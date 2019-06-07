@@ -1,7 +1,7 @@
 syntax="proto3";
 
 package service;
-option java_package = "org.dkv.server.service";
+option java_package = "org.dst.server.service";
 option java_outer_classname = "ExampleMessage";
 
 message SetRequest {
