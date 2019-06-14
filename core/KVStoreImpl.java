@@ -5,15 +5,15 @@ import org.dst.core.operatorset.DstString;
 
 public class KVStoreImpl implements KVStore {
 	
-	private DstStringImpl str;
+    private DstStringImpl str;
 	
-	public KVStoreImpl() {
-		this.str = new DstStringImpl();
-	}
+    public KVStoreImpl() {
+        this.str = new DstStringImpl();
+    }
 	
-	@Override
-	public DstString str() {
-		return str;
-	}
+    @Override
+    public DstString str() {
+        return str;
+    }
 
 }
