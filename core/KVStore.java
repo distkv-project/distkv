@@ -1,5 +1,9 @@
 package org.dst.core;
-import org.dst.core.operatorset.*;
+
+/**
+ * The api of kv-store.
+ */
+import org.dst.core.operatorset.DstString;
 
 interface KVStore {
 
