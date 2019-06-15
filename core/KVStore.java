@@ -1,18 +1,20 @@
 package org.dst.core;
 
+import org.dst.core.operatorset.DstString;
+
 /**
  * The api of kv-store.
  */
 interface KVStore {
 
-  StrOperatorSet str();
+    DstString str();
 
-  ListOperatorSet list();
+    //ListOperatorSet list();
 
-  SetOperatorSet set();
+    //SetOperatorSet set();
 
-  DictOperatorSet dict();
+    //DictOperatorSet dict();
 
-  TableOperatorSet table();
+    //TableOperatorSet table();
 
 }
