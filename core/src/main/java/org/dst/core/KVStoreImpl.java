@@ -1,7 +1,15 @@
 package org.dst.core;
 
-import org.dst.core.operatorImpl.*;
-import org.dst.core.operatorset.*;
+import org.dst.core.operatorset.DstString;
+import org.dst.core.operatorset.DstList;
+import org.dst.core.operatorset.DstSet;
+import org.dst.core.operatorset.DstDict;
+import org.dst.core.operatorset.DstTable;
+import org.dst.core.operatorImpl.DstStringImpl;
+import org.dst.core.operatorImpl.DstListImpl;
+import org.dst.core.operatorImpl.DstSetImpl;
+import org.dst.core.operatorImpl.DstDictImpl;
+import org.dst.core.operatorImpl.DstTableImpl;
 
 public class KVStoreImpl implements KVStore {
 	
