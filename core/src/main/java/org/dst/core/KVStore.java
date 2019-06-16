@@ -1,6 +1,10 @@
 package org.dst.core;
 
-import org.dst.core.operatorset.*;
+import org.dst.core.operatorset.DstList;
+import org.dst.core.operatorset.DstSet;
+import org.dst.core.operatorset.DstString;
+import org.dst.core.operatorset.DstTable;
+import org.dst.core.operatorset.DstDict;
 
 /**
  * The api of kv-store.
