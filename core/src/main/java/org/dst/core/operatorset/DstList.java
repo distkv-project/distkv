@@ -6,10 +6,25 @@ import java.util.List;
 
 public interface DstList {
 
+    /**
+     * This method will put a key-value pair to map
+     * @param Key  the key to store
+     * @param Value the list value to store
+     */
     public void put(String Key, List<String> Value);
 
+    /**
+     * This method will query a list value based on the key
+     * @param Key Obtain a list value based on the key
+     * @return the list value
+     */
     public List<String>  get(String Key);
 
+    /**
+     * This method will delete a list value based on the key
+     * @param Key delete a key-value pair based on the key
+     * @return true or false, indicates that the deletion succeeded or failed.
+     */
     public boolean del(String Key);
 
     //insert value from the left of list

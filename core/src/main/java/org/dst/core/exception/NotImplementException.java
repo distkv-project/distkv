@@ -1,11 +1,16 @@
 package org.dst.core.exception;
 
-public class NotImplementException extends Exception {
+public class NotImplementException extends RuntimeException {
 
     public NotImplementException() {}
 
-    public NotImplementException(String msg) {
-        super(msg);
+    /**
+     * If the method don't be implemented, this method
+     * will show a messgae
+     * @param message the exception message to display
+     */
+    public NotImplementException(String message) {
+        super(message);
     }
 
 }
