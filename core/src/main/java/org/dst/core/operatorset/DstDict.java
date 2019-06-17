@@ -8,8 +8,6 @@ public interface DstDict {
 
     public Map<String, String> get(String Key);
 
-    public String get(String outKey, String inKey);
-
     public boolean del(String Key);
 
 }

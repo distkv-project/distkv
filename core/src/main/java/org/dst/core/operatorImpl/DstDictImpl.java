@@ -24,11 +24,6 @@ public class DstDictImpl implements DstDict {
     }
 
     @Override
-    public String get(String outKey, String inKey) {
-        return dictMap.get(outKey).get(inKey);
-    }
-
-    @Override
     public boolean del(String Key) {
         if(!dictMap.containsKey(Key)) {
             return false;

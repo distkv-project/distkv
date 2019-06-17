@@ -1,5 +1,7 @@
 package org.dst.core.operatorset;
 
+import org.dst.core.exception.KeyNotFoundException;
+
 import java.util.Set;
 
 public interface DstSet {
@@ -10,6 +12,6 @@ public interface DstSet {
 
     public boolean del(String Key);
 
-    public boolean exists(String Key, String Value);
+    public boolean exists(String Key, String Value) throws KeyNotFoundException;
 
 }

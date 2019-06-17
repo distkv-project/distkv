@@ -1,5 +1,6 @@
 package org.dst.core.operatorImpl;
 
+import org.dst.core.exception.KeyNotFoundException;
 import org.dst.core.operatorset.DstSet;
 
 import java.util.HashMap;
@@ -34,12 +35,12 @@ public class DstSetImpl implements DstSet {
     }
 
     @Override
-    public boolean exists(String Key, String Value) {
+    public boolean exists(String Key, String value) throws KeyNotFoundException {
         if(!setMap.containsKey(Key)) {
-            return false;
-        }else {
-            return setMap.get(Key).contains(Value);
+            throw new KeyNotFoundException("The key is not found");
         }
+
+        return setMap.get(Key).contains(value);
     }
 
 }
