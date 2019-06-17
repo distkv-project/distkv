@@ -12,7 +12,7 @@ import org.dst.core.operatorImpl.DstDictImpl;
 import org.dst.core.operatorImpl.DstTableImpl;
 
 public class KVStoreImpl implements KVStore {
-	
+
     private DstStringImpl str;
 
     private DstListImpl list;
@@ -30,7 +30,7 @@ public class KVStoreImpl implements KVStore {
         this.dict = new DstDictImpl();
         this.table = new DstTableImpl();
     }
-	
+
     @Override
     public DstString str() {
         return str;

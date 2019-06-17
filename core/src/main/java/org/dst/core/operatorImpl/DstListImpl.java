@@ -25,7 +25,7 @@ public class DstListImpl implements DstList {
 
     @Override
     public boolean del(String Key) {
-        if(!listMap.containsKey(Key)) {
+        if (!listMap.containsKey(Key)) {
             return false;
         }
 
@@ -34,22 +34,22 @@ public class DstListImpl implements DstList {
     }
 
     @Override
-    public boolean lput(String Key, List<String> Value){
+    public boolean lput(String Key, List<String> Value) {
         throw new NotImplementException("The method is not implemented");
     }
 
     @Override
-    public boolean rput(String Key, List<String> Value){
+    public boolean rput(String Key, List<String> Value) {
         throw new NotImplementException("The method is not implemented");
     }
 
     @Override
-    public boolean ldel(String Key, int n){
+    public boolean ldel(String Key, int n) {
         throw new NotImplementException("The method is not implemented");
     }
 
     @Override
-    public boolean rdel(String Key, int n){
+    public boolean rdel(String Key, int n) {
         throw new NotImplementException("The method is not implemented");
     }
 }

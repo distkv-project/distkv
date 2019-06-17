@@ -1,7 +1,6 @@
 package org.dst.core.operatorImpl;
 
 import org.dst.core.operatorset.DstDict;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class DstDictImpl implements DstDict {
 
     @Override
     public boolean del(String Key) {
-        if(!dictMap.containsKey(Key)) {
+        if (!dictMap.containsKey(Key)) {
             return false;
         }
 

@@ -6,13 +6,13 @@ import org.dst.core.operatorset.DstString;
 public class DstStringImpl implements DstString {
 
     private HashMap<String, String> strMap;
-	
+
     public DstStringImpl() {
         this.strMap = new HashMap<String, String>();
     }
-	
+
     @Override
-    public void put(String  Key, String Value) {
+    public void put(String Key, String Value) {
         strMap.put(Key, Value);
     }
 
@@ -23,12 +23,12 @@ public class DstStringImpl implements DstString {
 
     @Override
     public boolean del(String Key) {
-        if(!strMap.containsKey(Key)) {
+        if (!strMap.containsKey(Key)) {
             return false;
         }
 
         strMap.remove(Key);
         return true;
     }
-	
+
 }
