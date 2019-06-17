@@ -1,5 +1,4 @@
 package org.dst.core.operatorset;
 
-interface TableOperatorSet {
-
+public interface DstTable {
 }
