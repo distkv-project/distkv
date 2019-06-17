@@ -1,7 +1,6 @@
 package org.dst.core.operatorset;
 
 import org.dst.core.exception.NotImplementException;
-
 import java.util.List;
 
 public interface DstList {

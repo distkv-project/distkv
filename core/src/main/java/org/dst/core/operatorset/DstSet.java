@@ -1,7 +1,6 @@
 package org.dst.core.operatorset;
 
 import org.dst.core.exception.KeyNotFoundException;
-
 import java.util.Set;
 
 public interface DstSet {

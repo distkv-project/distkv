@@ -2,7 +2,6 @@ package org.dst.core.operatorImpl;
 
 import org.dst.core.exception.NotImplementException;
 import org.dst.core.operatorset.DstList;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,22 +34,22 @@ public class DstListImpl implements DstList {
     }
 
     @Override
-    public boolean lput(String Key, List<String> Value) throws NotImplementException {
+    public boolean lput(String Key, List<String> Value){
         throw new NotImplementException("The method is not implemented");
     }
 
     @Override
-    public boolean rput(String Key, List<String> Value) throws NotImplementException {
+    public boolean rput(String Key, List<String> Value){
         throw new NotImplementException("The method is not implemented");
     }
 
     @Override
-    public boolean ldel(String Key, int n) throws NotImplementException {
+    public boolean ldel(String Key, int n){
         throw new NotImplementException("The method is not implemented");
     }
 
     @Override
-    public boolean rdel(String Key, int n) throws NotImplementException {
+    public boolean rdel(String Key, int n){
         throw new NotImplementException("The method is not implemented");
     }
 }
