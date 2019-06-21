@@ -6,4 +6,5 @@ public enum ValueTypeEnum {
   STRING,
   DOUBLE,
   STRING_LIST,
+  RAW_DATA,
 }
