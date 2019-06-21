@@ -2,8 +2,7 @@ package org.dst.core.exception;
 
 public class KeyNotFoundException extends RuntimeException {
 
-    public KeyNotFoundException() {
-    }
+    public KeyNotFoundException() {}
 
     /**
      * If you want to query a key that don't exist in map, this method
