@@ -5,7 +5,7 @@ import org.dst.core.TableSpecification;
 
 public interface DstTable {
 
-    void createTable(TableSpecification tableSpec);
+  void createTable(TableSpecification tableSpec);
 
-    void append(RecordEntry recordEntry);
+  void append(RecordEntry recordEntry);
 }

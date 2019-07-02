@@ -6,13 +6,13 @@ import org.dst.core.operatorset.DstTable;
 
 public class DstTableImpl implements DstTable {
 
-    @Override
-    public void createTable(TableSpecification tableSpec) {
+  @Override
+  public void createTable(TableSpecification tableSpec) {
 
-    }
+  }
 
-    @Override
-    public void append(RecordEntry recordEntry) {
+  @Override
+  public void append(RecordEntry recordEntry) {
 
-    }
+  }
 }

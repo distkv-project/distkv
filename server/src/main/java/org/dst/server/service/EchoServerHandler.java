@@ -11,26 +11,26 @@ import io.netty.util.CharsetUtil;
 @ChannelHandler.Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf in = (ByteBuf) msg;
-        //print the client msg to console
-        System.out.println("Server received: " + in.toString(CharsetUtil.UTF_8));
-        //write the msg to client
-        ctx.write(in);
-    }
+  @Override
+  public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    ByteBuf in = (ByteBuf) msg;
+    //print the client msg to console
+    System.out.println("Server received: " + in.toString(CharsetUtil.UTF_8));
+    //write the msg to client
+    ctx.write(in);
+  }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+  @Override
+  public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 
-        //print the stay msg to client, and close the channel
-        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER)
-                .addListener(ChannelFutureListener.CLOSE);
-    }
+    //print the stay msg to client, and close the channel
+    ctx.writeAndFlush(Unpooled.EMPTY_BUFFER)
+            .addListener(ChannelFutureListener.CLOSE);
+  }
 
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
-        ctx.close();
-    }
+  @Override
+  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    cause.printStackTrace();
+    ctx.close();
+  }
 }

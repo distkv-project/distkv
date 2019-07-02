@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RecordEntry {
 
-    public TableSpecification tableSpec;
+  public TableSpecification tableSpec;
 
-    public List<FieldValue> fieldValues;
+  public List<FieldValue> fieldValues;
 }
