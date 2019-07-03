@@ -1,4 +1,4 @@
-package org.dst.core.client;
+package test.org.dst.core;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
-
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
 import org.dst.core.exception.KeyNotFoundException;
