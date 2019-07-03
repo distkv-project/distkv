@@ -17,6 +17,15 @@ public class FieldSpecification {
    */
   private int functionBits;
 
+  public FieldSpecification(int index, String name, ValueTypeEnum valueType,
+                            boolean isPrimary, boolean shouldCreateIndex) {
+    this.index = index;
+    this.name = name;
+    this.valueType = valueType;
+    markAsPrimary(isPrimary);
+    markShouldCreateIndex(shouldCreateIndex);
+  }
+
   private void markAsPrimary(boolean isPrimary) {
     // TODO(qwang):
   }
@@ -33,15 +42,6 @@ public class FieldSpecification {
   public boolean shouldCreateIndex() {
     // TODO(qwang)
     return false;
-  }
-
-  public FieldSpecification(int index, String name, ValueTypeEnum valueType,
-                            boolean isPrimary, boolean shouldCreateIndex) {
-    this.index = index;
-    this.name = name;
-    this.valueType = valueType;
-    markAsPrimary(isPrimary);
-    markShouldCreateIndex(shouldCreateIndex);
   }
 
   public static class Builder {
