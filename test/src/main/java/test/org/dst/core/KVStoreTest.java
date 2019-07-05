@@ -1,4 +1,4 @@
-package org.dst.core.client;
+package test.org.dst.core;
 
 import java.util.List;
 import java.util.ArrayList;
