@@ -14,7 +14,7 @@ public class RawDataValue extends FieldValue {
   }
 
   public byte[] getValue() {
-    return this.value.clone();
+    return value;
   }
 
   public void setValue(byte[] value) {
