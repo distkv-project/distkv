@@ -17,7 +17,6 @@
 
     <properties>
         <lombok.version>1.18.8</lombok.version>
-        <protobuf.version>3.8.0</protobuf.version>
     </properties>
 
     <build>

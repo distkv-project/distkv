@@ -34,6 +34,5 @@ public class RpcClientTest {
 
     client.stop();
 
-
   }
 }
