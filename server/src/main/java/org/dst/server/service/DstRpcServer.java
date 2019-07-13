@@ -3,7 +3,7 @@ package org.dst.server.service;
 import com.baidu.brpc.server.RpcServer;
 import com.baidu.brpc.server.RpcServerOptions;
 
-public class RpcServerTest {
+public class DstRpcServer {
   public static void main(String[] args) {
     int port = 8082;
 
@@ -18,9 +18,9 @@ public class RpcServerTest {
     server.start();
 
     // make server keep running
-    synchronized (RpcServerTest.class) {
+    synchronized (DstRpcServer.class) {
       try {
-        RpcServerTest.class.wait();
+        DstRpcServer.class.wait();
       } catch (Throwable e) {
       }
     }

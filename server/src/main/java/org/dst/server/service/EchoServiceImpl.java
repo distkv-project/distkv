@@ -1,5 +1,7 @@
 package org.dst.server.service;
 
+import org.dst.server.generated.EchoExample;
+
 public class EchoServiceImpl implements EchoService {
   @Override
   public EchoExample.EchoResponse echo(EchoExample.EchoRequest request) {
@@ -9,7 +11,6 @@ public class EchoServiceImpl implements EchoService {
     EchoExample.EchoResponse response = EchoExample.EchoResponse
             .newBuilder()
             .setMessage(message)
-            .setMessage("Hefei Ubiversity of Technology!")
             .build();
 
     return response;

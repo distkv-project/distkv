@@ -11,7 +11,7 @@
 
     <artifactId>dst-server</artifactId>
 
-    <!--统一指定项目的各个依赖版本-->
+    <!--List the dependency versions of the project-->
     <properties>
         <brpc.version>2.5.1</brpc.version>
         <logback.version>1.2.3</logback.version>
@@ -21,7 +21,7 @@
 
     <build>
         <plugins>
-            <!--protoc-jar-maven-plugin提供protobuf自动编译的功能-->
+            <!--provide the function of protobuf automatic compilation-->
             <plugin>
                 <groupId>com.github.os72</groupId>
                 <artifactId>protoc-jar-maven-plugin</artifactId>

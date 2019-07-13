@@ -1,7 +1,7 @@
 syntax="proto2";
 
 package example_for_java;
-option java_package="org.dst.server.service";
+option java_package="org.dst.server.generated";
 option java_outer_classname="EchoExample";
 option cc_generic_services = true;
 

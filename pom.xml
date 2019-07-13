@@ -21,7 +21,7 @@
 
     <build>
         <plugins>
-            <!--maven-source-plugin提供项目自动编译的功能,并且为加了注解的类自动生成get,set方法-->
+            <!-- automatically compile project -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -39,7 +39,7 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <!--maven-source-plugin提供项目自动将源码打包并发布的功能-->
+            <!--automatically package and publish source code-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
