@@ -16,7 +16,7 @@ public class Log4jTest {
         File file = new File(path);
         StringBuffer s = new StringBuffer();
         try {
-            InputStreamReader read = new InputStreamReader(new FileInputStream(file), "UTF-8");//考虑到编码格式
+            InputStreamReader read = new InputStreamReader(new FileInputStream(file));
             BufferedReader bufferedReader = new BufferedReader(read);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
