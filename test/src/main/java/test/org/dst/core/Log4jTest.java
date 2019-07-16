@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class Log4jTest {
 
-    public String readLog(String path){
+    public String readLog(String path) {
         File file = new File(path);
         StringBuffer s = new StringBuffer();
         try {
@@ -22,13 +22,13 @@ public class Log4jTest {
             while ((line = bufferedReader.readLine()) != null) {
                 s.append(line);
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e);
         }
         return s.toString();
     }
 
-    public void initLog(String str){
+    public void initLog(String str) {
         PropertyConfigurator.configure( "./src/log4j.properties" );
         Logger logger = Logger.getLogger(Log4jTest. class );
         logger.debug(str + ": debug");
@@ -48,7 +48,7 @@ public class Log4jTest {
     }
 
     @Test
-    public void testInfo(){
+    public void testInfo() {
         initLog("testInfo");
         String line = readLog("./src/logs/info.log");
         Assertions.assertFalse(line.contains("[DEBUG] testInfo: debug"));
@@ -58,7 +58,7 @@ public class Log4jTest {
     }
 
     @Test
-    public void testWarn(){
+    public void testWarn() {
         initLog("testWarn");
         String line = readLog("./src/logs/warn.log");
         Assertions.assertFalse(line.contains("[DEBUG] testWarn: debug"));
@@ -68,7 +68,7 @@ public class Log4jTest {
     }
 
     @Test
-    public void testError(){
+    public void testError() {
         initLog("testError");
         String line = readLog("./src/logs/error.log");
         Assertions.assertFalse(line.contains("[DEBUG] testError: debug"));
