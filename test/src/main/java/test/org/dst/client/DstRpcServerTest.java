@@ -25,7 +25,7 @@ public class DstRpcServerTest {
 
     RpcClient client = new RpcClient(url, options);
 
-    //构造请求
+    //Construct a request
     EchoExample.EchoRequest request = EchoExample.EchoRequest
             .newBuilder().setMessage("Hefei University of Technology!").build();
 
