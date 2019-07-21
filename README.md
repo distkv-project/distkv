@@ -8,6 +8,10 @@ jdk8+ && protobuf 2.5.0 && maven3.6.0+
 ```
 mvn clean install -Dskiptests
 ```
+#### 3. Test command
+```
+mvn test
+```
 ## Usage
 
 #### 1. String concept
