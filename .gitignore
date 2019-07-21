@@ -25,4 +25,9 @@ hs_err_pid*
 # idea ide
 .idea/
 *.iml
-EchoExample.java
+
+# target files
+/*/target
+
+# generated files
+server/src/main/java/org/dst/server/generated/*
