@@ -1,6 +1,13 @@
 # dst
 A distributed key-value in-memory store system with table concept.
 
+## Getting Started
+#### 1. Required environment
+jdk8+ && protobuf 2.5.0 && maven3.6.0+
+#### 2. Build command
+```
+mvn clean install -Dskiptests
+```
 ## Usage
 
 #### 1. String concept
