@@ -45,6 +45,29 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId> maven-assembly-plugin </artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.dst.server.service.DstRpcServer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -60,13 +83,6 @@
             <groupId>com.baidu</groupId>
             <artifactId>brpc-java</artifactId>
             <version>${brpc.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->

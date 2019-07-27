@@ -2,7 +2,9 @@ package org.dst.server.service;
 
 import com.baidu.brpc.server.RpcServer;
 import com.baidu.brpc.server.RpcServerOptions;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DstRpcServer {
   public static void main(String[] args) {
     int port = 8082;
