@@ -13,6 +13,8 @@ public class DstRpcServerTest {
 
   @Test
   public void testRpcServer() {
+    StartServerTest serverTest = new StartServerTest();
+    serverTest.start();
 
     RpcClientOptions options = new RpcClientOptions();
     options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
@@ -36,6 +38,7 @@ public class DstRpcServerTest {
     Assertions.assertEquals("Hefei University of Technology!",response.getMessage());
 
     client.stop();
+    serverTest.stop();
 
   }
 }
