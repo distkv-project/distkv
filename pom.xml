@@ -13,6 +13,7 @@
         <module>server</module>
         <module>client</module>
         <module>test</module>
+        <module>common</module>
     </modules>
 
     <properties>
