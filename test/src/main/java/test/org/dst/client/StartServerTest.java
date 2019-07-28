@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class StartServerTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(StartServerTest.class);
@@ -16,12 +15,12 @@ public class StartServerTest {
   private boolean executeCommand(List<String> command) {
 
     try {
-      LOGGER.info("Executing command: {}", String.join(" ", command));
+      LOGGER.debug("Executing command: {}", String.join(" ", command));
 
       ProcessBuilder processBuilder = new ProcessBuilder(command).redirectOutput(ProcessBuilder.Redirect.INHERIT)
               .redirectError(ProcessBuilder.Redirect.INHERIT);
       process = processBuilder.start();
-      process.waitFor(10, TimeUnit.SECONDS);
+      process.waitFor(2, TimeUnit.SECONDS);
       return process.exitValue() == 0;
     } catch (Exception e) {
       throw new RuntimeException("Error executing command " + String.join(" ", command), e);
