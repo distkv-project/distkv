@@ -1,4 +1,4 @@
-package test.org.dst.client;
+package test.org.dst.rpc;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,12 +7,12 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StartServerTest {
+public class TestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(StartServerTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
   private static Process process = null;
 
-  private boolean executeCommand(List<String> command) {
+  private static boolean executeCommand(List<String> command) {
 
     try {
       LOGGER.debug("Executing command: {}", String.join(" ", command));
@@ -27,7 +27,7 @@ public class StartServerTest {
     }
   }
 
-  public void start() {
+  public static void  start() {
     //get the project root directory
     File file = new File("");
     String path = file.getAbsolutePath();
@@ -49,7 +49,7 @@ public class StartServerTest {
     }
   }
 
-  public void stop() {
+  public static void stop() {
     process.destroy();
   }
 }

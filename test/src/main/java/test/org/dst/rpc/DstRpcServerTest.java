@@ -1,4 +1,4 @@
-package test.org.dst.client;
+package test.org.dst.rpc;
 
 import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
@@ -13,8 +13,7 @@ public class DstRpcServerTest {
 
   @Test
   public void testRpcServer() {
-    StartServerTest serverTest = new StartServerTest();
-    serverTest.start();
+    TestUtil.start();
 
     RpcClientOptions options = new RpcClientOptions();
     options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
@@ -38,7 +37,8 @@ public class DstRpcServerTest {
     Assertions.assertEquals("Hefei University of Technology!",response.getMessage());
 
     client.stop();
-    serverTest.stop();
+
+    TestUtil.stop();
 
   }
 }
