@@ -13,7 +13,7 @@ public class DstRpcServerTest {
 
   @Test
   public void testRpcServer() {
-    TestUtil.start();
+    TestUtil.startRpcServer();
 
     RpcClientOptions options = new RpcClientOptions();
     options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
@@ -38,7 +38,7 @@ public class DstRpcServerTest {
 
     client.stop();
 
-    TestUtil.stop();
+    TestUtil.stopRpcServer();
 
   }
 }

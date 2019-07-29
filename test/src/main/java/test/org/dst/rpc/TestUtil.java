@@ -1,17 +1,20 @@
 package test.org.dst.rpc;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TestUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
-  private static Process process = null;
+  private static Process rpcServerProcess = null;
 
+  /**
+   * @param command the command to start rpc server using a new process
+   * @return Whether the command succeeded.
+   */
   private static boolean executeCommand(List<String> command) {
 
     try {
@@ -19,18 +22,17 @@ public class TestUtil {
 
       ProcessBuilder processBuilder = new ProcessBuilder(command).redirectOutput(ProcessBuilder.Redirect.INHERIT)
               .redirectError(ProcessBuilder.Redirect.INHERIT);
-      process = processBuilder.start();
-      process.waitFor(2, TimeUnit.SECONDS);
-      return process.exitValue() == 0;
+      rpcServerProcess = processBuilder.start();
+      rpcServerProcess.waitFor(2, TimeUnit.SECONDS);
+      return rpcServerProcess.exitValue() == 0;
     } catch (Exception e) {
       throw new RuntimeException("Error executing command " + String.join(" ", command), e);
     }
   }
 
-  public static void  start() {
+  public static void startRpcServer() {
     //get the project root directory
-    File file = new File("");
-    String path = file.getAbsolutePath();
+    String path = System.getProperty("user.dir");
 
     int lastIndex = path.lastIndexOf("\\");
     String serverPtah = path.substring(0, lastIndex);
@@ -38,19 +40,20 @@ public class TestUtil {
     //get the classpath
     String classPath = serverPtah + "\\server\\target\\dst-server-1.0-SNAPSHOT-jar-with-dependencies.jar";
 
-    final List<String> startCommand = new ArrayList<>();
-    startCommand.add("java");
-    startCommand.add("-classpath");
-    startCommand.add(classPath);
-    startCommand.add("org.dst.server.service.DstRpcServer");
+    final List<String> startCommand = ImmutableList.of(
+            "java",
+            "-classpath",
+            classPath,
+            "org.dst.server.service.DstRpcServer"
+    );
 
     if (!executeCommand(startCommand)) {
       throw new RuntimeException("Couldn't start dst server.");
     }
   }
 
-  public static void stop() {
-    process.destroy();
+  public static void stopRpcServer() {
+    rpcServerProcess.destroy();
   }
 }
 
