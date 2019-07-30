@@ -22,7 +22,7 @@ public class DstRpcServerTest {
     options.setMaxTotalConnections(1000);
     options.setMinIdleConnections(10);
 
-    String url = "list://localhost:8087";
+    String url = "list://localhost:8082";
 
     RpcClient client = new RpcClient(url, options);
 
