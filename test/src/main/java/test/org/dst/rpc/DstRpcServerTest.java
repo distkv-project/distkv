@@ -31,11 +31,8 @@ public class DstRpcServerTest {
             .newBuilder().setMessage("Hefei University of Technology!").build();
 
     EchoService echoService = BrpcProxy.getProxy(client, EchoService.class);
-
     EchoExample.EchoResponse response = echoService.echo(request);
-
     Assertions.assertEquals("Hefei University of Technology!",response.getMessage());
-
     client.stop();
 
     TestUtil.stopRpcServer();

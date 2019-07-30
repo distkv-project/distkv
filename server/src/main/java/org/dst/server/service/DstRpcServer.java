@@ -13,7 +13,7 @@ public class DstRpcServer {
     options.setKeepAliveTime(20);
 
     RpcServer server = new RpcServer(port, options);
-    //注册服务
+    // Register service.
     server.registerService(new EchoServiceImpl());
     server.start();
 
