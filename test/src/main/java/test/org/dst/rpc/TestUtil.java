@@ -1,5 +1,6 @@
 package test.org.dst.rpc;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.google.common.collect.ImmutableList;
@@ -9,13 +10,15 @@ import org.slf4j.LoggerFactory;
 public class TestUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
+
+  private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target" + File.separator + "dst-server-1.0-SNAPSHOT-jar-with-dependencies.jar";
+
   private static Process rpcServerProcess = null;
 
   /**
-   * @param command the command to start rpc server using a new process
-   * @return Whether the command succeeded.
+   * @param command the command to start rpc server using a new process.
    */
-  private static boolean executeCommand(List<String> command) {
+  private static void executeCommand(List<String> command) {
 
     try {
       LOGGER.debug("Executing command: {}", String.join(" ", command));
@@ -23,33 +26,24 @@ public class TestUtil {
       ProcessBuilder processBuilder = new ProcessBuilder(command).redirectOutput(ProcessBuilder.Redirect.INHERIT)
               .redirectError(ProcessBuilder.Redirect.INHERIT);
       rpcServerProcess = processBuilder.start();
-      rpcServerProcess.waitFor(2, TimeUnit.SECONDS);
-      return rpcServerProcess.exitValue() == 0;
+      // TODO(qwang): Refine this wait
+      rpcServerProcess.waitFor(1, TimeUnit.SECONDS);
     } catch (Exception e) {
+      rpcServerProcess.destroy();
       throw new RuntimeException("Error executing command " + String.join(" ", command), e);
     }
   }
 
   public static void startRpcServer() {
-    //get the project root directory
-    String path = System.getProperty("user.dir");
-
-    int lastIndex = path.lastIndexOf("\\");
-    String serverPtah = path.substring(0, lastIndex);
-
-    //get the classpath
-    String classPath = serverPtah + "\\server\\target\\dst-server-1.0-SNAPSHOT-jar-with-dependencies.jar";
-
+    final File userDir = new File(System.getProperty("user.dir"));
+    final String jarDir = userDir.getParent() + File.separator + SUFFIX_JAR_DIR;
     final List<String> startCommand = ImmutableList.of(
             "java",
             "-classpath",
-            classPath,
+            jarDir,
             "org.dst.server.service.DstRpcServer"
     );
-
-    if (!executeCommand(startCommand)) {
-      throw new RuntimeException("Couldn't start dst server.");
-    }
+    executeCommand(startCommand);
   }
 
   public static void stopRpcServer() {

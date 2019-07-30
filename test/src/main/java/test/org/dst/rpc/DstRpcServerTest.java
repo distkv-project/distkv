@@ -22,7 +22,7 @@ public class DstRpcServerTest {
     options.setMaxTotalConnections(1000);
     options.setMinIdleConnections(10);
 
-    String url = "list://localhost:8082";
+    String url = "list://localhost:8087";
 
     RpcClient client = new RpcClient(url, options);
 
@@ -31,11 +31,8 @@ public class DstRpcServerTest {
             .newBuilder().setMessage("Hefei University of Technology!").build();
 
     EchoService echoService = BrpcProxy.getProxy(client, EchoService.class);
-
     EchoExample.EchoResponse response = echoService.echo(request);
-
     Assertions.assertEquals("Hefei University of Technology!",response.getMessage());
-
     client.stop();
 
     TestUtil.stopRpcServer();
