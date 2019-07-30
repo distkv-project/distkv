@@ -1,4 +1,4 @@
-# dst
+# dst [![Build Status](https://travis-ci.com/jovany-wang/dst.svg?token=7wQpC1f51BkWzsCeefLE&branch=master)](https://travis-ci.com/jovany-wang/dst)
 A distributed key-value in-memory store system with table concept.
 
 ## Getting Started
