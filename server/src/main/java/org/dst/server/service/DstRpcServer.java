@@ -4,10 +4,18 @@ import com.baidu.brpc.server.RpcServer;
 import com.baidu.brpc.server.RpcServerOptions;
 
 public class DstRpcServer {
+
   public static void main(String[] args) {
+
     int port = 8082;
 
+    if (args.length == 1) {
+      // TODO(qwang): This may throw exception.
+      port = Integer.valueOf(args[0]);
+    }
+
     RpcServerOptions options = new RpcServerOptions();
+    // TODO(qwang): This should be configurable.
     options.setReceiveBufferSize(64 * 1024 * 1024);
     options.setSendBufferSize(64 * 1024 * 1024);
     options.setKeepAliveTime(20);
@@ -22,6 +30,7 @@ public class DstRpcServer {
       try {
         DstRpcServer.class.wait();
       } catch (Throwable e) {
+        // TODO(qwang): Add log and do clean up.
       }
     }
 

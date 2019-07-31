@@ -1,0 +1,32 @@
+syntax="proto2";
+
+package example_for_java;
+option java_package="org.dst.server.generated";
+option java_outer_classname="DstServerProtocol";
+option cc_generic_services = true;
+
+
+enum StringRequestType {
+    PUT = 0;
+    GET = 1;
+}
+
+enum StringResponseType {
+    STATUS_RESPONSE = 0;
+    DATA_RESPONSE = 1;
+}
+
+message StringRequest {
+    required StringRequestType requestType = 1;
+    required string key = 2;
+    required string value = 3;
+};
+
+message StringResponse {
+    required StringResponseType responseType = 1;
+    required string result = 2;
+};
+
+service DstStringService {
+    rpc HandleString(StringRequest) returns (StringResponse);
+}
