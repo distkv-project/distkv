@@ -12,6 +12,7 @@ cache:
 install: true
 
 script:
+  - travis_wait 10 mvn checkstyle:check
   - travis_wait 10 mvn clean install -DskipTests=true
   - travis_wait 10 mvn test
 
