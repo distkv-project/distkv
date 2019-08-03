@@ -1,0 +1,28 @@
+syntax="proto2";
+
+package example_for_java;
+option java_package="org.dst.server.generated";
+option java_outer_classname="DstServerProtocol";
+option cc_generic_services = true;
+
+message StringPutRequest {
+    required string key = 1;
+    required string value = 2;
+};
+
+message StringPutResponse {
+    required string result = 1;
+};
+
+message StringGetRequest {
+    required string key = 1;
+}
+
+message StringGetResponse {
+    required string result = 1;
+};
+
+service DstService {
+    rpc strPut(StringPutRequest) returns (StringPutResponse);
+    rpc strGet(StringGetRequest) returns (StringGetResponse);
+}

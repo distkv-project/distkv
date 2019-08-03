@@ -4,8 +4,8 @@ import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
-import org.dst.server.generated.EchoExample;
-import org.dst.server.service.EchoService;
+import org.dst.server.generated.DstServerProtocol;
+import org.dst.server.service.DstStringService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,20 +22,28 @@ public class DstRpcServerTest {
     options.setMaxTotalConnections(1000);
     options.setMinIdleConnections(10);
 
-    String url = "list://localhost:8082";
+    String url = "list://127.0.0.1:8082";
 
     RpcClient client = new RpcClient(url, options);
 
-    //Construct a request
-    EchoExample.EchoRequest request = EchoExample.EchoRequest
-            .newBuilder().setMessage("Hefei University of Technology!").build();
+    DstStringService stringService = BrpcProxy.getProxy(client, DstStringService.class);
 
-    EchoService echoService = BrpcProxy.getProxy(client, EchoService.class);
-    EchoExample.EchoResponse response = echoService.echo(request);
-    Assertions.assertEquals("Hefei University of Technology!",response.getMessage());
+    // Test string put request
+    DstServerProtocol.StringPutRequest stringPutRequest = DstServerProtocol.StringPutRequest.newBuilder()
+        .setKey("k1")
+        .setValue("v1")
+        .build();
+    DstServerProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
+    Assertions.assertEquals("ok", stringResponse.getResult());
+
+    // Test string get request
+    DstServerProtocol.StringGetRequest strGetRequest = DstServerProtocol.StringGetRequest.newBuilder()
+        .setKey("k1")
+        .build();
+    DstServerProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
+    Assertions.assertEquals("v1", stringGetRequest.getResult());
     client.stop();
 
     TestUtil.stopRpcServer();
-
   }
 }
