@@ -4,11 +4,8 @@ import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
-import org.dst.core.operatorset.DstString;
 import org.dst.server.generated.DstServerProtocol;
-import org.dst.server.generated.EchoExample;
 import org.dst.server.service.DstStringService;
-import org.dst.server.service.EchoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,28 +26,24 @@ public class DstRpcServerTest {
 
     RpcClient client = new RpcClient(url, options);
 
-    //Construct a request
-//    EchoExample.EchoRequest request = EchoExample.EchoRequest
-//            .newBuilder().setMessage("Hefei University of Technology!").build();
-//
-//    EchoService echoService = BrpcProxy.getProxy(client, EchoService.class);
-//    EchoExample.EchoResponse response = echoService.echo(request);
-//    Assertions.assertEquals("Hefei University of Technology!",response.getMessage());
+    DstStringService stringService = BrpcProxy.getProxy(client, DstStringService.class);
 
-    // Test string request
-    DstServerProtocol.StringRequest stringRequest = DstServerProtocol.StringRequest.newBuilder()
-        .setRequestType(DstServerProtocol.StringRequestType.PUT)
+    // Test string put request
+    DstServerProtocol.StringPutRequest stringPutRequest = DstServerProtocol.StringPutRequest.newBuilder()
         .setKey("k1")
         .setValue("v1")
         .build();
-
-    DstStringService stringService = BrpcProxy.getProxy(client, DstStringService.class);
-    DstServerProtocol.StringResponse stringResponse = stringService.handleString(stringRequest);
-    Assertions.assertEquals(DstServerProtocol.StringResponseType.STATUS_RESPONSE, stringResponse.getResponseType());
+    DstServerProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
     Assertions.assertEquals("ok", stringResponse.getResult());
+
+    // Test string get request
+    DstServerProtocol.StringGetRequest strGetRequest = DstServerProtocol.StringGetRequest.newBuilder()
+        .setKey("k1")
+        .build();
+    DstServerProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
+    Assertions.assertEquals("v1", stringGetRequest.getResult());
     client.stop();
 
     TestUtil.stopRpcServer();
-
   }
 }

@@ -2,10 +2,20 @@ package org.dst.server.service;
 
 import com.baidu.brpc.server.RpcServer;
 import com.baidu.brpc.server.RpcServerOptions;
+import org.dst.core.KVStore;
+import org.dst.core.KVStoreImpl;
 
 public class DstRpcServer {
 
+  private KVStore kvStore;
+
+  private DstRpcServer() {
+    kvStore = new KVStoreImpl();
+  }
+
   public static void main(String[] args) {
+
+    DstRpcServer rpcServer = new DstRpcServer();
 
     int port = 8082;
 

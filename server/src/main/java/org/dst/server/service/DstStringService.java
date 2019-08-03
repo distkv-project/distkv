@@ -5,7 +5,11 @@ import org.dst.server.generated.DstServerProtocol;
 
 public interface DstStringService {
 
-  @BrpcMeta(serviceName = "DstStringService", methodName = "HandleString")
-  DstServerProtocol.StringResponse handleString(DstServerProtocol.StringRequest request);
+  @BrpcMeta(serviceName = "DstService", methodName = "strPut")
+  DstServerProtocol.StringPutResponse strPut(DstServerProtocol.StringPutRequest request);
+
+  @BrpcMeta(serviceName = "DstService", methodName = "strGet")
+  DstServerProtocol.StringGetResponse strGet(DstServerProtocol.StringGetRequest request);
+
 }
 
