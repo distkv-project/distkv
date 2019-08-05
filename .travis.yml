@@ -19,7 +19,6 @@ matrix:
       env: CUSTOM_JDK="oraclejdk8"
       script:
         - mvn clean install
-        - mvn test
 
     # This is the job to check code format.
     - os: linux
