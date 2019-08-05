@@ -32,7 +32,6 @@ public class DstRpcServer {
 
     RpcServer server = new RpcServer(port, options);
     // Register service.
-    server.registerService(new EchoServiceImpl());
     server.registerService(new DstStringServiceImpl());
     server.start();
 
