@@ -11,9 +11,21 @@ cache:
 
 install: true
 
-script:
-  - travis_wait 10 mvn clean install -DskipTests=true
-  - travis_wait 10 mvn test
+# define two parallel jobs
+matrix:
+  include:
+    # This job is to install and test project
+    - os: linux
+      env: CUSTOM_JDK="oraclejdk8"
+      script:
+        - mvn clean install
+        - mvn test
+
+    # This is the job to check code format.
+    - os: linux
+      dist: trusty
+      script:
+        - mvn checkstyle:check
 
 after_success:
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
