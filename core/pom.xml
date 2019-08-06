@@ -16,6 +16,17 @@
             <groupId>com.github.wenweihu86.raft</groupId>
             <artifactId>raft-java-core</artifactId>
             <version>1.8.0</version>
+            <!--exclude log4j in raft-brpc-core-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
