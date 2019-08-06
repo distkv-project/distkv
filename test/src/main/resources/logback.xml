@@ -39,7 +39,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.dst.server">
+    <logger name="org.dst.test">
         <level value="info"/>
     </logger>
 
