@@ -29,13 +29,11 @@ matrix:
 
     # for MacOS: This job is to test project
     - os: osx
-      osx_image: xcode9
       script:
         - mvn test
 
     # for MacOS: This job to check code format.
     - os: osx
-      osx_image: xcode9
       script:
         - mvn checkstyle:check
 
