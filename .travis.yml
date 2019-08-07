@@ -8,6 +8,8 @@ cache:
   directories:
     - $HOME/.m2
 
+# install all dependencies
+# if true, skip all install
 install: true
 
 # define two parallel jobs
@@ -17,13 +19,13 @@ matrix:
     - os: linux
       env: CUSTOM_JDK="oraclejdk8"
       script:
-        - mvn clean install -Dskiptests
+        - mvn clean install
 
     # This is the job to check code format.
     - os: linux
       dist: trusty
       script:
-        - mvn checkstyle:check
+        - mvn install checkstyle:check
 
 after_success:
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
