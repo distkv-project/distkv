@@ -10,22 +10,34 @@ cache:
 
 # install all dependencies
 # if true, skip all install
-install: true
+install: mvn claen install
 
-# define two parallel jobs
+# define four parallel jobs
 matrix:
   include:
-    # This job is to install and test project
+    # for linux : This job is to test project
     - os: linux
-      env: CUSTOM_JDK="oraclejdk8"
+      dist: xenial
       script:
-        - mvn clean install
+        - mvn test
 
-    # This is the job to check code format.
+    # for linux: This job to check code format.
     - os: linux
       dist: trusty
       script:
-        - mvn install checkstyle:check
+        - mvn checkstyle:check
+
+    # for MacOS: This job is to test project
+    - os: osx
+      osx_image: xcode9
+      script:
+        - mvn test
+
+    # for MacOS: This job to check code format.
+    - os: osx
+      osx_image: xcode9
+      script:
+        - mvn checkstyle:check
 
 after_success:
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
