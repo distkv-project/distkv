@@ -28,7 +28,7 @@
     </module>
 
     <module name="TreeWalker">
-        <property name ="tabWidth" value ="4"/>
+        <property name ="tabWidth" value ="2"/>
         <!-- Below are custom config items in addition to the original google style config. -->
         <module name="UnusedImports"/>
         <!-- End of custom config items -->
