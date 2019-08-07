@@ -8,35 +8,35 @@ public interface DstSet {
   /**
    * This method will put a key-value pair to map
    *
-   * @param Key   the key to store
-   * @param Value the set value to store
+   * @param key   the key to store
+   * @param value the set value to store
    */
-  public void put(String Key, Set<String> Value);
+  public void put(String key, Set<String> value);
 
   /**
    * This method will query a set value based on the key
    *
-   * @param Key Obtain a set value based on the key
+   * @param key Obtain a set value based on the key
    * @return the set value
    */
-  public Set<String> get(String Key);
+  public Set<String> get(String key);
 
   /**
    * This method will delete a set value based on the key
    *
-   * @param Key delete a key-value pair based on the key
+   * @param key delete a key-value pair based on the key
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  public boolean del(String Key);
+  public boolean del(String key);
 
   /**
    * This method will judge that if the value exists in map or not.
    *
-   * @param Key   the key exists in map
-   * @param Value the set value you want to judge
+   * @param key   the key exists in map
+   * @param value the set value you want to judge
    * @return true or false, indicates that the value exists or not.
    * @throws KeyNotFoundException If the key don't exist in map
    */
-  public boolean exists(String Key, String Value) throws KeyNotFoundException;
+  public boolean exists(String key, String value) throws KeyNotFoundException;
 
 }

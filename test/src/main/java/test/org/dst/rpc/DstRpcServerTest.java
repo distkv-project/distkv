@@ -29,7 +29,8 @@ public class DstRpcServerTest {
     DstStringService stringService = BrpcProxy.getProxy(client, DstStringService.class);
 
     // Test string put request
-    DstServerProtocol.StringPutRequest stringPutRequest = DstServerProtocol.StringPutRequest.newBuilder()
+    DstServerProtocol.StringPutRequest stringPutRequest =
+            DstServerProtocol.StringPutRequest.newBuilder()
         .setKey("k1")
         .setValue("v1")
         .build();
@@ -37,7 +38,8 @@ public class DstRpcServerTest {
     Assertions.assertEquals("ok", stringResponse.getResult());
 
     // Test string get request
-    DstServerProtocol.StringGetRequest strGetRequest = DstServerProtocol.StringGetRequest.newBuilder()
+    DstServerProtocol.StringGetRequest strGetRequest = DstServerProtocol.StringGetRequest
+        .newBuilder()
         .setKey("k1")
         .build();
     DstServerProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
