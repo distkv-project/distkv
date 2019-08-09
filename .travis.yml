@@ -27,17 +27,5 @@ matrix:
       script:
         - travis_wait 10 mvn checkstyle:check
 
-    # for MacOS: This job is to test project
-    - os: osx
-      env: CUSTOM_JDK="oraclejdk8"
-      script:
-        - travis_wait 10 mvn test
-
-    # for MacOS: This job to check code format.
-    - os: osx
-      env: CUSTOM_JDK="oraclejdk8"
-      script:
-        - travis_wait 10 mvn checkstyle:check
-
 after_success:
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
