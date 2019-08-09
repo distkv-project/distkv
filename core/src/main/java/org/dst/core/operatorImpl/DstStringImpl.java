@@ -12,22 +12,22 @@ public class DstStringImpl implements DstString {
   }
 
   @Override
-  public void put(String Key, String Value) {
-    strMap.put(Key, Value);
+  public void put(String key, String kalue) {
+    strMap.put(key, kalue);
   }
 
   @Override
-  public String get(String Key) {
-    return strMap.get(Key);
+  public String get(String key) {
+    return strMap.get(key);
   }
 
   @Override
-  public boolean del(String Key) {
-    if (!strMap.containsKey(Key)) {
+  public boolean del(String key) {
+    if (!strMap.containsKey(key)) {
       return false;
     }
 
-    strMap.remove(Key);
+    strMap.remove(key);
     return true;
   }
 

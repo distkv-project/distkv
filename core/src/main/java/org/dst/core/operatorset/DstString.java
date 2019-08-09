@@ -5,25 +5,25 @@ public interface DstString {
   /**
    * This method will put a key-value pair to map
    *
-   * @param Key   the key to store
-   * @param Value the string value to store
+   * @param key   the key to store
+   * @param value the string value to store
    */
-  public void put(String Key, String Value);
+  public void put(String key, String value);
 
   /**
    * This method will query a string value based on the key
    *
-   * @param Key Obtain a string value based on the key
+   * @param key Obtain a string value based on the key
    * @return the string  value
    */
-  public String get(String Key);
+  public String get(String key);
 
   /**
    * This method will delete a string value based on the key
    *
-   * @param Key delete a key-value pair based on the key
+   * @param key delete a key-value pair based on the key
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  public boolean del(String Key);
+  public boolean del(String key);
 
 }

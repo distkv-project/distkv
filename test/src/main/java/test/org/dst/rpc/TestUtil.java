@@ -11,7 +11,8 @@ public class TestUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
 
-  private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target" + File.separator + "dst-server-1.0-SNAPSHOT-jar-with-dependencies.jar";
+  private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
+          + File.separator + "dst-server-1.0-SNAPSHOT-jar-with-dependencies.jar";
 
   private static Process rpcServerProcess = null;
 
@@ -23,7 +24,8 @@ public class TestUtil {
     try {
       LOGGER.debug("Executing command: {}", String.join(" ", command));
 
-      ProcessBuilder processBuilder = new ProcessBuilder(command).redirectOutput(ProcessBuilder.Redirect.INHERIT)
+      ProcessBuilder processBuilder = new ProcessBuilder(command)
+              .redirectOutput(ProcessBuilder.Redirect.INHERIT)
               .redirectError(ProcessBuilder.Redirect.INHERIT);
       rpcServerProcess = processBuilder.start();
       // TODO(qwang): Refine this wait

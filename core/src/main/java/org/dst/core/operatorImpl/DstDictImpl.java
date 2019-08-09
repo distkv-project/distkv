@@ -13,22 +13,22 @@ public class DstDictImpl implements DstDict {
   }
 
   @Override
-  public void put(String Key, Map<String, String> Value) {
-    dictMap.put(Key, Value);
+  public void put(String key, Map<String, String> value) {
+    dictMap.put(key, value);
   }
 
   @Override
-  public Map<String, String> get(String Key) {
-    return dictMap.get(Key);
+  public Map<String, String> get(String key) {
+    return dictMap.get(key);
   }
 
   @Override
-  public boolean del(String Key) {
-    if (!dictMap.containsKey(Key)) {
+  public boolean del(String key) {
+    if (!dictMap.containsKey(key)) {
       return false;
     }
 
-    dictMap.remove(Key);
+    dictMap.remove(key);
     return true;
   }
 }

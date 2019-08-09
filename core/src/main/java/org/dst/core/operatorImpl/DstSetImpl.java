@@ -14,32 +14,32 @@ public class DstSetImpl implements DstSet {
   }
 
   @Override
-  public void put(String Key, Set<String> Value) {
-    setMap.put(Key, Value);
+  public void put(String key, Set<String> value) {
+    setMap.put(key, value);
   }
 
   @Override
-  public Set<String> get(String Key) {
-    return setMap.get(Key);
+  public Set<String> get(String key) {
+    return setMap.get(key);
   }
 
   @Override
-  public boolean del(String Key) {
-    if (!setMap.containsKey(Key)) {
+  public boolean del(String key) {
+    if (!setMap.containsKey(key)) {
       return false;
     }
 
-    setMap.remove(Key);
+    setMap.remove(key);
     return true;
   }
 
   @Override
-  public boolean exists(String Key, String value) throws KeyNotFoundException {
-    if (!setMap.containsKey(Key)) {
+  public boolean exists(String key, String value) throws KeyNotFoundException {
+    if (!setMap.containsKey(key)) {
       throw new KeyNotFoundException("The key is not found");
     }
 
-    return setMap.get(Key).contains(value);
+    return setMap.get(key).contains(value);
   }
 
 }

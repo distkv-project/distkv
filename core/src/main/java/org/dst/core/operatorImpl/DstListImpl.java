@@ -14,42 +14,42 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public void put(String Key, List<String> Value) {
-    listMap.put(Key, Value);
+  public void put(String key, List<String> value) {
+    listMap.put(key, value);
   }
 
   @Override
-  public List<String> get(String Key) {
-    return listMap.get(Key);
+  public List<String> get(String key) {
+    return listMap.get(key);
   }
 
   @Override
-  public boolean del(String Key) {
-    if (!listMap.containsKey(Key)) {
+  public boolean del(String key) {
+    if (!listMap.containsKey(key)) {
       return false;
     }
 
-    listMap.remove(Key);
+    listMap.remove(key);
     return true;
   }
 
   @Override
-  public boolean lput(String Key, List<String> Value) {
+  public boolean lput(String key, List<String> value) {
     throw new NotImplementException("The method is not implemented");
   }
 
   @Override
-  public boolean rput(String Key, List<String> Value) {
+  public boolean rput(String key, List<String> value) {
     throw new NotImplementException("The method is not implemented");
   }
 
   @Override
-  public boolean ldel(String Key, int n) {
+  public boolean ldel(String key, int n) {
     throw new NotImplementException("The method is not implemented");
   }
 
   @Override
-  public boolean rdel(String Key, int n) {
+  public boolean rdel(String key, int n) {
     throw new NotImplementException("The method is not implemented");
   }
 }
