@@ -28,6 +28,7 @@ hs_err_pid*
 
 # target files
 /*/target
+target/
 
 # generated files
 server/src/main/java/org/dst/server/generated/*

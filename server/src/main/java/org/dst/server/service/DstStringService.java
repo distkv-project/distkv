@@ -11,5 +11,9 @@ public interface DstStringService {
   @BrpcMeta(serviceName = "DstService", methodName = "strGet")
   DstServerProtocol.StringGetResponse strGet(DstServerProtocol.StringGetRequest request);
 
-}
+  @BrpcMeta(serviceName = "DstService", methodName = "listPut")
+  DstServerProtocol.ListPutResponse listPut(DstServerProtocol.ListPutRequest request);
 
+  @BrpcMeta(serviceName = "DstService", methodName = "listGet")
+  DstServerProtocol.ListGetResponse listGet(DstServerProtocol.ListGetRequest request);
+}

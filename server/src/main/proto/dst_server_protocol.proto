@@ -1,9 +1,11 @@
 syntax="proto2";
 
-package example_for_java;
+package dst.server.protocol.pb;
+
 option java_package="org.dst.server.generated";
 option java_outer_classname="DstServerProtocol";
 option cc_generic_services = true;
+
 
 message StringPutRequest {
     required string key = 1;
@@ -22,7 +24,30 @@ message StringGetResponse {
     required string result = 1;
 };
 
+
+
+message ListPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message ListPutResponse {
+    required string result = 1;
+}
+
+message ListGetRequest {
+    required string key = 1;
+}
+
+message ListGetResponse {
+    required string result = 1;
+    repeated string values = 2;
+}
+
 service DstService {
     rpc strPut(StringPutRequest) returns (StringPutResponse);
     rpc strGet(StringGetRequest) returns (StringGetResponse);
+
+    rpc listPut(ListPutRequest) returns (ListPutResponse);
+    rpc listGet(ListGetRequest) returns (ListGetResponse);
 }
