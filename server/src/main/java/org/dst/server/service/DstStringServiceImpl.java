@@ -53,10 +53,7 @@ public class DstStringServiceImpl implements DstStringService {
             DstServerProtocol.ListGetResponse.newBuilder();
 
     List<String> values = store.list().get(request.getKey());
-    // TODO(qwang): Use for each.
-    for (int i = 0; i < values.size(); ++i) {
-      responseBuilder.addValues(values.get(i));
-    }
+    values.forEach(value -> responseBuilder.addValues(value));
 
     responseBuilder.setResult("ok");
     return responseBuilder.build();
