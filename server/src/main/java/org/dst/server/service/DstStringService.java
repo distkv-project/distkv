@@ -17,4 +17,3 @@ public interface DstStringService {
   @BrpcMeta(serviceName = "DstService", methodName = "listGet")
   DstServerProtocol.ListGetResponse listGet(DstServerProtocol.ListGetRequest request);
 }
-

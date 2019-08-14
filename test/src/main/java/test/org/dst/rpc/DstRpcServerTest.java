@@ -10,7 +10,6 @@ import org.dst.server.generated.DstServerProtocol;
 import org.dst.server.service.DstStringService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
 
 public class DstRpcServerTest {
@@ -18,7 +17,6 @@ public class DstRpcServerTest {
   @Test
   public void testRpcServer() {
     TestUtil.startRpcServer();
-
     RpcClientOptions options = new RpcClientOptions();
     options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
     options.setWriteTimeoutMillis(1000);
@@ -54,9 +52,8 @@ public class DstRpcServerTest {
   }
 
   @Test
-  void testListRpcCall() {
+  public void testListRpcCall() {
     TestUtil.startRpcServer();
-
     // TODO(qwang): Remove this duplicated code.
     RpcClientOptions options = new RpcClientOptions();
     options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
@@ -70,17 +67,17 @@ public class DstRpcServerTest {
     DstStringService listService = BrpcProxy.getProxy(client, DstStringService.class);
 
     // Test list put.
-    DstServerProtocol.ListPutRequest.Builder putRequestbuilder =
+    DstServerProtocol.ListPutRequest.Builder putRequestBuilder =
             DstServerProtocol.ListPutRequest.newBuilder();
-    putRequestbuilder.setKey("k1");
+    putRequestBuilder.setKey("k1");
     final List<String> values = ImmutableList.of("v1", "v2", "v3");
     for (int i = 0; i < values.size(); ++i) {
-      putRequestbuilder.setValues(i, values.get(i));
+      putRequestBuilder.setValues(i, values.get(i));
     }
 
-    DstServerProtocol.ListPutResponse listPutresponse =
-            listService.listPut(putRequestbuilder.build());
-    Assert.assertEquals("ok", listPutresponse.getResult());
+    DstServerProtocol.ListPutResponse listPutResponse =
+            listService.listPut(putRequestBuilder.build());
+    Assert.assertEquals("ok", listPutResponse.getResult());
 
     // Test list get.
     DstServerProtocol.ListGetRequest.Builder getRequestBuilder =
