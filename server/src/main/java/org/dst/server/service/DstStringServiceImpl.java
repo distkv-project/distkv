@@ -19,7 +19,7 @@ public class DstStringServiceImpl implements DstStringService {
     DstServerProtocol.StringPutResponse.Builder responseBuilder =
             DstServerProtocol.StringPutResponse.newBuilder();
     store.str().put(request.getKey(), request.getValue());
-    responseBuilder.setResponse("ok");
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 
@@ -28,7 +28,7 @@ public class DstStringServiceImpl implements DstStringService {
     DstServerProtocol.StringGetResponse.Builder responseBuilder =
             DstServerProtocol.StringGetResponse.newBuilder();
     responseBuilder.setValue(store.str().get(request.getKey()));
-    responseBuilder.setResponse("ok");
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 
@@ -44,7 +44,7 @@ public class DstStringServiceImpl implements DstStringService {
       // TODO(qwang): Use DstException instead of Exception here.
       result = e.getMessage();
     }
-    responseBuilder.setResponse(result);
+    responseBuilder.setStatus(result);
     return responseBuilder.build();
   }
 
@@ -56,7 +56,7 @@ public class DstStringServiceImpl implements DstStringService {
     List<String> values = store.list().get(request.getKey());
     values.forEach(value -> responseBuilder.addValue(value));
 
-    responseBuilder.setResponse("ok");
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 }

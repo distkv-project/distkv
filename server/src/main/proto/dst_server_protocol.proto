@@ -13,7 +13,7 @@ message StringPutRequest {
 };
 
 message StringPutResponse {
-    required string response = 1;
+    required string status = 1;
 };
 
 message StringGetRequest {
@@ -21,7 +21,7 @@ message StringGetRequest {
 }
 
 message StringGetResponse {
-    required string response = 1;
+    required string status = 1;
     required string value =2;
 };
 
@@ -32,7 +32,7 @@ message ListPutRequest {
 }
 
 message ListPutResponse {
-    required string response = 1;
+    required string status = 1;
 }
 
 message ListGetRequest {
@@ -40,7 +40,7 @@ message ListGetRequest {
 }
 
 message ListGetResponse {
-    required string response = 1;
+    required string status = 1;
     repeated string value = 2;
 }
 

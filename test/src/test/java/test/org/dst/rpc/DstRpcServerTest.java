@@ -40,7 +40,7 @@ public class DstRpcServerTest {
             .build();
 
     DstServerProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
-    Assertions.assertEquals("ok", stringResponse.getResponse());
+    Assertions.assertEquals("ok", stringResponse.getStatus());
 
     // Test string get request
     DstServerProtocol.StringGetRequest strGetRequest =
@@ -79,7 +79,7 @@ public class DstRpcServerTest {
 
     DstServerProtocol.ListPutResponse listPutResponse =
             listService.listPut(putRequestBuilder.build());
-    Assert.assertEquals("ok", listPutResponse.getResponse());
+    Assert.assertEquals("ok", listPutResponse.getStatus());
 
     // Test list get.
     DstServerProtocol.ListGetRequest.Builder getRequestBuilder =
@@ -88,7 +88,7 @@ public class DstRpcServerTest {
     DstServerProtocol.ListGetResponse listGetResponse =
             listService.listGet(getRequestBuilder.build());
 
-    Assert.assertEquals("ok", listGetResponse.getResponse());
+    Assert.assertEquals("ok", listGetResponse.getStatus());
     Assert.assertEquals(values, listGetResponse.getValueList());
     client.stop();
     TestUtil.stopRpcServer();
