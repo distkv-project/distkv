@@ -28,7 +28,7 @@ message StringGetResponse {
 //list
 message ListPutRequest {
     required string key = 1;
-    repeated string value = 2;
+    repeated string values = 2;
 }
 
 message ListPutResponse {
