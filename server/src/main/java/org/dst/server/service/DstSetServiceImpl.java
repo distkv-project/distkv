@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.dst.core.KVStore;
 import org.dst.core.KVStoreImpl;
-import org.dst.server.generated.DstServerSetProtocol;
+import org.dst.server.generated.SetProtocol;
 
 public class DstSetServiceImpl implements DstSetService {
 
@@ -15,9 +15,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public DstServerSetProtocol.SetPutResponse setPut(DstServerSetProtocol.SetPutRequest request) {
-    DstServerSetProtocol.SetPutResponse.Builder setPutResponseBuilder =
-            DstServerSetProtocol.SetPutResponse.newBuilder();
+  public SetProtocol.SetPutResponse setPut(SetProtocol.SetPutRequest request) {
+    SetProtocol.SetPutResponse.Builder setPutResponseBuilder =
+            SetProtocol.SetPutResponse.newBuilder();
 
     store.set().put(request.getKey(), new HashSet<>(request.getValueList()));
     setPutResponseBuilder.setStatus("ok");
@@ -26,12 +26,12 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public DstServerSetProtocol.SetGetResponse setGet(DstServerSetProtocol.SetGetRequest request) {
-    DstServerSetProtocol.SetGetResponse.Builder setGetResponseBuilder =
-            DstServerSetProtocol.SetGetResponse.newBuilder();
+  public SetProtocol.SetGetResponse setGet(SetProtocol.SetGetRequest request) {
+    SetProtocol.SetGetResponse.Builder setGetResponseBuilder =
+            SetProtocol.SetGetResponse.newBuilder();
 
     Set<String> values = store.set().get(request.getKey());
-    values.forEach(value -> setGetResponseBuilder.addValue(value));
+    values.forEach(value -> setGetResponseBuilder.addValues(value));
 
     setGetResponseBuilder.setStatus("ok");
     return setGetResponseBuilder.build();

@@ -41,7 +41,7 @@ message ListGetRequest {
 
 message ListGetResponse {
     required string status = 1;
-    repeated string value = 2;
+    repeated string values = 2;
 }
 
 service DstService {

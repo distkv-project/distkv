@@ -6,7 +6,7 @@ import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
 import com.google.common.collect.ImmutableList;
 import junit.framework.Assert;
-import org.dst.server.generated.DstServerSetProtocol;
+import org.dst.server.generated.SetProtocol;
 import org.dst.server.generated.DstServerProtocol;
 import org.dst.server.service.DstStringService;
 import org.dst.server.service.DstSetService;
@@ -89,7 +89,7 @@ public class DstRpcServerTest {
             listService.listGet(getRequestBuilder.build());
 
     Assert.assertEquals("ok", listGetResponse.getStatus());
-    Assert.assertEquals(values, listGetResponse.getValueList());
+    Assert.assertEquals(values, listGetResponse.getValuesList());
     client.stop();
     TestUtil.stopRpcServer();
   }
@@ -110,27 +110,27 @@ public class DstRpcServerTest {
     DstSetService setService = BrpcProxy.getProxy(client, DstSetService.class);
 
     // Test set put.
-    DstServerSetProtocol.SetPutRequest.Builder setPutRequestBuilder =
-            DstServerSetProtocol.SetPutRequest.newBuilder();
+    SetProtocol.SetPutRequest.Builder setPutRequestBuilder =
+            SetProtocol.SetPutRequest.newBuilder();
     setPutRequestBuilder.setKey("k1");
     final List<String> values = ImmutableList.of("v1", "v2", "v3","v1");
     values.forEach(value -> setPutRequestBuilder.addValue(value));
 
-    DstServerSetProtocol.SetPutResponse setPutResponse =
+    SetProtocol.SetPutResponse setPutResponse =
             setService.setPut(setPutRequestBuilder.build());
     Assert.assertEquals("ok", setPutResponse.getStatus());
 
     // Test set get.
-    DstServerSetProtocol.SetGetRequest.Builder setGetRequestBuilder =
-            DstServerSetProtocol.SetGetRequest.newBuilder();
+    SetProtocol.SetGetRequest.Builder setGetRequestBuilder =
+            SetProtocol.SetGetRequest.newBuilder();
     setGetRequestBuilder.setKey("k1");
 
-    DstServerSetProtocol.SetGetResponse setGetResponse =
+    SetProtocol.SetGetResponse setGetResponse =
             setService.setGet(setGetRequestBuilder.build());
 
     final List<String> results = ImmutableList.of("v1", "v2", "v3");
     Assert.assertEquals("ok", setGetResponse.getStatus());
-    Assert.assertEquals(results, setGetResponse.getValueList());
+    Assert.assertEquals(results, setGetResponse.getValuesList());
     client.stop();
     TestUtil.stopRpcServer();
   }

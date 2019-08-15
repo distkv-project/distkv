@@ -1,12 +1,12 @@
 package org.dst.server.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
-import org.dst.server.generated.DstServerSetProtocol;
+import org.dst.server.generated.SetProtocol;
 
 public interface DstSetService {
   @BrpcMeta(serviceName = "DstSetService", methodName = "setPut")
-  DstServerSetProtocol.SetPutResponse setPut(DstServerSetProtocol.SetPutRequest request);
+  SetProtocol.SetPutResponse setPut(SetProtocol.SetPutRequest request);
 
   @BrpcMeta(serviceName = "DstSetService", methodName = "setGet")
-  DstServerSetProtocol.SetGetResponse setGet(DstServerSetProtocol.SetGetRequest request);
+  SetProtocol.SetGetResponse setGet(SetProtocol.SetGetRequest request);
 }
