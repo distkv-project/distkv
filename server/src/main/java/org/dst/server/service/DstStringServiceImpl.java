@@ -1,7 +1,6 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
-import org.dst.core.KVStoreImpl;
 import org.dst.server.generated.DstServerProtocol;
 
 import java.util.List;
@@ -10,8 +9,8 @@ public class DstStringServiceImpl implements DstStringService {
 
   private KVStore store;
 
-  public DstStringServiceImpl() {
-    store = new KVStoreImpl();
+  public DstStringServiceImpl(KVStore kvStore) {
+    store = kvStore;
   }
 
   @Override
@@ -19,7 +18,7 @@ public class DstStringServiceImpl implements DstStringService {
     DstServerProtocol.StringPutResponse.Builder responseBuilder =
             DstServerProtocol.StringPutResponse.newBuilder();
     store.str().put(request.getKey(), request.getValue());
-    responseBuilder.setResult("ok");
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 
@@ -27,7 +26,8 @@ public class DstStringServiceImpl implements DstStringService {
   public DstServerProtocol.StringGetResponse strGet(DstServerProtocol.StringGetRequest request) {
     DstServerProtocol.StringGetResponse.Builder responseBuilder =
             DstServerProtocol.StringGetResponse.newBuilder();
-    responseBuilder.setResult(store.str().get(request.getKey()));
+    responseBuilder.setValue(store.str().get(request.getKey()));
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 
@@ -43,7 +43,7 @@ public class DstStringServiceImpl implements DstStringService {
       // TODO(qwang): Use DstException instead of Exception here.
       result = e.getMessage();
     }
-    responseBuilder.setResult(result);
+    responseBuilder.setStatus(result);
     return responseBuilder.build();
   }
 
@@ -55,7 +55,7 @@ public class DstStringServiceImpl implements DstStringService {
     List<String> values = store.list().get(request.getKey());
     values.forEach(value -> responseBuilder.addValues(value));
 
-    responseBuilder.setResult("ok");
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 }

@@ -1,0 +1,31 @@
+syntax="proto2";
+
+package dst.server.protocol.pb;
+
+option java_package="org.dst.server.generated";
+option java_outer_classname="SetProtocol";
+option cc_generic_services = true;
+
+//set
+message SetPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message SetPutResponse {
+    required string status = 1;
+}
+
+message SetGetRequest {
+    required string key = 1;
+}
+
+message SetGetResponse {
+    required string status = 1;
+    repeated string values = 2;
+}
+
+service DstSetService {
+    rpc setPut(SetPutRequest) returns (SetPutResponse);
+    rpc setGet(SetGetRequest) returns (SetGetResponse);
+}
