@@ -114,7 +114,7 @@ public class DstRpcServerTest {
             SetProtocol.SetPutRequest.newBuilder();
     setPutRequestBuilder.setKey("k1");
     final List<String> values = ImmutableList.of("v1", "v2", "v3","v1");
-    values.forEach(value -> setPutRequestBuilder.addValue(value));
+    values.forEach(value -> setPutRequestBuilder.addValues(value));
 
     SetProtocol.SetPutResponse setPutResponse =
             setService.setPut(setPutRequestBuilder.build());

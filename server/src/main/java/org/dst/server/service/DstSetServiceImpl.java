@@ -18,7 +18,7 @@ public class DstSetServiceImpl implements DstSetService {
     SetProtocol.SetPutResponse.Builder setPutResponseBuilder =
             SetProtocol.SetPutResponse.newBuilder();
 
-    store.set().put(request.getKey(), new HashSet<>(request.getValueList()));
+    store.set().put(request.getKey(), new HashSet<>(request.getValuesList()));
     setPutResponseBuilder.setStatus("ok");
 
     return setPutResponseBuilder.build();
