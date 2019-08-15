@@ -1,7 +1,6 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
-import org.dst.core.KVStoreImpl;
 import org.dst.server.generated.DstServerProtocol;
 
 import java.util.List;

@@ -3,7 +3,6 @@ package org.dst.server.service;
 import java.util.HashSet;
 import java.util.Set;
 import org.dst.core.KVStore;
-import org.dst.core.KVStoreImpl;
 import org.dst.server.generated.SetProtocol;
 
 public class DstSetServiceImpl implements DstSetService {
