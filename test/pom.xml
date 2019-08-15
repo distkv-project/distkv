@@ -67,7 +67,7 @@
                 <version>2.18.1</version>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
-                    <testSourceDirectory>src/main/java/</testSourceDirectory>
+                    <testSourceDirectory>src/test/java/</testSourceDirectory>
                     <testClassesDirectory>${project.build.directory}/classes/</testClassesDirectory>
                 </configuration>
             </plugin>
