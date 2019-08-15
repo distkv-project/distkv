@@ -33,17 +33,17 @@ public class DstRpcServerTest {
     // Test string put request
     DstServerProtocol.StringPutRequest stringPutRequest =
             DstServerProtocol.StringPutRequest.newBuilder()
-        .setKey("k1")
-        .setValue("v1")
-        .build();
+                    .setKey("k1")
+                    .setValue("v1")
+                    .build();
     DstServerProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
     Assertions.assertEquals("ok", stringResponse.getResult());
 
     // Test string get request
     DstServerProtocol.StringGetRequest strGetRequest = DstServerProtocol.StringGetRequest
-        .newBuilder()
-        .setKey("k1")
-        .build();
+            .newBuilder()
+            .setKey("k1")
+            .build();
     DstServerProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
     Assertions.assertEquals("v1", stringGetRequest.getResult());
     client.stop();
