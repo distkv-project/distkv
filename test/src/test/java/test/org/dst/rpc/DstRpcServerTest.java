@@ -75,7 +75,7 @@ public class DstRpcServerTest {
             DstServerProtocol.ListPutRequest.newBuilder();
     putRequestBuilder.setKey("k1");
     final List<String> values = ImmutableList.of("v1", "v2", "v3");
-    values.forEach(value -> putRequestBuilder.addValue(value));
+    values.forEach(value -> putRequestBuilder.addValues(value));
 
     DstServerProtocol.ListPutResponse listPutResponse =
             listService.listPut(putRequestBuilder.build());

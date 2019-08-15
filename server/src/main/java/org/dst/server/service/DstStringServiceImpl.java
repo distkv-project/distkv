@@ -38,7 +38,7 @@ public class DstStringServiceImpl implements DstStringService {
             DstServerProtocol.ListPutResponse.newBuilder();
     String result;
     try {
-      store.list().put(request.getKey(), request.getValueList());
+      store.list().put(request.getKey(), request.getValuesList());
       result = "ok";
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
