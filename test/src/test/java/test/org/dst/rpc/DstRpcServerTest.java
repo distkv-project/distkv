@@ -6,6 +6,7 @@ import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
 import com.google.common.collect.ImmutableList;
 import junit.framework.Assert;
+import org.dst.server.generated.DstServerSetProtocol;
 import org.dst.server.generated.DstServerProtocol;
 import org.dst.server.service.DstStringService;
 import org.dst.server.service.DstSetService;
@@ -109,26 +110,26 @@ public class DstRpcServerTest {
     DstSetService setService = BrpcProxy.getProxy(client, DstSetService.class);
 
     // Test set put.
-    DstServerProtocol.SetPutRequest.Builder setPutRequestBuilder =
-            DstServerProtocol.SetPutRequest.newBuilder();
+    DstServerSetProtocol.SetPutRequest.Builder setPutRequestBuilder =
+            DstServerSetProtocol.SetPutRequest.newBuilder();
     setPutRequestBuilder.setKey("k1");
     final List<String> values = ImmutableList.of("v1", "v2", "v3","v1");
     values.forEach(value -> setPutRequestBuilder.addValue(value));
 
-    DstServerProtocol.SetPutResponse setPutResponse =
+    DstServerSetProtocol.SetPutResponse setPutResponse =
             setService.setPut(setPutRequestBuilder.build());
-    Assert.assertEquals("ok", setPutResponse.getResponse());
+    Assert.assertEquals("ok", setPutResponse.getStatus());
 
     // Test set get.
-    DstServerProtocol.SetGetRequest.Builder setGetRequestBuilder =
-            DstServerProtocol.SetGetRequest.newBuilder();
+    DstServerSetProtocol.SetGetRequest.Builder setGetRequestBuilder =
+            DstServerSetProtocol.SetGetRequest.newBuilder();
     setGetRequestBuilder.setKey("k1");
 
-    DstServerProtocol.SetGetResponse setGetResponse =
+    DstServerSetProtocol.SetGetResponse setGetResponse =
             setService.setGet(setGetRequestBuilder.build());
 
     final List<String> results = ImmutableList.of("v1", "v2", "v3");
-    Assert.assertEquals("ok", setGetResponse.getResponse());
+    Assert.assertEquals("ok", setGetResponse.getStatus());
     Assert.assertEquals(results, setGetResponse.getValueList());
     client.stop();
     TestUtil.stopRpcServer();
