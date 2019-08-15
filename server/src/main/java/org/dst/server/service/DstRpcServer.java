@@ -33,6 +33,7 @@ public class DstRpcServer {
     RpcServer server = new RpcServer(port, options);
     // Register service.
     server.registerService(new DstStringServiceImpl());
+    server.registerService(new DstSetServiceImpl());
     server.start();
 
     // make server keep running

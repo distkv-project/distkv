@@ -19,7 +19,7 @@ public class DstStringServiceImpl implements DstStringService {
     DstServerProtocol.StringPutResponse.Builder responseBuilder =
             DstServerProtocol.StringPutResponse.newBuilder();
     store.str().put(request.getKey(), request.getValue());
-    responseBuilder.setResult("ok");
+    responseBuilder.setResponse("ok");
     return responseBuilder.build();
   }
 
@@ -27,7 +27,8 @@ public class DstStringServiceImpl implements DstStringService {
   public DstServerProtocol.StringGetResponse strGet(DstServerProtocol.StringGetRequest request) {
     DstServerProtocol.StringGetResponse.Builder responseBuilder =
             DstServerProtocol.StringGetResponse.newBuilder();
-    responseBuilder.setResult(store.str().get(request.getKey()));
+    responseBuilder.setValue(store.str().get(request.getKey()));
+    responseBuilder.setResponse("ok");
     return responseBuilder.build();
   }
 
@@ -37,13 +38,13 @@ public class DstStringServiceImpl implements DstStringService {
             DstServerProtocol.ListPutResponse.newBuilder();
     String result;
     try {
-      store.list().put(request.getKey(), request.getValuesList());
+      store.list().put(request.getKey(), request.getValueList());
       result = "ok";
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
       result = e.getMessage();
     }
-    responseBuilder.setResult(result);
+    responseBuilder.setResponse(result);
     return responseBuilder.build();
   }
 
@@ -53,9 +54,9 @@ public class DstStringServiceImpl implements DstStringService {
             DstServerProtocol.ListGetResponse.newBuilder();
 
     List<String> values = store.list().get(request.getKey());
-    values.forEach(value -> responseBuilder.addValues(value));
+    values.forEach(value -> responseBuilder.addValue(value));
 
-    responseBuilder.setResult("ok");
+    responseBuilder.setResponse("ok");
     return responseBuilder.build();
   }
 }
