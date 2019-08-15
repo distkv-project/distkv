@@ -10,8 +10,8 @@ public class DstSetServiceImpl implements DstSetService {
 
   private KVStore store;
 
-  public DstSetServiceImpl() {
-    store = new KVStoreImpl();
+  public DstSetServiceImpl(KVStore kvStore) {
+    store = kvStore;
   }
 
   @Override

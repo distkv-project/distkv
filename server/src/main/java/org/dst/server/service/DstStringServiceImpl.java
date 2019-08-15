@@ -10,8 +10,8 @@ public class DstStringServiceImpl implements DstStringService {
 
   private KVStore store;
 
-  public DstStringServiceImpl() {
-    store = new KVStoreImpl();
+  public DstStringServiceImpl(KVStore kvStore) {
+    store = kvStore;
   }
 
   @Override

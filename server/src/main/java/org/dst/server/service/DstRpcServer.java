@@ -7,7 +7,7 @@ import org.dst.core.KVStoreImpl;
 
 public class DstRpcServer {
 
-  private KVStore kvStore;
+  private static KVStore kvStore;
 
   private DstRpcServer() {
     kvStore = new KVStoreImpl();
@@ -32,8 +32,8 @@ public class DstRpcServer {
 
     RpcServer server = new RpcServer(port, options);
     // Register service.
-    server.registerService(new DstStringServiceImpl());
-    server.registerService(new DstSetServiceImpl());
+    server.registerService(new DstStringServiceImpl(kvStore));
+    server.registerService(new DstSetServiceImpl(kvStore));
     server.start();
 
     // make server keep running
