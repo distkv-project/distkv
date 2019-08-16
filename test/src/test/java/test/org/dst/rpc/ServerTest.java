@@ -1,6 +1,5 @@
 package test.org.dst.rpc;
 
-import org.dst.server.generated.DstServerProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
 import org.junit.jupiter.api.Assertions;

@@ -2,10 +2,8 @@ package test.org.dst.rpc;
 
 import com.google.common.collect.ImmutableList;
 import junit.framework.Assert;
-import org.dst.server.generated.DstServerProtocol;
 import org.dst.server.generated.ListProtocol;
 import org.dst.server.service.DstListService;
-import org.dst.server.service.DstStringService;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
