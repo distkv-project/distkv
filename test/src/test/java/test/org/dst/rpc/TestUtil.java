@@ -3,7 +3,13 @@ package test.org.dst.rpc;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.baidu.brpc.client.BrpcProxy;
+import com.baidu.brpc.client.RpcClient;
+import com.baidu.brpc.client.RpcClientOptions;
+import com.baidu.brpc.protocol.Options;
 import com.google.common.collect.ImmutableList;
+import org.dst.server.service.DstStringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +22,7 @@ public class TestUtil {
 
   private static Process rpcServerProcess = null;
 
+  private static RpcClient client;
   /**
    * @param command the command to start rpc server using a new process.
    */
@@ -51,6 +58,7 @@ public class TestUtil {
   public static void stopRpcServer() {
     rpcServerProcess.destroy();
   }
+
 }
 
 
