@@ -7,12 +7,12 @@ import org.dst.server.service.DstSetService;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
-public class SetTest {
+public class SetRpcTest {
 
     @Test
     public void testSetRpcCall() {
-
-        ProxyOnClient<DstSetService> setProxy = new ProxyOnClient(DstSetService.class);
+        TestUtil.startRpcServer();
+        ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class);
         DstSetService setService = setProxy.openConnection();
 
         // Test set put.
@@ -39,5 +39,6 @@ public class SetTest {
         Assert.assertEquals(results, setGetResponse.getValuesList());
 
         setProxy.closeConnection();
+        TestUtil.stopRpcServer();
     }
 }
