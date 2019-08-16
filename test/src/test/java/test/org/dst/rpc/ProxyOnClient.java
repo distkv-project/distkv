@@ -39,6 +39,5 @@ public class ProxyOnClient<T> {
 
     public void closeConnection(){
         client.stop();
-        TestUtil.stopRpcServer();
     }
 }
