@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class ListTest {
+public class ListRpcTest {
 
     @Test
     public void testListRpcCall() {
-
-        ProxyOnClient<DstListService> setProxy = new ProxyOnClient(DstListService.class);
+        TestUtil.startRpcServer();
+        ProxyOnClient<DstListService> setProxy = new ProxyOnClient<>(DstListService.class);
         DstListService listService = setProxy.openConnection();
 
         // Test list put.
@@ -38,5 +38,6 @@ public class ListTest {
         Assert.assertEquals(values, listGetResponse.getValuesList());
 
         setProxy.closeConnection();
+        TestUtil.stopRpcServer();
     }
 }

@@ -17,7 +17,7 @@ public class TestUtil {
   private static Process rpcServerProcess = null;
 
   /**
-   * @param command the command to start rpc server using a new process.
+   * @param command The command that will be executed.
    */
   private static void executeCommand(List<String> command) {
 

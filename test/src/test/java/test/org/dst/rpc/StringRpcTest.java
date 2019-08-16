@@ -5,11 +5,11 @@ import org.dst.server.service.DstStringService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ServerTest {
+public class StringRpcTest {
     @Test
     public void testRpcServer() {
-
-        ProxyOnClient<DstStringService> setProxy = new ProxyOnClient(DstStringService.class);
+        TestUtil.startRpcServer();
+        ProxyOnClient<DstStringService> setProxy = new ProxyOnClient<>(DstStringService.class);
         DstStringService stringService = setProxy.openConnection();
 
         // Test string put request
@@ -32,5 +32,6 @@ public class ServerTest {
         Assertions.assertEquals("v1", stringGetRequest.getValue());
 
         setProxy.closeConnection();
+        TestUtil.stopRpcServer();
     }
 }
