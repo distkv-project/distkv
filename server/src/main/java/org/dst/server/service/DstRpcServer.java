@@ -38,6 +38,7 @@ public class DstRpcServer {
     // Register service.
     server.registerService(new DstStringServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstSetServiceImpl(rpcServer.getKvStore()));
+    server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
     server.start();
 
     // make server keep running
