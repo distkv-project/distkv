@@ -11,7 +11,6 @@ protobuf == 2.5.0 (Not support 3.0)
 #### 2. Build command
 ``` 
 mvn clean install -Dskiptests
-mvn clean install -Dmaven.test.skip
 ```
 #### 3. Test command
 ```
