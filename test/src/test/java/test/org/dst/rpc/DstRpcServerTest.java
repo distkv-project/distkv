@@ -7,9 +7,11 @@ import com.baidu.brpc.protocol.Options;
 import com.google.common.collect.ImmutableList;
 import junit.framework.Assert;
 import org.dst.server.generated.SetProtocol;
-import org.dst.server.generated.DstServerProtocol;
+import org.dst.server.generated.StringProtocol;
+import org.dst.server.generated.ListProtocol;
 import org.dst.server.service.DstStringService;
 import org.dst.server.service.DstSetService;
+import org.dst.server.service.DstListService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -33,22 +35,22 @@ public class DstRpcServerTest {
     DstStringService stringService = BrpcProxy.getProxy(client, DstStringService.class);
 
     // Test string put request
-    DstServerProtocol.StringPutRequest stringPutRequest =
-            DstServerProtocol.StringPutRequest.newBuilder()
+    StringProtocol.StringPutRequest stringPutRequest =
+            StringProtocol.StringPutRequest.newBuilder()
             .setKey("k1")
             .setValue("v1")
             .build();
 
-    DstServerProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
+    StringProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
     Assertions.assertEquals("ok", stringResponse.getStatus());
 
     // Test string get request
-    DstServerProtocol.StringGetRequest strGetRequest =
-            DstServerProtocol.StringGetRequest.newBuilder()
+    StringProtocol.StringGetRequest strGetRequest =
+            StringProtocol.StringGetRequest.newBuilder()
             .setKey("k1")
             .build();
 
-    DstServerProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
+    StringProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
     Assertions.assertEquals("v1", stringGetRequest.getValue());
     client.stop();
 
@@ -68,24 +70,24 @@ public class DstRpcServerTest {
     final String url = "list://127.0.0.1:8082";
 
     RpcClient client = new RpcClient(url, options);
-    DstStringService listService = BrpcProxy.getProxy(client, DstStringService.class);
+    DstListService listService = BrpcProxy.getProxy(client, DstListService.class);
 
     // Test list put.
-    DstServerProtocol.ListPutRequest.Builder putRequestBuilder =
-            DstServerProtocol.ListPutRequest.newBuilder();
+    ListProtocol.ListPutRequest.Builder putRequestBuilder =
+            ListProtocol.ListPutRequest.newBuilder();
     putRequestBuilder.setKey("k1");
     final List<String> values = ImmutableList.of("v1", "v2", "v3");
     values.forEach(value -> putRequestBuilder.addValues(value));
 
-    DstServerProtocol.ListPutResponse listPutResponse =
+    ListProtocol.ListPutResponse listPutResponse =
             listService.listPut(putRequestBuilder.build());
     Assert.assertEquals("ok", listPutResponse.getStatus());
 
     // Test list get.
-    DstServerProtocol.ListGetRequest.Builder getRequestBuilder =
-            DstServerProtocol.ListGetRequest.newBuilder();
+    ListProtocol.ListGetRequest.Builder getRequestBuilder =
+            ListProtocol.ListGetRequest.newBuilder();
     getRequestBuilder.setKey("k1");
-    DstServerProtocol.ListGetResponse listGetResponse =
+    ListProtocol.ListGetResponse listGetResponse =
             listService.listGet(getRequestBuilder.build());
 
     Assert.assertEquals("ok", listGetResponse.getStatus());
