@@ -10,7 +10,7 @@ maven >= 3.5.0
 protobuf == 2.5.0 (Not support 3.0)
 #### 2. Build command
 ```
-mvn clean install -Dskiptests
+mvn clean install -DskipTests
 ```
 #### 3. Test command
 ```

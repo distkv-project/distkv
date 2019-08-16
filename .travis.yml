@@ -10,7 +10,7 @@ cache:
 
 # install all dependencies
 # if true, skip all install
-install: mvn clean install -Dskiptests
+install: mvn clean install -DskipTests
 
 # define four parallel jobs
 matrix:
