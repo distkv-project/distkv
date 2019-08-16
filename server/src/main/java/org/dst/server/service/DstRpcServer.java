@@ -13,6 +13,10 @@ public class DstRpcServer {
     kvStore = new KVStoreImpl();
   }
 
+  public KVStore getKvStore() {
+    return kvStore;
+  }
+
   public static void main(String[] args) {
 
     DstRpcServer rpcServer = new DstRpcServer();
@@ -32,7 +36,9 @@ public class DstRpcServer {
 
     RpcServer server = new RpcServer(port, options);
     // Register service.
-    server.registerService(new DstStringServiceImpl());
+    server.registerService(new DstStringServiceImpl(rpcServer.getKvStore()));
+    server.registerService(new DstSetServiceImpl(rpcServer.getKvStore()));
+    server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
     server.start();
 
     // make server keep running

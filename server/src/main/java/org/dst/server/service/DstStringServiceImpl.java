@@ -1,31 +1,32 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
-import org.dst.core.KVStoreImpl;
-import org.dst.server.generated.DstServerProtocol;
+import org.dst.server.generated.StringProtocol;
 
 public class DstStringServiceImpl implements DstStringService {
 
   private KVStore store;
 
-  public DstStringServiceImpl() {
-    store = new KVStoreImpl();
+  public DstStringServiceImpl(KVStore kvStore) {
+    store = kvStore;
   }
 
   @Override
-  public DstServerProtocol.StringPutResponse strPut(DstServerProtocol.StringPutRequest request) {
-    DstServerProtocol.StringPutResponse.Builder responseBuilder =
-            DstServerProtocol.StringPutResponse.newBuilder();
+  public StringProtocol.StringPutResponse strPut(StringProtocol.StringPutRequest request) {
+    StringProtocol.StringPutResponse.Builder responseBuilder =
+            StringProtocol.StringPutResponse.newBuilder();
     store.str().put(request.getKey(), request.getValue());
-    responseBuilder.setResult("ok");
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 
   @Override
-  public DstServerProtocol.StringGetResponse strGet(DstServerProtocol.StringGetRequest request) {
-    DstServerProtocol.StringGetResponse.Builder responseBuilder =
-            DstServerProtocol.StringGetResponse.newBuilder();
-    responseBuilder.setResult(store.str().get(request.getKey()));
+  public StringProtocol.StringGetResponse strGet(StringProtocol.StringGetRequest request) {
+    StringProtocol.StringGetResponse.Builder responseBuilder =
+            StringProtocol.StringGetResponse.newBuilder();
+    responseBuilder.setValue(store.str().get(request.getKey()));
+    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
+
 }

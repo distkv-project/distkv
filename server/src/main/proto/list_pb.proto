@@ -1,0 +1,31 @@
+syntax="proto2";
+
+package dst.server.protocol.pb;
+
+option java_package="org.dst.server.generated";
+option java_outer_classname="ListProtocol";
+option cc_generic_services = true;
+
+//list
+message ListPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message ListPutResponse {
+    required string status = 1;
+}
+
+message ListGetRequest {
+    required string key = 1;
+}
+
+message ListGetResponse {
+    required string status = 1;
+    repeated string values = 2;
+}
+
+service DstListService {
+    rpc listPut(ListPutRequest) returns (ListPutResponse);
+    rpc listGet(ListGetRequest) returns (ListGetResponse);
+}
