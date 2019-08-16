@@ -13,7 +13,8 @@ public class ListTest {
     @Test
     public void testListRpcCall() {
 
-        DstStringService listService = TestUtil.openConnection(DstStringService.class);
+        ProxyOnClient<DstStringService> setProxy = new ProxyOnClient(DstStringService.class);
+        DstStringService listService = setProxy.openConnection();
                 // Test list put.
         DstServerProtocol.ListPutRequest.Builder putRequestBuilder =
                 DstServerProtocol.ListPutRequest.newBuilder();
@@ -35,6 +36,6 @@ public class ListTest {
         Assert.assertEquals("ok", listGetResponse.getStatus());
         Assert.assertEquals(values, listGetResponse.getValuesList());
 
-        TestUtil.closeConnection();
+        setProxy.closeConnection();
     }
 }

@@ -12,7 +12,8 @@ public class SetTest {
     @Test
     public void testSetRpcCall() {
 
-        DstSetService setService = TestUtil.openConnection(DstSetService.class);
+        ProxyOnClient<DstSetService> setProxy = new ProxyOnClient(DstSetService.class);
+        DstSetService setService = setProxy.openConnection();
 
         // Test set put.
         SetProtocol.SetPutRequest.Builder setPutRequestBuilder =
@@ -37,6 +38,6 @@ public class SetTest {
         Assert.assertEquals("ok", setGetResponse.getStatus());
         Assert.assertEquals(results, setGetResponse.getValuesList());
 
-        TestUtil.closeConnection();
+        setProxy.closeConnection();
     }
 }

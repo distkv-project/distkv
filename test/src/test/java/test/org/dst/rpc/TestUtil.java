@@ -59,23 +59,6 @@ public class TestUtil {
     rpcServerProcess.destroy();
   }
 
-  public static <T> T openConnection(Class classz){
-    startRpcServer();
-    RpcClientOptions options = new RpcClientOptions();
-    options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
-    options.setWriteTimeoutMillis(1000);
-    options.setReadTimeoutMillis(1000);
-    options.setMaxTotalConnections(1000);
-    options.setMinIdleConnections(10);
-    final String url = "list://127.0.0.1:8082";
-    client = new RpcClient(url, options);
-    return BrpcProxy.getProxy(client, classz);
-  }
-
-  public static void closeConnection(){
-    client.stop();
-    TestUtil.stopRpcServer();
-  }
 }
 
 

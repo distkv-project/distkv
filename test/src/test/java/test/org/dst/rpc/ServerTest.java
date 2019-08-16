@@ -9,7 +9,8 @@ public class ServerTest {
     @Test
     public void testRpcServer() {
 
-        DstStringService stringService = TestUtil.openConnection(DstStringService.class);
+        ProxyOnClient<DstStringService> setProxy = new ProxyOnClient(DstStringService.class);
+        DstStringService stringService = setProxy.openConnection();
 
         // Test string put request
         DstServerProtocol.StringPutRequest stringPutRequest =
@@ -30,6 +31,6 @@ public class ServerTest {
         DstServerProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
         Assertions.assertEquals("v1", stringGetRequest.getValue());
 
-        TestUtil.closeConnection();
+        setProxy.closeConnection();
     }
 }
