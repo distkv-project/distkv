@@ -1,5 +1,4 @@
 # dst [![Build Status](https://travis-ci.com/jovany-wang/dst.svg?token=7wQpC1f51BkWzsCeefLE&branch=master)](https://travis-ci.com/jovany-wang/dst)
-A distributed key-value in-memory store system with table concept.
 一个可以存储table的分布式"key-value"内存存储系统。
 
 ## 快速开始
