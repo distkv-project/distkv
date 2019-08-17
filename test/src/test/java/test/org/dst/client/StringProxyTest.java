@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 
 public class StringProxyTest {
 
+    private final static String serverAddress = "";
+
     @Test
     public void testPutAndGet() {
-        DstClient client = new DefaultDstClient();
+        DstClient client = new DefaultDstClient(serverAddress);
         client.str().put("k1", "v1");
 
         Assert.assertEquals("v1", client.str().get("k1"));
@@ -20,7 +22,7 @@ public class StringProxyTest {
 
     @Test
     public void testKeyNotFoundWhenGetting() {
-        DstClient client = new DefaultDstClient();
+        DstClient client = new DefaultDstClient(serverAddress);
 
         try {
             client.str().get("k1");
