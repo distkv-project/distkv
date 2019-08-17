@@ -39,10 +39,10 @@ public class DstListImpl implements DstList {
 
   @Override
   public boolean lput(String key, List<String> value) {
-      if (listMap.containsKey(key)) {
-        value.addAll(listMap.get(key));
-      }
-      return listMap.put(key, value).size()>0;
+    if (listMap.containsKey(key)) {
+      value.addAll(listMap.get(key));
+    }
+    return listMap.put(key, value).size() > 0;
   }
 
   @Override
@@ -50,14 +50,14 @@ public class DstListImpl implements DstList {
     if (listMap.containsKey(key)) {
       return listMap.get(key).addAll(value);
     }
-    return listMap.put(key, value).size()>0;
+    return listMap.put(key,value).size() > 0;
   }
 
   @Override
   public boolean ldel(String key, int n) {
     if (listMap.containsKey(key)) {
       List<String> original = listMap.get(key);
-      if(original.size()<n){
+      if (original.size() < n) {
         original.clear();
         return true;
       }
@@ -75,12 +75,12 @@ public class DstListImpl implements DstList {
     if (listMap.containsKey(key)) {
       List<String> original = listMap.get(key);
       int size = original.size();
-      if(size<=n){
+      if (size <= n) {
         original.clear();
         return true;
       }
       for (int i = 0; i < n; i++) {
-        original.remove(size-1);
+        original.remove(size - 1);
         size--;
       }
       return true;
