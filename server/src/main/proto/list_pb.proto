@@ -3,27 +3,8 @@ syntax="proto2";
 package dst.server.protocol.pb;
 
 option java_package="org.dst.server.generated";
-option java_outer_classname="DstServerProtocol";
+option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
-
-//string
-message StringPutRequest {
-    required string key = 1;
-    required string value = 2;
-};
-
-message StringPutResponse {
-    required string status = 1;
-};
-
-message StringGetRequest {
-    required string key = 1;
-}
-
-message StringGetResponse {
-    required string status = 1;
-    required string value =2;
-};
 
 //list
 message ListPutRequest {
@@ -44,10 +25,7 @@ message ListGetResponse {
     repeated string values = 2;
 }
 
-service DstService {
-    rpc strPut(StringPutRequest) returns (StringPutResponse);
-    rpc strGet(StringGetRequest) returns (StringGetResponse);
-
+service DstListService {
     rpc listPut(ListPutRequest) returns (ListPutResponse);
     rpc listGet(ListGetRequest) returns (ListGetResponse);
 }

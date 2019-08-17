@@ -1,19 +1,14 @@
 package org.dst.server.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
-import org.dst.server.generated.DstServerProtocol;
+import org.dst.server.generated.StringProtocol;
 
 public interface DstStringService {
 
-  @BrpcMeta(serviceName = "DstService", methodName = "strPut")
-  DstServerProtocol.StringPutResponse strPut(DstServerProtocol.StringPutRequest request);
+  @BrpcMeta(serviceName = "DstStringService", methodName = "strPut")
+  StringProtocol.StringPutResponse strPut(StringProtocol.StringPutRequest request);
 
-  @BrpcMeta(serviceName = "DstService", methodName = "strGet")
-  DstServerProtocol.StringGetResponse strGet(DstServerProtocol.StringGetRequest request);
+  @BrpcMeta(serviceName = "DstStringService", methodName = "strGet")
+  StringProtocol.StringGetResponse strGet(StringProtocol.StringGetRequest request);
 
-  @BrpcMeta(serviceName = "DstService", methodName = "listPut")
-  DstServerProtocol.ListPutResponse listPut(DstServerProtocol.ListPutRequest request);
-
-  @BrpcMeta(serviceName = "DstService", methodName = "listGet")
-  DstServerProtocol.ListGetResponse listGet(DstServerProtocol.ListGetRequest request);
 }
