@@ -5,7 +5,7 @@ import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
 
-public class ProxyOnClient<T> {
+public class ProxyOnClient<T> implements AutoCloseable {
 
     /**
      * The url of the rpc server address.
@@ -22,11 +22,14 @@ public class ProxyOnClient<T> {
      */
     private Class<T> proxyClass;
 
+    private T service;
+
     public ProxyOnClient(Class<T> proxyClass) {
         this.proxyClass = proxyClass;
+        this.openConnection();
     }
 
-    public T openConnection() {
+    private void openConnection() {
         RpcClientOptions options = new RpcClientOptions();
         options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
         options.setWriteTimeoutMillis(1000);
@@ -34,10 +37,19 @@ public class ProxyOnClient<T> {
         options.setMaxTotalConnections(1000);
         options.setMinIdleConnections(10);
         client = new RpcClient(SERVER_URL, options);
-        return BrpcProxy.getProxy(client, proxyClass);
+        service = BrpcProxy.getProxy(client, proxyClass);
     }
 
-    public void closeConnection() {
+    public T getService(){
+        return service;
+    }
+
+    private void closeConnection() {
         client.stop();
+    }
+
+    @Override
+    public void close() {
+        this.closeConnection();
     }
 }
