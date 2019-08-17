@@ -1,6 +1,8 @@
 package org.dst.server.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.dst.core.KVStore;
 import org.dst.server.generated.ListProtocol;
 import org.dst.utils.enums.Status;
@@ -35,7 +37,11 @@ public class DstListServiceImpl implements DstListService {
             ListProtocol.ListGetResponse.newBuilder();
 
     List<String> values = store.list().get(request.getKey());
-    values.forEach(value -> responseBuilder.addValues(value));
+    // TODO change protocol
+    Optional.ofNullable(values)
+            .ifPresent(u-> {
+              values.forEach(value -> responseBuilder.addValues(value));
+            });
 
     responseBuilder.setStatus("ok");
     return responseBuilder.build();
