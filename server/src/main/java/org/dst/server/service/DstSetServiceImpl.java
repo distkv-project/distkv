@@ -35,4 +35,37 @@ public class DstSetServiceImpl implements DstSetService {
     setGetResponseBuilder.setStatus("ok");
     return setGetResponseBuilder.build();
   }
+
+  @Override
+  public SetProtocol.SetDeleteResponse setDelete(SetProtocol.SetDeleteRequest request) {
+    SetProtocol.SetDeleteResponse.Builder setDeleteResponseBuilder =
+            SetProtocol.SetDeleteResponse.newBuilder();
+
+    if (store.set().del(request.getKey())) {
+      setDeleteResponseBuilder.setStatus("ok");
+    } else {
+      setDeleteResponseBuilder.setStatus("wrong");
+    }
+
+    return setDeleteResponseBuilder.build();
+  }
+
+  @Override
+  public SetProtocol.SetExistResponse setExist(SetProtocol.SetExistRequest request) {
+    SetProtocol.SetExistResponse.Builder setExistResponseBuilder =
+            SetProtocol.SetExistResponse.newBuilder();
+
+    String status;
+    try {
+      store.set().exists(request.getKey(), request.getValue());
+      status = "ok";
+    } catch (Exception e) {
+      status = e.getMessage();
+    }
+
+    setExistResponseBuilder.setStatus(status);
+
+    return setExistResponseBuilder.build();
+  }
+
 }

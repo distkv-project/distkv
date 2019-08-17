@@ -37,6 +37,27 @@ public class SetRpcTest {
             final List<String> results = ImmutableList.of("v1", "v2", "v3");
             Assert.assertEquals("ok", setGetResponse.getStatus());
             Assert.assertEquals(results, setGetResponse.getValuesList());
+
+            //Test set delete.
+            SetProtocol.SetDeleteRequest.Builder setDeleteRequestBuilder =
+                    SetProtocol.SetDeleteRequest.newBuilder();
+           setDeleteRequestBuilder.setKey("k1");
+
+           SetProtocol.SetDeleteResponse setDeleteResponse =
+                    setService.setDelete(setDeleteRequestBuilder.build());
+
+            Assert.assertEquals("ok", setDeleteResponse.getStatus());
+
+            //Test set exist.
+           SetProtocol.SetExistRequest.Builder setExistRequestBuilder =
+                   SetProtocol.SetExistRequest.newBuilder();
+            setExistRequestBuilder.setKey("k1");
+           setExistRequestBuilder.setValue("v1");
+
+            SetProtocol.SetExistResponse setExistResponse =
+                  setService.setExist(setExistRequestBuilder.build());
+
+            Assert.assertFalse("ok".equals(setExistResponse.getStatus()));
         }
         // Stop the server
         TestUtil.stopRpcServer();

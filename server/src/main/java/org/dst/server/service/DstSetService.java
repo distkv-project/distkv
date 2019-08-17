@@ -9,4 +9,10 @@ public interface DstSetService {
 
   @BrpcMeta(serviceName = "DstSetService", methodName = "setGet")
   SetProtocol.SetGetResponse setGet(SetProtocol.SetGetRequest request);
+
+  @BrpcMeta(serviceName = "DstSetService", methodName = "setDelete")
+  SetProtocol.SetDeleteResponse setDelete(SetProtocol.SetDeleteRequest request);
+
+  @BrpcMeta(serviceName = "DstSetService", methodName = "setExist")
+  SetProtocol.SetExistResponse setExist(SetProtocol.SetExistRequest request);
 }

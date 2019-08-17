@@ -25,7 +25,26 @@ message SetGetResponse {
     repeated string values = 2;
 }
 
+message SetDeleteRequest {
+    required string key = 1;
+}
+
+message SetDeleteResponse {
+    required string status = 1;
+}
+
+message SetExistRequest {
+    required string key = 1;
+    required string value = 2;
+}
+
+message SetExistResponse {
+    required string status = 1;
+}
+
 service DstSetService {
     rpc setPut(SetPutRequest) returns (SetPutResponse);
     rpc setGet(SetGetRequest) returns (SetGetResponse);
+    rpc setDelete(SetDeleteRequest) returns (SetDeleteResponse);
+    rpc setExist(SetExistRequest) returns (SetExistResponse);
 }
