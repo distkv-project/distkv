@@ -40,7 +40,12 @@ public class DstListImpl implements DstList {
   @Override
   public boolean lput(String key, List<String> value) {
     if (listMap.containsKey(key)) {
-      value.addAll(listMap.get(key));
+      int size = value.size();
+      List<String> original = listMap.get(key);
+      for (int i = 0; i < size; i++) {
+        original.add(i,value.get(i));
+      }
+      return true;
     }
     return listMap.put(key, value).size() > 0;
   }
