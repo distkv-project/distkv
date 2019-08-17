@@ -25,7 +25,58 @@ message ListGetResponse {
     repeated string values = 2;
 }
 
+message ListDelRequest {
+    required string key = 1;
+}
+
+message ListDelResponse {
+    required string status = 1;
+}
+
+message ListLPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message ListLPutResponse {
+    required string status = 1;
+}
+
+message ListRPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message ListRPutResponse {
+    required string status = 1;
+}
+
+
+message ListLDelRequest {
+    required string key = 1;
+    required int32 values = 2;
+}
+
+message ListLDelResponse {
+    required string status = 1;
+}
+
+
+message ListRDelRequest {
+    required string key = 1;
+    required int32 values = 2;
+}
+
+message ListRDelResponse {
+    required string status = 1;
+}
+
 service DstListService {
     rpc listPut(ListPutRequest) returns (ListPutResponse);
     rpc listGet(ListGetRequest) returns (ListGetResponse);
+    rpc listDel(ListDelRequest) returns (ListDelResponse);
+    rpc listLPut(ListLPutRequest) returns (ListLPutResponse);
+    rpc listRPut(ListRPutRequest) returns (ListRPutResponse);
+    rpc listLDel(ListLDelRequest) returns (ListLDelResponse);
+    rpc listRDel(ListRDelRequest) returns (ListRDelResponse);
 }

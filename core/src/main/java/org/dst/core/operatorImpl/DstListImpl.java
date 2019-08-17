@@ -1,6 +1,7 @@
 package org.dst.core.operatorImpl;
 
 import org.dst.core.operatorset.DstList;
+import org.dst.utils.enums.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class DstListImpl implements DstList {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DstListImpl.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstListImpl.class);
 
   private HashMap<String, List<String>> listMap;
 
@@ -18,8 +19,9 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public void put(String key, List<String> value) {
+  public Status put(String key, List<String> value) {
     listMap.put(key, value);
+    return Status.OK;
   }
 
   @Override
@@ -28,69 +30,63 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public boolean del(String key) {
+  public Status del(String key) {
     if (!listMap.containsKey(key)) {
-      return false;
+      return Status.KEY_NOT_FOUND;
     }
-
     listMap.remove(key);
-    return true;
+    return Status.OK;
   }
 
   @Override
-  public boolean lput(String key, List<String> value) {
-    if (listMap.containsKey(key)) {
-      int size = value.size();
-      List<String> original = listMap.get(key);
-      for (int i = 0; i < size; i++) {
-        original.add(i,value.get(i));
-      }
-      return true;
+  public Status lput(String key, List<String> value) {
+    if (!listMap.containsKey(key)) {
+      return Status.KEY_NOT_FOUND;
     }
-    return listMap.put(key, value).size() > 0;
+    listMap.get(key).addAll(0, value);
+    return Status.OK;
   }
 
   @Override
-  public boolean rput(String key, List<String> value) {
-    if (listMap.containsKey(key)) {
-      return listMap.get(key).addAll(value);
+  public Status rput(String key, List<String> value) {
+    if (!listMap.containsKey(key)) {
+      return Status.KEY_NOT_FOUND;
     }
-    return listMap.put(key,value).size() > 0;
+    listMap.get(key).addAll(value);
+    return Status.OK;
   }
 
   @Override
-  public boolean ldel(String key, int n) {
-    if (listMap.containsKey(key)) {
-      List<String> original = listMap.get(key);
-      if (original.size() < n) {
-        original.clear();
-        return true;
-      }
-      for (int i = 0; i < n; i++) {
-        original.remove(0);
-      }
-      return true;
+  public Status ldel(String key, int n) {
+    if (!listMap.containsKey(key)) {
+      return Status.KEY_NOT_FOUND;
     }
-    LOGGER.info(" no key find to ldel for kvstore-list()");
-    return false;
+    List<String> original = listMap.get(key);
+    if (original.size() < n) {
+      original.clear();
+      return Status.OK;
+    }
+    for (int i = 0; i < n; i++) {
+      original.remove(0);
+    }
+    return Status.OK;
   }
 
   @Override
-  public boolean rdel(String key, int n) {
-    if (listMap.containsKey(key)) {
-      List<String> original = listMap.get(key);
-      int size = original.size();
-      if (size <= n) {
-        original.clear();
-        return true;
-      }
-      for (int i = 0; i < n; i++) {
-        original.remove(size - 1);
-        size--;
-      }
-      return true;
+  public Status rdel(String key, int n) {
+    if (!listMap.containsKey(key)) {
+      return Status.KEY_NOT_FOUND;
     }
-    LOGGER.info("no key find to rdel for kvstore-list()");
-    return false;
+    List<String> original = listMap.get(key);
+    int size = original.size();
+    if (size <= n) {
+      original.clear();
+      return Status.OK;
+    }
+    for (int i = 0; i < n; i++) {
+      original.remove(size - 1);
+      size--;
+    }
+    return Status.OK;
   }
 }

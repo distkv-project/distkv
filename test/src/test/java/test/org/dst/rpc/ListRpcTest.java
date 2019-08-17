@@ -37,6 +37,9 @@ public class ListRpcTest {
         Assert.assertEquals("ok", listGetResponse.getStatus());
         Assert.assertEquals(values, listGetResponse.getValuesList());
 
+        // Test list get.
+
+
         setProxy.closeConnection();
         TestUtil.stopRpcServer();
     }
