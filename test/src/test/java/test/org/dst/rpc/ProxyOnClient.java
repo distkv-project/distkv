@@ -22,11 +22,11 @@ public class ProxyOnClient<T> {
      */
     private Class<T> proxyClass;
 
-    public ProxyOnClient(Class<T> proxyClass){
+    public ProxyOnClient(Class<T> proxyClass) {
         this.proxyClass = proxyClass;
     }
 
-    public T openConnection(){
+    public T openConnection() {
         RpcClientOptions options = new RpcClientOptions();
         options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
         options.setWriteTimeoutMillis(1000);
@@ -37,7 +37,7 @@ public class ProxyOnClient<T> {
         return BrpcProxy.getProxy(client, proxyClass);
     }
 
-    public void closeConnection(){
+    public void closeConnection() {
         client.stop();
     }
 }
