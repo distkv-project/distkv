@@ -39,7 +39,7 @@ public class DstListServiceImpl implements DstListService {
     List<String> values = store.list().get(request.getKey());
     // TODO change protocol
     Optional.ofNullable(values)
-            .ifPresent(u-> {
+            .ifPresent(u -> {
               values.forEach(value -> responseBuilder.addValues(value));
             });
 
