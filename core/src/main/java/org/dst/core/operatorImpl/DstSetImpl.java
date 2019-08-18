@@ -1,7 +1,7 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.exception.KeyNotFoundException;
 import org.dst.core.operatorset.DstSet;
+import org.dst.exception.KeyNotFoundException;
 import java.util.HashMap;
 import java.util.Set;
 
