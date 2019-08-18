@@ -8,7 +8,7 @@ public interface DstString {
    * @param key   the key to store
    * @param value the string value to store
    */
-  public void put(String key, String value);
+  void put(String key, String value);
 
   /**
    * This method will query a string value based on the key
@@ -16,7 +16,7 @@ public interface DstString {
    * @param key Obtain a string value based on the key
    * @return the string  value
    */
-  public String get(String key);
+  String get(String key);
 
   /**
    * This method will delete a string value based on the key
@@ -24,6 +24,6 @@ public interface DstString {
    * @param key delete a key-value pair based on the key
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  public boolean del(String key);
+  boolean del(String key);
 
 }

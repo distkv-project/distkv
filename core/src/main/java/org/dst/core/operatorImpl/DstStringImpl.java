@@ -18,6 +18,10 @@ public class DstStringImpl implements DstString {
 
   @Override
   public String get(String key) {
+    if (!strMap.containsKey(key)) {
+      return null;
+    }
+
     return strMap.get(key);
   }
 
