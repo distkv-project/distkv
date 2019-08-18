@@ -37,7 +37,7 @@ public class DstListServiceImpl implements DstListService {
             ListProtocol.ListGetResponse.newBuilder();
 
     List<String> values = store.list().get(request.getKey());
-    // TODO change protocol
+    // TODO(tansen) change protocol
     Optional.ofNullable(values)
             .ifPresent(v -> {
               values.forEach(value -> responseBuilder.addValues(value));
