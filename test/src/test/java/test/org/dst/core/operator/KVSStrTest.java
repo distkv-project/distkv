@@ -5,9 +5,7 @@ import org.dst.core.KVStoreImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Created by TSY on:2019/8/17
- */
+
 public class KVSStrTest {
     @Test
     public void testStr() {

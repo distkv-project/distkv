@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by TSY on:2019/8/17
- */
 public class KVSDictTest {
     @Test
     public void testDict() {
