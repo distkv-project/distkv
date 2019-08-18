@@ -33,6 +33,12 @@
 
         <dependency>
             <groupId>org.dst</groupId>
+            <artifactId>dst-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dst</groupId>
             <artifactId>dst-server</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
