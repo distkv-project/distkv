@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.dst.core.KVStore;
 import org.dst.server.generated.ListProtocol;
-import org.dst.utils.enums.Status;
+import org.dst.utils.Status;
 
 public class DstListServiceImpl implements DstListService {
 
@@ -39,11 +39,11 @@ public class DstListServiceImpl implements DstListService {
     List<String> values = store.list().get(request.getKey());
     // TODO change protocol
     Optional.ofNullable(values)
-            .ifPresent(u -> {
+            .ifPresent(v -> {
               values.forEach(value -> responseBuilder.addValues(value));
             });
 
-    responseBuilder.setStatus("ok");
+    responseBuilder.setStatus(Status.OK.toString());
     return responseBuilder.build();
   }
 
