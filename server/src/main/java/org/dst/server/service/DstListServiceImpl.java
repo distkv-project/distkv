@@ -2,6 +2,7 @@ package org.dst.server.service;
 
 import java.util.List;
 import org.dst.core.KVStore;
+import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
 
 public class DstListServiceImpl implements DstListService {
@@ -16,15 +17,15 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListPutResponse listPut(ListProtocol.ListPutRequest request) {
     ListProtocol.ListPutResponse.Builder responseBuilder =
             ListProtocol.ListPutResponse.newBuilder();
-    String result;
+    CommonProtocol.Status status;
     try {
       store.list().put(request.getKey(), request.getValuesList());
-      result = "ok";
+      status = CommonProtocol.Status.OK;
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
       result = e.getMessage();
     }
-    responseBuilder.setStatus(result);
+    responseBuilder.setStatus(status);
     return responseBuilder.build();
   }
 

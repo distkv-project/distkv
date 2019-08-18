@@ -1,0 +1,11 @@
+syntax="proto2";
+
+package dst.server.protocol.pb;
+
+option java_package="org.dst.server.generated";
+option java_outer_classname="CommonProtocol";
+
+enum Status {
+    OK = 0;
+    KEY_NOT_FOUND = 1;
+};
