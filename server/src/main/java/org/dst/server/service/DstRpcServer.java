@@ -40,7 +40,8 @@ public class DstRpcServer {
       try {
         listeningPort = Integer.valueOf(args[0]);
       } catch (NumberFormatException e) {
-        LOGGER.error("Failed to start dst server, because the port is incorrect format: {}", args[0]);
+        LOGGER.error("Failed to start dst server, because the port is incorrect format: {}",
+            args[0]);
         System.exit(0);
       }
     }
