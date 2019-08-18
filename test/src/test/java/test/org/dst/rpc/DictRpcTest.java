@@ -10,7 +10,7 @@ import java.util.Map;
 public class DictRpcTest {
 
     @Test
-    public void testSetRpcCall() {
+    public void testDictRpcCall() {
         // Run the server
         TestUtil.startRpcServer();
         try(ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(DstDictService.class)) {
