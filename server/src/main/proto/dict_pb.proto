@@ -1,0 +1,36 @@
+syntax="proto2";
+
+package dst.server.protocol.pb;
+
+option java_package="org.dst.server.generated";
+option java_outer_classname="DictProtocol";
+option cc_generic_services = true;
+
+//Dict
+message DstMap {
+    repeated string keys = 1;
+    repeated string values = 2;
+}
+
+message DictPutRequest {
+    required string key = 1;
+    required DstMap values = 2;
+}
+
+message DictPutResponse {
+    required string status = 1;
+}
+
+message DictGetRequest {
+    required string key = 1;
+}
+
+message DictGetResponse {
+    required string status = 1;
+    required DstMap values = 2;
+}
+
+service DstDictService {
+    rpc dictPut(DictPutRequest) returns (DictPutResponse);
+    rpc dictGet(DictGetRequest) returns (DictGetResponse);
+}

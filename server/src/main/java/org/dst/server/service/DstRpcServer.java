@@ -39,6 +39,7 @@ public class DstRpcServer {
     server.registerService(new DstStringServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstSetServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
+    server.registerService(new DstDictServiceImpl(rpcServer.getKvStore()));
     server.start();
 
     // make server keep running
