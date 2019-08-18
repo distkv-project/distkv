@@ -27,7 +27,15 @@ public interface DstSet {
    * @param key delete a key-value pair based on the key
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  public boolean del(String key);
+  public boolean dropByKey(String key);
+
+  /**
+   * This method will delete a value according to the key
+   *
+   * @param key the key existing in set
+   * @param value the value will be deleted
+   * */
+  public boolean del(String key, String value);
 
   /**
    * This method will judge that if the value exists in map or not.

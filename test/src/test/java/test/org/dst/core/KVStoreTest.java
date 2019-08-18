@@ -52,7 +52,8 @@ public class KVStoreTest {
     } catch (KeyNotFoundException e) {
       e.printStackTrace();
     }
-    Assertions.assertTrue(ks.set().del("k1"));
+    Assertions.assertTrue(ks.set().del("k1","v1"));
+    Assertions.assertTrue(ks.set().dropByKey("k1"));
     Assertions.assertNull(ks.set().get("k1"));
   }
 

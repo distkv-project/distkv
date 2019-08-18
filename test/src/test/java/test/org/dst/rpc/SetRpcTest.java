@@ -23,7 +23,7 @@ public class SetRpcTest {
             values.forEach(value -> setPutRequestBuilder.addValues(value));
 
             SetProtocol.SetPutResponse setPutResponse =
-                    setService.setPut(setPutRequestBuilder.build());
+                    setService.put(setPutRequestBuilder.build());
             Assert.assertEquals("ok", setPutResponse.getStatus());
 
             // Test set get.
@@ -32,7 +32,7 @@ public class SetRpcTest {
             setGetRequestBuilder.setKey("k1");
 
             SetProtocol.SetGetResponse setGetResponse =
-                    setService.setGet(setGetRequestBuilder.build());
+                    setService.get(setGetRequestBuilder.build());
 
             final List<String> results = ImmutableList.of("v1", "v2", "v3");
             Assert.assertEquals("ok", setGetResponse.getStatus());
@@ -42,20 +42,31 @@ public class SetRpcTest {
             SetProtocol.SetDeleteRequest.Builder setDeleteRequestBuilder =
                     SetProtocol.SetDeleteRequest.newBuilder();
            setDeleteRequestBuilder.setKey("k1");
+           setDeleteRequestBuilder.setEntity("v1");
 
            SetProtocol.SetDeleteResponse setDeleteResponse =
-                    setService.setDelete(setDeleteRequestBuilder.build());
+                    setService.delete(setDeleteRequestBuilder.build());
 
             Assert.assertEquals("ok", setDeleteResponse.getStatus());
+
+            //Test set dropByKey
+            SetProtocol.SetDropByKeyRequest.Builder setDropByKeyRequestBuilder =
+                    SetProtocol.SetDropByKeyRequest.newBuilder();
+            setDropByKeyRequestBuilder.setKey("k1");
+
+            SetProtocol.SetDropByKeyResponse setDropByKeyResponse =
+                    setService.dropByKey(setDropByKeyRequestBuilder.build());
+
+            Assert.assertEquals("ok", setDropByKeyResponse.getStatus());
 
             //Test set exist.
            SetProtocol.SetExistRequest.Builder setExistRequestBuilder =
                    SetProtocol.SetExistRequest.newBuilder();
             setExistRequestBuilder.setKey("k1");
-           setExistRequestBuilder.setValue("v1");
+           setExistRequestBuilder.setEntity("v1");
 
             SetProtocol.SetExistResponse setExistResponse =
-                  setService.setExist(setExistRequestBuilder.build());
+                  setService.exist(setExistRequestBuilder.build());
 
             Assert.assertFalse("ok".equals(setExistResponse.getStatus()));
         }

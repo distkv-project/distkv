@@ -27,15 +27,24 @@ message SetGetResponse {
 
 message SetDeleteRequest {
     required string key = 1;
+    required string entity = 2;
 }
 
 message SetDeleteResponse {
     required string status = 1;
 }
 
+message SetDropByKeyRequest {
+    required string key = 1;
+}
+
+message SetDropByKeyResponse {
+    required string status = 1;
+}
+
 message SetExistRequest {
     required string key = 1;
-    required string value = 2;
+    required string entity = 2;
 }
 
 message SetExistResponse {
@@ -46,5 +55,6 @@ service DstSetService {
     rpc setPut(SetPutRequest) returns (SetPutResponse);
     rpc setGet(SetGetRequest) returns (SetGetResponse);
     rpc setDelete(SetDeleteRequest) returns (SetDeleteResponse);
+    rpc setDropByKey(SetDropByKeyRequest) returns (SetDropByKeyResponse);
     rpc setExist(SetExistRequest) returns (SetExistResponse);
 }

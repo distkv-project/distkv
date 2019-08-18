@@ -24,12 +24,22 @@ public class DstSetImpl implements DstSet {
   }
 
   @Override
-  public boolean del(String key) {
+  public boolean dropByKey(String key) {
     if (!setMap.containsKey(key)) {
       return false;
     }
 
     setMap.remove(key);
+    return true;
+  }
+
+  @Override
+  public boolean del(String key, String value) {
+    if (!setMap.containsKey(key)) {
+      return false;
+    }
+
+    setMap.get(key).remove(value);
     return true;
   }
 

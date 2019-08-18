@@ -14,7 +14,7 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.SetPutResponse setPut(SetProtocol.SetPutRequest request) {
+  public SetProtocol.SetPutResponse put(SetProtocol.SetPutRequest request) {
     SetProtocol.SetPutResponse.Builder setPutResponseBuilder =
             SetProtocol.SetPutResponse.newBuilder();
 
@@ -25,7 +25,7 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.SetGetResponse setGet(SetProtocol.SetGetRequest request) {
+  public SetProtocol.SetGetResponse get(SetProtocol.SetGetRequest request) {
     SetProtocol.SetGetResponse.Builder setGetResponseBuilder =
             SetProtocol.SetGetResponse.newBuilder();
 
@@ -37,11 +37,11 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.SetDeleteResponse setDelete(SetProtocol.SetDeleteRequest request) {
+  public SetProtocol.SetDeleteResponse delete(SetProtocol.SetDeleteRequest request) {
     SetProtocol.SetDeleteResponse.Builder setDeleteResponseBuilder =
             SetProtocol.SetDeleteResponse.newBuilder();
 
-    if (store.set().del(request.getKey())) {
+    if (store.set().del(request.getKey(), request.getEntity())) {
       setDeleteResponseBuilder.setStatus("ok");
     } else {
       setDeleteResponseBuilder.setStatus("wrong");
@@ -51,13 +51,27 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.SetExistResponse setExist(SetProtocol.SetExistRequest request) {
+  public SetProtocol.SetDropByKeyResponse dropByKey(SetProtocol.SetDropByKeyRequest request) {
+    SetProtocol.SetDropByKeyResponse.Builder setDropByKeyResponseBuilder =
+            SetProtocol.SetDropByKeyResponse.newBuilder();
+
+    if (store.set().dropByKey(request.getKey())) {
+      setDropByKeyResponseBuilder.setStatus("ok");
+    } else {
+      setDropByKeyResponseBuilder.setStatus("wrong");
+    }
+
+    return setDropByKeyResponseBuilder.build();
+  }
+
+  @Override
+  public SetProtocol.SetExistResponse exist(SetProtocol.SetExistRequest request) {
     SetProtocol.SetExistResponse.Builder setExistResponseBuilder =
             SetProtocol.SetExistResponse.newBuilder();
 
     String status;
     try {
-      store.set().exists(request.getKey(), request.getValue());
+      store.set().exists(request.getKey(), request.getEntity());
       status = "ok";
     } catch (Exception e) {
       status = e.getMessage();
