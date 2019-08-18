@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.HashSet;
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
-import org.dst.core.exception.KeyNotFoundException;
+import org.dst.exception.KeyNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

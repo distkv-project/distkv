@@ -1,7 +1,7 @@
 package org.dst.client;
 
-import org.dst.client.exception.DstException;
-import org.dst.client.exception.KeyNotFoundException;
+import org.dst.exception.DstException;
+import org.dst.exception.KeyNotFoundException;
 import org.dst.server.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
 
