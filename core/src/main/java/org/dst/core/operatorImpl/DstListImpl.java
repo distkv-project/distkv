@@ -1,16 +1,12 @@
 package org.dst.core.operatorImpl;
 
 import org.dst.core.operatorset.DstList;
-import org.dst.utils.enums.Status;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dst.utils.Status;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class DstListImpl implements DstList {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(DstListImpl.class);
 
   private HashMap<String, List<String>> listMap;
 
@@ -28,6 +24,7 @@ public class DstListImpl implements DstList {
   public List<String> get(String key) {
     if (!listMap.containsKey(key)) {
       //TODO should return a status value
+      return null;
     }
     return listMap.get(key);
   }
