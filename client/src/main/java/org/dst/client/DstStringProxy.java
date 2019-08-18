@@ -21,7 +21,7 @@ public class DstStringProxy {
             .build();
 
     StringProtocol.StringPutResponse response = service.strPut(request);
-    if ("ok".equals(response.getStatus())) {
+    if (!"ok".equals(response.getStatus())) {
       throw new DstException("Unknown error.");
     }
   }
@@ -34,7 +34,7 @@ public class DstStringProxy {
 
     StringProtocol.StringGetResponse response = service.strGet(request);
     // TODO(qwang): Refine this with enum `Status`.
-    if ("ok" != response.getStatus()) {
+    if (!"ok".equals(response.getStatus())) {
       throw new KeyNotFoundException(key);
     }
 

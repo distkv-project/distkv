@@ -8,7 +8,6 @@ import org.dst.client.exception.KeyNotFoundException;
 import org.junit.jupiter.api.Test;
 import test.org.dst.rpc.TestUtil;
 
-
 public class StringProxyTest {
 
     private final static String serverAddress = "list://127.0.0.1:8082";
