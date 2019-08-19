@@ -6,7 +6,6 @@ option java_package="org.dst.server.generated";
 option java_outer_classname="DictProtocol";
 option cc_generic_services = true;
 
-//Dict
 message DstDict {
     repeated string keys = 1;
     repeated string values = 2;
