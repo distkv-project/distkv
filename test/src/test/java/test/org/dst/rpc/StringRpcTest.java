@@ -1,5 +1,6 @@
 package test.org.dst.rpc;
 
+import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +21,7 @@ public class StringRpcTest {
                             .build();
 
             StringProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
-            Assertions.assertEquals("ok", stringResponse.getStatus());
+            Assertions.assertEquals(CommonProtocol.Status.OK, stringResponse.getStatus());
             // Test string get request
             StringProtocol.StringGetRequest strGetRequest =
                     StringProtocol.StringGetRequest.newBuilder()

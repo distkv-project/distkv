@@ -3,6 +3,7 @@ package org.dst.server.service;
 import java.util.HashSet;
 import java.util.Set;
 import org.dst.core.KVStore;
+import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SetProtocol;
 
 public class DstSetServiceImpl implements DstSetService {
@@ -19,7 +20,7 @@ public class DstSetServiceImpl implements DstSetService {
             SetProtocol.SetPutResponse.newBuilder();
 
     store.set().put(request.getKey(), new HashSet<>(request.getValuesList()));
-    setPutResponseBuilder.setStatus("ok");
+    setPutResponseBuilder.setStatus(CommonProtocol.Status.OK);
 
     return setPutResponseBuilder.build();
   }
@@ -32,7 +33,7 @@ public class DstSetServiceImpl implements DstSetService {
     Set<String> values = store.set().get(request.getKey());
     values.forEach(value -> setGetResponseBuilder.addValues(value));
 
-    setGetResponseBuilder.setStatus("ok");
+    setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
     return setGetResponseBuilder.build();
   }
 }
