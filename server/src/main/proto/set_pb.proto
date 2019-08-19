@@ -2,6 +2,8 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
+import "common_pb.proto";
+
 option java_package="org.dst.server.generated";
 option java_outer_classname="SetProtocol";
 option cc_generic_services = true;
@@ -13,7 +15,7 @@ message SetPutRequest {
 }
 
 message SetPutResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message SetGetRequest {
@@ -21,7 +23,7 @@ message SetGetRequest {
 }
 
 message SetGetResponse {
-    required string status = 1;
+    required Status Status = 1;
     repeated string values = 2;
 }
 

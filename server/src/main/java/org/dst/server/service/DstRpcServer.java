@@ -58,6 +58,7 @@ public class DstRpcServer {
     server.registerService(new DstStringServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstSetServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
+    server.registerService(new DstDictServiceImpl(rpcServer.getKvStore()));
     server.start();
 
     LOGGER.info("Succeeded to start dst server on port {}.", listeningPort);

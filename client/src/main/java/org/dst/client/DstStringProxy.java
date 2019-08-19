@@ -2,6 +2,7 @@ package org.dst.client;
 
 import org.dst.exception.DstException;
 import org.dst.exception.KeyNotFoundException;
+import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
 
@@ -21,8 +22,8 @@ public class DstStringProxy {
             .build();
 
     StringProtocol.StringPutResponse response = service.strPut(request);
-    if (!"ok".equals(response.getStatus())) {
-      throw new DstException("Unknown error.");
+    if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
 
@@ -33,9 +34,10 @@ public class DstStringProxy {
             .build();
 
     StringProtocol.StringGetResponse response = service.strGet(request);
-    // TODO(qwang): Refine this with enum `Status`.
-    if (!"ok".equals(response.getStatus())) {
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
 
     return response.getValue();
