@@ -2,7 +2,7 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
-option java_package="org.dst.server.generated";
+option java_package="org.dst.protocol";
 option java_outer_classname="DictProtocol";
 option cc_generic_services = true;
 

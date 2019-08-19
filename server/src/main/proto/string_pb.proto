@@ -2,9 +2,9 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
-import "common_pb.proto";
+import "status_pb.proto";
 
-option java_package="org.dst.server.generated";
+option java_package="org.dst.protocol";
 option java_outer_classname="StringProtocol";
 option cc_generic_services = true;
 

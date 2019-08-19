@@ -2,8 +2,8 @@ package test.org.dst.rpc;
 
 import com.google.common.collect.ImmutableList;
 import junit.framework.Assert;
-import org.dst.server.generated.CommonProtocol;
-import org.dst.server.generated.SetProtocol;
+import org.dst.protocol.SetProtocol;
+import org.dst.protocol.StatusProtocol;
 import org.dst.server.service.DstSetService;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -25,7 +25,7 @@ public class SetRpcTest {
 
             SetProtocol.SetPutResponse setPutResponse =
                     setService.setPut(setPutRequestBuilder.build());
-            Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
+            Assert.assertEquals(StatusProtocol.Status.OK, setPutResponse.getStatus());
 
             // Test set get.
             SetProtocol.SetGetRequest.Builder setGetRequestBuilder =
@@ -36,7 +36,7 @@ public class SetRpcTest {
                     setService.setGet(setGetRequestBuilder.build());
 
             final List<String> results = ImmutableList.of("v1", "v2", "v3");
-            Assert.assertEquals(CommonProtocol.Status.OK, setGetResponse.getStatus());
+            Assert.assertEquals(StatusProtocol.Status.OK, setGetResponse.getStatus());
             Assert.assertEquals(results, setGetResponse.getValuesList());
         }
         // Stop the server

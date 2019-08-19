@@ -1,8 +1,8 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
-import org.dst.server.generated.CommonProtocol;
-import org.dst.server.generated.StringProtocol;
+import org.dst.protocol.StatusProtocol;
+import org.dst.protocol.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class DstStringServiceImpl implements DstStringService {
     StringProtocol.StringPutResponse.Builder responseBuilder =
             StringProtocol.StringPutResponse.newBuilder();
     store.strs().put(request.getKey(), request.getValue());
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    responseBuilder.setStatus(StatusProtocol.Status.OK);
     return responseBuilder.build();
   }
 
@@ -33,9 +33,9 @@ public class DstStringServiceImpl implements DstStringService {
     String value = store.strs().get(request.getKey());
     if (value != null) {
       responseBuilder.setValue(store.strs().get(request.getKey()));
-      responseBuilder.setStatus(CommonProtocol.Status.OK);
+      responseBuilder.setStatus(StatusProtocol.Status.OK);
     } else {
-      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+      responseBuilder.setStatus(StatusProtocol.Status.KEY_NOT_FOUND);
     }
     return responseBuilder.build();
   }

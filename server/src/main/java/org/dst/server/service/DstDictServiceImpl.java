@@ -1,7 +1,7 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
-import org.dst.server.generated.DictProtocol;
+import org.dst.protocol.DictProtocol;
 import java.util.HashMap;
 import java.util.Map;
 

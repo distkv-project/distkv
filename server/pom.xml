@@ -36,7 +36,7 @@
                             <protocVersion>2.5.0</protocVersion>
                             <addSources>none</addSources>
                             <includeStdTypes>true</includeStdTypes>
-                            <outputDirectory>src/main/java</outputDirectory>
+                            <outputDirectory>../common/src/main/java</outputDirectory>
                             <inputDirectories>
                                 <include>src/main/proto</include>
                             </inputDirectories>

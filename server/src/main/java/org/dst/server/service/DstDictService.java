@@ -1,7 +1,7 @@
 package org.dst.server.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
-import org.dst.server.generated.DictProtocol;
+import org.dst.protocol.DictProtocol;
 
 public interface DstDictService {
 

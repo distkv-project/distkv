@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.dst.core.KVStore;
-import org.dst.server.generated.CommonProtocol;
-import org.dst.server.generated.ListProtocol;
+import org.dst.protocol.StatusProtocol;
+import org.dst.protocol.ListProtocol;
 import org.dst.utils.Status;
 
 public class DstListServiceImpl implements DstListService {
@@ -20,13 +20,13 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListPutResponse listPut(ListProtocol.ListPutRequest request) {
     ListProtocol.ListPutResponse.Builder responseBuilder =
             ListProtocol.ListPutResponse.newBuilder();
-    CommonProtocol.Status status;
+    StatusProtocol.Status status;
     try {
       store.lists().put(request.getKey(), request.getValuesList());
-      status = CommonProtocol.Status.OK;
+      status = StatusProtocol.Status.OK;
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+      status = StatusProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
@@ -44,7 +44,7 @@ public class DstListServiceImpl implements DstListService {
               values.forEach(value -> responseBuilder.addValues(value));
             });
 
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    responseBuilder.setStatus(StatusProtocol.Status.OK);
     return responseBuilder.build();
   }
 
@@ -52,17 +52,17 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListDelResponse listDel(ListProtocol.ListDelRequest request) {
     ListProtocol.ListDelResponse.Builder responseBuilder =
             ListProtocol.ListDelResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    StatusProtocol.Status status = StatusProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().del(request.getKey());
       if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
+        status = StatusProtocol.Status.KEY_NOT_FOUND;
       } else if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
+        status = StatusProtocol.Status.OK;
       }
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+      status = StatusProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
@@ -72,17 +72,17 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListLPutResponse listLPut(ListProtocol.ListLPutRequest request) {
     ListProtocol.ListLPutResponse.Builder responseBuilder =
             ListProtocol.ListLPutResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    StatusProtocol.Status status = StatusProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().lput(request.getKey(), request.getValuesList());
       if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
+        status = StatusProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
+        status = StatusProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here  .
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+      status = StatusProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
@@ -92,17 +92,17 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListRPutResponse listRPut(ListProtocol.ListRPutRequest request) {
     ListProtocol.ListRPutResponse.Builder responseBuilder =
             ListProtocol.ListRPutResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    StatusProtocol.Status status = StatusProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().rput(request.getKey(), request.getValuesList());
       if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
+        status = StatusProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
+        status = StatusProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here .
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+      status = StatusProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
@@ -120,7 +120,7 @@ public class DstListServiceImpl implements DstListService {
       // TODO(qwang): Use DstException instead of Exception here .
       result = e.getMessage();
     }
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    responseBuilder.setStatus(StatusProtocol.Status.OK);
     return responseBuilder.build();
   }
 
@@ -128,18 +128,18 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListRDelResponse listRDel(ListProtocol.ListRDelRequest request) {
     ListProtocol.ListRDelResponse.Builder responseBuilder =
             ListProtocol.ListRDelResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    StatusProtocol.Status status = StatusProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().rdel(request.getKey(), request.getValues());
       if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
+        status = StatusProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
+        status = StatusProtocol.Status.KEY_NOT_FOUND;
       }
 
     } catch (Exception e) {
       // TODO(qwang): Add error message to protobuf.
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+      status = StatusProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();

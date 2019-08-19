@@ -1,7 +1,7 @@
 package test.org.dst.rpc;
 
 import junit.framework.Assert;
-import org.dst.server.generated.DictProtocol;
+import org.dst.protocol.DictProtocol;
 import org.dst.server.service.DstDictService;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
