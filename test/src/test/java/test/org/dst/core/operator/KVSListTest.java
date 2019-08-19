@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
+import org.dst.exception.KeyNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,20 +21,27 @@ public class KVSListTest {
         return list;
     }
 
-
     @Test
     public void testPutAndGet() {
         KVStore store = new KVStoreImpl();
         store.lists().put("k1", listForKVSTest());
         Assertions.assertEquals(listForKVSTest(), store.lists().get("k1"));
+
+        Throwable exception = Assertions.assertThrows(KeyNotFoundException.class,()->{
+            Assertions.assertEquals(listForKVSTest(), store.lists().get("k2"));
+        });
+        Assertions.assertEquals("The key k2 doesn't exist in the store.",exception.getMessage());
     }
 
-    @Test
+    @Test()
     public void testDel() {
         KVStore store = new KVStoreImpl();
         store.lists().put("k1", listForKVSTest());
-        Assertions.assertEquals("ok",store.lists().del("k1").toString());
-        Assertions.assertNull(store.lists().get("k1"));
+        store.lists().del("k1");
+        Throwable exception = Assertions.assertThrows(KeyNotFoundException.class,()->{
+            store.lists().get("k1");
+        });
+        Assertions.assertEquals("The key k1 doesn't exist in the store.",exception.getMessage());
     }
 
     @Test
@@ -45,6 +53,11 @@ public class KVSListTest {
         list2.add("v5");
         store.lists().lput("k1",list2);
         Assertions.assertEquals(Arrays.asList("v4","v5","v1","v2","v3"),store.lists().get("k1"));
+
+        Throwable exception = Assertions.assertThrows(KeyNotFoundException.class,()->{
+            store.lists().lput("k2",list2);
+        });
+        Assertions.assertEquals("The key k2 doesn't exist in the store.",exception.getMessage());
     }
 
     @Test
@@ -56,8 +69,12 @@ public class KVSListTest {
         list2.add("v5");
         store.lists().rput("k1", list2);
         Assertions.assertEquals(Arrays.asList("v1","v2","v3","v4","v5"),store.lists().get("k1"));
-    }
 
+        Throwable exception = Assertions.assertThrows(KeyNotFoundException.class,()->{
+            store.lists().rput("k2", list2);
+        });
+        Assertions.assertEquals("The key k2 doesn't exist in the store.",exception.getMessage());
+    }
 
     @Test
     public void testLDel() {
@@ -65,9 +82,12 @@ public class KVSListTest {
         store.lists().put("k1",listForKVSTest());
         store.lists().ldel("k1",1);
         Assertions.assertEquals(Arrays.asList("v2","v3"),store.lists().get("k1"));
-        Assertions.assertEquals("key not exist",store.lists().ldel("-k",1).toString());
-    }
 
+        Throwable exception = Assertions.assertThrows(KeyNotFoundException.class,()->{
+            store.lists().ldel("k2",1);
+        });
+        Assertions.assertEquals("The key k2 doesn't exist in the store.",exception.getMessage());
+    }
 
     @Test
     public void testRDel() {
@@ -75,7 +95,11 @@ public class KVSListTest {
         store.lists().put("k1",listForKVSTest());
         store.lists().rdel("k1",1);
         Assertions.assertEquals(Arrays.asList("v1","v2"),store.lists().get("k1"));
-        Assertions.assertEquals("key not exist",store.lists().rdel("-k",1).toString());
+
+        Throwable exception = Assertions.assertThrows(KeyNotFoundException.class,()->{
+            store.lists().rdel("k2",1);
+        });
+        Assertions.assertEquals("The key k2 doesn't exist in the store.",exception.getMessage());
     }
 
 }

@@ -30,8 +30,6 @@ public class KVStoreTest {
     list.add("v3");
     ks.lists().put("k1", list);
     Assertions.assertEquals(list, ks.lists().get("k1"));
-    Assertions.assertEquals("ok",ks.lists().del("k1").toString());
-    Assertions.assertNull(ks.lists().get("k1"));
   }
 
   @Test

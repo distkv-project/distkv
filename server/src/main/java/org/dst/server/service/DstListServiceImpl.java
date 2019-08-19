@@ -4,11 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.dst.core.KVStore;
+import org.dst.exception.KeyNotFoundException;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
-import org.dst.utils.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DstListServiceImpl implements DstListService {
+
+  private static Logger logger = LoggerFactory.getLogger(DstListServiceImpl.class);
 
   private KVStore store;
 
@@ -36,15 +40,19 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListGetResponse listGet(ListProtocol.ListGetRequest request) {
     ListProtocol.ListGetResponse.Builder responseBuilder =
             ListProtocol.ListGetResponse.newBuilder();
+    CommonProtocol.Status status;
+    try {
+      List<String> values = store.lists().get(request.getKey());
+      Optional.ofNullable(values)
+              .ifPresent(v -> {
+                values.forEach(value -> responseBuilder.addValues(value));
+              });
 
-    List<String> values = store.lists().get(request.getKey());
-    // TODO(tansen) change protocol
-    Optional.ofNullable(values)
-            .ifPresent(v -> {
-              values.forEach(value -> responseBuilder.addValues(value));
-            });
-
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
+      responseBuilder.setStatus(CommonProtocol.Status.OK);
+    } catch (Exception e) {
+      // TODO(qwang): Use DstException instead of Exception here.
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
     return responseBuilder.build();
   }
 
@@ -52,16 +60,14 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListDelResponse listDel(ListProtocol.ListDelRequest request) {
     ListProtocol.ListDelResponse.Builder responseBuilder =
             ListProtocol.ListDelResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    CommonProtocol.Status status;
     try {
-      Status localStatus = store.lists().del(request.getKey());
-      if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
-      } else if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      }
+      store.lists().del(request.getKey());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      logger.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (Exception e) {
-      // TODO(qwang): Use DstException instead of Exception here.
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -72,16 +78,14 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListLPutResponse listLPut(ListProtocol.ListLPutRequest request) {
     ListProtocol.ListLPutResponse.Builder responseBuilder =
             ListProtocol.ListLPutResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    CommonProtocol.Status status;
     try {
-      Status localStatus = store.lists().lput(request.getKey(), request.getValuesList());
-      if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
-      }
+      store.lists().lput(request.getKey(), request.getValuesList());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      logger.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (Exception e) {
-      // TODO(qwang): Use DstException instead of Exception here  .
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -92,16 +96,14 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListRPutResponse listRPut(ListProtocol.ListRPutRequest request) {
     ListProtocol.ListRPutResponse.Builder responseBuilder =
             ListProtocol.ListRPutResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    CommonProtocol.Status status;
     try {
-      Status localStatus = store.lists().rput(request.getKey(), request.getValuesList());
-      if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
-      }
+      store.lists().rput(request.getKey(), request.getValuesList());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      logger.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (Exception e) {
-      // TODO(qwang): Use DstException instead of Exception here .
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -112,15 +114,17 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListLDelResponse listLDel(ListProtocol.ListLDelRequest request) {
     ListProtocol.ListLDelResponse.Builder responseBuilder =
             ListProtocol.ListLDelResponse.newBuilder();
-    String result;
+    CommonProtocol.Status status;
     try {
-      Status status = store.lists().ldel(request.getKey(), request.getValues());
-      result = status.toString();
+      store.lists().ldel(request.getKey(), request.getValues());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      logger.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (Exception e) {
-      // TODO(qwang): Use DstException instead of Exception here .
-      result = e.getMessage();
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    responseBuilder.setStatus(status);
     return responseBuilder.build();
   }
 
@@ -128,17 +132,14 @@ public class DstListServiceImpl implements DstListService {
   public ListProtocol.ListRDelResponse listRDel(ListProtocol.ListRDelRequest request) {
     ListProtocol.ListRDelResponse.Builder responseBuilder =
             ListProtocol.ListRDelResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    CommonProtocol.Status status;
     try {
-      Status localStatus = store.lists().rdel(request.getKey(), request.getValues());
-      if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
-      }
-
+      store.lists().rdel(request.getKey(), request.getValues());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      logger.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (Exception e) {
-      // TODO(qwang): Add error message to protobuf.
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
