@@ -55,7 +55,7 @@ message existsResponse {
     required Status status = 1;
 }
 
-service DstService {
+service DstSetService {
     rpc setPut(putRequest) returns (putResponse);
     rpc setGet(getRequest) returns (getResponse);
     rpc setDelete(deleteRequest) returns (deleteResponse);

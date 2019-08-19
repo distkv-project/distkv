@@ -47,11 +47,8 @@ public class KVStoreTest {
     set.add("v3");
     ks.sets().put("k1", set);
     Assertions.assertEquals(set, ks.sets().get("k1"));
-    try {
-      Assertions.assertEquals("ok", ks.sets().exists("k1", "v3").toString());
-    } catch (KeyNotFoundException e) {
-      e.printStackTrace();
-    }
+
+    Assertions.assertEquals("ok", ks.sets().exists("k1", "v3").toString());
     Assertions.assertEquals("ok", ks.sets().del("k1","v1").toString());
     Assertions.assertEquals("ok", ks.sets().dropByKey("k1").toString());
     Assertions.assertNull(ks.sets().get("k1"));

@@ -12,7 +12,7 @@ public class StringRpcTest {
         // Run the server
         TestUtil.startRpcServer();
         try(ProxyOnClient<DstStringService> stringProxy = new ProxyOnClient<>(DstStringService.class)) {
-                DstStringService stringService = stringProxy.getService();
+            DstStringService stringService = stringProxy.getService();
             // Test string put request
             StringProtocol.StringPutRequest stringPutRequest =
                     StringProtocol.StringPutRequest.newBuilder()
