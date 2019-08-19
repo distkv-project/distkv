@@ -17,9 +17,9 @@ public class DstListServiceImpl implements DstListService {
   }
 
   @Override
-  public ListProtocol.ListPutResponse listPut(ListProtocol.ListPutRequest request) {
-    ListProtocol.ListPutResponse.Builder responseBuilder =
-            ListProtocol.ListPutResponse.newBuilder();
+  public ListProtocol.PutResponse listPut(ListProtocol.PutRequest request) {
+    ListProtocol.PutResponse.Builder responseBuilder =
+            ListProtocol.PutResponse.newBuilder();
     CommonProtocol.Status status;
     try {
       store.lists().put(request.getKey(), request.getValuesList());
@@ -33,9 +33,9 @@ public class DstListServiceImpl implements DstListService {
   }
 
   @Override
-  public ListProtocol.ListGetResponse listGet(ListProtocol.ListGetRequest request) {
-    ListProtocol.ListGetResponse.Builder responseBuilder =
-            ListProtocol.ListGetResponse.newBuilder();
+  public ListProtocol.GetResponse listGet(ListProtocol.GetRequest request) {
+    ListProtocol.GetResponse.Builder responseBuilder =
+            ListProtocol.GetResponse.newBuilder();
 
     List<String> values = store.lists().get(request.getKey());
     // TODO(tansen) change protocol
@@ -49,9 +49,9 @@ public class DstListServiceImpl implements DstListService {
   }
 
   @Override
-  public ListProtocol.ListDelResponse listDel(ListProtocol.ListDelRequest request) {
-    ListProtocol.ListDelResponse.Builder responseBuilder =
-            ListProtocol.ListDelResponse.newBuilder();
+  public ListProtocol.DelResponse listDel(ListProtocol.DelRequest request) {
+    ListProtocol.DelResponse.Builder responseBuilder =
+            ListProtocol.DelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().del(request.getKey());
@@ -69,9 +69,9 @@ public class DstListServiceImpl implements DstListService {
   }
 
   @Override
-  public ListProtocol.ListLPutResponse listLPut(ListProtocol.ListLPutRequest request) {
-    ListProtocol.ListLPutResponse.Builder responseBuilder =
-            ListProtocol.ListLPutResponse.newBuilder();
+  public ListProtocol.LPutResponse listLPut(ListProtocol.LPutRequest request) {
+    ListProtocol.LPutResponse.Builder responseBuilder =
+            ListProtocol.LPutResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().lput(request.getKey(), request.getValuesList());
@@ -89,9 +89,9 @@ public class DstListServiceImpl implements DstListService {
   }
 
   @Override
-  public ListProtocol.ListRPutResponse listRPut(ListProtocol.ListRPutRequest request) {
-    ListProtocol.ListRPutResponse.Builder responseBuilder =
-            ListProtocol.ListRPutResponse.newBuilder();
+  public ListProtocol.RPutResponse listRPut(ListProtocol.RPutRequest request) {
+    ListProtocol.RPutResponse.Builder responseBuilder =
+            ListProtocol.RPutResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().rput(request.getKey(), request.getValuesList());
@@ -109,9 +109,9 @@ public class DstListServiceImpl implements DstListService {
   }
 
   @Override
-  public ListProtocol.ListLDelResponse listLDel(ListProtocol.ListLDelRequest request) {
-    ListProtocol.ListLDelResponse.Builder responseBuilder =
-            ListProtocol.ListLDelResponse.newBuilder();
+  public ListProtocol.LDelResponse listLDel(ListProtocol.LDelRequest request) {
+    ListProtocol.LDelResponse.Builder responseBuilder =
+            ListProtocol.LDelResponse.newBuilder();
     String result;
     try {
       Status status = store.lists().ldel(request.getKey(), request.getValues());
@@ -125,9 +125,9 @@ public class DstListServiceImpl implements DstListService {
   }
 
   @Override
-  public ListProtocol.ListRDelResponse listRDel(ListProtocol.ListRDelRequest request) {
-    ListProtocol.ListRDelResponse.Builder responseBuilder =
-            ListProtocol.ListRDelResponse.newBuilder();
+  public ListProtocol.RDelResponse listRDel(ListProtocol.RDelRequest request) {
+    ListProtocol.RDelResponse.Builder responseBuilder =
+            ListProtocol.RDelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = store.lists().rdel(request.getKey(), request.getValues());

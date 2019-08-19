@@ -20,7 +20,7 @@ public class StringRpcTest {
                             .setValue("v1")
                             .build();
 
-            StringProtocol.PutResponse putResponse = stringService.strPut(putRequest);
+            StringProtocol.PutResponse putResponse = stringService.put(putRequest);
             Assertions.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
             // Test string get request
             StringProtocol.GetRequest getRequest =
@@ -28,7 +28,7 @@ public class StringRpcTest {
                             .setKey("k1")
                             .build();
 
-            StringProtocol.GetResponse getResponse = stringService.strGet(getRequest);
+            StringProtocol.GetResponse getResponse = stringService.get(getRequest);
             Assertions.assertEquals("v1", getResponse.getValue());
         }
         // Stop the server

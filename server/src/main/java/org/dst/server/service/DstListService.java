@@ -5,26 +5,26 @@ import org.dst.server.generated.ListProtocol;
 
 public interface DstListService {
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "listPut")
-  ListProtocol.ListPutResponse listPut(ListProtocol.ListPutRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "put")
+  ListProtocol.PutResponse listPut(ListProtocol.PutRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "listGet")
-  ListProtocol.ListGetResponse listGet(ListProtocol.ListGetRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "get")
+  ListProtocol.GetResponse listGet(ListProtocol.GetRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "listDel")
-  ListProtocol.ListDelResponse listDel(ListProtocol.ListDelRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "del")
+  ListProtocol.DelResponse listDel(ListProtocol.DelRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "listLPut")
-  ListProtocol.ListLPutResponse listLPut(ListProtocol.ListLPutRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "lPut")
+  ListProtocol.LPutResponse listLPut(ListProtocol.LPutRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "listRPut")
-  ListProtocol.ListRPutResponse listRPut(ListProtocol.ListRPutRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "rPut")
+  ListProtocol.RPutResponse listRPut(ListProtocol.RPutRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "listLDel")
-  ListProtocol.ListLDelResponse listLDel(ListProtocol.ListLDelRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "lDel")
+  ListProtocol.LDelResponse listLDel(ListProtocol.LDelRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "listRDel")
-  ListProtocol.ListRDelResponse listRDel(ListProtocol.ListRDelRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "rDel")
+  ListProtocol.RDelResponse listRDel(ListProtocol.RDelRequest request);
 
 
 

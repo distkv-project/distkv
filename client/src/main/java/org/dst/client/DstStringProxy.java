@@ -21,7 +21,7 @@ public class DstStringProxy {
             .setValue(value)
             .build();
 
-    StringProtocol.PutResponse response = service.strPut(request);
+    StringProtocol.PutResponse response = service.put(request);
     if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
@@ -33,7 +33,7 @@ public class DstStringProxy {
             .setKey(key)
             .build();
 
-    StringProtocol.GetResponse response = service.strGet(request);
+    StringProtocol.GetResponse response = service.get(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {

@@ -27,6 +27,6 @@ message GetResponse {
 };
 
 service DstStringService {
-    rpc strPut(PutRequest) returns (PutResponse);
-    rpc strGet(GetRequest) returns (GetResponse);
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
 }
