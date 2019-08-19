@@ -15,25 +15,25 @@ public class DstStringProxy {
   }
 
   public void put(String key, String value) {
-    StringProtocol.StringPutRequest request =
-        StringProtocol.StringPutRequest.newBuilder()
+    StringProtocol.PutRequest request =
+        StringProtocol.PutRequest.newBuilder()
             .setKey(key)
             .setValue(value)
             .build();
 
-    StringProtocol.StringPutResponse response = service.strPut(request);
+    StringProtocol.PutResponse response = service.strPut(request);
     if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
 
   public String get(String key) throws DstException {
-    StringProtocol.StringGetRequest request =
-        StringProtocol.StringGetRequest.newBuilder()
+    StringProtocol.GetRequest request =
+        StringProtocol.GetRequest.newBuilder()
             .setKey(key)
             .build();
 
-    StringProtocol.StringGetResponse response = service.strGet(request);
+    StringProtocol.GetResponse response = service.strGet(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
