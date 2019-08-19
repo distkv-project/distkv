@@ -36,7 +36,7 @@ public class DstSetImpl implements DstSet {
   @Override
   public boolean exists(String key, String value) throws KeyNotFoundException {
     if (!setMap.containsKey(key)) {
-      throw new KeyNotFoundException("The key is not found");
+      throw new KeyNotFoundException(key);
     }
 
     return setMap.get(key).contains(value);
