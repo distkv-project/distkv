@@ -31,6 +31,6 @@ message DictGetResponse {
 }
 
 service DstDictService {
-    rpc dictPut(DictPutRequest) returns (DictPutResponse);
-    rpc dictGet(DictGetRequest) returns (DictGetResponse);
+    rpc put(DictPutRequest) returns (DictPutResponse);
+    rpc get(DictGetRequest) returns (DictGetResponse);
 }
