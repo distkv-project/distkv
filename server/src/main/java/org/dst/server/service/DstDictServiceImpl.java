@@ -14,17 +14,17 @@ public class DstDictServiceImpl implements DstDictService {
   }
 
   @Override
-  public DictProtocol.DictPutResponse dictPut(DictProtocol.DictPutRequest request) {
+  public DictProtocol.DictPutResponse put(DictProtocol.DictPutRequest request) {
     DictProtocol.DictPutResponse.Builder responseBuilder =
             DictProtocol.DictPutResponse.newBuilder();
     String result;
     try {
       Map<String,String> map = new HashMap<>();
-      DictProtocol.DstMap dstMap = request.getValues();
-      for (int i = 0;i < dstMap.getKeysCount();i++) {
-        map.put(dstMap.getKeys(i),dstMap.getValues(i));
+      DictProtocol.DstDict dstDict = request.getValues();
+      for (int i = 0;i < dstDict.getKeysCount();i++) {
+        map.put(dstDict.getKeys(i), dstDict.getDict(i));
       }
-      store.dict().put(request.getKey(),map);
+      store.dict().put(request.getKey(), map);
       result = "ok";
     } catch (Exception e) {
       // TODO: Use DstException instead of Exception here.
@@ -35,16 +35,16 @@ public class DstDictServiceImpl implements DstDictService {
   }
 
   @Override
-  public DictProtocol.DictGetResponse dictGet(DictProtocol.DictGetRequest request) {
+  public DictProtocol.DictGetResponse get(DictProtocol.DictGetRequest request) {
     DictProtocol.DictGetResponse.Builder responseBuilder =
             DictProtocol.DictGetResponse.newBuilder();
     Map<String,String> values = store.dict().get(request.getKey());
-    DictProtocol.DstMap.Builder builder = DictProtocol.DstMap.newBuilder();
+    DictProtocol.DstDict.Builder builder = DictProtocol.DstDict.newBuilder();
     for (Map.Entry<String,String> entry : values.entrySet()) {
       builder.addKeys(entry.getKey());
-      builder.addValues(entry.getValue());
+      builder.addDict(entry.getValue());
     }
-    responseBuilder.setValues(builder.build());
+    responseBuilder.setDict(builder.build());
     responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }

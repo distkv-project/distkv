@@ -5,9 +5,9 @@ import org.dst.server.generated.DictProtocol;
 
 public interface DstDictService {
 
-  @BrpcMeta(serviceName = "DstDictService", methodName = "dictPut")
-  DictProtocol.DictPutResponse dictPut(DictProtocol.DictPutRequest request);
+  @BrpcMeta(serviceName = "DstDictService", methodName = "put")
+  DictProtocol.DictPutResponse put(DictProtocol.DictPutRequest request);
 
-  @BrpcMeta(serviceName = "DstDictService", methodName = "dictGet")
-  DictProtocol.DictGetResponse dictGet(DictProtocol.DictGetRequest request);
+  @BrpcMeta(serviceName = "DstDictService", methodName = "get")
+  DictProtocol.DictGetResponse get(DictProtocol.DictGetRequest request);
 }

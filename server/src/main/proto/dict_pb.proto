@@ -7,14 +7,14 @@ option java_outer_classname="DictProtocol";
 option cc_generic_services = true;
 
 //Dict
-message DstMap {
+message DstDict {
     repeated string keys = 1;
-    repeated string values = 2;
+    repeated string dict = 2;
 }
 
 message DictPutRequest {
     required string key = 1;
-    required DstMap values = 2;
+    optional DstDict values = 2;
 }
 
 message DictPutResponse {
@@ -27,7 +27,7 @@ message DictGetRequest {
 
 message DictGetResponse {
     required string status = 1;
-    required DstMap values = 2;
+    required DstDict dict = 2;
 }
 
 service DstDictService {
