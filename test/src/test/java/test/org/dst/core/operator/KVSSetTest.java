@@ -18,14 +18,14 @@ public class KVSSetTest {
         set.add("v1");
         set.add("v2");
         set.add("v3");
-        store.set().put("k1", set);
-        Assertions.assertEquals(set, store.set().get("k1"));
+        store.sets().put("k1", set);
+        Assertions.assertEquals(set, store.sets().get("k1"));
         try {
-            Assertions.assertTrue(store.set().exists("k1", "v3"));
+            Assertions.assertTrue(store.sets().exists("k1", "v3"));
         } catch (KeyNotFoundException e) {
             e.printStackTrace();
         }
-        Assertions.assertTrue(store.set().del("k1"));
-        Assertions.assertNull(store.set().get("k1"));
+        Assertions.assertTrue(store.sets().del("k1"));
+        Assertions.assertNull(store.sets().get("k1"));
     }
 }
