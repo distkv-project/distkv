@@ -54,7 +54,7 @@ public class DstSetImpl implements DstSet {
       return Status.OK;
     }
 
-    //TODO(yuxin) modidify this return value
+    //TODO(yuxin) modify this return value
     return Status.KEY_NOT_FOUND;
   }
 
