@@ -9,12 +9,12 @@ option cc_generic_services = true;
 //Dict
 message DstDict {
     repeated string keys = 1;
-    repeated string dict = 2;
+    repeated string values = 2;
 }
 
 message DictPutRequest {
     required string key = 1;
-    optional DstDict dict = 2;
+    required DstDict dict = 2;
 }
 
 message DictPutResponse {

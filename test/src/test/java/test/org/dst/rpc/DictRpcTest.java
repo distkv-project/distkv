@@ -6,15 +6,12 @@ import org.dst.server.service.DstDictService;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * if you want to put a dict,you need new a map. Like this:
- * Map<String,String> myMap = new HashMap<>();
- * use a Request Builder
- * DictPutRequest.Builder dictPutRequestBuilder = DictPutRequest.newBuilder();
- * add the key
- * dictPutRequestBuilder.setKey("m1");
+ * Map<String,String> localDict = new HashMap<>();
  * and add the kv to the request Builder
- * for (Map.Entry<String,String> entry : myMap.entrySet()) {
+ * for (Map.Entry<String,String> entry : localDict.entrySet()) {
  *     dstDictBuilder.addKeys(entry.getKey());
  *     dstDictBuilder.addDict(entry.getValue());
  * }
@@ -33,14 +30,14 @@ public class DictRpcTest {
             DictProtocol.DictPutRequest.Builder dictPutRequestBuilder =
                     DictProtocol.DictPutRequest.newBuilder();
             dictPutRequestBuilder.setKey("m1");
-            final Map<String,String> myMap = new HashMap<>();
-            myMap.put("k1", "v1");
-            myMap.put("k2", "v2");
-            myMap.put("k3", "v3");
+            final Map<String,String> localDict = new HashMap<>();
+            localDict.put("k1", "v1");
+            localDict.put("k2", "v2");
+            localDict.put("k3", "v3");
             DictProtocol.DstDict.Builder dstDictBuilder = DictProtocol.DstDict.newBuilder();
-            for (Map.Entry<String,String> entry : myMap.entrySet()) {
+            for (Map.Entry<String,String> entry : localDict.entrySet()) {
                 dstDictBuilder.addKeys(entry.getKey());
-                dstDictBuilder.addDict(entry.getValue());
+                dstDictBuilder.addValues(entry.getValue());
             }
             dictPutRequestBuilder.setDict(dstDictBuilder.build());
             DictProtocol.DictPutResponse setPutResponse =
@@ -53,18 +50,18 @@ public class DictRpcTest {
             DictProtocol.DictGetResponse dictGetResponse =
                     dictService.get(dictGetRequestBuilder.build());
 
-            final Map<String,String> myMap1 = new HashMap<>();
-            myMap1.put("k1", "v1");
-            myMap1.put("k2", "v2");
-            myMap1.put("k3", "v3");
+            final Map<String,String> judgeDict = new HashMap<>();
+            judgeDict.put("k1", "v1");
+            judgeDict.put("k2", "v2");
+            judgeDict.put("k3", "v3");
             DictProtocol.DstDict values = dictGetResponse.getDict();
             Map<String,String> results = new HashMap<>();
             for (int i = 0;i < values.getKeysCount();i++) {
-                results.put(values.getKeys(i), values.getDict(i));
+                results.put(values.getKeys(i), values.getValues(i));
             }
 
             Assert.assertEquals("ok", dictGetResponse.getStatus());
-            Assert.assertEquals(results, myMap1);
+            Assert.assertEquals(results, judgeDict);
         }
         // Stop the server
         TestUtil.stopRpcServer();

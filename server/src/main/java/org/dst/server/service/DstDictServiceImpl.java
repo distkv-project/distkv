@@ -22,7 +22,7 @@ public class DstDictServiceImpl implements DstDictService {
       Map<String,String> map = new HashMap<>();
       DictProtocol.DstDict dstDict = request.getDict();
       for (int i = 0;i < dstDict.getKeysCount();i++) {
-        map.put(dstDict.getKeys(i), dstDict.getDict(i));
+        map.put(dstDict.getKeys(i), dstDict.getValues(i));
       }
       store.dict().put(request.getKey(), map);
       result = "ok";
@@ -42,7 +42,7 @@ public class DstDictServiceImpl implements DstDictService {
     DictProtocol.DstDict.Builder builder = DictProtocol.DstDict.newBuilder();
     for (Map.Entry<String,String> entry : values.entrySet()) {
       builder.addKeys(entry.getKey());
-      builder.addDict(entry.getValue());
+      builder.addValues(entry.getValue());
     }
     responseBuilder.setDict(builder.build());
     responseBuilder.setStatus("ok");
