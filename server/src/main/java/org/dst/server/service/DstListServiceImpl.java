@@ -23,7 +23,7 @@ public class DstListServiceImpl implements DstListService {
       status = CommonProtocol.Status.OK;
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
-      result = e.getMessage();
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
@@ -37,7 +37,7 @@ public class DstListServiceImpl implements DstListService {
     List<String> values = store.list().get(request.getKey());
     values.forEach(value -> responseBuilder.addValues(value));
 
-    responseBuilder.setStatus("ok");
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
     return responseBuilder.build();
   }
 }

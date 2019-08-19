@@ -8,4 +8,5 @@ option java_outer_classname="CommonProtocol";
 enum Status {
     OK = 0;
     KEY_NOT_FOUND = 1;
+    UNKNOWN_ERROR = 2;
 };

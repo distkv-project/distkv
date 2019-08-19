@@ -23,7 +23,7 @@ message SetGetRequest {
 }
 
 message SetGetResponse {
-    required string Status = 1;
+    required Status Status = 1;
     repeated string values = 2;
 }
 
