@@ -11,13 +11,13 @@ import org.dst.core.operatorset.DstTable;
  */
 public interface KVStore {
 
-  DstString str();
+  DstString strs();
 
   DstList list();
 
   DstSet set();
 
-  DstDict dict();
+  DstDict dicts();
 
   DstTable table();
 

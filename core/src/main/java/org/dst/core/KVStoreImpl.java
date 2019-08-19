@@ -32,7 +32,7 @@ public class KVStoreImpl implements KVStore {
   }
 
   @Override
-  public DstString str() {
+  public DstString strs() {
     return str;
   }
 
@@ -47,7 +47,7 @@ public class KVStoreImpl implements KVStore {
   }
 
   @Override
-  public DstDict dict() {
+  public DstDict dicts() {
     return dict;
   }
 

@@ -13,12 +13,12 @@ public class KVStoreTest {
   @Test
   public void testStr() {
     KVStore ks = new KVStoreImpl();
-    ks.str().put("k1", "v1");
-    ks.str().put("k2", "v2");
-    Assertions.assertEquals("v1", ks.str().get("k1"));
-    Assertions.assertEquals("v2", ks.str().get("k2"));
-    Assertions.assertTrue(ks.str().del("k1"));
-    Assertions.assertNull(ks.str().get("k1"));
+    ks.strs().put("k1", "v1");
+    ks.strs().put("k2", "v2");
+    Assertions.assertEquals("v1", ks.strs().get("k1"));
+    Assertions.assertEquals("v2", ks.strs().get("k2"));
+    Assertions.assertTrue(ks.strs().del("k1"));
+    Assertions.assertNull(ks.strs().get("k1"));
   }
 
   @Test
@@ -59,10 +59,10 @@ public class KVStoreTest {
     dict.put("k1", "v1");
     dict.put("k2", "v2");
     dict.put("k3", "v3");
-    ks.dict().put("k1", dict);
-    Assertions.assertEquals(dict, ks.dict().get("k1"));
-    Assertions.assertTrue(ks.dict().del("k1"));
-    Assertions.assertNull(ks.dict().get("k1"));
+    ks.dicts().put("k1", dict);
+    Assertions.assertEquals(dict, ks.dicts().get("k1"));
+    Assertions.assertTrue(ks.dicts().del("k1"));
+    Assertions.assertNull(ks.dicts().get("k1"));
   }
 
   @Test
