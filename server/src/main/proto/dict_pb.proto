@@ -14,7 +14,7 @@ message DstDict {
 
 message DictPutRequest {
     required string key = 1;
-    optional DstDict values = 2;
+    optional DstDict dict = 2;
 }
 
 message DictPutResponse {

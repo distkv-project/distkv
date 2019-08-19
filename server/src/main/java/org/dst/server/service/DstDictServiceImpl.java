@@ -20,7 +20,7 @@ public class DstDictServiceImpl implements DstDictService {
     String result;
     try {
       Map<String,String> map = new HashMap<>();
-      DictProtocol.DstDict dstDict = request.getValues();
+      DictProtocol.DstDict dstDict = request.getDict();
       for (int i = 0;i < dstDict.getKeysCount();i++) {
         map.put(dstDict.getKeys(i), dstDict.getDict(i));
       }

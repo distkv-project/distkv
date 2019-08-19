@@ -42,7 +42,7 @@ public class DictRpcTest {
                 dstDictBuilder.addKeys(entry.getKey());
                 dstDictBuilder.addDict(entry.getValue());
             }
-            dictPutRequestBuilder.setValues(dstDictBuilder.build());
+            dictPutRequestBuilder.setDict(dstDictBuilder.build());
             DictProtocol.DictPutResponse setPutResponse =
                     dictService.put(dictPutRequestBuilder.build());
             Assert.assertEquals("ok", setPutResponse.getStatus());
