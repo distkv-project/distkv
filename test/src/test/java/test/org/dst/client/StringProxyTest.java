@@ -30,7 +30,7 @@ public class StringProxyTest {
 
         try {
             client.str().get("k1");
-            Assert.assertTrue("It shouldn't reach here.", false);
+            Assert.fail("It shouldn't reach here.");
         } catch (KeyNotFoundException e) {
             Assert.assertTrue(true);
         }
