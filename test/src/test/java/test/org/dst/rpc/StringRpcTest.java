@@ -1,5 +1,6 @@
 package test.org.dst.rpc;
 
+import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
 import org.junit.jupiter.api.Assertions;
@@ -11,7 +12,7 @@ public class StringRpcTest {
         // Run the server
         TestUtil.startRpcServer();
         try(ProxyOnClient<DstStringService> stringProxy = new ProxyOnClient<>(DstStringService.class)) {
-            DstStringService stringService = stringProxy.getService();
+                DstStringService stringService = stringProxy.getService();
             // Test string put request
             StringProtocol.StringPutRequest stringPutRequest =
                     StringProtocol.StringPutRequest.newBuilder()
@@ -20,7 +21,7 @@ public class StringRpcTest {
                             .build();
 
             StringProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
-            Assertions.assertEquals("ok", stringResponse.getStatus());
+            Assertions.assertEquals(CommonProtocol.Status.OK, stringResponse.getStatus());
             // Test string get request
             StringProtocol.StringGetRequest strGetRequest =
                     StringProtocol.StringGetRequest.newBuilder()

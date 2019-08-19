@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.HashSet;
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
-import org.dst.core.exception.KeyNotFoundException;
+import org.dst.exception.KeyNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ public class KVStoreTest {
     list.add("v3");
     ks.list().put("k1", list);
     Assertions.assertEquals(list, ks.list().get("k1"));
-    Assertions.assertTrue(ks.list().del("k1"));
+    Assertions.assertEquals("ok",ks.list().del("k1").toString());
     Assertions.assertNull(ks.list().get("k1"));
   }
 
@@ -48,12 +48,12 @@ public class KVStoreTest {
     ks.set().put("k1", set);
     Assertions.assertEquals(set, ks.set().get("k1"));
     try {
-      Assertions.assertTrue(ks.set().exists("k1", "v3"));
+      Assertions.assertEquals("ok", ks.set().exists("k1", "v3").toString());
     } catch (KeyNotFoundException e) {
       e.printStackTrace();
     }
-    Assertions.assertTrue(ks.set().del("k1","v1"));
-    Assertions.assertTrue(ks.set().dropByKey("k1"));
+    Assertions.assertEquals("ok", ks.set().del("k1","v1").toString());
+    Assertions.assertEquals("ok", ks.set().dropByKey("k1").toString());
     Assertions.assertNull(ks.set().get("k1"));
   }
 

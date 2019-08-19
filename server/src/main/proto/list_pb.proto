@@ -2,6 +2,8 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
+import "common_pb.proto";
+
 option java_package="org.dst.server.generated";
 option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
@@ -13,7 +15,7 @@ message ListPutRequest {
 }
 
 message ListPutResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message ListGetRequest {
@@ -21,11 +23,62 @@ message ListGetRequest {
 }
 
 message ListGetResponse {
-    required string status = 1;
+    required Status status = 1;
     repeated string values = 2;
+}
+
+message ListDelRequest {
+    required string key = 1;
+}
+
+message ListDelResponse {
+    required Status status = 1;
+}
+
+message ListLPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message ListLPutResponse {
+    required Status status = 1;
+}
+
+message ListRPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message ListRPutResponse {
+    required Status status = 1;
+}
+
+
+message ListLDelRequest {
+    required string key = 1;
+    required int32 values = 2;
+}
+
+message ListLDelResponse {
+    required Status status = 1;
+}
+
+
+message ListRDelRequest {
+    required string key = 1;
+    required int32 values = 2;
+}
+
+message ListRDelResponse {
+    required Status status = 1;
 }
 
 service DstListService {
     rpc listPut(ListPutRequest) returns (ListPutResponse);
     rpc listGet(ListGetRequest) returns (ListGetResponse);
+    rpc listDel(ListDelRequest) returns (ListDelResponse);
+    rpc listLPut(ListLPutRequest) returns (ListLPutResponse);
+    rpc listRPut(ListRPutRequest) returns (ListRPutResponse);
+    rpc listLDel(ListLDelRequest) returns (ListLDelResponse);
+    rpc listRDel(ListRDelRequest) returns (ListRDelResponse);
 }

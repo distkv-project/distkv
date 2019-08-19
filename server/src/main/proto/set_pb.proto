@@ -2,59 +2,63 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
+import "common_pb.proto";
+
 option java_package="org.dst.server.generated";
 option java_outer_classname="SetProtocol";
 option cc_generic_services = true;
 
 //set
-message SetPutRequest {
+message putRequest {
     required string key = 1;
     repeated string values = 2;
 }
 
-message SetPutResponse {
-    required string status = 1;
+message putResponse {
+    required Status status = 1;
 }
 
-message SetGetRequest {
+message getRequest {
     required string key = 1;
 }
 
-message SetGetResponse {
-    required string status = 1;
+message getResponse {
+    required Status Status = 1;
     repeated string values = 2;
 }
 
-message SetDeleteRequest {
+//The entity that will be deleted from the set.
+message deleteRequest {
     required string key = 1;
     required string entity = 2;
 }
 
-message SetDeleteResponse {
-    required string status = 1;
+message deleteResponse {
+    required Status status = 1;
 }
 
-message SetDropByKeyRequest {
+//drop the whole set
+message dropByKeyRequest {
     required string key = 1;
 }
 
-message SetDropByKeyResponse {
-    required string status = 1;
+message dropByKeyResponse {
+    required Status status = 1;
 }
 
-message SetExistRequest {
+message existsRequest {
     required string key = 1;
     required string entity = 2;
 }
 
-message SetExistResponse {
-    required string status = 1;
+message existsResponse {
+    required Status status = 1;
 }
 
-service DstSetService {
-    rpc setPut(SetPutRequest) returns (SetPutResponse);
-    rpc setGet(SetGetRequest) returns (SetGetResponse);
-    rpc setDelete(SetDeleteRequest) returns (SetDeleteResponse);
-    rpc setDropByKey(SetDropByKeyRequest) returns (SetDropByKeyResponse);
-    rpc setExist(SetExistRequest) returns (SetExistResponse);
+service DstService {
+    rpc setPut(putRequest) returns (putResponse);
+    rpc setGet(getRequest) returns (getResponse);
+    rpc setDelete(deleteRequest) returns (deleteResponse);
+    rpc setDropByKey(dropByKeyRequest) returns (dropByKeyResponse);
+    rpc setExists(existsRequest) returns (existsResponse);
 }

@@ -13,6 +13,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.dst</groupId>
+            <artifactId>dst-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.wenweihu86.raft</groupId>
             <artifactId>raft-java-core</artifactId>
             <version>1.8.0</version>

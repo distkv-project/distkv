@@ -15,7 +15,7 @@
     <properties>
         <brpc.version>2.5.1</brpc.version>
         <logback.version>1.2.3</logback.version>
-        <junit.version>5.3.1</junit.version>
+        <junit.version>5.5.1</junit.version>
     </properties>
 
     <dependencies>
@@ -24,6 +24,26 @@
             <artifactId>dst-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.dst</groupId>
+            <artifactId>dst-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dst</groupId>
+            <artifactId>dst-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dst</groupId>
+            <artifactId>dst-server</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
@@ -37,13 +57,6 @@
             <artifactId>brpc-java</artifactId>
             <version>${brpc.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.dst</groupId>
-            <artifactId>dst-server</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-         </dependency>
 
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
         <dependency>

@@ -5,17 +5,17 @@ import org.dst.server.generated.SetProtocol;
 
 public interface DstSetService {
   @BrpcMeta(serviceName = "DstSetService", methodName = "setPut")
-  SetProtocol.SetPutResponse put(SetProtocol.SetPutRequest request);
+  SetProtocol.putResponse put(SetProtocol.putRequest request);
 
   @BrpcMeta(serviceName = "DstSetService", methodName = "setGet")
-  SetProtocol.SetGetResponse get(SetProtocol.SetGetRequest request);
+  SetProtocol.getResponse get(SetProtocol.getRequest request);
 
   @BrpcMeta(serviceName = "DstSetService", methodName = "setDelete")
-  SetProtocol.SetDeleteResponse delete(SetProtocol.SetDeleteRequest request);
+  SetProtocol.deleteResponse delete(SetProtocol.deleteRequest request);
 
   @BrpcMeta(serviceName = "DstSetService", methodName = "setDropByKey")
-  SetProtocol.SetDropByKeyResponse dropByKey(SetProtocol.SetDropByKeyRequest request);
+  SetProtocol.dropByKeyResponse dropByKey(SetProtocol.dropByKeyRequest request);
 
-  @BrpcMeta(serviceName = "DstSetService", methodName = "setExist")
-  SetProtocol.SetExistResponse exist(SetProtocol.SetExistRequest request);
+  @BrpcMeta(serviceName = "DstSetService", methodName = "setExists")
+  SetProtocol.existsResponse exists(SetProtocol.existsRequest request);
 }
