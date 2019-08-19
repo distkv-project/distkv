@@ -28,10 +28,10 @@ public class KVStoreTest {
     list.add("v1");
     list.add("v2");
     list.add("v3");
-    ks.list().put("k1", list);
-    Assertions.assertEquals(list, ks.list().get("k1"));
-    Assertions.assertEquals("ok",ks.list().del("k1").toString());
-    Assertions.assertNull(ks.list().get("k1"));
+    ks.lists().put("k1", list);
+    Assertions.assertEquals(list, ks.lists().get("k1"));
+    Assertions.assertEquals("ok",ks.lists().del("k1").toString());
+    Assertions.assertNull(ks.lists().get("k1"));
   }
 
   @Test
@@ -41,15 +41,15 @@ public class KVStoreTest {
     set.add("v1");
     set.add("v2");
     set.add("v3");
-    ks.set().put("k1", set);
-    Assertions.assertEquals(set, ks.set().get("k1"));
+    ks.sets().put("k1", set);
+    Assertions.assertEquals(set, ks.sets().get("k1"));
     try {
-      Assertions.assertTrue(ks.set().exists("k1", "v3"));
+      Assertions.assertTrue(ks.sets().exists("k1", "v3"));
     } catch (KeyNotFoundException e) {
       e.printStackTrace();
     }
-    Assertions.assertTrue(ks.set().del("k1"));
-    Assertions.assertNull(ks.set().get("k1"));
+    Assertions.assertTrue(ks.sets().del("k1"));
+    Assertions.assertNull(ks.sets().get("k1"));
   }
 
   @Test
