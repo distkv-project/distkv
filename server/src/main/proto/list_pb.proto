@@ -2,6 +2,8 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
+import "common_pb.proto";
+
 option java_package="org.dst.server.generated";
 option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
@@ -13,7 +15,7 @@ message ListPutRequest {
 }
 
 message ListPutResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message ListGetRequest {
@@ -21,7 +23,7 @@ message ListGetRequest {
 }
 
 message ListGetResponse {
-    required string status = 1;
+    required Status status = 1;
     repeated string values = 2;
 }
 
@@ -30,7 +32,7 @@ message ListDelRequest {
 }
 
 message ListDelResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message ListLPutRequest {
@@ -39,7 +41,7 @@ message ListLPutRequest {
 }
 
 message ListLPutResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message ListRPutRequest {
@@ -48,7 +50,7 @@ message ListRPutRequest {
 }
 
 message ListRPutResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 
@@ -58,7 +60,7 @@ message ListLDelRequest {
 }
 
 message ListLDelResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 
@@ -68,7 +70,7 @@ message ListRDelRequest {
 }
 
 message ListRDelResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 service DstListService {

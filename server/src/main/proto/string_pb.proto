@@ -2,6 +2,8 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
+import "common_pb.proto";
+
 option java_package="org.dst.server.generated";
 option java_outer_classname="StringProtocol";
 option cc_generic_services = true;
@@ -13,7 +15,7 @@ message StringPutRequest {
 };
 
 message StringPutResponse {
-    required string status = 1;
+    required Status status = 1;
 };
 
 message StringGetRequest {
@@ -21,8 +23,8 @@ message StringGetRequest {
 }
 
 message StringGetResponse {
-    required string status = 1;
-    required string value =2;
+    required Status status = 1;
+    optional string value =2;
 };
 
 service DstStringService {
