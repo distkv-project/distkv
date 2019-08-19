@@ -6,31 +6,30 @@ option java_package="org.dst.server.generated";
 option java_outer_classname="DictProtocol";
 option cc_generic_services = true;
 
-//Dict
 message DstDict {
     repeated string keys = 1;
     repeated string values = 2;
 }
 
-message DictPutRequest {
+message PutRequest {
     required string key = 1;
     required DstDict dict = 2;
 }
 
-message DictPutResponse {
+message PutResponse {
     required string status = 1;
 }
 
-message DictGetRequest {
+message GetRequest {
     required string key = 1;
 }
 
-message DictGetResponse {
+message GetResponse {
     required string status = 1;
     optional DstDict dict = 2;
 }
 
 service DstDictService {
-    rpc put(DictPutRequest) returns (DictPutResponse);
-    rpc get(DictGetRequest) returns (DictGetResponse);
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
 }
