@@ -13,47 +13,47 @@ import org.dst.core.operatorImpl.DstTableImpl;
 
 public class KVStoreImpl implements KVStore {
 
-  private DstStringImpl str;
+  private DstStringImpl strs;
 
-  private DstListImpl list;
+  private DstListImpl lists;
 
-  private DstSetImpl set;
+  private DstSetImpl sets;
 
-  private DstDictImpl dict;
+  private DstDictImpl dicts;
 
-  private DstTableImpl table;
+  private DstTableImpl tables;
 
   public KVStoreImpl() {
-    this.str = new DstStringImpl();
-    this.list = new DstListImpl();
-    this.set = new DstSetImpl();
-    this.dict = new DstDictImpl();
-    this.table = new DstTableImpl();
+    this.strs = new DstStringImpl();
+    this.lists = new DstListImpl();
+    this.sets = new DstSetImpl();
+    this.dicts = new DstDictImpl();
+    this.tables = new DstTableImpl();
   }
 
   @Override
-  public DstString str() {
-    return str;
+  public DstString strs() {
+    return strs;
   }
 
   @Override
-  public DstList list() {
-    return list;
+  public DstList lists() {
+    return lists;
   }
 
   @Override
-  public DstSet set() {
-    return set;
+  public DstSet sets() {
+    return sets;
   }
 
   @Override
-  public DstDict dict() {
-    return dict;
+  public DstDict dicts() {
+    return dicts;
   }
 
   @Override
-  public DstTable table() {
-    return table;
+  public DstTable tables() {
+    return tables;
   }
 
 }
