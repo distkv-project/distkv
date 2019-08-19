@@ -10,12 +10,12 @@ public class KVSStrTest {
     @Test
     public void testStr() {
         KVStore store = new KVStoreImpl();
-        store.str().put("k1", "v1");
-        store.str().put("k2", "v2");
-        Assertions.assertEquals("v1", store.str().get("k1"));
-        Assertions.assertEquals("v2", store.str().get("k2"));
-        Assertions.assertTrue(store.str().del("k1"));
-        Assertions.assertNull(store.str().get("k1"));
+        store.strs().put("k1", "v1");
+        store.strs().put("k2", "v2");
+        Assertions.assertEquals("v1", store.strs().get("k1"));
+        Assertions.assertEquals("v2", store.strs().get("k2"));
+        Assertions.assertTrue(store.strs().del("k1"));
+        Assertions.assertNull(store.strs().get("k1"));
     }
 
 }
