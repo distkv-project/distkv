@@ -47,13 +47,14 @@ public class DstSetImpl implements DstSet {
   @Override
   public Status exists(String key, String value) throws KeyNotFoundException {
     if (!setMap.containsKey(key)) {
-      throw new KeyNotFoundException("The key is not found");
+      return Status.KEY_NOT_FOUND;
     }
 
     if (setMap.get(key).contains(value)) {
       return Status.OK;
     }
 
+    //TODO(yuxin) modidify this return value
     return Status.KEY_NOT_FOUND;
   }
 
