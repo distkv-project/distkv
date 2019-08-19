@@ -4,16 +4,29 @@ import com.baidu.brpc.server.RpcServer;
 import com.baidu.brpc.server.RpcServerOptions;
 import org.dst.core.KVStore;
 import org.dst.core.KVStoreImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DstRpcServer {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstRpcServer.class);
+
+  private static final int LISTENING_PORT = 8082;
+
+  private static final int RECEIVE_BUFFER_SIZE = 64 * 1024 * 1024;
+
+  private static final int SEND_BUFFER_SIZE = 64 * 1024 * 1024;
+
+  private static final int KEEP_ALIVE_TIME = 20;
+
+  // TODO(qwang): This should be a Dst Runtime.
   private KVStore kvStore;
 
   private DstRpcServer() {
     kvStore = new KVStoreImpl();
   }
 
-  public KVStore getKvStore() {
+  private KVStore getKvStore() {
     return kvStore;
   }
 
@@ -21,32 +34,42 @@ public class DstRpcServer {
 
     DstRpcServer rpcServer = new DstRpcServer();
 
-    int port = 8082;
+    int listeningPort = LISTENING_PORT;
 
     if (args.length == 1) {
-      // TODO(qwang): This may throw exception.
-      port = Integer.valueOf(args[0]);
+      try {
+        listeningPort = Integer.valueOf(args[0]);
+      } catch (NumberFormatException e) {
+        LOGGER.error("Failed to start dst server, because the port is incorrect format: {}",
+            args[0]);
+        System.exit(0);
+      }
     }
 
     RpcServerOptions options = new RpcServerOptions();
     // TODO(qwang): This should be configurable.
-    options.setReceiveBufferSize(64 * 1024 * 1024);
-    options.setSendBufferSize(64 * 1024 * 1024);
-    options.setKeepAliveTime(20);
+    options.setReceiveBufferSize(RECEIVE_BUFFER_SIZE);
+    options.setSendBufferSize(SEND_BUFFER_SIZE);
+    options.setKeepAliveTime(KEEP_ALIVE_TIME);
 
-    RpcServer server = new RpcServer(port, options);
-    // Register service.
+    RpcServer server = new RpcServer(listeningPort, options);
+
+    // Register all services to rpc server.
     server.registerService(new DstStringServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstSetServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
+    server.registerService(new DstDictServiceImpl(rpcServer.getKvStore()));
     server.start();
 
-    // make server keep running
+    LOGGER.info("Succeeded to start dst server on port {}.", listeningPort);
+
+    // Run server.
     synchronized (DstRpcServer.class) {
       try {
         DstRpcServer.class.wait();
       } catch (Throwable e) {
-        // TODO(qwang): Add log and do clean up.
+        LOGGER.error("Failed with the exception: {}", e.toString());
+        System.exit(-1);
       }
     }
 
