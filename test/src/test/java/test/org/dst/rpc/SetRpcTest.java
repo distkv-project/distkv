@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import junit.framework.Assert;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SetProtocol;
-import org.dst.server.service.*;
+import org.dst.server.service.DstSetService;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
