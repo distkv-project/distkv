@@ -1,11 +1,7 @@
 package test.org.dst.core;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
+
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
 import org.dst.exception.KeyNotFoundException;
@@ -34,8 +30,8 @@ public class KVStoreTest {
     list.add("v3");
     ks.list().put("k1", list);
     Assertions.assertEquals(list, ks.list().get("k1"));
-    //Assertions.assertTrue(ks.list().del("k1"));
-    //Assertions.assertNull(ks.list().get("k1"));
+    Assertions.assertEquals("ok",ks.list().del("k1").toString());
+    Assertions.assertNull(ks.list().get("k1"));
   }
 
   @Test
