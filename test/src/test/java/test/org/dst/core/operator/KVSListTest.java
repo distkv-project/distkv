@@ -24,58 +24,58 @@ public class KVSListTest {
     @Test
     public void testPutAndGet() {
         KVStore store = new KVStoreImpl();
-        store.list().put("k1", listForKVSTest());
-        Assertions.assertEquals(listForKVSTest(), store.list().get("k1"));
+        store.lists().put("k1", listForKVSTest());
+        Assertions.assertEquals(listForKVSTest(), store.lists().get("k1"));
     }
 
     @Test
     public void testDel() {
         KVStore store = new KVStoreImpl();
-        store.list().put("k1", listForKVSTest());
-        Assertions.assertEquals("ok",store.list().del("k1").toString());
-        Assertions.assertNull(store.list().get("k1"));
+        store.lists().put("k1", listForKVSTest());
+        Assertions.assertEquals("ok",store.lists().del("k1").toString());
+        Assertions.assertNull(store.lists().get("k1"));
     }
 
     @Test
     public void testLPut() {
         KVStore store = new KVStoreImpl();
-        store.list().put("k1",listForKVSTest());
+        store.lists().put("k1",listForKVSTest());
         List<String> list2 = new ArrayList<>();
         list2.add("v4");
         list2.add("v5");
-        store.list().lput("k1",list2);
-        Assertions.assertEquals(Arrays.asList("v4","v5","v1","v2","v3"),store.list().get("k1"));
+        store.lists().lput("k1",list2);
+        Assertions.assertEquals(Arrays.asList("v4","v5","v1","v2","v3"),store.lists().get("k1"));
     }
 
     @Test
     public void testRPut() {
         KVStore store = new KVStoreImpl();
-        store.list().put("k1",listForKVSTest());
+        store.lists().put("k1",listForKVSTest());
         List<String> list2 = new ArrayList<>();
         list2.add("v4");
         list2.add("v5");
-        store.list().rput("k1", list2);
-        Assertions.assertEquals(Arrays.asList("v1","v2","v3","v4","v5"),store.list().get("k1"));
+        store.lists().rput("k1", list2);
+        Assertions.assertEquals(Arrays.asList("v1","v2","v3","v4","v5"),store.lists().get("k1"));
     }
 
 
     @Test
     public void testLDel() {
         KVStore store = new KVStoreImpl();
-        store.list().put("k1",listForKVSTest());
-        store.list().ldel("k1",1);
-        Assertions.assertEquals(Arrays.asList("v2","v3"),store.list().get("k1"));
-        Assertions.assertEquals("key not exist",store.list().ldel("-k",1).toString());
+        store.lists().put("k1",listForKVSTest());
+        store.lists().ldel("k1",1);
+        Assertions.assertEquals(Arrays.asList("v2","v3"),store.lists().get("k1"));
+        Assertions.assertEquals("key not exist",store.lists().ldel("-k",1).toString());
     }
 
 
     @Test
     public void testRDel() {
         KVStore store = new KVStoreImpl();
-        store.list().put("k1",listForKVSTest());
-        store.list().rdel("k1",1);
-        Assertions.assertEquals(Arrays.asList("v1","v2"),store.list().get("k1"));
-        Assertions.assertEquals("key not exist",store.list().rdel("-k",1).toString());
+        store.lists().put("k1",listForKVSTest());
+        store.lists().rdel("k1",1);
+        Assertions.assertEquals(Arrays.asList("v1","v2"),store.lists().get("k1"));
+        Assertions.assertEquals("key not exist",store.lists().rdel("-k",1).toString());
     }
 
 }
