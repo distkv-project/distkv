@@ -46,7 +46,7 @@ public class DstSetServiceImpl implements DstSetService {
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
-      Status localStatus = store.set().del(request.getKey(), request.getEntity());
+      Status localStatus = store.sets().del(request.getKey(), request.getEntity());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -70,7 +70,7 @@ public class DstSetServiceImpl implements DstSetService {
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
-      Status localStatus = store.set().dropByKey(request.getKey());
+      Status localStatus = store.sets().dropByKey(request.getKey());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -94,7 +94,7 @@ public class DstSetServiceImpl implements DstSetService {
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
-      Status localStatus = store.set().exists(request.getKey(), request.getEntity());
+      Status localStatus = store.sets().exists(request.getKey(), request.getEntity());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
