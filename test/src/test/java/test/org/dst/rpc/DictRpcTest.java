@@ -27,8 +27,8 @@ public class DictRpcTest {
         try(ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(DstDictService.class)) {
             DstDictService dictService = setProxy.getService();
             // Test dict put.
-            DictProtocol.DictPutRequest.Builder dictPutRequestBuilder =
-                    DictProtocol.DictPutRequest.newBuilder();
+            DictProtocol.PutRequest.Builder dictPutRequestBuilder =
+                    DictProtocol.PutRequest.newBuilder();
             dictPutRequestBuilder.setKey("m1");
             final Map<String,String> localDict = new HashMap<>();
             localDict.put("k1", "v1");
@@ -40,14 +40,14 @@ public class DictRpcTest {
                 dstDictBuilder.addValues(entry.getValue());
             }
             dictPutRequestBuilder.setDict(dstDictBuilder.build());
-            DictProtocol.DictPutResponse setPutResponse =
+            DictProtocol.PutResponse setPutResponse =
                     dictService.put(dictPutRequestBuilder.build());
             Assert.assertEquals("ok", setPutResponse.getStatus());
             // Test dict get.
-            DictProtocol.DictGetRequest.Builder dictGetRequestBuilder =
-                    DictProtocol.DictGetRequest.newBuilder();
+            DictProtocol.GetRequest.Builder dictGetRequestBuilder =
+                    DictProtocol.GetRequest.newBuilder();
             dictGetRequestBuilder.setKey("m1");
-            DictProtocol.DictGetResponse dictGetResponse =
+            DictProtocol.GetResponse dictGetResponse =
                     dictService.get(dictGetRequestBuilder.build());
 
             final Map<String,String> judgeDict = new HashMap<>();
