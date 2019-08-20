@@ -1,10 +1,11 @@
 package test.org.dst.rpc;
 
-import junit.framework.Assert;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 
