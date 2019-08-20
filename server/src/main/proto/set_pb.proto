@@ -9,56 +9,56 @@ option java_outer_classname="SetProtocol";
 option cc_generic_services = true;
 
 //set
-message putRequest {
+message PutRequest {
     required string key = 1;
     repeated string values = 2;
 }
 
-message putResponse {
+message PutResponse {
     required Status status = 1;
 }
 
-message getRequest {
+message GetRequest {
     required string key = 1;
 }
 
-message getResponse {
+message GetResponse {
     required Status Status = 1;
     repeated string values = 2;
 }
 
 //The entity that will be deleted from the set.
-message deleteRequest {
+message DeleteRequest {
     required string key = 1;
     required string entity = 2;
 }
 
-message deleteResponse {
+message DeleteResponse {
     required Status status = 1;
 }
 
 //drop the whole set
-message dropByKeyRequest {
+message DropByKeyRequest {
     required string key = 1;
 }
 
-message dropByKeyResponse {
+message DropByKeyResponse {
     required Status status = 1;
 }
 
-message existsRequest {
+message ExistsRequest {
     required string key = 1;
     required string entity = 2;
 }
 
-message existsResponse {
+message ExistsResponse {
     required Status status = 1;
 }
 
 service DstSetService {
-    rpc setPut(putRequest) returns (putResponse);
-    rpc setGet(getRequest) returns (getResponse);
-    rpc setDelete(deleteRequest) returns (deleteResponse);
-    rpc setDropByKey(dropByKeyRequest) returns (dropByKeyResponse);
-    rpc setExists(existsRequest) returns (existsResponse);
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
+    rpc delete(DeleteRequest) returns (DeleteResponse);
+    rpc dropByKey(DropByKeyRequest) returns (DropByKeyResponse);
+    rpc exists(ExistsRequest) returns (ExistsResponse);
 }

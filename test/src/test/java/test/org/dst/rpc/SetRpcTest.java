@@ -24,13 +24,13 @@ public class SetRpcTest {
   public static void testPut() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
-      SetProtocol.putRequest.Builder setPutRequestBuilder =
-              SetProtocol.putRequest.newBuilder();
+      SetProtocol.PutRequest.Builder setPutRequestBuilder =
+              SetProtocol.PutRequest.newBuilder();
       setPutRequestBuilder.setKey("k1");
       final List<String> values = ImmutableList.of("v1", "v2", "v3", "v1");
       values.forEach(value -> setPutRequestBuilder.addValues(value));
 
-      SetProtocol.putResponse setPutResponse =
+      SetProtocol.PutResponse setPutResponse =
               setService.put(setPutRequestBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
     }
@@ -39,11 +39,11 @@ public class SetRpcTest {
   public static void testGet() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
-      SetProtocol.getRequest.Builder setGetRequestBuilder =
-              SetProtocol.getRequest.newBuilder();
+      SetProtocol.GetRequest.Builder setGetRequestBuilder =
+              SetProtocol.GetRequest.newBuilder();
       setGetRequestBuilder.setKey("k1");
 
-      SetProtocol.getResponse setGetResponse =
+      SetProtocol.GetResponse setGetResponse =
               setService.get(setGetRequestBuilder.build());
 
       final List<String> results = ImmutableList.of("v1", "v2", "v3");
@@ -57,12 +57,12 @@ public class SetRpcTest {
   public static void testDelete() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
-      SetProtocol.deleteRequest.Builder setDeleteRequestBuilder =
-              SetProtocol.deleteRequest.newBuilder();
+      SetProtocol.DeleteRequest.Builder setDeleteRequestBuilder =
+              SetProtocol.DeleteRequest.newBuilder();
       setDeleteRequestBuilder.setKey("k1");
       setDeleteRequestBuilder.setEntity("v1");
 
-      SetProtocol.deleteResponse setDeleteResponse =
+      SetProtocol.DeleteResponse setDeleteResponse =
               setService.delete(setDeleteRequestBuilder.build());
 
       Assert.assertEquals("OK", setDeleteResponse.getStatus().toString());
@@ -74,11 +74,11 @@ public class SetRpcTest {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
 
-      SetProtocol.dropByKeyRequest.Builder setDropByKeyRequestBuilder =
-              SetProtocol.dropByKeyRequest.newBuilder();
+      SetProtocol.DropByKeyRequest.Builder setDropByKeyRequestBuilder =
+              SetProtocol.DropByKeyRequest.newBuilder();
       setDropByKeyRequestBuilder.setKey("k1");
 
-      SetProtocol.dropByKeyResponse setDropByKeyResponse =
+      SetProtocol.DropByKeyResponse setDropByKeyResponse =
               setService.dropByKey(setDropByKeyRequestBuilder.build());
 
       Assert.assertEquals("OK", setDropByKeyResponse.getStatus().toString());
@@ -88,15 +88,15 @@ public class SetRpcTest {
   public static void testExists() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
-      SetProtocol.existsRequest.Builder setExistRequestBuilder =
-              SetProtocol.existsRequest.newBuilder();
+      SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
+              SetProtocol.ExistsRequest.newBuilder();
       setExistRequestBuilder.setKey("k1");
       setExistRequestBuilder.setEntity("v1");
 
-      SetProtocol.existsResponse setExistResponse =
+      SetProtocol.ExistsResponse setExistResponse =
               setService.exists(setExistRequestBuilder.build());
 
-      Assert.assertEquals("KEY_NOT_FOUND", setExistResponse.getStatus().toString());
+      Assert.assertEquals("UNKNOWN_ERROR", setExistResponse.getStatus().toString());
     }
   }
 }

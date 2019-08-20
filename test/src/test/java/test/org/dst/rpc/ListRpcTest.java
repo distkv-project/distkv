@@ -18,21 +18,21 @@ public class ListRpcTest {
         try(ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(DstListService.class)) {
             DstListService listService = listProxy.getService();
             // Test list put.
-            ListProtocol.ListPutRequest.Builder putRequestBuilder =
-                    ListProtocol.ListPutRequest.newBuilder();
+            ListProtocol.PutRequest.Builder putRequestBuilder =
+                    ListProtocol.PutRequest.newBuilder();
             putRequestBuilder.setKey("k1");
             final List<String> values = ImmutableList.of("v1", "v2", "v3");
             values.forEach(value -> putRequestBuilder.addValues(value));
 
-            ListProtocol.ListPutResponse listPutResponse =
+            ListProtocol.PutResponse listPutResponse =
                     listService.listPut(putRequestBuilder.build());
             Assert.assertEquals(CommonProtocol.Status.OK, listPutResponse.getStatus());
 
             // Test list get.
-            ListProtocol.ListGetRequest.Builder getRequestBuilder =
-                    ListProtocol.ListGetRequest.newBuilder();
+            ListProtocol.GetRequest.Builder getRequestBuilder =
+                    ListProtocol.GetRequest.newBuilder();
             getRequestBuilder.setKey("k1");
-            ListProtocol.ListGetResponse listGetResponse =
+            ListProtocol.GetResponse listGetResponse =
                     listService.listGet(getRequestBuilder.build());
 
             Assert.assertEquals(CommonProtocol.Status.OK, listGetResponse.getStatus());

@@ -8,77 +8,76 @@ option java_package="org.dst.server.generated";
 option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
 
-//list
-message ListPutRequest {
+message PutRequest {
     required string key = 1;
     repeated string values = 2;
 }
 
-message ListPutResponse {
+message PutResponse {
     required Status status = 1;
 }
 
-message ListGetRequest {
+message GetRequest {
     required string key = 1;
 }
 
-message ListGetResponse {
+message GetResponse {
     required Status status = 1;
     repeated string values = 2;
 }
 
-message ListDelRequest {
+message DelRequest {
     required string key = 1;
 }
 
-message ListDelResponse {
+message DelResponse {
     required Status status = 1;
 }
 
-message ListLPutRequest {
-    required string key = 1;
-    repeated string values = 2;
-}
-
-message ListLPutResponse {
-    required Status status = 1;
-}
-
-message ListRPutRequest {
+message LPutRequest {
     required string key = 1;
     repeated string values = 2;
 }
 
-message ListRPutResponse {
+message LPutResponse {
+    required Status status = 1;
+}
+
+message RPutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message RPutResponse {
     required Status status = 1;
 }
 
 
-message ListLDelRequest {
+message LDelRequest {
     required string key = 1;
     required int32 values = 2;
 }
 
-message ListLDelResponse {
+message LDelResponse {
     required Status status = 1;
 }
 
 
-message ListRDelRequest {
+message RDelRequest {
     required string key = 1;
     required int32 values = 2;
 }
 
-message ListRDelResponse {
+message RDelResponse {
     required Status status = 1;
 }
 
 service DstListService {
-    rpc listPut(ListPutRequest) returns (ListPutResponse);
-    rpc listGet(ListGetRequest) returns (ListGetResponse);
-    rpc listDel(ListDelRequest) returns (ListDelResponse);
-    rpc listLPut(ListLPutRequest) returns (ListLPutResponse);
-    rpc listRPut(ListRPutRequest) returns (ListRPutResponse);
-    rpc listLDel(ListLDelRequest) returns (ListLDelResponse);
-    rpc listRDel(ListRDelRequest) returns (ListRDelResponse);
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
+    rpc del(DelRequest) returns (DelResponse);
+    rpc lPut(LPutRequest) returns (LPutResponse);
+    rpc rPut(RPutRequest) returns (RPutResponse);
+    rpc lDel(LDelRequest) returns (LDelResponse);
+    rpc rDel(RDelRequest) returns (RDelResponse);
 }

@@ -16,9 +16,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.putResponse put(SetProtocol.putRequest request) {
-    SetProtocol.putResponse.Builder setPutResponseBuilder =
-            SetProtocol.putResponse.newBuilder();
+  public SetProtocol.PutResponse put(SetProtocol.PutRequest request) {
+    SetProtocol.PutResponse.Builder setPutResponseBuilder =
+            SetProtocol.PutResponse.newBuilder();
 
     store.sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
     setPutResponseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -27,9 +27,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.getResponse get(SetProtocol.getRequest request) {
-    SetProtocol.getResponse.Builder setGetResponseBuilder =
-            SetProtocol.getResponse.newBuilder();
+  public SetProtocol.GetResponse get(SetProtocol.GetRequest request) {
+    SetProtocol.GetResponse.Builder setGetResponseBuilder =
+            SetProtocol.GetResponse.newBuilder();
 
     Set<String> values = store.sets().get(request.getKey());
     values.forEach(value -> setGetResponseBuilder.addValues(value));
@@ -39,9 +39,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.deleteResponse delete(SetProtocol.deleteRequest request) {
-    SetProtocol.deleteResponse.Builder setDeleteResponseBuilder =
-            SetProtocol.deleteResponse.newBuilder();
+  public SetProtocol.DeleteResponse delete(SetProtocol.DeleteRequest request) {
+    SetProtocol.DeleteResponse.Builder setDeleteResponseBuilder =
+            SetProtocol.DeleteResponse.newBuilder();
 
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
@@ -63,9 +63,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.dropByKeyResponse dropByKey(SetProtocol.dropByKeyRequest request) {
-    SetProtocol.dropByKeyResponse.Builder setDropByKeyResponseBuilder =
-            SetProtocol.dropByKeyResponse.newBuilder();
+  public SetProtocol.DropByKeyResponse dropByKey(SetProtocol.DropByKeyRequest request) {
+    SetProtocol.DropByKeyResponse.Builder setDropByKeyResponseBuilder =
+            SetProtocol.DropByKeyResponse.newBuilder();
 
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
@@ -87,9 +87,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.existsResponse exists(SetProtocol.existsRequest request) {
-    SetProtocol.existsResponse.Builder setExistResponseBuilder =
-            SetProtocol.existsResponse.newBuilder();
+  public SetProtocol.ExistsResponse exists(SetProtocol.ExistsRequest request) {
+    SetProtocol.ExistsResponse.Builder setExistResponseBuilder =
+            SetProtocol.ExistsResponse.newBuilder();
 
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 

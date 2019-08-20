@@ -14,22 +14,22 @@ public class StringRpcTest {
         try(ProxyOnClient<DstStringService> stringProxy = new ProxyOnClient<>(DstStringService.class)) {
             DstStringService stringService = stringProxy.getService();
             // Test string put request
-            StringProtocol.StringPutRequest stringPutRequest =
-                    StringProtocol.StringPutRequest.newBuilder()
+            StringProtocol.PutRequest putRequest =
+                    StringProtocol.PutRequest.newBuilder()
                             .setKey("k1")
                             .setValue("v1")
                             .build();
 
-            StringProtocol.StringPutResponse stringResponse = stringService.strPut(stringPutRequest);
-            Assertions.assertEquals(CommonProtocol.Status.OK, stringResponse.getStatus());
+            StringProtocol.PutResponse putResponse = stringService.put(putRequest);
+            Assertions.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
             // Test string get request
-            StringProtocol.StringGetRequest strGetRequest =
-                    StringProtocol.StringGetRequest.newBuilder()
+            StringProtocol.GetRequest getRequest =
+                    StringProtocol.GetRequest.newBuilder()
                             .setKey("k1")
                             .build();
 
-            StringProtocol.StringGetResponse stringGetRequest = stringService.strGet(strGetRequest);
-            Assertions.assertEquals("v1", stringGetRequest.getValue());
+            StringProtocol.GetResponse getResponse = stringService.get(getRequest);
+            Assertions.assertEquals("v1", getResponse.getValue());
         }
         // Stop the server
         TestUtil.stopRpcServer();

@@ -14,9 +14,9 @@ public class DstDictServiceImpl implements DstDictService {
   }
 
   @Override
-  public DictProtocol.DictPutResponse put(DictProtocol.DictPutRequest request) {
-    DictProtocol.DictPutResponse.Builder responseBuilder =
-            DictProtocol.DictPutResponse.newBuilder();
+  public DictProtocol.PutResponse put(DictProtocol.PutRequest request) {
+    DictProtocol.PutResponse.Builder responseBuilder =
+            DictProtocol.PutResponse.newBuilder();
     String result;
     try {
       Map<String,String> map = new HashMap<>();
@@ -35,9 +35,9 @@ public class DstDictServiceImpl implements DstDictService {
   }
 
   @Override
-  public DictProtocol.DictGetResponse get(DictProtocol.DictGetRequest request) {
-    DictProtocol.DictGetResponse.Builder responseBuilder =
-            DictProtocol.DictGetResponse.newBuilder();
+  public DictProtocol.GetResponse get(DictProtocol.GetRequest request) {
+    DictProtocol.GetResponse.Builder responseBuilder =
+            DictProtocol.GetResponse.newBuilder();
     Map<String,String> values = store.dicts().get(request.getKey());
     DictProtocol.DstDict.Builder builder = DictProtocol.DstDict.newBuilder();
     for (Map.Entry<String,String> entry : values.entrySet()) {

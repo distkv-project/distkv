@@ -4,18 +4,19 @@ import com.baidu.brpc.protocol.BrpcMeta;
 import org.dst.server.generated.SetProtocol;
 
 public interface DstSetService {
-  @BrpcMeta(serviceName = "DstSetService", methodName = "setPut")
-  SetProtocol.putResponse put(SetProtocol.putRequest request);
+  @BrpcMeta(serviceName = "DstSetService", methodName = "put")
+  SetProtocol.PutResponse put(SetProtocol.PutRequest request);
 
-  @BrpcMeta(serviceName = "DstSetService", methodName = "setGet")
-  SetProtocol.getResponse get(SetProtocol.getRequest request);
+  @BrpcMeta(serviceName = "DstSetService", methodName = "get")
+  SetProtocol.GetResponse get(SetProtocol.GetRequest request);
 
-  @BrpcMeta(serviceName = "DstSetService", methodName = "setDelete")
-  SetProtocol.deleteResponse delete(SetProtocol.deleteRequest request);
+  @BrpcMeta(serviceName = "DstSetService", methodName = "delete")
+  SetProtocol.DeleteResponse delete(SetProtocol.DeleteRequest request);
 
-  @BrpcMeta(serviceName = "DstSetService", methodName = "setDropByKey")
-  SetProtocol.dropByKeyResponse dropByKey(SetProtocol.dropByKeyRequest request);
+  @BrpcMeta(serviceName = "DstSetService", methodName = "dropByKey")
+  SetProtocol.DropByKeyResponse dropByKey(SetProtocol.DropByKeyRequest request);
 
-  @BrpcMeta(serviceName = "DstSetService", methodName = "setExists")
-  SetProtocol.existsResponse exists(SetProtocol.existsRequest request);
+  @BrpcMeta(serviceName = "DstSetService", methodName = "exists")
+  SetProtocol.ExistsResponse exists(SetProtocol.ExistsRequest request);
+
 }

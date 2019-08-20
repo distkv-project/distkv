@@ -8,26 +8,25 @@ option java_package="org.dst.server.generated";
 option java_outer_classname="StringProtocol";
 option cc_generic_services = true;
 
-//string
-message StringPutRequest {
+message PutRequest {
     required string key = 1;
     required string value = 2;
 };
 
-message StringPutResponse {
+message PutResponse {
     required Status status = 1;
 };
 
-message StringGetRequest {
+message GetRequest {
     required string key = 1;
 }
 
-message StringGetResponse {
+message GetResponse {
     required Status status = 1;
     optional string value =2;
 };
 
 service DstStringService {
-    rpc strPut(StringPutRequest) returns (StringPutResponse);
-    rpc strGet(StringGetRequest) returns (StringGetResponse);
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
 }
