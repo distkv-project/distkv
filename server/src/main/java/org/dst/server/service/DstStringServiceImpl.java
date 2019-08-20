@@ -1,20 +1,20 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
+import org.dst.server.base.DstBserService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DstStringServiceImpl implements DstStringService {
+public class DstStringServiceImpl extends DstBserService implements DstStringService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstStringServiceImpl.class);
 
-  private KVStore store;
-
-  public DstStringServiceImpl(KVStore kvStore) {
-    store = kvStore;
+  public DstStringServiceImpl(KVStore store) {
+    super(store);
   }
+
 
   @Override
   public StringProtocol.PutResponse put(StringProtocol.PutRequest request) {

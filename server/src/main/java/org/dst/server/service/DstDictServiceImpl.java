@@ -1,16 +1,15 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
+import org.dst.server.base.DstBserService;
 import org.dst.server.generated.DictProtocol;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DstDictServiceImpl implements DstDictService {
+public class DstDictServiceImpl extends DstBserService implements DstDictService  {
 
-  private KVStore store;
-
-  public DstDictServiceImpl(KVStore kvStore) {
-    store = kvStore;
+  public DstDictServiceImpl(KVStore store) {
+    super(store);
   }
 
   @Override

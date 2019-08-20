@@ -4,16 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.dst.core.KVStore;
+import org.dst.server.base.DstBserService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
 import org.dst.utils.Status;
 
-public class DstListServiceImpl implements DstListService {
+public class DstListServiceImpl extends DstBserService implements DstListService {
 
-  private KVStore store;
 
-  public DstListServiceImpl(KVStore kvStore) {
-    store = kvStore;
+  public DstListServiceImpl(KVStore store) {
+    super(store);
   }
 
   @Override
