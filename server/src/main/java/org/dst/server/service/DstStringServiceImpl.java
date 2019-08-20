@@ -1,13 +1,13 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
-import org.dst.server.base.DstBserService;
+import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DstStringServiceImpl extends DstBserService implements DstStringService {
+public class DstStringServiceImpl extends DstBaseService implements DstStringService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstStringServiceImpl.class);
 

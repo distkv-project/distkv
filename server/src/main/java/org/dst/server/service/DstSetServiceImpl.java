@@ -3,11 +3,11 @@ package org.dst.server.service;
 import java.util.HashSet;
 import java.util.Set;
 import org.dst.core.KVStore;
-import org.dst.server.base.DstBserService;
+import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SetProtocol;
 
-public class DstSetServiceImpl extends DstBserService implements DstSetService {
+public class DstSetServiceImpl extends DstBaseService implements DstSetService {
 
 
   public DstSetServiceImpl(KVStore store) {

@@ -2,10 +2,10 @@ package org.dst.server.base;
 
 import org.dst.core.KVStore;
 
-public class DstBserService {
+public class DstBaseService {
   public KVStore store;
 
-  public DstBserService(KVStore store) {
+  public DstBaseService(KVStore store) {
     this.store = store;
   }
 }

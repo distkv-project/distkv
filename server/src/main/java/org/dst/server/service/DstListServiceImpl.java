@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.dst.core.KVStore;
-import org.dst.server.base.DstBserService;
+import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
 import org.dst.utils.Status;
 
-public class DstListServiceImpl extends DstBserService implements DstListService {
+public class DstListServiceImpl extends DstBaseService implements DstListService {
 
 
   public DstListServiceImpl(KVStore store) {
