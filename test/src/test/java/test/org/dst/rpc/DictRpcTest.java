@@ -7,7 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.org.dst.rpc.supplier.ProxyOnClient;
 import test.org.dst.rpc.supplier.RPCTestSupplier;
-
 import java.util.HashMap;
 import java.util.Map;
 

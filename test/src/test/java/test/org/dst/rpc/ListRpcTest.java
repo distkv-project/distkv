@@ -8,7 +8,6 @@ import org.dst.server.service.DstListService;
 import org.testng.annotations.Test;
 import test.org.dst.rpc.supplier.ProxyOnClient;
 import test.org.dst.rpc.supplier.RPCTestSupplier;
-
 import java.util.List;
 
 public class ListRpcTest extends RPCTestSupplier{

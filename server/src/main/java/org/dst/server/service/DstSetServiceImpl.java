@@ -3,15 +3,15 @@ package org.dst.server.service;
 import java.util.HashSet;
 import java.util.Set;
 import org.dst.core.KVStore;
+import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SetProtocol;
 
-public class DstSetServiceImpl implements DstSetService {
+public class DstSetServiceImpl extends DstBaseService implements DstSetService {
 
-  private KVStore store;
 
-  public DstSetServiceImpl(KVStore kvStore) {
-    store = kvStore;
+  public DstSetServiceImpl(KVStore store) {
+    super(store);
   }
 
   @Override
@@ -19,7 +19,7 @@ public class DstSetServiceImpl implements DstSetService {
     SetProtocol.PutResponse.Builder setPutResponseBuilder =
             SetProtocol.PutResponse.newBuilder();
 
-    store.sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
+    getStore().sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
     setPutResponseBuilder.setStatus(CommonProtocol.Status.OK);
 
     return setPutResponseBuilder.build();
@@ -30,7 +30,7 @@ public class DstSetServiceImpl implements DstSetService {
     SetProtocol.GetResponse.Builder setGetResponseBuilder =
             SetProtocol.GetResponse.newBuilder();
 
-    Set<String> values = store.sets().get(request.getKey());
+    Set<String> values = getStore().sets().get(request.getKey());
     values.forEach(value -> setGetResponseBuilder.addValues(value));
 
     setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
