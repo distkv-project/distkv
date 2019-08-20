@@ -51,13 +51,13 @@ message PopItemResponse {
     required Status status = 2;
 }
 
-message SetItemRequest {
+message PutItemRequest {
     required string key = 1;
     required string itemKey = 2;
     required string itemValue = 3;
 }
 
-message SetItemResponse {
+message PutItemResponse {
     required Status status = 1;
 }
 
@@ -83,7 +83,7 @@ service DstDictService {
     rpc get(GetRequest) returns (GetResponse);
     rpc getItemValue(GetItemValueRequest) returns (GetItemValueResponse);
     rpc popItem(PopItemRequest) returns (PopItemResponse);
-    rpc setItem(SetItemRequest) returns (SetItemResponse);
+    rpc putItem(PutItemRequest) returns (PutItemResponse);
     rpc del(DelRequest) returns (DelResponse);
     rpc delItem(DelItemRequest) returns (DelItemResponse);
 }
