@@ -15,7 +15,7 @@
     <properties>
         <brpc.version>2.5.1</brpc.version>
         <logback.version>1.2.3</logback.version>
-        <junit.version>5.3.1</junit.version>
+        <testng.version>6.14.3</testng.version>
     </properties>
 
     <dependencies>
@@ -45,12 +45,14 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
         </dependency>
+
 
         <dependency>
             <groupId>com.baidu</groupId>
