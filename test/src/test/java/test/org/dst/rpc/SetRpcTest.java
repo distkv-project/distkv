@@ -6,15 +6,15 @@ import org.dst.server.generated.SetProtocol;
 import org.dst.server.service.DstSetService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import test.org.dst.rpc.supplier.ProxyOnClient;
+import test.org.dst.rpc.supplier.RPCTestSupplier;
 
 import java.util.List;
 
-public class SetRpcTest {
+public class SetRpcTest  extends RPCTestSupplier {
 
     @Test
     public void testSetRpcCall() {
-        // Run the server
-        TestUtil.startRpcServer();
         try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
             DstSetService setService = setProxy.getService();
             // Test set put.
@@ -40,7 +40,5 @@ public class SetRpcTest {
             Assert.assertEquals(CommonProtocol.Status.OK, setGetResponse.getStatus());
             Assert.assertEquals(results, setGetResponse.getValuesList());
         }
-        // Stop the server
-        TestUtil.stopRpcServer();
     }
 }
