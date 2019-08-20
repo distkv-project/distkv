@@ -47,7 +47,7 @@ public class KVStoreTest {
     ks.sets().put("k1", set);
     Assertions.assertEquals(set, ks.sets().get("k1"));
 
-    Assertions.assertEquals("ok", ks.sets().exists("k1", "v3").toString());
+    Assertions.assertTrue(ks.sets().exists("k1", "v3"));
     Assertions.assertEquals("ok", ks.sets().del("k1","v1").toString());
     Assertions.assertEquals("ok", ks.sets().dropByKey("k1").toString());
     Assertions.assertNull(ks.sets().get("k1"));

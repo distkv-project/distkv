@@ -22,7 +22,8 @@ public class KVSSetTest {
         store.sets().put("k1", set);
         Assertions.assertEquals(set, store.sets().get("k1"));
         Assertions.assertTrue(store.sets().exists("k1", "v3"));
-        Assertions.assertTrue(store.sets().del("k1"));
+        Assertions.assertEquals("ok", store.sets().del("k1","v1").toString());
+        Assertions.assertEquals("ok", store.sets().dropByKey("k1").toString());
         Assertions.assertNull(store.sets().get("k1"));
 
         KeyNotFoundException exception = Assertions.assertThrows(KeyNotFoundException.class,()->{

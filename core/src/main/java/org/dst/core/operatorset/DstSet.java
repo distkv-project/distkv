@@ -48,6 +48,6 @@ public interface DstSet {
    * @return Status indicates that the value exists or not.
    * @throws KeyNotFoundException If the key don't exist in map
    */
-  Status exists(String key, String value) throws KeyNotFoundException;
+  boolean exists(String key, String value) throws KeyNotFoundException;
 
 }

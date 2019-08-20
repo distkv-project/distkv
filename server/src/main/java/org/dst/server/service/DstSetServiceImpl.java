@@ -94,12 +94,8 @@ public class DstSetServiceImpl implements DstSetService {
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
-      Status localStatus = store.sets().exists(request.getKey(), request.getEntity());
-      if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
-      }
+      store.sets().exists(request.getKey(), request.getEntity());
+      status = CommonProtocol.Status.OK;
     } catch (Exception e) {
       //TODO(qwang): Use DstException instead of Exception here.
       status = CommonProtocol.Status.UNKNOWN_ERROR;
