@@ -1,6 +1,7 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
+import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,6 @@ public class DstDictServiceImpl implements DstDictService {
   public DictProtocol.PutResponse put(DictProtocol.PutRequest request) {
     DictProtocol.PutResponse.Builder responseBuilder =
             DictProtocol.PutResponse.newBuilder();
-    String result;
     try {
       Map<String,String> map = new HashMap<>();
       DictProtocol.DstDict dstDict = request.getDict();
@@ -25,12 +25,12 @@ public class DstDictServiceImpl implements DstDictService {
         map.put(dstDict.getKeys(i), dstDict.getValues(i));
       }
       store.dicts().put(request.getKey(), map);
-      result = "ok";
+      responseBuilder.setStatus(CommonProtocol.Status.OK);
     } catch (Exception e) {
       // TODO: Use DstException instead of Exception here.
-      result = e.getMessage();
+      responseBuilder.setStatus(CommonProtocol.Status.DICT_KEY_NOT_FOUND);
     }
-    responseBuilder.setStatus(result);
+
     return responseBuilder.build();
   }
 
@@ -38,14 +38,18 @@ public class DstDictServiceImpl implements DstDictService {
   public DictProtocol.GetResponse get(DictProtocol.GetRequest request) {
     DictProtocol.GetResponse.Builder responseBuilder =
             DictProtocol.GetResponse.newBuilder();
-    Map<String,String> values = store.dicts().get(request.getKey());
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    Map<String,String> dict = store.dicts().get(request.getKey());
+    if (dict == null) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+      return responseBuilder.build();
+    }
     DictProtocol.DstDict.Builder builder = DictProtocol.DstDict.newBuilder();
-    for (Map.Entry<String,String> entry : values.entrySet()) {
+    for (Map.Entry<String,String> entry : dict.entrySet()) {
       builder.addKeys(entry.getKey());
       builder.addValues(entry.getValue());
     }
     responseBuilder.setDict(builder.build());
-    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 
@@ -54,8 +58,17 @@ public class DstDictServiceImpl implements DstDictService {
     DictProtocol.GetItemValueResponse.Builder responseBuilder =
             DictProtocol.GetItemValueResponse.newBuilder();
     Map<String,String> dict = store.dicts().get(request.getKey());
-    responseBuilder.setItemValue(dict.get(request.getItemKey()));
-    responseBuilder.setStatus("ok");
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    if (dict == null) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+    } else {
+      String itemValue = dict.get(request.getItemKey());
+      if (itemValue == null) {
+        responseBuilder.setStatus(CommonProtocol.Status.DICT_KEY_NOT_FOUND);
+      } else {
+        responseBuilder.setItemValue(itemValue);
+      }
+    }
     return responseBuilder.build();
   }
 
@@ -63,9 +76,18 @@ public class DstDictServiceImpl implements DstDictService {
   public DictProtocol.PopItemResponse popItem(DictProtocol.PopItemRequest request) {
     DictProtocol.PopItemResponse.Builder responseBuilder =
             DictProtocol.PopItemResponse.newBuilder();
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
     Map<String,String> dict = store.dicts().get(request.getKey());
-    responseBuilder.setItemValue(dict.remove(request.getItemKey()));
-    responseBuilder.setStatus("ok");
+    if (dict == null) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+    } else {
+      String itemValue = dict.remove(request.getItemKey());
+      if (itemValue == null) {
+        responseBuilder.setStatus(CommonProtocol.Status.DICT_KEY_NOT_FOUND);
+      } else {
+        responseBuilder.setItemValue(itemValue);
+      }
+    }
     return responseBuilder.build();
   }
 
@@ -73,9 +95,13 @@ public class DstDictServiceImpl implements DstDictService {
   public DictProtocol.SetItemResponse setItem(DictProtocol.SetItemRequest request) {
     DictProtocol.SetItemResponse.Builder responseBuilder =
             DictProtocol.SetItemResponse.newBuilder();
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
     Map<String,String> dict = store.dicts().get(request.getKey());
-    dict.put(request.getItemKey(),request.getItemValue());
-    responseBuilder.setStatus("ok");
+    if (dict == null) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+    } else {
+      dict.put(request.getItemKey(),request.getItemValue());
+    }
     return responseBuilder.build();
   }
 
@@ -83,8 +109,10 @@ public class DstDictServiceImpl implements DstDictService {
   public DictProtocol.DelResponse del(DictProtocol.DelRequest request) {
     DictProtocol.DelResponse.Builder responseBuilder =
             DictProtocol.DelResponse.newBuilder();
-    store.dicts().del(request.getKey());
-    responseBuilder.setStatus("ok");
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    if (!store.dicts().del(request.getKey())) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+    }
     return responseBuilder.build();
   }
 
@@ -92,9 +120,17 @@ public class DstDictServiceImpl implements DstDictService {
   public DictProtocol.DelItemResponse delItem(DictProtocol.DelItemRequest request) {
     DictProtocol.DelItemResponse.Builder responseBuilder =
             DictProtocol.DelItemResponse.newBuilder();
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
     Map<String,String> dict = store.dicts().get(request.getKey());
+    if (dict == null) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+    } else {
+      String itemValue = dict.remove(request.getItemKey());
+      if (itemValue == null) {
+        responseBuilder.setStatus(CommonProtocol.Status.DICT_KEY_NOT_FOUND);
+      }
+    }
     dict.remove(request.getItemKey());
-    responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
 }

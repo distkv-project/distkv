@@ -9,4 +9,6 @@ enum Status {
     OK = 0;
     KEY_NOT_FOUND = 1;
     UNKNOWN_ERROR = 2;
+    // Can't find the key inside dict
+    DICT_KEY_NOT_FOUND = 3;
 };

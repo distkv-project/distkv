@@ -2,6 +2,8 @@ syntax="proto2";
 
 package dst.server.protocol.pb;
 
+import "common_pb.proto";
+
 option java_package="org.dst.server.generated";
 option java_outer_classname="DictProtocol";
 option cc_generic_services = true;
@@ -17,7 +19,7 @@ message PutRequest {
 }
 
 message PutResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message GetRequest {
@@ -25,7 +27,7 @@ message GetRequest {
 }
 
 message GetResponse {
-    required string status = 1;
+    required Status status = 1;
     optional DstDict dict = 2;
 }
 
@@ -36,7 +38,7 @@ message GetItemValueRequest {
 
 message GetItemValueResponse {
     optional string itemValue = 1;
-    required string status = 2;
+    required Status status = 2;
 }
 
 message PopItemRequest {
@@ -46,7 +48,7 @@ message PopItemRequest {
 
 message PopItemResponse {
     optional string itemValue = 1;
-    required string status = 2;
+    required Status status = 2;
 }
 
 message SetItemRequest {
@@ -56,7 +58,7 @@ message SetItemRequest {
 }
 
 message SetItemResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message DelRequest {
@@ -64,7 +66,7 @@ message DelRequest {
 }
 
 message DelResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 message DelItemRequest {
@@ -73,7 +75,7 @@ message DelItemRequest {
 }
 
 message DelItemResponse {
-    required string status = 1;
+    required Status status = 1;
 }
 
 service DstDictService {
