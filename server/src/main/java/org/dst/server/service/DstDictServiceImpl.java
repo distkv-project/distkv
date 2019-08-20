@@ -48,4 +48,53 @@ public class DstDictServiceImpl implements DstDictService {
     responseBuilder.setStatus("ok");
     return responseBuilder.build();
   }
+
+  @Override
+  public DictProtocol.GetItemValueResponse getItemValue(DictProtocol.GetItemValueRequest request) {
+    DictProtocol.GetItemValueResponse.Builder responseBuilder =
+            DictProtocol.GetItemValueResponse.newBuilder();
+    Map<String,String> dict = store.dicts().get(request.getKey());
+    responseBuilder.setItemValue(dict.get(request.getItemKey()));
+    responseBuilder.setStatus("ok");
+    return responseBuilder.build();
+  }
+
+  @Override
+  public DictProtocol.PopItemResponse popItem(DictProtocol.PopItemRequest request) {
+    DictProtocol.PopItemResponse.Builder responseBuilder =
+            DictProtocol.PopItemResponse.newBuilder();
+    Map<String,String> dict = store.dicts().get(request.getKey());
+    responseBuilder.setItemValue(dict.remove(request.getItemKey()));
+    responseBuilder.setStatus("ok");
+    return responseBuilder.build();
+  }
+
+  @Override
+  public DictProtocol.SetItemResponse setItem(DictProtocol.SetItemRequest request) {
+    DictProtocol.SetItemResponse.Builder responseBuilder =
+            DictProtocol.SetItemResponse.newBuilder();
+    Map<String,String> dict = store.dicts().get(request.getKey());
+    dict.put(request.getItemKey(),request.getItemValue());
+    responseBuilder.setStatus("ok");
+    return responseBuilder.build();
+  }
+
+  @Override
+  public DictProtocol.DelResponse del(DictProtocol.DelRequest request) {
+    DictProtocol.DelResponse.Builder responseBuilder =
+            DictProtocol.DelResponse.newBuilder();
+    store.dicts().del(request.getKey());
+    responseBuilder.setStatus("ok");
+    return responseBuilder.build();
+  }
+
+  @Override
+  public DictProtocol.DelItemResponse delItem(DictProtocol.DelItemRequest request) {
+    DictProtocol.DelItemResponse.Builder responseBuilder =
+            DictProtocol.DelItemResponse.newBuilder();
+    Map<String,String> dict = store.dicts().get(request.getKey());
+    dict.remove(request.getItemKey());
+    responseBuilder.setStatus("ok");
+    return responseBuilder.build();
+  }
 }
