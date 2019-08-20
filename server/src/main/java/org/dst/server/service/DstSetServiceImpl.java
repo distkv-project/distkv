@@ -19,7 +19,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     SetProtocol.PutResponse.Builder setPutResponseBuilder =
             SetProtocol.PutResponse.newBuilder();
 
-    store.sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
+    getStore().sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
     setPutResponseBuilder.setStatus(CommonProtocol.Status.OK);
 
     return setPutResponseBuilder.build();
@@ -30,7 +30,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     SetProtocol.GetResponse.Builder setGetResponseBuilder =
             SetProtocol.GetResponse.newBuilder();
 
-    Set<String> values = store.sets().get(request.getKey());
+    Set<String> values = getStore().sets().get(request.getKey());
     values.forEach(value -> setGetResponseBuilder.addValues(value));
 
     setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);

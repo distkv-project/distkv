@@ -20,7 +20,7 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
   public StringProtocol.PutResponse put(StringProtocol.PutRequest request) {
     StringProtocol.PutResponse.Builder responseBuilder =
             StringProtocol.PutResponse.newBuilder();
-    store.strs().put(request.getKey(), request.getValue());
+    getStore().strs().put(request.getKey(), request.getValue());
     responseBuilder.setStatus(CommonProtocol.Status.OK);
     return responseBuilder.build();
   }
@@ -30,9 +30,9 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
     StringProtocol.GetResponse.Builder responseBuilder =
             StringProtocol.GetResponse.newBuilder();
 
-    String value = store.strs().get(request.getKey());
+    String value = getStore().strs().get(request.getKey());
     if (value != null) {
-      responseBuilder.setValue(store.strs().get(request.getKey()));
+      responseBuilder.setValue(getStore().strs().get(request.getKey()));
       responseBuilder.setStatus(CommonProtocol.Status.OK);
     } else {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
