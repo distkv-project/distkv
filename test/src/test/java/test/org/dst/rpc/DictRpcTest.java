@@ -1,6 +1,7 @@
 package test.org.dst.rpc;
 
 import junit.framework.Assert;
+import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ public class DictRpcTest {
             dictPutRequestBuilder.setDict(dstDictBuilder.build());
             DictProtocol.PutResponse setPutResponse =
                     dictService.put(dictPutRequestBuilder.build());
-            Assert.assertEquals("ok", setPutResponse.getStatus());
+            Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
             // Test dict get.
             DictProtocol.GetRequest.Builder dictGetRequestBuilder =
                     DictProtocol.GetRequest.newBuilder();
@@ -59,9 +60,9 @@ public class DictRpcTest {
             for (int i = 0;i < values.getKeysCount();i++) {
                 results.put(values.getKeys(i), values.getValues(i));
             }
-
-            Assert.assertEquals("ok", dictGetResponse.getStatus());
+            Assert.assertEquals(CommonProtocol.Status.OK, dictGetResponse.getStatus());
             Assert.assertEquals(results, judgeDict);
+
         }
         // Stop the server
         TestUtil.stopRpcServer();
