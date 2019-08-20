@@ -17,18 +17,18 @@ public class DstStringServiceImpl implements DstStringService {
   }
 
   @Override
-  public StringProtocol.StringPutResponse strPut(StringProtocol.StringPutRequest request) {
-    StringProtocol.StringPutResponse.Builder responseBuilder =
-            StringProtocol.StringPutResponse.newBuilder();
+  public StringProtocol.PutResponse put(StringProtocol.PutRequest request) {
+    StringProtocol.PutResponse.Builder responseBuilder =
+            StringProtocol.PutResponse.newBuilder();
     store.strs().put(request.getKey(), request.getValue());
     responseBuilder.setStatus(CommonProtocol.Status.OK);
     return responseBuilder.build();
   }
 
   @Override
-  public StringProtocol.StringGetResponse strGet(StringProtocol.StringGetRequest request) {
-    StringProtocol.StringGetResponse.Builder responseBuilder =
-            StringProtocol.StringGetResponse.newBuilder();
+  public StringProtocol.GetResponse get(StringProtocol.GetRequest request) {
+    StringProtocol.GetResponse.Builder responseBuilder =
+            StringProtocol.GetResponse.newBuilder();
 
     String value = store.strs().get(request.getKey());
     if (value != null) {

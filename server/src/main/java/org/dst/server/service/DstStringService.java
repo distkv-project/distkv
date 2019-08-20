@@ -5,10 +5,10 @@ import org.dst.server.generated.StringProtocol;
 
 public interface DstStringService {
 
-  @BrpcMeta(serviceName = "DstStringService", methodName = "strPut")
-  StringProtocol.StringPutResponse strPut(StringProtocol.StringPutRequest request);
+  @BrpcMeta(serviceName = "DstStringService", methodName = "put")
+  StringProtocol.PutResponse put(StringProtocol.PutRequest request);
 
-  @BrpcMeta(serviceName = "DstStringService", methodName = "strGet")
-  StringProtocol.StringGetResponse strGet(StringProtocol.StringGetRequest request);
+  @BrpcMeta(serviceName = "DstStringService", methodName = "get")
+  StringProtocol.GetResponse get(StringProtocol.GetRequest request);
 
 }
