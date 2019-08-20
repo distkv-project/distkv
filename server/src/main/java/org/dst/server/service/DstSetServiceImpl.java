@@ -15,9 +15,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.SetPutResponse setPut(SetProtocol.SetPutRequest request) {
-    SetProtocol.SetPutResponse.Builder setPutResponseBuilder =
-            SetProtocol.SetPutResponse.newBuilder();
+  public SetProtocol.PutResponse put(SetProtocol.PutRequest request) {
+    SetProtocol.PutResponse.Builder setPutResponseBuilder =
+            SetProtocol.PutResponse.newBuilder();
 
     store.sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
     setPutResponseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -26,9 +26,9 @@ public class DstSetServiceImpl implements DstSetService {
   }
 
   @Override
-  public SetProtocol.SetGetResponse setGet(SetProtocol.SetGetRequest request) {
-    SetProtocol.SetGetResponse.Builder setGetResponseBuilder =
-            SetProtocol.SetGetResponse.newBuilder();
+  public SetProtocol.GetResponse get(SetProtocol.GetRequest request) {
+    SetProtocol.GetResponse.Builder setGetResponseBuilder =
+            SetProtocol.GetResponse.newBuilder();
 
     Set<String> values = store.sets().get(request.getKey());
     values.forEach(value -> setGetResponseBuilder.addValues(value));

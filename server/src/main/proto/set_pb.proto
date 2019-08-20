@@ -8,26 +8,25 @@ option java_package="org.dst.server.generated";
 option java_outer_classname="SetProtocol";
 option cc_generic_services = true;
 
-//set
-message SetPutRequest {
+message PutRequest {
     required string key = 1;
     repeated string values = 2;
 }
 
-message SetPutResponse {
+message PutResponse {
     required Status status = 1;
 }
 
-message SetGetRequest {
+message GetRequest {
     required string key = 1;
 }
 
-message SetGetResponse {
+message GetResponse {
     required Status Status = 1;
     repeated string values = 2;
 }
 
 service DstSetService {
-    rpc setPut(SetPutRequest) returns (SetPutResponse);
-    rpc setGet(SetGetRequest) returns (SetGetResponse);
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
 }
