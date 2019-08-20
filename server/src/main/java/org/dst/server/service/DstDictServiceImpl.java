@@ -93,7 +93,7 @@ public class DstDictServiceImpl implements DstDictService {
   }
 
   @Override
-  public DictProtocol.PutItemResponse setItem(DictProtocol.PutItemRequest request) {
+  public DictProtocol.PutItemResponse putItem(DictProtocol.PutItemRequest request) {
     DictProtocol.PutItemResponse.Builder responseBuilder =
             DictProtocol.PutItemResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);

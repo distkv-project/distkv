@@ -18,7 +18,7 @@ public interface DstDictService {
   DictProtocol.PopItemResponse popItem(DictProtocol.PopItemRequest request);
 
   @BrpcMeta(serviceName = "DstDictService", methodName = "putItem")
-  DictProtocol.PutItemResponse setItem(DictProtocol.PutItemRequest request);
+  DictProtocol.PutItemResponse putItem(DictProtocol.PutItemRequest request);
 
   @BrpcMeta(serviceName = "DstDictService", methodName = "del")
   DictProtocol.DelResponse del(DictProtocol.DelRequest request);
