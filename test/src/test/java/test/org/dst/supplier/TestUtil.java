@@ -1,4 +1,4 @@
-package test.org.dst.rpc;
+package test.org.dst.supplier;
 
 import java.io.File;
 import java.util.List;

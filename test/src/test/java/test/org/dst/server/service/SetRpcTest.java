@@ -1,4 +1,4 @@
-package test.org.dst.rpc;
+package test.org.dst.server.service;
 
 import com.google.common.collect.ImmutableList;
 import org.dst.server.generated.CommonProtocol;
@@ -6,10 +6,12 @@ import org.dst.server.generated.SetProtocol;
 import org.dst.server.service.DstSetService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import test.org.dst.supplier.BaseTestSupplier;
+import test.org.dst.supplier.ProxyOnClient;
 
 import java.util.List;
 
-public class SetRpcTest extends BaseTestSupplier{
+public class SetRpcTest extends BaseTestSupplier {
 
   @Test
   public void testSet() {
