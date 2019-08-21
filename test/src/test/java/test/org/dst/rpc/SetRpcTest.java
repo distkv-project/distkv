@@ -9,17 +9,15 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class SetRpcTest {
+public class SetRpcTest extends BaseTestSupplier{
 
   @Test
   public void testSet() {
-    TestUtil.startRpcServer();
     testPut();
     testGet();
     testDelete();
     testDropByKey();
     testExists();
-    TestUtil.stopRpcServer();
   }
 
   public static void testPut() {
