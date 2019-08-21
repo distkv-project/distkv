@@ -21,7 +21,8 @@ public class KVSSetTest {
         store.sets().put("k1", set);
         Assert.assertEquals(set, store.sets().get("k1"));
         Assert.assertTrue(store.sets().exists("k1", "v3"));
-        Assert.assertTrue(store.sets().del("k1"));
+        Assert.assertEquals("ok", store.sets().del("k1", "v1").toString());
+        Assert.assertEquals("ok", store.sets().dropByKey("k1").toString());
         Assert.assertNull(store.sets().get("k1"));
 
         //test exception

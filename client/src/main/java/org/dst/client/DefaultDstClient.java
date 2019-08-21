@@ -10,7 +10,8 @@ public class DefaultDstClient implements DstClient {
 
   private RpcClient rcpClient;
 
-  private DstStringService stringProxy;
+  private DstStringProxy stringProxy;
+
 
   public DefaultDstClient(String serverAddress) {
     RpcClientOptions clientOptions = new RpcClientOptions();
@@ -21,7 +22,8 @@ public class DefaultDstClient implements DstClient {
     clientOptions.setMinIdleConnections(10);
     rcpClient = new RpcClient(serverAddress, clientOptions);
 
-    stringProxy = BrpcProxy.getProxy(rcpClient, DstStringService.class);
+    DstStringService stringService = BrpcProxy.getProxy(rcpClient, DstStringService.class);
+    stringProxy = new DstStringProxy(stringService);
   }
 
   @Override
@@ -41,6 +43,6 @@ public class DefaultDstClient implements DstClient {
 
   @Override
   public DstStringProxy strs() {
-    return new DstStringProxy(stringProxy);
+    return stringProxy;
   }
 }
