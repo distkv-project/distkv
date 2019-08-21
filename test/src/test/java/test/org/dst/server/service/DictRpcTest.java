@@ -1,10 +1,12 @@
-package test.org.dst.rpc;
+package test.org.dst.server.service;
 
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import test.org.dst.supplier.BaseTestSupplier;
+import test.org.dst.supplier.ProxyOnClient;
 
 import java.util.HashMap;
 import java.util.Map;
