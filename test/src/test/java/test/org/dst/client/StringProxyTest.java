@@ -1,6 +1,5 @@
 package test.org.dst.client;
 
-
 import junit.framework.Assert;
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
