@@ -15,8 +15,8 @@ public class ListRpcTest {
     public void testListRpcCall() {
         // Run the server
         TestUtil.startRpcServer();
-        try(ProxyOnClient<DstListService> setProxy = new ProxyOnClient<>(DstListService.class)) {
-            DstListService listService = setProxy.getService();
+        try(ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(DstListService.class)) {
+            DstListService listService = listProxy.getService();
             // Test list put.
             ListProtocol.PutRequest.Builder putRequestBuilder =
                     ListProtocol.PutRequest.newBuilder();
