@@ -3,14 +3,12 @@ package test.org.dst.rpc;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
-public class StringRpcTest {
+public class StringRpcTest extends BaseTestSupplier {
     @Test
     public void testRpcServer() {
-        // Run the server
-        TestUtil.startRpcServer();
         try(ProxyOnClient<DstStringService> setProxy = new ProxyOnClient<>(DstStringService.class)) {
             DstStringService stringService = setProxy.getService();
             // Test string put request
@@ -21,7 +19,7 @@ public class StringRpcTest {
                             .build();
 
             StringProtocol.PutResponse putResponse = stringService.put(putRequest);
-            Assertions.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
+            Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
             // Test string get request
             StringProtocol.GetRequest getRequest =
                     StringProtocol.GetRequest.newBuilder()
@@ -29,9 +27,7 @@ public class StringRpcTest {
                             .build();
 
             StringProtocol.GetResponse getResponse = stringService.get(getRequest);
-            Assertions.assertEquals("v1", getResponse.getValue());
+            Assert.assertEquals("v1", getResponse.getValue());
         }
-        // Stop the server
-        TestUtil.stopRpcServer();
     }
 }

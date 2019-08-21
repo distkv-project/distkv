@@ -1,6 +1,7 @@
 package org.dst.core.operatorset;
 
 import org.dst.exception.KeyNotFoundException;
+import org.dst.utils.Status;
 
 import java.util.Set;
 
@@ -12,7 +13,7 @@ public interface DstSet {
    * @param key   the key to store
    * @param value the set value to store
    */
-  public void put(String key, Set<String> value);
+  void put(String key, Set<String> value);
 
   /**
    * This method will query a set value based on the key
@@ -20,24 +21,33 @@ public interface DstSet {
    * @param key Obtain a set value based on the key
    * @return the set value
    */
-  public Set<String> get(String key);
+  Set<String> get(String key);
 
   /**
-   * This method will delete a set value based on the key
+   * This method will delete the whole set based on the key
    *
-   * @param key delete a key-value pair based on the key
-   * @return true or false, indicates that the deletion succeeded or failed.
+   * @param key delete the whole set based on the key
+   * @return Status indicates that the deletion succeeded or failed.
    */
-  public boolean del(String key);
+  Status dropByKey(String key);
+
+  /**
+   * This method will delete a value according to the key
+   *
+   * @param key the key existing in set
+   * @param value the value will be deleted
+   * @return Status indicates that the deletion succeeded or failed.
+   * */
+  Status del(String key, String value);
 
   /**
    * This method will judge that if the value exists in map or not.
    *
    * @param key   the key exists in map
    * @param value the set value you want to judge
-   * @return true or false, indicates that the value exists or not.
+   * @return Status indicates that the value exists or not.
    * @throws KeyNotFoundException If the key don't exist in map
    */
-  public boolean exists(String key, String value) throws KeyNotFoundException;
+  boolean exists(String key, String value) throws KeyNotFoundException;
 
 }

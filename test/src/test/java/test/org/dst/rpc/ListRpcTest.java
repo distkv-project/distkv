@@ -1,20 +1,18 @@
 package test.org.dst.rpc;
 
 import com.google.common.collect.ImmutableList;
-import junit.framework.Assert;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
 import org.dst.server.service.DstListService;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class ListRpcTest {
+public class ListRpcTest extends BaseTestSupplier {
 
     @Test
     public void testListRpcCall() {
-        // Run the server
-        TestUtil.startRpcServer();
         try(ProxyOnClient<DstListService> setProxy = new ProxyOnClient<>(DstListService.class)) {
             DstListService listService = setProxy.getService();
             // Test list put.
@@ -38,7 +36,5 @@ public class ListRpcTest {
             Assert.assertEquals(CommonProtocol.Status.OK, listGetResponse.getStatus());
             Assert.assertEquals(values, listGetResponse.getValuesList());
         }
-        // Stop the server
-        TestUtil.stopRpcServer();
     }
 }

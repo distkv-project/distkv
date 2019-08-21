@@ -30,5 +30,5 @@ public interface DstClient {
    *
    * @return The dst string proxy.
    */
-  DstStringProxy str();
+  DstStringProxy strs();
 }

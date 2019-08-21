@@ -1,26 +1,26 @@
 package org.dst.server.service;
 
 import org.dst.core.KVStore;
+import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DstStringServiceImpl implements DstStringService {
+public class DstStringServiceImpl extends DstBaseService implements DstStringService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstStringServiceImpl.class);
 
-  private KVStore store;
-
-  public DstStringServiceImpl(KVStore kvStore) {
-    store = kvStore;
+  public DstStringServiceImpl(KVStore store) {
+    super(store);
   }
+
 
   @Override
   public StringProtocol.PutResponse put(StringProtocol.PutRequest request) {
     StringProtocol.PutResponse.Builder responseBuilder =
             StringProtocol.PutResponse.newBuilder();
-    store.strs().put(request.getKey(), request.getValue());
+    getStore().strs().put(request.getKey(), request.getValue());
     responseBuilder.setStatus(CommonProtocol.Status.OK);
     return responseBuilder.build();
   }
@@ -30,9 +30,9 @@ public class DstStringServiceImpl implements DstStringService {
     StringProtocol.GetResponse.Builder responseBuilder =
             StringProtocol.GetResponse.newBuilder();
 
-    String value = store.strs().get(request.getKey());
+    String value = getStore().strs().get(request.getKey());
     if (value != null) {
-      responseBuilder.setValue(store.strs().get(request.getKey()));
+      responseBuilder.setValue(getStore().strs().get(request.getKey()));
       responseBuilder.setStatus(CommonProtocol.Status.OK);
     } else {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
