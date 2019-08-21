@@ -14,6 +14,8 @@ public class SetRpcTest extends BaseTestSupplier{
 
   @Test
   public void testSet() {
+    // The following methods should be called as ordered
+    // because some methods depends on other methods.
     testPut();
     testGet();
     testDelete();
@@ -21,7 +23,7 @@ public class SetRpcTest extends BaseTestSupplier{
     testExists();
   }
 
-  public static void testPut() {
+  private static void testPut() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.PutRequest.Builder setPutRequestBuilder =
@@ -36,7 +38,7 @@ public class SetRpcTest extends BaseTestSupplier{
     }
   }
 
-  public static void testGet() {
+  private static void testGet() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.GetRequest.Builder setGetRequestBuilder =
@@ -54,7 +56,7 @@ public class SetRpcTest extends BaseTestSupplier{
   }
 
 
-  public static void testDelete() {
+  private static void testDelete() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.DeleteRequest.Builder setDeleteRequestBuilder =
@@ -70,7 +72,7 @@ public class SetRpcTest extends BaseTestSupplier{
   }
 
 
-  public static void testDropByKey() {
+  private static void testDropByKey() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
 
@@ -85,7 +87,7 @@ public class SetRpcTest extends BaseTestSupplier{
     }
   }
 
-  public static void testExists() {
+  private static void testExists() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
