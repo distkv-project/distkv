@@ -46,7 +46,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
-      Status localStatus = store.sets().del(request.getKey(), request.getEntity());
+      Status localStatus = getStore().sets().del(request.getKey(), request.getEntity());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -70,7 +70,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
-      Status localStatus = store.sets().dropByKey(request.getKey());
+      Status localStatus = getStore().sets().dropByKey(request.getKey());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -93,7 +93,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
 
     boolean result;
     try {
-      store.sets().exists(request.getKey(), request.getEntity());
+      getStore().sets().exists(request.getKey(), request.getEntity());
       result = true;
     } catch (Exception e) {
       //TODO(qwang): Use DstException instead of Exception here.
