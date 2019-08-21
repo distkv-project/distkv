@@ -11,7 +11,6 @@ public class StringProxyTest extends BaseTestSupplier {
 
     private final static String serverAddress = "list://127.0.0.1:8082";
 
-
     @Test
     public void testPutAndGet() {
         DstClient client = new DefaultDstClient(serverAddress);
