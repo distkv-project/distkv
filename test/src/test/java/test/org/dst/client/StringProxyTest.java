@@ -17,9 +17,9 @@ public class StringProxyTest {
     public void testPutAndGet() {
         TestUtil.startRpcServer();
         DstClient client = new DefaultDstClient(serverAddress);
-        client.str().put("k1", "v1");
+        client.strs().put("k1", "v1");
 
-        Assert.assertEquals("v1", client.str().get("k1"));
+        Assert.assertEquals("v1", client.strs().get("k1"));
         TestUtil.stopRpcServer();
     }
 
@@ -29,7 +29,7 @@ public class StringProxyTest {
         DstClient client = new DefaultDstClient(serverAddress);
 
         try {
-            client.str().get("k1");
+            client.strs().get("k1");
             Assert.fail("It shouldn't reach here.");
         } catch (KeyNotFoundException e) {
             Assert.assertTrue(true);
