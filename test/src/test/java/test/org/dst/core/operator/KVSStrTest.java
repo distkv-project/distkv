@@ -5,7 +5,6 @@ import org.dst.core.KVStoreImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
 public class KVSStrTest {
     @Test
     public void testStr() {

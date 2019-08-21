@@ -1,4 +1,4 @@
-package test.org.dst.rpc;
+package test.org.dst.supplier;
 
 import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
