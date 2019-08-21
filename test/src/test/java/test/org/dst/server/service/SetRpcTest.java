@@ -65,7 +65,7 @@ public class SetRpcTest extends BaseTestSupplier{
       SetProtocol.DeleteResponse setDeleteResponse =
               setService.delete(setDeleteRequestBuilder.build());
 
-      Assert.assertEquals("OK", setDeleteResponse.getStatus().toString());
+      Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }
   }
 
@@ -81,7 +81,7 @@ public class SetRpcTest extends BaseTestSupplier{
       SetProtocol.DropByKeyResponse setDropByKeyResponse =
               setService.dropByKey(setDropByKeyRequestBuilder.build());
 
-      Assert.assertEquals("OK", setDropByKeyResponse.getStatus().toString());
+      Assert.assertEquals(CommonProtocol.Status.OK, setDropByKeyResponse.getStatus());
     }
   }
 
@@ -95,10 +95,7 @@ public class SetRpcTest extends BaseTestSupplier{
 
       SetProtocol.ExistsResponse setExistResponse =
               setService.exists(setExistRequestBuilder.build());
-
-      //if the key is deleted,the exists() will throw a exception
-      //and set rpc will only set status, don't set result.
-      Assert.assertEquals("UNKNOWN_ERROR", setExistResponse.getStatus().toString());
+      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, setExistResponse.getStatus());
     }
   }
 }
