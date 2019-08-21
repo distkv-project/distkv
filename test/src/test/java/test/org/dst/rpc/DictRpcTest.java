@@ -21,11 +21,9 @@ import java.util.Map;
  *
  * if you want to get a dict, you just need dictGetResponse.getDict() method.
  */
-public class DictRpcTest {
+public class DictRpcTest extends BaseTestSupplier {
     @Test
     public void testDictRpcCall() {
-        // Run the server
-        TestUtil.startRpcServer();
         try(ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(DstDictService.class)) {
             DstDictService dictService = setProxy.getService();
             // Test dict put.
@@ -98,7 +96,5 @@ public class DictRpcTest {
             Assert.assertEquals(results, judgeDict);
 
         }
-        // Stop the server
-        TestUtil.stopRpcServer();
     }
 }
