@@ -96,7 +96,7 @@ public class SetRpcTest {
       SetProtocol.ExistsResponse setExistResponse =
               setService.exists(setExistRequestBuilder.build());
 
-      Assert.assertEquals("UNKNOWN_ERROR", setExistResponse.getStatus().toString());
+      Assert.assertFalse(setExistResponse.getResult());
     }
   }
 }

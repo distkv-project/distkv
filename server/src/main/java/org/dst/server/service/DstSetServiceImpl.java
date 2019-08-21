@@ -91,17 +91,16 @@ public class DstSetServiceImpl implements DstSetService {
     SetProtocol.ExistsResponse.Builder setExistResponseBuilder =
             SetProtocol.ExistsResponse.newBuilder();
 
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
-
+    boolean result;
     try {
       store.sets().exists(request.getKey(), request.getEntity());
-      status = CommonProtocol.Status.OK;
+      result = true;
     } catch (Exception e) {
       //TODO(qwang): Use DstException instead of Exception here.
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+      result = false;
     }
 
-    setExistResponseBuilder.setStatus(status);
+    setExistResponseBuilder.setResult(result);
 
     return setExistResponseBuilder.build();
   }
