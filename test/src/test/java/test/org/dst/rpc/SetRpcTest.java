@@ -97,7 +97,9 @@ public class SetRpcTest {
       SetProtocol.ExistsResponse setExistResponse =
               setService.exists(setExistRequestBuilder.build());
 
-      Assert.assertFalse(setExistResponse.getResult());
+      //if the key is deleted,the exists() will throw a exception
+      //and set rpc will only set status, don't set result.
+      Assert.assertEquals("UNKNOWN_ERROR", setExistResponse.getStatus().toString());
     }
   }
 }

@@ -92,15 +92,22 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
             SetProtocol.ExistsResponse.newBuilder();
 
     boolean result;
+    CommonProtocol.Status status;
     try {
-      getStore().sets().exists(request.getKey(), request.getEntity());
-      result = true;
+      if (getStore().sets().exists(request.getKey(), request.getEntity())) {
+        result = true;
+        status = CommonProtocol.Status.OK;
+        setExistResponseBuilder.setResult(result);
+      } else {
+        result = false;
+        status = CommonProtocol.Status.OK;
+        setExistResponseBuilder.setResult(result);
+      }
     } catch (Exception e) {
       //TODO(qwang): Use DstException instead of Exception here.
-      result = false;
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
-
-    setExistResponseBuilder.setResult(result);
+    setExistResponseBuilder.setStatus(status);
 
     return setExistResponseBuilder.build();
   }

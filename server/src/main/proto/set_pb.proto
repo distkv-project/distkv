@@ -52,8 +52,9 @@ message ExistsRequest {
 }
 
 message ExistsResponse {
-    optional Status status = 1;
-    required bool result = 2;
+    required Status status = 1;
+    //if exist throws a exception, the result wouldn't be set
+    optional bool result = 2;
 }
 
 service DstSetService {
