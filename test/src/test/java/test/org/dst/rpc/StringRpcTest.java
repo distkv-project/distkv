@@ -11,8 +11,8 @@ public class StringRpcTest {
     public void testRpcServer() {
         // Run the server
         TestUtil.startRpcServer();
-        try(ProxyOnClient<DstStringService> setProxy = new ProxyOnClient<>(DstStringService.class)) {
-            DstStringService stringService = setProxy.getService();
+        try(ProxyOnClient<DstStringService> stringProxy = new ProxyOnClient<>(DstStringService.class)) {
+            DstStringService stringService = stringProxy.getService();
             // Test string put request
             StringProtocol.PutRequest putRequest =
                     StringProtocol.PutRequest.newBuilder()

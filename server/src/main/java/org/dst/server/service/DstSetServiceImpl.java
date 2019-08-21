@@ -6,6 +6,7 @@ import org.dst.core.KVStore;
 import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SetProtocol;
+import org.dst.utils.Status;
 
 public class DstSetServiceImpl extends DstBaseService implements DstSetService {
 
@@ -36,4 +37,79 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
     return setGetResponseBuilder.build();
   }
+
+  @Override
+  public SetProtocol.DeleteResponse delete(SetProtocol.DeleteRequest request) {
+    SetProtocol.DeleteResponse.Builder setDeleteResponseBuilder =
+            SetProtocol.DeleteResponse.newBuilder();
+
+    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+
+    try {
+      Status localStatus = getStore().sets().del(request.getKey(), request.getEntity());
+      if (localStatus == Status.OK) {
+        status = CommonProtocol.Status.OK;
+      } else if (localStatus == Status.KEY_NOT_FOUND) {
+        status = CommonProtocol.Status.KEY_NOT_FOUND;
+      }
+    } catch (Exception e) {
+      //TODO(qwang): Use DstException instead of Exception here.
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+
+    setDeleteResponseBuilder.setStatus(status);
+
+    return setDeleteResponseBuilder.build();
+  }
+
+  @Override
+  public SetProtocol.DropByKeyResponse dropByKey(SetProtocol.DropByKeyRequest request) {
+    SetProtocol.DropByKeyResponse.Builder setDropByKeyResponseBuilder =
+            SetProtocol.DropByKeyResponse.newBuilder();
+
+    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+
+    try {
+      Status localStatus = getStore().sets().dropByKey(request.getKey());
+      if (localStatus == Status.OK) {
+        status = CommonProtocol.Status.OK;
+      } else if (localStatus == Status.KEY_NOT_FOUND) {
+        status = CommonProtocol.Status.KEY_NOT_FOUND;
+      }
+    } catch (Exception e) {
+      //TODO(qwang): Use DstException instead of Exception here.
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+
+    setDropByKeyResponseBuilder.setStatus(status);
+
+    return setDropByKeyResponseBuilder.build();
+  }
+
+  @Override
+  public SetProtocol.ExistsResponse exists(SetProtocol.ExistsRequest request) {
+    SetProtocol.ExistsResponse.Builder setExistResponseBuilder =
+            SetProtocol.ExistsResponse.newBuilder();
+
+    boolean result;
+    CommonProtocol.Status status;
+    try {
+      if (getStore().sets().exists(request.getKey(), request.getEntity())) {
+        result = true;
+        status = CommonProtocol.Status.OK;
+        setExistResponseBuilder.setResult(result);
+      } else {
+        result = false;
+        status = CommonProtocol.Status.OK;
+        setExistResponseBuilder.setResult(result);
+      }
+    } catch (Exception e) {
+      //TODO(qwang): Use DstException instead of Exception here.
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+    setExistResponseBuilder.setStatus(status);
+
+    return setExistResponseBuilder.build();
+  }
+
 }
