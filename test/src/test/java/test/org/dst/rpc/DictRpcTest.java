@@ -5,8 +5,7 @@ import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import test.org.dst.rpc.supplier.ProxyOnClient;
-import test.org.dst.rpc.supplier.RPCTestSupplier;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ import java.util.Map;
  *
  * if you want to get a dict, you just need dictGetResponse.getDict() method.
  */
-public class DictRpcTest extends RPCTestSupplier{
+public class DictRpcTest extends BaseTestSupplier {
     @Test
     public void testDictRpcCall() {
         try(ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(DstDictService.class)) {

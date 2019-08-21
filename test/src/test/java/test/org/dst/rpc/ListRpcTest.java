@@ -1,16 +1,15 @@
 package test.org.dst.rpc;
 
 import com.google.common.collect.ImmutableList;
-import junit.framework.Assert;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
 import org.dst.server.service.DstListService;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import test.org.dst.rpc.supplier.ProxyOnClient;
-import test.org.dst.rpc.supplier.RPCTestSupplier;
+
 import java.util.List;
 
-public class ListRpcTest extends RPCTestSupplier{
+public class ListRpcTest extends BaseTestSupplier {
 
     @Test
     public void testListRpcCall() {

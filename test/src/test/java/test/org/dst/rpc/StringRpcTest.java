@@ -5,10 +5,8 @@ import org.dst.server.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import test.org.dst.rpc.supplier.ProxyOnClient;
-import test.org.dst.rpc.supplier.RPCTestSupplier;
 
-public class StringRpcTest extends RPCTestSupplier {
+public class StringRpcTest extends BaseTestSupplier {
     @Test
     public void testRpcServer() {
         try(ProxyOnClient<DstStringService> setProxy = new ProxyOnClient<>(DstStringService.class)) {
