@@ -4,13 +4,16 @@ import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
+import org.dst.core.operatorset.DstString;
+import org.dst.server.service.DstDictService;
 import org.dst.server.service.DstStringService;
 
 public class DefaultDstClient implements DstClient {
 
   private RpcClient rcpClient;
 
-  private DstStringService stringProxy;
+  private DstStringProxy stringProxy;
+
 
   public DefaultDstClient(String serverAddress) {
     RpcClientOptions clientOptions = new RpcClientOptions();
@@ -21,7 +24,8 @@ public class DefaultDstClient implements DstClient {
     clientOptions.setMinIdleConnections(10);
     rcpClient = new RpcClient(serverAddress, clientOptions);
 
-    stringProxy = BrpcProxy.getProxy(rcpClient, DstStringService.class);
+    DstStringService stringService = BrpcProxy.getProxy(rcpClient, DstStringService.class);
+    stringProxy = new DstStringProxy(stringService);
   }
 
   @Override
@@ -41,6 +45,6 @@ public class DefaultDstClient implements DstClient {
 
   @Override
   public DstStringProxy strs() {
-    return new DstStringProxy(stringProxy);
+    return stringProxy;
   }
 }
