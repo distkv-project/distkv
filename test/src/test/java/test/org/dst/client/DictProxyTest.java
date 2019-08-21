@@ -5,7 +5,6 @@ import org.dst.client.DstClient;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.org.dst.rpc.TestUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public class DictProxyTest {
         client.dicts().put("m1",dict);
         Map<String, String> dict1 = client.dicts().get("m1");
         Assert.assertEquals(dict,dict1);
-        TestUtil.startRpcServer();
+        TestUtil.stopRpcServer();
     }
 
     @Test void testDictOtherOperator() {
@@ -40,6 +39,6 @@ public class DictProxyTest {
         final Map<String, String> m2 = client.dicts().get("m2");
         Assert.assertEquals(dict,m2);
         client.dicts().del("m2");
-        TestUtil.startRpcServer();
+        TestUtil.stopRpcServer();
     }
 }
