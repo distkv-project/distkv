@@ -1,11 +1,12 @@
 package test.org.dst.rpc;
 
 import com.google.common.collect.ImmutableList;
-import junit.framework.Assert;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SetProtocol;
 import org.dst.server.service.DstSetService;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import java.util.List;
 
 public class SetRpcTest {
