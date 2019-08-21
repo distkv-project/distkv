@@ -40,7 +40,7 @@ public class DefaultDstClient implements DstClient {
   }
 
   @Override
-  public DstStringProxy str() {
+  public DstStringProxy strs() {
     return new DstStringProxy(stringProxy);
   }
 }
