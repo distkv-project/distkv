@@ -3,13 +3,18 @@ package org.dst.server.service;
 import java.util.HashSet;
 import java.util.Set;
 import org.dst.core.KVStore;
+import org.dst.exception.DstException;
+import org.dst.exception.KeyNotFoundException;
 import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SetProtocol;
 import org.dst.utils.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DstSetServiceImpl extends DstBaseService implements DstSetService {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstSetServiceImpl.class);
 
   public DstSetServiceImpl(KVStore store) {
     super(store);
@@ -31,10 +36,16 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     SetProtocol.GetResponse.Builder setGetResponseBuilder =
             SetProtocol.GetResponse.newBuilder();
 
-    Set<String> values = getStore().sets().get(request.getKey());
-    values.forEach(value -> setGetResponseBuilder.addValues(value));
+    try {
+      Set<String> values = getStore().sets().get(request.getKey());
+      values.forEach(value -> setGetResponseBuilder.addValues(value));
+      setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
+    } catch (KeyNotFoundException e) {
+      setGetResponseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+    } catch (DstException e) {
+      setGetResponseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
+    }
 
-    setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
     return setGetResponseBuilder.build();
   }
 
@@ -52,8 +63,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
-    } catch (Exception e) {
-      //TODO(qwang): Use DstException instead of Exception here.
+    } catch (DstException e) {
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
 
@@ -68,7 +78,6 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
             SetProtocol.DropByKeyResponse.newBuilder();
 
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
-
     try {
       Status localStatus = getStore().sets().dropByKey(request.getKey());
       if (localStatus == Status.OK) {
@@ -76,13 +85,11 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
-    } catch (Exception e) {
-      //TODO(qwang): Use DstException instead of Exception here.
+    } catch (DstException e) {
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
 
     setDropByKeyResponseBuilder.setStatus(status);
-
     return setDropByKeyResponseBuilder.build();
   }
 
@@ -91,24 +98,17 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     SetProtocol.ExistsResponse.Builder setExistResponseBuilder =
             SetProtocol.ExistsResponse.newBuilder();
 
-    boolean result;
     CommonProtocol.Status status;
     try {
-      if (getStore().sets().exists(request.getKey(), request.getEntity())) {
-        result = true;
-        status = CommonProtocol.Status.OK;
-        setExistResponseBuilder.setResult(result);
-      } else {
-        result = false;
-        status = CommonProtocol.Status.OK;
-        setExistResponseBuilder.setResult(result);
-      }
-    } catch (Exception e) {
-      //TODO(qwang): Use DstException instead of Exception here.
+      boolean result = getStore().sets().exists(request.getKey(), request.getEntity());
+      setExistResponseBuilder.setResult(result);
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstException e) {
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     setExistResponseBuilder.setStatus(status);
-
     return setExistResponseBuilder.build();
   }
 
