@@ -10,7 +10,7 @@ import test.org.dst.supplier.BaseTestSupplier;
 import test.org.dst.supplier.ProxyOnClient;
 import java.util.List;
 
-public class SetRpcTest extends BaseTestSupplier{
+public class SetRpcTest extends BaseTestSupplier {
 
   @Test
   public void testSet() {
@@ -22,7 +22,7 @@ public class SetRpcTest extends BaseTestSupplier{
   }
 
   public static void testPut() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.PutRequest.Builder setPutRequestBuilder =
               SetProtocol.PutRequest.newBuilder();
@@ -37,7 +37,7 @@ public class SetRpcTest extends BaseTestSupplier{
   }
 
   public static void testGet() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.GetRequest.Builder setGetRequestBuilder =
               SetProtocol.GetRequest.newBuilder();
@@ -55,7 +55,7 @@ public class SetRpcTest extends BaseTestSupplier{
 
 
   public static void testDelete() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.DeleteRequest.Builder setDeleteRequestBuilder =
               SetProtocol.DeleteRequest.newBuilder();
@@ -71,7 +71,7 @@ public class SetRpcTest extends BaseTestSupplier{
 
 
   public static void testDropByKey() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
 
       SetProtocol.DropByKeyRequest.Builder setDropByKeyRequestBuilder =
@@ -86,7 +86,7 @@ public class SetRpcTest extends BaseTestSupplier{
   }
 
   public static void testExists() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
               SetProtocol.ExistsRequest.newBuilder();

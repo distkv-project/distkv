@@ -5,14 +5,14 @@ import org.testng.annotations.BeforeMethod;
 
 public class BaseTestSupplier {
 
-    @BeforeMethod
-    public void setupBase() {
-        TestUtil.startRpcServer();
-    }
+  @BeforeMethod
+  public void setupBase() {
+    TestUtil.startRpcServer();
+  }
 
-    @AfterMethod
-    public  void teardownBase() {
-        TestUtil.stopRpcServer();
-    }
+  @AfterMethod
+  public void teardownBase() {
+    TestUtil.stopRpcServer();
+  }
 
 }
