@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.dst.exception.DstException;
 import org.dst.exception.KeyNotFoundException;
-import org.dst.server.generated.*;
-import org.dst.server.service.*;
+import org.dst.server.generated.SetProtocol;
+import org.dst.server.generated.CommonProtocol;
+import org.dst.server.service.DstSetService;
 
 public class DstSetProxy {
 
@@ -18,7 +19,7 @@ public class DstSetProxy {
   public void put(String key, Set<String> values) {
     SetProtocol.PutRequest.Builder request = SetProtocol.PutRequest.newBuilder();
     request.setKey(key);
-    values.forEach(value->request.addValues(value));
+    values.forEach(value -> request.addValues(value));
 
     SetProtocol.PutResponse response = service.put(request.build());
 
@@ -83,7 +84,7 @@ public class DstSetProxy {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
 
-    return true;
+    return response.getResult();
   }
 
 }
