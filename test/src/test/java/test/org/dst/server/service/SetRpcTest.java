@@ -81,7 +81,7 @@ public class SetRpcTest extends BaseTestSupplier{
       SetProtocol.DropByKeyResponse setDropByKeyResponse =
               setService.dropByKey(setDropByKeyRequestBuilder.build());
 
-      Assert.assertEquals("OK", setDropByKeyResponse.getStatus().toString());
+      Assert.assertEquals(CommonProtocol.Status.OK, setDropByKeyResponse.getStatus());
     }
   }
 

@@ -13,6 +13,7 @@ public class DefaultDstClient implements DstClient {
   private DstStringProxy stringProxy;
 
 
+
   public DefaultDstClient(String serverAddress) {
     RpcClientOptions clientOptions = new RpcClientOptions();
     clientOptions.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
