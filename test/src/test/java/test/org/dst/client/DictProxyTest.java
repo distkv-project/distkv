@@ -21,7 +21,7 @@ public class DictProxyTest extends BaseTestSupplier {
         dict.put("k1", "v1");
         client.dicts().put("m1", dict);
         Map<String, String> dict1 = client.dicts().get("m1");
-        Assert.assertEquals(dict,dict1);
+        Assert.assertEquals(dict, dict1);
     }
 
     @Test
