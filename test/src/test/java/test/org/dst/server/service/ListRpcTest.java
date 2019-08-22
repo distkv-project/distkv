@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ListRpcTest extends BaseTestSupplier {
+public class ListRpcTest extends BaseTestSupplier{
 
     private static List<String> listForRPCTest() {
         List<String> list = new ArrayList<>();
@@ -83,9 +83,8 @@ public class ListRpcTest extends BaseTestSupplier {
             List<String> valuesLput = new ArrayList<>();
             valuesLput.add("v3");
             valuesLput.add("v4");
-            valuesLput.forEach(value -> lputRequest.addValues(value));
+            lputRequest.addAllValues(valuesLput);
             ListProtocol.LPutResponse lputResponse = ListRpcWrapper.lputResponse(lputRequest, proxy);
-            System.out.println(lputResponse.getStatus());
             Assert.assertEquals(CommonProtocol.Status.OK, lputResponse.getStatus());
 
             //get
@@ -116,7 +115,7 @@ public class ListRpcTest extends BaseTestSupplier {
             ListProtocol.PutResponse putResponse = ListRpcWrapper.putResponse(putRequest, proxy);
             Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
-            //lput
+            //rput
             ListProtocol.RPutRequest.Builder rputRequest = ListRpcWrapper.rputRequest();
             rputRequest.setKey("k1");
             List<String> valuesRput = new ArrayList<>();
@@ -124,7 +123,6 @@ public class ListRpcTest extends BaseTestSupplier {
             valuesRput.add("v4");
             valuesRput.forEach(value -> rputRequest.addValues(value));
             ListProtocol.RPutResponse rputResponse = ListRpcWrapper.rputResponse(rputRequest, proxy);
-            System.out.println(rputResponse.getStatus());
             Assert.assertEquals(CommonProtocol.Status.OK, rputResponse.getStatus());
 
             //get
@@ -146,11 +144,65 @@ public class ListRpcTest extends BaseTestSupplier {
 
     @Test
     public void testLDel() {
+        try(ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+            //put
+            ListProtocol.PutRequest.Builder putRequest = ListRpcWrapper.putRequest();
+            List<String> values = listForRPCTest();
+            putRequest.setKey("k1");
+            values.forEach(value -> putRequest.addValues(value));
+            ListProtocol.PutResponse putResponse = ListRpcWrapper.putResponse(putRequest, proxy);
+            Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
+            //rdel
+            ListProtocol.LDelRequest.Builder ldelRequest = ListRpcWrapper.ldelRequest();
+            ldelRequest.setKey("k1");
+            ldelRequest.setValues(1);
+            ListProtocol.LDelResponse ldelResponse = ListRpcWrapper.ldelResponse(ldelRequest, proxy);
+            Assert.assertEquals(CommonProtocol.Status.OK, ldelResponse.getStatus());
+
+            //get
+            ListProtocol.GetRequest.Builder getRequest = ListRpcWrapper.getRequest();
+            getRequest.setKey("k1");
+            ListProtocol.GetResponse getResponse = ListRpcWrapper.getResponse(getRequest,proxy);
+            Assert.assertEquals(Arrays.asList("v1","v2"), getResponse.getValuesList());
+
+            //KEY_NOT_FOUND
+            ldelRequest.setKey("k2");
+            ldelRequest.setValues(1);
+            ListProtocol.LDelResponse ldelResponse2 = ListRpcWrapper.ldelResponse(ldelRequest, proxy);
+            Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, ldelResponse2.getStatus());
+        }
     }
 
     @Test
     public void testRDel() {
+        try(ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+            //put
+            ListProtocol.PutRequest.Builder putRequest = ListRpcWrapper.putRequest();
+            List<String> values = listForRPCTest();
+            putRequest.setKey("k1");
+            values.forEach(value -> putRequest.addValues(value));
+            ListProtocol.PutResponse putResponse = ListRpcWrapper.putResponse(putRequest, proxy);
+            Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
+            //rdel
+            ListProtocol.RDelRequest.Builder rdelRequest = ListRpcWrapper.rdelRequest();
+            rdelRequest.setKey("k1");
+            rdelRequest.setValues(1);
+            ListProtocol.RDelResponse rdelResponse = ListRpcWrapper.rdelResponse(rdelRequest, proxy);
+            Assert.assertEquals(CommonProtocol.Status.OK, rdelResponse.getStatus());
+
+            //get
+            ListProtocol.GetRequest.Builder getRequest = ListRpcWrapper.getRequest();
+            getRequest.setKey("k1");
+            ListProtocol.GetResponse getResponse = ListRpcWrapper.getResponse(getRequest,proxy);
+            Assert.assertEquals(Arrays.asList("v0","v1"), getResponse.getValuesList());
+
+            //KEY_NOT_FOUND
+            rdelRequest.setKey("k2");
+            rdelRequest.setValues(1);
+            ListProtocol.RDelResponse rdelResponse2 = ListRpcWrapper.rdelResponse(rdelRequest, proxy);
+            Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, rdelResponse2.getStatus());
+        }
     }
 }

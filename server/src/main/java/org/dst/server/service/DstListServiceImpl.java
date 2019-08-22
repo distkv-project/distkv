@@ -1,8 +1,10 @@
 package org.dst.server.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.dst.core.KVStore;
+import org.dst.exception.DstException;
 import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
@@ -21,7 +23,9 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.PutResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().lists().put(request.getKey(), request.getValuesList());
+      ArrayList<String> list = new ArrayList<>();
+      list.addAll(request.getValuesList());
+      getStore().lists().put(request.getKey(),list);
       status = CommonProtocol.Status.OK;
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
@@ -71,7 +75,6 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   public ListProtocol.LPutResponse lput(ListProtocol.LPutRequest request) {
     ListProtocol.LPutResponse.Builder responseBuilder =
             ListProtocol.LPutResponse.newBuilder();
-    System.out.println("Hello++++++++++++12111++++++++++++");
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = getStore().lists().lput(request.getKey(), request.getValuesList());
@@ -81,7 +84,6 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (Exception e) {
-      System.out.println("Hello++++++++++++++++++++++++");
       // TODO(qwang): Use DstException instead of Exception here  .
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
@@ -101,7 +103,8 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
-    } catch (Exception e) {
+    } catch (DstException e) {
+      e.printStackTrace();
       // TODO(qwang): Use DstException instead of Exception here .
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
@@ -113,15 +116,19 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   public ListProtocol.LDelResponse ldel(ListProtocol.LDelRequest request) {
     ListProtocol.LDelResponse.Builder responseBuilder =
             ListProtocol.LDelResponse.newBuilder();
-    String result;
+    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status status = getStore().lists().ldel(request.getKey(), request.getValues());
-      result = status.toString();
-    } catch (Exception e) {
-      // TODO(qwang): Use DstException instead of Exception here .
-      result = e.getMessage();
+      Status localStatus = getStore().lists().ldel(request.getKey(), request.getValues());
+      if (localStatus == Status.OK) {
+        status = CommonProtocol.Status.OK;
+      } else if (localStatus == Status.KEY_NOT_FOUND) {
+        status = CommonProtocol.Status.KEY_NOT_FOUND;
+      }
+    } catch (DstException e) {
+      e.printStackTrace();
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    responseBuilder.setStatus(status);
     return responseBuilder.build();
   }
 
@@ -137,8 +144,8 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
-
     } catch (Exception e) {
+      e.printStackTrace();
       // TODO(qwang): Add error message to protobuf.
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }

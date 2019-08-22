@@ -3,6 +3,7 @@ package org.dst.core.operatorImpl;
 import org.dst.core.operatorset.DstList;
 import org.dst.utils.Status;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class DstListImpl implements DstList {
 
   @Override
   public Status put(String key, List<String> value) {
-    listMap.put(key, value);
+    listMap.put(key, new ArrayList(value));
     return Status.OK;
   }
 
