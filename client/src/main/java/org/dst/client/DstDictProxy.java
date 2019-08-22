@@ -4,7 +4,6 @@ import org.dst.exception.DstException;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,9 +21,9 @@ public class DstDictProxy {
     request.setKey(key);
     DictProtocol.DstDict.Builder builder =
         DictProtocol.DstDict.newBuilder();
-    for (Map.Entry<String, String> kv : dict.entrySet()) {
-      builder.addKeys(kv.getKey());
-      builder.addValues(kv.getValue());
+    for (Map.Entry<String, String> entry : dict.entrySet()) {
+      builder.addKeys(entry.getKey());
+      builder.addValues(entry.getValue());
     }
     request.setDict(builder.build());
     DictProtocol.PutResponse response = service.put(request.build());

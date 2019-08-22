@@ -29,8 +29,8 @@ public class DefaultDstClient implements DstClient {
 
     DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
     stringProxy = new DstStringProxy(stringService);
-    DstDictService dstService = BrpcProxy.getProxy(dictClient, DstDictService.class);
-    dictProxy = new DstDictProxy(dstService);
+    DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);
+    dictProxy = new DstDictProxy(dictService);
   }
 
   @Override

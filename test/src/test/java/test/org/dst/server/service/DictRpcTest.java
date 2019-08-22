@@ -1,11 +1,12 @@
-package test.org.dst.rpc;
+package test.org.dst.server.service;
 
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
+import test.org.dst.supplier.BaseTestSupplier;
+import test.org.dst.supplier.ProxyOnClient;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,11 +22,9 @@ import java.util.Map;
  *
  * if you want to get a dict, you just need dictGetResponse.getDict() method.
  */
-public class DictRpcTest {
+public class DictRpcTest extends BaseTestSupplier {
     @Test
     public void testDictRpcCall() {
-        // Run the server
-        TestUtil.startRpcServer();
         try(ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(DstDictService.class)) {
             DstDictService dictService = setProxy.getService();
             // Test dict put.
@@ -98,7 +97,5 @@ public class DictRpcTest {
             Assert.assertEquals(results, judgeDict);
 
         }
-        // Stop the server
-        TestUtil.stopRpcServer();
     }
 }
