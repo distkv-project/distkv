@@ -10,7 +10,7 @@ import test.org.dst.supplier.BaseTestSupplier;
 import test.org.dst.supplier.ProxyOnClient;
 import java.util.List;
 
-public class SetRpcTest extends BaseTestSupplier {
+public class SetRpcTest extends BaseTestSupplier{
 
   @Test
   public void testSet() {
