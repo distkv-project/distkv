@@ -39,13 +39,9 @@ public class SetRpcTest extends BaseTestSupplier{
   public static void testGet() {
     try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
-      SetProtocol.GetRequest.Builder setGetRequestBuilder =
-              SetProtocol.GetRequest.newBuilder();
+      SetProtocol.GetRequest.Builder setGetRequestBuilder =SetProtocol.GetRequest.newBuilder();
       setGetRequestBuilder.setKey("k1");
-
-      SetProtocol.GetResponse setGetResponse =
-              setService.get(setGetRequestBuilder.build());
-
+      SetProtocol.GetResponse setGetResponse = setService.get(setGetRequestBuilder.build());
       final List<String> results = ImmutableList.of("v1", "v2", "v3");
       Assert.assertEquals(CommonProtocol.Status.OK, setGetResponse.getStatus());
       Assert.assertEquals(results, setGetResponse.getValuesList());

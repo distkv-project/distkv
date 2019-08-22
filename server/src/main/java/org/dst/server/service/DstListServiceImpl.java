@@ -2,7 +2,6 @@ package org.dst.server.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.dst.core.KVStore;
 import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
@@ -17,7 +16,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.PutResponse listPut(ListProtocol.PutRequest request) {
+  public ListProtocol.PutResponse put(ListProtocol.PutRequest request) {
     ListProtocol.PutResponse.Builder responseBuilder =
             ListProtocol.PutResponse.newBuilder();
     CommonProtocol.Status status;
@@ -33,7 +32,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.GetResponse listGet(ListProtocol.GetRequest request) {
+  public ListProtocol.GetResponse get(ListProtocol.GetRequest request) {
     ListProtocol.GetResponse.Builder responseBuilder =
             ListProtocol.GetResponse.newBuilder();
 
@@ -49,7 +48,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.DelResponse listDel(ListProtocol.DelRequest request) {
+  public ListProtocol.DelResponse del(ListProtocol.DelRequest request) {
     ListProtocol.DelResponse.Builder responseBuilder =
             ListProtocol.DelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -69,9 +68,10 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.LPutResponse listLPut(ListProtocol.LPutRequest request) {
+  public ListProtocol.LPutResponse lput(ListProtocol.LPutRequest request) {
     ListProtocol.LPutResponse.Builder responseBuilder =
             ListProtocol.LPutResponse.newBuilder();
+    System.out.println("Hello++++++++++++12111++++++++++++");
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = getStore().lists().lput(request.getKey(), request.getValuesList());
@@ -81,6 +81,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (Exception e) {
+      System.out.println("Hello++++++++++++++++++++++++");
       // TODO(qwang): Use DstException instead of Exception here  .
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
@@ -89,7 +90,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.RPutResponse listRPut(ListProtocol.RPutRequest request) {
+  public ListProtocol.RPutResponse rput(ListProtocol.RPutRequest request) {
     ListProtocol.RPutResponse.Builder responseBuilder =
             ListProtocol.RPutResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -109,7 +110,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.LDelResponse listLDel(ListProtocol.LDelRequest request) {
+  public ListProtocol.LDelResponse ldel(ListProtocol.LDelRequest request) {
     ListProtocol.LDelResponse.Builder responseBuilder =
             ListProtocol.LDelResponse.newBuilder();
     String result;
@@ -125,7 +126,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.RDelResponse listRDel(ListProtocol.RDelRequest request) {
+  public ListProtocol.RDelResponse rdel(ListProtocol.RDelRequest request) {
     ListProtocol.RDelResponse.Builder responseBuilder =
             ListProtocol.RDelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
