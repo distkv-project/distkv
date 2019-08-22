@@ -5,10 +5,12 @@ import org.dst.client.DstClient;
 import org.dst.exception.DstException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import test.org.dst.supplier.BaseTestSupplier;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class DictProxyTest {
+public class DictProxyTest extends BaseTestSupplier {
 
     private final static String serverAddress = "list://127.0.0.1:8082";
 
