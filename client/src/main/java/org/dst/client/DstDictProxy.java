@@ -1,6 +1,8 @@
 package org.dst.client;
 
+import org.dst.exception.DictKeyNotFoundException;
 import org.dst.exception.DstException;
+import org.dst.exception.KeyNotFoundException;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
@@ -28,7 +30,7 @@ public class DstDictProxy {
     request.setDict(builder.build());
     DictProtocol.PutResponse response = service.put(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+      throw new KeyNotFoundException(key);
     }
   }
 
@@ -40,8 +42,8 @@ public class DstDictProxy {
     DictProtocol.GetResponse response =
         service.get(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+      throw new KeyNotFoundException(key);
+  }
     DictProtocol.DstDict dstDict = response.getDict();
     for (int i = 0; i < dstDict.getKeysCount(); i++) {
       dict.put(dstDict.getKeys(i), dstDict.getValues(i));
@@ -57,7 +59,12 @@ public class DstDictProxy {
     DictProtocol.GetItemValueResponse response =
         service.getItemValue(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+      switch (response.getStatus()) {
+        case KEY_NOT_FOUND:
+          throw new KeyNotFoundException(key);
+        case DICT_KEY_NOT_FOUND:
+          throw new DictKeyNotFoundException(key);
+      }
     }
     return response.getItemValue();
   }
@@ -70,7 +77,12 @@ public class DstDictProxy {
     DictProtocol.PopItemResponse response =
         service.popItem(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+      switch (response.getStatus()) {
+        case KEY_NOT_FOUND:
+          throw new KeyNotFoundException(key);
+        case DICT_KEY_NOT_FOUND:
+          throw new DictKeyNotFoundException(key);
+      }
     }
     return response.getItemValue();
   }
@@ -83,7 +95,12 @@ public class DstDictProxy {
     request.setItemValue(itemValue);
     DictProtocol.PutItemResponse response = service.putItem(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+      switch (response.getStatus()) {
+        case KEY_NOT_FOUND:
+          throw new KeyNotFoundException(key);
+        case DICT_KEY_NOT_FOUND:
+          throw new DictKeyNotFoundException(key);
+      }
     }
   }
 
@@ -93,7 +110,7 @@ public class DstDictProxy {
     request.setKey(key);
     DictProtocol.DelResponse response = service.del(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+      throw new KeyNotFoundException(key);
     }
   }
 
@@ -104,7 +121,12 @@ public class DstDictProxy {
     request.setItemKey(itemKey);
     DictProtocol.DelItemResponse response = service.delItem(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+      switch (response.getStatus()) {
+        case KEY_NOT_FOUND:
+          throw new KeyNotFoundException(key);
+        case DICT_KEY_NOT_FOUND:
+          throw new DictKeyNotFoundException(key);
+      }
     }
   }
 }
