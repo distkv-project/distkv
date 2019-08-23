@@ -29,7 +29,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       getStore().lists().put(request.getKey(),new ArrayList<>(request.getValuesList()));
       status = CommonProtocol.Status.OK;
     } catch (DstException e) {
-      LOGGER.error("server of dst-list put failure: {}",e);
+      LOGGER.error("Failed to put a list to store: {}", e);
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -64,7 +64,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         status = CommonProtocol.Status.OK;
       }
     } catch (DstException e) {
-      LOGGER.error("server of dst-del put failure: {}",e);
+      LOGGER.error("Failed to del a list from store: {}", e);
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -84,7 +84,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (DstException e) {
-      LOGGER.error("server of dst-lput failure: {}",e);
+      LOGGER.error("Failed to lput a list to store: {}", e);
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -104,7 +104,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (DstException e) {
-      LOGGER.error("server of dst-rput failure: {}",e);
+      LOGGER.error("Failed to rput a list to store: {}", e);
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -124,7 +124,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (DstException e) {
-      LOGGER.error("server of dst-ldel failure: {}",e);
+      LOGGER.error("Failed to ldel a list from store: {}", e);
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
@@ -144,7 +144,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (DstException e) {
-      LOGGER.error("server of dst-rdel failure: {}",e);
+      LOGGER.error("Failed to rdel a list from store: {}", e);
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
