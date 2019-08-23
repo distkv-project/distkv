@@ -4,6 +4,8 @@ import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
+import org.dst.server.service.DstDictService;
+import org.dst.server.service.DstListService;
 import org.dst.server.service.DstSetService;
 import org.dst.server.service.DstStringService;
 
@@ -11,11 +13,19 @@ public class DefaultDstClient implements DstClient {
 
   private RpcClient stringClient;
 
+  private RpcClient listClient;
+
   private RpcClient setClient;
+
+  private RpcClient dictClient;
 
   private DstStringProxy stringProxy;
 
+  private DstListProxy listProxy;
+
   private DstSetProxy setProxy;
+
+  private DstDictProxy dictProxy;
 
 
   public DefaultDstClient(String serverAddress) {
@@ -26,12 +36,18 @@ public class DefaultDstClient implements DstClient {
     clientOptions.setMaxTotalConnections(1000);
     clientOptions.setMinIdleConnections(10);
     stringClient = new RpcClient(serverAddress, clientOptions);
+    listClient = new RpcClient(serverAddress, clientOptions);
     setClient = new RpcClient(serverAddress, clientOptions);
+    dictClient = new RpcClient(serverAddress, clientOptions);
 
     DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
+    DstListService listService = BrpcProxy.getProxy(listClient, DstListService.class);
     DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
+    DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);
     stringProxy = new DstStringProxy(stringService);
+    listProxy = new DstListProxy(listService);
     setProxy = new DstSetProxy(setService);
+    dictProxy = new DstDictProxy(dictService);
   }
 
   @Override
@@ -52,6 +68,16 @@ public class DefaultDstClient implements DstClient {
   @Override
   public DstStringProxy strs() {
     return stringProxy;
+  }
+
+  @Override
+  public DstDictProxy dicts() {
+    return dictProxy;
+  }
+
+  @Override
+  public DstListProxy lists() {
+    return listProxy;
   }
 
   @Override

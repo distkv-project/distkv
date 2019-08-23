@@ -5,7 +5,6 @@ import org.dst.exception.KeyNotFoundException;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
 import org.dst.server.service.DstListService;
-
 import java.util.List;
 
 public class DstListProxy {
@@ -34,8 +33,7 @@ public class DstListProxy {
     ListProtocol.GetResponse response = service.get(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
-    }
-    if (response.getStatus() != CommonProtocol.Status.OK) {
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
     return response.getValuesList();
@@ -48,8 +46,7 @@ public class DstListProxy {
     ListProtocol.DelResponse response = service.del(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
-    }
-    if (response.getStatus() != CommonProtocol.Status.OK) {
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
@@ -62,8 +59,7 @@ public class DstListProxy {
     ListProtocol.LPutResponse response = service.lput(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
-    }
-    if (response.getStatus() != CommonProtocol.Status.OK) {
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
@@ -76,8 +72,7 @@ public class DstListProxy {
     ListProtocol.RPutResponse response = service.rput(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
-    }
-    if (response.getStatus() != CommonProtocol.Status.OK) {
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
@@ -90,8 +85,7 @@ public class DstListProxy {
     ListProtocol.LDelResponse response = service.ldel(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
-    }
-    if (response.getStatus() != CommonProtocol.Status.OK) {
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
@@ -104,8 +98,7 @@ public class DstListProxy {
     ListProtocol.RDelResponse response = service.rdel(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
-    }
-    if (response.getStatus() != CommonProtocol.Status.OK) {
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
