@@ -1,4 +1,4 @@
-package test.org.dst.rpc;
+package test.org.dst.server.service;
 
 import com.google.common.collect.ImmutableList;
 import org.dst.server.generated.CommonProtocol;
@@ -6,13 +6,16 @@ import org.dst.server.generated.SetProtocol;
 import org.dst.server.service.DstSetService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
+import test.org.dst.supplier.BaseTestSupplier;
+import test.org.dst.supplier.ProxyOnClient;
 import java.util.List;
 
-public class SetRpcTest extends BaseTestSupplier{
+public class SetRpcTest extends BaseTestSupplier {
 
   @Test
   public void testSet() {
+    // The following methods should be called as ordered
+    // because some methods depends on other methods.
     testPut();
     testGet();
     testDelete();
@@ -20,8 +23,8 @@ public class SetRpcTest extends BaseTestSupplier{
     testExists();
   }
 
-  public static void testPut() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testPut() {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.PutRequest.Builder setPutRequestBuilder =
               SetProtocol.PutRequest.newBuilder();
@@ -35,8 +38,8 @@ public class SetRpcTest extends BaseTestSupplier{
     }
   }
 
-  public static void testGet() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testGet() {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.GetRequest.Builder setGetRequestBuilder =
               SetProtocol.GetRequest.newBuilder();
@@ -52,9 +55,8 @@ public class SetRpcTest extends BaseTestSupplier{
 
   }
 
-
-  public static void testDelete() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testDelete() {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.DeleteRequest.Builder setDeleteRequestBuilder =
               SetProtocol.DeleteRequest.newBuilder();
@@ -64,13 +66,12 @@ public class SetRpcTest extends BaseTestSupplier{
       SetProtocol.DeleteResponse setDeleteResponse =
               setService.delete(setDeleteRequestBuilder.build());
 
-      Assert.assertEquals("OK", setDeleteResponse.getStatus().toString());
+      Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }
   }
 
-
-  public static void testDropByKey() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testDropByKey() {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
 
       SetProtocol.DropByKeyRequest.Builder setDropByKeyRequestBuilder =
@@ -80,12 +81,12 @@ public class SetRpcTest extends BaseTestSupplier{
       SetProtocol.DropByKeyResponse setDropByKeyResponse =
               setService.dropByKey(setDropByKeyRequestBuilder.build());
 
-      Assert.assertEquals("OK", setDropByKeyResponse.getStatus().toString());
+      Assert.assertEquals(CommonProtocol.Status.OK, setDropByKeyResponse.getStatus());
     }
   }
 
-  public static void testExists() {
-    try(ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testExists() {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
               SetProtocol.ExistsRequest.newBuilder();
@@ -94,10 +95,7 @@ public class SetRpcTest extends BaseTestSupplier{
 
       SetProtocol.ExistsResponse setExistResponse =
               setService.exists(setExistRequestBuilder.build());
-
-      //if the key is deleted,the exists() will throw a exception
-      //and set rpc will only set status, don't set result.
-      Assert.assertEquals("UNKNOWN_ERROR", setExistResponse.getStatus().toString());
+      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, setExistResponse.getStatus());
     }
   }
 }

@@ -21,6 +21,10 @@ public class DstSetImpl implements DstSet {
 
   @Override
   public Set<String> get(String key) {
+    if (!setMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
+
     return setMap.get(key);
   }
 
