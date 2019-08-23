@@ -21,16 +21,12 @@ public class DstDictProxy {
     DictProtocol.PutRequest.Builder request =
         DictProtocol.PutRequest.newBuilder();
     request.setKey(key);
-    DictProtocol.DstDict.Builder builder =
-        DictProtocol.DstDict.newBuilder();
-    for (Map.Entry<String, String> entry : dict.entrySet()) {
-      builder.addKeys(entry.getKey());
-      builder.addValues(entry.getValue());
-    }
-    request.setDict(builder.build());
+    DictProtocol.DstDict dstDict = DictUtil.buildDstDict(dict);
+    request.setDict(dstDict);
     DictProtocol.PutResponse response = service.put(request.build());
     if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new KeyNotFoundException(key);
+      throw new DstException(String.format("Error code is %d",
+          response.getStatus().getNumber()));
     }
   }
 

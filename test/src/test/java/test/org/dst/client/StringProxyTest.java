@@ -1,9 +1,9 @@
 package test.org.dst.client;
 
-import junit.framework.Assert;
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.dst.exception.KeyNotFoundException;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.org.dst.supplier.BaseTestSupplier;
 
