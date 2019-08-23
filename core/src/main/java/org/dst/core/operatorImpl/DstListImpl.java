@@ -22,7 +22,6 @@ public class DstListImpl implements DstList {
   @Override
   public List<String> get(String key) {
     if (!listMap.containsKey(key)) {
-      //TODO(tansen) should return a status value
       return null;
     }
     return listMap.get(key);
