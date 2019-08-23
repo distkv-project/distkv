@@ -32,6 +32,14 @@ public interface DstClient {
    */
   DstStringProxy strs();
 
+
+  /**
+   * Get the dst dict proxy.
+   *
+   * @return The dst string proxy.
+   */
+  DstDictProxy dicts();
+
   /**
    * Get the dst list proxy.
    *
