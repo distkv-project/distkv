@@ -31,4 +31,12 @@ public interface DstClient {
    * @return The dst string proxy.
    */
   DstStringProxy strs();
+
+  /**
+   * Get the dst list proxy.
+   *
+   * @return The dst list proxy.
+   */
+  DstListProxy lists();
+
 }
