@@ -42,7 +42,6 @@ public class DstSetProxy {
     }
 
     Set<String> set = new HashSet<>(response.getValuesList());
-
     return set;
   }
 
@@ -59,16 +58,18 @@ public class DstSetProxy {
     }
   }
 
-  public void dropByKey(String key) {
+  public boolean dropByKey(String key) {
     SetProtocol.DropByKeyRequest.Builder request = SetProtocol.DropByKeyRequest.newBuilder();
     request.setKey(key);
 
     SetProtocol.DropByKeyResponse response = service.dropByKey(request.build());
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
+      return false;
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
+
+    return true;
   }
 
   public boolean exists(String key, String entity) {

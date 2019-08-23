@@ -1,7 +1,7 @@
 package test.org.dst.client;
 
-import java.util.HashSet;
 import java.util.Set;
+import com.google.common.collect.ImmutableSet;
 import org.dst.client.DefaultDstClient;
 import org.dst.exception.DstException;
 import org.testng.Assert;
@@ -14,11 +14,7 @@ public class SetProxyTest extends BaseTestSupplier {
 
   @Test
   public void testPutAndGet() {
-    Set<String> set = new HashSet<>();
-    set.add("v1");
-    set.add("v2");
-    set.add("v3");
-    set.add("v2");
+    Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
     DefaultDstClient client = new DefaultDstClient(serverAddress);
     client.sets().put("k1", set);
@@ -27,45 +23,31 @@ public class SetProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDelete() {
-    Set<String> set = new HashSet<>();
-    set.add("v1");
-    set.add("v2");
-    set.add("v3");
+    Set<String> set1 = ImmutableSet.of("v1", "v2", "v3");
 
     DefaultDstClient client = new DefaultDstClient(serverAddress);
-    client.sets().put("k1", set);
+    client.sets().put("k1", set1);
     client.sets().delete("k1", "v3");
 
-    set.remove("v3");
-    Assert.assertEquals(set, client.sets().get("k1"));
+    Set<String> set2 = ImmutableSet.of("v1", "v2");
+    Assert.assertEquals(set2, client.sets().get("k1"));
   }
 
-  @Test
+  @Test(expectedExceptions = DstException.class)
   public void testDropByKey() {
-    Set<String> set = new HashSet<>();
-    set.add("v1");
-    set.add("v2");
-    set.add("v3");
+    Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
     DefaultDstClient client = new DefaultDstClient(serverAddress);
     client.sets().put("k1", set);
-    client.sets().dropByKey("k1");
+    Assert.assertTrue(client.sets().dropByKey("k1"));
 
     //if we drop the key in store, this method will throw a DstException
-    try {
-      client.sets().get("k1");
-    } catch (DstException e) {
-      Assert.assertTrue(true);
-    }
-
+    client.sets().get("k1");
   }
 
-  @Test
+  @Test(expectedExceptions = DstException.class)
   public void testExists() {
-    Set<String> set = new HashSet<>();
-    set.add("v1");
-    set.add("v2");
-    set.add("v3");
+    Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
     DefaultDstClient client = new DefaultDstClient(serverAddress);
     client.sets().put("k1", set);
@@ -76,11 +58,6 @@ public class SetProxyTest extends BaseTestSupplier {
 
     client.sets().dropByKey("k1");
     //if we drop the key in store, this method will throw a DstException
-    try {
-      client.sets().exists("k1", "v1");
-    } catch (DstException e) {
-      Assert.assertTrue(true);
-    }
-
+    client.sets().exists("k1", "v1");
   }
 }
