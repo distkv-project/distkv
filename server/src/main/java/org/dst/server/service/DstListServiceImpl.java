@@ -23,9 +23,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.PutResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      ArrayList<String> list = new ArrayList<>();
-      list.addAll(request.getValuesList());
-      getStore().lists().put(request.getKey(),list);
+      getStore().lists().put(request.getKey(),new ArrayList<>(request.getValuesList()));
       status = CommonProtocol.Status.OK;
     } catch (Exception e) {
       // TODO(qwang): Use DstException instead of Exception here.
