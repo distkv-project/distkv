@@ -17,6 +17,7 @@ public class DstDictProxy {
     this.service = service;
   }
 
+  // Put a new dict
   public void put(String key, Map<String, String> dict) {
     DictProtocol.PutRequest.Builder request =
         DictProtocol.PutRequest.newBuilder();
@@ -30,6 +31,7 @@ public class DstDictProxy {
     }
   }
 
+  // Get a dict
   public Map<String, String> get(String key) {
     Map<String, String> dict = new HashMap();
     DictProtocol.GetRequest.Builder request =
@@ -47,6 +49,7 @@ public class DstDictProxy {
     return dict;
   }
 
+  // Get the value in the dict corresponding to the key
   public String getItemValue(String key, String itemKey) {
     DictProtocol.GetItemValueRequest.Builder request =
         DictProtocol.GetItemValueRequest.newBuilder();
@@ -68,6 +71,7 @@ public class DstDictProxy {
     return response.getItemValue();
   }
 
+  // Pop the item in the dict corresponding to the key
   public String popItem(String key, String itemKey) {
     DictProtocol.PopItemRequest.Builder request =
         DictProtocol.PopItemRequest.newBuilder();
@@ -89,6 +93,7 @@ public class DstDictProxy {
     return response.getItemValue();
   }
 
+  // Put the item in the dict corresponding to the key
   public void putItem(String key, String itemKey, String itemValue) {
     DictProtocol.PutItemRequest.Builder request =
         DictProtocol.PutItemRequest.newBuilder();
@@ -109,6 +114,7 @@ public class DstDictProxy {
     }
   }
 
+  // Delete a dict
   public void del(String key) {
     DictProtocol.DelRequest.Builder request =
         DictProtocol.DelRequest.newBuilder();
@@ -119,6 +125,7 @@ public class DstDictProxy {
     }
   }
 
+  // Delete the item in the dict corresponding to the key
   public void delItem(String key, String itemKey) {
     DictProtocol.DelItemRequest.Builder request =
         DictProtocol.DelItemRequest.newBuilder();

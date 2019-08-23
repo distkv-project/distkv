@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class DictProxyTest extends BaseTestSupplier {
 
-  private final static String serverAddress = "list://127.0.0.1:8082";
+  private static final String serverAddress = "list://127.0.0.1:8082";
 
   @Test
   public void testDictPutGet() {
