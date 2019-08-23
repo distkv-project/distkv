@@ -8,7 +8,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.org.dst.supplier.BaseTestSupplier;
 import test.org.dst.supplier.ProxyOnClient;
-
 import java.util.List;
 
 public class SetRpcTest extends BaseTestSupplier {
@@ -28,13 +27,13 @@ public class SetRpcTest extends BaseTestSupplier {
     try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.PutRequest.Builder setPutRequestBuilder =
-            SetProtocol.PutRequest.newBuilder();
+              SetProtocol.PutRequest.newBuilder();
       setPutRequestBuilder.setKey("k1");
       final List<String> values = ImmutableList.of("v1", "v2", "v3", "v1");
       values.forEach(value -> setPutRequestBuilder.addValues(value));
 
       SetProtocol.PutResponse setPutResponse =
-            setService.put(setPutRequestBuilder.build());
+              setService.put(setPutRequestBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
     }
   }
@@ -43,11 +42,11 @@ public class SetRpcTest extends BaseTestSupplier {
     try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.GetRequest.Builder setGetRequestBuilder =
-            SetProtocol.GetRequest.newBuilder();
+              SetProtocol.GetRequest.newBuilder();
       setGetRequestBuilder.setKey("k1");
 
       SetProtocol.GetResponse setGetResponse =
-            setService.get(setGetRequestBuilder.build());
+              setService.get(setGetRequestBuilder.build());
 
       final List<String> results = ImmutableList.of("v1", "v2", "v3");
       Assert.assertEquals(CommonProtocol.Status.OK, setGetResponse.getStatus());
@@ -60,12 +59,12 @@ public class SetRpcTest extends BaseTestSupplier {
     try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.DeleteRequest.Builder setDeleteRequestBuilder =
-            SetProtocol.DeleteRequest.newBuilder();
+              SetProtocol.DeleteRequest.newBuilder();
       setDeleteRequestBuilder.setKey("k1");
       setDeleteRequestBuilder.setEntity("v1");
 
       SetProtocol.DeleteResponse setDeleteResponse =
-            setService.delete(setDeleteRequestBuilder.build());
+              setService.delete(setDeleteRequestBuilder.build());
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }
@@ -76,11 +75,11 @@ public class SetRpcTest extends BaseTestSupplier {
       DstSetService setService = setProxy.getService();
 
       SetProtocol.DropByKeyRequest.Builder setDropByKeyRequestBuilder =
-            SetProtocol.DropByKeyRequest.newBuilder();
+              SetProtocol.DropByKeyRequest.newBuilder();
       setDropByKeyRequestBuilder.setKey("k1");
 
       SetProtocol.DropByKeyResponse setDropByKeyResponse =
-            setService.dropByKey(setDropByKeyRequestBuilder.build());
+              setService.dropByKey(setDropByKeyRequestBuilder.build());
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDropByKeyResponse.getStatus());
     }
@@ -90,12 +89,12 @@ public class SetRpcTest extends BaseTestSupplier {
     try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
-            SetProtocol.ExistsRequest.newBuilder();
+              SetProtocol.ExistsRequest.newBuilder();
       setExistRequestBuilder.setKey("k1");
       setExistRequestBuilder.setEntity("v1");
 
       SetProtocol.ExistsResponse setExistResponse =
-            setService.exists(setExistRequestBuilder.build());
+              setService.exists(setExistRequestBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, setExistResponse.getStatus());
     }
   }
