@@ -5,16 +5,23 @@ import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
 import org.dst.server.service.DstDictService;
+import org.dst.server.service.DstSetService;
 import org.dst.server.service.DstStringService;
 
 public class DefaultDstClient implements DstClient {
 
   private RpcClient stringClient;
+
   private RpcClient dictClient;
+
+  private RpcClient setClient;
 
   private DstStringProxy stringProxy;
 
+  private DstSetProxy setProxy;
+
   private DstDictProxy dictProxy;
+
 
   public DefaultDstClient(String serverAddress) {
     RpcClientOptions clientOptions = new RpcClientOptions();
@@ -26,11 +33,15 @@ public class DefaultDstClient implements DstClient {
 
     stringClient = new RpcClient(serverAddress, clientOptions);
     dictClient = new RpcClient(serverAddress, clientOptions);
+    setClient = new RpcClient(serverAddress, clientOptions);
 
     DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
     stringProxy = new DstStringProxy(stringService);
     DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);
     dictProxy = new DstDictProxy(dictService);
+    DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
+    setProxy = new DstSetProxy(setService);
+
   }
 
   @Override
@@ -57,4 +68,10 @@ public class DefaultDstClient implements DstClient {
   public DstDictProxy dicts() {
     return dictProxy;
   }
+
+  @Override
+  public DstSetProxy sets() {
+    return setProxy;
+  }
+
 }
