@@ -41,10 +41,17 @@ public interface DstClient {
   DstDictProxy dicts();
 
   /**
+   * Get the dst list proxy.
+   *
+   * @return The dst list proxy.
+   */
+  DstListProxy lists();
+
+  /**
    * Get the dst set proxy.
    *
    * @return The dst set proxy.
-   * */
+   */
   DstSetProxy sets();
 
 }

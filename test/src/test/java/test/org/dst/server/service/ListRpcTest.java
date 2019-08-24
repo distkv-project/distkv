@@ -36,6 +36,14 @@ public class ListRpcTest extends BaseTestSupplier {
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
       Assert.assertEquals(dummyListTestData(), getResponseBuilder.getValuesList());
+
+      //get
+      ListProtocol.GetRequest.Builder getRequest2Builder = ListRpcTestUtil.getRequestBuilder();
+      getRequest2Builder.setKey("k2");
+      ListProtocol.GetResponse getResponse2Builder =
+              ListRpcTestUtil.getResponseBuilder(getRequest2Builder, proxy);
+      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, getResponse2Builder.getStatus());
+
     }
   }
 
