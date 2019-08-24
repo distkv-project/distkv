@@ -31,4 +31,4 @@ hs_err_pid*
 target/
 
 # generated files
-server/src/main/java/org/dst/server/generated/*
+common/src/main/java/org/dst/common/generated/*

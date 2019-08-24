@@ -1,7 +1,7 @@
 package test.org.dst.server.service;
 
-import org.dst.server.generated.CommonProtocol;
-import org.dst.server.generated.StringProtocol;
+import org.dst.common.generated.CommonProtocol;
+import org.dst.common.generated.StringProtocol;
 import org.dst.server.service.DstStringService;
 import org.testng.Assert;
 import org.testng.annotations.Test;

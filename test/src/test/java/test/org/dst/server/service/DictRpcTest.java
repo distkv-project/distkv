@@ -1,7 +1,7 @@
 package test.org.dst.server.service;
 
-import org.dst.server.generated.CommonProtocol;
-import org.dst.server.generated.DictProtocol;
+import org.dst.common.generated.CommonProtocol;
+import org.dst.common.generated.DictProtocol;
 import org.dst.server.service.DstDictService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -27,6 +27,7 @@ public class DictRpcTest extends BaseTestSupplier {
   public void testDictRpcCall() {
     try (ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(DstDictService.class)) {
       DstDictService dictService = setProxy.getService();
+
       // Test dict put.
       DictProtocol.PutRequest.Builder dictPutRequestBuilder =
               DictProtocol.PutRequest.newBuilder();
@@ -44,6 +45,7 @@ public class DictRpcTest extends BaseTestSupplier {
       DictProtocol.PutResponse setPutResponse =
               dictService.put(dictPutRequestBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
+
       // Test putItem
       DictProtocol.PutItemRequest.Builder putBuilder =
               DictProtocol.PutItemRequest.newBuilder();
@@ -53,6 +55,7 @@ public class DictRpcTest extends BaseTestSupplier {
       DictProtocol.PutItemResponse putItemResponse =
               dictService.putItem(putBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, putItemResponse.getStatus());
+
       // Test getItemValue
       DictProtocol.GetItemValueRequest.Builder getItemValueBuilder =
               DictProtocol.GetItemValueRequest.newBuilder();
@@ -62,6 +65,7 @@ public class DictRpcTest extends BaseTestSupplier {
               dictService.getItemValue(getItemValueBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, getItemValueResponse.getStatus());
       Assert.assertEquals(getItemValueResponse.getItemValue(), "v3");
+
       // Test popItem
       DictProtocol.PopItemRequest.Builder popItemBuilder =
               DictProtocol.PopItemRequest.newBuilder();
@@ -71,6 +75,7 @@ public class DictRpcTest extends BaseTestSupplier {
               dictService.popItem(popItemBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, popItemResponse.getStatus());
       Assert.assertEquals(popItemResponse.getItemValue(), "v3");
+
       // Test delItem
       DictProtocol.DelItemRequest.Builder delItemBuilder =
               DictProtocol.DelItemRequest.newBuilder();
@@ -79,6 +84,7 @@ public class DictRpcTest extends BaseTestSupplier {
       DictProtocol.DelItemResponse delItemResponse =
               dictService.delItem(delItemBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, delItemResponse.getStatus());
+
       // Test dict get.
       DictProtocol.GetRequest.Builder dictGetRequestBuilder =
               DictProtocol.GetRequest.newBuilder();

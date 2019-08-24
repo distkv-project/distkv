@@ -1,9 +1,10 @@
 package org.dst.client;
 
-import org.dst.server.generated.DictProtocol;
+import org.dst.common.generated.DictProtocol;
 
 import java.util.Map;
 
+// TODO(qwang): Put this file to common module.
 public class DictUtil {
   public static DictProtocol.DstDict buildDstDict(Map<String, String> localDict) {
     DictProtocol.DstDict.Builder dictBuilder =
