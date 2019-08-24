@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
+import org.dst.exception.KeyNotFoundException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -26,12 +27,12 @@ public class KVSListTest {
     Assert.assertEquals(listForKVSTest(), store.lists().get("k1"));
   }
 
-  @Test
+  @Test(expectedExceptions = KeyNotFoundException.class)
   public void testDel() {
     KVStore store = new KVStoreImpl();
     store.lists().put("k1", listForKVSTest());
     Assert.assertEquals("ok", store.lists().del("k1").toString());
-    Assert.assertNull(store.lists().get("k1"));
+    store.lists().get("k1");
   }
 
   @Test
