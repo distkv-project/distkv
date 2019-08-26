@@ -1,7 +1,7 @@
 package org.dst.client.cmd;
 
 import org.dst.client.DefaultDstClient;
-import org.dst.exception.*;
+import org.dst.exception.KeyNotFoundException;
 
 public class ProcessResult {
 
@@ -21,7 +21,7 @@ public class ProcessResult {
       try {
         result = client.strs().get(cmd[1]);
       } catch (KeyNotFoundException e) {
-        result = "the key :"+e.getKey()+"is not found";
+        result = "the key :" + e.getKey() + "is not found";
       }
     }
 

@@ -28,6 +28,7 @@ public class Main {
       switch (type) {
         case STRING:
           result = ProcessResult.getStringResult(CommandParser.parseCommand(line));
+          break;
         case LIST:
           break;
         case SET:
@@ -35,6 +36,8 @@ public class Main {
         case DICT:
           break;
         case TABLE:
+          break;
+        default:
           break;
       }
       System.out.println(result);
