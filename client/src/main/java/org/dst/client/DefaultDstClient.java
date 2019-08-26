@@ -35,6 +35,7 @@ public class DefaultDstClient implements DstClient {
     clientOptions.setReadTimeoutMillis(1000);
     clientOptions.setMaxTotalConnections(1000);
     clientOptions.setMinIdleConnections(10);
+
     stringClient = new RpcClient(serverAddress, clientOptions);
     listClient = new RpcClient(serverAddress, clientOptions);
     setClient = new RpcClient(serverAddress, clientOptions);
@@ -44,10 +45,13 @@ public class DefaultDstClient implements DstClient {
     DstListService listService = BrpcProxy.getProxy(listClient, DstListService.class);
     DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
     DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);
+
+
     stringProxy = new DstStringProxy(stringService);
     listProxy = new DstListProxy(listService);
     setProxy = new DstSetProxy(setService);
     dictProxy = new DstDictProxy(dictService);
+
   }
 
   @Override
@@ -62,8 +66,13 @@ public class DefaultDstClient implements DstClient {
 
   @Override
   public boolean disconnect() {
+    stringClient.stop();
+    listClient.stop();
+    setClient.stop();
+    dictClient.stop();
     return true;
   }
+
 
   @Override
   public DstStringProxy strs() {
