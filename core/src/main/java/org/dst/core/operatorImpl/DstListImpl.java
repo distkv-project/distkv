@@ -1,6 +1,7 @@
 package org.dst.core.operatorImpl;
 
 import org.dst.core.operatorset.DstList;
+import org.dst.exception.KeyNotFoundException;
 import org.dst.utils.Status;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,7 @@ public class DstListImpl implements DstList {
   @Override
   public List<String> get(String key) {
     if (!listMap.containsKey(key)) {
-      return null;
+      throw new KeyNotFoundException(key);
     }
     return listMap.get(key);
   }

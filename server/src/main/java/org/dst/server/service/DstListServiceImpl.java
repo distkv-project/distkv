@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.dst.core.KVStore;
 import org.dst.exception.DstException;
+import org.dst.exception.KeyNotFoundException;
 import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
@@ -40,14 +41,15 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   public ListProtocol.GetResponse get(ListProtocol.GetRequest request) {
     ListProtocol.GetResponse.Builder responseBuilder =
             ListProtocol.GetResponse.newBuilder();
-
-    List<String> values = getStore().lists().get(request.getKey());
-    Optional.ofNullable(values)
-            .ifPresent(v -> {
-              values.forEach(value -> responseBuilder.addValues(value));
-            });
-
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    CommonProtocol.Status status = CommonProtocol.Status.OK;
+    try {
+      List<String> values = getStore().lists().get(request.getKey());
+      Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValues(values));
+    } catch (KeyNotFoundException e) {
+      LOGGER.error("Failed to get a list from store: {}", e);
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    }
+    responseBuilder.setStatus(status);
     return responseBuilder.build();
   }
 
