@@ -39,8 +39,8 @@
         </encoder>
     </appender>
 
-    <logger name="org.dst.server">
-        <level value="info"/>
+    <logger name="org.dst.server" level="info">
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <root>
