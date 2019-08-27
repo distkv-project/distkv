@@ -46,12 +46,10 @@ public class DefaultDstClient implements DstClient {
     DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
     DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);
 
-
     stringProxy = new DstStringProxy(stringService);
     listProxy = new DstListProxy(listService);
     setProxy = new DstSetProxy(setService);
     dictProxy = new DstDictProxy(dictService);
-
   }
 
   @Override
@@ -72,7 +70,6 @@ public class DefaultDstClient implements DstClient {
     dictClient.stop();
     return true;
   }
-
 
   @Override
   public DstStringProxy strs() {
