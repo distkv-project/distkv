@@ -30,4 +30,7 @@ public class DstBenchmarkTest {
     client.disconnect();
   }
 
+  public static void benchmarkTest(DstClient client) {
+    strPutStressTest(client);
+  }
 }

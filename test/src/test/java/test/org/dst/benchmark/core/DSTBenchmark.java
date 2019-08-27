@@ -6,7 +6,7 @@ import test.org.dst.supplier.TestUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static test.org.dst.benchmark.DstBenchmarkTest.strPutStressTest;
+import static test.org.dst.benchmark.DstBenchmarkTest.benchmarkTest;
 
 public class DSTBenchmark {
   public static final String serverAddress = "list://127.0.0.1:8082";
@@ -33,7 +33,7 @@ public class DSTBenchmark {
       List<Thread> threads = new ArrayList<>();
       for (int i = 0; i < clients.size(); i++) {
         int finalI = i;
-        Thread thread =  new Thread(() -> strPutStressTest(clients.get(finalI)));
+        Thread thread =  new Thread(() -> benchmarkTest(clients.get(finalI)));
         thread.start();
         threads.add(thread);
       }
