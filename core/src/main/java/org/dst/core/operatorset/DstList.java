@@ -1,6 +1,5 @@
 package org.dst.core.operatorset;
 
-import org.dst.core.exception.NotImplementException;
 import org.dst.utils.Status;
 
 import java.util.List;
@@ -32,15 +31,15 @@ public interface DstList {
   Status del(String key);
 
   //insert value from the left of list
-  Status lput(String key, List<String> value) throws NotImplementException;
+  Status lput(String key, List<String> value);
 
   //insert value from the right of list
-  Status rput(String key, List<String> value) throws NotImplementException;
+  Status rput(String key, List<String> value);
 
   //delete n values from the left of list
-  Status ldel(String key, int n) throws NotImplementException;
+  Status ldel(String key, int n);
 
   //delete n values from the right of list
-  Status rdel(String key, int n) throws NotImplementException;
+  Status rdel(String key, int n);
 
 }
