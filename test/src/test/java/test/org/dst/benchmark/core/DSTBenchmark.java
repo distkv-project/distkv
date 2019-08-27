@@ -8,6 +8,8 @@ import test.org.dst.supplier.TestUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import static test.org.dst.benchmark.DstBenchmarkTest.strPutStressTest;
+
 public class DSTBenchmark {
 
   public static final String serverAddress = "list://127.0.0.1:8082";
@@ -39,7 +41,8 @@ public class DSTBenchmark {
         clients.add(new DefaultDstClient(serverAddress));
       }
       for (int i = 0; i < clients.size(); i++) {
-        new Thread(new DstBenchmarkTest(clients.get(i))).start();
+        int finalI = i;
+        new Thread(() -> strPutStressTest(clients.get(finalI))).start();
       }
       Thread.sleep(timeOut);
       TestUtil.stopRpcServer();
@@ -56,7 +59,6 @@ public class DSTBenchmark {
       } else {
         for (int i = 0; i < threadNum; i++) {
           new Thread(myTest).start();
-          Thread.sleep(10000);
         }
       }
       Thread.sleep(timeOut);
@@ -67,11 +69,10 @@ public class DSTBenchmark {
   }
 
   public static void main(String[] args) {
-//    DSTBenchmark benchmark = new DSTBenchmark();
-//    benchmark.setTimeOut(100 * 1000);
-//    benchmark.setThreadNum(10);
-//    benchmark.DstRun();
-    TestUtil.startRpcServer();
+    DSTBenchmark benchmark = new DSTBenchmark();
+    benchmark.setTimeOut(100 * 1000);
+    benchmark.setThreadNum(10);
+    benchmark.DstRun();
   }
 
 }

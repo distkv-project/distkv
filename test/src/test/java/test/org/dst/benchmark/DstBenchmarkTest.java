@@ -1,12 +1,11 @@
 package test.org.dst.benchmark;
 
-import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import test.org.dst.benchmark.core.DSTBenchmark;
 
-public class DstBenchmarkTest implements Runnable{
+public class DstBenchmarkTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DSTBenchmark.class);
 
@@ -16,7 +15,7 @@ public class DstBenchmarkTest implements Runnable{
     this.client = client;
   }
 
-  public void strPutStressTest() {
+  public static void strPutStressTest(DstClient client) {
     Thread thread = Thread.currentThread();
     long id = thread.getId();
     String name = Thread.currentThread().getName();
@@ -32,8 +31,4 @@ public class DstBenchmarkTest implements Runnable{
     client.disconnect();
   }
 
-  @Override
-  public void run() {
-    strPutStressTest();
-  }
 }
