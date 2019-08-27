@@ -32,7 +32,7 @@ public class ProcessResult {
       }
     } else if ("get".equals(cmd[0])) {
       if (cmd.length > 2) {
-        return  "too many key";
+        return "too many key";
       }
       try {
         result = client.strs().get(cmd[1]);
@@ -53,7 +53,7 @@ public class ProcessResult {
    * @return OK、[v1 v2 v3]
    */
   public static String getListResult(String[] cmd) {
-    String result ;
+    String result;
 
     if ("put".equals(cmd[0])) {
       try {
