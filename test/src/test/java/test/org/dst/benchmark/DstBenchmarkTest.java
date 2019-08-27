@@ -9,7 +9,7 @@ public class DstBenchmarkTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DSTBenchmark.class);
 
-  public DstClient client ;
+  public DstClient client;
 
   public DstBenchmarkTest(DstClient client) {
     this.client = client;
@@ -25,7 +25,9 @@ public class DstBenchmarkTest {
     }
     String as = client.strs().get(name + 59999);
     long end = System.currentTimeMillis();
-    String str = "This test is Str put test, and this is thread-" + id + " and waste time =" + (end - start) + "; the result is " + "test59999".equals(as);
+    String str = "This test is Str put test, and this is thread-" +
+        id + " and waste time =" +
+        (end - start) + "; the result is " + "test59999".equals(as);
     LOGGER.debug(str);
     System.out.println(str);
     client.disconnect();
