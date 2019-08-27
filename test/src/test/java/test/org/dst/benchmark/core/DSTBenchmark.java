@@ -15,8 +15,6 @@ public class DSTBenchmark {
 
   private Runnable myTest = null;
 
-  private long timeOut = 100 * 1000;
-
   public void setTestModule(Runnable myTest) {
     this.myTest = myTest;
   }
@@ -25,23 +23,23 @@ public class DSTBenchmark {
     this.threadNum = threadNum;
   }
 
-  public void setTimeOut(long timeOut) {
-    this.timeOut = timeOut;
-  }
-
   public void dstRun() {
     try {
       TestUtil.startRpcServer();
-      Thread.sleep(1000 * 10);
       List<DstClient> clients = new ArrayList<>();
       for (int i = 0; i < threadNum; i++) {
         clients.add(new DefaultDstClient(serverAddress));
       }
+      List<Thread> threads = new ArrayList<>();
       for (int i = 0; i < clients.size(); i++) {
         int finalI = i;
-        new Thread(() -> strPutStressTest(clients.get(finalI))).start();
+        Thread thread =  new Thread(() -> strPutStressTest(clients.get(finalI)));
+        thread.start();
+        threads.add(thread);
       }
-      Thread.sleep(timeOut);
+      for(int i = 0;i<threadNum;i++) {
+        threads.get(i).join();
+      }
       TestUtil.stopRpcServer();
     } catch (InterruptedException e) {
       e.printStackTrace();
@@ -54,11 +52,16 @@ public class DSTBenchmark {
       if (myTest == null) {
         System.out.println("You must set test module");
       } else {
+        List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < threadNum; i++) {
-          new Thread(myTest).start();
+          Thread thread = new Thread(myTest);
+          threads.add(thread);
+          thread.start();
+        }
+        for(int i = 0;i<threadNum;i++) {
+          threads.get(i).join();
         }
       }
-      Thread.sleep(timeOut);
       TestUtil.stopRpcServer();
     } catch (InterruptedException e) {
       e.printStackTrace();
@@ -67,8 +70,7 @@ public class DSTBenchmark {
 
   public static void main(String[] args) {
     DSTBenchmark benchmark = new DSTBenchmark();
-    benchmark.setTimeOut(100 * 1000);
-    benchmark.setThreadNum(1);
+    benchmark.setThreadNum(10);
     benchmark.dstRun();
   }
 
