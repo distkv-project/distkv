@@ -68,7 +68,7 @@ public class DSTBenchmark {
   public static void main(String[] args) {
     DSTBenchmark benchmark = new DSTBenchmark();
     benchmark.setTimeOut(100 * 1000);
-    benchmark.setThreadNum(10);
+    benchmark.setThreadNum(1);
     benchmark.dstRun();
   }
 

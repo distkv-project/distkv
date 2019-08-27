@@ -1,13 +1,8 @@
 package test.org.dst.benchmark;
 
 import org.dst.client.DstClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import test.org.dst.benchmark.core.DSTBenchmark;
 
 public class DstBenchmarkTest {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(DSTBenchmark.class);
 
   public DstClient client;
 
@@ -26,9 +21,11 @@ public class DstBenchmarkTest {
     String as = client.strs().get(name + 59999);
     long end = System.currentTimeMillis();
     String str = "This test is Str put test, and this is thread-" +
-        id + " and waste time =" +
-        (end - start) + "; the result is " + "test59999".equals(as);
-    LOGGER.debug(str);
+        id +
+        " and waste time =" +
+        (end - start) +
+        "; the result is " +
+        "test59999".equals(as);
     System.out.println(str);
     client.disconnect();
   }
