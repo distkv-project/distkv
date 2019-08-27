@@ -33,7 +33,7 @@ public class CommandParser {
   public static DstOperationType parseOperationType(String line) {
     String[] lineArr = line.split(" ");
     DstOperationType type;
-    String[] typeArr = null;
+    String[] typeArr;
 
     if ("put".equals(lineArr[0]) || "get".equals(lineArr[0])) {
       type = DstOperationType.STRING;

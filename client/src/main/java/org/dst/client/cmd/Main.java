@@ -24,20 +24,25 @@ public class Main {
       System.out.print("dst-cli>");
       String line = sc.nextLine();
       DstOperationType type = CommandParser.parseOperationType(line);
-      String result = "";
+      String result;
       switch (type) {
         case STRING:
           result = ProcessResult.getStringResult(CommandParser.parseCommand(line));
           break;
         case LIST:
+          result = ProcessResult.getListResult(CommandParser.parseCommand(line));
           break;
         case SET:
+          result = ProcessResult.getSetResult(CommandParser.parseCommand(line));
           break;
         case DICT:
+          result = ProcessResult.getDictResult(CommandParser.parseCommand(line));
           break;
         case TABLE:
+          result = ProcessResult.getTableResult(CommandParser.parseCommand(line));
           break;
         default:
+          result = "Unsupport data type";
           break;
       }
       System.out.println(result);
