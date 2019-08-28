@@ -32,14 +32,9 @@ public interface DstTable {
    * This method will return all values by TableSpecification
    *
    * @param table table
+   * @param fields support for conditional query
    */
-  List<FieldValue> query(TableSpecification table);
-
-  /**
-   * This will return values from table store by fields in TableSpecification
-   * @param table table
-   */
-  List<FieldValue> queryByConditions(TableSpecification table, FieldValue... fields);
+  List<FieldValue> query(TableSpecification table,FieldValue... fields);
 
   /**
    * This method will drop table from store by table

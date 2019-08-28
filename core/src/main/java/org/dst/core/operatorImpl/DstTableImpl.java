@@ -1,8 +1,6 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.table.FieldValue;
-import org.dst.core.table.TableSpecification;
-import org.dst.core.table.RecordEntry;
+import org.dst.core.table.*;
 import org.dst.core.exception.NotImplementException;
 import org.dst.core.operatorset.DstTable;
 import org.dst.exception.RepeatCreateTableException;
@@ -30,13 +28,49 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public void append(RecordEntry recordEntry) {
-    if (isExist(recordEntry.getTableSpec())) {
+    TableSpecification spec = recordEntry.getTableSpec();
+    if (!isExist(spec)) {
       throw new TableNotFoundException(recordEntry.getTableSpec().getName());
     }
-    TableSpecification ts=recordEntry.getTableSpec();
-    recordEntry.getIndexEntry();
-    RecordEntry re = tableMap.get(recordEntry.getTableSpec().getName());
+    RecordEntry store = tableMap.get(spec.getName());
+    List<List<FieldValue>> newValues = recordEntry.getFieldValues();
+    if (store.getFieldValues() == null) {
+      store.setFieldValues(newValues);
+    } else {
+      store.getFieldValues().addAll(newValues);
+    }
 
+    List<FieldSpecification> fields = spec.getFields();
+
+    //插入索引信息
+    for (FieldSpecification field : fields) {
+      //TODO (tansen)
+      boolean primary = field.isPrimary();
+      if (primary) {
+        for(List<FieldValue> fieldValues : newValues) {
+          for (FieldValue fieldValue : fieldValues){
+            if (fieldValue.index == field.index) {
+              //store.getPrimarys().put(fieldValue,(store.getFieldValues()));
+            }
+          }
+
+        }
+      }
+
+      //TODO (tansen)
+      boolean index = field.isIndex();
+      if (index) {
+        for(List<FieldValue> fieldValues : newValues) {
+          for (FieldValue fieldValue : fieldValues){
+            if (fieldValue.index == field.index) {
+              //store.getIndexEntry().put(fieldValue,(store.getFieldValues().size()+1));
+            }
+          }
+
+        }
+      }
+
+    }
   }
 
   @Override
@@ -45,12 +79,7 @@ public class DstTableImpl implements DstTable {
   }
 
   @Override
-  public List<FieldValue> query(TableSpecification table) {
-    throw new NotImplementException();
-  }
-
-  @Override
-  public List<FieldValue> queryByConditions(TableSpecification table, FieldValue... fields) {
+  public List<FieldValue> query(TableSpecification table, FieldValue... fields) {
     throw new NotImplementException();
   }
 
