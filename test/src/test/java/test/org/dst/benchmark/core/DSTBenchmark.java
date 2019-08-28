@@ -16,8 +16,7 @@ public class DSTBenchmark {
     this.threadNum = threadNum;
   }
 
-  public DSTBenchmark() {
-  }
+  public DSTBenchmark() {}
 
   public void setThreadNum(int threadNum) {
     this.threadNum = threadNum;
@@ -43,6 +42,7 @@ public class DSTBenchmark {
       TestUtil.stopRpcServer();
     } catch (InterruptedException e) {
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
@@ -63,6 +63,7 @@ public class DSTBenchmark {
       }
     } catch (InterruptedException e) {
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 }
