@@ -33,19 +33,4 @@ public class TableSpecification {
     }
   }
 
-  public String getName() {
-    return this.name;
-  }
-
-  public List<FieldSpecification> getFields() {
-    return this.fields;
-  }
-
-  @Override
-  public String toString() {
-    return "TableSpecification{" +
-          "name='" + name + '\'' +
-          ", fields=" + fields +
-          '}';
-  }
 }

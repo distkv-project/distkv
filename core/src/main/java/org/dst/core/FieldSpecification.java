@@ -81,14 +81,4 @@ public class FieldSpecification {
       return new FieldSpecification(index, name, valueType, isPrimary, shouldCreateIndex);
     }
   }
-
-  @Override
-  public String toString() {
-    return "FieldSpecification{" +
-          "index=" + index +
-          ", name='" + name + '\'' +
-          ", valueType=" + valueType +
-          ", functionBits=" + functionBits +
-          '}';
-  }
 }

@@ -11,11 +11,4 @@ public class FieldValue {
     this.valueType = valueType;
   }
 
-  @Override
-  public String toString() {
-    return "FieldValue{" +
-          "index=" + index +
-          ", valueType=" + valueType +
-          '}';
-  }
 }

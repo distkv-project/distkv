@@ -14,10 +14,7 @@ public class StringListValue extends FieldValue {
     super(-1, ValueTypeEnum.STRING_LIST);
     this.value = value;
   }
-  public StringListValue(int index,List<String> value) {
-    super(index, ValueTypeEnum.STRING_LIST);
-    this.value = value;
-  }
+
   public List<String> getValue() {
     return value;
   }
@@ -26,13 +23,5 @@ public class StringListValue extends FieldValue {
     this.value = value;
   }
 
-  @Override
-  public String toString() {
-    return "StringListValue{" +
-          "value=" + value +
-          ", index=" + index +
-          ", valueType=" + valueType +
-          '}';
-  }
 }
 
