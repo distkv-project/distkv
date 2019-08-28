@@ -1,14 +1,11 @@
 package test.org.dst.benchmark;
 
 import org.dst.client.DstClient;
+import test.org.dst.benchmark.core.DSTBenchmark;
 
 public class DstBenchmarkTest {
 
   public DstClient client;
-
-  public DstBenchmarkTest(DstClient client) {
-    this.client = client;
-  }
 
   public static void strPutStressTest(DstClient client) {
     Thread thread = Thread.currentThread();
@@ -32,5 +29,11 @@ public class DstBenchmarkTest {
 
   public static void benchmarkTest(DstClient client) {
     strPutStressTest(client);
+  }
+
+  public static void main(String[] args) {
+    DSTBenchmark benchmark = new DSTBenchmark();
+    benchmark.setThreadNum(10);
+    benchmark.dstRun();
   }
 }

@@ -13,12 +13,6 @@ public class DSTBenchmark {
 
   private int threadNum = 1;
 
-  private Runnable myTest = null;
-
-  public void setTestModule(Runnable myTest) {
-    this.myTest = myTest;
-  }
-
   public void setThreadNum(int threadNum) {
     this.threadNum = threadNum;
   }
@@ -46,7 +40,7 @@ public class DSTBenchmark {
     }
   }
 
-  public void run() {
+  public void run(Runnable myTest) {
     try {
       TestUtil.startRpcServer();
       if (myTest == null) {
@@ -67,11 +61,4 @@ public class DSTBenchmark {
       e.printStackTrace();
     }
   }
-
-  public static void main(String[] args) {
-    DSTBenchmark benchmark = new DSTBenchmark();
-    benchmark.setThreadNum(10);
-    benchmark.dstRun();
-  }
-
 }
