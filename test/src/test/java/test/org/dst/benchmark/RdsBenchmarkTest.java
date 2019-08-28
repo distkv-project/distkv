@@ -1,22 +1,20 @@
 package test.org.dst.benchmark;
 
-import org.dst.client.DstClient;
+import redis.clients.jedis.Jedis;
 import test.org.dst.benchmark.core.DSTBenchmark;
 
-public class DstBenchmarkTest {
-
-
-  public static void strPutStressTest(DstClient client) {
+public class RdsBenchmarkTest {
+  public static void strPutStressTest(Jedis jedis) {
     Thread thread = Thread.currentThread();
     long id = thread.getId();
     String name = Thread.currentThread().getName();
     long start = System.currentTimeMillis();
     for (int i = 0; i < 100000; i++) {
-      client.strs().put(name + i, "test" + i);
+      jedis.set(name + i, "test" + i);
     }
-    String as = client.strs().get(name + 59999);
+    String as = jedis.get(name + 59999);
     long end = System.currentTimeMillis();
-    String str = "This test is DST Str put test, and this is thread-" +
+    String str = "This test is RDS Str put test, and this is thread-" +
         id +
         " and waste time =" +
         (end - start) +
@@ -25,14 +23,15 @@ public class DstBenchmarkTest {
     System.out.println(str);
   }
 
-  public static void benchmarkTest(DstClient client) {
-    strPutStressTest(client);
-    client.disconnect();
+  public static void benchmarkTest() {
+    Jedis jedis = new Jedis("127.0.0.1", 6379);
+    strPutStressTest(jedis);
+    jedis.close();
   }
 
   public static void main(String[] args) {
-    // DST benchmark test
+    //RDS benchmark test
     DSTBenchmark benchmark = new DSTBenchmark(10);
-    benchmark.run(dstClient -> benchmarkTest(dstClient));
+    benchmark.run(() -> benchmarkTest());
   }
 }

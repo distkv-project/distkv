@@ -5,19 +5,25 @@ import org.dst.client.DstClient;
 import test.org.dst.supplier.TestUtil;
 import java.util.ArrayList;
 import java.util.List;
-
-import static test.org.dst.benchmark.DstBenchmarkTest.benchmarkTest;
+import java.util.function.Consumer;
 
 public class DSTBenchmark {
   public static final String serverAddress = "list://127.0.0.1:8082";
 
   private int threadNum = 1;
 
+  public DSTBenchmark(int threadNum) {
+    this.threadNum = threadNum;
+  }
+
+  public DSTBenchmark() {
+  }
+
   public void setThreadNum(int threadNum) {
     this.threadNum = threadNum;
   }
 
-  public void dstRun() {
+  public void run(Consumer<DstClient> myTest) {
     try {
       TestUtil.startRpcServer();
       List<DstClient> clients = new ArrayList<>();
@@ -27,11 +33,11 @@ public class DSTBenchmark {
       List<Thread> threads = new ArrayList<>();
       for (int i = 0; i < clients.size(); i++) {
         int finalI = i;
-        Thread thread =  new Thread(() -> benchmarkTest(clients.get(finalI)));
+        Thread thread = new Thread(() -> myTest.accept(clients.get(finalI)));
         thread.start();
         threads.add(thread);
       }
-      for(int i = 0;i<threadNum;i++) {
+      for (int i = 0; i < threadNum; i++) {
         threads.get(i).join();
       }
       TestUtil.stopRpcServer();
@@ -42,7 +48,6 @@ public class DSTBenchmark {
 
   public void run(Runnable myTest) {
     try {
-      TestUtil.startRpcServer();
       if (myTest == null) {
         System.out.println("You must set test module");
       } else {
@@ -52,11 +57,10 @@ public class DSTBenchmark {
           threads.add(thread);
           thread.start();
         }
-        for(int i = 0;i<threadNum;i++) {
+        for (int i = 0; i < threadNum; i++) {
           threads.get(i).join();
         }
       }
-      TestUtil.stopRpcServer();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
