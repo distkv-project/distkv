@@ -12,7 +12,8 @@ public class Benchmark {
     this.threadNum = threadNum;
   }
 
-  public Benchmark() {}
+  public Benchmark() {
+  }
 
   public void setThreadNum(int threadNum) {
     this.threadNum = threadNum;

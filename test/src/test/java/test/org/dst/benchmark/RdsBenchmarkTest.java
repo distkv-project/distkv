@@ -32,7 +32,7 @@ public class RdsBenchmarkTest {
   public static void main(String[] args) {
     //RDS benchmark test
     Benchmark benchmark = new Benchmark(10);
-    benchmark.setTest(()->benchmarkTest());
+    benchmark.setTest(() -> benchmarkTest());
     benchmark.run();
   }
 }

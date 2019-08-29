@@ -3,7 +3,6 @@ package test.org.dst.benchmark;
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import test.org.dst.benchmark.core.Benchmark;
-import test.org.dst.supplier.TestUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -15,7 +14,8 @@ public class DSTBenchmark extends Benchmark {
     super.setThreadNum(threadNum);
   }
 
-  public DSTBenchmark() {}
+  public DSTBenchmark() {
+  }
 
   public void run(Consumer<DstClient> myTest) {
     try {
