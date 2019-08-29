@@ -1,7 +1,7 @@
 package test.org.dst.benchmark;
 
 import redis.clients.jedis.Jedis;
-import test.org.dst.benchmark.core.DSTBenchmark;
+import test.org.dst.benchmark.core.Benchmark;
 
 public class RdsBenchmarkTest {
   public static void strPutStressTest(Jedis jedis) {
@@ -31,7 +31,8 @@ public class RdsBenchmarkTest {
 
   public static void main(String[] args) {
     //RDS benchmark test
-    DSTBenchmark benchmark = new DSTBenchmark(10);
-    benchmark.run(() -> benchmarkTest());
+    Benchmark benchmark = new Benchmark(10);
+    benchmark.setTest(()->benchmarkTest());
+    benchmark.run();
   }
 }

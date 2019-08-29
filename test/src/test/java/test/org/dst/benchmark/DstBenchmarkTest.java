@@ -1,7 +1,7 @@
 package test.org.dst.benchmark;
 
 import org.dst.client.DstClient;
-import test.org.dst.benchmark.core.DSTBenchmark;
+import test.org.dst.supplier.TestUtil;
 
 public class DstBenchmarkTest {
 
@@ -32,7 +32,9 @@ public class DstBenchmarkTest {
 
   public static void main(String[] args) {
     // DST benchmark test
+    TestUtil.startRpcServer();
     DSTBenchmark benchmark = new DSTBenchmark(10);
     benchmark.run(dstClient -> benchmarkTest(dstClient));
+    TestUtil.stopRpcServer();
   }
 }
