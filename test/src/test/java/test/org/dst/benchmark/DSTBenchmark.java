@@ -2,7 +2,6 @@ package test.org.dst.benchmark;
 
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
-import test.org.dst.benchmark.core.Benchmark;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
