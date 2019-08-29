@@ -1,36 +1,30 @@
 package org.dst.client.cmd;
 
-public class CommandParser {
+import org.dst.utils.StringUtil;
 
-  /**
-   * @param args -h x.x.x.x -p xxxx
-   */
-  public static String parseAddress(String[] args) {
-    if (args.length != 4) {
-      System.out.println("the parameter is not enough");
-    }
+public class Parser {
 
-    StringBuilder sb = new StringBuilder();
-    if ("-h".equals(args[0])) {
-      sb.append(args[1]);
-    } else {
-      System.out.println("the first parameter must be -h");
-    }
+  private DstCommandWithType dstCommandWithType = new DstCommandWithType();
 
-    if ("-p".equals(args[2])) {
-      sb.append(args[3]);
-    } else {
-      System.out.println("the third parameter must be -p");
-    }
-
-    return sb.toString();
+  public Parser() {
   }
 
   /**
    * @param line put k1 v1 or str.put k1 v1 or list.put k1 v1 v2 v3 etc.
    * @return return the specific operation type, for example STRING SET LIST etc
    */
-  public static DstOperationType parseOperationType(String line) {
+  public DstCommandWithType parse(String line) {
+    if (StringUtil.isNullOrEmpty(line)) {
+      return dstCommandWithType;
+    }
+    this.parseOperationType(line);
+    if (dstCommandWithType.operationType != DstOperationType.UNKNOWN) {
+      this.parseCommand(line);
+    }
+    return dstCommandWithType;
+  }
+
+  private void parseOperationType(String line) {
     String[] lineArr = line.split(" ");
     DstOperationType type;
     String[] typeArr;
@@ -55,18 +49,24 @@ public class CommandParser {
       }
     }
 
-    return type;
+    dstCommandWithType.operationType = type;
   }
 
   /**
    * @return [put, k1, v1] or [put, k1, v1, v2, v3]
    * @line put k1 v1 or str.put k1 v1 or list.put k1 v1 v2 v3 etc.
    */
-  public static String[] parseCommand(String line) {
+  private void parseCommand(String line) throws ArrayIndexOutOfBoundsException {
     String[] lineArr = line.split(" ");
     if (lineArr[0].contains(".")) {
-      lineArr[0] = lineArr[0].split("\\.")[1];
+      String[] tempArr = lineArr[0].split("\\.");
+      //str. list.
+      if (tempArr.length == 2) {
+        lineArr[0] = tempArr[1];
+      }
     }
-    return lineArr;
+
+    dstCommandWithType.command = lineArr;
   }
+
 }

@@ -15,9 +15,9 @@ public class ProcessResult {
 
   /**
    * @param cmd [put k1 v1] 、[get k1]
-   * @return OK、v1
+   * @return ok、v1
    */
-  public static String getStringResult(String[] cmd) {
+  public String getStringResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
@@ -26,7 +26,7 @@ public class ProcessResult {
       }
       try {
         client.strs().put(cmd[1], cmd[2]);
-        result = "OK";
+        result = "ok";
       } catch (ArrayIndexOutOfBoundsException e) {
         result = "please specify a value";
       }
@@ -50,18 +50,18 @@ public class ProcessResult {
 
   /**
    * @param cmd [put k1 v1 v2 v3]、[get k1]
-   * @return OK、[v1 v2 v3]
+   * @return ok、[v1 v2 v3]
    */
-  public static String getListResult(String[] cmd) {
+  public String getListResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
       try {
         String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
         client.lists().put(cmd[1], Arrays.asList(str));
-        result = "OK";
+        result = "ok";
       } catch (ArrayIndexOutOfBoundsException e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("get".equals(cmd[0])) {
       try {
@@ -71,53 +71,53 @@ public class ProcessResult {
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("lpush".equals(cmd[0])) {
       try {
         String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
         client.lists().lput(cmd[1], Arrays.asList(str));
-        result = "OK";
+        result = "ok";
       } catch (KeyNotFoundException e) {
         result = "the key:" + e.getKey() + " is not found";
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("rpush".equals(cmd[0])) {
       try {
         String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
         client.lists().rput(cmd[1], Arrays.asList(str));
-        result = "OK";
+        result = "ok";
       } catch (KeyNotFoundException e) {
         result = "the key:" + e.getKey() + " is not found";
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("lpop".equals(cmd[0])) {
       try {
         client.lists().ldel(cmd[1], Integer.parseInt(cmd[2]));
-        result = "OK";
+        result = "ok";
       } catch (KeyNotFoundException e) {
         result = "the key:" + e.getKey() + " is not found";
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("rpop".equals(cmd[0])) {
       try {
         client.lists().rdel(cmd[1], Integer.parseInt(cmd[2]));
-        result = "OK";
+        result = "ok";
       } catch (KeyNotFoundException e) {
         result = "the key:" + e.getKey() + " is not found";
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else {
       result = "Unsupport operation";
@@ -126,16 +126,16 @@ public class ProcessResult {
     return result;
   }
 
-  public static String getSetResult(String[] cmd) {
+  public String getSetResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
       try {
         String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
         client.sets().put(cmd[1], new HashSet<>(Arrays.asList(str)));
-        result = "OK";
+        result = "ok";
       } catch (ArrayIndexOutOfBoundsException e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("get".equals(cmd[0])) {
       try {
@@ -145,29 +145,29 @@ public class ProcessResult {
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("del".equals(cmd[0])) {
       try {
         client.sets().delete(cmd[1], cmd[2]);
-        result = "OK";
+        result = "ok";
       } catch (KeyNotFoundException e) {
         result = "the key:" + e.getKey() + " is not found";
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("drop".equals(cmd[0])) {
       try {
         client.sets().dropByKey(cmd[1]);
-        result = "OK";
+        result = "ok";
       } catch (KeyNotFoundException e) {
         result = "the key:" + e.getKey() + " is not found";
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("exists".equals(cmd[0])) {
       try {
@@ -177,7 +177,7 @@ public class ProcessResult {
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else {
       result = "Unsupport operation";
@@ -186,7 +186,7 @@ public class ProcessResult {
     return result;
   }
 
-  public static String getDictResult(String[] cmd) {
+  public String getDictResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
@@ -196,9 +196,9 @@ public class ProcessResult {
           map.put(cmd[i], cmd[i + 1]);
         }
         client.dicts().put(cmd[1], map);
-        result = "OK";
+        result = "ok";
       } catch (ArrayIndexOutOfBoundsException e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("get".equals(cmd[0])) {
       try {
@@ -215,7 +215,7 @@ public class ProcessResult {
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("pop".equals(cmd[0])) {
       try {
@@ -227,12 +227,12 @@ public class ProcessResult {
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("del".equals(cmd[0])) {
       try {
         client.dicts().delItem(cmd[1], cmd[2]);
-        result = "OK";
+        result = "ok";
       } catch (DictKeyNotFoundException e) {
         result = "the dictionary key:" + e.getKey() + " is not found";
       } catch (KeyNotFoundException e) {
@@ -240,18 +240,18 @@ public class ProcessResult {
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else if ("drop".equals(cmd[0])) {
       try {
         client.dicts().del(cmd[1]);
-        result = "OK";
+        result = "ok";
       } catch (DictKeyNotFoundException e) {
         result = "the dictionary key:" + e.getKey() + " is not found";
       } catch (DstException e) {
         result = e.toString();
       } catch (Exception e) {
-        result = "NOT OK";
+        result = "not ok";
       }
     } else {
       result = "Unsupport operation";
