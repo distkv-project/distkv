@@ -39,8 +39,7 @@ public class Benchmark {
         }
       }
     } catch (InterruptedException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e);
+      throw new RuntimeException("Failed to start benchmark threads.", e);
     }
   }
 

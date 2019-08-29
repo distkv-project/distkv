@@ -34,7 +34,8 @@ public class DstBenchmarkTest {
     // DST benchmark test
     TestUtil.startRpcServer();
     DSTBenchmark benchmark = new DSTBenchmark(10);
-    benchmark.run(dstClient -> benchmarkTest(dstClient));
+    benchmark.setTestModule(dstClient -> benchmarkTest(dstClient));
+    benchmark.run();
     TestUtil.stopRpcServer();
   }
 }
