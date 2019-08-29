@@ -30,6 +30,24 @@ public class DstRpcServer {
     return kvStore;
   }
 
+  private static String WELCOME_WORD =
+      "                                   \n" +
+      "                                   \n" +
+      "    ,---,                  ___     \n" +
+      "  .'  .' `\\              ,--.'|_   \n" +
+      ",---.'     \\             |  | :,'  \n" +
+      "|   |  .`\\  |  .--.--.   :  : ' :  \n" +
+      ":   : |  '  | /  /    '.;__,'  /   \n" +
+      "|   ' '  ;  :|  :  /`./|  |   |    \n" +
+      "'   | ;  .  ||  :  ;_  :__,'| :    \n" +
+      "|   | :  |  ' \\  \\    `. '  : |__  \n" +
+      "'   : | /  ;   `----.   \\|  | '.'| \n" +
+      "|   | '` ,/   /  /`--'  /;  :    ; \n" +
+      ";   :  .'    '--'.     / |  ,   /  \n" +
+      "|   ,.'        `--'---'   ---`-'   \n" +
+      "'---'                              \n" +
+      "                                   ";
+
   public static void main(String[] args) {
 
     DstRpcServer rpcServer = new DstRpcServer();
@@ -60,6 +78,9 @@ public class DstRpcServer {
     server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstDictServiceImpl(rpcServer.getKvStore()));
     server.start();
+
+    // print welcome word.
+    System.out.println(WELCOME_WORD);
 
     LOGGER.info("Succeeded to start dst server on port {}.", listeningPort);
 
