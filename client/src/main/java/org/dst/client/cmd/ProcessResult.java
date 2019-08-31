@@ -4,55 +4,59 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.function.Function;
 import org.dst.client.DefaultDstClient;
 import org.dst.exception.DstException;
 import org.dst.exception.KeyNotFoundException;
 import org.dst.exception.DictKeyNotFoundException;
 
-public class ProcessResult {
+public class ProcessResult implements Function<DstCommandWithType, ClientResult> {
 
-  public static DefaultDstClient client = null;
+  public DefaultDstClient client = null;
 
+  public ClientResult clientResult = new ClientResult();
   /**
    * @param cmd [put k1 v1] 、[get k1]
    * @return ok、v1
    */
-  public String getStringResult(String[] cmd) {
+  public ClientResult getStringResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
       if (cmd.length > 3) {
-        return "only need a key and a value";
-      }
-      try {
-        client.strs().put(cmd[1], cmd[2]);
-        result = "ok";
-      } catch (ArrayIndexOutOfBoundsException e) {
-        result = "please specify a value";
+       result = "only need a key and a value";
+      } else {
+        try {
+          client.strs().put(cmd[1], cmd[2]);
+          result = "ok";
+        } catch (ArrayIndexOutOfBoundsException e) {
+          result = "please specify a value";
+        }
       }
     } else if ("get".equals(cmd[0])) {
       if (cmd.length > 2) {
-        return "too many key";
-      }
-      try {
-        result = client.strs().get(cmd[1]);
-      } catch (KeyNotFoundException e) {
-        result = "the key:" + e.getKey() + " is not found";
-      } catch (DstException e) {
-        result = e.toString();
+        result = "too many key";
+      } else {
+        try {
+          result = client.strs().get(cmd[1]);
+        } catch (KeyNotFoundException e) {
+          result = "the key:" + e.getKey() + " is not found";
+        } catch (DstException e) {
+          result = e.toString();
+        }
       }
     } else {
       result = "Unsupport operation";
     }
-
-    return result;
+    clientResult.setResult(result);
+    return clientResult;
   }
 
   /**
    * @param cmd [put k1 v1 v2 v3]、[get k1]
    * @return ok、[v1 v2 v3]
    */
-  public String getListResult(String[] cmd) {
+  public ClientResult getListResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
@@ -73,7 +77,7 @@ public class ProcessResult {
       } catch (Exception e) {
         result = "not ok";
       }
-    } else if ("lpush".equals(cmd[0])) {
+    } else if ("lput".equals(cmd[0])) {
       try {
         String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
         client.lists().lput(cmd[1], Arrays.asList(str));
@@ -85,7 +89,7 @@ public class ProcessResult {
       } catch (Exception e) {
         result = "not ok";
       }
-    } else if ("rpush".equals(cmd[0])) {
+    } else if ("rput".equals(cmd[0])) {
       try {
         String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
         client.lists().rput(cmd[1], Arrays.asList(str));
@@ -97,7 +101,7 @@ public class ProcessResult {
       } catch (Exception e) {
         result = "not ok";
       }
-    } else if ("lpop".equals(cmd[0])) {
+    } else if ("ldel".equals(cmd[0])) {
       try {
         client.lists().ldel(cmd[1], Integer.parseInt(cmd[2]));
         result = "ok";
@@ -108,7 +112,7 @@ public class ProcessResult {
       } catch (Exception e) {
         result = "not ok";
       }
-    } else if ("rpop".equals(cmd[0])) {
+    } else if ("rdel".equals(cmd[0])) {
       try {
         client.lists().rdel(cmd[1], Integer.parseInt(cmd[2]));
         result = "ok";
@@ -122,11 +126,11 @@ public class ProcessResult {
     } else {
       result = "Unsupport operation";
     }
-
-    return result;
+    clientResult.setResult(result);
+    return clientResult;
   }
 
-  public String getSetResult(String[] cmd) {
+  public ClientResult getSetResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
@@ -182,11 +186,11 @@ public class ProcessResult {
     } else {
       result = "Unsupport operation";
     }
-
-    return result;
+    clientResult.setResult(result);
+    return clientResult;
   }
 
-  public String getDictResult(String[] cmd) {
+  public ClientResult getDictResult(String[] cmd) {
     String result;
 
     if ("put".equals(cmd[0])) {
@@ -256,12 +260,38 @@ public class ProcessResult {
     } else {
       result = "Unsupport operation";
     }
-
-    return result;
+    clientResult.setResult(result);
+    return clientResult;
   }
 
   //TODO(jyx)
-  public static String getTableResult(String[] cmd) {
+  public ClientResult getTableResult(String[] cmd) {
     return null;
+  }
+
+  @Override
+  public ClientResult apply(DstCommandWithType commandWithType) {
+    ClientResult clientResult;
+    switch (commandWithType.getCommandType()) {
+      case STRING:
+        clientResult = getStringResult(commandWithType.getCommand());
+        break;
+      case LIST:
+        clientResult = getListResult(commandWithType.getCommand());
+        break;
+      case SET:
+        clientResult = getSetResult(commandWithType.getCommand());
+        break;
+      case DICT:
+        clientResult = getDictResult(commandWithType.getCommand());
+        break;
+      case TABLE:
+        clientResult = getTableResult(commandWithType.getCommand());
+        break;
+      default:
+        clientResult = new ClientResult("Unsupport data type");
+        break;
+    }
+    return clientResult;
   }
 }

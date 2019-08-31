@@ -1,6 +1,8 @@
 package org.dst.client.cmd;
 
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.function.Function;
 import org.dst.client.DefaultDstClient;
 
 public class Main {
@@ -9,13 +11,15 @@ public class Main {
 
   private Parser parser = new Parser();
 
-  private ProcessResult processResult = new ProcessResult();
+  private static ProcessResult processResult = new ProcessResult();
+
+  private HashMap<DstOperationType, Function<DstCommandWithType, ClientResult>> commandHandlers = new HashMap<>();
 
   public static void main(String[] args) {
     //TODO(jyx) Check the server is open or not
 
     if (args.length == 0) {
-      ProcessResult.client = new DefaultDstClient(defaultAddress);
+      processResult.client = new DefaultDstClient(defaultAddress);
     } else {
       if (args.length != 4) {
         System.out.println("the parameter is not enough");
@@ -35,42 +39,24 @@ public class Main {
       } else {
         System.out.println("the third parameter must be -p");
       }
-
-      ProcessResult.client = new DefaultDstClient(sb.toString());
+      processResult.client = new DefaultDstClient(sb.toString());
     }
-
     new Main().loop();
   }
 
-  public void loop() {
+  private void loop() {
     Scanner sc = new Scanner(System.in);
     while (true) {
       System.out.print("dst-cli>");
       String line = sc.nextLine();
       DstCommandWithType commandWithType = parser.parse(line);
-      String result;
-      switch (commandWithType.getCommandType()) {
-        case STRING:
-          result = processResult.getStringResult(commandWithType.getCommand());
-          break;
-        case LIST:
-          result = processResult.getListResult(commandWithType.getCommand());
-          break;
-        case SET:
-          result = processResult.getSetResult(commandWithType.getCommand());
-          break;
-        case DICT:
-          result = processResult.getDictResult(commandWithType.getCommand());
-          break;
-        case TABLE:
-          result = processResult.getTableResult(commandWithType.getCommand());
-          break;
-        default:
-          result = "Unsupport data type";
-          break;
-      }
-      System.out.println("dst-cli>" + result);
+      ClientResult clientResult = executeCommand(commandWithType);
+      System.out.println("dst-cli>" + clientResult);
     }
   }
 
+  private ClientResult executeCommand(DstCommandWithType commandWithType) {
+    commandHandlers.put(commandWithType.getCommandType(), processResult);
+    return commandHandlers.get(commandWithType.getCommandType()).apply(commandWithType);
+  }
 }
