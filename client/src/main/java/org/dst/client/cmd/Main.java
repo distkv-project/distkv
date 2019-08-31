@@ -20,26 +20,8 @@ public class Main {
 
     if (args.length == 0) {
       processResult.client = new DefaultDstClient(defaultAddress);
-    } else {
-      if (args.length != 4) {
-        System.out.println("the parameter is not enough");
-      }
+    } else { //TODO(jyx) deal with -h 127.0.0.1 -p 8082
 
-      StringBuilder sb = new StringBuilder();
-      if ("-h".equals(args[0])) {
-        sb.append("list://");
-        sb.append(args[1]);
-      } else {
-        System.out.println("the first parameter must be -h");
-      }
-
-      if ("-p".equals(args[2])) {
-        sb.append(":");
-        sb.append(args[3]);
-      } else {
-        System.out.println("the third parameter must be -p");
-      }
-      processResult.client = new DefaultDstClient(sb.toString());
     }
     new Main().loop();
   }
