@@ -13,7 +13,8 @@ public class Main {
 
   private static ProcessResult processResult = new ProcessResult();
 
-  private HashMap<DstOperationType, Function<DstCommandWithType, ClientResult>> commandHandlers = new HashMap<>();
+  private HashMap<DstOperationType, Function<DstCommandWithType, ClientResult>>
+          commandHandlers = new HashMap<>();
 
   public static void main(String[] args) {
     //TODO(jyx) Check the server is open or not

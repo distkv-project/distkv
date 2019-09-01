@@ -15,6 +15,7 @@ public class ProcessResult implements Function<DstCommandWithType, ClientResult>
   public DefaultDstClient client = null;
 
   public ClientResult clientResult = new ClientResult();
+
   /**
    * @param cmd [put k1 v1] 、[get k1]
    * @return ok、v1
@@ -24,7 +25,7 @@ public class ProcessResult implements Function<DstCommandWithType, ClientResult>
 
     if ("put".equals(cmd[0])) {
       if (cmd.length > 3) {
-       result = "only need a key and a value";
+        result = "only need a key and a value";
       } else {
         try {
           client.strs().put(cmd[1], cmd[2]);
