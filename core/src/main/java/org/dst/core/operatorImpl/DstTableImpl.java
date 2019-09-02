@@ -1,8 +1,12 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.table.*;
 import org.dst.core.exception.NotImplementException;
 import org.dst.core.operatorset.DstTable;
+import org.dst.core.table.FieldSpecification;
+import org.dst.core.table.FieldValue;
+import org.dst.core.table.IndexEntry;
+import org.dst.core.table.RecordEntry;
+import org.dst.core.table.TableSpecification;
 import org.dst.exception.RepeatCreateTableException;
 import org.dst.exception.TableNotFoundException;
 import java.util.ArrayList;
@@ -29,7 +33,7 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public void append(RecordEntry recordEntry) {
-    //TODO(tansen)???  Map的key不可以重复，所以，key不能存对应的字段值。 可以考虑将key和value进行翻转
+    //TODO(tansen)???  Map的key不可以重复，所以，key不能存对应的字段值。 可以考虑将key和value进行翻转.利用其他策略实现存储重复的key
     TableSpecification spec = recordEntry.getTableSpec();
     if (!isExist(spec)) {
       throw new TableNotFoundException(recordEntry.getTableSpec().getName());
