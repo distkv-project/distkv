@@ -21,9 +21,9 @@ public class Main {
 
     if (args.length == 0) {
       processResult.client = new DefaultDstClient(defaultAddress);
-    } else { //TODO(jyx) deal with -h 127.0.0.1 -p 8082
-
     }
+    //TODO(jyx) deal with -h 127.0.0.1 -p 8082
+
     new Main().loop();
   }
 
