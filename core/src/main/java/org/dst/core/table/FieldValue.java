@@ -11,6 +11,14 @@ public class FieldValue {
     this.valueType = valueType;
   }
 
+  public int getIndex() {
+    return index;
+  }
+
+  public ValueTypeEnum getValueType() {
+    return valueType;
+  }
+
   @Override
   public String toString() {
     return "FieldValue{" +

@@ -34,14 +34,29 @@ public interface DstTable {
    * @param table table
    * @param fields support for conditional query
    */
-  List<FieldValue> query(TableSpecification table,FieldValue... fields);
+  List<List<FieldValue>> query(TableSpecification table,FieldValue... fields);
 
   /**
    * This method will drop table from store by table
    *
    * @param table TableSpecification
+   * @return value which been deleted
    */
-  boolean delete(TableSpecification table);
+  RecordEntry drop(TableSpecification table);
+
+
+  /**
+   * Verify the legitimacy of the incoming object
+   * @param recordEntry recordEntry
+   * @return is legitimacy
+   */
+  boolean verifyLegitimacy(RecordEntry recordEntry);
+
+  /**
+   * This method will clear the table by table description
+   * @param table incoming object
+   */
+  void clearTable(TableSpecification table);
 
   /**
    * This method will clear the whole table store
