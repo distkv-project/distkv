@@ -39,12 +39,13 @@
         </encoder>
     </appender>
 
-    <logger name="org.dst.server" level="info">
-        <appender-ref ref="CONSOLE"/>
+    <logger name="org.dst.server">
+        <level value="info"/>
     </logger>
 
     <root>
-        <level value="INFO"/>
+        <level value="info"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="FILE-WARN"/>
     </root>
