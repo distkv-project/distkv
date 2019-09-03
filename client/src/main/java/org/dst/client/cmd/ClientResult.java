@@ -3,7 +3,8 @@ package org.dst.client.cmd;
 public class ClientResult {
   public String result;
 
-  public ClientResult() {}
+  public ClientResult() {
+  }
 
   public ClientResult(String result) {
     this.result = result;

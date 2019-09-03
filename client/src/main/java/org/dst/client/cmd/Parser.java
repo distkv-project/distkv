@@ -17,9 +17,9 @@ public class Parser {
     if (StringUtil.isNullOrEmpty(line)) {
       return dstCommandWithType;
     }
-    this.parseOperationType(line);
+    parseOperationType(line);
     if (dstCommandWithType.operationType != DstOperationType.UNKNOWN) {
-      this.parseCommand(line);
+      parseCommand(line);
     }
     return dstCommandWithType;
   }
