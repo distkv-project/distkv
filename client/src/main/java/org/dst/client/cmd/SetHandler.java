@@ -20,58 +20,65 @@ public class SetHandler extends Handler {
   public ClientResult getCmdResult(String[] cmd) {
     String result;
 
-    if ("put".equals(cmd[0])) {
-      try {
-        String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
-        client.sets().put(cmd[1], new HashSet<>(Arrays.asList(str)));
-        result = "ok";
-      } catch (ArrayIndexOutOfBoundsException e) {
-        result = "not ok";
-      }
-    } else if ("get".equals(cmd[0])) {
-      try {
-        result = client.sets().get(cmd[1]).toString();
-      } catch (KeyNotFoundException e) {
-        result = "the key:" + e.getKey() + " is not found";
-      } catch (DstException e) {
-        result = e.toString();
-      } catch (Exception e) {
-        result = "not ok";
-      }
-    } else if ("del".equals(cmd[0])) {
-      try {
-        client.sets().delete(cmd[1], cmd[2]);
-        result = "ok";
-      } catch (KeyNotFoundException e) {
-        result = "the key:" + e.getKey() + " is not found";
-      } catch (DstException e) {
-        result = e.toString();
-      } catch (Exception e) {
-        result = "not ok";
-      }
-    } else if ("drop".equals(cmd[0])) {
-      try {
-        client.sets().dropByKey(cmd[1]);
-        result = "ok";
-      } catch (KeyNotFoundException e) {
-        result = "the key:" + e.getKey() + " is not found";
-      } catch (DstException e) {
-        result = e.toString();
-      } catch (Exception e) {
-        result = "not ok";
-      }
-    } else if ("exists".equals(cmd[0])) {
-      try {
-        result = String.valueOf(client.sets().exists(cmd[1], cmd[2]));
-      } catch (KeyNotFoundException e) {
-        result = "the key:" + e.getKey() + " is not found";
-      } catch (DstException e) {
-        result = e.toString();
-      } catch (Exception e) {
-        result = "not ok";
-      }
-    } else {
-      result = "Unsupport operation";
+    switch (cmd[0]) {
+      case "put":
+        try {
+          String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
+          client.sets().put(cmd[1], new HashSet<>(Arrays.asList(str)));
+          result = "ok";
+        } catch (ArrayIndexOutOfBoundsException e) {
+          result = "not ok";
+        }
+        break;
+      case "get":
+        try {
+          result = client.sets().get(cmd[1]).toString();
+        } catch (KeyNotFoundException e) {
+          result = "the key:" + e.getKey() + " is not found";
+        } catch (DstException e) {
+          result = e.toString();
+        } catch (Exception e) {
+          result = "not ok";
+        }
+        break;
+      case "del":
+        try {
+          client.sets().delete(cmd[1], cmd[2]);
+          result = "ok";
+        } catch (KeyNotFoundException e) {
+          result = "the key:" + e.getKey() + " is not found";
+        } catch (DstException e) {
+          result = e.toString();
+        } catch (Exception e) {
+          result = "not ok";
+        }
+        break;
+      case "drop":
+        try {
+          client.sets().dropByKey(cmd[1]);
+          result = "ok";
+        } catch (KeyNotFoundException e) {
+          result = "the key:" + e.getKey() + " is not found";
+        } catch (DstException e) {
+          result = e.toString();
+        } catch (Exception e) {
+          result = "not ok";
+        }
+        break;
+      case "exists":
+        try {
+          result = String.valueOf(client.sets().exists(cmd[1], cmd[2]));
+        } catch (KeyNotFoundException e) {
+          result = "the key:" + e.getKey() + " is not found";
+        } catch (DstException e) {
+          result = e.toString();
+        } catch (Exception e) {
+          result = "not ok";
+        }
+        break;
+      default:
+        result = "Unsupport operation";
+        break;
     }
     clientResult.setResult(result);
     return clientResult;

@@ -18,31 +18,34 @@ public class StringHandler extends Handler {
   public ClientResult getCmdResult(String[] cmd) {
     String result;
 
-    if ("put".equals(cmd[0])) {
-      if (cmd.length > 3) {
-        result = "only need a key and a value";
-      } else {
-        try {
-          client.strs().put(cmd[1], cmd[2]);
-          result = "ok";
-        } catch (ArrayIndexOutOfBoundsException e) {
-          result = "please specify a value";
+    switch (cmd[0]) {
+      case "put":
+        if (cmd.length > 3) {
+          result = "only need a key and a value";
+        } else {
+          try {
+            client.strs().put(cmd[1], cmd[2]);
+            result = "ok";
+          } catch (ArrayIndexOutOfBoundsException e) {
+            result = "please specify a value";
+          }
         }
-      }
-    } else if ("get".equals(cmd[0])) {
-      if (cmd.length > 2) {
-        result = "too many key";
-      } else {
-        try {
-          result = client.strs().get(cmd[1]);
-        } catch (KeyNotFoundException e) {
-          result = "the key:" + e.getKey() + " is not found";
-        } catch (DstException e) {
-          result = e.toString();
+        break;
+      case "get":
+        if (cmd.length > 2) {
+          result = "too many key";
+        } else {
+          try {
+            result = client.strs().get(cmd[1]);
+          } catch (KeyNotFoundException e) {
+            result = "the key:" + e.getKey() + " is not found";
+          } catch (DstException e) {
+            result = e.toString();
+          }
         }
-      }
-    } else {
-      result = "Unsupport operation";
+        break;
+      default:
+        result = "Unsupport operation";
     }
     clientResult.setResult(result);
     return clientResult;
