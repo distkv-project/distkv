@@ -2,6 +2,6 @@
 
 > A distributed key-value in-memory store system with table concept.
 
-### [build](https://github.com/dst-project/dst/blob/master/docs/build.md)
+### [build](https://dst-project.github.io/dst/build)
 
-### [Dst client tool](https://github.com/dst-project/dst/blob/master/docs/client_tool.md)
+### [Dst client tool](https://dst-project.github.io/dst/client_tool)
