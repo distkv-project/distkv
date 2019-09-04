@@ -1,7 +1,7 @@
 # dst [![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) 
 A distributed key-value in-memory store system with table concept.
 
-Full [docs](https://docs.dst-pro.tech) are here.
+Full [document](https://docs.dst-pro.tech) is here.
 
 ## Getting Started
 #### 1. Required environment
