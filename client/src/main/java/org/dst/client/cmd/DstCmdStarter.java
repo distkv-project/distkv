@@ -35,11 +35,11 @@ public class DstCmdStarter {
     Parser parser = new Parser();
     Scanner sc = new Scanner(System.in);
     while (true) {
-      System.out.print("dst-cli>");
+      System.out.print("dst-cli >");
       String line = sc.nextLine();
       DstCommandWithType commandWithType = parser.parse(line);
       ClientResult clientResult = executeCommand(commandWithType);
-      System.out.println("dst-cli>" + clientResult);
+      System.out.println("dst-cli >" + clientResult);
     }
   }
 
