@@ -45,7 +45,7 @@ public class StringHandler extends Handler {
         }
         break;
       default:
-        result = "Unsupport operation";
+        result = "Unsupported operation";
     }
     clientResult.setResult(result);
     return clientResult;

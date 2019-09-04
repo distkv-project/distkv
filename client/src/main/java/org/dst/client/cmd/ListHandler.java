@@ -91,7 +91,7 @@ public class ListHandler extends Handler {
         }
         break;
       default:
-        result = "Unsupport operation";
+        result = "Unsupported operation";
         break;
     }
     clientResult.setResult(result);

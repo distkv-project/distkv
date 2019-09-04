@@ -77,7 +77,7 @@ public class SetHandler extends Handler {
         }
         break;
       default:
-        result = "Unsupport operation";
+        result = "Unsupported operation";
         break;
     }
     clientResult.setResult(result);
