@@ -1,7 +1,9 @@
 package org.dst.client.cmd;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import org.dst.client.DefaultDstClient;
 
@@ -14,7 +16,7 @@ public class DstCmdStarter {
   private static HashMap<DstOperationType, Function<DstCommandWithType, ClientResult>>
           commandHandlers = new HashMap<>();
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     //TODO(jyx) Check the server is open or not
 
     if (args.length == 0) {
@@ -32,12 +34,18 @@ public class DstCmdStarter {
     new DstCmdStarter().loop();
   }
 
-  private void loop() {
+  private void loop() throws InterruptedException  {
     Parser parser = new Parser();
     Scanner sc = new Scanner(System.in);
+    TimeUnit.SECONDS.sleep(1);
     while (true) {
       System.out.print("dst-cli>");
-      String line = sc.nextLine();
+      String line;
+      try {
+        line = sc.nextLine();
+      } catch (NoSuchElementException e) {
+        continue;
+      }
       DstCommandWithType commandWithType = parser.parse(line);
       ClientResult clientResult = executeCommand(commandWithType);
       System.out.println("dst-cli>" + clientResult);
