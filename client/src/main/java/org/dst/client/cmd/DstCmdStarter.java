@@ -40,12 +40,7 @@ public class DstCmdStarter {
     TimeUnit.SECONDS.sleep(1);
     while (true) {
       System.out.print("dst-cli>");
-      String line;
-      try {
-        line = sc.nextLine();
-      } catch (NoSuchElementException e) {
-        continue;
-      }
+      String line = sc.nextLine();
       DstCommandWithType commandWithType = parser.parse(line);
       ClientResult clientResult = executeCommand(commandWithType);
       System.out.println("dst-cli>" + clientResult);
