@@ -9,7 +9,7 @@ public class UnkonwnHandler extends Handler {
 
   @Override
   public ClientResult getCmdResult(String[] command) {
-    clientResult.setResult("Unsupported operation");
+    clientResult.setResult("unsupported data type");
     return clientResult;
   }
 

@@ -4,9 +4,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import org.dst.client.DefaultDstClient;
 import org.dst.exception.DstException;
-import org.dst.exception.KeyNotFoundException;
 
 public class SetHandler extends Handler {
+
+  private static final String PUT = "put";
+  private static final String GET = "get";
+  private static final String DEL = "del";
+  private static final String DROP = "drop";
+  private static final String EXISTS = "exists";
 
   public SetHandler(DefaultDstClient client) {
     super(client);
@@ -18,66 +23,89 @@ public class SetHandler extends Handler {
    */
   @Override
   public ClientResult getCmdResult(String[] cmd) {
+
+    if (cmd == null) {
+      return clientResult;
+    }
+
     String result;
 
     switch (cmd[0]) {
-      case "put":
+      case PUT:
         try {
-          String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
-          client.sets().put(cmd[1], new HashSet<>(Arrays.asList(str)));
-          result = "ok";
-        } catch (ArrayIndexOutOfBoundsException e) {
-          result = "not ok";
-        }
-        break;
-      case "get":
-        try {
-          result = client.sets().get(cmd[1]).toString();
-        } catch (KeyNotFoundException e) {
-          result = "the key:" + e.getKey() + " is not found";
+          //set.put k1 v1...
+          if (cmd.length > 2) {
+            String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
+            client.sets().put(cmd[1], new HashSet<>(Arrays.asList(str)));
+            result = "ok";
+          } else { //set.put or set.put k1
+            result = "please specify the right parameter";
+          }
         } catch (DstException e) {
-          result = e.toString();
+          result = e.getMessage();
         } catch (Exception e) {
           result = "not ok";
         }
         break;
-      case "del":
+      case GET:
         try {
-          client.sets().delete(cmd[1], cmd[2]);
-          result = "ok";
-        } catch (KeyNotFoundException e) {
-          result = "the key:" + e.getKey() + " is not found";
+          //set.get k1
+          if (cmd.length == 2) {
+            result = client.sets().get(cmd[1]).toString();
+          } else { //set.get or set.get k1 k2...
+            result = "please specify the right parameter";
+          }
         } catch (DstException e) {
-          result = e.toString();
+          result = e.getMessage();
         } catch (Exception e) {
           result = "not ok";
         }
         break;
-      case "drop":
+      case DEL:
         try {
-          client.sets().dropByKey(cmd[1]);
-          result = "ok";
-        } catch (KeyNotFoundException e) {
-          result = "the key:" + e.getKey() + " is not found";
+          //set.del k1 v1
+          if (cmd.length == 3) {
+            client.sets().delete(cmd[1], cmd[2]);
+            result = "ok";
+          } else { //set.del or set.del k1 or set.del k1 k2 k3..
+            result = "please specify the right parameter";
+          }
         } catch (DstException e) {
-          result = e.toString();
+          result = e.getMessage();
         } catch (Exception e) {
           result = "not ok";
         }
         break;
-      case "exists":
+      case DROP:
         try {
-          result = String.valueOf(client.sets().exists(cmd[1], cmd[2]));
-        } catch (KeyNotFoundException e) {
-          result = "the key:" + e.getKey() + " is not found";
+          //set.drop k1
+          if (cmd.length == 2) {
+            result = String.valueOf(client.sets().dropByKey(cmd[1]));
+          } else { //set.drop or set.drop k1 k2...
+            result = "please specify the right parameter";
+          }
         } catch (DstException e) {
-          result = e.toString();
+          result = e.getMessage();
+        } catch (Exception e) {
+          result = "not ok";
+        }
+        break;
+      case EXISTS:
+        try {
+          //set.exists k1 v1
+          if (cmd.length == 3) {
+            result = String.valueOf(client.sets().exists(cmd[1], cmd[2]));
+          } else { //set.exists or set.exists k1 or set.exists k1 k2 k3
+            result = "please specify the right parameter";
+          }
+        } catch (DstException e) {
+          result = e.getMessage();
         } catch (Exception e) {
           result = "not ok";
         }
         break;
       default:
-        result = "Unsupported operation";
+        result = "unsupported operation";
         break;
     }
     clientResult.setResult(result);

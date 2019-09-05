@@ -2,9 +2,11 @@ package org.dst.client.cmd;
 
 import org.dst.client.DefaultDstClient;
 import org.dst.exception.DstException;
-import org.dst.exception.KeyNotFoundException;
 
 public class StringHandler extends Handler {
+
+  private static final String PUT = "put";
+  private static final String GET = "get";
 
   public StringHandler(DefaultDstClient client) {
     super(client);
@@ -16,36 +18,45 @@ public class StringHandler extends Handler {
    */
   @Override
   public ClientResult getCmdResult(String[] cmd) {
+
+    if (cmd == null) {
+      return clientResult;
+    }
+
     String result;
 
     switch (cmd[0]) {
-      case "put":
-        if (cmd.length > 3) {
-          result = "only need a key and a value";
-        } else {
-          try {
+      case PUT:
+        try {
+          //put k1 v1 or str.put k1 v1
+          if (cmd.length == 3) {
             client.strs().put(cmd[1], cmd[2]);
             result = "ok";
-          } catch (ArrayIndexOutOfBoundsException e) {
-            result = "please specify a value";
+          } else { // str.put or str.put k1 or str.put k1 v1 k2 v2...
+            result = "please specify the right parameter";
           }
+        } catch (DstException e) {
+          result = e.getMessage();
+        } catch (Exception e) {
+          result = "not ok";
         }
         break;
-      case "get":
-        if (cmd.length > 2) {
-          result = "too many key";
-        } else {
-          try {
+      case GET:
+        try {
+          //get k1 or str.get k1
+          if (cmd.length == 2) {
             result = client.strs().get(cmd[1]);
-          } catch (KeyNotFoundException e) {
-            result = "the key:" + e.getKey() + " is not found";
-          } catch (DstException e) {
-            result = e.toString();
+          } else { //str.get or str.get k1 k2...
+            result = "please specify the right parameter";
           }
+        } catch (DstException e) {
+          result = e.getMessage();
+        } catch (Exception e) {
+          result = "not ok";
         }
         break;
       default:
-        result = "Unsupported operation";
+        result = "unsupported operation";
     }
     clientResult.setResult(result);
     return clientResult;
