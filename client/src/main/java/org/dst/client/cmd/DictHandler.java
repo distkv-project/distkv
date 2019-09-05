@@ -32,8 +32,8 @@ public class DictHandler extends Handler {
 
     switch (cmd[0]) {
       case PUT:
-        //dict.put dict1 k1 v1 k2 v2
         try {
+          //dict.put dict1 k1 v1 k2 v2
           Map<String, String> map = new HashMap<>();
           for (int i = 2; i < cmd.length; i = i + 2) {
             map.put(cmd[i], cmd[i + 1]);
