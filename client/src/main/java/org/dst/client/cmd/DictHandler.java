@@ -52,9 +52,11 @@ public class DictHandler extends Handler {
           //dict.get dict1 k1
           if (cmd.length == 3) {
             result = client.dicts().getItemValue(cmd[1], cmd[2]);
-          } else if (cmd.length == 2) { //dict.get dict1
+          } else if (cmd.length == 2) {
+            //dict.get dict1
             result = client.dicts().get(cmd[1]).toString();
-          } else { //dict.get or dict.get dict1 k1 k2 k3...
+          } else {
+            //dict.get or dict.get dict1 k1 k2 k3...
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -68,7 +70,8 @@ public class DictHandler extends Handler {
           //dict.pop dict1 k1
           if (cmd.length == 3) {
             result = client.dicts().popItem(cmd[1], cmd[2]);
-          } else { //dict.pop dict1 or dict.pop or dict.pop dict1 k1 k2 k3...
+          } else {
+            //dict.pop dict1 or dict.pop or dict.pop dict1 k1 k2 k3...
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -83,7 +86,8 @@ public class DictHandler extends Handler {
           if (cmd.length == 3) {
             client.dicts().delItem(cmd[1], cmd[2]);
             result = "ok";
-          } else { //dict.del or dict.del dict1 or dict.del dict1 k1 k2 k3...
+          } else {
+            //dict.del or dict.del dict1 or dict.del dict1 k1 k2 k3...
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -98,7 +102,8 @@ public class DictHandler extends Handler {
           if (cmd.length == 1) {
             client.dicts().del(cmd[1]);
             result = "ok";
-          } else { //dict.drop or dict.drop dict1 k1 k2...
+          } else {
+            //dict.drop or dict.drop dict1 k1 k2...
             result = "please specify the right argument";
           }
         } catch (DstException e) {

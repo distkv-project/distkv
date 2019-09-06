@@ -37,7 +37,8 @@ public class ListHandler extends Handler {
             String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
             client.lists().put(cmd[1], Arrays.asList(str));
             result = "ok";
-          } else { //list.put or list.put k1
+          } else {
+            //list.put or list.put k1
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -51,7 +52,8 @@ public class ListHandler extends Handler {
           //list.get k1
           if (cmd.length == 1) {
             result = client.lists().get(cmd[1]).toString();
-          } else { //list.get or list.get k1 k2...
+          } else {
+            //list.get or list.get k1 k2...
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -67,7 +69,8 @@ public class ListHandler extends Handler {
             String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
             client.lists().lput(cmd[1], Arrays.asList(str));
             result = "ok";
-          } else { //list.lput or list.lput k1
+          } else {
+            //list.lput or list.lput k1
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -83,7 +86,8 @@ public class ListHandler extends Handler {
             String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
             client.lists().rput(cmd[1], Arrays.asList(str));
             result = "ok";
-          } else { //list.rput or list.rput k1
+          } else {
+            //list.rput or list.rput k1
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -98,7 +102,8 @@ public class ListHandler extends Handler {
           if (cmd.length == 3) {
             client.lists().ldel(cmd[1], Integer.parseInt(cmd[2]));
             result = "ok";
-          } else { //list.ldel or or list.ldel k1 or list.ldel k1 1 2..
+          } else {
+            //list.ldel or or list.ldel k1 or list.ldel k1 1 2..
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -115,7 +120,8 @@ public class ListHandler extends Handler {
           if (cmd.length == 3) {
             client.lists().rdel(cmd[1], Integer.parseInt(cmd[2]));
             result = "ok";
-          } else { //list.rdel or list.rdel k1 or list.rdel k1 1 2..
+          } else {
+            //list.rdel or list.rdel k1 or list.rdel k1 1 2..
             result = "please specify the right argument";
           }
         } catch (DstException e) {

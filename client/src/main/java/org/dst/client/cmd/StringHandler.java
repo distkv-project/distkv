@@ -31,7 +31,8 @@ public class StringHandler extends Handler {
           if (cmd.length == 3) {
             client.strs().put(cmd[1], cmd[2]);
             result = "ok";
-          } else { // str.put or str.put k1 or str.put k1 v1 k2 v2...
+          } else {
+            // str.put or str.put k1 or str.put k1 v1 k2 v2...
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -45,7 +46,8 @@ public class StringHandler extends Handler {
           //get k1 or str.get k1
           if (cmd.length == 2) {
             result = client.strs().get(cmd[1]);
-          } else { //str.get or str.get k1 k2...
+          } else {
+            //str.get or str.get k1 k2...
             result = "please specify the right argument";
           }
         } catch (DstException e) {

@@ -37,7 +37,8 @@ public class SetHandler extends Handler {
             String[] str = Arrays.copyOfRange(cmd, 2, cmd.length);
             client.sets().put(cmd[1], new HashSet<>(Arrays.asList(str)));
             result = "ok";
-          } else { //set.put or set.put k1
+          } else {
+            //set.put or set.put k1
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -51,7 +52,8 @@ public class SetHandler extends Handler {
           //set.get k1
           if (cmd.length == 2) {
             result = client.sets().get(cmd[1]).toString();
-          } else { //set.get or set.get k1 k2...
+          } else {
+            //set.get or set.get k1 k2...
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -66,7 +68,8 @@ public class SetHandler extends Handler {
           if (cmd.length == 3) {
             client.sets().delete(cmd[1], cmd[2]);
             result = "ok";
-          } else { //set.del or set.del k1 or set.del k1 k2 k3..
+          } else {
+            //set.del or set.del k1 or set.del k1 k2 k3..
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -80,7 +83,8 @@ public class SetHandler extends Handler {
           //set.drop k1
           if (cmd.length == 2) {
             result = String.valueOf(client.sets().dropByKey(cmd[1]));
-          } else { //set.drop or set.drop k1 k2...
+          } else {
+            //set.drop or set.drop k1 k2...
             result = "please specify the right argument";
           }
         } catch (DstException e) {
@@ -94,7 +98,8 @@ public class SetHandler extends Handler {
           //set.exists k1 v1
           if (cmd.length == 3) {
             result = String.valueOf(client.sets().exists(cmd[1], cmd[2]));
-          } else { //set.exists or set.exists k1 or set.exists k1 k2 k3
+          } else {
+            //set.exists or set.exists k1 or set.exists k1 k2 k3
             result = "please specify the right argument";
           }
         } catch (DstException e) {
