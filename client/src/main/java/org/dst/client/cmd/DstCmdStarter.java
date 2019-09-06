@@ -28,6 +28,7 @@ public class DstCmdStarter {
     commandHandlers.put(DstOperationType.LIST, new ListHandler(client));
     commandHandlers.put(DstOperationType.DICT, new DictHandler(client));
     commandHandlers.put(DstOperationType.TABLE, new TableHandler(client));
+    commandHandlers.put(DstOperationType.UNKNOWN, new UnkonwnHandler(client));
     new DstCmdStarter().loop();
   }
 
