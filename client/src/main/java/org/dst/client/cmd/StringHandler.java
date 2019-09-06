@@ -1,10 +1,13 @@
 package org.dst.client.cmd;
 
+import com.google.common.base.Preconditions;
 import org.dst.client.DefaultDstClient;
 import org.dst.exception.DstException;
-import org.dst.exception.KeyNotFoundException;
 
 public class StringHandler extends Handler {
+
+  private static final String PUT_COMMAND_STR = "put";
+  private static final String GET_COMMAND_STR = "get";
 
   public StringHandler(DefaultDstClient client) {
     super(client);
@@ -16,33 +19,45 @@ public class StringHandler extends Handler {
    */
   @Override
   public ClientResult getCmdResult(String[] cmd) {
+
+    Preconditions.checkArgument(cmd != null && cmd.length > 0, "command is empty");
+
     String result;
 
-    if ("put".equals(cmd[0])) {
-      if (cmd.length > 3) {
-        result = "only need a key and a value";
-      } else {
+    switch (cmd[0]) {
+      case PUT_COMMAND_STR:
         try {
-          client.strs().put(cmd[1], cmd[2]);
-          result = "ok";
-        } catch (ArrayIndexOutOfBoundsException e) {
-          result = "please specify a value";
-        }
-      }
-    } else if ("get".equals(cmd[0])) {
-      if (cmd.length > 2) {
-        result = "too many key";
-      } else {
-        try {
-          result = client.strs().get(cmd[1]);
-        } catch (KeyNotFoundException e) {
-          result = "the key:" + e.getKey() + " is not found";
+          //put k1 v1 or str.put k1 v1
+          if (cmd.length == 3) {
+            client.strs().put(cmd[1], cmd[2]);
+            result = "ok";
+          } else {
+            // str.put or str.put k1 or str.put k1 v1 k2 v2...
+            result = "please specify the right argument";
+          }
         } catch (DstException e) {
-          result = e.toString();
+          result = e.getMessage();
+        } catch (Exception e) {
+          result = "not ok";
         }
-      }
-    } else {
-      result = "Unsupport operation";
+        break;
+      case GET_COMMAND_STR:
+        try {
+          //get k1 or str.get k1
+          if (cmd.length == 2) {
+            result = client.strs().get(cmd[1]);
+          } else {
+            //str.get or str.get k1 k2...
+            result = "please specify the right argument";
+          }
+        } catch (DstException e) {
+          result = e.getMessage();
+        } catch (Exception e) {
+          result = "not ok";
+        }
+        break;
+      default:
+        result = "unsupported operation";
     }
     clientResult.setResult(result);
     return clientResult;
