@@ -20,7 +20,7 @@ public class StringHandler extends Handler {
   @Override
   public ClientResult getCmdResult(String[] cmd) {
 
-    Preconditions.checkArgument(cmd != null && cmd.length > 0);
+    Preconditions.checkArgument(cmd != null && cmd.length > 0, "command is empty");
 
     String result;
 

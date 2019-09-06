@@ -1,7 +1,7 @@
 package org.dst.client.cmd;
 
 public class ClientResult {
-  public String result = "command is empty";
+  public String result;
 
   public ClientResult() {
   }
