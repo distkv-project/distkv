@@ -2,16 +2,17 @@ package org.dst.client.cmd;
 
 import java.util.HashMap;
 import java.util.Map;
+import com.google.common.base.Preconditions;
 import org.dst.client.DefaultDstClient;
 import org.dst.exception.DstException;
 
 public class DictHandler extends Handler {
 
-  private static final String PUT = "put";
-  private static final String GET = "get";
-  private static final String POP = "pop";
-  private static final String DEL = "del";
-  private static final String DROP = "drop";
+  private static final String PUT_COMMAND_STR = "put";
+  private static final String GET_COMMAND_STR = "get";
+  private static final String POP_COMMAND_STR = "pop";
+  private static final String DEL_COMMAND_STR = "del";
+  private static final String DROP_COMMAND_STR = "drop";
 
   public DictHandler(DefaultDstClient client) {
     super(client);
@@ -24,14 +25,12 @@ public class DictHandler extends Handler {
   @Override
   public ClientResult getCmdResult(String[] cmd) {
 
-    if (cmd == null) {
-      return clientResult;
-    }
+    Preconditions.checkArgument(cmd != null && cmd.length > 0);
 
     String result;
 
     switch (cmd[0]) {
-      case PUT:
+      case PUT_COMMAND_STR:
         try {
           //dict.put dict1 k1 v1 k2 v2
           Map<String, String> map = new HashMap<>();
@@ -48,7 +47,7 @@ public class DictHandler extends Handler {
           result = "not ok";
         }
         break;
-      case GET:
+      case GET_COMMAND_STR:
         try {
           //dict.get dict1 k1
           if (cmd.length == 3) {
@@ -56,7 +55,7 @@ public class DictHandler extends Handler {
           } else if (cmd.length == 2) { //dict.get dict1
             result = client.dicts().get(cmd[1]).toString();
           } else { //dict.get or dict.get dict1 k1 k2 k3...
-            result = "please specify the right parameter";
+            result = "please specify the right argument";
           }
         } catch (DstException e) {
           result = e.getMessage();
@@ -64,13 +63,13 @@ public class DictHandler extends Handler {
           result = "not ok";
         }
         break;
-      case POP:
+      case POP_COMMAND_STR:
         try {
           //dict.pop dict1 k1
           if (cmd.length == 3) {
             result = client.dicts().popItem(cmd[1], cmd[2]);
           } else { //dict.pop dict1 or dict.pop or dict.pop dict1 k1 k2 k3...
-            result = "please specify the right parameter";
+            result = "please specify the right argument";
           }
         } catch (DstException e) {
           result = e.getMessage();
@@ -78,14 +77,14 @@ public class DictHandler extends Handler {
           result = "not ok";
         }
         break;
-      case DEL:
+      case DEL_COMMAND_STR:
         try {
           //dict.del dict1 k1
           if (cmd.length == 3) {
             client.dicts().delItem(cmd[1], cmd[2]);
             result = "ok";
           } else { //dict.del or dict.del dict1 or dict.del dict1 k1 k2 k3...
-            result = "please specify the right parameter";
+            result = "please specify the right argument";
           }
         } catch (DstException e) {
           result = e.getMessage();
@@ -93,14 +92,14 @@ public class DictHandler extends Handler {
           result = "not ok";
         }
         break;
-      case DROP:
+      case DROP_COMMAND_STR:
         try {
           //dict.drop dict1
           if (cmd.length == 1) {
             client.dicts().del(cmd[1]);
             result = "ok";
           } else { //dict.drop or dict.drop dict1 k1 k2...
-            result = "please specify the right parameter";
+            result = "please specify the right argument";
           }
         } catch (DstException e) {
           result = e.getMessage();
