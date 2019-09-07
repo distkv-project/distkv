@@ -1,7 +1,13 @@
 package org.dst.core.operatorImpl;
 
 import org.dst.core.operatorset.DstTable;
-import org.dst.core.table.*;
+import org.dst.core.table.TableEntry;
+import org.dst.core.table.TableSpecification;
+import org.dst.core.table.Record;
+import org.dst.core.table.Value;
+import org.dst.core.table.Field;
+import org.dst.core.table.Index;
+import org.dst.core.table.ValueType;
 import org.dst.exception.IncorrectRecordFormatException;
 import org.dst.exception.IncorrectTableFormatException;
 import org.dst.exception.RepeatCreateTableException;
@@ -166,7 +172,7 @@ public class DstTableImpl implements DstTable {
    */
   private void checkFormatOfRecords(TableEntry store, List<Record> records) {
     if (records.isEmpty()) {
-      throw new IncorrectRecordFormatException();
+      throw new IncorrectRecordFormatException(store.getTableSpec().getName());
     }
     TableSpecification tableSpec = store.getTableSpec();
     List<Field> fields = tableSpec.getFields();
@@ -176,7 +182,7 @@ public class DstTableImpl implements DstTable {
         List<Value> values = record.getRecord();
         for (Value value : values) {
           if (!fieldType.equals(value.getType())) {
-            throw new IncorrectRecordFormatException();
+            throw new IncorrectRecordFormatException(store.getTableSpec().getName());
           }
         }
       }
