@@ -1,29 +1,49 @@
 package org.dst.core.table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableSpecification {
 
-  public final String name;
+  private String name;
 
-  public final List<FieldSpecification> fields;
+  private List<Field> fields = new ArrayList<>();
 
-  public TableSpecification(String name, List<FieldSpecification> fields) {
+  public TableSpecification() {
+  }
+
+  public TableSpecification(String name, List<Field> fields) {
     this.name = name;
+    this.fields = fields;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<Field> getFields() {
+    return fields;
+  }
+
+  public void setFields(List<Field> fields) {
     this.fields = fields;
   }
 
   public static class Builder {
 
     private String name = null;
-    private List<FieldSpecification> fields = null;
+    private List<Field> fields = null;
 
-    public Builder setName(String name) {
+    public Builder name(String name) {
       this.name = name;
       return this;
     }
 
-    public Builder setFields(List<FieldSpecification> fields) {
+    public Builder fields(List<Field> fields) {
       this.fields = fields;
       return this;
     }
@@ -33,19 +53,4 @@ public class TableSpecification {
     }
   }
 
-  public String getName() {
-    return this.name;
-  }
-
-  public List<FieldSpecification> getFields() {
-    return this.fields;
-  }
-
-  @Override
-  public String toString() {
-    return "TableSpecification{" +
-          "name='" + name + '\'' +
-          ", fields=" + fields +
-          '}';
-  }
 }

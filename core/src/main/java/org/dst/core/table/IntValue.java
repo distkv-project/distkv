@@ -1,22 +1,18 @@
 package org.dst.core.table;
 
-public class IntValue extends FieldValue {
+public class IntValue extends Value {
 
   private int value = 0;
 
-  public IntValue() {
-    this(0);
+  protected IntValue() {
+    super(ValueType.INT);
   }
 
-  public IntValue(int value) {
-    super(-1, ValueTypeEnum.INT);
-    this.setValue(value);
+  protected IntValue(int value) {
+    super(ValueType.INT);
+    this.value = value;
   }
 
-  public IntValue(int index, int value) {
-    super(index, ValueTypeEnum.INT);
-    this.setValue(value);
-  }
 
   public int getValue() {
     return value;
@@ -24,14 +20,5 @@ public class IntValue extends FieldValue {
 
   public void setValue(int value) {
     this.value = value;
-  }
-
-  @Override
-  public String toString() {
-    return "IntValue{" +
-          "value=" + value +
-          ", index=" + index +
-          ", valueType=" + valueType +
-          '}';
   }
 }

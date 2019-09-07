@@ -1,9 +1,11 @@
 package org.dst.core.operatorset;
 
-import org.dst.core.table.FieldValue;
-import org.dst.core.table.RecordEntry;
+import org.dst.core.table.Field;
+import org.dst.core.table.Record;
 import org.dst.core.table.TableSpecification;
+import org.dst.core.table.Value;
 import java.util.List;
+import java.util.Map;
 
 public interface DstTable {
 
@@ -15,48 +17,41 @@ public interface DstTable {
   void createTable(TableSpecification table);
 
   /**
-   * This method will append content into table
+   * This method will append list records into table
    *
-   * @param recordEntry key & values
+   * @param tableName tableName
+   * @param records records
    */
-  void append(RecordEntry recordEntry);
-
+  void append(String tableName, List<Record> records);
   /**
    * This method will return table info by table name
    *
-   * @param name table name
+   * @param tableName table name
    */
-  TableSpecification getTableByName(String name);
+  TableSpecification findTableSpecification(String tableName);
 
   /**
    * This method will return all values by TableSpecification
    *
-   * @param table table
-   * @param fields support for conditional query
+   * @param tableName tableName
+   * @param conditions support for conditional query
    */
-  List<List<FieldValue>> query(TableSpecification table,FieldValue... fields);
+  List<Record> query(String tableName, Map<Field, Value> conditions);
 
   /**
-   * This method will drop table from store by table
+   * This method will drop table from store by tableName
    *
-   * @param table TableSpecification
-   * @return value which been deleted
+   * @param tableName tableName
+   * @return whether drop
    */
-  RecordEntry drop(TableSpecification table);
+  boolean drop(String tableName);
 
-
-  /**
-   * Verify the legitimacy of the incoming object
-   * @param recordEntry recordEntry
-   * @return is legitimacy
-   */
-  boolean verifyLegitimacy(RecordEntry recordEntry);
 
   /**
    * This method will clear the table by table description
-   * @param table incoming object
+   * @param tableName tableName
    */
-  void clearTable(TableSpecification table);
+  void clearTable(String tableName);
 
   /**
    * This method will clear the whole table store

@@ -1,15 +1,16 @@
 package org.dst.core.table;
 
-public class DoubleValue extends FieldValue {
+public class DoubleValue extends Value {
 
   private double value = 0.0;
 
   public DoubleValue() {
-    this(0.0);
+    super(ValueType.DOUBLE);
+    this.value = value;
   }
 
-  public DoubleValue(Double value) {
-    super(-1, ValueTypeEnum.DOUBLE);
+  public DoubleValue(double value) {
+    super(ValueType.DOUBLE);
     this.value = value;
   }
 
@@ -20,5 +21,4 @@ public class DoubleValue extends FieldValue {
   public void setValue(double value) {
     this.value = value;
   }
-
 }

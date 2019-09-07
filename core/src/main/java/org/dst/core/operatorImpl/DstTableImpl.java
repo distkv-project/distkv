@@ -1,161 +1,155 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.exception.NotImplementException;
 import org.dst.core.operatorset.DstTable;
-import org.dst.core.table.FieldSpecification;
-import org.dst.core.table.FieldValue;
-import org.dst.core.table.IndexEntry;
-import org.dst.core.table.RecordEntry;
-import org.dst.core.table.TableSpecification;
+import org.dst.core.table.*;
+import org.dst.exception.IncorrectRecordFormatException;
+import org.dst.exception.IncorrectTableFormatException;
 import org.dst.exception.RepeatCreateTableException;
 import org.dst.exception.TableNotFoundException;
-import java.util.ArrayList;
+
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public class DstTableImpl implements DstTable {
-  private HashMap<String, RecordEntry> tableMap;
+
+  private HashMap<String, TableEntry> tableMap;
 
   public DstTableImpl() {
-    this.tableMap = new HashMap<String, RecordEntry>();
+    this.tableMap = new HashMap<String, TableEntry>();
   }
 
   @Override
   public void createTable(TableSpecification tableSpec) {
-    if (isExist(tableSpec)) {
+    checkFormatofTableSpecification(tableSpec);
+    if (isExist(tableSpec.getName())) {
       throw new RepeatCreateTableException(tableSpec.getName());
     }
-    RecordEntry re = new RecordEntry();
-    re.setTableSpec(tableSpec);
-    tableMap.put(tableSpec.getName(), re);
+    TableEntry table = new TableEntry.Builder().tableSpec(tableSpec).builder();
+    tableMap.put(tableSpec.getName(), table);
   }
 
   @Override
-  public void append(RecordEntry recordEntry) {
-    //TODO(tansen)???  Map的key不可以重复，所以，key不能存对应的字段值。 可以考虑将key和value进行翻转.利用其他策略实现存储重复的key
-    TableSpecification spec = recordEntry.getTableSpec();
-    if (!isExist(spec)) {
-      throw new TableNotFoundException(recordEntry.getTableSpec().getName());
+  public void append(String tableName, List<Record> records) {
+    if (isExist(tableName)) {
+      throw new TableNotFoundException(tableName);
     }
-    RecordEntry store = tableMap.get(spec.getName());
-    List<List<FieldValue>> newValues = recordEntry.getFieldValues();
-    List<List<FieldValue>> oldValues = store.getFieldValues();
-
-    if (oldValues == null) {
-      store.setFieldValues(newValues);
+    TableEntry store = tableMap.get(tableName);
+    checkFormatOfRecords(store, records);
+    List<Record> oldRecords = store.getRecords();
+    int position = -1;
+    //append records
+    if (oldRecords == null) {
+      store.setRecords(records);
     } else {
-      oldValues.addAll(newValues);
+      position = oldRecords.size();
+      oldRecords.addAll(records);
     }
+    //append index
+    TableSpecification tableSpec = store.getTableSpec();
+    List<Field> fields = tableSpec.getFields();
+    int fieldsSize = fields.size();
+    for (int i = 0; i < fieldsSize; i++) {
+      boolean primary = fields.get(i).isPrimary();
+      boolean index = fields.get(i).isIndex();
+      if (primary || index) {
+        int newRecordSize = records.size();
+        Map<Value, List<Integer>> indexs = store.getIndex().getIndexs();
+        for (int j = 0; j < newRecordSize; j++) {
+          Value value = records.get(j).getRecord().get(i);
+          position += 1;
+          if (primary) {
+            //TODO (senyer) how to enhance this code :Arrays.asList() ?
+            indexs.put(value, Arrays.asList(position));
+          }
+          if (index) {
+            if (indexs.containsKey(value)) {
+              List<Integer> positions = indexs.get(value);
+              positions.add(position);
+            } else {
+              indexs.put(value, Arrays.asList(position));
+            }
+          }
+        }
+      }
+    }
+  }
 
-    int size = newValues.size();
-    int oldSize = oldValues.size();
-    List<FieldSpecification> fields = spec.getFields();
+  @Override
+  public TableSpecification findTableSpecification(String tableName) {
+    if (isExist(tableName)) {
+      throw new TableNotFoundException(tableName);
+    }
+    return tableMap.get(tableName).getTableSpec();
+  }
 
-    //add index & primary map
-    for (FieldSpecification field : fields) {
+  @Override
+  public List<Record> query(String tableName, Map<Field, Value> conditions) {
+    if (isExist(tableName)) {
+      throw new TableNotFoundException(tableName);
+    }
+    List<Record> records = tableMap.get(tableName).getRecords();
+    if (conditions.isEmpty()) {
+      return records;
+    }
+    List<Integer> positions = new ArrayList<>();
+
+    for (Map.Entry<Field, Value> entry : conditions.entrySet()) {
+      Field field = entry.getKey();
+      Value value = entry.getValue();
       boolean primary = field.isPrimary();
       boolean index = field.isIndex();
       if (primary || index) {
-        for (int i = 0; i < size; i++) {
-          List<FieldValue> newValue = newValues.get(i);
-          int s = newValue.size();
-          for (int j = 0; j < s; j++) {
-            if (primary) {
-              Map<FieldValue, Integer> primarys = store.getPrimarys();
-              if (primarys != null) {
-                if (newValue.get(i).index == field.index) {
-                  primarys.put(newValue.get(i), (oldSize + i + 1));
-                }
-              } else {
-                Map<FieldValue, Integer> newPrimarys = new HashMap<>();
-                newPrimarys.put(newValue.get(i), (oldSize + i + 1));
-                store.setPrimarys(newPrimarys);
-              }
-            }
-            if (index) {
-              if (newValue.get(i).index == field.index) {
-                IndexEntry indexEntry = store.getIndexEntry();
-                if (indexEntry != null) {
-                  if (newValue.get(i).index == indexEntry.getFieldIndex()) {
-                    indexEntry.getIndexs().put(newValue.get(i), (oldSize + i + 1));
-                  }
-                } else {
-                  if (newValue.get(i).index == field.index) {
-                    IndexEntry newIndexEntry = new IndexEntry();
-                    newIndexEntry.setFieldIndex(field.index);
-                    Map<FieldValue, Integer> indexs = new HashMap<>();
-                    indexs.put(newValue.get(i), (oldSize + i + 1));
-                    newIndexEntry.setIndexs(indexs);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  @Override
-  public TableSpecification getTableByName(String name) {
-    if (tableMap.get(name) == null) {
-      throw new TableNotFoundException(name);
-    }
-    return tableMap.get(name).getTableSpec();
-  }
-
-  @Override
-  public List<List<FieldValue>> query(TableSpecification table, FieldValue... fields) {
-    List<List<FieldValue>> result = new ArrayList<>();
-    if (fields.length == 0) {
-      return tableMap.get(table.getName()).getFieldValues();
-    } else if (fields.length == 1) {
-      RecordEntry recordEntry = tableMap.get(table.getName());
-      List<FieldSpecification> targetFields = table.getFields();
-      for (int j = 0; j < targetFields.size(); j++) {
-        FieldSpecification field = targetFields.get(j);
-        if (field.index == fields[0].getIndex() && field.isPrimary()) {
-          Integer index = recordEntry.getPrimarys().get(fields[0]);
-          List<FieldValue> fieldValues = recordEntry.getFieldValues().get(index);
-          result.add(fieldValues);
-        } else if (field.index == fields[0].getIndex() && field.isIndex()) {
-          Integer index = recordEntry.getIndexEntry().getIndexs().get(fields[0]);
-          List<FieldValue> fieldValues = recordEntry.getFieldValues().get(index);
-          result.add(fieldValues);
+        Index indexs = tableMap.get(tableName).getIndex();
+        List<Integer> currentPositions = indexs.getIndexs().get(value);
+        if (positions.isEmpty()) {
+          positions.addAll(currentPositions);
         } else {
-          List<List<FieldValue>> fieldValues = recordEntry.getFieldValues();
-          int size = fieldValues.size();
-          for (int i = 0; i < size; i++) {
-            if (fieldValues.get(i).equals(fields[0])) {
-              result.add(fieldValues.get(i));
+          positions.retainAll(currentPositions);
+        }
+      } else {
+        TableSpecification tableSpec = tableMap.get(tableName).getTableSpec();
+        List<Field> fields = tableSpec.getFields();
+        List<Integer> currentPositions = new ArrayList<>();
+        for (int i = 0; i < fields.size(); i++) {
+          if (fields.get(i).getName().equals(field.getName())) {
+            int size = records.size();
+            for (int j = 0; j < size; j++) {
+              List<Value> record = records.get(i).getRecord();
+              if (record.get(i).equals(value)) {
+                currentPositions.add(j);
+              }
             }
           }
         }
+        positions.retainAll(currentPositions);
       }
-    } else {
-      //TODO(tansen)
     }
-    return null;
+
+    List<Record> result = new ArrayList<>();
+    for (Integer position : positions) {
+      Record record = records.get(position);
+      result.add(record);
+    }
+    return result;
   }
 
   @Override
-  public RecordEntry drop(TableSpecification table) {
-    return tableMap.remove(table.getName());
+  public boolean drop(String tableName) {
+    if (isExist(tableName)) {
+      throw new TableNotFoundException(tableName);
+    }
+    tableMap.remove(tableName);
+    return true;
   }
 
   @Override
-  public boolean verifyLegitimacy(RecordEntry recordEntry) {
-    //TODO(tansen)
-    throw new NotImplementException();
-  }
-
-  @Override
-  public void clearTable(TableSpecification table) {
-    RecordEntry recordEntry = tableMap.get(table.getName());
-    recordEntry.getPrimarys().clear();
-    recordEntry.setIndexEntry(null);
-    recordEntry.getFieldValues().clear();
+  public void clearTable(String tableName) {
+    TableEntry table = tableMap.get(tableName);
+    table.getIndex().getIndexs().clear();
+    table.getRecords().clear();
   }
 
   @Override
@@ -164,12 +158,63 @@ public class DstTableImpl implements DstTable {
   }
 
   /**
+   * check the records's format
+   * 1. field locations must correspond one to one
+   * 2. records can't be empty
+   * 3. primary must unique TODO (senyer)
+   * @param records records
+   * @return boolean
+   */
+  private void checkFormatOfRecords(TableEntry store, List<Record> records) {
+    if (records.isEmpty()) {
+      throw new IncorrectRecordFormatException();
+    }
+    TableSpecification tableSpec = store.getTableSpec();
+    List<Field> fields = tableSpec.getFields();
+    for (Field field : fields) {
+      ValueType fieldType = field.getType();
+      for (Record record : records) {
+        List<Value> values = record.getRecord();
+        for (Value value : values) {
+          if (!fieldType.equals(value.getType())) {
+            throw new IncorrectRecordFormatException();
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * check format of tableSpecification
+   *  1. field can't be both index and primary
+   *  2. table name can't be empty
+   *  3. at least one field
+   *
+   * @param tableSpec tableSpec
+   * @return boolean
+   */
+  private void checkFormatofTableSpecification(TableSpecification tableSpec) {
+    if (tableSpec.getName() == null) {
+      throw new IncorrectTableFormatException();
+    }
+    List<Field> fields = tableSpec.getFields();
+    if (fields.size() <= 0) {
+      throw new IncorrectTableFormatException();
+    }
+    for (Field field: fields ) {
+      if (field.isPrimary()&&field.isIndex()) {
+        throw new IncorrectTableFormatException();
+      }
+    }
+  }
+
+  /**
    * Determine whether the table has been created
    *
-   * @param tableSpec table description
+   * @param tableName table description
    * @return exists or not exist
    */
-  public boolean isExist(TableSpecification tableSpec) {
-    return tableMap.get(tableSpec.name) != null;
+  private boolean isExist(String tableName) {
+    return tableMap.containsKey(tableName);
   }
 }

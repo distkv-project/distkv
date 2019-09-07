@@ -1,15 +1,14 @@
 package org.dst.core.table;
 
-public class RawDataValue extends FieldValue {
-
+public class RawValue extends Value {
   private byte[] value = null;
 
-  public RawDataValue() {
-    this(null);
+  public RawValue() {
+    super(ValueType.RAW_DATA);
   }
 
-  public RawDataValue(byte[] value) {
-    super(-1, ValueTypeEnum.RAW_DATA);
+  public RawValue(byte[] value) {
+    super(ValueType.RAW_DATA);
     this.value = value;
   }
 
@@ -20,5 +19,4 @@ public class RawDataValue extends FieldValue {
   public void setValue(byte[] value) {
     this.value = value;
   }
-
 }
