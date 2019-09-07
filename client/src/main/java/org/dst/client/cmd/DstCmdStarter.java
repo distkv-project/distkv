@@ -1,7 +1,6 @@
 package org.dst.client.cmd;
 
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
