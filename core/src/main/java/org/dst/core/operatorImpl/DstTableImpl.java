@@ -6,7 +6,6 @@ import org.dst.exception.IncorrectRecordFormatException;
 import org.dst.exception.IncorrectTableFormatException;
 import org.dst.exception.RepeatCreateTableException;
 import org.dst.exception.TableNotFoundException;
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
