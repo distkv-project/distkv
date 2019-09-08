@@ -5,7 +5,7 @@
 Dst is a distributed key value store with high available. It also has a bunch of fancy features, 
 like very easy to use, good management tool, and table concept based on k-v. So, follow me to travel it.
 
-### [Build](https://dst-project.github.io/dst/build)
+### [build](https://dst-project.github.io/dst/build)
 
 ### [Usage](https://dst-project.github.io/dst/usage)
 
