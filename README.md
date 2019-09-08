@@ -4,7 +4,7 @@ A distributed key-value in-memory store system with table concept.
 Full [document](https://docs.dst-pro.com) is here.
 
 ## Getting Involved
-Thank you for your attention to the DST project. If you have any questions, you can create a new issue in our [Issues](https://github.com/dst-project/dst/issues) list.
+Thank you for your attention to the `Dst` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/dst-project/dst/issues) list.
 And we welcome you to participate in our project, if you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/dst/blob/master/CONTRIBUTING.md).
 
 ## Getting Started
