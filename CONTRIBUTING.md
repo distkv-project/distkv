@@ -6,7 +6,6 @@ please read the content below. Then send us a pull request!
 [GitHub Issues](https://github.com/dst-project/dst/issues): For bug reports and feature requests. Make sure your bug 
 reports contain enough details so they can be easily understood by others and quickly fixed.
 ### How to contribute
-The best way to contribute code is to fork the main repo and send a pull request on GitHub.
-1. Bug fixes should be done in the master branch.
-2. New features or major changes should be done in the new-feature branch.
-3. Make sure your code style satisfy our [checkstyle](https://github.com/dst-project/dst/blob/master/checkstyle.xml) configuration.
+The best way to contribute code is to fork the master branch and send a pull request on GitHub.
+1. At present,bug fixes and new features should be done in the master branch. In the future, we may plan several branches.
+2. Make sure your code style satisfy our [checkstyle](https://github.com/dst-project/dst/blob/master/checkstyle.xml) configuration.
