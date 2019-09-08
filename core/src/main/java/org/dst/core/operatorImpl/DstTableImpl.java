@@ -84,7 +84,7 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public TableSpecification findTableSpecification(String tableName) {
-    if (isExist(tableName)) {
+    if (!isExist(tableName)) {
       throw new TableNotFoundException(tableName);
     }
     return tableMap.get(tableName).getTableSpec();
