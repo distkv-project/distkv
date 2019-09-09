@@ -102,7 +102,8 @@ table TaskTable {
   return_num: int;
   arguments: [string];
 }
-
+```
+```shell
 table DriverTable {
  [p]driver_id: string;
  driver_name: string;
