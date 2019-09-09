@@ -32,3 +32,9 @@ target/
 
 # generated files
 server/src/main/java/org/dst/server/generated/*
+
+# cmake
+deploy/launcher/cmake-build-debug/
+
+# build
+build/
