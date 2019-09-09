@@ -94,7 +94,7 @@ dst-cli > ok
 
 #### 5. Table concept
 1. Define your data structure in a schema file named `mytables.sc`
-```
+```shell
 table TaskTable {
   [p]task_id: string;
   [i]driver_id: string;
