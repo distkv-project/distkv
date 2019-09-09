@@ -4,10 +4,7 @@ import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
-import org.dst.server.service.DstDictService;
-import org.dst.server.service.DstListService;
-import org.dst.server.service.DstSetService;
-import org.dst.server.service.DstStringService;
+import org.dst.server.service.*;
 
 public class DefaultDstClient implements DstClient {
 
@@ -41,7 +38,7 @@ public class DefaultDstClient implements DstClient {
     setClient = new RpcClient(serverAddress, clientOptions);
     dictClient = new RpcClient(serverAddress, clientOptions);
 
-    DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
+    DstStringServiceAsync stringService = RpcClient.getProxy(stringClient, DstStringServiceAsync.class);
     DstListService listService = BrpcProxy.getProxy(listClient, DstListService.class);
     DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
     DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);

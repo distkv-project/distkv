@@ -1,8 +1,10 @@
 package test.org.dst.client;
 
+import com.baidu.brpc.client.RpcCallback;
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.dst.exception.KeyNotFoundException;
+import org.dst.server.generated.StringProtocol;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.org.dst.supplier.BaseTestSupplier;
@@ -27,5 +29,23 @@ public class StringProxyTest extends BaseTestSupplier {
     } catch (KeyNotFoundException e) {
       Assert.assertTrue(true);
     }
+  }
+
+  @Test
+  public void testAsyncStringGet() {
+    DstClient client = new DefaultDstClient(serverAddress);
+    client.strs().put("k1", "v1");
+
+    client.strs().AsynGet("k1", new RpcCallback<StringProtocol.GetResponse>() {
+      @Override
+      public void success(StringProtocol.GetResponse getResponse) {
+        Assert.assertEquals("v1",getResponse.getValue());
+      }
+
+      @Override
+      public void fail(Throwable throwable) {
+
+      }
+    });
   }
 }

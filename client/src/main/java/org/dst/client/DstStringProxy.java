@@ -1,16 +1,17 @@
 package org.dst.client;
 
+import com.baidu.brpc.client.RpcCallback;
 import org.dst.exception.DstException;
 import org.dst.exception.KeyNotFoundException;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.StringProtocol;
-import org.dst.server.service.DstStringService;
+import org.dst.server.service.DstStringServiceAsync;
 
 public class DstStringProxy {
 
-  private DstStringService service;
+  private DstStringServiceAsync service;
 
-  public DstStringProxy(DstStringService service) {
+  public DstStringProxy(DstStringServiceAsync service) {
     this.service = service;
   }
 
@@ -41,5 +42,13 @@ public class DstStringProxy {
     }
 
     return response.getValue();
+  }
+
+  public void AsynGet(String key, RpcCallback<StringProtocol.GetResponse> callback) {
+    StringProtocol.GetRequest request =
+        StringProtocol.GetRequest.newBuilder()
+            .setKey(key)
+            .build();
+    service.get(request, callback);
   }
 }
