@@ -87,7 +87,7 @@
         <dependency>
             <groupId>org.dst</groupId>
             <artifactId>dst-core</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
