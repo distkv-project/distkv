@@ -4,6 +4,7 @@ import org.dst.core.table.Field;
 import org.dst.core.table.Record;
 import org.dst.core.table.TableSpecification;
 import org.dst.core.table.Value;
+
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +21,10 @@ public interface DstTable {
    * This method will append list records into table
    *
    * @param tableName tableName
-   * @param records records
+   * @param records   records
    */
   void append(String tableName, List<Record> records);
+
   /**
    * This method will return table info by table name
    *
@@ -33,7 +35,7 @@ public interface DstTable {
   /**
    * This method will return all values by TableSpecification
    *
-   * @param tableName tableName
+   * @param tableName  tableName
    * @param conditions support for conditional query
    */
   List<Record> query(String tableName, Map<Field, Value> conditions);
@@ -49,6 +51,7 @@ public interface DstTable {
 
   /**
    * This method will clear the table by table description
+   *
    * @param tableName tableName
    */
   void clearTable(String tableName);

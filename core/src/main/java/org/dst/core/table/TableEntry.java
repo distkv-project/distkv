@@ -7,7 +7,7 @@ public class TableEntry {
 
   private TableSpecification tableSpec;
 
-  private List<Record> records =new ArrayList<>();
+  private List<Record> records = new ArrayList<>();
 
   private Index index = new Index();
 
@@ -51,25 +51,27 @@ public class TableEntry {
   public static class Builder {
     private TableSpecification tableSpec;
 
-    private List<Record> records;
+    private List<Record> records = new ArrayList<>();
 
-    private Index index;
+    private Index index = new Index();
 
-    public Builder tableSpec(TableSpecification tableSpec){
-      this.tableSpec=tableSpec;
+    public Builder tableSpec(TableSpecification tableSpec) {
+      this.tableSpec = tableSpec;
       return this;
     }
-    public Builder records(List<Record> records){
-      this.records=records;
+
+    public Builder records(List<Record> records) {
+      this.records = records;
       return this;
     }
-    public Builder index(Index index){
-      this.index=index;
+
+    public Builder index(Index index) {
+      this.index = index;
       return this;
     }
 
     public TableEntry builder() {
-      return  new TableEntry(tableSpec, records, index);
+      return new TableEntry(tableSpec, records, index);
     }
   }
 }

@@ -12,6 +12,7 @@ import org.dst.exception.IncorrectRecordFormatException;
 import org.dst.exception.IncorrectTableFormatException;
 import org.dst.exception.RepeatCreateTableException;
 import org.dst.exception.TableNotFoundException;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +38,9 @@ public class DstTableImpl implements DstTable {
   }
 
   @Override
-  public void append(String tableName, List<Record> records) {
-    if (isExist(tableName)) {
+  public void append(String tableName, List<Record> sourceRecords) {
+    ArrayList<Record> records = new ArrayList<>(sourceRecords);
+    if (!isExist(tableName)) {
       throw new TableNotFoundException(tableName);
     }
     TableEntry store = tableMap.get(tableName);
@@ -46,7 +48,7 @@ public class DstTableImpl implements DstTable {
     List<Record> oldRecords = store.getRecords();
     int position = -1;
     //append records
-    if (oldRecords == null) {
+    if (oldRecords == null || oldRecords.size() <= 0) {
       store.setRecords(records);
     } else {
       position = oldRecords.size();
@@ -92,11 +94,11 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public List<Record> query(String tableName, Map<Field, Value> conditions) {
-    if (isExist(tableName)) {
+    if (!isExist(tableName)) {
       throw new TableNotFoundException(tableName);
     }
     List<Record> records = tableMap.get(tableName).getRecords();
-    if (conditions.isEmpty()) {
+    if (conditions == null || conditions.isEmpty()) {
       return records;
     }
     List<Integer> positions = new ArrayList<>();
@@ -143,7 +145,7 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public boolean drop(String tableName) {
-    if (isExist(tableName)) {
+    if (!isExist(tableName)) {
       throw new TableNotFoundException(tableName);
     }
     tableMap.remove(tableName);
@@ -167,6 +169,7 @@ public class DstTableImpl implements DstTable {
    * 1. field locations must correspond one to one
    * 2. records can't be empty
    * 3. primary must unique TODO (senyer)
+   *
    * @param records records
    * @return boolean
    */
@@ -176,11 +179,12 @@ public class DstTableImpl implements DstTable {
     }
     TableSpecification tableSpec = store.getTableSpec();
     List<Field> fields = tableSpec.getFields();
-    for (Field field : fields) {
-      ValueType fieldType = field.getType();
+    for (int i = 0; i < fields.size(); i++) {
+      ValueType fieldType = fields.get(i).getType();
       for (Record record : records) {
         List<Value> values = record.getRecord();
-        for (Value value : values) {
+        Value value = values.get(i);
+        if (value != null) {
           if (!fieldType.equals(value.getType())) {
             throw new IncorrectRecordFormatException(store.getTableSpec().getName());
           }
@@ -191,9 +195,9 @@ public class DstTableImpl implements DstTable {
 
   /**
    * check format of tableSpecification
-   *  1. field can't be both index and primary
-   *  2. table name can't be empty
-   *  3. at least one field
+   * 1. field can't be both index and primary
+   * 2. table name can't be empty
+   * 3. at least one field
    *
    * @param tableSpec tableSpec
    * @return boolean
@@ -206,8 +210,8 @@ public class DstTableImpl implements DstTable {
     if (fields.size() <= 0) {
       throw new IncorrectTableFormatException();
     }
-    for (Field field: fields ) {
-      if (field.isPrimary()&&field.isIndex()) {
+    for (Field field : fields) {
+      if (field.isPrimary() && field.isIndex()) {
         throw new IncorrectTableFormatException();
       }
     }

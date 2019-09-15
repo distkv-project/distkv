@@ -36,7 +36,7 @@ public class TableSpecification {
   public static class Builder {
 
     private String name = null;
-    private List<Field> fields = null;
+    private List<Field> fields = new ArrayList<>();
 
     public Builder name(String name) {
       this.name = name;
