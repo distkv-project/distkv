@@ -1,0 +1,89 @@
+syntax="proto2";
+
+package dst.server.protocol.pb;
+
+import "common_pb.proto";
+
+option java_package="org.dst.server.generated";
+option java_outer_classname="TableProtocol";
+option cc_generic_services = true;
+
+message DstTable {
+    repeated string keys = 1;
+    repeated string values = 2;
+}
+
+message CreateTableRequest {
+    required string key = 1;
+    required DstTable dict = 2;
+}
+
+message CreateTableResponse {
+    required Status status = 1;
+}
+
+message GetRequest {
+    required string key = 1;
+}
+
+message GetResponse {
+    required Status status = 1;
+    optional DstDict dict = 2;
+}
+
+message GetItemValueRequest {
+    required string key = 1;
+    required string itemKey = 2;
+}
+
+message GetItemValueResponse {
+    optional string itemValue = 1;
+    required Status status = 2;
+}
+
+message PopItemRequest {
+    required string key = 1;
+    required string itemKey = 2;
+}
+
+message PopItemResponse {
+    optional string itemValue = 1;
+    required Status status = 2;
+}
+
+message PutItemRequest {
+    required string key = 1;
+    required string itemKey = 2;
+    required string itemValue = 3;
+}
+
+message PutItemResponse {
+    required Status status = 1;
+}
+
+message DelRequest {
+    required string key = 1;
+}
+
+message DelResponse {
+    required Status status = 1;
+}
+
+message DelItemRequest {
+    required string key = 1;
+    required string itemKey = 2;
+}
+
+message DelItemResponse {
+    required Status status = 1;
+}
+
+service DstTableService {
+    rpc createTable(PutRequest) returns (PutResponse);
+    rpc append(GetRequest) returns (GetResponse);
+    rpc findTableSpecification(GetItemValueRequest) returns (GetItemValueResponse);
+    rpc query(PopItemRequest) returns (PopItemResponse);
+    rpc drop(PutItemRequest) returns (PutItemResponse);
+    rpc clearTable(DelRequest) returns (DelResponse);
+    rpc clear(DelItemRequest) returns (DelItemResponse);
+}

@@ -1,9 +1,9 @@
-syntax="proto2";
+syntax = "proto2";
 
 package dst.server.protocol.pb;
 
-option java_package="org.dst.server.generated";
-option java_outer_classname="CommonProtocol";
+option java_package = "org.dst.server.generated";
+option java_outer_classname = "CommonProtocol";
 
 enum Status {
     OK = 0;
@@ -11,4 +11,10 @@ enum Status {
     UNKNOWN_ERROR = 2;
     // The key of the dict is not found.
     DICT_KEY_NOT_FOUND = 3;
+    // table status
+    TABLE_NOT_FOUND = 4;
+    TABLE_DUPLICATED_CREATE = 5;
+    TABLE_SPEC_FORMAT_ERROR = 6;
+    TABLE_RECORDS_FORMAT_ERROR = 7;
+    TABLE_DUPLICATED_PRIMARY_KEY = 8;
 };
