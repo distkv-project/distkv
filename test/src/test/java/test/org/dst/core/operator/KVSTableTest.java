@@ -122,11 +122,8 @@ public class KVSTableTest {
     store.tables().findTableSpecification(TEST_TABLE);
   }
 
-
-
   @Test(priority = 5)
   public void testClearTable() {
-    store.tables().clear();
     dummyCreateTable();
     store.tables().append(TEST_TABLE, dummyTableEntryData());
     store.tables().clearTable(TEST_TABLE);
@@ -136,7 +133,6 @@ public class KVSTableTest {
 
   @Test(priority = 6,expectedExceptions = TableNotFoundException.class)
   public void testDrop() {
-    store.tables().clear();
     dummyCreateTable();
     store.tables().append(TEST_TABLE, dummyTableEntryData());
     store.tables().drop(TEST_TABLE);
