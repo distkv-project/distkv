@@ -7,9 +7,10 @@ Full [document](https://docs.dst-pro.com) is here.
 `Dst` project is a memory-based distributed key-value storage system. Besides these features, dst can support table concept which looks like tables in relational databases. We use java to finish this project, which is somewhat different from most databases using c/c++.
 
 ## Fancy Features
-1. Distributed
-2. Table Concept
-3. Sorted List
+1. Redis-like data structure
+2. Table concept based on k-v store
+3. High available since this is distributed
+4. Easy to use client
 
 ## Quick Started
 When we connect to server, we must start server first. At present, we only have two kinds of clients. One is `command line tool`, another is `java client sdk`.
