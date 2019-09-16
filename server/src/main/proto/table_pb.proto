@@ -1,89 +1,156 @@
-syntax="proto2";
-
+syntax = "proto2";
+//TODO （senyer） why proto2？
 package dst.server.protocol.pb;
 
 import "common_pb.proto";
+//import "google/protobuf/any.proto";
 
-option java_package="org.dst.server.generated";
-option java_outer_classname="TableProtocol";
+option java_package = "org.dst.server.generated";
+option java_outer_classname = "TableProtocol";
 option cc_generic_services = true;
 
-message DstTable {
-    repeated string keys = 1;
-    repeated string values = 2;
+
+message TableEntry {
+    optional TableSpecification tableSpec = 1;
+    optional Index index = 2;
+    repeated Record records = 3;
 }
 
+message TableSpecification {
+    required string name = 1;
+    repeated Field fields = 2;
+}
+
+message Index {
+    repeated MapIndex indexs = 1;
+    message MapIndex {
+        required Value key = 1;
+        repeated int32 values = 2;
+    }
+}
+
+message Record {
+    repeated Value values = 1;
+}
+
+message Field {
+    required string name = 1;
+    required ValueType type = 2 [default = NONE];
+    required bool primary = 3;
+    required bool index = 4;
+}
+//TODO （senyer） discuss feasibility
+message Value {
+    required ValueType type = 1 [default = NONE];
+    optional int32 int_value = 2;
+    optional double double_value = 3;
+    optional string str_value = 4;
+    optional StrList str_list_value = 5;
+    optional bytes raw_value = 6;
+    message StrList {
+        repeated string values = 1;
+    }
+}
+//TODO （senyer） discuss feasibility
+/*message Value {
+    required ValueType type = 1 [default = NONE];
+    oneof value {
+        int32 int_value = 2;
+        double double_value = 3;
+        string str_value = 4;
+        StrList str_list_value = 5;
+        bytes raw_value = 6;
+    }
+    message StrList {
+        repeated string values = 1;
+    }
+}*/
+//TODO （senyer） discuss feasibility
+/*message Value {
+    required ValueType type = 1 [default = NONE];
+    repeated google.protobuf.Any details = 2;
+}*/
+
+enum ValueType {
+    INT = 0;
+    STRING = 1;
+    DOUBLE = 2;
+    STRING_LIST = 3;
+    RAW_DATA = 4;
+    NONE = 5;
+}
+
+
 message CreateTableRequest {
-    required string key = 1;
-    required DstTable dict = 2;
+    required TableSpecification tableSpec = 1;
 }
 
 message CreateTableResponse {
     required Status status = 1;
 }
 
-message GetRequest {
-    required string key = 1;
+message AppendRequest {
+    required string tableName = 1;
+    repeated Record records = 2;
 }
 
-message GetResponse {
-    required Status status = 1;
-    optional DstDict dict = 2;
-}
-
-message GetItemValueRequest {
-    required string key = 1;
-    required string itemKey = 2;
-}
-
-message GetItemValueResponse {
-    optional string itemValue = 1;
-    required Status status = 2;
-}
-
-message PopItemRequest {
-    required string key = 1;
-    required string itemKey = 2;
-}
-
-message PopItemResponse {
-    optional string itemValue = 1;
-    required Status status = 2;
-}
-
-message PutItemRequest {
-    required string key = 1;
-    required string itemKey = 2;
-    required string itemValue = 3;
-}
-
-message PutItemResponse {
+message AppendResponse {
     required Status status = 1;
 }
 
-message DelRequest {
-    required string key = 1;
+message FindSpecificationRequest {
+    required string tableName = 1;
 }
 
-message DelResponse {
+message FindSpecificationResponse {
+    required Status status = 1;
+    optional TableSpecification tableSpec = 2;
+}
+
+message QueryRequest {
+    required string tableName = 1;
+    repeated MapConditions conditions = 2;
+    message MapConditions {
+        required Field field = 1;
+        required Value value = 2;
+    }
+}
+
+message QueryResponse {
+    required Status status = 1;
+    repeated Record records = 2;
+}
+
+message DropRequest {
+    required string tableName = 1;
+}
+
+message DropResponse {
     required Status status = 1;
 }
 
-message DelItemRequest {
-    required string key = 1;
-    required string itemKey = 2;
+message ClearTableRequest {
+    required string tableName = 1;
 }
 
-message DelItemResponse {
+message ClearTableResponse {
+    required Status status = 1;
+}
+
+message ClearRequest {
+
+}
+
+message ClearResponse {
     required Status status = 1;
 }
 
 service DstTableService {
-    rpc createTable(PutRequest) returns (PutResponse);
-    rpc append(GetRequest) returns (GetResponse);
-    rpc findTableSpecification(GetItemValueRequest) returns (GetItemValueResponse);
-    rpc query(PopItemRequest) returns (PopItemResponse);
-    rpc drop(PutItemRequest) returns (PutItemResponse);
-    rpc clearTable(DelRequest) returns (DelResponse);
-    rpc clear(DelItemRequest) returns (DelItemResponse);
+    rpc create (CreateTableRequest) returns (CreateTableResponse);
+    rpc append (AppendRequest) returns (AppendResponse);
+    rpc findSpecification (FindSpecificationRequest) returns (FindSpecificationResponse);
+    rpc query (QueryRequest) returns (QueryResponse);
+    rpc drop (DropRequest) returns (DropResponse);
+    rpc clearTable (ClearTableRequest) returns (ClearTableResponse);
+    rpc clear (ClearRequest) returns (ClearResponse);
 }
