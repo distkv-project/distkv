@@ -1,9 +1,10 @@
 package org.dst.core;
 
-import org.dst.core.operatorset.DstString;
+import org.dst.core.operatorset.DstDict;
 import org.dst.core.operatorset.DstList;
 import org.dst.core.operatorset.DstSet;
-import org.dst.core.operatorset.DstDict;
+import org.dst.core.operatorset.DstString;
+import org.dst.core.operatorset.DstSortedList;
 import org.dst.core.operatorset.DstTable;
 
 /**
@@ -18,6 +19,8 @@ public interface KVStore {
   DstSet sets();
 
   DstDict dicts();
+
+  DstSortedList sortLists();
 
   DstTable tables();
 
