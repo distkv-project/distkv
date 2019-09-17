@@ -1,6 +1,7 @@
 package org.dst.core.operatorset;
 
 import org.dst.entity.SortedListEntity;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,9 +11,9 @@ public interface DstSortedList {
 
   void del(String key);
 
-  void putItem(String key, SortedListEntity value);
+  void putItem(String key, SortedListEntity item);
 
-  void delItem(String key);
+  void delItem(String key, String info);
 
   void incItem(String key, String info);
 

@@ -2,8 +2,8 @@ package org.dst.server.service;
 
 import org.dst.core.KVStore;
 import org.dst.entity.SortedListEntity;
-import org.dst.exception.DictKeyNotFoundException;
 import org.dst.exception.DstException;
+import org.dst.exception.KeyNotFoundException;
 import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.SortedListProtocol;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 
 public class DstSortedListServiceImpl extends DstBaseService implements DstSortedListService {
@@ -29,8 +30,9 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
     CommonProtocol.Status status;
     try {
       LinkedList<SortedListEntity> linkedList = new LinkedList<>();
-      for (int i = 0; i < request.getInfoCount(); i++) {
-        linkedList.add(new SortedListEntity(request.getInfo(i),request.getScore(i)));
+      for (int i = 0; i < request.getListCount(); i++) {
+        linkedList.add(new SortedListEntity(request.getList(i).getInfo(),
+            request.getList(i).getScore()));
       }
       getStore().sortLists().put(request.getKey(), linkedList);
       status = CommonProtocol.Status.OK;
@@ -47,10 +49,22 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
     SortedListProtocol.TopResponse.Builder responseBuilder =
         SortedListProtocol.TopResponse.newBuilder();
     CommonProtocol.Status status;
-    try{
-      List<SortedListEntity> topList = getStore().sortLists().top(request.getKey(), request.getTopNum());
+    try {
+      List<SortedListEntity> topList =
+          getStore().sortLists().top(request.getKey(), request.getTopNum());
+      ListIterator<SortedListEntity> listIterator = topList.listIterator();
+      int i = 0;
+      while (listIterator.hasNext()) {
+        SortedListEntity entity = listIterator.next();
+        SortedListProtocol.SortedListEntity.Builder builder =
+            SortedListProtocol.SortedListEntity.newBuilder();
+        responseBuilder.setList(i,
+            builder.setInfo(entity.getInfo())
+                .setScore(entity.getScore()).build());
+        i++;
+      }
       status = CommonProtocol.Status.OK;
-    } catch (DictKeyNotFoundException e) {
+    } catch (KeyNotFoundException e) {
       LOGGER.error(e.getMessage());
       status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (DstException e) {
@@ -58,26 +72,83 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    return null;
+    return responseBuilder.build();
   }
 
   @Override
   public SortedListProtocol.DelResponse del(SortedListProtocol.DelRequest request) {
-    return null;
+    SortedListProtocol.DelResponse.Builder responseBuilder =
+        SortedListProtocol.DelResponse.newBuilder();
+    CommonProtocol.Status status;
+    try {
+      getStore().sortLists().del(request.getKey());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+    responseBuilder.setStatus(status);
+    return responseBuilder.build();
   }
 
   @Override
   public SortedListProtocol.IncItemResponse incItem(SortedListProtocol.IncItemRequest request) {
-    return null;
+    SortedListProtocol.IncItemResponse.Builder responseBuilder =
+        SortedListProtocol.IncItemResponse.newBuilder();
+    CommonProtocol.Status status;
+    try {
+      getStore().sortLists().incItem(request.getKey(), request.getInfo());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+    responseBuilder.setStatus(status);
+    return responseBuilder.build();
   }
 
   @Override
   public SortedListProtocol.PutItemResponse putItem(SortedListProtocol.PutItemRequest request) {
-    return null;
+    SortedListProtocol.PutItemResponse.Builder responseBuilder =
+        SortedListProtocol.PutItemResponse.newBuilder();
+    CommonProtocol.Status status;
+    try {
+      getStore().sortLists().putItem(request.getKey(),
+          new SortedListEntity(request.getInfo(), request.getScore()));
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+    responseBuilder.setStatus(status);
+    return responseBuilder.build();
   }
 
   @Override
   public SortedListProtocol.DelItemResponse delItem(SortedListProtocol.DelItemRequest request) {
-    return null;
+    SortedListProtocol.DelItemResponse.Builder responseBuilder =
+        SortedListProtocol.DelItemResponse.newBuilder();
+    CommonProtocol.Status status;
+    try {
+      getStore().sortLists().delItem(request.getKey(),request.getInfo());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+    responseBuilder.setStatus(status);
+    return responseBuilder.build();
   }
 }
