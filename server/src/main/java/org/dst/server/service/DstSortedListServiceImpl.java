@@ -53,15 +53,13 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       List<SortedListEntity> topList =
           getStore().sortLists().top(request.getKey(), request.getTopNum());
       ListIterator<SortedListEntity> listIterator = topList.listIterator();
-      int i = 0;
       while (listIterator.hasNext()) {
         SortedListEntity entity = listIterator.next();
         SortedListProtocol.SortedListEntity.Builder builder =
             SortedListProtocol.SortedListEntity.newBuilder();
-        responseBuilder.setList(i,
-            builder.setInfo(entity.getInfo())
-                .setScore(entity.getScore()).build());
-        i++;
+        builder.setScore(entity.getScore());
+        builder.setInfo(entity.getInfo());
+        responseBuilder.addList(builder.build());
       }
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {

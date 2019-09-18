@@ -14,25 +14,6 @@ import java.util.ListIterator;
 
 public class DstSortedListImpl implements DstSortedList {
 
-  public static void main(String[] args) throws InterruptedException {
-    DstSortedListImpl dstSortedList = new DstSortedListImpl();
-    LinkedList<SortedListEntity> list = new LinkedList<>();
-    list.add(new SortedListEntity("xswl", 9));
-    list.add(new SortedListEntity("wlll", 8));
-    list.add(new SortedListEntity("fw", 9));
-    list.add(new SortedListEntity("55", 6));
-    dstSortedList.put("k1", list);
-    List<SortedListEntity> k1 = dstSortedList.top("k1", 2);
-    System.out.println(k1.get(0).getInfo());
-    dstSortedList.incItem("k1", "xswl");
-    dstSortedList.incItem("k1", "fw");
-    dstSortedList.incItem("k1", "fw");
-
-    Thread.sleep(100);
-    List<SortedListEntity> k11 = dstSortedList.top("k1", 2);
-
-  }
-
   HashMap<String, LinkedList<SortedListEntity>> sortedListMap;
 
   public DstSortedListImpl() {
