@@ -13,38 +13,11 @@
 
     <!--List the dependency versions of the project-->
     <properties>
-        <brpc.version>2.5.1</brpc.version>
         <logback.version>1.2.3</logback.version>
-        <protobuf.version>3.8.0</protobuf.version>
     </properties>
 
     <build>
         <plugins>
-            <!--provide the function of protobuf automatic compilation-->
-            <plugin>
-                <groupId>com.github.os72</groupId>
-                <artifactId>protoc-jar-maven-plugin</artifactId>
-                <version>3.6.0.1</version>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <protocVersion>2.5.0</protocVersion>
-                            <addSources>none</addSources>
-                            <includeStdTypes>true</includeStdTypes>
-                            <outputDirectory>src/main/java</outputDirectory>
-                            <inputDirectories>
-                                <include>src/main/proto</include>
-                            </inputDirectories>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <artifactId> maven-assembly-plugin </artifactId>
                 <configuration>
@@ -71,19 +44,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>${protobuf.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baidu</groupId>
-            <artifactId>brpc-java</artifactId>
-            <version>${brpc.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.dst</groupId>
             <artifactId>dst-core</artifactId>

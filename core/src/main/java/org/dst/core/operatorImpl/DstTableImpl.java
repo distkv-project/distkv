@@ -1,8 +1,8 @@
 package org.dst.core.operatorImpl;
 
+import org.dst.common.exception.NotImplementException;
 import org.dst.core.TableSpecification;
 import org.dst.core.RecordEntry;
-import org.dst.core.exception.NotImplementException;
 import org.dst.core.operatorset.DstTable;
 
 public class DstTableImpl implements DstTable {
