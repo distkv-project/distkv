@@ -3,6 +3,7 @@ package test.org.dst.client;
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.dst.entity.SortedListEntity;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.org.dst.supplier.BaseTestSupplier;
 
@@ -15,6 +16,33 @@ public class SortedListProxyTest extends BaseTestSupplier {
   @Test
   public void testMain() {
     testPut();
+    testIncItem();
+    testPutItem();
+    testTop();
+    testDelItem();
+    testTop();
+  }
+
+  private void testTop() {
+    DstClient client = new DefaultDstClient(serverAddress);
+    LinkedList<SortedListEntity> list = client.sortedList().top("k1", 100);
+    Assert.assertEquals(list.get(0).getInfo(), "whhh");
+    Assert.assertEquals(list.get(1).getInfo(),"fw");
+  }
+
+  private void testDelItem() {
+    DstClient client = new DefaultDstClient(serverAddress);
+    client.sortedList().delItem("k1","55");
+  }
+
+  private void testPutItem() {
+    DstClient client = new DefaultDstClient(serverAddress);
+    client.sortedList().putItem("k1", new SortedListEntity("whhh",100));
+  }
+
+  private void testIncItem() {
+    DstClient client = new DefaultDstClient(serverAddress);
+    client.sortedList().incItem("k1", "fw");
   }
 
   private void testPut() {
@@ -24,7 +52,6 @@ public class SortedListProxyTest extends BaseTestSupplier {
     list.add(new SortedListEntity("wlll", 8));
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
-
     client.sortedList().put("k1", list);
   }
 

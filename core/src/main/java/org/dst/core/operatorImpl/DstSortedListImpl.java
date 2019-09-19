@@ -34,7 +34,7 @@ public class DstSortedListImpl implements DstSortedList {
   @Override
   public void putItem(String key, SortedListEntity item) {
     LinkedList list = sortedListMap.get(key);
-    ListIterator<SortedListEntity> iterator = list.listIterator(list.size());
+    ListIterator<SortedListEntity> iterator = list.listIterator();
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
       if (now.compareTo(item) > 0) {
@@ -42,6 +42,9 @@ public class DstSortedListImpl implements DstSortedList {
         iterator.add(item);
         break;
       }
+    }
+    if (!iterator.hasNext()) {
+      iterator.add(item);
     }
   }
 

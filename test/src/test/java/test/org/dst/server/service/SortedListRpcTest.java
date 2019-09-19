@@ -49,8 +49,22 @@ public class SortedListRpcTest extends BaseTestSupplier {
       topRequestBuilder.setTopNum(2);
       SortedListProtocol.TopResponse top =
           service.top(topRequestBuilder.build());
-      Assert.assertEquals(top.getList(0).getInfo(),"xswl");
-      Assert.assertEquals(top.getList(1).getInfo(),"fw");
+      Assert.assertEquals(top.getList(0).getInfo(), "xswl");
+      Assert.assertEquals(top.getList(1).getInfo(), "fw");
+
+      SortedListProtocol.PutItemRequest.Builder putRequestBuilder =
+          SortedListProtocol.PutItemRequest.newBuilder();
+      putRequestBuilder.setKey("k1");
+      putRequestBuilder.setInfo("asd");
+      putRequestBuilder.setScore(1000);
+      SortedListProtocol.PutItemResponse response =
+          service.putItem(putRequestBuilder.build());
+
+      topRequestBuilder.setKey("k1");
+      topRequestBuilder.setTopNum(2);
+      SortedListProtocol.TopResponse top1 =
+          service.top(topRequestBuilder.build());
+      Assert.assertEquals(top1.getList(0).getInfo(), "asd");
     }
   }
 }

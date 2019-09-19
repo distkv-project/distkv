@@ -5,11 +5,12 @@ import org.dst.core.KVStoreImpl;
 import org.dst.entity.SortedListEntity;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import test.org.dst.supplier.BaseTestSupplier;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class KVSSortedListTest {
+public class KVSSortedListTest extends BaseTestSupplier {
   @Test
   public void testSortedList() throws InterruptedException {
     KVStore store = new KVStoreImpl();
@@ -20,6 +21,7 @@ public class KVSSortedListTest {
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
     store.sortLists().put("k1", list);
+    store.sortLists().putItem("k1", new SortedListEntity("asd",1000));
     List<SortedListEntity> k1 = store.sortLists().top("k1", 2);
     new Thread(() -> {
       store.sortLists().incItem("k1", "xswl");
@@ -32,10 +34,10 @@ public class KVSSortedListTest {
     new Thread(runnable).start();
 
     Thread.sleep(100);
-    List<SortedListEntity> k11 = store.sortLists().top("k1", 2);
-    Assert.assertEquals(k11.get(0).getInfo(),"fw");
-    Assert.assertEquals(k11.get(0).getScore(),11);
-    Assert.assertEquals(k11.get(1).getInfo(),"xswl");
-    Assert.assertEquals(k11.get(1).getScore(),10);
+    List<SortedListEntity> k11 = store.sortLists().top("k1", 3);
+    Assert.assertEquals(k11.get(1).getInfo(),"fw");
+    Assert.assertEquals(k11.get(1).getScore(),11);
+    Assert.assertEquals(k11.get(2).getInfo(),"xswl");
+    Assert.assertEquals(k11.get(2).getScore(),10);
   }
 }
