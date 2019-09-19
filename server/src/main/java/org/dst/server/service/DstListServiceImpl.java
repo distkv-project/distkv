@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.dst.common.protobuf.protocols.CommonProtocol;
-import org.dst.common.protobuf.protocols.ListProtocol;
+import org.dst.common.protobuf.generated.CommonProtocol;
+import org.dst.common.protobuf.generated.ListProtocol;
 import org.dst.core.KVStore;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;

@@ -1,7 +1,7 @@
 package org.dst.server.service;
 
-import org.dst.common.protobuf.protocols.CommonProtocol;
-import org.dst.common.protobuf.protocols.DictProtocol;
+import org.dst.common.protobuf.generated.CommonProtocol;
+import org.dst.common.protobuf.generated.DictProtocol;
 import org.dst.core.KVStore;
 import org.dst.server.base.DstBaseService;
 import java.util.HashMap;

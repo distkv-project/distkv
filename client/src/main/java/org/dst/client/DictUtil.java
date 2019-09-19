@@ -1,7 +1,7 @@
 package org.dst.client;
 
 
-import org.dst.common.protobuf.protocols.DictProtocol;
+import org.dst.common.protobuf.generated.DictProtocol;
 import java.util.Map;
 
 public class DictUtil {

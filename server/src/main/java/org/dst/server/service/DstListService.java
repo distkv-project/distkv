@@ -1,7 +1,7 @@
 package org.dst.server.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
-import org.dst.common.protobuf.protocols.ListProtocol;
+import org.dst.common.protobuf.generated.ListProtocol;
 
 public interface DstListService {
 

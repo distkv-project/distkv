@@ -1,6 +1,6 @@
 package org.dst.test.supplier;
 
-import org.dst.common.protobuf.protocols.ListProtocol;
+import org.dst.common.protobuf.generated.ListProtocol;
 import org.dst.server.service.DstListService;
 
 public class ListRpcTestUtil {

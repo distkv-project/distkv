@@ -1,7 +1,7 @@
 package org.dst.server.service;
 
-import org.dst.common.protobuf.protocols.CommonProtocol;
-import org.dst.common.protobuf.protocols.StringProtocol;
+import org.dst.common.protobuf.generated.CommonProtocol;
+import org.dst.common.protobuf.generated.StringProtocol;
 import org.dst.core.KVStore;
 import org.dst.server.base.DstBaseService;
 import org.slf4j.Logger;

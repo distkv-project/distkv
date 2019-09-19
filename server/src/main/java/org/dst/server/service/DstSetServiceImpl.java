@@ -3,8 +3,8 @@ package org.dst.server.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.dst.common.protobuf.protocols.CommonProtocol;
-import org.dst.common.protobuf.protocols.SetProtocol;
+import org.dst.common.protobuf.generated.CommonProtocol;
+import org.dst.common.protobuf.generated.SetProtocol;
 import org.dst.core.KVStore;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
