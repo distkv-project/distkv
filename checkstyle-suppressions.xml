@@ -8,7 +8,7 @@
     <suppress checks="SummaryJavadoc" files=".*" />
     <!-- suppress check for protobuf-generated files. -->
     <!-- for windows separator-->
-    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]org[\\\\]dst[\\\\]server[\\\\]generated" />
+    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]org[\\\\]dst[\\\\]common[\\\\]protobuf[\\\\]protocols" />
     <!-- for linux separator-->
-    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]org[\\/]dst[\\/]server[\\/]generated" />
+    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]org[\\/]dst[\\/]common[\\/]protobuf[\\\\]protocols" />
 </suppressions>
