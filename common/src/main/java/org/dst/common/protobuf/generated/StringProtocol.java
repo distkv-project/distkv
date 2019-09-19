@@ -2153,7 +2153,7 @@ public final class StringProtocol {
       "uf.PutResponse\022P\n\003get\022#.org.dst.common.p",
       "rotobuf.GetRequest\032$.org.dst.common.prot" +
       "obuf.GetResponseB6\n!org.dst.common.proto" +
-      "buf.protocolsB\016StringProtocol\200\001\001"
+      "buf.generatedB\016StringProtocol\200\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

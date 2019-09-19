@@ -1345,7 +1345,7 @@ public final class DictProtocol {
        * <code>required .org.dst.common.protobuf.DstDict dict = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          org.dst.common.protobuf.generated.DictProtocol.DstDict, org.dst.common.protobuf.generated.DictProtocol.DstDict.Builder, org.dst.common.protobuf.generated.DictProtocol.DstDictOrBuilder>
+          org.dst.common.protobuf.generated.DictProtocol.DstDict, org.dst.common.protobuf.generated.DictProtocol.DstDict.Builder, org.dst.common.protobuf.generated.DictProtocol.DstDictOrBuilder> 
           getDictFieldBuilder() {
         if (dictBuilder_ == null) {
           dictBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -2842,7 +2842,7 @@ public final class DictProtocol {
        * <code>optional .org.dst.common.protobuf.DstDict dict = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          org.dst.common.protobuf.generated.DictProtocol.DstDict, org.dst.common.protobuf.generated.DictProtocol.DstDict.Builder, org.dst.common.protobuf.generated.DictProtocol.DstDictOrBuilder>
+          org.dst.common.protobuf.generated.DictProtocol.DstDict, org.dst.common.protobuf.generated.DictProtocol.DstDict.Builder, org.dst.common.protobuf.generated.DictProtocol.DstDictOrBuilder> 
           getDictFieldBuilder() {
         if (dictBuilder_ == null) {
           dictBuilder_ = new com.google.protobuf.SingleFieldBuilder<
@@ -8584,7 +8584,7 @@ public final class DictProtocol {
       "\022\\\n\007delItem\022\'.org.dst.common.protobuf.De",
       "lItemRequest\032(.org.dst.common.protobuf.D" +
       "elItemResponseB4\n!org.dst.common.protobu" +
-      "f.protocolsB\014DictProtocol\200\001\001"
+      "f.generatedB\014DictProtocol\200\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

@@ -5389,7 +5389,7 @@ public final class SetProtocol {
       "n.protobuf.DropByKeyResponse\022Y\n\006exists\022&" +
       ".org.dst.common.protobuf.ExistsRequest\032\'" +
       ".org.dst.common.protobuf.ExistsResponseB" +
-      "3\n!org.dst.common.protobuf.protocolsB\013Se" +
+      "3\n!org.dst.common.protobuf.generatedB\013Se" +
       "tProtocol\200\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =

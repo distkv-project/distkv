@@ -128,7 +128,7 @@ public final class CommonProtocol {
       "\n\017common_pb.proto\022\027org.dst.common.protob" +
       "uf*N\n\006Status\022\006\n\002OK\020\000\022\021\n\rKEY_NOT_FOUND\020\001\022" +
       "\021\n\rUNKNOWN_ERROR\020\002\022\026\n\022DICT_KEY_NOT_FOUND" +
-      "\020\003B3\n!org.dst.common.protobuf.protocolsB" +
+      "\020\003B3\n!org.dst.common.protobuf.generatedB" +
       "\016CommonProtocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
