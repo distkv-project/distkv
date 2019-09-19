@@ -1,4 +1,4 @@
-package org.dst.example;
+package org.dst.client.example;
 
 import java.util.ArrayList;
 import java.util.Arrays;
