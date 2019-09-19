@@ -1,8 +1,8 @@
 syntax="proto2";
 
-package dst.server.protocol.pb;
+package org.dst.common.protobuf;
 
-option java_package="org.dst.server.generated";
+option java_package="org.dst.common.protobuf.protocols";
 option java_outer_classname="CommonProtocol";
 
 enum Status {

@@ -1,4 +1,4 @@
-package org.dst.core.exception;
+package org.dst.exception;
 
 public class NotImplementException extends RuntimeException {
 
