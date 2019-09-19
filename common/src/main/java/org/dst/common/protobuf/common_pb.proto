@@ -1,0 +1,14 @@
+syntax="proto2";
+
+package org.dst.common.protobuf;
+
+option java_package="org.dst.common.protobuf.protocols";
+option java_outer_classname="CommonProtocol";
+
+enum Status {
+    OK = 0;
+    KEY_NOT_FOUND = 1;
+    UNKNOWN_ERROR = 2;
+    // The key of the dict is not found.
+    DICT_KEY_NOT_FOUND = 3;
+};

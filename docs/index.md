@@ -1,17 +1,12 @@
-## What is DST ?
+## Dst document
 
 > A distributed key-value in-memory store system with table concept.
 
-## Quick Started
+Dst is a distributed key value store with high available. It also has a bunch of fancy features, 
+like very easy to use, good management tool, and table concept based on k-v. So, follow me to travel it.
 
-1. Required environment
-JDK >= 1.8
+### [build](https://dst-project.github.io/dst/build)
 
-maven >= 3.5.0
+### [Usage](https://dst-project.github.io/dst/usage)
 
-protobuf == 2.5.0 (Not support 3.0)
-
-2. Build command
-> mvn clean install -DskipTests
-3. Test command
-> mvn test
+### [Dst client tool](https://dst-project.github.io/dst/client_tool)

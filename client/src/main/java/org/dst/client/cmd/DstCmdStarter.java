@@ -28,6 +28,7 @@ public class DstCmdStarter {
     commandHandlers.put(DstOperationType.LIST, new ListHandler(client));
     commandHandlers.put(DstOperationType.DICT, new DictHandler(client));
     commandHandlers.put(DstOperationType.TABLE, new TableHandler(client));
+    commandHandlers.put(DstOperationType.UNKNOWN, new UnkonwnHandler(client));
     new DstCmdStarter().loop();
   }
 
@@ -35,11 +36,11 @@ public class DstCmdStarter {
     Parser parser = new Parser();
     Scanner sc = new Scanner(System.in);
     while (true) {
-      System.out.print("dst-cli>");
+      System.out.print("dst-cli> ");
       String line = sc.nextLine();
       DstCommandWithType commandWithType = parser.parse(line);
       ClientResult clientResult = executeCommand(commandWithType);
-      System.out.println("dst-cli>" + clientResult);
+      System.out.println("dst-cli> " + clientResult);
     }
   }
 
