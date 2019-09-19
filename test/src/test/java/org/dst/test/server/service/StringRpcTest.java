@@ -1,12 +1,12 @@
-package test.org.dst.server.service;
+package org.dst.test.server.service;
 
-import org.dst.server.generated.CommonProtocol;
-import org.dst.server.generated.StringProtocol;
+import org.dst.common.protobuf.protocols.CommonProtocol;
+import org.dst.common.protobuf.protocols.StringProtocol;
 import org.dst.server.service.DstStringService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import test.org.dst.supplier.BaseTestSupplier;
-import test.org.dst.supplier.ProxyOnClient;
+import org.dst.test.supplier.BaseTestSupplier;
+import org.dst.test.supplier.ProxyOnClient;
 
 public class StringRpcTest extends BaseTestSupplier {
   @Test

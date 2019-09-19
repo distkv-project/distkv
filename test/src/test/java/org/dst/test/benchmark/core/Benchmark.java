@@ -1,4 +1,4 @@
-package test.org.dst.benchmark.core;
+package org.dst.test.benchmark.core;
 
 import java.util.ArrayList;
 import java.util.List;

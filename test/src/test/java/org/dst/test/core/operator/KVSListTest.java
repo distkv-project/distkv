@@ -1,4 +1,4 @@
-package test.org.dst.core.operator;
+package org.dst.test.core.operator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

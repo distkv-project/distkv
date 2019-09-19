@@ -1,12 +1,12 @@
-package test.org.dst.client;
+package org.dst.test.client;
 
 import com.google.common.collect.ImmutableList;
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.dst.common.exception.KeyNotFoundException;
+import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import test.org.dst.supplier.BaseTestSupplier;
 
 public class ListProxyTest extends BaseTestSupplier {
 

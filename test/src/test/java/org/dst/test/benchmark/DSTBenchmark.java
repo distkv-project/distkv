@@ -1,4 +1,4 @@
-package test.org.dst.benchmark;
+package org.dst.test.benchmark;
 
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;

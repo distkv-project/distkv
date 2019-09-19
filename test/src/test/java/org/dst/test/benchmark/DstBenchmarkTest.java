@@ -1,7 +1,7 @@
-package test.org.dst.benchmark;
+package org.dst.test.benchmark;
 
 import org.dst.client.DstClient;
-import test.org.dst.supplier.TestUtil;
+import org.dst.test.supplier.TestUtil;
 
 public class DstBenchmarkTest {
 
@@ -12,7 +12,7 @@ public class DstBenchmarkTest {
     String name = Thread.currentThread().getName();
     long start = System.currentTimeMillis();
     for (int i = 0; i < 100000; i++) {
-      client.strs().put(name + i, "test" + i);
+      client.strs().put(name + i, "org/dst/test" + i);
     }
     String as = client.strs().get(name + 59999);
     long end = System.currentTimeMillis();

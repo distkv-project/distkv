@@ -1,7 +1,7 @@
-package test.org.dst.benchmark;
+package org.dst.test.benchmark;
 
+import org.dst.test.benchmark.core.Benchmark;
 import redis.clients.jedis.Jedis;
-import test.org.dst.benchmark.core.Benchmark;
 
 public class RdsBenchmarkTest {
   public static void strPutStressTest(Jedis jedis) {
@@ -10,7 +10,7 @@ public class RdsBenchmarkTest {
     String name = Thread.currentThread().getName();
     long start = System.currentTimeMillis();
     for (int i = 0; i < 100000; i++) {
-      jedis.set(name + i, "test" + i);
+      jedis.set(name + i, "org/dst/test" + i);
     }
     String as = jedis.get(name + 59999);
     long end = System.currentTimeMillis();

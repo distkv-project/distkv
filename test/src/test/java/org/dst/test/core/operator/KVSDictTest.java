@@ -1,4 +1,4 @@
-package test.org.dst.core.operator;
+package org.dst.test.core.operator;
 
 import org.dst.core.KVStore;
 import org.dst.core.KVStoreImpl;

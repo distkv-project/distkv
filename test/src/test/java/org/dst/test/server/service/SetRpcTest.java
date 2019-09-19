@@ -1,13 +1,13 @@
-package test.org.dst.server.service;
+package org.dst.test.server.service;
 
 import com.google.common.collect.ImmutableList;
-import org.dst.server.generated.CommonProtocol;
-import org.dst.server.generated.SetProtocol;
+import org.dst.common.protobuf.protocols.CommonProtocol;
+import org.dst.common.protobuf.protocols.SetProtocol;
 import org.dst.server.service.DstSetService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import test.org.dst.supplier.BaseTestSupplier;
-import test.org.dst.supplier.ProxyOnClient;
+import org.dst.test.supplier.BaseTestSupplier;
+import org.dst.test.supplier.ProxyOnClient;
 import java.util.List;
 
 public class SetRpcTest extends BaseTestSupplier {

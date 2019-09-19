@@ -1,12 +1,12 @@
-package test.org.dst.client;
+package org.dst.test.client;
 
 import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import org.dst.client.DefaultDstClient;
 import org.dst.common.exception.DstException;
+import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import test.org.dst.supplier.BaseTestSupplier;
 
 public class SetProxyTest extends BaseTestSupplier {
 
