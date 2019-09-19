@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
-import org.dst.exception.KeyNotFoundException;
+import org.dst.common.exception.KeyNotFoundException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

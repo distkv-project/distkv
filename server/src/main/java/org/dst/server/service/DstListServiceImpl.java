@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.dst.core.KVStore;
-import org.dst.exception.DstException;
-import org.dst.exception.KeyNotFoundException;
+import org.dst.common.exception.DstException;
+import org.dst.common.exception.KeyNotFoundException;
 import org.dst.server.base.DstBaseService;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.ListProtocol;
-import org.dst.utils.Status;
+import org.dst.common.utils.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

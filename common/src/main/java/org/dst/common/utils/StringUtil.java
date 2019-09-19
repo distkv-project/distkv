@@ -1,4 +1,4 @@
-package org.dst.utils;
+package org.dst.common.utils;
 
 public class StringUtil {
 

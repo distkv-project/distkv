@@ -1,8 +1,8 @@
 package org.dst.client;
 
-import org.dst.exception.DictKeyNotFoundException;
-import org.dst.exception.DstException;
-import org.dst.exception.KeyNotFoundException;
+import org.dst.common.exception.DictKeyNotFoundException;
+import org.dst.common.exception.DstException;
+import org.dst.common.exception.KeyNotFoundException;
 import org.dst.server.generated.CommonProtocol;
 import org.dst.server.generated.DictProtocol;
 import org.dst.server.service.DstDictService;

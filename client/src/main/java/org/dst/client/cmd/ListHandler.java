@@ -3,7 +3,7 @@ package org.dst.client.cmd;
 import java.util.Arrays;
 import com.google.common.base.Preconditions;
 import org.dst.client.DefaultDstClient;
-import org.dst.exception.DstException;
+import org.dst.common.exception.DstException;
 
 public class ListHandler extends Handler {
 

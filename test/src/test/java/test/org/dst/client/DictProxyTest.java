@@ -2,7 +2,7 @@ package test.org.dst.client;
 
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
-import org.dst.exception.DstException;
+import org.dst.common.exception.DstException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.org.dst.supplier.BaseTestSupplier;

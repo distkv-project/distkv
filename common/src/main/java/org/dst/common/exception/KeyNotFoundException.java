@@ -1,4 +1,4 @@
-package org.dst.exception;
+package org.dst.common.exception;
 
 public class KeyNotFoundException extends DstException {
   protected String key;

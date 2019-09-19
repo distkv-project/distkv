@@ -1,4 +1,4 @@
-package org.dst.utils;
+package org.dst.common.utils;
 
 /**
  * The status is used to describe the result of server.

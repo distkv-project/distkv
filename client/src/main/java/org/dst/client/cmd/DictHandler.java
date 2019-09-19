@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.google.common.base.Preconditions;
 import org.dst.client.DefaultDstClient;
-import org.dst.exception.DstException;
+import org.dst.common.exception.DstException;
 
 public class DictHandler extends Handler {
 

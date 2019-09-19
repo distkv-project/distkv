@@ -1,4 +1,4 @@
-package org.dst.exception;
+package org.dst.common.exception;
 
 public class DstException extends RuntimeException {
 
