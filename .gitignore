@@ -31,7 +31,7 @@ hs_err_pid*
 target/
 
 # generated files
-server/src/main/java/org/dst/common/protobuf/protocols/*
+common/src/main/java/org/dst/common/protobuf/protocols/*
 
 # cmake
 deploy/launcher/cmake-build-debug/
