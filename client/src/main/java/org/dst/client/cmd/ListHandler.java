@@ -50,7 +50,7 @@ public class ListHandler extends Handler {
       case GET_COMMAND_STR:
         try {
           //list.get k1
-          if (cmd.length == 1) {
+          if (cmd.length == 2) {
             result = client.lists().get(cmd[1]).toString();
           } else {
             //list.get or list.get k1 k2...
