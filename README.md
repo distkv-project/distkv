@@ -13,16 +13,22 @@ Full [document](https://docs.dst-pro.com) is here.
 4. Easy to use client
 
 ## Quick Started
+#### 1. install dst
+Running the scripts `install_dst.sh` will install the whole dst to your machine.
+```bash
+./install_dst.sh
+```
+
 When we connect to server, we must start server first. At present, we only have two kinds of clients. One is `command line tool`, another is `java client sdk`.
 We can use each of them to access dst server.
 #### 1. Start Dst Server
 ```bash
-[root@localhost ~]# run_dst_server.sh
+[root@localhost ~]# dst-server
 ```
 
 #### 2.1 Start Dst Cli
 ```bash
-[root@localhost ~]# run_dst_cli.sh
+[root@localhost ~]# dst-cli
 ```
 
 #### 2.2 Command Line Tool
