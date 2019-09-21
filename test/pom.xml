@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>dst-superpom</artifactId>
-        <groupId>org.dst</groupId>
+        <groupId>com.dst-pro</groupId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -21,25 +21,25 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.dst</groupId>
+            <groupId>com.dst-pro</groupId>
             <artifactId>dst-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.dst</groupId>
+            <groupId>com.dst-pro</groupId>
             <artifactId>dst-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.dst</groupId>
+            <groupId>com.dst-pro</groupId>
             <artifactId>dst-common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.dst</groupId>
+            <groupId>com.dst-pro</groupId>
             <artifactId>dst-server</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
