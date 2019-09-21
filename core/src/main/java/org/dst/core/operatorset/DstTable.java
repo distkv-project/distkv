@@ -11,53 +11,53 @@ import java.util.Map;
 public interface DstTable {
 
   /**
-   * This method will create a new table
+   * Create a new table by the given table specification.
    *
-   * @param table the key to store
+   * @param table The specification of the table that will be created.
    */
   void createTable(TableSpecification table);
 
   /**
-   * This method will append list records into table
+   * Append a list of records to a table.
    *
    * @param tableName tableName
-   * @param records   records
+   * @param records   The records that will be append to the table.
    */
   void append(String tableName, List<Record> records);
 
   /**
-   * This method will return table info by table name
+   * Find a table specification by tableName
    *
-   * @param tableName table name
+   * @param tableName tableName
    */
   TableSpecification findTableSpecification(String tableName);
 
   /**
-   * This method will return all values by TableSpecification
+   * Query target Records by tableName and query conditions
    *
    * @param tableName  tableName
-   * @param conditions support for conditional query
+   * @param conditions query conditions
    */
   List<Record> query(String tableName, Map<Field, Value> conditions);
 
   /**
-   * This method will drop table from store by tableName
+   * Drop a table from store by tableName
    *
    * @param tableName tableName
-   * @return whether drop
+   * @return drop result : true or false
    */
   boolean drop(String tableName);
 
 
   /**
-   * This method will clear the table by table description
+   * Clear a table by tableName
    *
    * @param tableName tableName
    */
   void clearTable(String tableName);
 
   /**
-   * This method will clear the whole table store
+   * Clear the whole table store
    */
   void clear();
 

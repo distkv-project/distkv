@@ -10,9 +10,8 @@ import org.dst.core.table.Index;
 import org.dst.core.table.ValueType;
 import org.dst.common.exception.IncorrectRecordFormatException;
 import org.dst.common.exception.IncorrectTableFormatException;
-import org.dst.common.exception.RepeatCreateTableException;
+import org.dst.common.exception.TableAlreadyExistsException;
 import org.dst.common.exception.TableNotFoundException;
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +28,9 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public void createTable(TableSpecification tableSpec) {
-    checkFormatofTableSpecification(tableSpec);
+    checkFormatefTableSpecification(tableSpec);
     if (isExist(tableSpec.getName())) {
-      throw new RepeatCreateTableException(tableSpec.getName());
+      throw new TableAlreadyExistsException(tableSpec.getName());
     }
     TableEntry table = new TableEntry.Builder().tableSpec(tableSpec).builder();
     tableMap.put(tableSpec.getName(), table);
@@ -202,17 +201,17 @@ public class DstTableImpl implements DstTable {
    * @param tableSpec tableSpec
    * @return boolean
    */
-  private void checkFormatofTableSpecification(TableSpecification tableSpec) {
+  private void checkFormatefTableSpecification(TableSpecification tableSpec) {
     if (tableSpec.getName() == null) {
-      throw new IncorrectTableFormatException();
+      throw new IncorrectTableFormatException(null);
     }
     List<Field> fields = tableSpec.getFields();
     if (fields.size() <= 0) {
-      throw new IncorrectTableFormatException();
+      throw new IncorrectTableFormatException(tableSpec.getName());
     }
     for (Field field : fields) {
       if (field.isPrimary() && field.isIndex()) {
-        throw new IncorrectTableFormatException();
+        throw new IncorrectTableFormatException(tableSpec.getName());
       }
     }
   }

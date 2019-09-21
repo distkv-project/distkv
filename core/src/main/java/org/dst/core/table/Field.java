@@ -7,9 +7,9 @@ public class Field {
 
   private ValueType type = ValueType.NONE;
 
-  private boolean primary = false;
+  private boolean isPrimary = false;
 
-  private boolean index = false;
+  private boolean isIndex = false;
 
   public Field() {
   }
@@ -22,14 +22,14 @@ public class Field {
   public Field(String name, ValueType type, boolean primary) {
     this.name = name;
     this.type = type;
-    this.primary = primary;
+    this.isPrimary = primary;
   }
 
   public Field(String name, ValueType type, boolean primary, boolean index) {
     this.name = name;
     this.type = type;
-    this.primary = primary;
-    this.index = index;
+    this.isPrimary = primary;
+    this.isIndex = index;
   }
 
   public String getName() {
@@ -49,21 +49,20 @@ public class Field {
   }
 
   public boolean isPrimary() {
-    return primary;
+    return isPrimary;
   }
 
   public void setPrimary(boolean primary) {
-    this.primary = primary;
+    isPrimary = primary;
   }
 
   public boolean isIndex() {
-    return index;
+    return isIndex;
   }
 
   public void setIndex(boolean index) {
-    this.index = index;
+    isIndex = index;
   }
-
 
   public static class Builder {
 
