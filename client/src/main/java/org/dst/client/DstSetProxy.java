@@ -2,10 +2,10 @@ package org.dst.client;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.dst.exception.DstException;
-import org.dst.exception.KeyNotFoundException;
-import org.dst.server.generated.SetProtocol;
-import org.dst.server.generated.CommonProtocol;
+import org.dst.common.exception.DstException;
+import org.dst.common.exception.KeyNotFoundException;
+import org.dst.common.protobuf.generated.CommonProtocol;
+import org.dst.common.protobuf.generated.SetProtocol;
 import org.dst.server.service.DstSetService;
 
 public class DstSetProxy {
