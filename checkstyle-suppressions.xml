@@ -1,0 +1,14 @@
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+    <suppress checks="OperatorWrap" files=".*" />
+    <suppress checks="JavadocParagraph" files=".*" />
+    <suppress checks="SummaryJavadoc" files=".*" />
+    <!-- suppress check for protobuf-generated files. -->
+    <!-- for windows separator-->
+    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]org[\\\\]dst[\\\\]common[\\\\]protobuf[\\\\]generated" />
+    <!-- for linux separator-->
+    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]org[\\/]dst[\\/]common[\\/]protobuf[\\/]generated" />
+</suppressions>
