@@ -1,6 +1,6 @@
 package org.dst.client.cmd;
 
-import org.dst.utils.StringUtil;
+import org.dst.common.utils.StringUtil;
 
 public class Parser {
 
