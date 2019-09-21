@@ -8,10 +8,10 @@ import org.dst.core.table.Value;
 import org.dst.core.table.Field;
 import org.dst.core.table.Index;
 import org.dst.core.table.ValueType;
-import org.dst.exception.IncorrectRecordFormatException;
-import org.dst.exception.IncorrectTableFormatException;
-import org.dst.exception.RepeatCreateTableException;
-import org.dst.exception.TableNotFoundException;
+import org.dst.common.exception.IncorrectRecordFormatException;
+import org.dst.common.exception.IncorrectTableFormatException;
+import org.dst.common.exception.RepeatCreateTableException;
+import org.dst.common.exception.TableNotFoundException;
 
 import java.util.Map;
 import java.util.HashMap;
