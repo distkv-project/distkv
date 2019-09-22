@@ -1,10 +1,17 @@
 package org.dst.test.core.multithread;
 
+import org.dst.core.KVStore;
+import org.dst.core.KVStoreImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class KVSMultiThreadTestBase<T> {
+  /**
+   * Storage of all data types
+   */
+  static final KVStore KV_STORE = new KVStoreImpl();
 
   /**
    * Number of thread tests
@@ -14,9 +21,10 @@ public abstract class KVSMultiThreadTestBase<T> {
   /**
    * Single thread test data volume
    */
-  static final int DATA_COUNT = 10000;
+  static final int DATA_COUNT = 100000;
 
-  protected List<String> KEYS =new ArrayList<String>();
+  protected List<String> targetKeys = new ArrayList<String>();
+
   /**
    * Provide test data for multithreaded testing
    *
@@ -31,7 +39,12 @@ public abstract class KVSMultiThreadTestBase<T> {
    *
    * @return Collection of keys
    */
-  abstract List<String> getAllKeys(Map<String, List<String>> dummyData);
+  protected void storeTempKeys(Map<String, T> dummyData) {
+    Set<String> key = dummyData.keySet();
+    synchronized (this) {
+      targetKeys.addAll(key);
+    }
+  }
 
   /**
    * Execute testing ,and multithreaded tests may throw InterruptedException

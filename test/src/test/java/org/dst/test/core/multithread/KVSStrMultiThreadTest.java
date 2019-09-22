@@ -11,10 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KVSStrMultiThreadTest extends KVSMultiThreadTestBase {
+public class KVSStrMultiThreadTest extends KVSMultiThreadTestBase<String> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KVSSetMultiThreadTest.class);
-  private static final List<String> LIST_KEY = new ArrayList<>();
 
   private static final String TEST_STRING = "DST";
 
@@ -23,12 +22,8 @@ public class KVSStrMultiThreadTest extends KVSMultiThreadTestBase {
     HashMap<String, String> strMap = new HashMap<>();
     for (int i = 0; i < DATA_COUNT; i++) {
       long id = Thread.currentThread().getId();
-      synchronized (this) {
-        strMap.put("key:" + id + ":" + i, TEST_STRING);
-        LIST_KEY.add("key:" + id + ":" + i);
-      }
+      strMap.put("key:" + id + ":" + i, TEST_STRING);
     }
-
     return strMap;
   }
 
@@ -40,6 +35,7 @@ public class KVSStrMultiThreadTest extends KVSMultiThreadTestBase {
     for (int i = 0; i < THREAD_COUNT; i++) {
       Thread thread = new Thread(() -> {
         Map<String, String> strMap = dummyDataForThread();
+        storeTempKeys(strMap);
         long startTime = System.currentTimeMillis();
         for (String key : strMap.keySet()) {
           kvStore.strs().put(key, strMap.get(key));
@@ -54,8 +50,8 @@ public class KVSStrMultiThreadTest extends KVSMultiThreadTestBase {
       threads.get(i).join();
     }
     // check thread safety
-    for (int i = 0; i < LIST_KEY.size(); i++) {
-      String key = LIST_KEY.get(i);
+    for (int i = 0; i < targetKeys.size(); i++) {
+      String key = targetKeys.get(i);
       Assert.assertEquals(TEST_STRING, kvStore.strs().get(key));
     }
   }
