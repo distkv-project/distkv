@@ -33,8 +33,5 @@ target/
 # generated files
 common/src/main/java/org/dst/common/protobuf/generated/*
 
-# cmake
-deploy/launcher/cmake-build-debug/
-
 # build
 build/

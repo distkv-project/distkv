@@ -5,28 +5,27 @@ import java.util.Map;
 public interface DstDict {
 
   /**
-   * This method will put a key-value pair to map
+   * Put a key-value pair to map.
    *
-   * @param key   the key to store
-   * @param value the dictionary value to store
+   * @param key The key to store.
+   * @param value The dictionary value to store.
    */
-  public void put(String key, Map<String, String> value);
+  void put(String key, Map<String, String> value);
 
   /**
-   * This method will query a dictionary value based on the key
+   * Get a dictionary value by the given key.
    *
-   * @param key Obtain a dictionary value based on the key
+   * @param key The key that we will get its value.
    * @return the dictionary value
    */
-  public Map<String, String> get(String key);
+  Map<String, String> get(String key);
 
   /**
-   * This method will delete a dictionary value based on the key
+   * Delete a dictionary entry by the given key.
    *
-   * @param key delete a key-value pair based on the key
-   * @return true or false, indicates that the deletion succeeded or failed.
+   * @param key The key of the entry that we will delete.
+   * @return True if we succeed to delete, otherwise it's false.
    */
-  public boolean del(String key);
-
+  boolean del(String key);
 }
 
