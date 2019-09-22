@@ -1,5 +1,6 @@
 package org.dst.core.operatorImpl;
 
+import org.dst.common.exception.*;
 import org.dst.core.operatorset.DstTable;
 import org.dst.core.table.TableEntry;
 import org.dst.core.table.TableSpecification;
@@ -8,11 +9,6 @@ import org.dst.core.table.Value;
 import org.dst.core.table.Field;
 import org.dst.core.table.Index;
 import org.dst.core.table.ValueType;
-import org.dst.common.exception.IncorrectRecordFormatException;
-import org.dst.common.exception.IncorrectTableFormatException;
-import org.dst.common.exception.TableAlreadyExistsException;
-import org.dst.common.exception.TableNotFoundException;
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -160,7 +156,7 @@ public class DstTableImpl implements DstTable {
    * check the records's format
    * 1. field locations must correspond one to one
    * 2. records can't be empty
-   * 3. primary must unique TODO (senyer)
+   * 3. primary must unique
    *
    * @param records records
    * @return boolean
@@ -170,6 +166,7 @@ public class DstTableImpl implements DstTable {
       throw new IncorrectRecordFormatException(store.getTableSpec().getName());
     }
     TableSpecification tableSpec = store.getTableSpec();
+    Map<Value, List<Integer>> indexs = store.getIndex().getIndexs();
     List<Field> fields = tableSpec.getFields();
     for (int i = 0; i < fields.size(); i++) {
       ValueType fieldType = fields.get(i).getType();
@@ -179,6 +176,12 @@ public class DstTableImpl implements DstTable {
         if (value != null) {
           if (!fieldType.equals(value.getType())) {
             throw new IncorrectRecordFormatException(store.getTableSpec().getName());
+          }
+        }
+        //primary must unique
+        if (fields.get(i).isPrimary()) {
+          if (indexs.containsKey(value)) {
+            throw new DuplicatedPrimaryKeyException(fields.get(i).getName());
           }
         }
       }
