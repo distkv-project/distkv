@@ -20,44 +20,46 @@ public interface DstTable {
   /**
    * Append a list of records to a table.
    *
-   * @param tableName tableName
-   * @param records   The records that will be append to the table.
+   * @param tableName The table's name to which the records will be appended.
+   * @param records The records that will be append to the table.
    */
   void append(String tableName, List<Record> records);
 
   /**
-   * Find a table specification by tableName
+   * Get the table specification of the given `tableName`.
    *
-   * @param tableName tableName
+   * @param tableName The table's name , which need to be get the specification.
    */
-  TableSpecification findTableSpecification(String tableName);
+  TableSpecification getTableSpecification(String tableName);
 
   /**
-   * Query target Records by tableName and query conditions
+   * Query target Records by the given `tableName` and `conditions`.
    *
-   * @param tableName  tableName
-   * @param conditions query conditions
+   * @param tableName  The table's name , which need to be queried.
+   * @param conditions Typically, the query condition is the value of
+   *                   the corresponding field of the query table,
+   *                   the conditions can be null
    */
   List<Record> query(String tableName, Map<Field, Value> conditions);
 
   /**
-   * Drop a table from store by tableName
+   * Drop a table from store by the given `tableName`.
    *
-   * @param tableName tableName
-   * @return drop result : true or false
+   * @param tableName The table's name which will be drop.
+   * @return True if we succeeded to drop the table, otherwise is false.
    */
   boolean drop(String tableName);
 
 
   /**
-   * Clear a table by tableName
+   * Clear all the records of the table.
    *
-   * @param tableName tableName
+   * @param tableName The table's name to which will be clean.
    */
   void clearTable(String tableName);
 
   /**
-   * Clear the whole table store
+   * Clear the whole table store.
    */
   void clear();
 

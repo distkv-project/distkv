@@ -1,4 +1,4 @@
-package test.org.dst.core.operator;
+package org.dst.test.core.operator;
 
 import com.google.common.collect.ImmutableList;
 import org.dst.core.KVStore;
@@ -87,7 +87,7 @@ public class KVSTableTest {
   @Test(priority = 1)
   public void testFindTableSpecification() {
     dummyCreateTable();
-    TableSpecification testTable = store.tables().findTableSpecification(TEST_TABLE);
+    TableSpecification testTable = store.tables().getTableSpecification(TEST_TABLE);
     Assert.assertEquals(testTable.getName(), TEST_TABLE);
   }
 
@@ -119,7 +119,7 @@ public class KVSTableTest {
   @Test(priority = 4,expectedExceptions = TableNotFoundException.class)
   public void testClear() {
     store.tables().clear();
-    store.tables().findTableSpecification(TEST_TABLE);
+    store.tables().getTableSpecification(TEST_TABLE);
   }
 
   @Test(priority = 5)
@@ -136,6 +136,6 @@ public class KVSTableTest {
     dummyCreateTable();
     store.tables().append(TEST_TABLE, dummyTableEntryData());
     store.tables().drop(TEST_TABLE);
-    store.tables().findTableSpecification(TEST_TABLE);
+    store.tables().getTableSpecification(TEST_TABLE);
   }
 }

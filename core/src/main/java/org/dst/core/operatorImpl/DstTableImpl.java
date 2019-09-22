@@ -12,6 +12,7 @@ import org.dst.common.exception.IncorrectRecordFormatException;
 import org.dst.common.exception.IncorrectTableFormatException;
 import org.dst.common.exception.TableAlreadyExistsException;
 import org.dst.common.exception.TableNotFoundException;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public void createTable(TableSpecification tableSpec) {
-    checkFormatefTableSpecification(tableSpec);
+    checkTableSpecificationFormat(tableSpec);
     if (isExist(tableSpec.getName())) {
       throw new TableAlreadyExistsException(tableSpec.getName());
     }
@@ -38,23 +39,21 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public void append(String tableName, List<Record> sourceRecords) {
-    ArrayList<Record> records = new ArrayList<>(sourceRecords);
-    if (!isExist(tableName)) {
-      throw new TableNotFoundException(tableName);
-    }
-    TableEntry store = tableMap.get(tableName);
-    checkFormatOfRecords(store, records);
-    List<Record> oldRecords = store.getRecords();
+    List<Record> records = new ArrayList<>(sourceRecords);
+    checkTableExists(tableName);
+    TableEntry tableEntry = tableMap.get(tableName);
+    checkRecordsFormat(tableEntry, records);
+    List<Record> oldRecords = tableEntry.getRecords();
     int position = -1;
     //append records
     if (oldRecords == null || oldRecords.size() <= 0) {
-      store.setRecords(records);
+      tableEntry.setRecords(records);
     } else {
       position = oldRecords.size();
       oldRecords.addAll(records);
     }
     //append index
-    TableSpecification tableSpec = store.getTableSpec();
+    TableSpecification tableSpec = tableEntry.getTableSpec();
     List<Field> fields = tableSpec.getFields();
     int fieldsSize = fields.size();
     for (int i = 0; i < fieldsSize; i++) {
@@ -62,7 +61,7 @@ public class DstTableImpl implements DstTable {
       boolean index = fields.get(i).isIndex();
       if (primary || index) {
         int newRecordSize = records.size();
-        Map<Value, List<Integer>> indexs = store.getIndex().getIndexs();
+        Map<Value, List<Integer>> indexs = tableEntry.getIndex().getIndexs();
         for (int j = 0; j < newRecordSize; j++) {
           Value value = records.get(j).getRecord().get(i);
           position += 1;
@@ -84,18 +83,14 @@ public class DstTableImpl implements DstTable {
   }
 
   @Override
-  public TableSpecification findTableSpecification(String tableName) {
-    if (!isExist(tableName)) {
-      throw new TableNotFoundException(tableName);
-    }
+  public TableSpecification getTableSpecification(String tableName) {
+    checkTableExists(tableName);
     return tableMap.get(tableName).getTableSpec();
   }
 
   @Override
   public List<Record> query(String tableName, Map<Field, Value> conditions) {
-    if (!isExist(tableName)) {
-      throw new TableNotFoundException(tableName);
-    }
+    checkTableExists(tableName);
     List<Record> records = tableMap.get(tableName).getRecords();
     if (conditions == null || conditions.isEmpty()) {
       return records;
@@ -144,9 +139,7 @@ public class DstTableImpl implements DstTable {
 
   @Override
   public boolean drop(String tableName) {
-    if (!isExist(tableName)) {
-      throw new TableNotFoundException(tableName);
-    }
+    checkTableExists(tableName);
     tableMap.remove(tableName);
     return true;
   }
@@ -172,7 +165,7 @@ public class DstTableImpl implements DstTable {
    * @param records records
    * @return boolean
    */
-  private void checkFormatOfRecords(TableEntry store, List<Record> records) {
+  private void checkRecordsFormat(TableEntry store, List<Record> records) {
     if (records.isEmpty()) {
       throw new IncorrectRecordFormatException(store.getTableSpec().getName());
     }
@@ -201,7 +194,7 @@ public class DstTableImpl implements DstTable {
    * @param tableSpec tableSpec
    * @return boolean
    */
-  private void checkFormatefTableSpecification(TableSpecification tableSpec) {
+  private void checkTableSpecificationFormat(TableSpecification tableSpec) {
     if (tableSpec.getName() == null) {
       throw new IncorrectTableFormatException(null);
     }
@@ -213,6 +206,15 @@ public class DstTableImpl implements DstTable {
       if (field.isPrimary() && field.isIndex()) {
         throw new IncorrectTableFormatException(tableSpec.getName());
       }
+    }
+  }
+
+  /**
+   * Check if the table exists，if not exist it will throw a TableNotFoundException
+   */
+  private void checkTableExists(String tableName) {
+    if (!isExist(tableName)) {
+      throw new TableNotFoundException(tableName);
     }
   }
 
