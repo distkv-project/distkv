@@ -1,6 +1,10 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.common.exception.*;
+import org.dst.common.exception.TableNotFoundException;
+import org.dst.common.exception.DuplicatedPrimaryKeyException;
+import org.dst.common.exception.IncorrectRecordFormatException;
+import org.dst.common.exception.IncorrectTableFormatException;
+import org.dst.common.exception.TableAlreadyExistsException;
 import org.dst.core.operatorset.DstTable;
 import org.dst.core.table.TableEntry;
 import org.dst.core.table.TableSpecification;
