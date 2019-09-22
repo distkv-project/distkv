@@ -28,8 +28,8 @@ CLIENT_INSTALLING_DEST=/usr/local/dst-all/client
 sudo mkdir -p $SERVER_INSTALLING_DEST
 sudo mkdir -p $CLIENT_INSTALLING_DEST
 
-sudo cp $SCRIPT_DIR/deploy/scripts/run_dst_server.sh $SERVER_INSTALLING_DEST/dst-server
-sudo cp $SCRIPT_DIR/deploy/scripts/run_dst_cli.sh $CLIENT_INSTALLING_DEST/dst-cli
+sudo cp $SCRIPT_DIR/scripts/run_dst_server.sh $SERVER_INSTALLING_DEST/dst-server
+sudo cp $SCRIPT_DIR/scripts/run_dst_cli.sh $CLIENT_INSTALLING_DEST/dst-cli
 
 sudo cp $SERVER_JAR $SERVER_INSTALLING_DEST/dst-server-0.1.1-SNAPSHOT-jar-with-dependencies.jar
 sudo cp $CLIENT_JAR $CLIENT_INSTALLING_DEST/dst-client-0.1.1-SNAPSHOT-jar-with-dependencies.jar
