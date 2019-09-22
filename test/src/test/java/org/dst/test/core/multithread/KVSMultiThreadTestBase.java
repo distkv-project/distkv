@@ -1,18 +1,28 @@
 package org.dst.test.core.multithread;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import org.dst.core.KVStore;
-import org.dst.core.KVStoreImpl;
 
-public interface KVSMultiThreadTestBase<T> {
-  KVStore KV_STORE = new KVStoreImpl();
-  int THREAD_COUNT = 10;
-  int DATA_COUNT = 10000;
-  List<String> LIST_KEY = new ArrayList<>();
+public abstract class KVSMultiThreadTestBase<T> {
 
-  Map<String, T> dummyDataForThread();
+  /**
+   * Number of thread tests
+   */
+  static final int THREAD_COUNT = 10;
 
-  void test();
+  /**
+   * Single thread test data volume
+   */
+  static final int DATA_COUNT = 10000;
+
+  /**
+   * Provide test data for multithreaded testing
+   *
+   * @return dummy data
+   */
+  abstract Map<String, T> dummyDataForThread();
+
+  /**
+   * Execute testing ,and multithreaded tests may throw InterruptedException
+   */
+  abstract void test() throws InterruptedException;
 }

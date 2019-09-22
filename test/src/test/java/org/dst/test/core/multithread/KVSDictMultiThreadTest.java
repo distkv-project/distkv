@@ -1,12 +1,21 @@
 package org.dst.test.core.multithread;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.google.common.collect.ImmutableMap;
-import org.dst.test.benchmark.core.Benchmark;
+import org.dst.core.KVStore;
+import org.dst.core.KVStoreImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
-public class KVSDictMultiThreadTest implements KVSMultiThreadTestBase {
+public class KVSDictMultiThreadTest extends KVSMultiThreadTestBase {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(KVSSetMultiThreadTest.class);
+  private static final List<String> LIST_KEY = new ArrayList<>();
 
   @Override
   public Map<String, Map<String, String>> dummyDataForThread() {
@@ -18,24 +27,34 @@ public class KVSDictMultiThreadTest implements KVSMultiThreadTestBase {
         LIST_KEY.add("key:" + id + ":" + i);
       }
     }
-
     return strMap;
   }
 
+  @Test
   @Override
-  public void test() {
-    Benchmark benchmark = new Benchmark(THREAD_COUNT);
-    benchmark.setTest(() -> {
-      Map<String, Map<String, String>> strMap = dummyDataForThread();
-      for (String key : strMap.keySet()) {
-        Map<String, String> value = strMap.get(key);
-        KV_STORE.dicts().put(key, value);
-      }
-    });
-    benchmark.run();
+  public void test() throws InterruptedException {
+    KVStore kvStore = new KVStoreImpl();
+    List<Thread> threads = new ArrayList<>();
+    for (int i = 0; i < THREAD_COUNT; i++) {
+      Thread thread = new Thread(() -> {
+        Map<String, Map<String, String>> strMap = dummyDataForThread();
+        long startTime = System.currentTimeMillis();
+        for (String key : strMap.keySet()) {
+          kvStore.dicts().put(key, strMap.get(key));
+        }
+        LOGGER.info("Thread-ID-" + Thread.currentThread().getId()
+              + "   Cost Time :" + (System.currentTimeMillis() - startTime) + "s");
+      });
+      threads.add(thread);
+      thread.start();
+    }
+    for (int i = 0; i < THREAD_COUNT; i++) {
+      threads.get(i).join();
+    }
+    // check thread safety
     for (int i = 0; i < LIST_KEY.size(); i++) {
       String key = LIST_KEY.get(i);
-      Assert.assertEquals(ImmutableMap.of("K1", "V1"), KV_STORE.dicts().get(key));
+      Assert.assertEquals(ImmutableMap.of("K1", "V1"), kvStore.dicts().get(key));
     }
   }
 }

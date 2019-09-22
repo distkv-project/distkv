@@ -1,11 +1,21 @@
 package org.dst.test.core.multithread;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.dst.test.benchmark.core.Benchmark;
+import org.dst.core.KVStore;
+import org.dst.core.KVStoreImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.Test;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class KVSStrMultiThreadTest implements KVSMultiThreadTestBase {
+public class KVSStrMultiThreadTest extends KVSMultiThreadTestBase {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(KVSSetMultiThreadTest.class);
+  private static final List<String> LIST_KEY = new ArrayList<>();
+
   private static final String TEST_STRING = "DST";
 
   @Override
@@ -22,20 +32,31 @@ public class KVSStrMultiThreadTest implements KVSMultiThreadTestBase {
     return strMap;
   }
 
+  @Test
   @Override
-  public void test() {
-    Benchmark benchmark = new Benchmark(THREAD_COUNT);
-    benchmark.setTest(() -> {
-      Map<String, String> strMap = dummyDataForThread();
-      for (String key : strMap.keySet()) {
-        String value = strMap.get(key);
-        KV_STORE.strs().put(key, value);
-      }
-    });
-    benchmark.run();
+  public void test() throws InterruptedException {
+    KVStore kvStore = new KVStoreImpl();
+    List<Thread> threads = new ArrayList<>();
+    for (int i = 0; i < THREAD_COUNT; i++) {
+      Thread thread = new Thread(() -> {
+        Map<String, String> strMap = dummyDataForThread();
+        long startTime = System.currentTimeMillis();
+        for (String key : strMap.keySet()) {
+          kvStore.strs().put(key, strMap.get(key));
+        }
+        LOGGER.info("Thread-ID-" + Thread.currentThread().getId()
+              + "   Cost Time :" + (System.currentTimeMillis() - startTime) + "s");
+      });
+      threads.add(thread);
+      thread.start();
+    }
+    for (int i = 0; i < THREAD_COUNT; i++) {
+      threads.get(i).join();
+    }
+    // check thread safety
     for (int i = 0; i < LIST_KEY.size(); i++) {
       String key = LIST_KEY.get(i);
-      Assert.assertEquals(TEST_STRING, KV_STORE.strs().get(key));
+      Assert.assertEquals(TEST_STRING, kvStore.strs().get(key));
     }
   }
 }
