@@ -1,0 +1,78 @@
+syntax = "proto2";
+
+package org.dst.common.protobuf;
+
+import "common_pb.proto";
+
+option java_package="org.dst.common.protobuf.generated";
+option java_outer_classname = "SortedListProtocol";
+option cc_generic_services = true;
+
+message SortedListEntity {
+    required int32 score = 1;
+    required string info = 2;
+}
+
+message PutRequest {
+    required string key = 1;
+    repeated SortedListEntity list = 2;
+}
+
+message PutResponse {
+    required Status status = 1;
+}
+
+message TopRequest {
+    required string key = 1;
+    required uint32 topNum = 2;
+}
+
+message TopResponse {
+    required Status status = 1;
+    repeated SortedListEntity list = 2;
+}
+
+message DelRequest {
+    required string key = 1;
+}
+
+message DelResponse {
+    required Status status = 1;
+}
+
+message IncItemRequest {
+    required string key = 1;
+    required string info = 2;
+}
+
+message IncItemResponse {
+    required Status status = 1;
+}
+
+message PutItemRequest {
+    required string key = 1;
+    required int32 score = 2;
+    required string info = 3;
+}
+
+message PutItemResponse {
+    required Status status = 1;
+}
+
+message DelItemRequest {
+    required string key = 1;
+    required string info = 2;
+}
+
+message DelItemResponse {
+    required Status status = 1;
+}
+
+service DstListService {
+    rpc put (PutRequest) returns (PutResponse);
+    rpc top (TopRequest) returns (TopResponse);
+    rpc del (DelRequest) returns (DelResponse);
+    rpc incItem (IncItemRequest) returns (IncItemResponse);
+    rpc putItem (PutItemRequest) returns (PutItemResponse);
+    rpc delItem (DelItemRequest) returns (DelItemResponse);
+}

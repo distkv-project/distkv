@@ -2,7 +2,7 @@ package org.dst.client.cmd;
 
 import com.google.common.base.Preconditions;
 import org.dst.client.DefaultDstClient;
-import org.dst.exception.DstException;
+import org.dst.common.exception.DstException;
 
 public class StringHandler extends Handler {
 
