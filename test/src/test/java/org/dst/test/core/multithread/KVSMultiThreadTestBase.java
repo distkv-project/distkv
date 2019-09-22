@@ -47,7 +47,7 @@ public abstract class KVSMultiThreadTestBase<T> {
   }
 
   /**
-   * Execute testing ,and multithreaded tests may throw InterruptedException
+   * Execute testing ,and multithreaded tests may throw InterruptedException.
    */
   abstract void test() throws InterruptedException;
 }
