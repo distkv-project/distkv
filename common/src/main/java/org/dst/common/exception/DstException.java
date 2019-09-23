@@ -1,5 +1,8 @@
 package org.dst.common.exception;
 
+/**
+ * The base exception of Dst.
+ */
 public class DstException extends RuntimeException {
 
   public DstException(String errorMessage) {

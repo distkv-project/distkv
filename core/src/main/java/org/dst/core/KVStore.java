@@ -7,7 +7,7 @@ import org.dst.core.operatorset.DstDict;
 import org.dst.core.operatorset.DstTable;
 
 /**
- * The api of kv-store.
+ * The api of dst store.
  */
 public interface KVStore {
 
