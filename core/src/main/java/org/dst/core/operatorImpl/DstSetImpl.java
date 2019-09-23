@@ -3,15 +3,15 @@ package org.dst.core.operatorImpl;
 import org.dst.core.operatorset.DstSet;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.common.utils.Status;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 public class DstSetImpl implements DstSet {
 
-  private HashMap<String, Set<String>> setMap;
+  private ConcurrentHashMap<String, Set<String>> setMap;
 
   public DstSetImpl() {
-    this.setMap = new HashMap<String, Set<String>>();
+    this.setMap = new ConcurrentHashMap<>();
   }
 
   @Override

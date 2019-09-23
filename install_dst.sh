@@ -17,8 +17,8 @@ SCRIPT_DIR=$(dirname $SCRIPT_ABS)
 
 mvn clean install -DskipTests
 
-SERVER_JAR=$SCRIPT_DIR/server/target/dst-server-0.1.0-jar-with-dependencies.jar
-CLIENT_JAR=$SCRIPT_DIR/client/target/dst-client-0.1.0-jar-with-dependencies.jar
+SERVER_JAR=$SCRIPT_DIR/server/target/dst-server-0.1.1-SNAPSHOT-jar-with-dependencies.jar
+CLIENT_JAR=$SCRIPT_DIR/client/target/dst-client-0.1.1-SNAPSHOT-jar-with-dependencies.jar
 
 SERVER_INSTALLING_DEST=/usr/local/dst-all/server
 CLIENT_INSTALLING_DEST=/usr/local/dst-all/client
@@ -28,11 +28,11 @@ CLIENT_INSTALLING_DEST=/usr/local/dst-all/client
 sudo mkdir -p $SERVER_INSTALLING_DEST
 sudo mkdir -p $CLIENT_INSTALLING_DEST
 
-sudo cp $SCRIPT_DIR/deploy/scripts/run_dst_server.sh $SERVER_INSTALLING_DEST/dst-server
-sudo cp $SCRIPT_DIR/deploy/scripts/run_dst_cli.sh $CLIENT_INSTALLING_DEST/dst-cli
+sudo cp $SCRIPT_DIR/scripts/run_dst_server.sh $SERVER_INSTALLING_DEST/dst-server
+sudo cp $SCRIPT_DIR/scripts/run_dst_cli.sh $CLIENT_INSTALLING_DEST/dst-cli
 
-sudo cp $SERVER_JAR $SERVER_INSTALLING_DEST/dst-server-0.1.0-jar-with-dependencies.jar
-sudo cp $CLIENT_JAR $CLIENT_INSTALLING_DEST/dst-client-0.1.0-jar-with-dependencies.jar
+sudo cp $SERVER_JAR $SERVER_INSTALLING_DEST/dst-server-0.1.1-SNAPSHOT-jar-with-dependencies.jar
+sudo cp $CLIENT_JAR $CLIENT_INSTALLING_DEST/dst-client-0.1.1-SNAPSHOT-jar-with-dependencies.jar
 
 # create soft link to binaries.
 ln -s $SERVER_INSTALLING_DEST/dst-server /usr/local/bin/dst-server
