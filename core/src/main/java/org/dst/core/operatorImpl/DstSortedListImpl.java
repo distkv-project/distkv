@@ -29,11 +29,17 @@ public class DstSortedListImpl implements DstSortedList {
 
   @Override
   public void del(String key) {
+    if (!sortedListMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
     sortedListMap.remove(key);
   }
 
   @Override
   public void putItem(String key, SortedListEntity item) {
+    if (!sortedListMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
     LinkedList list = sortedListMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
     while (iterator.hasNext()) {
@@ -51,24 +57,37 @@ public class DstSortedListImpl implements DstSortedList {
 
   @Override
   public void delItem(String key, String info) {
+    if (!sortedListMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
     LinkedList<SortedListEntity> list = sortedListMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
+    boolean isFounnd = false;
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
       if (now.getInfo().equals(info)) {
+        isFounnd = true;
         iterator.remove();
       }
+    }
+    if (isFounnd == false) {
+      throw new DstException("not find info at SortedList");
     }
   }
 
   @Override
   public void incItem(String key, String info) {
+    if (!sortedListMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
     LinkedList<SortedListEntity> list = sortedListMap.get(key);
     synchronized (this) {
       ListIterator<SortedListEntity> iterator = list.listIterator();
+      boolean isFounnd = false;
       while (iterator.hasNext()) {
         SortedListEntity now = iterator.next();
         if (now.getInfo().equals(info)) {
+          isFounnd = true;
           now.setScore(now.getScore() + 1);
           if (iterator.nextIndex() != 1) {
             iterator.remove();
@@ -87,6 +106,9 @@ public class DstSortedListImpl implements DstSortedList {
             break;
           }
         }
+      }
+      if (isFounnd == false) {
+        throw new DstException("not find info at SortedList");
       }
     }
   }
