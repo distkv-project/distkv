@@ -1,9 +1,9 @@
 package org.dst.test.server.service;
 
 import com.google.common.collect.ImmutableList;
-import org.dst.common.protobuf.generated.CommonProtocol;
-import org.dst.common.protobuf.generated.SetProtocol;
-import org.dst.server.service.DstSetService;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
+import org.dst.rpc.protobuf.generated.SetProtocol;
+import org.dst.rpc.service.DstSetService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.dst.test.supplier.BaseTestSupplier;

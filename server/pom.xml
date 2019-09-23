@@ -19,7 +19,7 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId> maven-assembly-plugin </artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -49,7 +49,11 @@
             <artifactId>dst-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.dst-pro</groupId>
+            <artifactId>dst-rpc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
