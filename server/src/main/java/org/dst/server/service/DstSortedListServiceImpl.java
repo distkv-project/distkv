@@ -9,11 +9,9 @@ import org.dst.entity.SortedListEntity;
 import org.dst.server.base.DstBaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-
 
 public class DstSortedListServiceImpl extends DstBaseService implements DstSortedListService {
 
