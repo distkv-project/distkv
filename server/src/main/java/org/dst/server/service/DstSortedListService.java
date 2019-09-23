@@ -1,7 +1,7 @@
 package org.dst.server.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
-import org.dst.server.generated.SortedListProtocol;
+import org.dst.common.protobuf.generated.SortedListProtocol;
 
 public interface DstSortedListService {
   @BrpcMeta(serviceName = "DstSortedListService", methodName = "put")

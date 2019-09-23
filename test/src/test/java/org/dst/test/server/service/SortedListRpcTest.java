@@ -1,7 +1,7 @@
 package org.dst.test.server.service;
 
+import org.dst.common.protobuf.generated.SortedListProtocol;
 import org.dst.entity.SortedListEntity;
-import org.dst.server.generated.SortedListProtocol;
 import org.dst.server.service.DstSortedListService;
 import org.dst.test.supplier.BaseTestSupplier;
 import org.dst.test.supplier.ProxyOnClient;
