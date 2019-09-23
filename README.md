@@ -1,125 +1,62 @@
-# dst [![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst)
+# dst [![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) 
 A distributed key-value in-memory store system with table concept.
 
-## Getting Started
-#### 1. Required environment
-JDK >= 1.8 
+Full [document](https://docs.dst-pro.com) is here.
 
-maven >= 3.5.0
+## Project Description
+`Dst` project is a memory-based distributed key-value storage system. Besides these features, dst can support table concept which looks like tables in relational databases. We use java to finish this project, which is somewhat different from most databases using c/c++.
 
-protobuf == 2.5.0 (Not support 3.0)
-#### 2. Build command
-```
-mvn clean install -DskipTests
-```
-#### 3. Test command
-```
-mvn test
-```
-## Usage
+## Fancy Features
+1. Redis-like data structure
+2. Table concept based on k-v store
+3. High available since this is distributed
+4. Easy to use client
 
-#### 1. String concept
+## Quick Started
+#### 1. install dst
+Running the scripts `install_dst.sh` will install the whole dst to your machine.
 ```bash
-dst-cli > put "k1" "v1"
-dst-cli > ok
-
-dst-cli > str.put "k1" "v1"   # the same as `put`
-dst-cli > ok
-
-dst-cli > get "k1"
-dst-cli > "v1"
-
-dst-cli > str.get "k1"       # the same as `get`
-dst-cli > "v1"
+./install_dst.sh
 ```
 
-#### 2. List concept
+When we connect to server, we must start server first. At present, we only have two kinds of clients. One is `command line tool`, another is `java client sdk`.
+We can use each of them to access dst server.
+#### 1. Start Dst Server
 ```bash
+[root@localhost ~]# dst-server
+```
+
+#### 2.1 Start Dst Cli
+```bash
+[root@localhost ~]# dst-cli
+```
+
+#### 2.2 Command Line Tool
+```bash
+dst-cli > str.put "k1" "v1"
+dst-cli > ok
+dst-cli > str.get "k1" 
+dst-cli > "v1"
 dst-cli > list.put "k1" "v1" "v2" "v3"
 dst-cli > ok
-
 dst-cli > list.get "k1"
 dst-cli > ["v1", "v2", "v3"]
-
-dst-cli > list.lpush "k1" "v4" "v5" "v6"
-dst-cli > ok
-
-dst-cli > list.rpush "k1" "v7"
-dst-cli > ok
-
-dst-cli > list.lpop "k1" 2
-dst-cli > ok
-
-dst-cli > list.get "k1"
-dst-cli > ["v6", "v1", "v2", "v3", "v7"]
-```
-
-#### 3. Set concept
-```bash
 dst-cli > set.put "k1" "v1" "v2" "v3"
 dst-cli > ok
-
 dst-cli > set.get "k1"
 dst-cli > {"v1", "v2", "v3"}
-
-dst-cli > set.exists "k1" "v2"
-dst-cli > true
-
-dst-cli > set.exists "k1" "v4"
-dst-cli > false
-```
-
-#### 4. Dict concept
-```bash
 dst-cli > dict.put "dict1" "k1" "v1" "k2" "v2"
 dst-cli > ok
-
 dst-cli > dict.get "dict1"
 dst-cli > { "k1" : "v1", "k2" : "v2"}
-
-dst-cli > dict.get "dict1" "k1"
-dst-cli > "v1"
+dst-cli > str.put "k1" "v1"   # the same as `put`
+dst-cli > ok 
 ```
 
-#### 5. Table concept
-1. Define your data structure in a schema file named `mytables.sc`
-```
-table TaskTable {
-  [p]task_id: string;
-  [i]driver_id: string;
-  task_name: string;
-  return_num: int;
-  arguments: [string];
-}
+#### 3. Java Client SDK
+[Java Client SDK Example](https://github.com/dst-project/dst/blob/master/client/src/main/java/org/dst/client/example/DstUsageExample.java)
 
-table DriverTable {
- [p]driver_id: string;
- driver_name: string;
- actor_num: int;
-};
-```
-2. Start an dst server and execute this command to create table:
-```shell
-> dst-cli -p 12344 # connect to dst server
-> create TaskTable, DriverTable from mytables.sc
-```
-3. Add data to the table:
-```shell
-> TaskTable.add "00001", "22222", "my_task", 3, ["1", "2"]
-< ok
-> TaskTable.add "00002", "99999", "my_task", 3, ["1", "2"]
-< ok
-> TaskTable.add "00003", "22222", "my_task", 3, ["1", "2"]
-< ok
-> DriverTable.add "22222", "my_driver", 10
-< ok
-```
-4. Query all tasks by driver id:
-```shell
-> TaskTable.query (*) when driver_id == "22222"
-<
-< task_id      driver_id     task_name      num_return      arguments
-< "00001"      "22222"       "my_task"      3               ["1", "2"]
-< "00003"      "22222"       "my_task"      3               ["1", "2"]
-< 2 records
-```
+## Getting Involved
+Thank you for your attention to the `Dst` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/dst-project/dst/issues) list.
+And we welcome you to participate in our `Dst` project, if you want to make some contributions, you can refer the file [CONTRIBUTING.md](https://github.com/dst-project/dst/blob/master/CONTRIBUTING.md).
+

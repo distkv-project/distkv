@@ -1,14 +1,14 @@
 package org.dst.core.operatorImpl;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import org.dst.core.operatorset.DstString;
 
 public class DstStringImpl implements DstString {
 
-  private HashMap<String, String> strMap;
+  private ConcurrentHashMap<String, String> strMap;
 
   public DstStringImpl() {
-    this.strMap = new HashMap<String, String>();
+    this.strMap = new ConcurrentHashMap<>();
   }
 
   @Override

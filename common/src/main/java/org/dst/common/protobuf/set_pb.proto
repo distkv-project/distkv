@@ -1,0 +1,66 @@
+syntax="proto2";
+
+package org.dst.common.protobuf;
+
+import "common_pb.proto";
+
+option java_package="org.dst.common.protobuf.generated";
+option java_outer_classname="SetProtocol";
+option cc_generic_services = true;
+
+//set
+message PutRequest {
+    required string key = 1;
+    repeated string values = 2;
+}
+
+message PutResponse {
+    required Status status = 1;
+}
+
+message GetRequest {
+    required string key = 1;
+}
+
+message GetResponse {
+    required Status Status = 1;
+    repeated string values = 2;
+}
+
+//The entity that will be deleted from the set.
+message DeleteRequest {
+    required string key = 1;
+    required string entity = 2;
+}
+
+message DeleteResponse {
+    required Status status = 1;
+}
+
+//drop the whole set
+message DropByKeyRequest {
+    required string key = 1;
+}
+
+message DropByKeyResponse {
+    required Status status = 1;
+}
+
+message ExistsRequest {
+    required string key = 1;
+    required string entity = 2;
+}
+
+message ExistsResponse {
+    required Status status = 1;
+    //if exist throws a exception, the result wouldn't be set
+    optional bool result = 2;
+}
+
+service DstSetService {
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
+    rpc delete(DeleteRequest) returns (DeleteResponse);
+    rpc dropByKey(DropByKeyRequest) returns (DropByKeyResponse);
+    rpc exists(ExistsRequest) returns (ExistsResponse);
+}

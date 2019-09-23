@@ -11,7 +11,7 @@
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>server/logs/echo-all.%d{yyyy-MM-dd-HH-mm}.log
+            <fileNamePattern>/tmp/dst/logs/server/dst_server_all_%d{yyyy-MM-dd-HH-mm}.log
             </fileNamePattern>
             <maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -25,7 +25,7 @@
     <appender name="FILE-WARN"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>server/logs/echo-warn.%d{yyyy-MM-dd-HH-mm}.log
+            <fileNamePattern>/tmp/dst/logs/server/dst_server_warn_%d{yyyy-MM-dd-HH-mm}.log
             </fileNamePattern>
             <maxHistory>120</maxHistory>
         </rollingPolicy>
@@ -39,13 +39,12 @@
         </encoder>
     </appender>
 
-    <logger name="org.dst.server">
-        <level value="info"/>
+    <logger name="org.dst.server" level = "info">
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <root>
         <level value="info"/>
-        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="FILE-WARN"/>
     </root>

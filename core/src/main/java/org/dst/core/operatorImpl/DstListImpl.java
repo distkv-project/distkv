@@ -1,17 +1,17 @@
 package org.dst.core.operatorImpl;
 
 import org.dst.core.operatorset.DstList;
-import org.dst.exception.KeyNotFoundException;
-import org.dst.utils.Status;
-import java.util.HashMap;
+import org.dst.common.exception.KeyNotFoundException;
+import org.dst.common.utils.Status;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 
 public class DstListImpl implements DstList {
 
-  private HashMap<String, List<String>> listMap;
+  private ConcurrentHashMap<String, List<String>> listMap;
 
   public DstListImpl() {
-    this.listMap = new HashMap<String, List<String>>();
+    this.listMap = new ConcurrentHashMap<>();
   }
 
   @Override
