@@ -12,7 +12,7 @@ public class TestUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
-          + File.separator + "dst-server-0.1.0-SNAPSHOT-jar-with-dependencies.jar";
+          + File.separator + "dst-server-0.1.1-SNAPSHOT-jar-with-dependencies.jar";
 
   private static Process rpcServerProcess = null;
 
