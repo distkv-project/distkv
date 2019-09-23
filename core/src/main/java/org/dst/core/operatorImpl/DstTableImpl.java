@@ -14,17 +14,17 @@ import org.dst.core.table.Field;
 import org.dst.core.table.Index;
 import org.dst.core.table.ValueType;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DstTableImpl implements DstTable {
 
-  private HashMap<String, TableEntry> tableMap;
+  private ConcurrentHashMap<String, TableEntry> tableMap;
 
   public DstTableImpl() {
-    this.tableMap = new HashMap<String, TableEntry>();
+    this.tableMap = new ConcurrentHashMap<String, TableEntry>();
   }
 
   @Override
