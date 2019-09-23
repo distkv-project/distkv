@@ -15,12 +15,23 @@ public class DstCmdStarter {
           commandHandlers = new HashMap<>();
 
   public static void main(String[] args) {
-    //TODO(jyx) Check the server is open or not
 
     if (args.length == 0) {
       client = new DefaultDstClient(defaultAddress);
+    } else {
+      String address = parseAddress(args);
+      try {
+        client = new DefaultDstClient(address);
+      } catch (NullPointerException e) {
+        System.out.println("can't connect to the server, please check your input.");
+        return;
+      }
     }
-    //TODO(jyx) deal with -h 127.0.0.1 -p 8082
+
+    if (!client.isConnected()) {
+      System.out.println("can't connect to the server, please check the status of your server.");
+      return;
+    }
 
     //register different operation type handler
     commandHandlers.put(DstOperationType.STRING, new StringHandler(client));
@@ -47,4 +58,33 @@ public class DstCmdStarter {
   private ClientResult executeCommand(DstCommandWithType commandWithType) {
     return commandHandlers.get(commandWithType.operationType).apply(commandWithType);
   }
+
+  /**
+   * @param args -h x.x.x.x -p xxxx
+   * @return list://127.0.0.1:8082
+   */
+  private static String parseAddress(String[] args) {
+    if (args.length != 4) {
+      return null;
+    }
+
+    StringBuilder sb = new StringBuilder();
+    if ("-h".equals(args[0])) {
+      sb.append("list://");
+      sb.append(args[1]);
+    } else {
+      return null;
+    }
+
+    if ("-p".equals(args[2])) {
+      sb.append(":");
+      sb.append(args[3]);
+    } else {
+      return null;
+    }
+
+    return sb.toString();
+  }
+
+
 }
