@@ -1,8 +1,8 @@
 package org.dst.test.server.service;
 
-import org.dst.common.protobuf.generated.CommonProtocol;
-import org.dst.common.protobuf.generated.StringProtocol;
-import org.dst.server.service.DstStringService;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
+import org.dst.rpc.protobuf.generated.StringProtocol;
+import org.dst.rpc.service.DstStringService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.dst.test.supplier.BaseTestSupplier;
