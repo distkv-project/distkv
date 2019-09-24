@@ -16,16 +16,18 @@ public class DstCmdStarter {
 
   public static void main(String[] args) {
 
+    String address;
     if (args.length == 0) {
-      client = new DefaultDstClient(defaultAddress);
+      address = defaultAddress;
     } else {
-      String address = parseAddress(args);
-      try {
-        client = new DefaultDstClient(address);
-      } catch (NullPointerException e) {
-        System.out.println("can't connect to the server, please check your input.");
-        return;
-      }
+      address = covertArgsToAddress(args);
+    }
+
+    try {
+      client = new DefaultDstClient(address);
+    } catch (NullPointerException e) {
+      System.out.println("can't connect to the server, please check your input.");
+      return;
     }
 
     if (!client.isConnected()) {
@@ -60,10 +62,10 @@ public class DstCmdStarter {
   }
 
   /**
-   * @param args -h x.x.x.x -p xxxx
+   * @param args the args like [-h,127.0.0.1,-p,8082]
    * @return list://127.0.0.1:8082
    */
-  private static String parseAddress(String[] args) {
+  private static String covertArgsToAddress(String[] args) {
     if (args.length != 4) {
       return null;
     }
