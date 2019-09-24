@@ -66,5 +66,4 @@ public class DstCmdStarter {
   private ClientResult executeCommand(DstCommandWithType commandWithType) {
     return commandHandlers.get(commandWithType.operationType).apply(commandWithType);
   }
-
 }
