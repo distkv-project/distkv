@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Function;
 import org.dst.client.DefaultDstClient;
+import org.dst.common.exception.DstException;
 
 public class DstCmdStarter {
 
@@ -20,7 +21,12 @@ public class DstCmdStarter {
     if (args.length == 0) {
       address = defaultAddress;
     } else {
-      address = covertArgsToAddress(args);
+      try {
+        address = ArgsParseUtil.covertArgsToAddress(args);
+      } catch (DstException e) {
+        System.out.println(e.getMessage());
+        return;
+      }
     }
 
     try {
@@ -60,33 +66,5 @@ public class DstCmdStarter {
   private ClientResult executeCommand(DstCommandWithType commandWithType) {
     return commandHandlers.get(commandWithType.operationType).apply(commandWithType);
   }
-
-  /**
-   * @param args the args like [-h,127.0.0.1,-p,8082]
-   * @return list://127.0.0.1:8082
-   */
-  private static String covertArgsToAddress(String[] args) {
-    if (args.length != 4) {
-      return null;
-    }
-
-    StringBuilder sb = new StringBuilder();
-    if ("-h".equals(args[0])) {
-      sb.append("list://");
-      sb.append(args[1]);
-    } else {
-      return null;
-    }
-
-    if ("-p".equals(args[2])) {
-      sb.append(":");
-      sb.append(args[3]);
-    } else {
-      return null;
-    }
-
-    return sb.toString();
-  }
-
 
 }
