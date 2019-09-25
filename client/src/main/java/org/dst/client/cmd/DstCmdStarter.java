@@ -31,23 +31,19 @@ public class DstCmdStarter {
 
   public static void main(String[] args) {
 
-    StringBuilder sb = new StringBuilder();
     DstCmdStarter dstCmdStarter = new DstCmdStarter();
     JCommander jcommander = JCommander.newBuilder().addObject(dstCmdStarter).build();
+    jcommander.setProgramName("dst");
 
     try {
       jcommander.parse(args);
     } catch (ParameterException e) {
-      jcommander.setProgramName("dst");
-      jcommander.usage(sb);
-      System.out.println(sb.toString());
+      jcommander.usage();
       return;
     }
 
     if (HELP) {
-      jcommander.setProgramName("dst");
-      jcommander.usage(sb);
-      System.out.println(sb.toString());
+      jcommander.usage();
       return;
     }
 
@@ -56,18 +52,10 @@ public class DstCmdStarter {
       return;
     }
 
-    sb.append("list://");
-    sb.append(ADDRESS);
-
     try {
-      client = new DefaultDstClient(sb.toString());
+      client = new DefaultDstClient(String.format("list://%s", ADDRESS));
     } catch (Exception e) {
       System.out.println("connect failure，please check your input.");
-      return;
-    }
-
-    if (!client.isConnected()) {
-      System.out.println("dst-server connect failure, please check the status of your server.");
       return;
     }
 
