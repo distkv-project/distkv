@@ -17,7 +17,7 @@ public class ArgsParseUtil {
           order = 1)
   private static String ADDRESS = "127.0.0.1:8082";
 
-  @Parameter(names = {"-v", "-version", "-V"}, description = "Show the version of Dst",
+  @Parameter(names = {"-v", "-version", "-V"}, description = "Show the version of Dst.",
           help = true, order = 2)
   private static boolean VERSION = false;
 

@@ -8,8 +8,6 @@ import org.dst.common.exception.DstException;
 
 public class DstCmdStarter {
 
-  private static final String defaultAddress = "list://127.0.0.1:8082";
-
   private static DefaultDstClient client;
 
   private static HashMap<DstOperationType, Function<DstCommandWithType, ClientResult>>
@@ -30,7 +28,7 @@ public class DstCmdStarter {
     } catch (Exception e) {
       System.out.println("connect failure，please check your input.");
       return;
-  }
+    }
 
     if (!client.isConnected()) {
       System.out.println("dst-server connect failure, please check the status of your server.");
