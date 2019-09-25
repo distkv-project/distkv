@@ -13,7 +13,7 @@ public class ArgsParseUtil {
   private static boolean HELP = false;
   @Parameter(names = {"--address"}, description = "Specify the address of server to connect.",
           order = 1)
-  private static String ADDRESS = "127.0.0.1:8282";
+  private static String ADDRESS = "127.0.0.1:8082";
   @Parameter(names = {"-v", "-version", "-V"}, description = "Show the version of Dst",
           help = true, order = 2)
   private static boolean VERSION = false;
