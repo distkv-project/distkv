@@ -55,7 +55,8 @@ public class DstCmdStarter {
     try {
       client = new DefaultDstClient(String.format("list://%s", ADDRESS));
     } catch (Exception e) {
-      System.out.println("connect failure, please check your input.");
+      System.out.println(String.format("Failed to connect to dst server, %s, "
+              + "please check your input.", ADDRESS));
       return;
     }
 
