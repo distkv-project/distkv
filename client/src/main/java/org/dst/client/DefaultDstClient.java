@@ -4,11 +4,11 @@ import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
-import org.dst.server.service.DstDictService;
-import org.dst.server.service.DstListService;
-import org.dst.server.service.DstSetService;
 import org.dst.server.service.DstSortedListService;
-import org.dst.server.service.DstStringService;
+import org.dst.rpc.service.DstDictService;
+import org.dst.rpc.service.DstListService;
+import org.dst.rpc.service.DstSetService;
+import org.dst.rpc.service.DstStringService;
 
 public class DefaultDstClient implements DstClient {
 
