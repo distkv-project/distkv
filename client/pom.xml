@@ -14,7 +14,7 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId> maven-assembly-plugin </artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -40,23 +40,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>3.6.1</version>
+            <groupId>com.dst-pro</groupId>
+            <artifactId>dst-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.baidu</groupId>
-            <artifactId>brpc-java</artifactId>
-            <version>2.5.1</version>
-            <scope>compile</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.dst-pro</groupId>
-            <artifactId>dst-server</artifactId>
+            <artifactId>dst-rpc</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>RELEASE</version>
         </dependency>
 
         <dependency>

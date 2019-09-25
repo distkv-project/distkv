@@ -14,6 +14,7 @@
         <module>client</module>
         <module>test</module>
         <module>common</module>
+        <module>rpc</module>
     </modules>
 
     <properties>
