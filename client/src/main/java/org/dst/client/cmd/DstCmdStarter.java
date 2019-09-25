@@ -18,15 +18,11 @@ public class DstCmdStarter {
   public static void main(String[] args) {
 
     String address;
-    if (args.length == 0) {
-      address = defaultAddress;
-    } else {
-      try {
-        address = ArgsParseUtil.covertArgsToAddress(args);
-      } catch (DstException e) {
-        System.out.println(e.getMessage());
-        return;
-      }
+    try {
+      address = ArgsParseUtil.covertArgsToAddress(args);
+    } catch (DstException e) {
+      System.out.println(e.getMessage());
+      return;
     }
 
     try {
@@ -34,7 +30,7 @@ public class DstCmdStarter {
     } catch (Exception e) {
       System.out.println("connect failure，please check your input.");
       return;
-    }
+  }
 
     if (!client.isConnected()) {
       System.out.println("dst-server connect failure, please check the status of your server.");
