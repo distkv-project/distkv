@@ -39,14 +39,6 @@
     </build>
 
     <dependencies>
-
-        <!-- https://mvnrepository.com/artifact/com.beust/jcommander -->
-        <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
-            <version>1.48</version>
-        </dependency>
-
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
@@ -66,11 +58,12 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
             <version>1.72</version>
-            <scope>compile</scope>
         </dependency>
+
     </dependencies>
 </project>
