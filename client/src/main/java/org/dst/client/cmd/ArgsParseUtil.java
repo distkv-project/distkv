@@ -9,7 +9,7 @@ public class ArgsParseUtil {
   private static final String DEFAULT_VERSION = "0.1.0";
 
   @Parameter(names = {"--help", "-help"}, description = "show the help command",
-          help = true, order = 0)
+          help = true, order = -1)
   private static boolean HELP = false;
   @Parameter(names = {"-h", "-H"}, description = "specify the host of server to connect", order = 1)
   private static String HOST = "127.0.0.1";
