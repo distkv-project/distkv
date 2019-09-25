@@ -31,13 +31,13 @@ public class DstCmdStarter {
 
     try {
       client = new DefaultDstClient(address);
-    } catch (NullPointerException e) {
-      System.out.println("can't connect to the server, please check your input.");
+    } catch (Exception e) {
+      System.out.println("connect failure，please check your input.");
       return;
     }
 
     if (!client.isConnected()) {
-      System.out.println("can't connect to the server, please check the status of your server.");
+      System.out.println("dst-server connect failure, please check the status of your server.");
       return;
     }
 
