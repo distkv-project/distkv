@@ -8,15 +8,14 @@ public class ArgsParseUtil {
 
   private static final String DEFAULT_VERSION = "0.1.0";
 
-  @Parameter(names = {"--help", "-help"}, description = "show the help command",
+  @Parameter(names = {"--help", "-help"}, description = "Show help messages.",
           help = true, order = -1)
   private static boolean HELP = false;
-  @Parameter(names = {"-h", "-H"}, description = "specify the host of server to connect", order = 1)
-  private static String HOST = "127.0.0.1";
-  @Parameter(names = {"-p", "-P"}, description = "specify the port of server to connect", order = 2)
-  private static String PORT = "8082";
-  @Parameter(names = {"-v", "-version", "-V"}, description = "show the version of Dst",
-      help = true, order = 3)
+  @Parameter(names = {"--address"}, description = "Specify the address of server to connect.",
+          order = 1)
+  private static String ADDRESS = "127.0.0.1:8282";
+  @Parameter(names = {"-v", "-version", "-V"}, description = "Show the version of Dst",
+          help = true, order = 2)
   private static boolean VERSION = false;
 
   /**
@@ -48,9 +47,7 @@ public class ArgsParseUtil {
     }
 
     sb.append("list://");
-    sb.append(HOST);
-    sb.append(":");
-    sb.append(PORT);
+    sb.append(ADDRESS);
     return sb.toString();
   }
 
