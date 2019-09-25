@@ -2,9 +2,9 @@ package org.dst.client;
 
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
-import org.dst.common.protobuf.generated.SortedListProtocol;
-import org.dst.entity.SortedListEntity;
-import org.dst.server.service.DstSortedListService;
+import org.dst.common.entity.sortedList.SortedListEntity;
+import org.dst.rpc.protobuf.generated.SortedListProtocol;
+import org.dst.rpc.service.DstSortedListService;
 
 import java.util.LinkedList;
 

@@ -3,7 +3,7 @@ package org.dst.core.operatorImpl;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.core.operatorset.DstSortedList;
-import org.dst.entity.SortedListEntity;
+import org.dst.common.entity.sortedList.SortedListEntity;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

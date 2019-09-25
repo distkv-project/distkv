@@ -2,7 +2,7 @@ package org.dst.test.core.operator;
 
 import org.dst.core.KVStore;
 import org.dst.core.KVStoreImpl;
-import org.dst.entity.SortedListEntity;
+import org.dst.common.entity.sortedList.SortedListEntity;
 import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;

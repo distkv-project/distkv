@@ -1,4 +1,4 @@
-package org.dst.entity;
+package org.dst.common.entity.sortedList;
 
 public class SortedListEntity implements Comparable<SortedListEntity> {
   private int score;

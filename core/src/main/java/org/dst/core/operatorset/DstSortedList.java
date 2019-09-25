@@ -1,6 +1,6 @@
 package org.dst.core.operatorset;
 
-import org.dst.entity.SortedListEntity;
+import org.dst.common.entity.sortedList.SortedListEntity;
 import java.util.LinkedList;
 import java.util.List;
 

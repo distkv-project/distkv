@@ -2,10 +2,11 @@ package org.dst.server.service;
 
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
-import org.dst.common.protobuf.generated.CommonProtocol;
-import org.dst.common.protobuf.generated.SortedListProtocol;
 import org.dst.core.KVStore;
-import org.dst.entity.SortedListEntity;
+import org.dst.common.entity.sortedList.SortedListEntity;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
+import org.dst.rpc.protobuf.generated.SortedListProtocol;
+import org.dst.rpc.service.DstSortedListService;
 import org.dst.server.base.DstBaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

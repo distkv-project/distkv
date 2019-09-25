@@ -2,7 +2,7 @@ package org.dst.test.client;
 
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
-import org.dst.entity.SortedListEntity;
+import org.dst.common.entity.sortedList.SortedListEntity;
 import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
