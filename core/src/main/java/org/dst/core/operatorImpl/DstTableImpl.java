@@ -30,9 +30,7 @@ public class DstTableImpl implements DstTable {
   @Override
   public void createTable(TableSpecification tableSpec) {
     checkTableSpecificationFormat(tableSpec);
-    if (isExist(tableSpec.getName())) {
-      throw new TableAlreadyExistsException(tableSpec.getName());
-    }
+    checkTableAlreadyExist(tableSpec.getName());
     TableEntry table = new TableEntry.Builder().tableSpec(tableSpec).builder();
     tableMap.put(tableSpec.getName(), table);
   }
@@ -57,19 +55,19 @@ public class DstTableImpl implements DstTable {
     List<Field> fields = tableSpec.getFields();
     int fieldsSize = fields.size();
     for (int i = 0; i < fieldsSize; i++) {
-      boolean primary = fields.get(i).isPrimary();
-      boolean index = fields.get(i).isIndex();
-      if (primary || index) {
+      final boolean isPrimary = fields.get(i).isPrimary();
+      final boolean isIndex = fields.get(i).isIndex();
+      if (isPrimary || isIndex) {
         int newRecordSize = records.size();
         Map<Value, List<Integer>> indexs = tableEntry.getIndex().getIndexs();
         for (int j = 0; j < newRecordSize; j++) {
           Value value = records.get(j).getRecord().get(i);
           position += 1;
-          if (primary) {
+          if (isPrimary) {
             //TODO (senyer) how to enhance this code :Arrays.asList() ?
             indexs.put(value, Arrays.asList(position));
           }
-          if (index) {
+          if (isIndex) {
             if (indexs.containsKey(value)) {
               List<Integer> positions = indexs.get(value);
               positions.add(position);
@@ -222,6 +220,15 @@ public class DstTableImpl implements DstTable {
   private void checkTableExists(String tableName) {
     if (!isExist(tableName)) {
       throw new TableNotFoundException(tableName);
+    }
+  }
+
+  /**
+   * Check if the table exists，if exist it will throw a TableAlreadyExistsException
+   */
+  private void checkTableAlreadyExist(String tableName) {
+    if (isExist(tableName)) {
+      throw new TableAlreadyExistsException(tableName);
     }
   }
 
