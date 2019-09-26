@@ -3,12 +3,12 @@ package org.dst.server.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.dst.common.protobuf.generated.CommonProtocol;
-import org.dst.common.protobuf.generated.ListProtocol;
 import org.dst.core.KVStore;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
+import org.dst.rpc.protobuf.generated.ListProtocol;
+import org.dst.rpc.service.DstListService;
 import org.dst.server.base.DstBaseService;
 import org.dst.common.utils.Status;
 import org.slf4j.Logger;
