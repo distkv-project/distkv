@@ -52,7 +52,7 @@ message IncItemResponse {
 message PutItemRequest {
     required string key = 1;
     required int32 score = 2;
-    required string info = 3;
+    required string member = 3;
 }
 
 message PutItemResponse {
