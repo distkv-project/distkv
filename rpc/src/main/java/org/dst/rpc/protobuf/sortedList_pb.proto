@@ -24,7 +24,7 @@ message PutResponse {
 
 message TopRequest {
     required string key = 1;
-    required uint32 topNum = 2;
+    required uint32 count = 2;
 }
 
 message TopResponse {
