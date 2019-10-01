@@ -31,7 +31,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
     try {
       LinkedList<SortedListEntity> linkedList = new LinkedList<>();
       for (int i = 0; i < request.getListCount(); i++) {
-        linkedList.add(new SortedListEntity(request.getList(i).getInfo(),
+        linkedList.add(new SortedListEntity(request.getList(i).getMember(),
             request.getList(i).getScore()));
       }
       getStore().sortLists().put(request.getKey(), linkedList);
@@ -51,14 +51,14 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
     CommonProtocol.Status status;
     try {
       List<SortedListEntity> topList =
-          getStore().sortLists().top(request.getKey(), request.getTopNum());
+          getStore().sortLists().top(request.getKey(), request.getCount());
       ListIterator<SortedListEntity> listIterator = topList.listIterator();
       while (listIterator.hasNext()) {
         SortedListEntity entity = listIterator.next();
         SortedListProtocol.SortedListEntity.Builder builder =
             SortedListProtocol.SortedListEntity.newBuilder();
         builder.setScore(entity.getScore());
-        builder.setInfo(entity.getInfo());
+        builder.setMember(entity.getMember());
         responseBuilder.addList(builder.build());
       }
       status = CommonProtocol.Status.OK;
@@ -93,12 +93,13 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public SortedListProtocol.IncItemResponse incItem(SortedListProtocol.IncItemRequest request) {
-    SortedListProtocol.IncItemResponse.Builder responseBuilder =
-        SortedListProtocol.IncItemResponse.newBuilder();
+  public SortedListProtocol.IncrScoreResponse incItem(SortedListProtocol.IncrScoreRequest request) {
+    SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
+        SortedListProtocol.IncrScoreResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().incItem(request.getKey(), request.getInfo());
+      getStore().sortLists().incScore(request.getKey(),
+          request.getMember(), request.getDelta());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
       LOGGER.error(e.getMessage());
@@ -112,13 +113,13 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public SortedListProtocol.PutItemResponse putItem(SortedListProtocol.PutItemRequest request) {
-    SortedListProtocol.PutItemResponse.Builder responseBuilder =
-        SortedListProtocol.PutItemResponse.newBuilder();
+  public SortedListProtocol.PutMemberResponse putItem(SortedListProtocol.PutMemberRequest request) {
+    SortedListProtocol.PutMemberResponse.Builder responseBuilder =
+        SortedListProtocol.PutMemberResponse.newBuilder();
     CommonProtocol.Status status;
     try {
       getStore().sortLists().putItem(request.getKey(),
-          new SortedListEntity(request.getInfo(), request.getScore()));
+          new SortedListEntity(request.getMember(), request.getScore()));
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
       LOGGER.error(e.getMessage());
@@ -132,12 +133,12 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public SortedListProtocol.DelItemResponse delItem(SortedListProtocol.DelItemRequest request) {
-    SortedListProtocol.DelItemResponse.Builder responseBuilder =
-        SortedListProtocol.DelItemResponse.newBuilder();
+  public SortedListProtocol.DelMemberResponse delItem(SortedListProtocol.DelMemberRequest request) {
+    SortedListProtocol.DelMemberResponse.Builder responseBuilder =
+        SortedListProtocol.DelMemberResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().delItem(request.getKey(),request.getInfo());
+      getStore().sortLists().delItem(request.getKey(),request.getMember());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
       LOGGER.error(e.getMessage());

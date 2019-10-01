@@ -53,7 +53,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void delItem(String key, String info) {
+  public void delItem(String key, String member) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -62,7 +62,7 @@ public class DstSortedListImpl implements DstSortedList {
     boolean isFounnd = false;
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
-      if (now.getInfo().equals(info)) {
+      if (now.getMember().equals(member)) {
         isFounnd = true;
         iterator.remove();
       }
@@ -73,7 +73,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void incItem(String key, String info) {
+  public void incScore(String key, String member, int dalta) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -83,9 +83,9 @@ public class DstSortedListImpl implements DstSortedList {
       boolean isFounnd = false;
       while (iterator.hasNext()) {
         SortedListEntity now = iterator.next();
-        if (now.getInfo().equals(info)) {
+        if (now.getMember().equals(member)) {
           isFounnd = true;
-          now.setScore(now.getScore() + 1);
+          now.setScore(now.getScore() + dalta);
           if (iterator.nextIndex() != 1) {
             iterator.remove();
             while (iterator.hasPrevious()) {

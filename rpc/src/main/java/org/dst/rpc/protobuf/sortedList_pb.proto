@@ -10,7 +10,7 @@ option cc_generic_services = true;
 
 message SortedListEntity {
     required int32 score = 1;
-    required string info = 2;
+    required string member = 2;
 }
 
 message PutRequest {
@@ -42,10 +42,11 @@ message DelResponse {
 
 message IncrScoreRequest {
     required string key = 1;
-    required string info = 2;
+    required string member = 2;
+    required int32 delta = 3;
 }
 
-message IncItemResponse {
+message IncrScoreResponse {
     required Status status = 1;
 }
 
@@ -55,16 +56,16 @@ message PutMemberRequest {
     required string member = 3;
 }
 
-message PutItemResponse {
+message PutMemberResponse {
     required Status status = 1;
 }
 
 message DelMemberRequest {
     required string key = 1;
-    required string info = 2;
+    required string member = 2;
 }
 
-message DelItemResponse {
+message DelMemberResponse {
     required Status status = 1;
 }
 
@@ -72,7 +73,7 @@ service DstListService {
     rpc put (PutRequest) returns (PutResponse);
     rpc top (TopRequest) returns (TopResponse);
     rpc del (DelRequest) returns (DelResponse);
-    rpc incItem (IncItemRequest) returns (IncItemResponse);
-    rpc putItem (PutItemRequest) returns (PutItemResponse);
-    rpc delItem (DelItemRequest) returns (DelItemResponse);
+    rpc incItem (IncrScoreRequest) returns (IncrScoreResponse);
+    rpc putItem (PutMemberRequest) returns (PutMemberResponse);
+    rpc delItem (DelMemberRequest) returns (DelMemberResponse);
 }

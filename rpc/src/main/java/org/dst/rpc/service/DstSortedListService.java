@@ -15,11 +15,11 @@ public interface DstSortedListService {
   SortedListProtocol.DelResponse del(SortedListProtocol.DelRequest request);
 
   @BrpcMeta(serviceName = "DstSortedListService", methodName = "incItem")
-  SortedListProtocol.IncItemResponse incItem(SortedListProtocol.IncItemRequest request);
+  SortedListProtocol.IncrScoreResponse incItem(SortedListProtocol.IncrScoreRequest request);
 
   @BrpcMeta(serviceName = "DstSortedListService", methodName = "putItem")
-  SortedListProtocol.PutItemResponse putItem(SortedListProtocol.PutItemRequest request);
+  SortedListProtocol.PutMemberResponse putItem(SortedListProtocol.PutMemberRequest request);
 
   @BrpcMeta(serviceName = "DstSortedListService", methodName = "delItem")
-  SortedListProtocol.DelItemResponse delItem(SortedListProtocol.DelItemRequest request);
+  SortedListProtocol.DelMemberResponse delItem(SortedListProtocol.DelMemberRequest request);
 }

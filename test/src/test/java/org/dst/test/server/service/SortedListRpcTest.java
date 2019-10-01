@@ -35,7 +35,7 @@ public class SortedListRpcTest extends BaseTestSupplier {
       for (SortedListEntity entity : list) {
         SortedListProtocol.SortedListEntity.Builder builder =
             SortedListProtocol.SortedListEntity.newBuilder();
-        builder.setInfo(entity.getInfo());
+        builder.setMember(entity.getMember());
         builder.setScore(entity.getScore());
         listEntities.add(builder.build());
       }
@@ -46,25 +46,25 @@ public class SortedListRpcTest extends BaseTestSupplier {
       SortedListProtocol.TopRequest.Builder topRequestBuilder =
           SortedListProtocol.TopRequest.newBuilder();
       topRequestBuilder.setKey("k1");
-      topRequestBuilder.setTopNum(2);
+      topRequestBuilder.setCount(2);
       SortedListProtocol.TopResponse top =
           service.top(topRequestBuilder.build());
-      Assert.assertEquals(top.getList(0).getInfo(), "xswl");
-      Assert.assertEquals(top.getList(1).getInfo(), "fw");
+      Assert.assertEquals(top.getList(0).getMember(), "xswl");
+      Assert.assertEquals(top.getList(1).getMember(), "fw");
 
-      SortedListProtocol.PutItemRequest.Builder putRequestBuilder =
-          SortedListProtocol.PutItemRequest.newBuilder();
+      SortedListProtocol.PutMemberRequest.Builder putRequestBuilder =
+          SortedListProtocol.PutMemberRequest.newBuilder();
       putRequestBuilder.setKey("k1");
-      putRequestBuilder.setInfo("asd");
+      putRequestBuilder.setMember("asd");
       putRequestBuilder.setScore(1000);
-      SortedListProtocol.PutItemResponse response =
+      SortedListProtocol.PutMemberResponse response =
           service.putItem(putRequestBuilder.build());
 
       topRequestBuilder.setKey("k1");
-      topRequestBuilder.setTopNum(2);
+      topRequestBuilder.setCount(2);
       SortedListProtocol.TopResponse top1 =
           service.top(topRequestBuilder.build());
-      Assert.assertEquals(top1.getList(0).getInfo(), "asd");
+      Assert.assertEquals(top1.getList(0).getMember(), "asd");
     }
   }
 }

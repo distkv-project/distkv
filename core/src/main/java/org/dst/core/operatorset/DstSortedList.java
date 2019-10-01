@@ -33,17 +33,18 @@ public interface DstSortedList {
    * This method will del a item in sortedList
    *
    * @param key   the key to store
-   * @param info  the itemEntity info in sortedList, Find the item by info
+   * @param member  the itemEntity info in sortedList, Find the item by info
    */
-  void delItem(String key, String info);
+  void delItem(String key, String member);
 
   /**
    * This method will inc a itemEntity score in sortedList
    *
    * @param key   the key to store
-   * @param info  the itemEntity info in sortedList, Find the item by info
+   * @param member  the itemEntity info in sortedList, Find the item by info
+   * @param dalta amount of change in score
    */
-  void incItem(String key, String info);
+  void incScore(String key, String member, int dalta);
 
   /**
    * This method will get a top list in map

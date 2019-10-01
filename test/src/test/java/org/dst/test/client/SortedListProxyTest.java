@@ -26,8 +26,8 @@ public class SortedListProxyTest extends BaseTestSupplier {
   private void testTop() {
     DstClient client = new DefaultDstClient(serverAddress);
     LinkedList<SortedListEntity> list = client.sortedList().top("k1", 100);
-    Assert.assertEquals(list.get(0).getInfo(), "whhh");
-    Assert.assertEquals(list.get(1).getInfo(),"fw");
+    Assert.assertEquals(list.get(0).getMember(), "whhh");
+    Assert.assertEquals(list.get(1).getMember(),"fw");
   }
 
   private void testDelItem() {
@@ -42,7 +42,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
 
   private void testIncItem() {
     DstClient client = new DefaultDstClient(serverAddress);
-    client.sortedList().incItem("k1", "fw");
+    client.sortedList().incItem("k1", "fw",1);
   }
 
   private void testPut() {

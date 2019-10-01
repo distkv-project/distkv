@@ -24,7 +24,7 @@ public class DstSortedListProxy {
     for (SortedListEntity entity : list) {
       SortedListProtocol.SortedListEntity.Builder builder =
           SortedListProtocol.SortedListEntity.newBuilder();
-      builder.setInfo(entity.getInfo());
+      builder.setMember(entity.getMember());
       builder.setScore(entity.getScore());
       listEntities.add(builder.build());
     }
@@ -41,12 +41,13 @@ public class DstSortedListProxy {
     }
   }
 
-  public void incItem(String key, String info) {
-    SortedListProtocol.IncItemRequest.Builder requestBuilder =
-        SortedListProtocol.IncItemRequest.newBuilder();
+  public void incItem(String key, String member, int dalta) {
+    SortedListProtocol.IncrScoreRequest.Builder requestBuilder =
+        SortedListProtocol.IncrScoreRequest.newBuilder();
     requestBuilder.setKey(key);
-    requestBuilder.setInfo(info);
-    SortedListProtocol.IncItemResponse response =
+    requestBuilder.setMember(member);
+    requestBuilder.setDelta(dalta);
+    SortedListProtocol.IncrScoreResponse response =
         service.incItem(requestBuilder.build());
     switch (response.getStatus()) {
       case OK:
@@ -62,7 +63,7 @@ public class DstSortedListProxy {
     SortedListProtocol.TopRequest.Builder topRequestBuilder =
         SortedListProtocol.TopRequest.newBuilder();
     topRequestBuilder.setKey(key);
-    topRequestBuilder.setTopNum(topNum);
+    topRequestBuilder.setCount(topNum);
     SortedListProtocol.TopResponse response =
         service.top(topRequestBuilder.build());
     switch (response.getStatus()) {
@@ -75,7 +76,7 @@ public class DstSortedListProxy {
     }
     LinkedList<SortedListEntity> list = new LinkedList<>();
     for (SortedListProtocol.SortedListEntity entity : response.getListList()) {
-      list.add(new SortedListEntity(entity.getInfo(), entity.getScore()));
+      list.add(new SortedListEntity(entity.getMember(), entity.getScore()));
     }
     return list;
   }
@@ -96,12 +97,12 @@ public class DstSortedListProxy {
     }
   }
 
-  public void delItem(String key, String info) {
-    SortedListProtocol.DelItemRequest.Builder requestBuilder =
-        SortedListProtocol.DelItemRequest.newBuilder();
+  public void delItem(String key, String member) {
+    SortedListProtocol.DelMemberRequest.Builder requestBuilder =
+        SortedListProtocol.DelMemberRequest.newBuilder();
     requestBuilder.setKey(key);
-    requestBuilder.setInfo(info);
-    SortedListProtocol.DelItemResponse response =
+    requestBuilder.setMember(member);
+    SortedListProtocol.DelMemberResponse response =
         service.delItem(requestBuilder.build());
     switch (response.getStatus()) {
       case OK:
@@ -114,12 +115,12 @@ public class DstSortedListProxy {
   }
 
   public void putItem(String key, SortedListEntity entity) {
-    SortedListProtocol.PutItemRequest.Builder requestBuilder =
-        SortedListProtocol.PutItemRequest.newBuilder();
+    SortedListProtocol.PutMemberRequest.Builder requestBuilder =
+        SortedListProtocol.PutMemberRequest.newBuilder();
     requestBuilder.setKey(key);
-    requestBuilder.setInfo(entity.getInfo());
+    requestBuilder.setMember(entity.getMember());
     requestBuilder.setScore(entity.getScore());
-    SortedListProtocol.PutItemResponse response =
+    SortedListProtocol.PutMemberResponse response =
         service.putItem(requestBuilder.build());
     switch (response.getStatus()) {
       case OK:

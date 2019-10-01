@@ -3,11 +3,11 @@ package org.dst.common.entity.sortedList;
 public class SortedListEntity implements Comparable<SortedListEntity> {
   private int score;
 
-  private String info;
+  private String member;
 
-  public SortedListEntity(String info, int score) {
+  public SortedListEntity(String member, int score) {
     this.score = score;
-    this.info = info;
+    this.member = member;
   }
 
   public int getScore() {
@@ -18,12 +18,12 @@ public class SortedListEntity implements Comparable<SortedListEntity> {
     this.score = score;
   }
 
-  public String getInfo() {
-    return info;
+  public String getMember() {
+    return member;
   }
 
-  public void setInfo(String info) {
-    this.info = info;
+  public void setMember(String info) {
+    this.member = info;
   }
 
   @Override
