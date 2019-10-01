@@ -49,7 +49,7 @@ message IncItemResponse {
     required Status status = 1;
 }
 
-message PutItemRequest {
+message PutMemberRequest {
     required string key = 1;
     required int32 score = 2;
     required string member = 3;
