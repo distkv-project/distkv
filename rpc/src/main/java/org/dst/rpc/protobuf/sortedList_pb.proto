@@ -40,7 +40,7 @@ message DelResponse {
     required Status status = 1;
 }
 
-message IncItemRequest {
+message IncrScoreRequest {
     required string key = 1;
     required string info = 2;
 }
