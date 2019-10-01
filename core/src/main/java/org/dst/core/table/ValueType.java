@@ -1,6 +1,6 @@
-package org.dst.core;
+package org.dst.core.table;
 
-public enum ValueTypeEnum {
+public enum ValueType {
   NONE,
   INT,
   STRING,
