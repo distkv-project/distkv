@@ -59,7 +59,7 @@ message PutItemResponse {
     required Status status = 1;
 }
 
-message DelItemRequest {
+message DelMemberRequest {
     required string key = 1;
     required string info = 2;
 }
