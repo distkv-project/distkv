@@ -101,7 +101,7 @@ public class DefaultDstClient implements DstClient {
   }
 
   @Override
-  public DstSortedListProxy sortedList() {
+  public DstSortedListProxy sortedLists() {
     return sortedListProxy;
   }
 }

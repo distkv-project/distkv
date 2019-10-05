@@ -5,7 +5,6 @@ import org.dst.common.exception.KeyNotFoundException;
 import org.dst.common.entity.sortedList.SortedListEntity;
 import org.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.dst.rpc.service.DstSortedListService;
-
 import java.util.LinkedList;
 
 public class DstSortedListProxy {
@@ -41,7 +40,7 @@ public class DstSortedListProxy {
     }
   }
 
-  public void incItem(String key, String member, int dalta) {
+  public void incrItem(String key, String member, int dalta) {
     SortedListProtocol.IncrScoreRequest.Builder requestBuilder =
         SortedListProtocol.IncrScoreRequest.newBuilder();
     requestBuilder.setKey(key);
