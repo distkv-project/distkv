@@ -14,8 +14,8 @@ public interface DstSortedListService {
   @BrpcMeta(serviceName = "DstSortedListService", methodName = "del")
   SortedListProtocol.DelResponse del(SortedListProtocol.DelRequest request);
 
-  @BrpcMeta(serviceName = "DstSortedListService", methodName = "incItem")
-  SortedListProtocol.IncrScoreResponse incItem(SortedListProtocol.IncrScoreRequest request);
+  @BrpcMeta(serviceName = "DstSortedListService", methodName = "incrItem")
+  SortedListProtocol.IncrScoreResponse incrItem(SortedListProtocol.IncrScoreRequest request);
 
   @BrpcMeta(serviceName = "DstSortedListService", methodName = "putItem")
   SortedListProtocol.PutMemberResponse putItem(SortedListProtocol.PutMemberRequest request);

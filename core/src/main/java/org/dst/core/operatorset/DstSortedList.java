@@ -42,9 +42,9 @@ public interface DstSortedList {
    *
    * @param key   the key to store
    * @param member  the itemEntity info in sortedList, Find the item by info
-   * @param dalta amount of change in score
+   * @param delta amount of change in score
    */
-  void incScore(String key, String member, int dalta);
+  void incrItem(String key, String member, int delta);
 
   /**
    * This method will get a top list in map

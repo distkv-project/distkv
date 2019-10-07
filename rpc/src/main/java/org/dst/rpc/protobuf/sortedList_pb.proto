@@ -73,7 +73,7 @@ service DstListService {
     rpc put (PutRequest) returns (PutResponse);
     rpc top (TopRequest) returns (TopResponse);
     rpc del (DelRequest) returns (DelResponse);
-    rpc incItem (IncrScoreRequest) returns (IncrScoreResponse);
+    rpc incrItem (IncrScoreRequest) returns (IncrScoreResponse);
     rpc putItem (PutMemberRequest) returns (PutMemberResponse);
     rpc delItem (DelMemberRequest) returns (DelMemberResponse);
 }

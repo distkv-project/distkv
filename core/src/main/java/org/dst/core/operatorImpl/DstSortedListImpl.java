@@ -4,18 +4,18 @@ import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.core.operatorset.DstSortedList;
 import org.dst.common.entity.sortedList.SortedListEntity;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Collections;
 import java.util.ListIterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DstSortedListImpl implements DstSortedList {
 
-  HashMap<String, LinkedList<SortedListEntity>> sortedListMap;
+  ConcurrentHashMap<String, LinkedList<SortedListEntity>> sortedListMap;
 
   public DstSortedListImpl() {
-    sortedListMap = new HashMap<>();
+    sortedListMap = new ConcurrentHashMap<>();
   }
 
   @Override
@@ -73,7 +73,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void incScore(String key, String member, int dalta) {
+  public void incrItem(String key, String member, int delta) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -85,7 +85,7 @@ public class DstSortedListImpl implements DstSortedList {
         SortedListEntity now = iterator.next();
         if (now.getMember().equals(member)) {
           isFounnd = true;
-          now.setScore(now.getScore() + dalta);
+          now.setScore(now.getScore() + delta);
           if (iterator.nextIndex() != 1) {
             iterator.remove();
             while (iterator.hasPrevious()) {

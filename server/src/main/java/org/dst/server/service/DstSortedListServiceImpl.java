@@ -93,12 +93,13 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public SortedListProtocol.IncrScoreResponse incItem(SortedListProtocol.IncrScoreRequest request) {
+  public SortedListProtocol.IncrScoreResponse incrItem(
+      SortedListProtocol.IncrScoreRequest request) {
     SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
         SortedListProtocol.IncrScoreResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().incScore(request.getKey(),
+      getStore().sortLists().incrItem(request.getKey(),
           request.getMember(), request.getDelta());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
@@ -141,10 +142,11 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       getStore().sortLists().delItem(request.getKey(),request.getMember());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error("Failed to delete SortedList, caused by key not found: %s", request.getKey());
       status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (DstException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error("Failed to delete SortedList Member, caused by member not found: %s",
+          request.getMember());
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);

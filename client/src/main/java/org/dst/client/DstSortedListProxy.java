@@ -3,6 +3,7 @@ package org.dst.client;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.common.entity.sortedList.SortedListEntity;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.dst.rpc.service.DstSortedListService;
 import java.util.LinkedList;
@@ -30,32 +31,18 @@ public class DstSortedListProxy {
     requestBuilder.addAllList(listEntities);
     SortedListProtocol.PutResponse response =
         service.put(requestBuilder.build());
-    switch (response.getStatus()) {
-      case OK:
-        break;
-      case KEY_NOT_FOUND:
-        throw new KeyNotFoundException(key);
-      default:
-        throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    checkException(response.getStatus(),key);
   }
 
-  public void incrItem(String key, String member, int dalta) {
+  public void incrItem(String key, String member, int delta) {
     SortedListProtocol.IncrScoreRequest.Builder requestBuilder =
         SortedListProtocol.IncrScoreRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
-    requestBuilder.setDelta(dalta);
+    requestBuilder.setDelta(delta);
     SortedListProtocol.IncrScoreResponse response =
-        service.incItem(requestBuilder.build());
-    switch (response.getStatus()) {
-      case OK:
-        break;
-      case KEY_NOT_FOUND:
-        throw new KeyNotFoundException(key);
-      default:
-        throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+        service.incrItem(requestBuilder.build());
+    checkException(response.getStatus(),key);
   }
 
   public LinkedList<SortedListEntity> top(String key, int topNum) {
@@ -65,14 +52,7 @@ public class DstSortedListProxy {
     topRequestBuilder.setCount(topNum);
     SortedListProtocol.TopResponse response =
         service.top(topRequestBuilder.build());
-    switch (response.getStatus()) {
-      case OK:
-        break;
-      case KEY_NOT_FOUND:
-        throw new KeyNotFoundException(key);
-      default:
-        throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    checkException(response.getStatus(),key);
     LinkedList<SortedListEntity> list = new LinkedList<>();
     for (SortedListProtocol.SortedListEntity entity : response.getListList()) {
       list.add(new SortedListEntity(entity.getMember(), entity.getScore()));
@@ -86,14 +66,7 @@ public class DstSortedListProxy {
     requestBuilder.setKey(key);
     SortedListProtocol.DelResponse response =
         service.del(requestBuilder.build());
-    switch (response.getStatus()) {
-      case OK:
-        break;
-      case KEY_NOT_FOUND:
-        throw new KeyNotFoundException(key);
-      default:
-        throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    checkException(response.getStatus(),key);
   }
 
   public void delItem(String key, String member) {
@@ -103,14 +76,7 @@ public class DstSortedListProxy {
     requestBuilder.setMember(member);
     SortedListProtocol.DelMemberResponse response =
         service.delItem(requestBuilder.build());
-    switch (response.getStatus()) {
-      case OK:
-        break;
-      case KEY_NOT_FOUND:
-        throw new KeyNotFoundException(key);
-      default:
-        throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    checkException(response.getStatus(),key);
   }
 
   public void putItem(String key, SortedListEntity entity) {
@@ -121,13 +87,17 @@ public class DstSortedListProxy {
     requestBuilder.setScore(entity.getScore());
     SortedListProtocol.PutMemberResponse response =
         service.putItem(requestBuilder.build());
-    switch (response.getStatus()) {
+    checkException(response.getStatus(),key);
+  }
+
+  private void checkException(CommonProtocol.Status status, String key) {
+    switch (status) {
       case OK:
         break;
       case KEY_NOT_FOUND:
         throw new KeyNotFoundException(key);
       default:
-        throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+        throw new DstException(String.format("Error code is %d", status.getNumber()));
     }
   }
 }
