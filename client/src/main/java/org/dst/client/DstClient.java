@@ -54,4 +54,10 @@ public interface DstClient {
    */
   DstSetProxy sets();
 
+  /**
+   * Get the dst sortedList proxy.
+   *
+   * @return The dst sortedList proxy.
+   */
+  DstSortedListProxy sortedLists();
 }

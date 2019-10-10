@@ -77,6 +77,7 @@ public class DstRpcServer {
     server.registerService(new DstSetServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
     server.registerService(new DstDictServiceImpl(rpcServer.getKvStore()));
+    server.registerService(new DstSortedListServiceImpl(rpcServer.getKvStore()));
     server.start();
 
     // print welcome word.
