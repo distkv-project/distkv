@@ -14,12 +14,12 @@ public class RdsBenchmarkTest {
     }
     String as = jedis.get(name + 59999);
     long end = System.currentTimeMillis();
-    String str = "This test is RDS Str put test, and this is thread-" +
+    String str = "This is RDS Str put test. I'm thread-" +
         id +
         " and waste time =" +
         (end - start) +
         "; the result is " +
-        "test59999".equals(as);
+        "org/dst/test59999".equals(as);
     System.out.println(str);
   }
 
