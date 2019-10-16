@@ -11,6 +11,17 @@ public interface DstString {
   void put(String key, String value);
 
   /**
+   * This method will put a key-value pair to map
+   * and set the expiration time.
+   *
+   * @param key   the key to store
+   * @param value the string value to store
+   * @param ttl key expiration time(millisecond)
+   * TODO (senyer) :support second or minute
+   */
+  void put(String key, String value, long ttl);
+
+  /**
    * This method will query a string value based on the key
    *
    * @param key Obtain a string value based on the key
