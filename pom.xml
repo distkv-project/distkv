@@ -7,13 +7,14 @@
     <groupId>com.dst-pro</groupId>
     <artifactId>dst-superpom</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <modules>
         <module>core</module>
         <module>server</module>
         <module>client</module>
         <module>test</module>
         <module>common</module>
+        <module>rpc</module>
     </modules>
 
     <properties>

@@ -4,10 +4,11 @@ import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.protocol.Options;
-import org.dst.server.service.DstDictService;
-import org.dst.server.service.DstListService;
-import org.dst.server.service.DstSetService;
-import org.dst.server.service.DstStringService;
+import org.dst.rpc.service.DstDictService;
+import org.dst.rpc.service.DstListService;
+import org.dst.rpc.service.DstSetService;
+import org.dst.rpc.service.DstSortedListService;
+import org.dst.rpc.service.DstStringService;
 
 public class DefaultDstClient implements DstClient {
 
@@ -19,6 +20,8 @@ public class DefaultDstClient implements DstClient {
 
   private RpcClient dictClient;
 
+  private RpcClient sortedListClient;
+
   private DstStringProxy stringProxy;
 
   private DstListProxy listProxy;
@@ -26,6 +29,8 @@ public class DefaultDstClient implements DstClient {
   private DstSetProxy setProxy;
 
   private DstDictProxy dictProxy;
+
+  private DstSortedListProxy sortedListProxy;
 
 
   public DefaultDstClient(String serverAddress) {
@@ -40,16 +45,20 @@ public class DefaultDstClient implements DstClient {
     listClient = new RpcClient(serverAddress, clientOptions);
     setClient = new RpcClient(serverAddress, clientOptions);
     dictClient = new RpcClient(serverAddress, clientOptions);
+    sortedListClient = new RpcClient(serverAddress, clientOptions);
 
     DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
     DstListService listService = BrpcProxy.getProxy(listClient, DstListService.class);
     DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
     DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);
+    DstSortedListService sortedListService =
+        BrpcProxy.getProxy(sortedListClient, DstSortedListService.class);
 
     stringProxy = new DstStringProxy(stringService);
     listProxy = new DstListProxy(listService);
     setProxy = new DstSetProxy(setService);
     dictProxy = new DstDictProxy(dictService);
+    sortedListProxy = new DstSortedListProxy(sortedListService);
   }
 
   @Override
@@ -91,5 +100,8 @@ public class DefaultDstClient implements DstClient {
     return setProxy;
   }
 
-
+  @Override
+  public DstSortedListProxy sortedLists() {
+    return sortedListProxy;
+  }
 }
