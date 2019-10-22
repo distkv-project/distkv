@@ -11,6 +11,7 @@ cache:
 # install all dependencies
 # if true, skip all install
 install: mvn clean install -DskipTests
+
 script: "mvn cobertura:cobertura"
 # define four parallel jobs
 matrix:
