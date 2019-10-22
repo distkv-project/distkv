@@ -1,5 +1,5 @@
 
-# dst [![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) [![codebeat badge](https://codebeat.co/badges/ad184ef7-3d75-4fa3-a368-cc5e38f0496d)](https://codebeat.co/projects/github-com-senyer-dst-master)
+# dst [![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-dst-project-dst-master)
 A distributed key-value in-memory store system with table concept.
 
 Full [document](https://docs.dst-pro.com) is here.
