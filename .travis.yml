@@ -11,7 +11,7 @@ cache:
 # install all dependencies
 # if true, skip all install
 install: mvn clean install -DskipTests
-
+script: "mvn cobertura:cobertura"
 # define four parallel jobs
 matrix:
   include:
@@ -28,4 +28,5 @@ matrix:
         - travis_wait 10 mvn checkstyle:check
 
 after_success:
+  - bash <(curl -s https://codecov.io/bash) -t 4360524b-524c-4312-8f45-6a7d7a324ede
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
