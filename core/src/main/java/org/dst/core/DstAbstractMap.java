@@ -4,7 +4,7 @@ public interface DstAbstractMap<K, V> {
 
   void put(K key, V value);
 
-  void remove(K key);
+  V remove(K key);
 
   V get(K key);
 

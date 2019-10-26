@@ -16,8 +16,8 @@ public class DstConcurrentHashMapImpl<K, V> implements DstAbstractMap<K, V> {
   }
 
   @Override
-  public void remove(K key) {
-    concurrentHashMap.remove(key);
+  public V remove(K key) {
+    return concurrentHashMap.remove(key);
   }
 
   @Override
