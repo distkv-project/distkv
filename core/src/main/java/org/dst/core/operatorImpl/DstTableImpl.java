@@ -5,6 +5,8 @@ import org.dst.common.exception.DuplicatedPrimaryKeyException;
 import org.dst.common.exception.IncorrectRecordFormatException;
 import org.dst.common.exception.IncorrectTableFormatException;
 import org.dst.common.exception.TableAlreadyExistsException;
+import org.dst.core.DstAbstractMap;
+import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstTable;
 import org.dst.core.table.TableEntry;
 import org.dst.core.table.TableSpecification;
@@ -17,14 +19,13 @@ import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DstTableImpl implements DstTable {
 
-  private ConcurrentHashMap<String, TableEntry> tableMap;
+  private DstAbstractMap<String, TableEntry> tableMap;
 
   public DstTableImpl() {
-    this.tableMap = new ConcurrentHashMap<String, TableEntry>();
+    this.tableMap = new DstConcurrentHashMapImpl<>();
   }
 
   @Override

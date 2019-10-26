@@ -2,11 +2,11 @@ package org.dst.core;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DstConcurrentHashMap<K, V> implements DstAbstractMap<K, V> {
+public class DstConcurrentHashMapImpl<K, V> implements DstAbstractMap<K, V> {
 
-  private ConcurrentHashMap concurrentHashMap;
+  private ConcurrentHashMap<K, V> concurrentHashMap;
 
-  public DstConcurrentHashMap() {
+  public DstConcurrentHashMapImpl() {
     this.concurrentHashMap = new ConcurrentHashMap();
   }
 
@@ -22,11 +22,15 @@ public class DstConcurrentHashMap<K, V> implements DstAbstractMap<K, V> {
 
   @Override
   public V get(K key) {
-    return (V) concurrentHashMap.get(key);
+    return concurrentHashMap.get(key);
   }
 
   @Override
   public boolean containsKey(K key) {
     return concurrentHashMap.containsKey(key);
+  }
+
+  public void clear() {
+    concurrentHashMap.clear();
   }
 }

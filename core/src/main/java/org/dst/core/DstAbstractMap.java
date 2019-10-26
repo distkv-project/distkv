@@ -10,4 +10,6 @@ public interface DstAbstractMap<K, V> {
 
   boolean containsKey(K key);
 
+  void clear();
+
 }
