@@ -1,5 +1,6 @@
 codecov:
   require_ci_to_pass: yes
+  token: 4360524b-524c-4312-8f45-6a7d7a324ede
 coverage:
   status:
     patch: no
