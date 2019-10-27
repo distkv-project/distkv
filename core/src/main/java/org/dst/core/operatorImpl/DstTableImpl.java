@@ -5,7 +5,7 @@ import org.dst.common.exception.DuplicatedPrimaryKeyException;
 import org.dst.common.exception.IncorrectRecordFormatException;
 import org.dst.common.exception.IncorrectTableFormatException;
 import org.dst.common.exception.TableAlreadyExistsException;
-import org.dst.core.DstAbstractMap;
+import org.dst.core.DstConcurrentHashMap;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstTable;
 import org.dst.core.table.TableEntry;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class DstTableImpl implements DstTable {
 
-  private DstAbstractMap<String, TableEntry> tableMap;
+  private DstConcurrentHashMap<String, TableEntry> tableMap;
 
   public DstTableImpl() {
     this.tableMap = new DstConcurrentHashMapImpl<>();

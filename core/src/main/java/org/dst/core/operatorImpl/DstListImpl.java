@@ -1,6 +1,6 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.DstAbstractMap;
+import org.dst.core.DstConcurrentHashMap;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstList;
 import org.dst.common.exception.KeyNotFoundException;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DstListImpl implements DstList {
 
-  private DstAbstractMap<String, List<String>> listMap;
+  private DstConcurrentHashMap<String, List<String>> listMap;
 
   public DstListImpl() {
     this.listMap = new DstConcurrentHashMapImpl<>();

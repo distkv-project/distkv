@@ -2,7 +2,7 @@ package org.dst.core;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DstConcurrentHashMapImpl<K, V> implements DstAbstractMap<K, V> {
+public class DstConcurrentHashMapImpl<K, V> implements DstConcurrentHashMap<K, V> {
 
   private ConcurrentHashMap<K, V> concurrentHashMap;
 

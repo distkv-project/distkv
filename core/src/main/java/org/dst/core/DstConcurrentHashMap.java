@@ -1,6 +1,6 @@
 package org.dst.core;
 
-public interface DstAbstractMap<K, V> {
+public interface DstConcurrentHashMap<K, V> {
 
   void put(K key, V value);
 

@@ -2,7 +2,7 @@ package org.dst.core.operatorImpl;
 
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
-import org.dst.core.DstAbstractMap;
+import org.dst.core.DstConcurrentHashMap;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstSortedList;
 import org.dst.common.entity.sortedList.SortedListEntity;
@@ -13,7 +13,7 @@ import java.util.ListIterator;
 
 public class DstSortedListImpl implements DstSortedList {
 
-  DstAbstractMap<String, LinkedList<SortedListEntity>> sortedListMap;
+  DstConcurrentHashMap<String, LinkedList<SortedListEntity>> sortedListMap;
 
   public DstSortedListImpl() {
     sortedListMap = new DstConcurrentHashMapImpl<>();
