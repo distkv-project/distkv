@@ -1,13 +1,13 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.DstConcurrentHashMap;
+import org.dst.core.DstMapInterface;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstDict;
 import java.util.Map;
 
 public class DstDictImpl implements DstDict {
 
-  private DstConcurrentHashMap<String, Map<String, String>> dictMap;
+  private DstMapInterface<String, Map<String, String>> dictMap;
 
   public DstDictImpl() {
     this.dictMap = new DstConcurrentHashMapImpl<>();

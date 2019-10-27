@@ -1,12 +1,12 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.DstConcurrentHashMap;
+import org.dst.core.DstMapInterface;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstString;
 
 public class DstStringImpl implements DstString {
 
-  private DstConcurrentHashMap<String, String> strMap;
+  private DstMapInterface<String, String> strMap;
 
   public DstStringImpl() {
     this.strMap = new DstConcurrentHashMapImpl<>();

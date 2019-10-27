@@ -1,6 +1,6 @@
 package org.dst.core.operatorImpl;
 
-import org.dst.core.DstConcurrentHashMap;
+import org.dst.core.DstMapInterface;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstSet;
 import org.dst.common.exception.KeyNotFoundException;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class DstSetImpl implements DstSet {
 
-  private DstConcurrentHashMap<String, Set<String>> setMap;
+  private DstMapInterface<String, Set<String>> setMap;
 
   public DstSetImpl() {
     this.setMap = new DstConcurrentHashMapImpl<>();

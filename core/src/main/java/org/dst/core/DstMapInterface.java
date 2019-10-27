@@ -1,6 +1,6 @@
 package org.dst.core;
 
-public interface DstConcurrentHashMap<K, V> {
+public interface DstMapInterface<K, V> {
 
   /**
    * @param key   key with which the specified value is to be associated.
