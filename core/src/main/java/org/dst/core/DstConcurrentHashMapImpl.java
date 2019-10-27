@@ -16,8 +16,13 @@ public class DstConcurrentHashMapImpl<K, V> implements DstConcurrentHashMap<K, V
   }
 
   @Override
-  public V remove(K key) {
-    return concurrentHashMap.remove(key);
+  public boolean remove(K key) {
+    try {
+      concurrentHashMap.remove(key);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   @Override
