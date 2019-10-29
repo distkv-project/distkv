@@ -1,7 +1,10 @@
 package org.dst.server.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dst.core.KVStore;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
@@ -19,6 +22,21 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
 
   public DstSetServiceImpl(KVStore store) {
     super(store);
+  }
+
+  public boolean put(String key, Object value) {
+      try {
+          HashSet<String> set = new HashSet<>();
+          List<TerminalNode> node=(List<TerminalNode>) value;
+          node.forEach(terminalNode -> set.add(terminalNode.getText()));
+          getStore().sets().put(key,set);
+      }catch (Exception e){
+          return false;
+      }finally {
+
+      }
+
+    return true;
   }
 
   @Override
