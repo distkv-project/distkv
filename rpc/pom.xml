@@ -13,6 +13,7 @@
     <properties>
         <brpc.version>2.5.1</brpc.version>
         <protobuf.version>3.8.0</protobuf.version>
+        <fastjson.version>1.2.58</fastjson.version>
     </properties>
     <dependencies>
         <dependency>
@@ -26,6 +27,12 @@
             <groupId>com.baidu</groupId>
             <artifactId>brpc-java</artifactId>
             <version>${brpc.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 
