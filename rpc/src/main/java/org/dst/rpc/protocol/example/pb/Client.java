@@ -1,8 +1,8 @@
 package org.dst.rpc.protocol.example.pb;
 
+import org.dst.rpc.protobuf.generated.StringProtocol.GetRequest;
+import org.dst.rpc.protobuf.generated.StringProtocol.GetResponse;
 import org.dst.rpc.protocol.Reference;
-import org.dst.rpc.protocol.example.pb.StringProtocol.GetRequest;
-import org.dst.rpc.protocol.example.pb.StringProtocol.GetResponse;
 import org.dst.rpc.transport.api.async.AsyncResponse;
 
 /**

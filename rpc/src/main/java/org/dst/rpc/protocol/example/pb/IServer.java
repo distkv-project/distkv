@@ -1,5 +1,6 @@
 package org.dst.rpc.protocol.example.pb;
 
+import org.dst.rpc.protobuf.generated.StringProtocol;
 import org.dst.rpc.transport.api.async.Response;
 
 /**
