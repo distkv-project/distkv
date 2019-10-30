@@ -37,6 +37,7 @@ public class Reference<T> {
     serverUrl.setAddress(address.substring(address.indexOf("://") + "://".length()));
   }
 
+  // fixme : 不要设置，自动根据返回类型自行判断
   public void setAsync(boolean async) {
     isAsync = async;
     serverUrl.setConfig(ParamConstants.isAsync, String.valueOf(async));
