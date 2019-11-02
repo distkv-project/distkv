@@ -3,7 +3,9 @@ package org.dst.rpc.protocol;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 import org.dst.rpc.core.common.URL;
 import org.dst.rpc.core.exception.DstException;
 import org.dst.rpc.core.utils.ReflectUtils;
@@ -55,6 +57,7 @@ public class ServerImpl<T> implements Invoker<T> {
   public Response invoke(Request request) {
     Response response = new DefaultResponse();
     response.setRequestId(request.getRequestId());
+    // invoke(Request request, String a)
     String methodName = ReflectUtils.getMethodDesc(request.getMethodName(), request.getArgsType());
     Method method = methodMap.get(methodName);
     if (method == null) {
@@ -63,6 +66,12 @@ public class ServerImpl<T> implements Invoker<T> {
     }
     try {
       Object value = method.invoke(ref, request.getArgsValue());
+      if(value instanceof Future) {
+
+      }
+      if(value instanceof CompletableFuture) {
+
+      }
       if (value instanceof Response) {
         Response innerResponse = (Response) value;
         response.setValue(innerResponse.getValue());

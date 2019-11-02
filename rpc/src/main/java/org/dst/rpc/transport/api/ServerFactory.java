@@ -21,7 +21,7 @@ public abstract class ServerFactory {
     Server server;
     if (activeServer.containsKey(serverAddress)) {
       server = activeServer.get(serverAddress);
-      if (server.isConnected()) {
+      if (server.isOpen()) {
         RoutableHandler routableHandler = server.getRoutableHandler();
         if (routableHandler == null) {
           throw new TransportException("Server's routableHandler can't be null");

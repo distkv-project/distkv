@@ -25,9 +25,21 @@ public class Client {
     // 这里是同步测试，如果要测试同步，先注释掉这行代码后面的代码，然后setAsync改为false
     //System.out.println(server.say(request).getValue());
 
-    AsyncResponse response = (AsyncResponse) server.asyncSay(request);
+//    AsyncResponse response = (AsyncResponse) server.asyncSay(request);
+//
+//    long b = System.currentTimeMillis();
+//    System.out.println("getResponse " + b);
+//
+//    response.await();
+//    long e = System.currentTimeMillis();
+//    System.out.println("getValue " + e + " cost: " + (e - b));
+//    System.out.println(((GetResponse) response.getValue()).getValue());
+
+    AsyncResponse response = (AsyncResponse) server.asyncServerSay(request);
+
     long b = System.currentTimeMillis();
     System.out.println("getResponse " + b);
+
     response.await();
     long e = System.currentTimeMillis();
     System.out.println("getValue " + e + " cost: " + (e - b));

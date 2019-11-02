@@ -27,9 +27,8 @@ import org.dst.rpc.transport.api.async.Response;
  * |               content length 32 bit                  |
  * |               request id     64 bit                  |
  * |               request id     64 bit                  |
- * |               content ...                            |
+ * |               payload ...                            |
  *
- * todo: content length 放到后面
  */
 public class DstCodec implements Codec {
 
@@ -130,12 +129,10 @@ public class DstCodec implements Codec {
       output.writeUTF(response.getException().getClass().getName());
       output.writeObject(serialization.serialize(response.getException()));
       dataType = DataType.EXCEPTION;
-    } else if (response.getValue() != null) {
+    } else {
       output.writeUTF(response.getValue().getClass().getName());
       output.writeObject(serialization.serialize(response.getValue()));
       dataType = DataType.RESPONSE;
-    } else {
-      dataType = DataType.VOID;
     }
 
     output.flush();

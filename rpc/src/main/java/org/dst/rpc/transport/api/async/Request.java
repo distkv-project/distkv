@@ -18,6 +18,10 @@ public class Request {
 
   private Object[] argsValue;
 
+  private transient Class<?>[] argsClass;
+
+  private transient Class<?> returnType;
+
   private Map<String, Object> attributes = new HashMap<>();
 
   public long getRequestId() {
@@ -78,5 +82,29 @@ public class Request {
 
   public void removeAttribute(String key) {
     attributes.remove(key);
+  }
+
+  public Class<?>[] getArgsClass() {
+    return argsClass;
+  }
+
+  public void setArgsClass(Class<?>[] argsClass) {
+    this.argsClass = argsClass;
+  }
+
+  public Class<?> getReturnType() {
+    return returnType;
+  }
+
+  public void setReturnType(Class<?> returnType) {
+    this.returnType = returnType;
+  }
+
+  public Map<String, Object> getAttributes() {
+    return attributes;
+  }
+
+  public void setAttributes(Map<String, Object> attributes) {
+    this.attributes = attributes;
   }
 }

@@ -12,4 +12,6 @@ public interface IServer {
 
   Response asyncSay(StringProtocol.GetRequest request);
 
+  Response asyncServerSay(StringProtocol.GetRequest request);
+
 }

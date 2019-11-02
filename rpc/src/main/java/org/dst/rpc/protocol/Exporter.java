@@ -53,6 +53,6 @@ public class Exporter<T> {
   public void export() {
     Handler handler = new HandlerDelegate(new ServerImpl<>(serverUrl, ref, interfaceClass));
     Server server = NettyTransportFactory.getInstance().createServer(serverUrl, handler);
-    server.init();
+    server.open();
   }
 }
