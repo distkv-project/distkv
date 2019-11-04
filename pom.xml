@@ -15,6 +15,7 @@
         <module>test</module>
         <module>common</module>
         <module>rpc</module>
+        <module>parse</module>
     </modules>
 
     <properties>
