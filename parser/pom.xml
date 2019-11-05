@@ -9,23 +9,27 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dst-parse</artifactId>
-    <dependencies>
+    <artifactId>dst-parser</artifactId>
 
+    <properties>
+        <logback.version>1.2.3</logback.version>
+        <antlr4.version>4.7.2</antlr4.version>
+        <commjex.version>3.1</commjex.version>
+    </properties>
+
+    <dependencies>
         <!--antlr4 jar -->
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-            <version>4.7.2</version>
+            <version>${antlr4.version}</version>
         </dependency>
-
         <!--commons-jex3  jar-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-jexl3</artifactId>
-            <version>3.1</version>
+            <version>${commjex.version}</version>
         </dependency>
-
         <!--test-->
         <dependency>
             <groupId>junit</groupId>
@@ -39,12 +43,20 @@
             <artifactId>dst-rpc</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.dst-pro</groupId>
             <artifactId>dst-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!--logback-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -52,12 +64,19 @@
                 <artifactId>antlr4-maven-plugin</artifactId>
                 <version>4.7</version>
                 <configuration>
+                    <visitor>true</visitor>
                     <outputDirectory>${basedir}/src/main/java/org/dst/parse/gen</outputDirectory>
                     <sourceDirectory>${basedir}/src/main/java/org/dst/parse</sourceDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-
 
 </project>
