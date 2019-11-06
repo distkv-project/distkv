@@ -9,20 +9,25 @@ conceptStatement: strStatement | listStatement | setStatement | dictStatement;
 
 // str concept
 strStatement: strPut | strGet;
-strPut: 'str.put' STRING STRING;
-strGet: 'str.get' STRING ;
+strPut: 'str.put' key value;
+strGet: 'str.get' key ;
 
 // list concept
 listStatement: ;
 
 // set concept
 setStatement: setPut | setGet | setDropByKey;
-setPut: 'set.put' STRING (STRING)+;
-setGet:'set.get' STRING;
-setDropByKey: 'set.dropByKey' STRING STRING;
+setPut: 'set.put' key value_array;
+setGet:'set.get' key;
+setDropByKey: 'set.dropByKey' key key;
 
 // dict concept
 dictStatement: ;
+
+// meta
+key: STRING;
+value: STRING;
+value_array: (STRING)+;
 
 STRING: '"'.*?'"'  ;
 

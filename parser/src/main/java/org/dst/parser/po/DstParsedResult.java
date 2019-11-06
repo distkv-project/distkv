@@ -1,22 +1,22 @@
 package org.dst.parser.po;
 
 public class DstParsedResult {
-  public String requestType;
+  public RequestTypeEnum requestType;
   public Object request;
 
   public DstParsedResult() {
   }
 
-  public DstParsedResult(String requestType, Object request) {
+  public DstParsedResult(RequestTypeEnum requestType, Object request) {
     this.requestType = requestType;
     this.request = request;
   }
 
-  public String getRequestType() {
+  public RequestTypeEnum getRequestType() {
     return requestType;
   }
 
-  public void setRequestType(String requestType) {
+  public void setRequestType(RequestTypeEnum requestType) {
     this.requestType = requestType;
   }
 
