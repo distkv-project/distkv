@@ -17,7 +17,7 @@ listStatement: ;
 
 // set concept
 setStatement: setPut | setGet | setDropByKey;
-setPut: 'set.put' key value_array;
+setPut: 'set.put' key valueArray;
 setGet:'set.get' key;
 setDropByKey: 'set.dropByKey' key;
 
@@ -27,7 +27,7 @@ dictStatement: ;
 // meta
 key: STRING;
 value: STRING;
-value_array: (STRING)+;
+valueArray: (STRING)+;
 
 STRING: '"'.*?'"'  ;
 
