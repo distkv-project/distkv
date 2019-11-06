@@ -1,5 +1,6 @@
 package org.dst.parser;
 
+import com.google.common.base.Preconditions;
 import org.dst.parser.executor.AbstractExecutor;
 import org.dst.parser.executor.DstSetExecutor;
 import org.dst.parser.generated.DstNewSQLBaseListener;
@@ -19,7 +20,10 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
   @Override
   public void enterSetPut(DstNewSQLParser.SetPutContext ctx) {
-
+    // The children of the `set_put` should be 3:
+    //        `set.put    key     value_array`
+    Preconditions.checkState(ctx.children.size() == 3);
+    final String key = ctx.children.get(1);
     executor = new DstSetExecutor();
     //optimize method name;
     executor.setMethod("put");
