@@ -20,7 +20,7 @@ matrix:
     - os: linux
       dist: xenial
       script:
-        - travis_wait 10 mvn test
+        - travis_wait 20 mvn test
 
     # for linux: This job to check code format.
     - os: linux
