@@ -19,7 +19,7 @@ listStatement: ;
 setStatement: setPut | setGet | setDropByKey;
 setPut: 'set.put' key value_array;
 setGet:'set.get' key;
-setDropByKey: 'set.dropByKey' key key;
+setDropByKey: 'set.dropByKey' key;
 
 // dict concept
 dictStatement: ;

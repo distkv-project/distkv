@@ -15,7 +15,7 @@ public class Test {
     DstParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequest().getClass(), SetProtocol.PutRequest.class);
     Assert.assertEquals("\"k1\"", ((SetProtocol.PutRequest)result.getRequest()).getKey());
-    Assert.assertEquals(3, ((SetProtocol.PutRequest)result.getRequest()).getValuesCount());
+    Assert.assertEquals(4, ((SetProtocol.PutRequest)result.getRequest()).getValuesCount());
 
     //get
     command = "set.get \"k1\"";

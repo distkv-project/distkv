@@ -48,7 +48,11 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
   @Override
   public void enterSetDropByKey(DstNewSQLParser.SetDropByKeyContext ctx) {
-
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+    SetProtocol.DropByKeyRequest.Builder builder = SetProtocol.DropByKeyRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.SET_DROP_BY_KEY, builder.build());
   }
 
 }
