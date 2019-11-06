@@ -13,7 +13,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstNewSqlListener.class);
 
-  DstParsedResult parsedResult = null;
+  private DstParsedResult parsedResult = null;
 
   public DstParsedResult getParsedResult() {
     return parsedResult;
