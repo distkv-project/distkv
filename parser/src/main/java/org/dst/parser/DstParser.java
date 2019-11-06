@@ -11,7 +11,7 @@ import org.dst.parser.po.DstParsedResult;
 public class DstParser {
 
   public DstParsedResult parse(String command) {
-    DstNewSqlHandler dstNewSqlHandler = new DstNewSqlHandler();
+    DstNewSqlListener dstNewSqlHandler = new DstNewSqlListener();
     DstNewSQLLexer lexer = new DstNewSQLLexer(CharStreams.fromString(command));
 
     //Add  DstErrorListener

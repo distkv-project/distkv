@@ -7,9 +7,9 @@ import org.dst.parser.generated.DstNewSQLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DstNewSqlHandler extends DstNewSQLBaseListener {
+public class DstNewSqlListener extends DstNewSQLBaseListener {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DstNewSqlHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstNewSqlListener.class);
 
   private AbstractExecutor executor;
 
@@ -19,6 +19,7 @@ public class DstNewSqlHandler extends DstNewSQLBaseListener {
 
   @Override
   public void enterSetPut(DstNewSQLParser.SetPutContext ctx) {
+
     executor = new DstSetExecutor();
     //optimize method name;
     executor.setMethod("put");
@@ -39,6 +40,11 @@ public class DstNewSqlHandler extends DstNewSQLBaseListener {
   @Override
   public void enterValueArray(DstNewSQLParser.ValueArrayContext ctx) {
     executor.setValue(ctx.STRING());
+  }
+
+  @Override
+  public void enterSetDropByKey(DstNewSQLParser.SetDropByKeyContext ctx) {
+
   }
 
 }
