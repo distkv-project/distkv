@@ -13,11 +13,11 @@ public class CodeUtils {
   private static JexlEngine jexlEngine = new Engine();
 
   /**
-   * convert String to java code ,then executor java code return java code result
+   * Convert String to java code ,then execute java code  and return java code result.
    *
-   * @param jexlExpression   code string
+   * @param jexlExpression Code string.
    * @param map  key =StringExpression's parameterName, value=parameterValue
-   * @return java code result
+   * @return The return value of the code we invoked.
    */
   public static Object executeExpression(String jexlExpression, Map<String, Object> map) {
     JexlExpression expression = jexlEngine.createExpression(jexlExpression);

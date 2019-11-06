@@ -1,7 +1,7 @@
 package org.dst.parser;
 
 import org.dst.parser.executor.AbstractExecutor;
-import org.dst.parser.executor.DstSetExecute;
+import org.dst.parser.executor.DstSetExecutor;
 import org.dst.parser.generated.DstNewSQLBaseListener;
 import org.dst.parser.generated.DstNewSQLParser;
 import org.slf4j.Logger;
@@ -13,20 +13,20 @@ public class DstNewSqlHandler extends DstNewSQLBaseListener {
 
   private AbstractExecutor executor;
 
-  public AbstractExecutor getBaseExecute() {
+  public AbstractExecutor getExecutor() {
     return executor;
   }
 
   @Override
   public void enterSetPut(DstNewSQLParser.SetPutContext ctx) {
-    executor = new DstSetExecute();
+    executor = new DstSetExecutor();
     //optimize method name;
     executor.setMethod("put");
   }
 
   @Override
   public void enterSetGet(DstNewSQLParser.SetGetContext ctx) {
-    executor = new DstSetExecute();
+    executor = new DstSetExecutor();
     //optimize method name;
     executor.setMethod("get");
   }

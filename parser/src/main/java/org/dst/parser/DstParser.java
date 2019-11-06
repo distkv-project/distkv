@@ -10,22 +10,26 @@ import org.dst.parser.po.DstParsedResult;
 
 public class DstParser {
 
-  public DstParsedResult parse(String cmd) {
+  public DstParsedResult parse(String command) {
     DstNewSqlHandler dstNewSqlHandler = new DstNewSqlHandler();
-    DstNewSQLLexer lexer = new DstNewSQLLexer(CharStreams.fromString(cmd));
-    //add  dstErrorListen
+    DstNewSQLLexer lexer = new DstNewSQLLexer(CharStreams.fromString(command));
+
+    //Add  DstErrorListener
     lexer.removeErrorListeners();
     lexer.addErrorListener(DstSqlErrorListener.INSTANCE);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
+
     DstNewSQLParser parser = new DstNewSQLParser(tokens);
     parser.removeErrorListeners();
     parser.addErrorListener(DstSqlErrorListener.INSTANCE);
+
     DstNewSQLParser.StatementContext statement = parser.statement();
     ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
     parseTreeWalker.walk(dstNewSqlHandler, statement);
-    AbstractExecutor execute = dstNewSqlHandler.getBaseExecute();
-    Object requset = execute.execute();
-    return new DstParsedResult(execute.getRequestType(), requset);
+
+    final AbstractExecutor executor = dstNewSqlHandler.getExecutor();
+    Object request = executor.execute();
+    return new DstParsedResult(executor.getRequestType(), request);
   }
 
 }

@@ -24,5 +24,7 @@ key: STRING;
 value: STRING;
 valueArray :(STRING)+;
 
-STRING: '"'.*?'"'  ; // match String
-WS : [ \t\r\n ]+ -> skip; // skip spaces, tabs, newlines
+STRING: '"'.*?'"'  ;
+
+ // Skip spaces, tabs, and newlines.
+WS : [ \t\r\n ]+ -> skip;

@@ -5,7 +5,7 @@ import org.dst.common.exception.DstException;
 import org.dst.rpc.protobuf.generated.SetProtocol;
 import java.util.List;
 
-public class DstSetExecute extends AbstractExecutor {
+public class DstSetExecutor extends AbstractExecutor {
 
 
   public SetProtocol.PutRequest put() {
