@@ -11,4 +11,10 @@
     <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]org[\\\\]dst[\\\\]rpc[\\\\]protobuf[\\\\]generated" />
     <!-- for linux separator-->
     <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]org[\\/]dst[\\/]rpc[\\/]protobuf[\\/]generated" />
+
+    <!-- suppress check for antlr4 files. -->
+    <!-- for windows separator-->
+    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]org[\\/]dst[\\/]parser[\\/]generated" />
+    <!-- for linux separator-->
+    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]org[\\\\]dst[\\\\]parser[\\/]generated" />
 </suppressions>
