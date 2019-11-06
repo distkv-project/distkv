@@ -1,11 +1,11 @@
-package org.dst.parse.execute;
+package org.dst.parser.executor;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dst.common.exception.DstException;
 import org.dst.rpc.protobuf.generated.SetProtocol;
 import java.util.List;
 
-public class DstSetExecute extends BaseExecute {
+public class DstSetExecute extends AbstractExecutor {
 
 
   public SetProtocol.PutRequest put() {

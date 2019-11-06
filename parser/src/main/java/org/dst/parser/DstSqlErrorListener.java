@@ -1,4 +1,4 @@
-package org.dst.parse;
+package org.dst.parser;
 
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;

@@ -65,8 +65,8 @@
                 <version>4.7</version>
                 <configuration>
                     <visitor>true</visitor>
-                    <outputDirectory>${basedir}/src/main/java/org/dst/parse/gen</outputDirectory>
-                    <sourceDirectory>${basedir}/src/main/java/org/dst/parse</sourceDirectory>
+                    <outputDirectory>${basedir}/src/main/java/org/dst/parser/generated</outputDirectory>
+                    <sourceDirectory>${basedir}/src/main/java/org/dst/parser</sourceDirectory>
                 </configuration>
                 <executions>
                     <execution>

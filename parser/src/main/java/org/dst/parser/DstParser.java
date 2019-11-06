@@ -1,16 +1,16 @@
-package org.dst.parse;
+package org.dst.parser;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.dst.parse.execute.BaseExecute;
-import org.dst.parse.gen.DstNewSQLLexer;
-import org.dst.parse.gen.DstNewSQLParser;
-import org.dst.parse.po.DstRequestReslut;
+import org.dst.parser.executor.AbstractExecutor;
+import org.dst.parser.generated.DstNewSQLLexer;
+import org.dst.parser.generated.DstNewSQLParser;
+import org.dst.parser.po.DstParsedResult;
 
 public class DstParser {
 
-  public DstRequestReslut parse(String cmd) {
+  public DstParsedResult parse(String cmd) {
     DstNewSqlHandler dstNewSqlHandler = new DstNewSqlHandler();
     DstNewSQLLexer lexer = new DstNewSQLLexer(CharStreams.fromString(cmd));
     //add  dstErrorListen
@@ -23,9 +23,9 @@ public class DstParser {
     DstNewSQLParser.StatementContext statement = parser.statement();
     ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
     parseTreeWalker.walk(dstNewSqlHandler, statement);
-    BaseExecute execute = dstNewSqlHandler.getBaseExecute();
-    Object requset = execute.excute();
-    return new DstRequestReslut(execute.getRequestType(), requset);
+    AbstractExecutor execute = dstNewSqlHandler.getBaseExecute();
+    Object requset = execute.execute();
+    return new DstParsedResult(execute.getRequestType(), requset);
   }
 
 }

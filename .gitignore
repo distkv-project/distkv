@@ -32,6 +32,7 @@ target/
 
 # generated files
 rpc/src/main/java/org/dst/rpc/protobuf/generated/*
+parser/src/main/java/org/dst/parser/generated/*
 
 # build
 build/

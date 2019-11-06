@@ -1,13 +1,13 @@
-package org.dst.parse.po;
+package org.dst.parser.po;
 
-public class DstRequestReslut {
+public class DstParsedResult {
   public String requestType;
   public Object request;
 
-  public DstRequestReslut() {
+  public DstParsedResult() {
   }
 
-  public DstRequestReslut(String requestType, Object request) {
+  public DstParsedResult(String requestType, Object request) {
     this.requestType = requestType;
     this.request = request;
   }

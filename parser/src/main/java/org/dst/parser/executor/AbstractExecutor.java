@@ -1,18 +1,17 @@
-package org.dst.parse.execute;
+package org.dst.parser.executor;
 
-import org.dst.parse.util.CodeUtils;
-
+import org.dst.parser.util.CodeUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseExecute {
+public abstract class AbstractExecutor {
 
   protected String key;
   protected Object value;
   protected String method;
   protected String requestType;
 
-  public Object excute() {
+  public Object execute() {
     try {
       String exec = "this." + method + "()";
       Map map = new HashMap<String, Object>();

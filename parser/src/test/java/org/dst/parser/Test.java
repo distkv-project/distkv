@@ -1,13 +1,13 @@
-package org.dst.parse;
+package org.dst.parser;
 
-import org.dst.parse.po.DstRequestReslut;
+import org.dst.parser.po.DstParsedResult;
 import org.dst.rpc.protobuf.generated.SetProtocol;
 import org.junit.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.dst.parse.util.CodeUtils.executeExpression;
+import static org.dst.parser.util.CodeUtils.executeExpression;
 
 public class Test {
 
@@ -17,7 +17,7 @@ public class Test {
     //put
     String cmd = "set.put \"k1\" \"v1\" \"v2\" \"v3\"";
     DstParser dstParser = new DstParser();
-    DstRequestReslut parse = dstParser.parse(cmd);
+    DstParsedResult parse = dstParser.parse(cmd);
     Assert.assertEquals(parse.getRequest().getClass(), SetProtocol.PutRequest.class);
     //get
     cmd = "set.get \"k1\"";

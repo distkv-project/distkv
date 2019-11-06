@@ -1,4 +1,4 @@
-package org.dst.parse.util;
+package org.dst.parser.util;
 
 import org.apache.commons.jexl3.JexlContext;
 import org.apache.commons.jexl3.JexlEngine;
@@ -13,7 +13,7 @@ public class CodeUtils {
   private static JexlEngine jexlEngine = new Engine();
 
   /**
-   * convert String to java code ,then execute java code return java code result
+   * convert String to java code ,then executor java code return java code result
    *
    * @param jexlExpression   code string
    * @param map  key =StringExpression's parameterName, value=parameterValue
