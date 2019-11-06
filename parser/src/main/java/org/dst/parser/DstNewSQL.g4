@@ -12,14 +12,19 @@ strStatement: strPut | strGet;
 strPut: 'str.put' key value;
 strGet: 'str.get' key ;
 
+// list concept
 listStatement: ;
 
-setStatement: setPut | setGet;
+// set concept
+setStatement: setPut | setGet | setDropByKey;
 setPut: 'set.put' key valueArray;
 setGet:'set.get' key;
+setDropByKey: 'set.dropByKey' key key;
 
+// dict concept
 dictStatement: ;
 
+// meta
 key: STRING;
 value: STRING;
 valueArray :(STRING)+;
