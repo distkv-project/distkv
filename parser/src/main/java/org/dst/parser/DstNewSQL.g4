@@ -14,6 +14,7 @@ strGet: 'str.get' key ;
 
 // list concept
 listStatement: ;
+// listStatement: listPut | listGet | listDel | listLput | listRput | listLdel | listRdel;
 
 // set concept
 setStatement: setPut | setGet | setDropByKey;
