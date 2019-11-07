@@ -8,7 +8,7 @@ statement: (conceptStatement) EOF;
 conceptStatement: strStatement | listStatement | setStatement | dictStatement;
 
 // str concept
-strStatement: (strPut | strGet);
+strStatement: strPut | strGet;
 strPut: 'str.put' key value;
 strGet: 'str.get' key ;
 
