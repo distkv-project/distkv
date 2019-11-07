@@ -3,7 +3,6 @@ package org.dst.parser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.dst.parser.executor.AbstractExecutor;
 import org.dst.parser.generated.DstNewSQLLexer;
 import org.dst.parser.generated.DstNewSQLParser;
 import org.dst.parser.po.DstParsedResult;
@@ -27,9 +26,7 @@ public class DstParser {
     ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
     parseTreeWalker.walk(dstNewSqlHandler, statement);
 
-    final AbstractExecutor executor = dstNewSqlHandler.getExecutor();
-    Object request = executor.execute();
-    return new DstParsedResult(executor.getRequestType(), request);
+    return dstNewSqlHandler.getParsedResult();
   }
 
 }
