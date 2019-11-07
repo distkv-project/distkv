@@ -27,7 +27,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
     ListProtocol.PutRequest.Builder builder = ListProtocol.PutRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
-    final int valueSize = ctx.children.get(1).getChildCount();
+    final int valueSize = ctx.children.get(2).getChildCount();
     for (int i = 0; i < valueSize; ++i) {
       builder.addValues(ctx.children.get(2).getChild(i).getText());
     }
