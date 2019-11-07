@@ -26,25 +26,25 @@ public final class ListProtocol {
     com.google.protobuf.ByteString
         getKeyBytes();
 
-    // repeated string values = 2;
+    // repeated string value = 2;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     java.util.List<java.lang.String>
-    getValuesList();
+    getValueList();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    int getValuesCount();
+    int getValueCount();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    java.lang.String getValues(int index);
+    java.lang.String getValue(int index);
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     com.google.protobuf.ByteString
-        getValuesBytes(int index);
+        getValueBytes(int index);
   }
   /**
    * Protobuf type {@code org.dst.rpc.protobuf.PutRequest}
@@ -104,10 +104,10 @@ public final class ListProtocol {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                values_ = new com.google.protobuf.LazyStringArrayList();
+                value_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000002;
               }
-              values_.add(input.readBytes());
+              value_.add(input.readBytes());
               break;
             }
           }
@@ -119,7 +119,7 @@ public final class ListProtocol {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(value_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -196,39 +196,39 @@ public final class ListProtocol {
       }
     }
 
-    // repeated string values = 2;
-    public static final int VALUES_FIELD_NUMBER = 2;
-    private com.google.protobuf.LazyStringList values_;
+    // repeated string value = 2;
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList value_;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public java.util.List<java.lang.String>
-        getValuesList() {
-      return values_;
+        getValueList() {
+      return value_;
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public int getValuesCount() {
-      return values_.size();
+    public int getValueCount() {
+      return value_.size();
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public java.lang.String getValues(int index) {
-      return values_.get(index);
+    public java.lang.String getValue(int index) {
+      return value_.get(index);
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getValuesBytes(int index) {
-      return values_.getByteString(index);
+        getValueBytes(int index) {
+      return value_.getByteString(index);
     }
 
     private void initFields() {
       key_ = "";
-      values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -249,8 +249,8 @@ public final class ListProtocol {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getKeyBytes());
       }
-      for (int i = 0; i < values_.size(); i++) {
-        output.writeBytes(2, values_.getByteString(i));
+      for (int i = 0; i < value_.size(); i++) {
+        output.writeBytes(2, value_.getByteString(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -267,12 +267,12 @@ public final class ListProtocol {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < values_.size(); i++) {
+        for (int i = 0; i < value_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(values_.getByteString(i));
+            .computeBytesSizeNoTag(value_.getByteString(i));
         }
         size += dataSize;
-        size += 1 * getValuesList().size();
+        size += 1 * getValueList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -392,7 +392,7 @@ public final class ListProtocol {
         super.clear();
         key_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -427,11 +427,11 @@ public final class ListProtocol {
         }
         result.key_ = key_;
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(
-              values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              value_);
           bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.values_ = values_;
+        result.value_ = value_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -453,13 +453,13 @@ public final class ListProtocol {
           key_ = other.key_;
           onChanged();
         }
-        if (!other.values_.isEmpty()) {
-          if (values_.isEmpty()) {
-            values_ = other.values_;
+        if (!other.value_.isEmpty()) {
+          if (value_.isEmpty()) {
+            value_ = other.value_;
             bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensureValuesIsMutable();
-            values_.addAll(other.values_);
+            ensureValueIsMutable();
+            value_.addAll(other.value_);
           }
           onChanged();
         }
@@ -568,95 +568,95 @@ public final class ListProtocol {
         return this;
       }
 
-      // repeated string values = 2;
-      private com.google.protobuf.LazyStringList values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureValuesIsMutable() {
+      // repeated string value = 2;
+      private com.google.protobuf.LazyStringList value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureValueIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.LazyStringArrayList(values_);
+          value_ = new com.google.protobuf.LazyStringArrayList(value_);
           bitField0_ |= 0x00000002;
          }
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public java.util.List<java.lang.String>
-          getValuesList() {
-        return java.util.Collections.unmodifiableList(values_);
+          getValueList() {
+        return java.util.Collections.unmodifiableList(value_);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public int getValuesCount() {
-        return values_.size();
+      public int getValueCount() {
+        return value_.size();
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public java.lang.String getValues(int index) {
-        return values_.get(index);
+      public java.lang.String getValue(int index) {
+        return value_.get(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getValuesBytes(int index) {
-        return values_.getByteString(index);
+          getValueBytes(int index) {
+        return value_.getByteString(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder setValues(
+      public Builder setValue(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.set(index, value);
+  ensureValueIsMutable();
+        value_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValues(
+      public Builder addValue(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addAllValues(
+      public Builder addAllValue(
           java.lang.Iterable<java.lang.String> values) {
-        ensureValuesIsMutable();
-        super.addAll(values, values_);
+        ensureValueIsMutable();
+        super.addAll(values, value_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder clearValues() {
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearValue() {
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValuesBytes(
+      public Builder addValueBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
@@ -1577,25 +1577,25 @@ public final class ListProtocol {
      */
     org.dst.rpc.protobuf.generated.CommonProtocol.Status getStatus();
 
-    // repeated string values = 2;
+    // repeated string value = 2;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     java.util.List<java.lang.String>
-    getValuesList();
+    getValueList();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    int getValuesCount();
+    int getValueCount();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    java.lang.String getValues(int index);
+    java.lang.String getValue(int index);
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     com.google.protobuf.ByteString
-        getValuesBytes(int index);
+        getValueBytes(int index);
   }
   /**
    * Protobuf type {@code org.dst.rpc.protobuf.GetResponse}
@@ -1661,10 +1661,10 @@ public final class ListProtocol {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                values_ = new com.google.protobuf.LazyStringArrayList();
+                value_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000002;
               }
-              values_.add(input.readBytes());
+              value_.add(input.readBytes());
               break;
             }
           }
@@ -1676,7 +1676,7 @@ public final class ListProtocol {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(value_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1726,39 +1726,39 @@ public final class ListProtocol {
       return status_;
     }
 
-    // repeated string values = 2;
-    public static final int VALUES_FIELD_NUMBER = 2;
-    private com.google.protobuf.LazyStringList values_;
+    // repeated string value = 2;
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList value_;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public java.util.List<java.lang.String>
-        getValuesList() {
-      return values_;
+        getValueList() {
+      return value_;
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public int getValuesCount() {
-      return values_.size();
+    public int getValueCount() {
+      return value_.size();
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public java.lang.String getValues(int index) {
-      return values_.get(index);
+    public java.lang.String getValue(int index) {
+      return value_.get(index);
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getValuesBytes(int index) {
-      return values_.getByteString(index);
+        getValueBytes(int index) {
+      return value_.getByteString(index);
     }
 
     private void initFields() {
       status_ = org.dst.rpc.protobuf.generated.CommonProtocol.Status.OK;
-      values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1779,8 +1779,8 @@ public final class ListProtocol {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeEnum(1, status_.getNumber());
       }
-      for (int i = 0; i < values_.size(); i++) {
-        output.writeBytes(2, values_.getByteString(i));
+      for (int i = 0; i < value_.size(); i++) {
+        output.writeBytes(2, value_.getByteString(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1797,12 +1797,12 @@ public final class ListProtocol {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < values_.size(); i++) {
+        for (int i = 0; i < value_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(values_.getByteString(i));
+            .computeBytesSizeNoTag(value_.getByteString(i));
         }
         size += dataSize;
-        size += 1 * getValuesList().size();
+        size += 1 * getValueList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1922,7 +1922,7 @@ public final class ListProtocol {
         super.clear();
         status_ = org.dst.rpc.protobuf.generated.CommonProtocol.Status.OK;
         bitField0_ = (bitField0_ & ~0x00000001);
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -1957,11 +1957,11 @@ public final class ListProtocol {
         }
         result.status_ = status_;
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(
-              values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              value_);
           bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.values_ = values_;
+        result.value_ = value_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1981,13 +1981,13 @@ public final class ListProtocol {
         if (other.hasStatus()) {
           setStatus(other.getStatus());
         }
-        if (!other.values_.isEmpty()) {
-          if (values_.isEmpty()) {
-            values_ = other.values_;
+        if (!other.value_.isEmpty()) {
+          if (value_.isEmpty()) {
+            value_ = other.value_;
             bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensureValuesIsMutable();
-            values_.addAll(other.values_);
+            ensureValueIsMutable();
+            value_.addAll(other.value_);
           }
           onChanged();
         }
@@ -2058,95 +2058,95 @@ public final class ListProtocol {
         return this;
       }
 
-      // repeated string values = 2;
-      private com.google.protobuf.LazyStringList values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureValuesIsMutable() {
+      // repeated string value = 2;
+      private com.google.protobuf.LazyStringList value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureValueIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.LazyStringArrayList(values_);
+          value_ = new com.google.protobuf.LazyStringArrayList(value_);
           bitField0_ |= 0x00000002;
          }
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public java.util.List<java.lang.String>
-          getValuesList() {
-        return java.util.Collections.unmodifiableList(values_);
+          getValueList() {
+        return java.util.Collections.unmodifiableList(value_);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public int getValuesCount() {
-        return values_.size();
+      public int getValueCount() {
+        return value_.size();
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public java.lang.String getValues(int index) {
-        return values_.get(index);
+      public java.lang.String getValue(int index) {
+        return value_.get(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getValuesBytes(int index) {
-        return values_.getByteString(index);
+          getValueBytes(int index) {
+        return value_.getByteString(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder setValues(
+      public Builder setValue(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.set(index, value);
+  ensureValueIsMutable();
+        value_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValues(
+      public Builder addValue(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addAllValues(
+      public Builder addAllValue(
           java.lang.Iterable<java.lang.String> values) {
-        ensureValuesIsMutable();
-        super.addAll(values, values_);
+        ensureValueIsMutable();
+        super.addAll(values, value_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder clearValues() {
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearValue() {
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValuesBytes(
+      public Builder addValueBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
@@ -3072,25 +3072,25 @@ public final class ListProtocol {
     com.google.protobuf.ByteString
         getKeyBytes();
 
-    // repeated string values = 2;
+    // repeated string value = 2;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     java.util.List<java.lang.String>
-    getValuesList();
+    getValueList();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    int getValuesCount();
+    int getValueCount();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    java.lang.String getValues(int index);
+    java.lang.String getValue(int index);
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     com.google.protobuf.ByteString
-        getValuesBytes(int index);
+        getValueBytes(int index);
   }
   /**
    * Protobuf type {@code org.dst.rpc.protobuf.LPutRequest}
@@ -3150,10 +3150,10 @@ public final class ListProtocol {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                values_ = new com.google.protobuf.LazyStringArrayList();
+                value_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000002;
               }
-              values_.add(input.readBytes());
+              value_.add(input.readBytes());
               break;
             }
           }
@@ -3165,7 +3165,7 @@ public final class ListProtocol {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(value_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -3242,39 +3242,39 @@ public final class ListProtocol {
       }
     }
 
-    // repeated string values = 2;
-    public static final int VALUES_FIELD_NUMBER = 2;
-    private com.google.protobuf.LazyStringList values_;
+    // repeated string value = 2;
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList value_;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public java.util.List<java.lang.String>
-        getValuesList() {
-      return values_;
+        getValueList() {
+      return value_;
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public int getValuesCount() {
-      return values_.size();
+    public int getValueCount() {
+      return value_.size();
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public java.lang.String getValues(int index) {
-      return values_.get(index);
+    public java.lang.String getValue(int index) {
+      return value_.get(index);
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getValuesBytes(int index) {
-      return values_.getByteString(index);
+        getValueBytes(int index) {
+      return value_.getByteString(index);
     }
 
     private void initFields() {
       key_ = "";
-      values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3295,8 +3295,8 @@ public final class ListProtocol {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getKeyBytes());
       }
-      for (int i = 0; i < values_.size(); i++) {
-        output.writeBytes(2, values_.getByteString(i));
+      for (int i = 0; i < value_.size(); i++) {
+        output.writeBytes(2, value_.getByteString(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -3313,12 +3313,12 @@ public final class ListProtocol {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < values_.size(); i++) {
+        for (int i = 0; i < value_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(values_.getByteString(i));
+            .computeBytesSizeNoTag(value_.getByteString(i));
         }
         size += dataSize;
-        size += 1 * getValuesList().size();
+        size += 1 * getValueList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3438,7 +3438,7 @@ public final class ListProtocol {
         super.clear();
         key_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -3473,11 +3473,11 @@ public final class ListProtocol {
         }
         result.key_ = key_;
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(
-              values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              value_);
           bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.values_ = values_;
+        result.value_ = value_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3499,13 +3499,13 @@ public final class ListProtocol {
           key_ = other.key_;
           onChanged();
         }
-        if (!other.values_.isEmpty()) {
-          if (values_.isEmpty()) {
-            values_ = other.values_;
+        if (!other.value_.isEmpty()) {
+          if (value_.isEmpty()) {
+            value_ = other.value_;
             bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensureValuesIsMutable();
-            values_.addAll(other.values_);
+            ensureValueIsMutable();
+            value_.addAll(other.value_);
           }
           onChanged();
         }
@@ -3614,95 +3614,95 @@ public final class ListProtocol {
         return this;
       }
 
-      // repeated string values = 2;
-      private com.google.protobuf.LazyStringList values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureValuesIsMutable() {
+      // repeated string value = 2;
+      private com.google.protobuf.LazyStringList value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureValueIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.LazyStringArrayList(values_);
+          value_ = new com.google.protobuf.LazyStringArrayList(value_);
           bitField0_ |= 0x00000002;
          }
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public java.util.List<java.lang.String>
-          getValuesList() {
-        return java.util.Collections.unmodifiableList(values_);
+          getValueList() {
+        return java.util.Collections.unmodifiableList(value_);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public int getValuesCount() {
-        return values_.size();
+      public int getValueCount() {
+        return value_.size();
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public java.lang.String getValues(int index) {
-        return values_.get(index);
+      public java.lang.String getValue(int index) {
+        return value_.get(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getValuesBytes(int index) {
-        return values_.getByteString(index);
+          getValueBytes(int index) {
+        return value_.getByteString(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder setValues(
+      public Builder setValue(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.set(index, value);
+  ensureValueIsMutable();
+        value_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValues(
+      public Builder addValue(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addAllValues(
+      public Builder addAllValue(
           java.lang.Iterable<java.lang.String> values) {
-        ensureValuesIsMutable();
-        super.addAll(values, values_);
+        ensureValueIsMutable();
+        super.addAll(values, value_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder clearValues() {
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearValue() {
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValuesBytes(
+      public Builder addValueBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
@@ -4149,25 +4149,25 @@ public final class ListProtocol {
     com.google.protobuf.ByteString
         getKeyBytes();
 
-    // repeated string values = 2;
+    // repeated string value = 2;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     java.util.List<java.lang.String>
-    getValuesList();
+    getValueList();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    int getValuesCount();
+    int getValueCount();
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    java.lang.String getValues(int index);
+    java.lang.String getValue(int index);
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     com.google.protobuf.ByteString
-        getValuesBytes(int index);
+        getValueBytes(int index);
   }
   /**
    * Protobuf type {@code org.dst.rpc.protobuf.RPutRequest}
@@ -4227,10 +4227,10 @@ public final class ListProtocol {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                values_ = new com.google.protobuf.LazyStringArrayList();
+                value_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000002;
               }
-              values_.add(input.readBytes());
+              value_.add(input.readBytes());
               break;
             }
           }
@@ -4242,7 +4242,7 @@ public final class ListProtocol {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(value_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -4319,39 +4319,39 @@ public final class ListProtocol {
       }
     }
 
-    // repeated string values = 2;
-    public static final int VALUES_FIELD_NUMBER = 2;
-    private com.google.protobuf.LazyStringList values_;
+    // repeated string value = 2;
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList value_;
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public java.util.List<java.lang.String>
-        getValuesList() {
-      return values_;
+        getValueList() {
+      return value_;
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public int getValuesCount() {
-      return values_.size();
+    public int getValueCount() {
+      return value_.size();
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
-    public java.lang.String getValues(int index) {
-      return values_.get(index);
+    public java.lang.String getValue(int index) {
+      return value_.get(index);
     }
     /**
-     * <code>repeated string values = 2;</code>
+     * <code>repeated string value = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getValuesBytes(int index) {
-      return values_.getByteString(index);
+        getValueBytes(int index) {
+      return value_.getByteString(index);
     }
 
     private void initFields() {
       key_ = "";
-      values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4372,8 +4372,8 @@ public final class ListProtocol {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getKeyBytes());
       }
-      for (int i = 0; i < values_.size(); i++) {
-        output.writeBytes(2, values_.getByteString(i));
+      for (int i = 0; i < value_.size(); i++) {
+        output.writeBytes(2, value_.getByteString(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -4390,12 +4390,12 @@ public final class ListProtocol {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < values_.size(); i++) {
+        for (int i = 0; i < value_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(values_.getByteString(i));
+            .computeBytesSizeNoTag(value_.getByteString(i));
         }
         size += dataSize;
-        size += 1 * getValuesList().size();
+        size += 1 * getValueList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4515,7 +4515,7 @@ public final class ListProtocol {
         super.clear();
         key_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -4550,11 +4550,11 @@ public final class ListProtocol {
         }
         result.key_ = key_;
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.UnmodifiableLazyStringList(
-              values_);
+          value_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              value_);
           bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.values_ = values_;
+        result.value_ = value_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4576,13 +4576,13 @@ public final class ListProtocol {
           key_ = other.key_;
           onChanged();
         }
-        if (!other.values_.isEmpty()) {
-          if (values_.isEmpty()) {
-            values_ = other.values_;
+        if (!other.value_.isEmpty()) {
+          if (value_.isEmpty()) {
+            value_ = other.value_;
             bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensureValuesIsMutable();
-            values_.addAll(other.values_);
+            ensureValueIsMutable();
+            value_.addAll(other.value_);
           }
           onChanged();
         }
@@ -4691,95 +4691,95 @@ public final class ListProtocol {
         return this;
       }
 
-      // repeated string values = 2;
-      private com.google.protobuf.LazyStringList values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureValuesIsMutable() {
+      // repeated string value = 2;
+      private com.google.protobuf.LazyStringList value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureValueIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          values_ = new com.google.protobuf.LazyStringArrayList(values_);
+          value_ = new com.google.protobuf.LazyStringArrayList(value_);
           bitField0_ |= 0x00000002;
          }
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public java.util.List<java.lang.String>
-          getValuesList() {
-        return java.util.Collections.unmodifiableList(values_);
+          getValueList() {
+        return java.util.Collections.unmodifiableList(value_);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public int getValuesCount() {
-        return values_.size();
+      public int getValueCount() {
+        return value_.size();
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public java.lang.String getValues(int index) {
-        return values_.get(index);
+      public java.lang.String getValue(int index) {
+        return value_.get(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getValuesBytes(int index) {
-        return values_.getByteString(index);
+          getValueBytes(int index) {
+        return value_.getByteString(index);
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder setValues(
+      public Builder setValue(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.set(index, value);
+  ensureValueIsMutable();
+        value_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValues(
+      public Builder addValue(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addAllValues(
+      public Builder addAllValue(
           java.lang.Iterable<java.lang.String> values) {
-        ensureValuesIsMutable();
-        super.addAll(values, values_);
+        ensureValueIsMutable();
+        super.addAll(values, value_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder clearValues() {
-        values_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearValue() {
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string values = 2;</code>
+       * <code>repeated string value = 2;</code>
        */
-      public Builder addValuesBytes(
+      public Builder addValueBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensureValuesIsMutable();
-        values_.add(value);
+  ensureValueIsMutable();
+        value_.add(value);
         onChanged();
         return this;
       }
@@ -5226,15 +5226,15 @@ public final class ListProtocol {
     com.google.protobuf.ByteString
         getKeyBytes();
 
-    // required int32 values = 2;
+    // required int32 value = 2;
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    boolean hasValues();
+    boolean hasValue();
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    int getValues();
+    int getValue();
   }
   /**
    * Protobuf type {@code org.dst.rpc.protobuf.LDelRequest}
@@ -5294,7 +5294,7 @@ public final class ListProtocol {
             }
             case 16: {
               bitField0_ |= 0x00000002;
-              values_ = input.readInt32();
+              value_ = input.readInt32();
               break;
             }
           }
@@ -5380,25 +5380,25 @@ public final class ListProtocol {
       }
     }
 
-    // required int32 values = 2;
-    public static final int VALUES_FIELD_NUMBER = 2;
-    private int values_;
+    // required int32 value = 2;
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private int value_;
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    public boolean hasValues() {
+    public boolean hasValue() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    public int getValues() {
-      return values_;
+    public int getValue() {
+      return value_;
     }
 
     private void initFields() {
       key_ = "";
-      values_ = 0;
+      value_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5409,7 +5409,7 @@ public final class ListProtocol {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasValues()) {
+      if (!hasValue()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -5424,7 +5424,7 @@ public final class ListProtocol {
         output.writeBytes(1, getKeyBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, values_);
+        output.writeInt32(2, value_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -5441,7 +5441,7 @@ public final class ListProtocol {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, values_);
+          .computeInt32Size(2, value_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5561,7 +5561,7 @@ public final class ListProtocol {
         super.clear();
         key_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        values_ = 0;
+        value_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -5598,7 +5598,7 @@ public final class ListProtocol {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.values_ = values_;
+        result.value_ = value_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5620,8 +5620,8 @@ public final class ListProtocol {
           key_ = other.key_;
           onChanged();
         }
-        if (other.hasValues()) {
-          setValues(other.getValues());
+        if (other.hasValue()) {
+          setValue(other.getValue());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -5632,7 +5632,7 @@ public final class ListProtocol {
           
           return false;
         }
-        if (!hasValues()) {
+        if (!hasValue()) {
           
           return false;
         }
@@ -5732,35 +5732,35 @@ public final class ListProtocol {
         return this;
       }
 
-      // required int32 values = 2;
-      private int values_ ;
+      // required int32 value = 2;
+      private int value_ ;
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public boolean hasValues() {
+      public boolean hasValue() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public int getValues() {
-        return values_;
+      public int getValue() {
+        return value_;
       }
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public Builder setValues(int value) {
+      public Builder setValue(int value) {
         bitField0_ |= 0x00000002;
-        values_ = value;
+        value_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public Builder clearValues() {
+      public Builder clearValue() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        values_ = 0;
+        value_ = 0;
         onChanged();
         return this;
       }
@@ -6207,15 +6207,15 @@ public final class ListProtocol {
     com.google.protobuf.ByteString
         getKeyBytes();
 
-    // required int32 values = 2;
+    // required int32 value = 2;
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    boolean hasValues();
+    boolean hasValue();
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    int getValues();
+    int getValue();
   }
   /**
    * Protobuf type {@code org.dst.rpc.protobuf.RDelRequest}
@@ -6275,7 +6275,7 @@ public final class ListProtocol {
             }
             case 16: {
               bitField0_ |= 0x00000002;
-              values_ = input.readInt32();
+              value_ = input.readInt32();
               break;
             }
           }
@@ -6361,25 +6361,25 @@ public final class ListProtocol {
       }
     }
 
-    // required int32 values = 2;
-    public static final int VALUES_FIELD_NUMBER = 2;
-    private int values_;
+    // required int32 value = 2;
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private int value_;
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    public boolean hasValues() {
+    public boolean hasValue() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int32 values = 2;</code>
+     * <code>required int32 value = 2;</code>
      */
-    public int getValues() {
-      return values_;
+    public int getValue() {
+      return value_;
     }
 
     private void initFields() {
       key_ = "";
-      values_ = 0;
+      value_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -6390,7 +6390,7 @@ public final class ListProtocol {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasValues()) {
+      if (!hasValue()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -6405,7 +6405,7 @@ public final class ListProtocol {
         output.writeBytes(1, getKeyBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, values_);
+        output.writeInt32(2, value_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -6422,7 +6422,7 @@ public final class ListProtocol {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, values_);
+          .computeInt32Size(2, value_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6542,7 +6542,7 @@ public final class ListProtocol {
         super.clear();
         key_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        values_ = 0;
+        value_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -6579,7 +6579,7 @@ public final class ListProtocol {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.values_ = values_;
+        result.value_ = value_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6601,8 +6601,8 @@ public final class ListProtocol {
           key_ = other.key_;
           onChanged();
         }
-        if (other.hasValues()) {
-          setValues(other.getValues());
+        if (other.hasValue()) {
+          setValue(other.getValue());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6613,7 +6613,7 @@ public final class ListProtocol {
           
           return false;
         }
-        if (!hasValues()) {
+        if (!hasValue()) {
           
           return false;
         }
@@ -6713,35 +6713,35 @@ public final class ListProtocol {
         return this;
       }
 
-      // required int32 values = 2;
-      private int values_ ;
+      // required int32 value = 2;
+      private int value_ ;
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public boolean hasValues() {
+      public boolean hasValue() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public int getValues() {
-        return values_;
+      public int getValue() {
+        return value_;
       }
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public Builder setValues(int value) {
+      public Builder setValue(int value) {
         bitField0_ |= 0x00000002;
-        values_ = value;
+        value_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 values = 2;</code>
+       * <code>required int32 value = 2;</code>
        */
-      public Builder clearValues() {
+      public Builder clearValue() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        values_ = 0;
+        value_ = 0;
         onChanged();
         return this;
       }
@@ -7250,40 +7250,40 @@ public final class ListProtocol {
   static {
     java.lang.String[] descriptorData = {
       "\n\rlist_pb.proto\022\024org.dst.rpc.protobuf\032\017c" +
-      "ommon_pb.proto\")\n\nPutRequest\022\013\n\003key\030\001 \002(" +
-      "\t\022\016\n\006values\030\002 \003(\t\";\n\013PutResponse\022,\n\006stat" +
-      "us\030\001 \002(\0162\034.org.dst.rpc.protobuf.Status\"\031" +
-      "\n\nGetRequest\022\013\n\003key\030\001 \002(\t\"K\n\013GetResponse" +
-      "\022,\n\006status\030\001 \002(\0162\034.org.dst.rpc.protobuf." +
-      "Status\022\016\n\006values\030\002 \003(\t\"\031\n\nDelRequest\022\013\n\003" +
-      "key\030\001 \002(\t\";\n\013DelResponse\022,\n\006status\030\001 \002(\016" +
-      "2\034.org.dst.rpc.protobuf.Status\"*\n\013LPutRe" +
-      "quest\022\013\n\003key\030\001 \002(\t\022\016\n\006values\030\002 \003(\t\"<\n\014LP",
-      "utResponse\022,\n\006status\030\001 \002(\0162\034.org.dst.rpc" +
-      ".protobuf.Status\"*\n\013RPutRequest\022\013\n\003key\030\001" +
-      " \002(\t\022\016\n\006values\030\002 \003(\t\"<\n\014RPutResponse\022,\n\006" +
-      "status\030\001 \002(\0162\034.org.dst.rpc.protobuf.Stat" +
-      "us\"*\n\013LDelRequest\022\013\n\003key\030\001 \002(\t\022\016\n\006values" +
-      "\030\002 \002(\005\"<\n\014LDelResponse\022,\n\006status\030\001 \002(\0162\034" +
-      ".org.dst.rpc.protobuf.Status\"*\n\013RDelRequ" +
-      "est\022\013\n\003key\030\001 \002(\t\022\016\n\006values\030\002 \002(\005\"<\n\014RDel" +
-      "Response\022,\n\006status\030\001 \002(\0162\034.org.dst.rpc.p" +
-      "rotobuf.Status2\260\004\n\016DstListService\022J\n\003put",
-      "\022 .org.dst.rpc.protobuf.PutRequest\032!.org" +
-      ".dst.rpc.protobuf.PutResponse\022J\n\003get\022 .o" +
-      "rg.dst.rpc.protobuf.GetRequest\032!.org.dst" +
-      ".rpc.protobuf.GetResponse\022J\n\003del\022 .org.d" +
-      "st.rpc.protobuf.DelRequest\032!.org.dst.rpc" +
-      ".protobuf.DelResponse\022M\n\004lput\022!.org.dst." +
-      "rpc.protobuf.LPutRequest\032\".org.dst.rpc.p" +
-      "rotobuf.LPutResponse\022M\n\004rput\022!.org.dst.r" +
-      "pc.protobuf.RPutRequest\032\".org.dst.rpc.pr" +
-      "otobuf.RPutResponse\022M\n\004ldel\022!.org.dst.rp",
-      "c.protobuf.LDelRequest\032\".org.dst.rpc.pro" +
-      "tobuf.LDelResponse\022M\n\004rdel\022!.org.dst.rpc" +
-      ".protobuf.RDelRequest\032\".org.dst.rpc.prot" +
-      "obuf.RDelResponseB1\n\036org.dst.rpc.protobu" +
-      "f.generatedB\014ListProtocol\200\001\001"
+      "ommon_pb.proto\"(\n\nPutRequest\022\013\n\003key\030\001 \002(" +
+      "\t\022\r\n\005value\030\002 \003(\t\";\n\013PutResponse\022,\n\006statu" +
+      "s\030\001 \002(\0162\034.org.dst.rpc.protobuf.Status\"\031\n" +
+      "\nGetRequest\022\013\n\003key\030\001 \002(\t\"J\n\013GetResponse\022" +
+      ",\n\006status\030\001 \002(\0162\034.org.dst.rpc.protobuf.S" +
+      "tatus\022\r\n\005value\030\002 \003(\t\"\031\n\nDelRequest\022\013\n\003ke" +
+      "y\030\001 \002(\t\";\n\013DelResponse\022,\n\006status\030\001 \002(\0162\034" +
+      ".org.dst.rpc.protobuf.Status\")\n\013LPutRequ" +
+      "est\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \003(\t\"<\n\014LPutR",
+      "esponse\022,\n\006status\030\001 \002(\0162\034.org.dst.rpc.pr" +
+      "otobuf.Status\")\n\013RPutRequest\022\013\n\003key\030\001 \002(" +
+      "\t\022\r\n\005value\030\002 \003(\t\"<\n\014RPutResponse\022,\n\006stat" +
+      "us\030\001 \002(\0162\034.org.dst.rpc.protobuf.Status\")" +
+      "\n\013LDelRequest\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(" +
+      "\005\"<\n\014LDelResponse\022,\n\006status\030\001 \002(\0162\034.org." +
+      "dst.rpc.protobuf.Status\")\n\013RDelRequest\022\013" +
+      "\n\003key\030\001 \002(\t\022\r\n\005value\030\002 \002(\005\"<\n\014RDelRespon" +
+      "se\022,\n\006status\030\001 \002(\0162\034.org.dst.rpc.protobu" +
+      "f.Status2\260\004\n\016DstListService\022J\n\003put\022 .org",
+      ".dst.rpc.protobuf.PutRequest\032!.org.dst.r" +
+      "pc.protobuf.PutResponse\022J\n\003get\022 .org.dst" +
+      ".rpc.protobuf.GetRequest\032!.org.dst.rpc.p" +
+      "rotobuf.GetResponse\022J\n\003del\022 .org.dst.rpc" +
+      ".protobuf.DelRequest\032!.org.dst.rpc.proto" +
+      "buf.DelResponse\022M\n\004lput\022!.org.dst.rpc.pr" +
+      "otobuf.LPutRequest\032\".org.dst.rpc.protobu" +
+      "f.LPutResponse\022M\n\004rput\022!.org.dst.rpc.pro" +
+      "tobuf.RPutRequest\032\".org.dst.rpc.protobuf" +
+      ".RPutResponse\022M\n\004ldel\022!.org.dst.rpc.prot",
+      "obuf.LDelRequest\032\".org.dst.rpc.protobuf." +
+      "LDelResponse\022M\n\004rdel\022!.org.dst.rpc.proto" +
+      "buf.RDelRequest\032\".org.dst.rpc.protobuf.R" +
+      "DelResponseB1\n\036org.dst.rpc.protobuf.gene" +
+      "ratedB\014ListProtocol\200\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -7295,7 +7295,7 @@ public final class ListProtocol {
           internal_static_org_dst_rpc_protobuf_PutRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_dst_rpc_protobuf_PutRequest_descriptor,
-              new java.lang.String[] { "Key", "Values", });
+              new java.lang.String[] { "Key", "Value", });
           internal_static_org_dst_rpc_protobuf_PutResponse_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_org_dst_rpc_protobuf_PutResponse_fieldAccessorTable = new
@@ -7313,7 +7313,7 @@ public final class ListProtocol {
           internal_static_org_dst_rpc_protobuf_GetResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_dst_rpc_protobuf_GetResponse_descriptor,
-              new java.lang.String[] { "Status", "Values", });
+              new java.lang.String[] { "Status", "Value", });
           internal_static_org_dst_rpc_protobuf_DelRequest_descriptor =
             getDescriptor().getMessageTypes().get(4);
           internal_static_org_dst_rpc_protobuf_DelRequest_fieldAccessorTable = new
@@ -7331,7 +7331,7 @@ public final class ListProtocol {
           internal_static_org_dst_rpc_protobuf_LPutRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_dst_rpc_protobuf_LPutRequest_descriptor,
-              new java.lang.String[] { "Key", "Values", });
+              new java.lang.String[] { "Key", "Value", });
           internal_static_org_dst_rpc_protobuf_LPutResponse_descriptor =
             getDescriptor().getMessageTypes().get(7);
           internal_static_org_dst_rpc_protobuf_LPutResponse_fieldAccessorTable = new
@@ -7343,7 +7343,7 @@ public final class ListProtocol {
           internal_static_org_dst_rpc_protobuf_RPutRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_dst_rpc_protobuf_RPutRequest_descriptor,
-              new java.lang.String[] { "Key", "Values", });
+              new java.lang.String[] { "Key", "Value", });
           internal_static_org_dst_rpc_protobuf_RPutResponse_descriptor =
             getDescriptor().getMessageTypes().get(9);
           internal_static_org_dst_rpc_protobuf_RPutResponse_fieldAccessorTable = new
@@ -7355,7 +7355,7 @@ public final class ListProtocol {
           internal_static_org_dst_rpc_protobuf_LDelRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_dst_rpc_protobuf_LDelRequest_descriptor,
-              new java.lang.String[] { "Key", "Values", });
+              new java.lang.String[] { "Key", "Value", });
           internal_static_org_dst_rpc_protobuf_LDelResponse_descriptor =
             getDescriptor().getMessageTypes().get(11);
           internal_static_org_dst_rpc_protobuf_LDelResponse_fieldAccessorTable = new
@@ -7367,7 +7367,7 @@ public final class ListProtocol {
           internal_static_org_dst_rpc_protobuf_RDelRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_dst_rpc_protobuf_RDelRequest_descriptor,
-              new java.lang.String[] { "Key", "Values", });
+              new java.lang.String[] { "Key", "Value", });
           internal_static_org_dst_rpc_protobuf_RDelResponse_descriptor =
             getDescriptor().getMessageTypes().get(13);
           internal_static_org_dst_rpc_protobuf_RDelResponse_fieldAccessorTable = new
