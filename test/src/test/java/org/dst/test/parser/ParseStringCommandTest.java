@@ -24,7 +24,7 @@ public class ParseStringCommandTest {
 
   @Test
   public void testGet() {
-    final String command = "str.get k1 v1";
+    final String command = "str.get k1";
     DstParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.STR_GET);
     StringProtocol.GetRequest request = (StringProtocol.GetRequest) result.getRequest();
