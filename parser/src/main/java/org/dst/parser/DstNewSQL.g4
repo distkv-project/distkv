@@ -30,7 +30,7 @@ key: STRING;
 value: STRING;
 valueArray: (STRING)+;
 
-STRING: '"'.*?'"'  ;
+STRING: (~' ')+;
 
  // Skip spaces, tabs, and newlines.
-WS : [ \t\r\n ]+ -> skip;
+WS : [ \t\r\n]+ -> skip;
