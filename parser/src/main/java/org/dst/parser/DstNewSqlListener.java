@@ -7,6 +7,7 @@ import org.dst.parser.po.DstParsedResult;
 import org.dst.parser.po.RequestTypeEnum;
 import org.dst.rpc.protobuf.generated.ListProtocol;
 import org.dst.rpc.protobuf.generated.SetProtocol;
+import org.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,27 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
   public DstParsedResult getParsedResult() {
     return parsedResult;
+  }
+
+  @Override
+  public void enterStrPut(DstNewSQLParser.StrPutContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    StringProtocol.PutRequest.Builder builder = StringProtocol.PutRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setValue(ctx.children.get(2).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.STR_PUT, builder.build());
+  }
+
+  @Override
+  public void enterStrGet(DstNewSQLParser.StrGetContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    StringProtocol.GetRequest.Builder builder = StringProtocol.GetRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.STR_GET, builder.build());
   }
 
   @Override

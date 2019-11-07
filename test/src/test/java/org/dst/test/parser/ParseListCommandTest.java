@@ -1,5 +1,6 @@
 package org.dst.test.parser;
 
+import org.dst.common.exception.DstException;
 import org.dst.parser.DstParser;
 import org.dst.parser.po.DstParsedResult;
 import org.dst.parser.po.RequestTypeEnum;
@@ -62,6 +63,12 @@ public class ParseListCommandTest {
   @Test
   public void testRdel() {
     // TODO(qwang): Should be finished.
+  }
+
+  @Test(expectedExceptions = DstException.class)
+  public void testInvalidPutCommand() {
+    final String command = "list.ldel k1";
+    dstParser.parse(command);
   }
 
 }
