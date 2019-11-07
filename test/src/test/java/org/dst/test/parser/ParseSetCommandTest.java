@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 public class ParseSetCommandTest {
 
-  private final static DstParser dstParser = new DstParser();
+  private static final DstParser dstParser = new DstParser();
 
   @Test
   public void testSetPut() {

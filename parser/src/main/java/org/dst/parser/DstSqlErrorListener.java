@@ -19,7 +19,7 @@ public class DstSqlErrorListener extends BaseErrorListener {
     if (!sourceName.isEmpty()) {
       sourceName = String.format("%s:%d:%d: ", sourceName, line, charPositionInLine);
     }
-    // TODO(qwang): This exception should be refined with .
+    // TODO(qwang): This exception should be refined.
     throw new DstException(sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
   }
 }
