@@ -4,7 +4,7 @@ grammar DstNewSQL;
 package org.dst.parser.generated;
 }
 
-statement: conceptStatement;
+statement: (conceptStatement) EOF;
 conceptStatement: strStatement | listStatement | setStatement | dictStatement;
 
 // str concept
@@ -30,7 +30,7 @@ key: STRING;
 value: STRING;
 valueArray: (STRING)+;
 
-STRING: '"'.*?'"'  ;
+STRING: (~[ \t\r\n])+;
 
  // Skip spaces, tabs, and newlines.
-WS : [ \t\r\n ]+ -> skip;
+WS : [ \t\r\n]+ -> skip;
