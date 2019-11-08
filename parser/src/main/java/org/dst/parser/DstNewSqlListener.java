@@ -49,8 +49,8 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
     ListProtocol.PutRequest.Builder builder = ListProtocol.PutRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
-    final int Valueize = ctx.children.get(2).getChildCount();
-    for (int i = 0; i < Valueize; ++i) {
+    final int valueSize = ctx.children.get(2).getChildCount();
+    for (int i = 0; i < valueSize; ++i) {
       builder.addValue(ctx.children.get(2).getChild(i).getText());
     }
     parsedResult = new DstParsedResult(RequestTypeEnum.LIST_PUT, builder.build());
@@ -71,8 +71,8 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
     ListProtocol.LPutRequest.Builder builder = ListProtocol.LPutRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
-    final int Valueize = ctx.children.get(2).getChildCount();
-    for (int i = 0; i < Valueize; ++i) {
+    final int valueSize = ctx.children.get(2).getChildCount();
+    for (int i = 0; i < valueSize; ++i) {
       builder.addValue(ctx.children.get(2).getChild(i).getText());
     }
     parsedResult = new DstParsedResult(RequestTypeEnum.LIST_LPUT, builder.build());
@@ -84,8 +84,8 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
     ListProtocol.RPutRequest.Builder builder = ListProtocol.RPutRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
-    final int Valueize = ctx.children.get(2).getChildCount();
-    for (int i = 0; i < Valueize; ++i) {
+    final int valueSize = ctx.children.get(2).getChildCount();
+    for (int i = 0; i < valueSize; ++i) {
       builder.addValue(ctx.children.get(2).getChild(i).getText());
     }
     parsedResult = new DstParsedResult(RequestTypeEnum.LIST_RPUT, builder.build());
@@ -121,9 +121,9 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     SetProtocol.PutRequest.Builder builder = SetProtocol.PutRequest.newBuilder();
     final String key = ctx.children.get(1).getText();
     builder.setKey(key);
-    final int Valueize = ctx.children.get(2).getChildCount();
-    for (int i = 0; i < Valueize; ++i) {
-      builder.addValues(ctx.children.get(2).getChild(i).getText());
+    final int valueSize = ctx.children.get(2).getChildCount();
+    for (int i = 0; i < valueSize; ++i) {
+      builder.addValue(ctx.children.get(2).getChild(i).getText());
     }
     SetProtocol.PutRequest request = builder.build();
     parsedResult = new DstParsedResult(RequestTypeEnum.SET_PUT, request);
