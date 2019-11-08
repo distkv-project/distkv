@@ -28,7 +28,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.PutResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().lists().put(request.getKey(),new ArrayList<>(request.getValueList()));
+      getStore().lists().put(request.getKey(),new ArrayList<>(request.getValuesList()));
       status = CommonProtocol.Status.OK;
     } catch (DstException e) {
       LOGGER.error("Failed to put a list to store: {1}", e);
@@ -45,7 +45,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
     CommonProtocol.Status status = CommonProtocol.Status.OK;
     try {
       List<String> values = getStore().lists().get(request.getKey());
-      Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValue(values));
+      Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValues(values));
     } catch (KeyNotFoundException e) {
       LOGGER.error("Failed to get a list from store: {1}", e);
       status = CommonProtocol.Status.KEY_NOT_FOUND;
@@ -80,7 +80,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.LPutResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().lput(request.getKey(), request.getValueList());
+      Status localStatus = getStore().lists().lput(request.getKey(), request.getValuesList());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -100,7 +100,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.RPutResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().rput(request.getKey(), request.getValueList());
+      Status localStatus = getStore().lists().rput(request.getKey(), request.getValuesList());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -120,7 +120,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.LDelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().ldel(request.getKey(), request.getValue());
+      Status localStatus = getStore().lists().ldel(request.getKey(), request.getIndex());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -140,7 +140,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.RDelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().rdel(request.getKey(), request.getValue());
+      Status localStatus = getStore().lists().rdel(request.getKey(), request.getIndex());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {

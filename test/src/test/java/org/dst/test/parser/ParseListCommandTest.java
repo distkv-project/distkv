@@ -19,9 +19,9 @@ public class ParseListCommandTest {
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_PUT);
     ListProtocol.PutRequest request = (ListProtocol.PutRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getValueCount(), 2);
-    Assert.assertEquals(request.getValue(0), "v1");
-    Assert.assertEquals(request.getValue(1), "v2");
+    Assert.assertEquals(request.getValuesCount(), 2);
+    Assert.assertEquals(request.getValues(0), "v1");
+    Assert.assertEquals(request.getValues(1), "v2");
   }
 
   @Test
@@ -40,9 +40,9 @@ public class ParseListCommandTest {
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_LPUT);
     ListProtocol.LPutRequest request = (ListProtocol.LPutRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getValueCount(), 2);
-    Assert.assertEquals(request.getValue(0), "v1");
-    Assert.assertEquals(request.getValue(1), "v2");
+    Assert.assertEquals(request.getValuesCount(), 2);
+    Assert.assertEquals(request.getValues(0), "v1");
+    Assert.assertEquals(request.getValues(1), "v2");
   }
 
   @Test
@@ -57,7 +57,7 @@ public class ParseListCommandTest {
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_LDEL);
     ListProtocol.LDelRequest request = (ListProtocol.LDelRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getValue(), 100);
+    Assert.assertEquals(request.getIndex(), 100);
   }
 
   @Test

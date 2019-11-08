@@ -18,7 +18,7 @@ public class DstListProxy {
   public void put(String key, List<String> value) {
     ListProtocol.PutRequest request = ListProtocol.PutRequest.newBuilder()
           .setKey(key)
-          .addAllValue(value)
+          .addAllValues(value)
           .build();
     ListProtocol.PutResponse response = service.put(request);
     if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -36,7 +36,7 @@ public class DstListProxy {
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
-    return response.getValueList();
+    return response.getValuesList();
   }
 
   public void del(String key) {
@@ -54,7 +54,7 @@ public class DstListProxy {
   public void lput(String key, List<String> value) {
     ListProtocol.LPutRequest request = ListProtocol.LPutRequest.newBuilder()
           .setKey(key)
-          .addAllValue(value)
+          .addAllValues(value)
           .build();
     ListProtocol.LPutResponse response = service.lput(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
@@ -67,7 +67,7 @@ public class DstListProxy {
   public void rput(String key, List<String> value) {
     ListProtocol.RPutRequest request = ListProtocol.RPutRequest.newBuilder()
           .setKey(key)
-          .addAllValue(value)
+          .addAllValues(value)
           .build();
     ListProtocol.RPutResponse response = service.rput(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
@@ -80,7 +80,7 @@ public class DstListProxy {
   public void ldel(String key, Integer index) {
     ListProtocol.LDelRequest request = ListProtocol.LDelRequest.newBuilder()
           .setKey(key)
-          .setValue(index)
+          .setIndex(index)
           .build();
     ListProtocol.LDelResponse response = service.ldel(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
@@ -93,7 +93,7 @@ public class DstListProxy {
   public void rdel(String key, Integer index) {
     ListProtocol.RDelRequest request = ListProtocol.RDelRequest.newBuilder()
           .setKey(key)
-          .setValue(index)
+          .setIndex(index)
           .build();
     ListProtocol.RDelResponse response = service.rdel(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {

@@ -10,7 +10,7 @@ option cc_generic_services = true;
 
 message PutRequest {
     required string key = 1;
-    repeated string value = 2;
+    repeated string values = 2;
 }
 
 message PutResponse {
@@ -23,7 +23,7 @@ message GetRequest {
 
 message GetResponse {
     required Status status = 1;
-    repeated string value = 2;
+    repeated string values = 2;
 }
 
 message DelRequest {
@@ -36,7 +36,7 @@ message DelResponse {
 
 message LPutRequest {
     required string key = 1;
-    repeated string value = 2;
+    repeated string values = 2;
 }
 
 message LPutResponse {
@@ -45,7 +45,7 @@ message LPutResponse {
 
 message RPutRequest {
     required string key = 1;
-    repeated string value = 2;
+    repeated string values = 2;
 }
 
 message RPutResponse {
@@ -55,7 +55,7 @@ message RPutResponse {
 
 message LDelRequest {
     required string key = 1;
-    required int32 value = 2;
+    required int32 index = 2;
 }
 
 message LDelResponse {
@@ -65,7 +65,7 @@ message LDelResponse {
 
 message RDelRequest {
     required string key = 1;
-    required int32 value = 2;
+    required int32 index = 2;
 }
 
 message RDelResponse {
