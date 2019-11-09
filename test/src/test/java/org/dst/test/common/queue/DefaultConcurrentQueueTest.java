@@ -81,7 +81,7 @@ public class DefaultConcurrentQueueTest {
   @Test
   public void testIsEmpty() {
     DefaultConcurrentQueue<String> queue = new DefaultConcurrentQueue<>();
-    Assert.assertEquals(true, queue.isEmpty());
+    Assert.assertTrue(queue.isEmpty());
   }
 
 }

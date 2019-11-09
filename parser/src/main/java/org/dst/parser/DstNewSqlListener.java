@@ -1,15 +1,18 @@
 package org.dst.parser;
 
 import com.google.common.base.Preconditions;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.dst.parser.generated.DstNewSQLBaseListener;
 import org.dst.parser.generated.DstNewSQLParser;
 import org.dst.parser.po.DstParsedResult;
 import org.dst.parser.po.RequestTypeEnum;
+import org.dst.rpc.protobuf.generated.DictProtocol;
 import org.dst.rpc.protobuf.generated.ListProtocol;
 import org.dst.rpc.protobuf.generated.SetProtocol;
 import org.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class DstNewSqlListener extends DstNewSQLBaseListener {
 
@@ -145,6 +148,55 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     SetProtocol.DropByKeyRequest.Builder builder = SetProtocol.DropByKeyRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.SET_DROP_BY_KEY, builder.build());
+  }
+
+  @Override
+  public void enterDictPut(DstNewSQLParser.DictPutContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+    DictProtocol.PutRequest.Builder builder = DictProtocol.PutRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    final ParseTree keyValuePairsParseTree = ctx.children.get(2);
+    final int numKeyValuePairs = keyValuePairsParseTree.getChildCount();
+    DictProtocol.DstDict.Builder dstDictBuilder = DictProtocol.DstDict.newBuilder();
+    for (int i = 0; i < numKeyValuePairs; ++i) {
+      final ParseTree keyValuePairParseTree = keyValuePairsParseTree.getChild(i);
+      Preconditions.checkState(keyValuePairParseTree.getChildCount() == 2);
+      dstDictBuilder.addKeys(keyValuePairParseTree.getChild(0).getText());
+      dstDictBuilder.addValues(keyValuePairParseTree.getChild(1).getText());
+    }
+    builder.setDict(dstDictBuilder.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.DICT_PUT, builder.build());
+  }
+
+  @Override
+  public void enterDictGet(DstNewSQLParser.DictGetContext ctx) {
+
+  }
+
+  @Override
+  public void enterDictGetItemValue(DstNewSQLParser.DictGetItemValueContext ctx) {
+
+  }
+
+  @Override
+  public void enterDictPutItem(DstNewSQLParser.DictPutItemContext ctx) {
+
+  }
+
+  @Override
+  public void enterDictPopItem(DstNewSQLParser.DictPopItemContext ctx) {
+
+  }
+
+  @Override
+  public void enterDictDel(DstNewSQLParser.DictDelContext ctx) {
+
+  }
+
+  @Override
+  public void enterDictDelItem(DstNewSQLParser.DictDelItemContext ctx) {
+
   }
 
 }
