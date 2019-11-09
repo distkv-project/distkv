@@ -42,11 +42,11 @@ public class DefaultDstClient implements DstClient {
     clientOptions.setMinIdleConnections(10);
 
     stringClient = new RpcClient(serverAddress, clientOptions);
+    stringClient.shutdown();
     listClient = new RpcClient(serverAddress, clientOptions);
     setClient = new RpcClient(serverAddress, clientOptions);
     dictClient = new RpcClient(serverAddress, clientOptions);
     sortedListClient = new RpcClient(serverAddress, clientOptions);
-
     DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
     DstListService listService = BrpcProxy.getProxy(listClient, DstListService.class);
     DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
@@ -77,6 +77,7 @@ public class DefaultDstClient implements DstClient {
     listClient.stop();
     setClient.stop();
     dictClient.stop();
+    sortedListClient.stop();
     return true;
   }
 
