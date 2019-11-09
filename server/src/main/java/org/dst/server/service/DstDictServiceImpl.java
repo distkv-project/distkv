@@ -107,9 +107,9 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public DictProtocol.DelResponse del(DictProtocol.DelRequest request) {
-    DictProtocol.DelResponse.Builder responseBuilder =
-          DictProtocol.DelResponse.newBuilder();
+  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
+    CommonProtocol.DropResponse.Builder responseBuilder =
+          CommonProtocol.DropResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
     if (!getStore().dicts().del(request.getKey())) {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);

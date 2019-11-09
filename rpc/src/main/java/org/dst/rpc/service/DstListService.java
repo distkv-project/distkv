@@ -1,6 +1,7 @@
 package org.dst.rpc.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.ListProtocol;
 
 public interface DstListService {
@@ -11,8 +12,8 @@ public interface DstListService {
   @BrpcMeta(serviceName = "DstListService", methodName = "get")
   ListProtocol.GetResponse get(ListProtocol.GetRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "del")
-  ListProtocol.DelResponse del(ListProtocol.DelRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "drop")
+  CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
 
   @BrpcMeta(serviceName = "DstListService", methodName = "lput")
   ListProtocol.LPutResponse lput(ListProtocol.LPutRequest request);

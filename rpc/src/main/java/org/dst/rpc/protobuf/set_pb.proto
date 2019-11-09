@@ -38,14 +38,7 @@ message DeleteResponse {
 }
 
 //drop the whole set
-message DropByKeyRequest {
-    required string key = 1;
-}
-
-message DropByKeyResponse {
-    required Status status = 1;
-}
-
+//
 message ExistsRequest {
     required string key = 1;
     required string entity = 2;
@@ -60,7 +53,7 @@ message ExistsResponse {
 service DstSetService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
-    rpc delete(DeleteRequest) returns (DeleteResponse);
-    rpc dropByKey(DropByKeyRequest) returns (DropByKeyResponse);
+    rpc del(DeleteRequest) returns (DeleteResponse);
     rpc exists(ExistsRequest) returns (ExistsResponse);
+    rpc drop(DropRequest) returns (DropResponse);
 }

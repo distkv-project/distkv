@@ -1,6 +1,7 @@
 package org.dst.rpc.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.DictProtocol;
 
 public interface DstDictService {
@@ -20,8 +21,8 @@ public interface DstDictService {
   @BrpcMeta(serviceName = "DstDictService", methodName = "putItem")
   DictProtocol.PutItemResponse putItem(DictProtocol.PutItemRequest request);
 
-  @BrpcMeta(serviceName = "DstDictService", methodName = "del")
-  DictProtocol.DelResponse del(DictProtocol.DelRequest request);
+  @BrpcMeta(serviceName = "DstDictService", methodName = "drop")
+  CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
 
   @BrpcMeta(serviceName = "DstDictService", methodName = "delItem")
   DictProtocol.DelItemResponse delItem(DictProtocol.DelItemRequest request);

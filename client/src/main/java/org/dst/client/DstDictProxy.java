@@ -112,9 +112,9 @@ public class DstDictProxy {
 
   // Delete a dict
   public void del(String key) {
-    DictProtocol.DelRequest.Builder request = DictProtocol.DelRequest.newBuilder();
+    CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
     request.setKey(key);
-    DictProtocol.DelResponse response = service.del(request.build());
+    CommonProtocol.DropResponse response = service.drop(request.build());
     switch (response.getStatus()) {
       case OK:
         break;

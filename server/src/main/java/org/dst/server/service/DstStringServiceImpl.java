@@ -1,5 +1,6 @@
 package org.dst.server.service;
 
+import org.dst.common.utils.Status;
 import org.dst.core.KVStore;
 import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.StringProtocol;
@@ -37,6 +38,18 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
       responseBuilder.setStatus(CommonProtocol.Status.OK);
     } else {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+    }
+    return responseBuilder.build();
+  }
+
+  @Override
+  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request){
+    CommonProtocol.DropResponse.Builder responseBuilder =
+            CommonProtocol.DropResponse.newBuilder();
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    if(!getStore().strs().del(request.getKey())){
+        responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+        return responseBuilder.build();
     }
     return responseBuilder.build();
   }

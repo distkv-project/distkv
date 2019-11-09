@@ -26,14 +26,6 @@ message GetResponse {
     repeated string values = 2;
 }
 
-message DelRequest {
-    required string key = 1;
-}
-
-message DelResponse {
-    required Status status = 1;
-}
-
 message LPutRequest {
     required string key = 1;
     repeated string values = 2;
@@ -75,9 +67,9 @@ message RDelResponse {
 service DstListService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
-    rpc del(DelRequest) returns (DelResponse);
     rpc lput(LPutRequest) returns (LPutResponse);
     rpc rput(RPutRequest) returns (RPutResponse);
     rpc ldel(LDelRequest) returns (LDelResponse);
     rpc rdel(RDelRequest) returns (RDelResponse);
+    rpc drop(DropRequest) returns (DropResponse);
 }

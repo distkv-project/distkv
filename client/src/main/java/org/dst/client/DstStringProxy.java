@@ -1,5 +1,6 @@
 package org.dst.client;
 
+import org.dst.common.exception.DictKeyNotFoundException;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.rpc.protobuf.generated.CommonProtocol;
@@ -41,5 +42,23 @@ public class DstStringProxy {
     }
 
     return response.getValue();
+  }
+
+  public void del(String key){
+    CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
+    request.setKey(key);
+    CommonProtocol.DropResponse response = service.drop(request.build());
+    switch(response.getStatus()){
+      case OK:
+        break;
+      case KEY_NOT_FOUND:
+        throw new KeyNotFoundException(key);
+      case UNKNOWN_ERROR:
+        break;
+      case DICT_KEY_NOT_FOUND:
+        throw new DictKeyNotFoundException(key);
+        default:
+          throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+    }
   }
 }

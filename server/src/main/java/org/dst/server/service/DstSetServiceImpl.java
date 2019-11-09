@@ -51,7 +51,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
   }
 
   @Override
-  public SetProtocol.DeleteResponse delete(SetProtocol.DeleteRequest request) {
+  public SetProtocol.DeleteResponse del(SetProtocol.DeleteRequest request) {
     SetProtocol.DeleteResponse.Builder setDeleteResponseBuilder =
             SetProtocol.DeleteResponse.newBuilder();
 
@@ -74,9 +74,9 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
   }
 
   @Override
-  public SetProtocol.DropByKeyResponse dropByKey(SetProtocol.DropByKeyRequest request) {
-    SetProtocol.DropByKeyResponse.Builder setDropByKeyResponseBuilder =
-            SetProtocol.DropByKeyResponse.newBuilder();
+  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
+    CommonProtocol.DropResponse.Builder setDropByKeyResponseBuilder =
+            CommonProtocol.DropResponse.newBuilder();
 
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {

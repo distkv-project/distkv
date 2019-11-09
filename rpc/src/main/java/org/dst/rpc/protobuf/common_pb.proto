@@ -12,3 +12,12 @@ enum Status {
     // The key of the dict is not found.
     DICT_KEY_NOT_FOUND = 3;
 };
+
+// Drop the k-v pair by the given key.
+message DropRequest {
+    required string key = 1;
+}
+
+message DropResponse {
+    required Status status = 1;
+}
