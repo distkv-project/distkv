@@ -29,13 +29,26 @@ setGet:'set.get' key;
 setDropByKey: 'set.dropByKey' key;
 
 // dict concept
-dictStatement: ;
+dictStatement: dictPut | dictGet | dictPutItem | dictGetItem | dictPopItem | dictRemoveItem | dictDrop;
+dictPut: 'dict.put' key keyValuePairs;
+dictGet: 'dict.get' key;
+dictPutItem: 'dict.putItem' key itemKey itemValue;
+dictGetItem: 'dict.getItem' key itemKey;
+dictPopItem: 'dict.popItem' key itemKey;
+dictRemoveItem: 'dict.removeItem' key itemKey;
+dictDrop: 'dict.drop' key;
+
+keyValuePairs: (keyValuePair)+;
+keyValuePair: itemKey itemValue;
+itemKey: STRING;
+itemValue: STRING;
 
 // meta
 key: STRING;
 value: STRING;
 valueArray: (STRING)+;
 index: NON_NEGATIVE_INT;
+
 
 NON_NEGATIVE_INT: [1-9][0-9]* | '0';
 STRING: (~[ \t\r\n])+;
