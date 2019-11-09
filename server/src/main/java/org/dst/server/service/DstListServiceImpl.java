@@ -120,7 +120,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.LDelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().ldel(request.getKey(), request.getValues());
+      Status localStatus = getStore().lists().ldel(request.getKey(), request.getIndex());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -140,7 +140,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             ListProtocol.RDelResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().rdel(request.getKey(), request.getValues());
+      Status localStatus = getStore().lists().rdel(request.getKey(), request.getIndex());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {

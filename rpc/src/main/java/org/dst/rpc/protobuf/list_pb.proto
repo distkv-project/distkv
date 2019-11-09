@@ -55,7 +55,7 @@ message RPutResponse {
 
 message LDelRequest {
     required string key = 1;
-    required int32 values = 2;
+    required int32 index = 2;
 }
 
 message LDelResponse {
@@ -65,7 +65,7 @@ message LDelResponse {
 
 message RDelRequest {
     required string key = 1;
-    required int32 values = 2;
+    required int32 index = 2;
 }
 
 message RDelResponse {

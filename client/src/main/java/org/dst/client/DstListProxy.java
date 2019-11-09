@@ -80,7 +80,7 @@ public class DstListProxy {
   public void ldel(String key, Integer index) {
     ListProtocol.LDelRequest request = ListProtocol.LDelRequest.newBuilder()
           .setKey(key)
-          .setValues(index)
+          .setIndex(index)
           .build();
     ListProtocol.LDelResponse response = service.ldel(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
@@ -93,7 +93,7 @@ public class DstListProxy {
   public void rdel(String key, Integer index) {
     ListProtocol.RDelRequest request = ListProtocol.RDelRequest.newBuilder()
           .setKey(key)
-          .setValues(index)
+          .setIndex(index)
           .build();
     ListProtocol.RDelResponse response = service.rdel(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {

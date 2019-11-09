@@ -176,7 +176,7 @@ public class ListRpcTest extends BaseTestSupplier {
       //rdel
       ListProtocol.LDelRequest.Builder ldelRequestBuilder = ListRpcTestUtil.ldelRequestBuilder();
       ldelRequestBuilder.setKey("k1");
-      ldelRequestBuilder.setValues(1);
+      ldelRequestBuilder.setIndex(1);
       ListProtocol.LDelResponse ldelResponseBuilder =
             ListRpcTestUtil.ldelResponseBuilder(ldelRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.OK, ldelResponseBuilder.getStatus());
@@ -190,7 +190,7 @@ public class ListRpcTest extends BaseTestSupplier {
 
       //KEY_NOT_FOUND
       ldelRequestBuilder.setKey("k2");
-      ldelRequestBuilder.setValues(1);
+      ldelRequestBuilder.setIndex(1);
       ListProtocol.LDelResponse ldelResponse2Builder =
             ListRpcTestUtil.ldelResponseBuilder(ldelRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, ldelResponse2Builder.getStatus());
@@ -212,7 +212,7 @@ public class ListRpcTest extends BaseTestSupplier {
       //rdel
       ListProtocol.RDelRequest.Builder rdelRequestBuilder = ListRpcTestUtil.rdelRequestBuilder();
       rdelRequestBuilder.setKey("k1");
-      rdelRequestBuilder.setValues(1);
+      rdelRequestBuilder.setIndex(1);
       ListProtocol.RDelResponse rdelResponseBuilder =
             ListRpcTestUtil.rdelResponseBuilder(rdelRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.OK, rdelResponseBuilder.getStatus());
@@ -226,7 +226,7 @@ public class ListRpcTest extends BaseTestSupplier {
 
       //KEY_NOT_FOUND
       rdelRequestBuilder.setKey("k2");
-      rdelRequestBuilder.setValues(1);
+      rdelRequestBuilder.setIndex(1);
       ListProtocol.RDelResponse rdelResponse2Builder =
             ListRpcTestUtil.rdelResponseBuilder(rdelRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, rdelResponse2Builder.getStatus());

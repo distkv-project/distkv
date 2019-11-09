@@ -100,7 +100,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
     ListProtocol.LDelRequest.Builder builder = ListProtocol.LDelRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
-    builder.setValues(Integer.valueOf(ctx.children.get(2).getText()));
+    builder.setIndex(Integer.valueOf(ctx.children.get(2).getText()));
     parsedResult = new DstParsedResult(RequestTypeEnum.LIST_LDEL, builder.build());
   }
 
@@ -110,7 +110,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
     ListProtocol.RDelRequest.Builder builder = ListProtocol.RDelRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
-    builder.setValues(Integer.valueOf(ctx.children.get(2).getText()));
+    builder.setIndex(Integer.valueOf(ctx.children.get(2).getText()));
     parsedResult = new DstParsedResult(RequestTypeEnum.LIST_RDEL, builder.build());
   }
 

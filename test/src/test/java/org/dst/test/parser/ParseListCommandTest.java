@@ -57,7 +57,7 @@ public class ParseListCommandTest {
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_LDEL);
     ListProtocol.LDelRequest request = (ListProtocol.LDelRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getValues(), 100);
+    Assert.assertEquals(request.getIndex(), 100);
   }
 
   @Test
