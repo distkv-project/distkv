@@ -5,10 +5,15 @@ import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.DictProtocol;
 import org.dst.rpc.service.DstDictService;
 import org.dst.server.base.DstBaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class DstDictServiceImpl extends DstBaseService implements DstDictService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstDictServiceImpl.class);
 
   public DstDictServiceImpl(KVStore store) {
     super(store);
@@ -18,6 +23,7 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   public DictProtocol.PutResponse put(DictProtocol.PutRequest request) {
     DictProtocol.PutResponse.Builder responseBuilder =
           DictProtocol.PutResponse.newBuilder();
+    LOGGER.info(">>>>>>>>>>>>>put services.");
     try {
       final Map<String, String> map = new HashMap<>();
       DictProtocol.DstDict dstDict = request.getDict();
