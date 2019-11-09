@@ -66,14 +66,14 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     dict.put("k2", "v2");
     client.dicts().put("m1", dict);
-    client.dicts().del("m1");
+    client.dicts().drop("m1");
   }
 
   @Test
   public void testException() {
     DstClient client = new DefaultDstClient(serverAddress);
     try {
-      client.dicts().del("m1");
+      client.dicts().drop("m1");
     } catch (DstException e) {
       e.printStackTrace();
     }
