@@ -2,12 +2,10 @@ package org.dst.test.client;
 
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
-import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 
