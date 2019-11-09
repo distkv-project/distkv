@@ -16,6 +16,7 @@ public class StringProxyTest extends BaseTestSupplier {
     DstClient client = new DefaultDstClient(serverAddress);
     client.strs().put("k1", "v1");
     Assert.assertEquals("v1", client.strs().get("k1"));
+    client.disconnect();
   }
 
   @Test
@@ -26,6 +27,9 @@ public class StringProxyTest extends BaseTestSupplier {
       Assert.fail("It shouldn't reach here.");
     } catch (KeyNotFoundException e) {
       Assert.assertTrue(true);
+      client.disconnect();
     }
+    // FIXME(qwang): Resources leak.
+    client.disconnect();
   }
 }

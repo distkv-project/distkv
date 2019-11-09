@@ -19,6 +19,7 @@ public class SetProxyTest extends BaseTestSupplier {
     DefaultDstClient client = new DefaultDstClient(serverAddress);
     client.sets().put("k1", set);
     Assert.assertEquals(set, client.sets().get("k1"));
+    client.disconnect();
   }
 
   @Test
@@ -31,6 +32,7 @@ public class SetProxyTest extends BaseTestSupplier {
 
     Set<String> set2 = ImmutableSet.of("v1", "v2");
     Assert.assertEquals(set2, client.sets().get("k1"));
+    client.disconnect();
   }
 
   @Test(expectedExceptions = DstException.class)
@@ -43,6 +45,7 @@ public class SetProxyTest extends BaseTestSupplier {
 
     //if we drop the key in store, this method will throw a DstException
     client.sets().get("k1");
+    client.disconnect();
   }
 
   @Test(expectedExceptions = DstException.class)
@@ -59,5 +62,6 @@ public class SetProxyTest extends BaseTestSupplier {
     client.sets().dropByKey("k1");
     //if we drop the key in store, this method will throw a DstException
     client.sets().exists("k1", "v1");
+    client.disconnect();
   }
 }

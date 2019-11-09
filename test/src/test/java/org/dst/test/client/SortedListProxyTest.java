@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
+// TODO(qwang): Do not use so much clients. Use a final static client instead.
 public class SortedListProxyTest extends BaseTestSupplier {
   private static final String serverAddress = "list://127.0.0.1:8082";
 
@@ -27,21 +28,25 @@ public class SortedListProxyTest extends BaseTestSupplier {
     LinkedList<SortedListEntity> list = client.sortedLists().top("k1", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
     Assert.assertEquals(list.get(1).getMember(),"fw");
+    client.disconnect();
   }
 
   private void testDelItem() {
     DstClient client = new DefaultDstClient(serverAddress);
     client.sortedLists().delItem("k1","55");
+    client.disconnect();
   }
 
   private void testPutItem() {
     DstClient client = new DefaultDstClient(serverAddress);
     client.sortedLists().putItem("k1", new SortedListEntity("whhh",100));
+    client.disconnect();
   }
 
   private void testIncItem() {
     DstClient client = new DefaultDstClient(serverAddress);
     client.sortedLists().incrItem("k1", "fw",1);
+    client.disconnect();
   }
 
   private void testPut() {
@@ -52,6 +57,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
     client.sortedLists().put("k1", list);
+    client.disconnect();
   }
 
 }
