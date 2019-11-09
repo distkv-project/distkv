@@ -6,7 +6,7 @@ public interface DstConcurrentQueue<E> {
    * Inserts the specified element into this queue if it is possible to do so
    * immediately without violating capacity restrictions.
    *
-   * @param e The element to add
+   * @param e The element to be added.
    * @return Whether the element is inserted.
    */
   boolean add(E e);
