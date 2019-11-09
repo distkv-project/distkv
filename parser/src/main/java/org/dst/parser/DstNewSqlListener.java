@@ -171,32 +171,64 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
   @Override
   public void enterDictGet(DstNewSQLParser.DictGetContext ctx) {
-
-  }
-
-  @Override
-  public void enterDictGetItemValue(DstNewSQLParser.DictGetItemValueContext ctx) {
-
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+    DictProtocol.GetRequest.Builder builder = DictProtocol.GetRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.DICT_GET, builder.build());
   }
 
   @Override
   public void enterDictPutItem(DstNewSQLParser.DictPutItemContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 4);
+    DictProtocol.PutItemRequest.Builder builder = DictProtocol.PutItemRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setItemKey(ctx.children.get(2).getText());
+    builder.setItemValue(ctx.children.get(3).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.DICT_PUT_ITEM, builder.build());
+  }
 
+  @Override
+  public void enterDictGetItem(DstNewSQLParser.DictGetItemContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+    DictProtocol.GetItemValueRequest.Builder builder
+        = DictProtocol.GetItemValueRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setItemKey(ctx.children.get(2).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.DICT_GET_ITEM, builder.build());
   }
 
   @Override
   public void enterDictPopItem(DstNewSQLParser.DictPopItemContext ctx) {
-
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+    DictProtocol.PopItemRequest.Builder builder = DictProtocol.PopItemRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setItemKey(ctx.children.get(2).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.DICT_POP_ITEM, builder.build());
   }
 
   @Override
-  public void enterDictDel(DstNewSQLParser.DictDelContext ctx) {
-
+  public void enterDictRemoveItem(DstNewSQLParser.DictRemoveItemContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+    // TODO(qwang): Rename this in proto-buf definition.
+    DictProtocol.DelItemRequest.Builder builder = DictProtocol.DelItemRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setItemKey(ctx.children.get(2).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.DICT_REMOVE_ITEM, builder.build());
   }
 
   @Override
-  public void enterDictDelItem(DstNewSQLParser.DictDelItemContext ctx) {
-
+  public void enterDictDrop(DstNewSQLParser.DictDropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+    // TODO(qwang): Rename this in proto-buf definition.
+    DictProtocol.DelRequest.Builder builder = DictProtocol.DelRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.DICT_DROP, builder.build());
   }
 
 }

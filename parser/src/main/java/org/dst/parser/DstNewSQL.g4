@@ -29,14 +29,14 @@ setGet:'set.get' key;
 setDropByKey: 'set.dropByKey' key;
 
 // dict concept
-dictStatement: dictPut | dictGet | dictGetItemValue | dictPutItem | dictPopItem | dictDel | dictDelItem;
+dictStatement: dictPut | dictGet | dictPutItem | dictGetItem | dictPopItem | dictRemoveItem | dictDrop;
 dictPut: 'dict.put' key keyValuePairs;
 dictGet: 'dict.get' key;
-dictGetItemValue: 'dict.getItem' key itemKey;
 dictPutItem: 'dict.putItem' key itemKey itemValue;
+dictGetItem: 'dict.getItem' key itemKey;
 dictPopItem: 'dict.popItem' key itemKey;
-dictDel: 'dict.del' key;
-dictDelItem: 'dict.delItem' key itemKey;
+dictRemoveItem: 'dict.removeItem' key itemKey;
+dictDrop: 'dict.drop' key;
 
 keyValuePairs: (keyValuePair)+;
 keyValuePair: itemKey itemValue;

@@ -30,4 +30,42 @@ public class ParseDictCommandTest {
     Assert.assertEquals(dstDict.getValues(2), "v3");
   }
 
+  @Test
+  public void testGet() {
+    final String getDictCommand = "dict.get dict1";
+    DstParsedResult result = dstParser.parse(getDictCommand);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_GET);
+    DictProtocol.GetRequest request = (DictProtocol.GetRequest) result.getRequest();
+    Assert.assertEquals(request.getKey(), "dict1");
+  }
+
+  @Test
+  public void testPutItem() {
+    // TODO(qwang): Should be finished.
+  }
+
+  @Test
+  public void testGetItem() {
+    // TODO(qwang): Should be finished.
+  }
+
+  @Test
+  public void testPopItem() {
+    // TODO(qwang): Should be finished.
+  }
+
+  @Test
+  public void testRemoveItem() {
+    // TODO(qwang): Should be finished.
+  }
+
+  @Test
+  public void testDrop() {
+    // TODO(qwang): Should be finished.
+  }
+
+  @Test
+  public void testInvalidCommand() {
+    // TODO(qwang): Should be finished.
+  }
 }
