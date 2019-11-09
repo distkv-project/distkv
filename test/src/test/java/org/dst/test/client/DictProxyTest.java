@@ -3,6 +3,7 @@ package org.dst.test.client;
 import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.dst.common.exception.DstException;
+import org.dst.common.exception.KeyNotFoundException;
 import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -69,13 +70,9 @@ public class DictProxyTest extends BaseTestSupplier {
     client.dicts().drop("m1");
   }
 
-  @Test
-  public void testException() {
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void testKeyNotFoundException() {
     DstClient client = new DefaultDstClient(serverAddress);
-    try {
-      client.dicts().drop("m1");
-    } catch (DstException e) {
-      e.printStackTrace();
-    }
+    client.dicts().drop("m1");
   }
 }

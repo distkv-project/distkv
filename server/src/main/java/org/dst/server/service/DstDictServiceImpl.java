@@ -7,7 +7,6 @@ import org.dst.rpc.service.DstDictService;
 import org.dst.server.base.DstBaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +22,6 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   public DictProtocol.PutResponse put(DictProtocol.PutRequest request) {
     DictProtocol.PutResponse.Builder responseBuilder =
           DictProtocol.PutResponse.newBuilder();
-    LOGGER.info(">>>>>>>>>>>>>put services.");
     try {
       final Map<String, String> map = new HashMap<>();
       DictProtocol.DstDict dstDict = request.getDict();
