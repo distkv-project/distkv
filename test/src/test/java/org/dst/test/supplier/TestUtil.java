@@ -53,8 +53,9 @@ public class TestUtil {
     executeCommand(startCommand);
   }
 
-  public static void stopRpcServer() {
+  public static void stopRpcServer() throws InterruptedException {
     rpcServerProcess.destroy();
+    TimeUnit.SECONDS.sleep(1);
   }
 }
 

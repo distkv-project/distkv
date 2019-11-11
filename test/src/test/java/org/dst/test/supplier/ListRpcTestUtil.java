@@ -77,5 +77,5 @@ public class ListRpcTestUtil {
     ListProtocol.RDelRequest build = builder.build();
     return setProxy.getService().rdel(build);
   }
-  
+
 }
