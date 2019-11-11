@@ -18,7 +18,7 @@ public class BaseTestSupplier {
   }
 
   @AfterMethod
-  public void teardownBase() {
+  public void teardownBase() throws InterruptedException {
     TestUtil.stopRpcServer();
   }
 
