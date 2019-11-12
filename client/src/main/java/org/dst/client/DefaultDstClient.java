@@ -42,7 +42,6 @@ public class DefaultDstClient implements DstClient {
     clientOptions.setMinIdleConnections(10);
 
     stringClient = new RpcClient(serverAddress, clientOptions);
-    stringClient.shutdown();
     listClient = new RpcClient(serverAddress, clientOptions);
     setClient = new RpcClient(serverAddress, clientOptions);
     dictClient = new RpcClient(serverAddress, clientOptions);
