@@ -4,6 +4,10 @@ grammar DstNewSQL;
 package org.dst.parser.generated;
 }
 
+/**
+* This is the Dst new SQL grammar definition.
+*/
+
 statement: (conceptStatement) EOF;
 conceptStatement: strStatement | listStatement | setStatement | dictStatement;
 
@@ -13,13 +17,23 @@ strPut: 'str.put' key value;
 strGet: 'str.get' key ;
 
 // list concept
-listStatement: listPut | listGet | listLput | listRput | listLdel | listRdel;
+listStatement: listPut | listLput | listRput | listGet | listRGet | listLdel | listRdel;
 listPut: 'list.put' key valueArray;
-listGet: 'list.get' key;
 listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
+listGet: 'list.get' listGetArguments;
+listRGet: 'list.rget' listGetArguments;
 listLdel: 'list.ldel' key index;
 listRdel: 'list.rdel' key index;
+
+
+listGetArguments: listGetAll | listGetOne | listGetRange;
+// Get the all values of this list.
+listGetAll: key;
+// Get the specific value of the given index.
+listGetOne: key index;
+// Get the specific values by the given range.
+listGetRange: key index index;
 
 
 // set concept
