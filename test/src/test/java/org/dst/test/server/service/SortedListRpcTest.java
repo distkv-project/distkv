@@ -13,13 +13,9 @@ import java.util.LinkedList;
 public class SortedListRpcTest extends BaseTestSupplier {
 
   @Test
-  public void testMain() {
-    testPut();
-  }
-
   public void testPut() {
     try (ProxyOnClient<DstSortedListService> sortedListProxy =
-             new ProxyOnClient<>(DstSortedListService.class)) {
+             new ProxyOnClient<>(DstSortedListService.class, rpcServerPort)) {
       DstSortedListService service = sortedListProxy.getService();
       LinkedList<SortedListEntity> list = new LinkedList<>();
       list.add(new SortedListEntity("xswl", 9));

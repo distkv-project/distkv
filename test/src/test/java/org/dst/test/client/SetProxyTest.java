@@ -2,7 +2,7 @@ package org.dst.test.client;
 
 import java.util.Set;
 import com.google.common.collect.ImmutableSet;
-import org.dst.client.DefaultDstClient;
+import org.dst.client.DstClient;
 import org.dst.common.exception.DstException;
 import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
@@ -10,13 +10,11 @@ import org.testng.annotations.Test;
 
 public class SetProxyTest extends BaseTestSupplier {
 
-  private static final String serverAddress = "list://127.0.0.1:8082";
-
   @Test
   public void testPutAndGet() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
-    DefaultDstClient client = new DefaultDstClient(serverAddress);
+    DstClient client = newDstClient();
     client.sets().put("k1", set);
     Assert.assertEquals(set, client.sets().get("k1"));
     client.disconnect();
@@ -26,7 +24,7 @@ public class SetProxyTest extends BaseTestSupplier {
   public void testDelete() {
     Set<String> set1 = ImmutableSet.of("v1", "v2", "v3");
 
-    DefaultDstClient client = new DefaultDstClient(serverAddress);
+    DstClient client = newDstClient();
     client.sets().put("k1", set1);
     client.sets().delete("k1", "v3");
 
@@ -39,7 +37,7 @@ public class SetProxyTest extends BaseTestSupplier {
   public void testDropByKey() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
-    DefaultDstClient client = new DefaultDstClient(serverAddress);
+    DstClient client = newDstClient();
     client.sets().put("k1", set);
     Assert.assertTrue(client.sets().dropByKey("k1"));
 
@@ -52,7 +50,7 @@ public class SetProxyTest extends BaseTestSupplier {
   public void testExists() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
-    DefaultDstClient client = new DefaultDstClient(serverAddress);
+    DstClient client = newDstClient();
     client.sets().put("k1", set);
     Assert.assertTrue(client.sets().exists("k1", "v1"));
 
