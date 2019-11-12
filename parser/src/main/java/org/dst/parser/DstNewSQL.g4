@@ -17,15 +17,14 @@ strPut: 'str.put' key value;
 strGet: 'str.get' key ;
 
 // list concept
-listStatement: listPut | listLput | listRput | listGet | listRGet | listLdel | listRdel;
+listStatement: listPut | listLput | listRput | listGet | listRGet | listDelete | listMDelete;
 listPut: 'list.put' key valueArray;
 listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
 listGet: 'list.get' listGetArguments;
 listRGet: 'list.rget' listGetArguments;
-listLdel: 'list.ldel' key index;
-listRdel: 'list.rdel' key index;
-
+listDelete: 'list.del' (listDeleteOne | listDeleteRange);
+listMDelete: 'list.mdel' key (index)+;
 
 listGetArguments: listGetAll | listGetOne | listGetRange;
 // Get the all values of this list.
@@ -34,6 +33,9 @@ listGetAll: key;
 listGetOne: key index;
 // Get the specific values by the given range.
 listGetRange: key index index;
+
+listDeleteOne: key index;
+listDeleteRange: key index index;
 
 
 // set concept
