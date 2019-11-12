@@ -19,7 +19,7 @@ public class BaseTestSupplier {
   public void setupBase(Method method) {
     LOGGER.info(String.format("\n==================== Running the test method: %s.%s",
             method.getDeclaringClass(), method.getName()));
-    rpcServerPort = (new Random().nextInt() % 10000) + 10000;
+    rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
     TestUtil.startRpcServer(rpcServerPort);
   }
 
