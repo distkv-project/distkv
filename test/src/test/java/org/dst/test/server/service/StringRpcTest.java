@@ -11,7 +11,8 @@ import org.dst.test.supplier.ProxyOnClient;
 public class StringRpcTest extends BaseTestSupplier {
   @Test
   public void testRpcServer() {
-    try (ProxyOnClient<DstStringService> setProxy = new ProxyOnClient<>(DstStringService.class)) {
+    try (ProxyOnClient<DstStringService> setProxy = new ProxyOnClient<>(
+        DstStringService.class, rpcServerPort)) {
       DstStringService stringService = setProxy.getService();
       // Test string put request
       StringProtocol.PutRequest putRequest =

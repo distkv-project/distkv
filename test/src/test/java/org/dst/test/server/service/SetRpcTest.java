@@ -16,15 +16,16 @@ public class SetRpcTest extends BaseTestSupplier {
   public void testSet() {
     // The following methods should be called as ordered
     // because some methods depends on other methods.
-    testPut();
-    testGet();
-    testDelete();
-    testDropByKey();
-    testExists();
+    testPut(rpcServerPort);
+    testGet(rpcServerPort);
+    testDelete(rpcServerPort);
+    testDropByKey(rpcServerPort);
+    testExists(rpcServerPort);
   }
 
-  private static void testPut() {
-    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testPut(int rpcServerPort) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(
+        DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.PutRequest.Builder setPutRequestBuilder =
               SetProtocol.PutRequest.newBuilder();
@@ -38,8 +39,9 @@ public class SetRpcTest extends BaseTestSupplier {
     }
   }
 
-  private static void testGet() {
-    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testGet(int rpcServerPort) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(
+        DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.GetRequest.Builder setGetRequestBuilder =
               SetProtocol.GetRequest.newBuilder();
@@ -55,8 +57,9 @@ public class SetRpcTest extends BaseTestSupplier {
 
   }
 
-  private static void testDelete() {
-    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testDelete(int rpcServerPort) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(
+        DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.DeleteRequest.Builder setDeleteRequestBuilder =
               SetProtocol.DeleteRequest.newBuilder();
@@ -70,8 +73,9 @@ public class SetRpcTest extends BaseTestSupplier {
     }
   }
 
-  private static void testDropByKey() {
-    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testDropByKey(int rpcServerPort) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(
+        DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
 
       SetProtocol.DropByKeyRequest.Builder setDropByKeyRequestBuilder =
@@ -85,8 +89,9 @@ public class SetRpcTest extends BaseTestSupplier {
     }
   }
 
-  private static void testExists() {
-    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(DstSetService.class)) {
+  private static void testExists(int rpcServerPort) {
+    try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(
+        DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
       SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
               SetProtocol.ExistsRequest.newBuilder();

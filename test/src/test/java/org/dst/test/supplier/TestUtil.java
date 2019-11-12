@@ -38,7 +38,7 @@ public class TestUtil {
     }
   }
 
-  public static void startRpcServer() {
+  public static void startRpcServer(int serverPort) {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().indexOf("test") != -1) {
@@ -50,7 +50,8 @@ public class TestUtil {
         "java",
         "-classpath",
         jarDir,
-        "org.dst.server.service.DstRpcServer"
+        "org.dst.server.service.DstRpcServer",
+        String.valueOf(serverPort)
     );
     executeCommand(startCommand);
   }
@@ -63,6 +64,7 @@ public class TestUtil {
       LOGGER.error("Failed to stop rpc server. This process is exiting.");
       System.exit(-1);
     }
+
   }
 }
 
