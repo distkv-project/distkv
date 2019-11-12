@@ -48,12 +48,6 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>28.1-jre</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>

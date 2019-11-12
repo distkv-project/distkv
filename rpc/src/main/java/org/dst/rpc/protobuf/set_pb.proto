@@ -53,7 +53,7 @@ message ExistsResponse {
 service DstSetService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
-    rpc del(DeleteRequest) returns (DeleteResponse);
+    rpc remove(DeleteRequest) returns (DeleteResponse);
     rpc exists(ExistsRequest) returns (ExistsResponse);
     rpc drop(DropRequest) returns (DropResponse);
 }
