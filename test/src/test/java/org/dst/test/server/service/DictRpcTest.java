@@ -25,7 +25,8 @@ import java.util.Map;
 public class DictRpcTest extends BaseTestSupplier {
   @Test
   public void testDictRpcCall() {
-    try (ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(DstDictService.class)) {
+    try (ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(
+        DstDictService.class, rpcServerPort)) {
       DstDictService dictService = setProxy.getService();
       // Test dict put.
       DictProtocol.PutRequest.Builder dictPutRequestBuilder =

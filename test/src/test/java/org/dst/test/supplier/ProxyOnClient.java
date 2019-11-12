@@ -24,19 +24,19 @@ public class ProxyOnClient<T> implements AutoCloseable {
 
   private T service;
 
-  public ProxyOnClient(Class<T> proxyClass) {
+  public ProxyOnClient(Class<T> proxyClass, int serverPort) {
     this.proxyClass = proxyClass;
-    this.openConnection();
+    this.openConnection(serverPort);
   }
 
-  private void openConnection() {
+  private void openConnection(int serverPort) {
     RpcClientOptions options = new RpcClientOptions();
     options.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
     options.setWriteTimeoutMillis(1000);
     options.setReadTimeoutMillis(1000);
     options.setMaxTotalConnections(1000);
     options.setMinIdleConnections(10);
-    client = new RpcClient(SERVER_URL, options);
+    client = new RpcClient(String.format("list://127.0.0.1:%d", serverPort), options);
     service = BrpcProxy.getProxy(client, proxyClass);
   }
 

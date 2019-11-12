@@ -20,7 +20,8 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testPutAndGet() {
-    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
+        DstListService.class, rpcServerPort)) {
       //put
       ListProtocol.PutRequest.Builder putRequestBuilder = ListRpcTestUtil.putRequestBuilder();
       List<String> values = dummyListTestData();
@@ -49,7 +50,8 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testDel() {
-    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
+        DstListService.class, rpcServerPort)) {
       //put
       ListProtocol.PutRequest.Builder putRequestBuilder = ListRpcTestUtil.putRequestBuilder();
       List<String> values = dummyListTestData();
@@ -76,7 +78,8 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testLPut() {
-    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
+        DstListService.class, rpcServerPort)) {
       //put
       ListProtocol.PutRequest.Builder putRequestBuilder = ListRpcTestUtil.putRequestBuilder();
       List<String> values = dummyListTestData();
@@ -120,7 +123,8 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testRPut() {
-    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
+        DstListService.class, rpcServerPort)) {
       //put
       ListProtocol.PutRequest.Builder putRequestBuilder = ListRpcTestUtil.putRequestBuilder();
       List<String> values = dummyListTestData();
@@ -163,7 +167,8 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testLDel() {
-    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
+        DstListService.class, rpcServerPort)) {
       //put
       ListProtocol.PutRequest.Builder putRequestBuilder = ListRpcTestUtil.putRequestBuilder();
       List<String> values = dummyListTestData();
@@ -199,7 +204,8 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testRDel() {
-    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(DstListService.class)) {
+    try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
+        DstListService.class, rpcServerPort)) {
       //put
       ListProtocol.PutRequest.Builder putRequestBuilder = ListRpcTestUtil.putRequestBuilder();
       List<String> values = dummyListTestData();
