@@ -9,18 +9,16 @@ import org.dst.test.supplier.BaseTestSupplier;
 
 public class StringProxyTest extends BaseTestSupplier {
 
-  private static final String serverAddress = "list://127.0.0.1:8082";
-
   @Test
   public void testPutAndGet() {
-    DstClient client = new DefaultDstClient(serverAddress);
+    DstClient client = newDstClient();
     client.strs().put("k1", "v1");
     Assert.assertEquals("v1", client.strs().get("k1"));
   }
 
   @Test
   public void testKeyNotFoundWhenGetting() {
-    DstClient client = new DefaultDstClient(serverAddress);
+    DstClient client = newDstClient();
     try {
       client.strs().get("k1");
       Assert.fail("It shouldn't reach here.");
