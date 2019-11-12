@@ -33,7 +33,7 @@ public class TestUtil {
       // TODO(qwang): Refine this wait
       rpcServerProcess.waitFor(1, TimeUnit.SECONDS);
     } catch (Exception e) {
-      rpcServerProcess.destroy();
+      rpcServerProcess.destroyForcibly();
       throw new RuntimeException("Error executing command " + String.join(" ", command), e);
     }
   }
@@ -56,7 +56,18 @@ public class TestUtil {
   }
 
   public static void stopRpcServer() {
-    rpcServerProcess.destroyForcibly();
+    int numAttempts = 0;
+    while (rpcServerProcess.isAlive()) {
+      if (numAttempts > 0) {
+        LOGGER.warn("Attempting to kill rpc server, numAttempts={}.", numAttempts);
+      }
+      if (numAttempts == 0) {
+        rpcServerProcess.destroy();
+      } else {
+        rpcServerProcess.destroyForcibly();
+      }
+      ++numAttempts;
+    }
     try {
       rpcServerProcess.waitFor(KILL_PROCESS_WAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
@@ -65,5 +76,3 @@ public class TestUtil {
     }
   }
 }
-
-
