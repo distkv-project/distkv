@@ -100,7 +100,7 @@ public class DictHandler extends Handler {
         try {
           //dict.drop dict1
           if (cmd.length == 1) {
-            client.dicts().del(cmd[1]);
+            client.dicts().drop(cmd[1]);
             result = "ok";
           } else {
             //dict.drop or dict.drop dict1 k1 k2...

@@ -46,7 +46,6 @@ public class DefaultDstClient implements DstClient {
     setClient = new RpcClient(serverAddress, clientOptions);
     dictClient = new RpcClient(serverAddress, clientOptions);
     sortedListClient = new RpcClient(serverAddress, clientOptions);
-
     DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
     DstListService listService = BrpcProxy.getProxy(listClient, DstListService.class);
     DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
@@ -77,6 +76,7 @@ public class DefaultDstClient implements DstClient {
     listClient.stop();
     setClient.stop();
     dictClient.stop();
+    sortedListClient.stop();
     return true;
   }
 

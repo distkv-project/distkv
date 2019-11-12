@@ -61,14 +61,6 @@ message PutItemResponse {
     required Status status = 1;
 }
 
-message DelRequest {
-    required string key = 1;
-}
-
-message DelResponse {
-    required Status status = 1;
-}
-
 message DelItemRequest {
     required string key = 1;
     required string itemKey = 2;
@@ -81,9 +73,10 @@ message DelItemResponse {
 service DstDictService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
+    // TODO(qwang): rename to `getItem`.
     rpc getItemValue(GetItemValueRequest) returns (GetItemValueResponse);
     rpc popItem(PopItemRequest) returns (PopItemResponse);
     rpc putItem(PutItemRequest) returns (PutItemResponse);
-    rpc del(DelRequest) returns (DelResponse);
     rpc delItem(DelItemRequest) returns (DelItemResponse);
+    rpc drop(DropRequest) returns (DropResponse);
 }

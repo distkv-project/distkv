@@ -6,6 +6,7 @@ import org.dst.parser.generated.DstNewSQLBaseListener;
 import org.dst.parser.generated.DstNewSQLParser;
 import org.dst.parser.po.DstParsedResult;
 import org.dst.parser.po.RequestTypeEnum;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.DictProtocol;
 import org.dst.rpc.protobuf.generated.ListProtocol;
 import org.dst.rpc.protobuf.generated.SetProtocol;
@@ -225,8 +226,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   public void enterDictDrop(DstNewSQLParser.DictDropContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
-    // TODO(qwang): Rename this in proto-buf definition.
-    DictProtocol.DelRequest.Builder builder = DictProtocol.DelRequest.newBuilder();
+    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.DICT_DROP, builder.build());
   }

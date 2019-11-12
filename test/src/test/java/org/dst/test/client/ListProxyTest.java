@@ -16,6 +16,7 @@ public class ListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"),client.lists().get("k1"));
     //exception test
     client.lists().get("k2");
+    client.disconnect();
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -25,6 +26,7 @@ public class ListProxyTest extends BaseTestSupplier {
     client.lists().del("k1");
     //exception test
     client.lists().get("k1");
+    client.disconnect();
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -45,6 +47,7 @@ public class ListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3","v4", "v5"),client.lists().get("k1"));
     //exception test
     client.lists().rput("k2", ImmutableList.of("v4", "v5"));
+    client.disconnect();
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -55,6 +58,7 @@ public class ListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(ImmutableList.of("v3", "v4"),client.lists().get("k1"));
     //exception test
     client.lists().ldel("k2",1);
+    client.disconnect();
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -65,6 +69,7 @@ public class ListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(ImmutableList.of("v1", "v2"),client.lists().get("k1"));
     //exception test
     client.lists().rdel("k2",1);
+    client.disconnect();
   }
 
 

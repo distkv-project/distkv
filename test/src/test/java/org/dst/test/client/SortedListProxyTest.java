@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
+// TODO(qwang): Do not use so much clients. Use a final static client instead.
 public class SortedListProxyTest extends BaseTestSupplier {
 
   private DstClient dstClient = null;
@@ -21,6 +22,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     testTop();
     testDelItem();
     testTop();
+    dstClient.disconnect();
   }
 
   private void testTop() {
