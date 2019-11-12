@@ -21,7 +21,7 @@ listStatement: listPut | listLput | listRput | listGet | listRGet | listDelete |
 listPut: 'list.put' key valueArray;
 listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
-listGet: 'list.get' listGetArguments;
+listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
 listRGet: 'list.rget' listGetArguments;
 listDelete: 'list.del' (listDeleteOne | listDeleteRange);
 listMDelete: 'list.mdel' key (index)+;

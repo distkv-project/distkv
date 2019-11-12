@@ -61,15 +61,6 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListGet(DstNewSQLParser.ListGetContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-    ListProtocol.GetRequest.Builder builder = ListProtocol.GetRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, builder.build());
-  }
-
-  @Override
   public void enterListLput(DstNewSQLParser.ListLputContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
@@ -96,23 +87,39 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListLdel(DstNewSQLParser.ListLdelContext ctx) {
+  public void enterListGet(DstNewSQLParser.ListGetContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 3);
-    ListProtocol.LDelRequest.Builder builder = ListProtocol.LDelRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    builder.setIndex(Integer.valueOf(ctx.children.get(2).getText()));
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_LDEL, builder.build());
+    Preconditions.checkState(ctx.children.size() == 2);
+    final ParseTree listGetArgumentsParseTree = ctx.children.get(1);
+    final int numArguments = listGetArgumentsParseTree.getChildCount();
+
+    if (1 == numArguments) {
+      // GET_ALL
+      final String key = listGetArgumentsParseTree.getChild(0).getText();
+
+    } else if (2 == numArguments) {
+      // get one
+    } else if (3 == numArguments) {
+      // get range
+    } else {
+      // exception
+    }
+
   }
 
   @Override
-  public void enterListRdel(DstNewSQLParser.ListRdelContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 3);
-    ListProtocol.RDelRequest.Builder builder = ListProtocol.RDelRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    builder.setIndex(Integer.valueOf(ctx.children.get(2).getText()));
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_RDEL, builder.build());
+  public void enterListRGet(DstNewSQLParser.ListRGetContext ctx) {
+    // TODO(qwang): Refine.
+  }
+
+  @Override
+  public void enterListDelete(DstNewSQLParser.ListDeleteContext ctx) {
+    // TODO(qwang): Refine.
+  }
+
+  @Override
+  public void enterListMDelete(DstNewSQLParser.ListMDeleteContext ctx) {
+    // TODO(qwang): Refine.
   }
 
   @Override
