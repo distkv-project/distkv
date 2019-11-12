@@ -63,6 +63,7 @@ public class TestUtil {
       LOGGER.error("Failed to stop rpc server. This process is exiting.");
       System.exit(-1);
     }
+
   }
 }
 
