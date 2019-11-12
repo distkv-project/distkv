@@ -1,6 +1,5 @@
 package org.dst.test.client;
 
-import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.dst.common.exception.DstException;
 import org.dst.test.supplier.BaseTestSupplier;

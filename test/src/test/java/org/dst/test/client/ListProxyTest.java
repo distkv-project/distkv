@@ -1,7 +1,6 @@
 package org.dst.test.client;
 
 import com.google.common.collect.ImmutableList;
-import org.dst.client.DefaultDstClient;
 import org.dst.client.DstClient;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.test.supplier.BaseTestSupplier;
