@@ -75,16 +75,6 @@ public class ParseListCommandTest {
   }
 
   @Test
-  public void testLdel() {
-    final String command = "list.ldel k1 100";
-    DstParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_LDEL);
-    ListProtocol.LDelRequest request = (ListProtocol.LDelRequest) result.getRequest();
-    Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getIndex(), 100);
-  }
-
-  @Test
   public void testRdel() {
     // TODO(qwang): Should be finished.
   }
