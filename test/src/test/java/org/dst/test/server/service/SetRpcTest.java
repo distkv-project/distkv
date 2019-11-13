@@ -67,7 +67,7 @@ public class SetRpcTest extends BaseTestSupplier {
       setDeleteRequestBuilder.setEntity("v1");
 
       SetProtocol.DeleteResponse setDeleteResponse =
-              setService.delete(setDeleteRequestBuilder.build());
+              setService.remove(setDeleteRequestBuilder.build());
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }
@@ -78,12 +78,12 @@ public class SetRpcTest extends BaseTestSupplier {
         DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
 
-      SetProtocol.DropByKeyRequest.Builder setDropByKeyRequestBuilder =
-              SetProtocol.DropByKeyRequest.newBuilder();
+      CommonProtocol.DropRequest.Builder setDropByKeyRequestBuilder =
+              CommonProtocol.DropRequest.newBuilder();
       setDropByKeyRequestBuilder.setKey("k1");
 
-      SetProtocol.DropByKeyResponse setDropByKeyResponse =
-              setService.dropByKey(setDropByKeyRequestBuilder.build());
+      CommonProtocol.DropResponse setDropByKeyResponse =
+              setService.drop(setDropByKeyRequestBuilder.build());
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDropByKeyResponse.getStatus());
     }

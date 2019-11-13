@@ -62,15 +62,15 @@ public class ListRpcTest extends BaseTestSupplier {
       Assert.assertEquals(CommonProtocol.Status.OK, putResponseBuilder.getStatus());
 
       //del
-      ListProtocol.DelRequest.Builder delRequestBuilder = ListRpcTestUtil.delRequestBuilder();
+      CommonProtocol.DropRequest.Builder delRequestBuilder = ListRpcTestUtil.delRequestBuilder();
       delRequestBuilder.setKey("k1");
-      ListProtocol.DelResponse delResponseBuilder =
+      CommonProtocol.DropResponse delResponseBuilder =
             ListRpcTestUtil.delResponseBuilder(delRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.OK, delResponseBuilder.getStatus());
 
       //KEY_NOT_FOUND
       delRequestBuilder.setKey("k2");
-      ListProtocol.DelResponse delResponse2Builder =
+      CommonProtocol.DropResponse delResponse2Builder =
             ListRpcTestUtil.delResponseBuilder(delRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, delResponse2Builder.getStatus());
     }
