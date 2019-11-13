@@ -9,8 +9,11 @@ enum Status {
     OK = 0;
     KEY_NOT_FOUND = 1;
     UNKNOWN_ERROR = 2;
+    UNKNOWN_REQUEST_TYPE = 3;
+    LIST_INDEX_OUT_OF_BOUNDS = 4;
+
     // The key of the dict is not found.
-    DICT_KEY_NOT_FOUND = 3;
+    DICT_KEY_NOT_FOUND = 5;
 };
 
 // Drop the k-v pair by the given key.
