@@ -1,4 +1,4 @@
-package org.dst.client.cmd;
+package org.dst.client.commandlinetool;
 
 public class ClientResult {
   public String result;
