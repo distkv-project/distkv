@@ -1,6 +1,7 @@
 package org.dst.test.supplier;
 
 
+import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.ListProtocol;
 import org.dst.rpc.service.DstListService;
 
@@ -15,8 +16,8 @@ public class ListRpcTestUtil {
     return ListProtocol.GetRequest.newBuilder();
   }
 
-  public static ListProtocol.DelRequest.Builder delRequestBuilder() {
-    return ListProtocol.DelRequest.newBuilder();
+  public static CommonProtocol.DropRequest.Builder delRequestBuilder() {
+    return CommonProtocol.DropRequest.newBuilder();
   }
 
   public static ListProtocol.LPutRequest.Builder lputRequestBuilder() {
@@ -48,10 +49,10 @@ public class ListRpcTestUtil {
     return setProxy.getService().get(build);
   }
 
-  public static ListProtocol.DelResponse delResponseBuilder(
-        ListProtocol.DelRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
-    ListProtocol.DelRequest build = builder.build();
-    return setProxy.getService().del(build);
+  public static CommonProtocol.DropResponse delResponseBuilder(
+          CommonProtocol.DropRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+    CommonProtocol.DropRequest build = builder.build();
+    return setProxy.getService().drop(build);
   }
 
   public static ListProtocol.LPutResponse lputResponseBuilder(

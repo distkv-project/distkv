@@ -41,4 +41,17 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
     return responseBuilder.build();
   }
 
+  @Override
+  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
+    CommonProtocol.DropResponse.Builder responseBuilder =
+            CommonProtocol.DropResponse.newBuilder();
+
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    if (!getStore().strs().drop(request.getKey())) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+      return responseBuilder.build();
+    }
+    return responseBuilder.build();
+  }
+
 }

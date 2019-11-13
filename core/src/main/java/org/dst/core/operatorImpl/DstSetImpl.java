@@ -30,7 +30,7 @@ public class DstSetImpl implements DstSet {
   }
 
   @Override
-  public Status dropByKey(String key) {
+  public Status drop(String key) {
     if (!setMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
     }
@@ -40,7 +40,7 @@ public class DstSetImpl implements DstSet {
   }
 
   @Override
-  public Status del(String key, String value) {
+  public Status remove(String key, String value) {
     if (!setMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
     }

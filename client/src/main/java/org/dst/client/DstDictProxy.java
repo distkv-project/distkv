@@ -53,12 +53,12 @@ public class DstDictProxy {
   }
 
   // Get the value in the dict corresponding to the key
-  public String getItemValue(String key, String itemKey) {
-    DictProtocol.GetItemValueRequest.Builder request = 
-        DictProtocol.GetItemValueRequest.newBuilder();
+  public String getItem(String key, String itemKey) {
+    DictProtocol.GetItemRequest.Builder request =
+        DictProtocol.GetItemRequest.newBuilder();
     request.setKey(key);
     request.setItemKey(itemKey);
-    DictProtocol.GetItemValueResponse response = service.getItemValue(request.build());
+    DictProtocol.GetItemResponse response = service.getItemValue(request.build());
     switch (response.getStatus()) {
       case OK:
         break;
@@ -109,6 +109,7 @@ public class DstDictProxy {
         throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
   }
+
 
   /**
    * Drop the k-v pair.

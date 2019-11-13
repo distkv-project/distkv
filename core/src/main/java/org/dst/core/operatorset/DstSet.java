@@ -29,7 +29,7 @@ public interface DstSet {
    * @param key delete the whole set based on the key
    * @return Status indicates that the deletion succeeded or failed.
    */
-  Status dropByKey(String key);
+  Status drop(String key);
 
   /**
    * This method will delete a value according to the key
@@ -38,7 +38,7 @@ public interface DstSet {
    * @param value the value will be deleted
    * @return Status indicates that the deletion succeeded or failed.
    * */
-  Status del(String key, String value);
+  Status remove(String key, String value);
 
   /**
    * This method will judge that if the value exists in map or not.

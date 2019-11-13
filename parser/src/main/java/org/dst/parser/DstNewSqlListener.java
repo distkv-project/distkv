@@ -7,9 +7,9 @@ import org.dst.parser.generated.DstNewSQLParser;
 import org.dst.parser.po.DstParsedResult;
 import org.dst.parser.po.RequestTypeEnum;
 import org.dst.rpc.protobuf.generated.CommonProtocol;
+import org.dst.rpc.protobuf.generated.SetProtocol;
 import org.dst.rpc.protobuf.generated.DictProtocol;
 import org.dst.rpc.protobuf.generated.ListProtocol;
-import org.dst.rpc.protobuf.generated.SetProtocol;
 import org.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,7 +164,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   public void enterSetDropByKey(DstNewSQLParser.SetDropByKeyContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
-    SetProtocol.DropByKeyRequest.Builder builder = SetProtocol.DropByKeyRequest.newBuilder();
+    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.SET_DROP_BY_KEY, builder.build());
   }
@@ -212,8 +212,8 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   public void enterDictGetItem(DstNewSQLParser.DictGetItemContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
-    DictProtocol.GetItemValueRequest.Builder builder
-        = DictProtocol.GetItemValueRequest.newBuilder();
+    DictProtocol.GetItemRequest.Builder builder
+        = DictProtocol.GetItemRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     builder.setItemKey(ctx.children.get(2).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.DICT_GET_ITEM, builder.build());
@@ -233,7 +233,6 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   public void enterDictRemoveItem(DstNewSQLParser.DictRemoveItemContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
-    // TODO(qwang): Rename this in proto-buf definition.
     DictProtocol.DelItemRequest.Builder builder = DictProtocol.DelItemRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     builder.setItemKey(ctx.children.get(2).getText());

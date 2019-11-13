@@ -19,7 +19,7 @@ public interface DstSortedList {
    *
    * @param key   the key to store
    */
-  void del(String key);
+  void drop(String key);
 
   /**
    * This method will put a item to a sortedList

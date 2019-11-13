@@ -17,7 +17,7 @@ public class KVSDictTest {
     dict.put("k3", "v3");
     store.dicts().put("k1", dict);
     Assert.assertEquals(dict, store.dicts().get("k1"));
-    Assert.assertTrue(store.dicts().del("k1"));
+    Assert.assertTrue(store.dicts().drop("k1"));
     Assert.assertNull(store.dicts().get("k1"));
   }
 }

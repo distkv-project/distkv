@@ -34,7 +34,7 @@ public class KVSListTest {
   public void testDel() {
     KVStore store = new KVStoreImpl();
     store.lists().put("k1", listForKVSTest());
-    Assert.assertEquals("ok", store.lists().del("k1").toString());
+    Assert.assertEquals("ok", store.lists().drop("k1").toString());
     store.lists().get("k1");
   }
 

@@ -32,14 +32,6 @@ message TopResponse {
     repeated SortedListEntity list = 2;
 }
 
-message DelRequest {
-    required string key = 1;
-}
-
-message DelResponse {
-    required Status status = 1;
-}
-
 message IncrScoreRequest {
     required string key = 1;
     required string member = 2;
@@ -72,8 +64,8 @@ message DelMemberResponse {
 service DstListService {
     rpc put (PutRequest) returns (PutResponse);
     rpc top (TopRequest) returns (TopResponse);
-    rpc del (DelRequest) returns (DelResponse);
     rpc incrItem (IncrScoreRequest) returns (IncrScoreResponse);
     rpc putItem (PutMemberRequest) returns (PutMemberResponse);
     rpc delItem (DelMemberRequest) returns (DelMemberResponse);
+    rpc drop(DropRequest) returns (DropResponse);
 }

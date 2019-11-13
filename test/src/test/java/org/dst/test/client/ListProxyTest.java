@@ -23,7 +23,7 @@ public class ListProxyTest extends BaseTestSupplier {
   public void testDel() {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    client.lists().del("k1");
+    client.lists().drop("k1");
     //exception test
     client.lists().get("k1");
     client.disconnect();

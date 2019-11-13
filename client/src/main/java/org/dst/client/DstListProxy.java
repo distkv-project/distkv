@@ -40,11 +40,11 @@ public class DstListProxy {
     return response.getValuesList();
   }
 
-  public void del(String key) {
-    ListProtocol.DelRequest request = ListProtocol.DelRequest.newBuilder()
+  public void drop(String key) {
+    CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
           .setKey(key)
           .build();
-    ListProtocol.DelResponse response = service.del(request);
+    CommonProtocol.DropResponse response = service.drop(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {

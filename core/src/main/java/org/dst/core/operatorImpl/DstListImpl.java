@@ -56,7 +56,7 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status del(String key) {
+  public Status drop(String key) {
     if (!listMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
     }

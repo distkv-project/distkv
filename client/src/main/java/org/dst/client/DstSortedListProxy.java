@@ -61,11 +61,11 @@ public class DstSortedListProxy {
   }
 
   public void del(String key) {
-    SortedListProtocol.DelRequest.Builder requestBuilder =
-        SortedListProtocol.DelRequest.newBuilder();
+    CommonProtocol.DropRequest.Builder requestBuilder =
+        CommonProtocol.DropRequest.newBuilder();
     requestBuilder.setKey(key);
-    SortedListProtocol.DelResponse response =
-        service.del(requestBuilder.build());
+    CommonProtocol.DropResponse response =
+        service.drop(requestBuilder.build());
     checkException(response.getStatus(),key);
   }
 

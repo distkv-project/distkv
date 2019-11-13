@@ -13,7 +13,7 @@ public class KVSStrTest {
     store.strs().put("k2", "v2");
     Assert.assertEquals("v1", store.strs().get("k1"));
     Assert.assertEquals("v2", store.strs().get("k2"));
-    Assert.assertTrue(store.strs().del("k1"));
+    Assert.assertTrue(store.strs().drop("k1"));
     Assert.assertNull(store.strs().get("k1"));
   }
 

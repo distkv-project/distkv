@@ -74,12 +74,12 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public SortedListProtocol.DelResponse del(SortedListProtocol.DelRequest request) {
-    SortedListProtocol.DelResponse.Builder responseBuilder =
-        SortedListProtocol.DelResponse.newBuilder();
+  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
+    CommonProtocol.DropResponse.Builder responseBuilder =
+        CommonProtocol.DropResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().del(request.getKey());
+      getStore().sortLists().drop(request.getKey());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
       LOGGER.error(e.getMessage());

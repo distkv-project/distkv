@@ -1,6 +1,7 @@
 package org.dst.rpc.service;
 
 import com.baidu.brpc.protocol.BrpcMeta;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.StringProtocol;
 
 public interface DstStringService {
@@ -11,4 +12,6 @@ public interface DstStringService {
   @BrpcMeta(serviceName = "DstStringService", methodName = "get")
   StringProtocol.GetResponse get(StringProtocol.GetRequest request);
 
+  @BrpcMeta(serviceName = "DstStringService", methodName = "drop")
+  CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
 }
