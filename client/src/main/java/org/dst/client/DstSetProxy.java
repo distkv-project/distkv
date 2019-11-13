@@ -45,12 +45,12 @@ public class DstSetProxy {
     return set;
   }
 
-  public void delete(String key, String entity) {
+  public void del(String key, String entity) {
     SetProtocol.DeleteRequest.Builder request = SetProtocol.DeleteRequest.newBuilder();
     request.setKey(key);
     request.setEntity(entity);
 
-    SetProtocol.DeleteResponse response = service.del(request.build());
+    SetProtocol.DeleteResponse response = service.remove(request.build());
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {

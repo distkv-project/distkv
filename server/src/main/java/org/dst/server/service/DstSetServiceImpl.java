@@ -51,7 +51,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
   }
 
   @Override
-  public SetProtocol.DeleteResponse del(SetProtocol.DeleteRequest request) {
+  public SetProtocol.DeleteResponse remove(SetProtocol.DeleteRequest request) {
     SetProtocol.DeleteResponse.Builder setDeleteResponseBuilder =
             SetProtocol.DeleteResponse.newBuilder();
 
