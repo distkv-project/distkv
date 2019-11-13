@@ -110,8 +110,13 @@ public class DstDictProxy {
     }
   }
 
-  // Delete a dict
-  public void del(String key) {
+
+  /**
+   * Drop the k-v pair.
+   *
+   * @param key The key to be dropped.
+   */
+  public void drop(String key) {
     CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
     request.setKey(key);
     CommonProtocol.DropResponse response = service.drop(request.build());

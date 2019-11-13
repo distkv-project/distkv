@@ -73,6 +73,7 @@ message DelItemResponse {
 service DstDictService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
+    // TODO(qwang): rename to `getItem`.
     rpc getItemValue(GetItemValueRequest) returns (GetItemValueResponse);
     rpc popItem(PopItemRequest) returns (PopItemResponse);
     rpc putItem(PutItemRequest) returns (PutItemResponse);

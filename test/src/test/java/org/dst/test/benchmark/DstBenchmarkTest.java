@@ -32,7 +32,7 @@ public class DstBenchmarkTest {
 
   public static void main(String[] args) {
     // DST benchmark test
-    TestUtil.startRpcServer();
+    TestUtil.startRpcServer(8082);
     DSTBenchmark benchmark = new DSTBenchmark(10);
     benchmark.setTestModule(dstClient -> benchmarkTest(dstClient));
     benchmark.run();

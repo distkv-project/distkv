@@ -5,10 +5,14 @@ import org.dst.rpc.protobuf.generated.CommonProtocol;
 import org.dst.rpc.protobuf.generated.DictProtocol;
 import org.dst.rpc.service.DstDictService;
 import org.dst.server.base.DstBaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DstDictServiceImpl extends DstBaseService implements DstDictService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstDictServiceImpl.class);
 
   public DstDictServiceImpl(KVStore store) {
     super(store);
@@ -107,18 +111,6 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
-    CommonProtocol.DropResponse.Builder responseBuilder =
-          CommonProtocol.DropResponse.newBuilder();
-    responseBuilder.setStatus(CommonProtocol.Status.OK);
-    if (!getStore().dicts().del(request.getKey())) {
-      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-      return responseBuilder.build();
-    }
-    return responseBuilder.build();
-  }
-
-  @Override
   public DictProtocol.DelItemResponse delItem(DictProtocol.DelItemRequest request) {
     DictProtocol.DelItemResponse.Builder responseBuilder =
           DictProtocol.DelItemResponse.newBuilder();
@@ -134,6 +126,19 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
       return responseBuilder.build();
     }
     dict.remove(request.getItemKey());
+    return responseBuilder.build();
+  }
+
+
+  @Override
+  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
+    CommonProtocol.DropResponse.Builder responseBuilder =
+        CommonProtocol.DropResponse.newBuilder();
+    responseBuilder.setStatus(CommonProtocol.Status.OK);
+    if (!getStore().dicts().del(request.getKey())) {
+      responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+      return responseBuilder.build();
+    }
     return responseBuilder.build();
   }
 }
