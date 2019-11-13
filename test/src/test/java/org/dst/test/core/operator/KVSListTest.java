@@ -59,7 +59,7 @@ public class KVSListTest {
     store.lists().rput("k1", list2);
     Assert.assertEquals(Arrays.asList("v1", "v2", "v3", "v4", "v5"), store.lists().get("k1"));
   }
-  
+
   @Test
   public void testLDel() {
     KVStore store = new KVStoreImpl();
