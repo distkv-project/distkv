@@ -66,7 +66,7 @@ public class SetHandler extends Handler {
         try {
           //set.del k1 v1
           if (cmd.length == 3) {
-            client.sets().delete(cmd[1], cmd[2]);
+            client.sets().del(cmd[1], cmd[2]);
             result = "ok";
           } else {
             //set.del or set.del k1 or set.del k1 k2 k3..
