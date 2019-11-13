@@ -3,8 +3,8 @@ package org.dst.server.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.google.common.base.Preconditions;
+import org.dst.common.exception.DstListIndexOutOfBoundsException;
 import org.dst.core.KVStore;
 import org.dst.common.exception.DstException;
 import org.dst.common.exception.KeyNotFoundException;
@@ -56,18 +56,20 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
         Preconditions.checkState(request.getIndex() >= 0);
         responseBuilder.addValues(getStore().lists().get(key, request.getIndex()));
       } else if (type == ListProtocol.GetType.GET_RANGE) {
-        final List<String> values = getStore().lists().get(key, request.getFrom(), request.getEnd());
+        final List<String> values = getStore().lists().get(
+            key, request.getFrom(), request.getEnd());
         Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValues(values));
       } else {
-        // TODO(qwang): Handle index out of bound exception.
+        LOGGER.error("Failed to get a list from store.");
+        status = CommonProtocol.Status.UNKNOWN_REQUEST_TYPE;
       }
 
     } catch (KeyNotFoundException e) {
       LOGGER.info("Failed to get a list from store: {1}", e);
       status = CommonProtocol.Status.KEY_NOT_FOUND;
-    } catch (IndexOutOfBoundsException e) {
+    } catch (DstListIndexOutOfBoundsException e) {
       LOGGER.info("Failed to get a list from store: {1}", e);
-      status = CommonProtocol.Status.IndexOutOfBound;
+      status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
 
     responseBuilder.setStatus(status);

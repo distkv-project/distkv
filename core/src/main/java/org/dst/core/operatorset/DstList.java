@@ -2,8 +2,6 @@ package org.dst.core.operatorset;
 
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.common.utils.Status;
-
-import java.security.Key;
 import java.util.List;
 
 public interface DstList {
@@ -31,16 +29,19 @@ public interface DstList {
    * @param index The index that we want get the value at.
    * @return The value at the given index from the list.
    */
-  String get(String key, int index) throws KeyNotFoundException, IndexOutOfBoundsException;
+  String get(String key, int index)
+      throws KeyNotFoundException, IndexOutOfBoundsException;
 
   /**
+   * Get the values of the given range.
    *
-   * @param key
-   * @param from
-   * @param end
-   * @return
+   * @param key The key of the list.
+   * @param from The left index of the range.
+   * @param end The right index of the range.
+   * @return The values of the given range.
    */
-  List<String> get(String key, int from, int end) throws KeyNotFoundException, IndexOutOfBoundsException;
+  List<String> get(String key, int from, int end)
+      throws KeyNotFoundException, IndexOutOfBoundsException;
 
   /**
    * This method will delete a list value based on the key
