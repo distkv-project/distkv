@@ -3,6 +3,7 @@ package org.dst.test.core.operator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.google.common.collect.ImmutableList;
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
 import org.dst.common.exception.KeyNotFoundException;
@@ -19,12 +20,14 @@ public class KVSListTest {
     return list;
   }
 
-
   @Test
   public void testPutAndGet() {
     KVStore store = new KVStoreImpl();
+    // Note that the list is `v1 v2 v3`.
     store.lists().put("k1", listForKVSTest());
     Assert.assertEquals(listForKVSTest(), store.lists().get("k1"));
+    Assert.assertEquals(store.lists().get("k1", 1), "v2");
+    Assert.assertEquals(store.lists().get("k1", 1, 3), ImmutableList.of("v2", "v3"));
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -56,8 +59,7 @@ public class KVSListTest {
     store.lists().rput("k1", list2);
     Assert.assertEquals(Arrays.asList("v1", "v2", "v3", "v4", "v5"), store.lists().get("k1"));
   }
-
-
+  
   @Test
   public void testLDel() {
     KVStore store = new KVStoreImpl();
@@ -66,7 +68,6 @@ public class KVSListTest {
     Assert.assertEquals(Arrays.asList("v2", "v3"), store.lists().get("k1"));
     Assert.assertEquals("key not exist", store.lists().ldel("-k", 1).toString());
   }
-
 
   @Test
   public void testRDel() {

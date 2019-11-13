@@ -93,18 +93,29 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     final ParseTree listGetArgumentsParseTree = ctx.children.get(1);
     final int numArguments = listGetArgumentsParseTree.getChildCount();
 
+    ListProtocol.GetRequest.Builder builder = ListProtocol.GetRequest.newBuilder();
+    final String key = listGetArgumentsParseTree.getChild(0).getText();
+    builder.setKey(key);
     if (1 == numArguments) {
       // GET_ALL
-      final String key = listGetArgumentsParseTree.getChild(0).getText();
-
+      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 1);
+      builder.setType(ListProtocol.GetType.GET_ALL);
     } else if (2 == numArguments) {
-      // get one
+      // GET_ONE
+      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 2);
+      builder.setType(ListProtocol.GetType.GET_ONE);
+      builder.setIndex(Integer.valueOf(listGetArgumentsParseTree.getChild(1).getText()));
     } else if (3 == numArguments) {
-      // get range
+      // GET_RANGE
+      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 3);
+      builder.setType(ListProtocol.GetType.GET_RANGE);
+      builder.setFrom(Integer.valueOf(listGetArgumentsParseTree.getChild(1).getText()));
+      builder.setEnd(Integer.valueOf(listGetArgumentsParseTree.getChild(2).getText()));
     } else {
-      // exception
+      throw new RuntimeException("Failed to parser the command.");
     }
 
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, builder.build());
   }
 
   @Override
