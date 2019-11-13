@@ -58,9 +58,9 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public DictProtocol.GetItemValueResponse getItemValue(DictProtocol.GetItemValueRequest request) {
-    DictProtocol.GetItemValueResponse.Builder responseBuilder =
-          DictProtocol.GetItemValueResponse.newBuilder();
+  public DictProtocol.GetItemResponse getItemValue(DictProtocol.GetItemRequest request) {
+    DictProtocol.GetItemResponse.Builder responseBuilder =
+          DictProtocol.GetItemResponse.newBuilder();
     final Map<String, String> dict = getStore().dicts().get(request.getKey());
     responseBuilder.setStatus(CommonProtocol.Status.OK);
     if (dict == null) {
@@ -135,7 +135,7 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
     CommonProtocol.DropResponse.Builder responseBuilder =
         CommonProtocol.DropResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
-    if (!getStore().dicts().del(request.getKey())) {
+    if (!getStore().dicts().drop(request.getKey())) {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
       return responseBuilder.build();
     }

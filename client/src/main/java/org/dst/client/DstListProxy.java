@@ -39,7 +39,7 @@ public class DstListProxy {
     return response.getValuesList();
   }
 
-  public void del(String key) {
+  public void drop(String key) {
     CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
           .setKey(key)
           .build();

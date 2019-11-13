@@ -60,7 +60,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
             CommonProtocol.DropResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().del(request.getKey());
+      Status localStatus = getStore().lists().drop(request.getKey());
       if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       } else if (localStatus == Status.OK) {

@@ -47,7 +47,7 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
             CommonProtocol.DropResponse.newBuilder();
 
     responseBuilder.setStatus(CommonProtocol.Status.OK);
-    if (!getStore().strs().del(request.getKey())) {
+    if (!getStore().strs().drop(request.getKey())) {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
       return responseBuilder.build();
     }

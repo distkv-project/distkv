@@ -26,7 +26,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void del(String key) {
+  public void drop(String key) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }

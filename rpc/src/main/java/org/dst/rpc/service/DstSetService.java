@@ -12,7 +12,7 @@ public interface DstSetService {
   SetProtocol.GetResponse get(SetProtocol.GetRequest request);
 
   @BrpcMeta(serviceName = "DstSetService", methodName = "remove")
-  SetProtocol.DeleteResponse remove(SetProtocol.DeleteRequest request);
+  SetProtocol.RemoveResponse remove(SetProtocol.RemoveRequest request);
 
   @BrpcMeta(serviceName = "DstSetService", methodName = "drop")
   CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);

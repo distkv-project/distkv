@@ -24,7 +24,7 @@ public class DstDictImpl implements DstDict {
   }
 
   @Override
-  public boolean del(String key) {
+  public boolean drop(String key) {
     if (!dictMap.containsKey(key)) {
       return false;
     }

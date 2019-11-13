@@ -27,7 +27,7 @@ public class DstStringImpl implements DstString {
   }
 
   @Override
-  public boolean del(String key) {
+  public boolean drop(String key) {
     if (!strMap.containsKey(key)) {
       return false;
     }

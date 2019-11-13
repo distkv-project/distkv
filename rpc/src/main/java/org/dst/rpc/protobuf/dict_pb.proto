@@ -31,12 +31,12 @@ message GetResponse {
     optional DstDict dict = 2;
 }
 
-message GetItemValueRequest {
+message GetItemRequest {
     required string key = 1;
     required string itemKey = 2;
 }
 
-message GetItemValueResponse {
+message GetItemResponse {
     optional string itemValue = 1;
     required Status status = 2;
 }
@@ -73,8 +73,7 @@ message DelItemResponse {
 service DstDictService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
-    // TODO(qwang): rename to `getItem`.
-    rpc getItemValue(GetItemValueRequest) returns (GetItemValueResponse);
+    rpc getItem(GetItemRequest) returns (GetItemResponse);
     rpc popItem(PopItemRequest) returns (PopItemResponse);
     rpc putItem(PutItemRequest) returns (PutItemResponse);
     rpc delItem(DelItemRequest) returns (DelItemResponse);

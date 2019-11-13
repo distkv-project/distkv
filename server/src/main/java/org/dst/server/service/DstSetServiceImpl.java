@@ -51,14 +51,14 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
   }
 
   @Override
-  public SetProtocol.DeleteResponse remove(SetProtocol.DeleteRequest request) {
-    SetProtocol.DeleteResponse.Builder setDeleteResponseBuilder =
-            SetProtocol.DeleteResponse.newBuilder();
+  public SetProtocol.RemoveResponse remove(SetProtocol.RemoveRequest request) {
+    SetProtocol.RemoveResponse.Builder setDeleteResponseBuilder =
+            SetProtocol.RemoveResponse.newBuilder();
 
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
-      Status localStatus = getStore().sets().del(request.getKey(), request.getEntity());
+      Status localStatus = getStore().sets().remove(request.getKey(), request.getEntity());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -80,7 +80,7 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
 
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().sets().dropByKey(request.getKey());
+      Status localStatus = getStore().sets().drop(request.getKey());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {

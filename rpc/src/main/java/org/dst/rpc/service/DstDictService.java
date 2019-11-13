@@ -13,7 +13,7 @@ public interface DstDictService {
   DictProtocol.GetResponse get(DictProtocol.GetRequest request);
 
   @BrpcMeta(serviceName = "DstDictService", methodName = "getItemValue")
-  DictProtocol.GetItemValueResponse getItemValue(DictProtocol.GetItemValueRequest request);
+  DictProtocol.GetItemResponse getItemValue(DictProtocol.GetItemRequest request);
 
   @BrpcMeta(serviceName = "DstDictService", methodName = "popItem")
   DictProtocol.PopItemResponse popItem(DictProtocol.PopItemRequest request);

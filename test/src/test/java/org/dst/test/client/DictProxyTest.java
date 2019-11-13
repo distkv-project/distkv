@@ -40,7 +40,7 @@ public class DictProxyTest extends BaseTestSupplier {
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
-    String s1 = client.dicts().getItemValue("m1", "k1");
+    String s1 = client.dicts().getItem("m1", "k1");
     Assert.assertEquals("v1", s1);
     client.disconnect();
   }

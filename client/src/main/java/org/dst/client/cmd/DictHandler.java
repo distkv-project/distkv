@@ -51,7 +51,7 @@ public class DictHandler extends Handler {
         try {
           //dict.get dict1 k1
           if (cmd.length == 3) {
-            result = client.dicts().getItemValue(cmd[1], cmd[2]);
+            result = client.dicts().getItem(cmd[1], cmd[2]);
           } else if (cmd.length == 2) {
             //dict.get dict1
             result = client.dicts().get(cmd[1]).toString();

@@ -79,7 +79,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
         CommonProtocol.DropResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().del(request.getKey());
+      getStore().sortLists().drop(request.getKey());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
       LOGGER.error(e.getMessage());

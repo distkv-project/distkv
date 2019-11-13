@@ -194,8 +194,8 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   public void enterDictGetItem(DstNewSQLParser.DictGetItemContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
-    DictProtocol.GetItemValueRequest.Builder builder
-        = DictProtocol.GetItemValueRequest.newBuilder();
+    DictProtocol.GetItemRequest.Builder builder
+        = DictProtocol.GetItemRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     builder.setItemKey(ctx.children.get(2).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.DICT_GET_ITEM, builder.build());

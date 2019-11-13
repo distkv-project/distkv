@@ -27,7 +27,7 @@ public interface DstList {
    * @param key delete a key-value pair based on the key
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  Status del(String key);
+  Status drop(String key);
 
   //insert value from the left of list
   Status lput(String key, List<String> value);

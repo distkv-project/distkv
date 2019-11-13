@@ -24,6 +24,6 @@ public interface DstString {
    * @param key delete a key-value pair based on the key
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  boolean del(String key);
+  boolean drop(String key);
 
 }

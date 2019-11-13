@@ -26,6 +26,6 @@ public interface DstDict {
    * @param key The key of the entry that we will delete.
    * @return True if we succeed to delete, otherwise it's false.
    */
-  boolean del(String key);
+  boolean drop(String key);
 }
 

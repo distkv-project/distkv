@@ -66,7 +66,7 @@ public class SetHandler extends Handler {
         try {
           //set.del k1 v1
           if (cmd.length == 3) {
-            client.sets().del(cmd[1], cmd[2]);
+            client.sets().remove(cmd[1], cmd[2]);
             result = "ok";
           } else {
             //set.del or set.del k1 or set.del k1 k2 k3..
@@ -82,7 +82,7 @@ public class SetHandler extends Handler {
         try {
           //set.drop k1
           if (cmd.length == 2) {
-            result = String.valueOf(client.sets().dropByKey(cmd[1]));
+            result = String.valueOf(client.sets().drop(cmd[1]));
           } else {
             //set.drop or set.drop k1 k2...
             result = "please specify the right argument";

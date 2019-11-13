@@ -61,13 +61,13 @@ public class SetRpcTest extends BaseTestSupplier {
     try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(
         DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
-      SetProtocol.DeleteRequest.Builder setDeleteRequestBuilder =
-              SetProtocol.DeleteRequest.newBuilder();
-      setDeleteRequestBuilder.setKey("k1");
-      setDeleteRequestBuilder.setEntity("v1");
+      SetProtocol.RemoveRequest.Builder setRemoveRequestBuilder =
+              SetProtocol.RemoveRequest.newBuilder();
+      setRemoveRequestBuilder.setKey("k1");
+      setRemoveRequestBuilder.setEntity("v1");
 
-      SetProtocol.DeleteResponse setDeleteResponse =
-              setService.remove(setDeleteRequestBuilder.build());
+      SetProtocol.RemoveResponse setDeleteResponse =
+              setService.remove(setRemoveRequestBuilder.build());
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }

@@ -55,11 +55,11 @@ public class DictRpcTest extends BaseTestSupplier {
               dictService.putItem(putBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, putItemResponse.getStatus());
       // Test getItemValue
-      DictProtocol.GetItemValueRequest.Builder getItemValueBuilder =
-              DictProtocol.GetItemValueRequest.newBuilder();
+      DictProtocol.GetItemRequest.Builder getItemValueBuilder =
+              DictProtocol.GetItemRequest.newBuilder();
       getItemValueBuilder.setKey("m1");
       getItemValueBuilder.setItemKey("k3");
-      DictProtocol.GetItemValueResponse getItemValueResponse =
+      DictProtocol.GetItemResponse getItemValueResponse =
               dictService.getItemValue(getItemValueBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, getItemValueResponse.getStatus());
       Assert.assertEquals(getItemValueResponse.getItemValue(), "v3");
