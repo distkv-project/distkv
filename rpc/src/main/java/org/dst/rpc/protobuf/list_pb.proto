@@ -17,8 +17,24 @@ message PutResponse {
     required Status status = 1;
 }
 
+// The type of a `get` request.
+//
+// GET_ALL indicates we should get all of the values of the specific key.
+// GET_ONE indicates we should get a value of the specific index.
+// GET_RANGE indicates that we should get the values of a range index.
+enum GetType {
+    GET_ALL = 0;
+    GET_ONE = 1;
+    GET_RANGE = 2;
+};
+
+// TODO(qwang): comment on this.
 message GetRequest {
-    required string key = 1;
+    required GetType type = 1;
+    required string key = 2;
+    optional int32 index = 3;
+    optional int32 from = 4;
+    optional int32 end = 5;
 }
 
 message GetResponse {

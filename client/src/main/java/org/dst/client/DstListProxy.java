@@ -28,8 +28,9 @@ public class DstListProxy {
 
   public List<String> get(String key) {
     ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
-          .setKey(key)
-          .build();
+        .setType(ListProtocol.GetType.GET_ALL)
+        .setKey(key)
+        .build();
     ListProtocol.GetResponse response = service.get(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);

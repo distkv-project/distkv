@@ -61,15 +61,6 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListGet(DstNewSQLParser.ListGetContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-    ListProtocol.GetRequest.Builder builder = ListProtocol.GetRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, builder.build());
-  }
-
-  @Override
   public void enterListLput(DstNewSQLParser.ListLputContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
@@ -96,23 +87,50 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListLdel(DstNewSQLParser.ListLdelContext ctx) {
+  public void enterListGet(DstNewSQLParser.ListGetContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 3);
-    ListProtocol.LDelRequest.Builder builder = ListProtocol.LDelRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    builder.setIndex(Integer.valueOf(ctx.children.get(2).getText()));
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_LDEL, builder.build());
+    Preconditions.checkState(ctx.children.size() == 2);
+    final ParseTree listGetArgumentsParseTree = ctx.children.get(1);
+    final int numArguments = listGetArgumentsParseTree.getChildCount();
+
+    ListProtocol.GetRequest.Builder builder = ListProtocol.GetRequest.newBuilder();
+    final String key = listGetArgumentsParseTree.getChild(0).getText();
+    builder.setKey(key);
+    if (1 == numArguments) {
+      // GET_ALL
+      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 1);
+      builder.setType(ListProtocol.GetType.GET_ALL);
+    } else if (2 == numArguments) {
+      // GET_ONE
+      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 2);
+      builder.setType(ListProtocol.GetType.GET_ONE);
+      builder.setIndex(Integer.valueOf(listGetArgumentsParseTree.getChild(1).getText()));
+    } else if (3 == numArguments) {
+      // GET_RANGE
+      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 3);
+      builder.setType(ListProtocol.GetType.GET_RANGE);
+      builder.setFrom(Integer.valueOf(listGetArgumentsParseTree.getChild(1).getText()));
+      builder.setEnd(Integer.valueOf(listGetArgumentsParseTree.getChild(2).getText()));
+    } else {
+      throw new RuntimeException("Failed to parser the command.");
+    }
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, builder.build());
   }
 
   @Override
-  public void enterListRdel(DstNewSQLParser.ListRdelContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 3);
-    ListProtocol.RDelRequest.Builder builder = ListProtocol.RDelRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    builder.setIndex(Integer.valueOf(ctx.children.get(2).getText()));
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_RDEL, builder.build());
+  public void enterListRGet(DstNewSQLParser.ListRGetContext ctx) {
+    // TODO(qwang): Refine.
+  }
+
+  @Override
+  public void enterListDelete(DstNewSQLParser.ListDeleteContext ctx) {
+    // TODO(qwang): Refine.
+  }
+
+  @Override
+  public void enterListMDelete(DstNewSQLParser.ListMDeleteContext ctx) {
+    // TODO(qwang): Refine.
   }
 
   @Override

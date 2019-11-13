@@ -25,12 +25,36 @@ public class ParseListCommandTest {
   }
 
   @Test
-  public void testGet() {
+  public void testGetAll() {
     final String command = "list.get k1";
     DstParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
     ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
+    Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_ALL);
     Assert.assertEquals(request.getKey(), "k1");
+  }
+
+  @Test
+  public void testGetOne() {
+    final String command = "list.get k1 3";
+    DstParsedResult result = dstParser.parse(command);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
+    ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
+    Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_ONE);
+    Assert.assertEquals(request.getKey(), "k1");
+    Assert.assertEquals(request.getIndex(), 3);
+  }
+
+  @Test
+  public void testGetRange() {
+    final String command = "list.get k1 4 9";
+    DstParsedResult result = dstParser.parse(command);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
+    ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
+    Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_RANGE);
+    Assert.assertEquals(request.getKey(), "k1");
+    Assert.assertEquals(request.getFrom(), 4);
+    Assert.assertEquals(request.getEnd(), 9);
   }
 
   @Test
@@ -48,16 +72,6 @@ public class ParseListCommandTest {
   @Test
   public void testRput() {
     // TODO(qwang): Should be finished.
-  }
-
-  @Test
-  public void testLdel() {
-    final String command = "list.ldel k1 100";
-    DstParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_LDEL);
-    ListProtocol.LDelRequest request = (ListProtocol.LDelRequest) result.getRequest();
-    Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getIndex(), 100);
   }
 
   @Test

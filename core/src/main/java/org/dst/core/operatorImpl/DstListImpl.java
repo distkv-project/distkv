@@ -1,5 +1,6 @@
 package org.dst.core.operatorImpl;
 
+import org.dst.common.exception.DstListIndexOutOfBoundsException;
 import org.dst.core.DstMapInterface;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstList;
@@ -27,6 +28,31 @@ public class DstListImpl implements DstList {
       throw new KeyNotFoundException(key);
     }
     return listMap.get(key);
+  }
+
+  @Override
+  public String get(String key, int index) throws KeyNotFoundException, IndexOutOfBoundsException {
+    try {
+      final List<String> list = listMap.get(key);
+      return list.get(index);
+    } catch (NullPointerException e) {
+      throw new KeyNotFoundException(key);
+    } catch (IndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
+    }
+  }
+
+  @Override
+  public List<String> get(String key, int from, int end)
+      throws KeyNotFoundException, IndexOutOfBoundsException {
+    try {
+      final List<String> list = listMap.get(key);
+      return list.subList(from, end);
+    } catch (NullPointerException e) {
+      throw new KeyNotFoundException(key);
+    } catch (IndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
+    }
   }
 
   @Override

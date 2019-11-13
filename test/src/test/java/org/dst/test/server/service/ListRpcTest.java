@@ -33,6 +33,7 @@ public class ListRpcTest extends BaseTestSupplier {
 
       //get
       ListProtocol.GetRequest.Builder getRequestBuilder = ListRpcTestUtil.getRequestBuilder();
+      getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       getRequestBuilder.setKey("k1");
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
@@ -41,6 +42,7 @@ public class ListRpcTest extends BaseTestSupplier {
       //get
       ListProtocol.GetRequest.Builder getRequest2Builder = ListRpcTestUtil.getRequestBuilder();
       getRequest2Builder.setKey("k2");
+      getRequest2Builder.setType(ListProtocol.GetType.GET_ALL);
       ListProtocol.GetResponse getResponse2Builder =
               ListRpcTestUtil.getResponseBuilder(getRequest2Builder, proxy);
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, getResponse2Builder.getStatus());
@@ -103,6 +105,7 @@ public class ListRpcTest extends BaseTestSupplier {
       //get
       ListProtocol.GetRequest.Builder getRequestBuilder = ListRpcTestUtil.getRequestBuilder();
       getRequestBuilder.setKey("k1");
+      getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
       Assert.assertEquals(ImmutableList.of("v3", "v4", "v0", "v1", "v2"),
@@ -148,6 +151,7 @@ public class ListRpcTest extends BaseTestSupplier {
       //get
       ListProtocol.GetRequest.Builder getRequestBuilder = ListRpcTestUtil.getRequestBuilder();
       getRequestBuilder.setKey("k1");
+      getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
       Assert.assertEquals(ImmutableList.of("v0", "v1", "v2", "v3", "v4"),
@@ -189,6 +193,7 @@ public class ListRpcTest extends BaseTestSupplier {
       //get
       ListProtocol.GetRequest.Builder getRequestBuilder = ListRpcTestUtil.getRequestBuilder();
       getRequestBuilder.setKey("k1");
+      getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
       Assert.assertEquals(ImmutableList.of("v1", "v2"), getResponseBuilder.getValuesList());
@@ -226,6 +231,7 @@ public class ListRpcTest extends BaseTestSupplier {
       //get
       ListProtocol.GetRequest.Builder getRequestBuilder = ListRpcTestUtil.getRequestBuilder();
       getRequestBuilder.setKey("k1");
+      getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
       Assert.assertEquals(ImmutableList.of("v0", "v1"), getResponseBuilder.getValuesList());

@@ -1,12 +1,13 @@
-package org.dst.client.cmd;
+package org.dst.client.commandlinetool;
 
-import java.util.HashMap;
 import java.util.Scanner;
-import java.util.function.Function;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import org.dst.client.DefaultDstClient;
+import org.dst.client.DstClient;
+import org.dst.parser.DstParser;
+import org.dst.parser.po.DstParsedResult;
 
 public class DstCmdStarter {
 
@@ -24,10 +25,6 @@ public class DstCmdStarter {
           help = true, order = 2)
   private static boolean VERSION = false;
 
-  private static DefaultDstClient client;
-
-  private static HashMap<DstOperationType, Function<DstCommandWithType, ClientResult>>
-          commandHandlers = new HashMap<>();
 
   public static void main(String[] args) {
 
@@ -52,37 +49,29 @@ public class DstCmdStarter {
       return;
     }
 
+    DstClient dstClient = null;
     try {
-      client = new DefaultDstClient(String.format("list://%s", ADDRESS));
+      dstClient = new DefaultDstClient(String.format("list://%s", ADDRESS));
     } catch (Exception e) {
       System.out.println(String.format("Failed to connect to dst server, %s, "
               + "please check your input.", ADDRESS));
       return;
     }
 
-    //register different operation type handler
-    commandHandlers.put(DstOperationType.STRING, new StringHandler(client));
-    commandHandlers.put(DstOperationType.SET, new SetHandler(client));
-    commandHandlers.put(DstOperationType.LIST, new ListHandler(client));
-    commandHandlers.put(DstOperationType.DICT, new DictHandler(client));
-    commandHandlers.put(DstOperationType.TABLE, new TableHandler(client));
-    commandHandlers.put(DstOperationType.UNKNOWN, new UnkonwnHandler(client));
-    new DstCmdStarter().loop();
+    new DstCmdStarter().loop(dstClient);
   }
 
-  private void loop() {
-    Parser parser = new Parser();
+  private void loop(DstClient dstClient) {
+    DstParser dstParser = new DstParser();
+    DstCommandExecutor dstCommandExecutor = new DstCommandExecutor(dstClient);
     Scanner sc = new Scanner(System.in);
     while (true) {
       System.out.print("dst-cli> ");
-      String line = sc.nextLine();
-      DstCommandWithType commandWithType = parser.parse(line);
-      ClientResult clientResult = executeCommand(commandWithType);
-      System.out.println("dst-cli> " + clientResult);
+      final String command = sc.nextLine();
+      DstParsedResult parsedResult = dstParser.parse(command);
+      String result = dstCommandExecutor.execute(parsedResult);
+      System.out.println("dst-cli> " + result);
     }
   }
 
-  private ClientResult executeCommand(DstCommandWithType commandWithType) {
-    return commandHandlers.get(commandWithType.operationType).apply(commandWithType);
-  }
 }
