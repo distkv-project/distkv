@@ -45,7 +45,7 @@ public class DstCommandExecutor {
       ListProtocol.GetRequest request =
               (ListProtocol.GetRequest) parsedResult.getRequest();
       return dstClient.lists().get(request.getKey()).toString();
-    }
+    }// else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_LDEL)
     return null;
   }
 }
