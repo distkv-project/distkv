@@ -7,6 +7,9 @@ import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+import java.util.Vector;
+
 public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -51,24 +54,29 @@ public class ListProxyTest extends BaseTestSupplier {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testLDel() {
+  public void testDelete() {
     DstClient client = newDstClient();
-    client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
-    client.lists().ldel("k1",2);
-    Assert.assertEquals(ImmutableList.of("v3", "v4"),client.lists().get("k1"));
+    client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4", "v5"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"),client.lists().get("k1"));
+    client.lists().delete("k1", 4);
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"), client.lists().get("k1"));
+    client.lists().delete("k1", 1, 2);
     //exception test
-    client.lists().ldel("k2",1);
+    client.lists().delete("k2", 1);
     client.disconnect();
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testRDel() {
+  public void testMDelete() {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
-    client.lists().rdel("k1",2);
-    Assert.assertEquals(ImmutableList.of("v1", "v2"),client.lists().get("k1"));
+    List<Integer> list = new Vector<Integer>();
+    list.add(1);
+    list.add(3);
+    client.lists().mdelete("k1",list);
+    Assert.assertEquals(ImmutableList.of("v1", "v3"),client.lists().get("k1"));
     //exception test
-    client.lists().rdel("k2",1);
+    client.lists().mdelete("k2",list);
     client.disconnect();
   }
 

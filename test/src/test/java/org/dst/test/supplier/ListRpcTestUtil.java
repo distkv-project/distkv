@@ -28,12 +28,12 @@ public class ListRpcTestUtil {
     return ListProtocol.RPutRequest.newBuilder();
   }
 
-  public static ListProtocol.LDelRequest.Builder ldelRequestBuilder() {
-    return ListProtocol.LDelRequest.newBuilder();
+  public static ListProtocol.DeleteRequest.Builder ldelRequestBuilder() {
+    return ListProtocol.DeleteRequest.newBuilder();
   }
 
-  public static ListProtocol.RDelRequest.Builder rdelRequestBuilder() {
-    return ListProtocol.RDelRequest.newBuilder();
+  public static ListProtocol.MDeleteRequest.Builder rdelRequestBuilder() {
+    return ListProtocol.MDeleteRequest.newBuilder();
   }
 
   ////all types of response
@@ -67,15 +67,15 @@ public class ListRpcTestUtil {
     return setProxy.getService().rput(build);
   }
 
-  public static ListProtocol.LDelResponse ldelResponseBuilder(
-        ListProtocol.LDelRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
-    ListProtocol.LDelRequest build = builder.build();
-    return setProxy.getService().ldel(build);
+  public static ListProtocol.DeleteResponse ldelResponseBuilder(
+        ListProtocol.DeleteRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+    ListProtocol.DeleteRequest build = builder.build();
+    return setProxy.getService().delete(build);
   }
 
-  public static ListProtocol.RDelResponse rdelResponseBuilder(
-        ListProtocol.RDelRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
-    ListProtocol.RDelRequest build = builder.build();
-    return setProxy.getService().rdel(build);
+  public static ListProtocol.MDeleteResponse rdelResponseBuilder(
+        ListProtocol.MDeleteRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+    ListProtocol.MDeleteRequest build = builder.build();
+    return setProxy.getService().mdelete(build);
   }
 }

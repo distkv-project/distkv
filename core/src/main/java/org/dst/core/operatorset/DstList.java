@@ -57,10 +57,32 @@ public interface DstList {
   //insert value from the right of list
   Status rput(String key, List<String> value);
 
-  //delete n values from the left of list
-  Status ldel(String key, int n);
+  /**
+   * This method will delete a element of the list which based on the key
+   *
+   * @param key delete a element of a list which based on the key
+   * @param index The index that we want delete the element at.
+   * @return true or false, indicates that the deletion succeeded or failed.
+   */
+  Status delete(String key, int index);
 
-  //delete n values from the right of list
-  Status rdel(String key, int n);
+  /**
+   * This method will delete a range of elements of the list which based on the key
+   *
+   * @param key delete a range of elements of a list which based on the key
+   * @param from The left index of the range.
+   * @param end The right index of the range.
+   * @return true or false, indicates that the deletion succeeded or failed.
+   */
+  Status delete(String key, int from, int end);
+
+  /**
+   * This method will delete a series of elements of the list which based on the key
+   *
+   * @param key delete a series of elements of a list which based on the key
+   * @param index A list of index for those elements you wanna to delete
+   * @return true or false, indicates that the deletion succeeded or failed.
+   */
+  Status mdelete(String key, List<Integer> index);
 
 }

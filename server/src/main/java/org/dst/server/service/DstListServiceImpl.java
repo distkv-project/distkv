@@ -3,6 +3,7 @@ package org.dst.server.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import com.google.common.base.Preconditions;
 import org.dst.common.exception.DstListIndexOutOfBoundsException;
 import org.dst.core.KVStore;
@@ -137,16 +138,28 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.LDelResponse ldel(ListProtocol.LDelRequest request) {
-    ListProtocol.LDelResponse.Builder responseBuilder =
-            ListProtocol.LDelResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+  public ListProtocol.DeleteResponse delete(ListProtocol.DeleteRequest request) {
+    ListProtocol.DeleteResponse.Builder responseBuilder =
+            ListProtocol.DeleteResponse.newBuilder();
+    CommonProtocol.Status status = CommonProtocol.Status.OK;
+
+    final String key = request.getKey();
+    final ListProtocol.DeleteType type = request.getType();
     try {
-      Status localStatus = getStore().lists().ldel(request.getKey(), request.getIndex());
-      if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
+      if (type == ListProtocol.DeleteType.DeleteOne) {
+        Status localStatus = getStore().lists().delete(key, request.getIndex());
+        if (localStatus == Status.OK) {
+          status = CommonProtocol.Status.OK;
+        } else if (localStatus == Status.KEY_NOT_FOUND) {
+          status = CommonProtocol.Status.KEY_NOT_FOUND;
+        }
+      } else if (type == ListProtocol.DeleteType.DeleteRange) {
+        Status localStatus = getStore().lists().delete(key, request.getFrom(), request.getEnd());
+        if (localStatus == Status.OK) {
+          status = CommonProtocol.Status.OK;
+        } else if (localStatus == Status.KEY_NOT_FOUND) {
+          status = CommonProtocol.Status.KEY_NOT_FOUND;
+        }
       }
     } catch (DstException e) {
       LOGGER.error("Failed to ldel a list from store: {1}", e);
@@ -157,12 +170,12 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.RDelResponse rdel(ListProtocol.RDelRequest request) {
-    ListProtocol.RDelResponse.Builder responseBuilder =
-            ListProtocol.RDelResponse.newBuilder();
+  public ListProtocol.MDeleteResponse mdelete(ListProtocol.MDeleteRequest request) {
+    ListProtocol.MDeleteResponse.Builder responseBuilder =
+            ListProtocol.MDeleteResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().rdel(request.getKey(), request.getIndex());
+      Status localStatus = getStore().lists().mdelete(request.getKey(), request.getIndexList());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {

@@ -60,23 +60,34 @@ message RPutResponse {
     required Status status = 1;
 }
 
-
-message LDelRequest {
-    required string key = 1;
-    required int32 index = 2;
+//The type of a 'delete' request
+//
+// DeleteOne indicates we should delete a element of the specific index.
+// DeleteRange indicates we should delete the elements of a range index.
+enum DeleteType {
+    DeleteOne = 1;
+    DeleteRange = 2;
 }
 
-message LDelResponse {
+message DeleteRequest {
+    required DeleteType type = 1;
+    required string key = 2;
+    optional int32 index = 3;
+    optional int32 from = 4;
+    optional int32 end = 5;
+}
+
+message DeleteResponse {
     required Status status = 1;
 }
 
 
-message RDelRequest {
+message MDeleteRequest {
     required string key = 1;
-    required int32 index = 2;
+    repeated int32 index = 2;
 }
 
-message RDelResponse {
+message MDeleteResponse {
     required Status status = 1;
 }
 
@@ -85,7 +96,7 @@ service DstListService {
     rpc get(GetRequest) returns (GetResponse);
     rpc lput(LPutRequest) returns (LPutResponse);
     rpc rput(RPutRequest) returns (RPutResponse);
-    rpc ldel(LDelRequest) returns (LDelResponse);
-    rpc rdel(RDelRequest) returns (RDelResponse);
+    rpc delete(DeleteRequest) returns (DeleteResponse);
+    rpc mdelete(MDeleteRequest) returns (MDeleteResponse);
     rpc drop(DropRequest) returns (DropResponse);
 }

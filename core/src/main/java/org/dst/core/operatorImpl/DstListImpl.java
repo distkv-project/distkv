@@ -83,36 +83,49 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status ldel(String key, int n) {
-    if (!listMap.containsKey(key)) {
-      return Status.KEY_NOT_FOUND;
-    }
-    List<String> original = listMap.get(key);
-    if (original.size() < n) {
-      original.clear();
+  public Status delete(String key, int index)
+          throws KeyNotFoundException, DstListIndexOutOfBoundsException {
+    try {
+      List<String> list = listMap.get(key);
+      list.remove(index);
       return Status.OK;
+    } catch (NullPointerException e) {
+      throw new KeyNotFoundException(key);
+    } catch (IndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
     }
-    for (int i = 0; i < n; i++) {
-      original.remove(0);
-    }
-    return Status.OK;
   }
 
   @Override
-  public Status rdel(String key, int n) {
-    if (!listMap.containsKey(key)) {
-      return Status.KEY_NOT_FOUND;
-    }
-    List<String> original = listMap.get(key);
-    int size = original.size();
-    if (size <= n) {
-      original.clear();
+  public Status delete(String key, int from, int end)
+          throws KeyNotFoundException, DstListIndexOutOfBoundsException {
+    try {
+      List<String> list = listMap.get(key);
+      for (int i = from; i <= end; i++) {
+        list.remove(i);
+      }
       return Status.OK;
+    } catch (KeyNotFoundException e) {
+      throw new KeyNotFoundException(key);
+    } catch (DstListIndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
     }
-    for (int i = 0; i < n; i++) {
-      original.remove(size - 1);
-      size--;
+  }
+
+  @Override
+  public Status mdelete(String key, List<Integer> index)
+          throws KeyNotFoundException, DstListIndexOutOfBoundsException {
+    //TODO(LCM):Not Clear
+    try {
+      List<String> list = listMap.get(key);
+      for (int i : index) {
+        list.remove(i);
+      }
+      return Status.OK;
+    } catch (KeyNotFoundException e) {
+      throw new KeyNotFoundException(key);
+    } catch (DstListIndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
     }
-    return Status.OK;
   }
 }

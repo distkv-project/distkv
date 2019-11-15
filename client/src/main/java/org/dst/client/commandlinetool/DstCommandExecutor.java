@@ -6,6 +6,8 @@ import org.dst.parser.po.RequestTypeEnum;
 import org.dst.rpc.protobuf.generated.ListProtocol;
 import org.dst.rpc.protobuf.generated.StringProtocol;
 
+import java.util.List;
+
 public class DstCommandExecutor {
 
   private static final String STATUS_OK = "ok";
@@ -44,8 +46,35 @@ public class DstCommandExecutor {
     } else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_GET) {
       ListProtocol.GetRequest request =
               (ListProtocol.GetRequest) parsedResult.getRequest();
-      return dstClient.lists().get(request.getKey()).toString();
-    }// else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_LDEL)
+      List<String> list = null;
+      if (request.getType() == ListProtocol.GetType.GET_ALL) {
+        list = dstClient.lists().get(request.getKey());
+      } else if (request.getType() == ListProtocol.GetType.GET_ONE) {
+        list = dstClient.lists().get(request.getKey(), request.getIndex());
+      } else if (request.getType() == ListProtocol.GetType.GET_RANGE) {
+        list = dstClient.lists().get(request.getKey(), request.getFrom(), request.getEnd());
+      }
+      String result = "";
+      for (String i : list) {
+        result = result + "\t" + i;
+      }
+      return result;
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_DELETE) {
+      ListProtocol.DeleteRequest request =
+              (ListProtocol.DeleteRequest) parsedResult.getRequest();
+      if (request.getType() == ListProtocol.DeleteType.DeleteOne) {
+        dstClient.lists().delete(request.getKey(), request.getIndex());
+        return STATUS_OK;
+      } else if (request.getType() == ListProtocol.DeleteType.DeleteRange) {
+        dstClient.lists().delete(request.getKey(), request.getFrom(), request.getEnd());
+        return STATUS_OK;
+      }
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_MDELETE) {
+      ListProtocol.MDeleteRequest request =
+              (ListProtocol.MDeleteRequest) parsedResult.getRequest();
+      dstClient.lists().mdelete(request.getKey(), request.getIndexList());
+      return STATUS_OK;
+    }
     return null;
   }
 }

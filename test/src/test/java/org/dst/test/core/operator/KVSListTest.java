@@ -3,6 +3,8 @@ package org.dst.test.core.operator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
+
 import com.google.common.collect.ImmutableList;
 import org.dst.core.KVStoreImpl;
 import org.dst.core.KVStore;
@@ -60,22 +62,27 @@ public class KVSListTest {
     Assert.assertEquals(Arrays.asList("v1", "v2", "v3", "v4", "v5"), store.lists().get("k1"));
   }
 
-  @Test
-  public void testLDel() {
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void testDelete() {
     KVStore store = new KVStoreImpl();
     store.lists().put("k1", listForKVSTest());
-    store.lists().ldel("k1", 1);
+    store.lists().delete("k1", 0);
     Assert.assertEquals(Arrays.asList("v2", "v3"), store.lists().get("k1"));
-    Assert.assertEquals("key not exist", store.lists().ldel("-k", 1).toString());
+    //test exceptions
+    store.lists().delete("-k", 0).toString();
   }
 
-  @Test
-  public void testRDel() {
+  @Test//(expectedExceptions = KeyNotFoundException.class)
+  public void testMDelete() {
     KVStore store = new KVStoreImpl();
+    List<Integer> list = new Vector<>();
+    list.add(0);
+    list.add(2);
     store.lists().put("k1", listForKVSTest());
-    store.lists().rdel("k1", 1);
-    Assert.assertEquals(Arrays.asList("v1", "v2"), store.lists().get("k1"));
-    Assert.assertEquals("key not exist", store.lists().rdel("-k", 1).toString());
+    store.lists().mdelete("k1", list);
+    Assert.assertEquals(Arrays.asList("v2"), store.lists().get("k1"));
+    //test exceptions
+    store.lists().mdelete("-k", list).toString();
   }
 
 }
