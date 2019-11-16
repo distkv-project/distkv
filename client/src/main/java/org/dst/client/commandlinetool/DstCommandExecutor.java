@@ -54,10 +54,7 @@ public class DstCommandExecutor {
       } else if (request.getType() == ListProtocol.GetType.GET_RANGE) {
         list = dstClient.lists().get(request.getKey(), request.getFrom(), request.getEnd());
       }
-      String result = "";
-      for (String i : list) {
-        result = result + "\t" + i;
-      }
+      String result = list.toString();
       return result;
     } else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_DELETE) {
       ListProtocol.DeleteRequest request =
