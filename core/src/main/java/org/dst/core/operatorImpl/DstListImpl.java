@@ -6,7 +6,6 @@ import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstList;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.common.utils.Status;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -116,15 +115,15 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status mremove(String key, List<Integer> index)
+  public Status multipleRemove(String key, List<Integer> indexes)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     try {
       List<String> list = listMap.get(key);
       ArrayList<Integer> thisIndex = new ArrayList<>();
-      thisIndex.addAll(index);
+      thisIndex.addAll(indexes);
       Collections.sort(thisIndex);
-      for (int i = (index.size() - 1); i >= 0; i--) {
-        list.remove(index.get(i).intValue());
+      for (int i = (indexes.size() - 1); i >= 0; i--) {
+        list.remove(indexes.get(i).intValue());
       }
       return Status.OK;
     } catch (NullPointerException e) {

@@ -24,7 +24,7 @@ listRput: 'list.rput' key valueArray;
 listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
 listRGet: 'list.rget' listGetArguments;
 listDelete: 'list.remove' (listRemoveOne | listRemoveRange);
-listMDelete: 'list.mremove' key (index)+;
+listMDelete: 'list.mRemove' key (index)+;
 
 listGetArguments: listGetAll | listGetOne | listGetRange;
 // Get the all values of this list.

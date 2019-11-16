@@ -23,7 +23,7 @@ public class ListProxyTest extends BaseTestSupplier {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testDel() {
+  public void testDrop() {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().drop("k1");
@@ -54,7 +54,7 @@ public class ListProxyTest extends BaseTestSupplier {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testDelete() {
+  public void testRemove() {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4", "v5"));
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"),client.lists().get("k1"));
@@ -68,17 +68,16 @@ public class ListProxyTest extends BaseTestSupplier {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testMDelete() {
-    //TODO(LCM):exist problemXX
+  public void testMRemove() {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
     List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(3);
-    client.lists().mremove("k1",list);
+    client.lists().multipleRemove("k1",list);
     Assert.assertEquals(ImmutableList.of("v1", "v3"),client.lists().get("k1"));
     //exception test
-    client.lists().mremove("k2",list);
+    client.lists().multipleRemove("k2",list);
     client.disconnect();
   }
 

@@ -60,10 +60,10 @@ message RPutResponse {
     required Status status = 1;
 }
 
-//The type of a 'delete' request
+//The type of a 'remove' request
 //
-// DeleteOne indicates we should delete a element of the specific index.
-// DeleteRange indicates we should delete the elements of a range index.
+// RemoveOne indicates we should remove a element of the specific index.
+// RemoveRange indicates we should remove the elements of a range index.
 enum RemoveType {
     RemoveOne = 1;
     RemoveRange = 2;
@@ -84,7 +84,7 @@ message RemoveResponse {
 
 message MRemoveRequest {
     required string key = 1;
-    repeated int32 index = 2;
+    repeated int32 indexes = 2;
 }
 
 message MRemoveResponse {

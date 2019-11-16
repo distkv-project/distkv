@@ -32,7 +32,7 @@ public class KVSListTest {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testDel() {
+  public void testDrop() {
     KVStore store = new KVStoreImpl();
     store.lists().put("k1", listForKVSTest());
     Assert.assertEquals("ok", store.lists().drop("k1").toString());
@@ -62,7 +62,7 @@ public class KVSListTest {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testDelete() {
+  public void testRemove() {
     KVStore store = new KVStoreImpl();
     store.lists().put("k1", listForKVSTest());
     store.lists().remove("k1", 0);
@@ -72,18 +72,18 @@ public class KVSListTest {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testMDelete() {
+  public void testMRemove() {
     KVStore store = new KVStoreImpl();
     List<Integer> list = new ArrayList<>();
     list.add(0);
     list.add(2);
     store.lists().put("k1", listForKVSTest());
-    store.lists().mremove("k1", list);
+    store.lists().multipleRemove("k1", list);
     Assert.assertEquals(ImmutableList.of("v2"), store.lists().get("k1"));
     //test exceptions
     list.clear();
     list.add(0);
-    store.lists().mremove("-k", list).toString();
+    store.lists().multipleRemove("-k", list).toString();
   }
 
 }

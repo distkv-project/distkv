@@ -138,12 +138,12 @@ public class DstListProxy {
     }
   }
 
-  public void mremove(String key, List<Integer> index) {
+  public void multipleRemove(String key, List<Integer> indexes) {
     ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
           .setKey(key)
-          .addAllIndex(index)
+          .addAllIndexes(indexes)
           .build();
-    ListProtocol.MRemoveResponse response = service.mremove(request);
+    ListProtocol.MRemoveResponse response = service.multipleRemove(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {

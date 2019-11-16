@@ -3,7 +3,6 @@ package org.dst.server.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import com.google.common.base.Preconditions;
 import org.dst.common.exception.DstListIndexOutOfBoundsException;
 import org.dst.core.KVStore;
@@ -146,26 +145,27 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
     final String key = request.getKey();
     final ListProtocol.RemoveType type = request.getType();
     try {
+      Status localStatus = null;
       if (type == ListProtocol.RemoveType.RemoveOne) {
-        Status localStatus = getStore().lists().remove(key, request.getIndex());
+        localStatus = getStore().lists().remove(key, request.getIndex());
         if (localStatus == Status.OK) {
           status = CommonProtocol.Status.OK;
         } else if (localStatus == Status.KEY_NOT_FOUND) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
         }
       } else if (type == ListProtocol.RemoveType.RemoveRange) {
-        Status localStatus = getStore().lists().remove(key, request.getFrom(), request.getEnd());
-        if (localStatus == Status.OK) {
-          status = CommonProtocol.Status.OK;
-        } else if (localStatus == Status.KEY_NOT_FOUND) {
-          status = CommonProtocol.Status.KEY_NOT_FOUND;
-        }
+        localStatus = getStore().lists().remove(key, request.getFrom(), request.getEnd());
+      }
+      if (localStatus == Status.OK) {
+        status = CommonProtocol.Status.OK;
+      } else if (localStatus == Status.KEY_NOT_FOUND) {
+        status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (KeyNotFoundException e) {
-      LOGGER.info("Failed to remove from store: {1}", e);
+      LOGGER.info("Failed to remove item from store: {1}", e);
       status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (DstListIndexOutOfBoundsException e) {
-      LOGGER.info("Failed to remove from store: {1}", e);
+      LOGGER.info("Failed to remove item from store: {1}", e);
       status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);
@@ -173,22 +173,23 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.MRemoveResponse mremove(ListProtocol.MRemoveRequest request) {
+  public ListProtocol.MRemoveResponse multipleRemove(ListProtocol.MRemoveRequest request) {
     ListProtocol.MRemoveResponse.Builder responseBuilder =
             ListProtocol.MRemoveResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().mremove(request.getKey(), request.getIndexList());
+      Status localStatus =
+              getStore().lists().multipleRemove(request.getKey(), request.getIndexesList());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (KeyNotFoundException e) {
-      LOGGER.info("Failed to mremove from store: {1}", e);
+      LOGGER.info("Failed to mRemove item from store: {1}", e);
       status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (DstListIndexOutOfBoundsException e) {
-      LOGGER.info("Failed to mremove from store: {1}", e);
+      LOGGER.info("Failed to mRemove item from store: {1}", e);
       status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);

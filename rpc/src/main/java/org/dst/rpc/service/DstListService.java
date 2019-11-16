@@ -24,7 +24,7 @@ public interface DstListService {
   @BrpcMeta(serviceName = "DstListService", methodName = "remove")
   ListProtocol.RemoveResponse remove(ListProtocol.RemoveRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "mremove")
-  ListProtocol.MRemoveResponse mremove(ListProtocol.MRemoveRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "mRemove")
+  ListProtocol.MRemoveResponse multipleRemove(ListProtocol.MRemoveRequest request);
 
 }

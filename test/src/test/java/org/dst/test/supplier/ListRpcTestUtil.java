@@ -32,7 +32,7 @@ public class ListRpcTestUtil {
     return ListProtocol.RemoveRequest.newBuilder();
   }
 
-  public static ListProtocol.MRemoveRequest.Builder mremoveRequestBuilder() {
+  public static ListProtocol.MRemoveRequest.Builder multipleRemoveRequestBuilder() {
     return ListProtocol.MRemoveRequest.newBuilder();
   }
 
@@ -49,7 +49,7 @@ public class ListRpcTestUtil {
     return setProxy.getService().get(build);
   }
 
-  public static CommonProtocol.DropResponse delResponseBuilder(
+  public static CommonProtocol.DropResponse dropResponseBuilder(
           CommonProtocol.DropRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
     CommonProtocol.DropRequest build = builder.build();
     return setProxy.getService().drop(build);
@@ -73,9 +73,9 @@ public class ListRpcTestUtil {
     return setProxy.getService().remove(build);
   }
 
-  public static ListProtocol.MRemoveResponse mremoveResponseBuilder(
+  public static ListProtocol.MRemoveResponse multipleRemoveResponseBuilder(
         ListProtocol.MRemoveRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
     ListProtocol.MRemoveRequest build = builder.build();
-    return setProxy.getService().mremove(build);
+    return setProxy.getService().multipleRemove(build);
   }
 }

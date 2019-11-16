@@ -58,34 +58,34 @@ public interface DstList {
   Status rput(String key, List<String> value);
 
   /**
-   * This method will delete a element of the list which based on the key
+   * This method will remove an item from the list.
    *
-   * @param key delete a element of a list which based on the key
-   * @param index The index that we want delete the element at.
-   * @return true or false, indicates that the deletion succeeded or failed.
+   * @param key The name of the list in store.
+   * @param index The index that we want remove the item at.
+   * @return Whether we succeed to remove the item.
    */
   Status remove(String key, int index)
           throws KeyNotFoundException, IndexOutOfBoundsException;
 
   /**
-   * This method will delete a range of elements of the list which based on the key
+   * This method will remove a range of items from the list.
    *
-   * @param key delete a range of elements of a list which based on the key
+   * @param key The name of the list in store.
    * @param from The left index of the range.
    * @param end The right index of the range.
-   * @return true or false, indicates that the deletion succeeded or failed.
+   * @return Whether we succeed to remove the range of the items.
    */
   Status remove(String key, int from, int end)
           throws KeyNotFoundException, IndexOutOfBoundsException;
 
   /**
-   * This method will delete a series of elements of the list which based on the key
+   * This method will remove multiple items from the list.
    *
-   * @param key delete a series of elements of a list which based on the key
-   * @param index A list of index for those elements you wanna to delete
-   * @return true or false, indicates that the deletion succeeded or failed.
+   * @param key The name of the list in store.
+   * @param indexes A list of indexes for those items you wanna to remove.
+   * @return Whether we succeed to remove the items.
    */
-  Status mremove(String key, List<Integer> index)
+  Status multipleRemove(String key, List<Integer> indexes)
           throws KeyNotFoundException, IndexOutOfBoundsException;
 
 }

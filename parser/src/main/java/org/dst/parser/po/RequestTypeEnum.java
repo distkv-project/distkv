@@ -8,8 +8,8 @@ public enum RequestTypeEnum {
   LIST_GET,
   LIST_LPUT,
   LIST_RPUT,
-  LIST_DELETE,
-  LIST_MDELETE,
+  LIST_REMOVE,
+  LIST_M_REMOVE,
 
   SET_PUT,
   SET_GET,
