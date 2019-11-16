@@ -23,8 +23,8 @@ listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
 listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
 listRGet: 'list.rget' listGetArguments;
-listDelete: 'list.del' (listDeleteOne | listDeleteRange);
-listMDelete: 'list.mdel' key (index)+;
+listDelete: 'list.remove' (listRemoveOne | listRemoveRange);
+listMDelete: 'list.mremove' key (index)+;
 
 listGetArguments: listGetAll | listGetOne | listGetRange;
 // Get the all values of this list.
@@ -34,8 +34,8 @@ listGetOne: key index;
 // Get the specific values by the given range.
 listGetRange: key index index;
 
-listDeleteOne: key index;
-listDeleteRange: key index index;
+listRemoveOne: key index;
+listRemoveRange: key index index;
 
 
 // set concept

@@ -57,19 +57,19 @@ public class DstCommandExecutor {
       String result = list.toString();
       return result;
     } else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_DELETE) {
-      ListProtocol.DeleteRequest request =
-              (ListProtocol.DeleteRequest) parsedResult.getRequest();
-      if (request.getType() == ListProtocol.DeleteType.DeleteOne) {
-        dstClient.lists().delete(request.getKey(), request.getIndex());
+      ListProtocol.RemoveRequest request =
+              (ListProtocol.RemoveRequest) parsedResult.getRequest();
+      if (request.getType() == ListProtocol.RemoveType.RemoveOne) {
+        dstClient.lists().remove(request.getKey(), request.getIndex());
         return STATUS_OK;
-      } else if (request.getType() == ListProtocol.DeleteType.DeleteRange) {
-        dstClient.lists().delete(request.getKey(), request.getFrom(), request.getEnd());
+      } else if (request.getType() == ListProtocol.RemoveType.RemoveRange) {
+        dstClient.lists().remove(request.getKey(), request.getFrom(), request.getEnd());
         return STATUS_OK;
       }
     } else if (parsedResult.getRequestType() == RequestTypeEnum.LIST_MDELETE) {
-      ListProtocol.MDeleteRequest request =
-              (ListProtocol.MDeleteRequest) parsedResult.getRequest();
-      dstClient.lists().mdelete(request.getKey(), request.getIndexList());
+      ListProtocol.MRemoveRequest request =
+              (ListProtocol.MRemoveRequest) parsedResult.getRequest();
+      dstClient.lists().mremove(request.getKey(), request.getIndexList());
       return STATUS_OK;
     }
     return null;

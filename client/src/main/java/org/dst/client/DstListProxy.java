@@ -109,13 +109,13 @@ public class DstListProxy {
     }
   }
 
-  public void delete(String key, Integer index) {
-    ListProtocol.DeleteRequest request = ListProtocol.DeleteRequest.newBuilder()
-            .setType(ListProtocol.DeleteType.DeleteOne)
+  public void remove(String key, Integer index) {
+    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
+            .setType(ListProtocol.RemoveType.RemoveOne)
             .setKey(key)
             .setIndex(index)
             .build();
-    ListProtocol.DeleteResponse response = service.delete(request);
+    ListProtocol.RemoveResponse response = service.remove(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -123,14 +123,14 @@ public class DstListProxy {
     }
   }
 
-  public void delete(String key, Integer from, Integer end) {
-    ListProtocol.DeleteRequest request = ListProtocol.DeleteRequest.newBuilder()
-            .setType(ListProtocol.DeleteType.DeleteRange)
+  public void remove(String key, Integer from, Integer end) {
+    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
+            .setType(ListProtocol.RemoveType.RemoveRange)
             .setKey(key)
             .setFrom(from)
             .setEnd(end)
             .build();
-    ListProtocol.DeleteResponse response = service.delete(request);
+    ListProtocol.RemoveResponse response = service.remove(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -138,12 +138,12 @@ public class DstListProxy {
     }
   }
 
-  public void mdelete(String key, List<Integer> index) {
-    ListProtocol.MDeleteRequest request = ListProtocol.MDeleteRequest.newBuilder()
+  public void mremove(String key, List<Integer> index) {
+    ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
           .setKey(key)
           .addAllIndex(index)
           .build();
-    ListProtocol.MDeleteResponse response = service.mdelete(request);
+    ListProtocol.MRemoveResponse response = service.mremove(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {

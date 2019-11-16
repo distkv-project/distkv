@@ -86,7 +86,7 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status delete(String key, int index)
+  public Status remove(String key, int index)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     try {
       List<String> list = listMap.get(key);
@@ -100,7 +100,7 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status delete(String key, int from, int end)
+  public Status remove(String key, int from, int end)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     try {
       List<String> list = listMap.get(key);
@@ -116,7 +116,7 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status mdelete(String key, List<Integer> index)
+  public Status mremove(String key, List<Integer> index)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     try {
       List<String> list = listMap.get(key);

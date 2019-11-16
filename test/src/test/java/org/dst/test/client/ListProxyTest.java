@@ -58,12 +58,12 @@ public class ListProxyTest extends BaseTestSupplier {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4", "v5"));
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"),client.lists().get("k1"));
-    client.lists().delete("k1", 4);
+    client.lists().remove("k1", 4);
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"), client.lists().get("k1"));
-    client.lists().delete("k1", 1, 2);
+    client.lists().remove("k1", 1, 2);
     Assert.assertEquals(ImmutableList.of("v1", "v4"), client.lists().get("k1"));
     //exception test
-    client.lists().delete("k2", 1);
+    client.lists().remove("k2", 1);
     client.disconnect();
   }
 
@@ -75,10 +75,10 @@ public class ListProxyTest extends BaseTestSupplier {
     List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(3);
-    client.lists().mdelete("k1",list);
+    client.lists().mremove("k1",list);
     Assert.assertEquals(ImmutableList.of("v1", "v3"),client.lists().get("k1"));
     //exception test
-    client.lists().mdelete("k2",list);
+    client.lists().mremove("k2",list);
     client.disconnect();
   }
 
