@@ -24,6 +24,6 @@ public interface DstDictService {
   @BrpcMeta(serviceName = "DstDictService", methodName = "drop")
   CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
 
-  @BrpcMeta(serviceName = "DstDictService", methodName = "delItem")
-  DictProtocol.DelItemResponse delItem(DictProtocol.DelItemRequest request);
+  @BrpcMeta(serviceName = "DstDictService", methodName = "removeItem")
+  DictProtocol.RemoveItemResponse removeItem(DictProtocol.RemoveItemRequest request);
 }

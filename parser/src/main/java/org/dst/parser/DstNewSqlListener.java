@@ -161,7 +161,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterSetDropByKey(DstNewSQLParser.SetDropByKeyContext ctx) {
+  public void enterSetDrop(DstNewSQLParser.SetDropContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
     CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
@@ -233,7 +233,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   public void enterDictRemoveItem(DstNewSQLParser.DictRemoveItemContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
-    DictProtocol.DelItemRequest.Builder builder = DictProtocol.DelItemRequest.newBuilder();
+    DictProtocol.RemoveItemRequest.Builder builder = DictProtocol.RemoveItemRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     builder.setItemKey(ctx.children.get(2).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.DICT_REMOVE_ITEM, builder.build());
