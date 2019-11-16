@@ -122,8 +122,8 @@ public class DstListImpl implements DstList {
       ArrayList<Integer> thisIndex = new ArrayList<>();
       thisIndex.addAll(indexes);
       Collections.sort(thisIndex);
-      for (int i = (indexes.size() - 1); i >= 0; i--) {
-        list.remove(indexes.get(i).intValue());
+      for (int i = (thisIndex.size() - 1); i >= 0; i--) {
+        list.remove(thisIndex.get(i).intValue());
       }
       return Status.OK;
     } catch (NullPointerException e) {

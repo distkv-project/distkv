@@ -75,8 +75,8 @@ public class KVSListTest {
   public void testMRemove() {
     KVStore store = new KVStoreImpl();
     List<Integer> list = new ArrayList<>();
-    list.add(0);
     list.add(2);
+    list.add(0);
     store.lists().put("k1", listForKVSTest());
     store.lists().multipleRemove("k1", list);
     Assert.assertEquals(ImmutableList.of("v2"), store.lists().get("k1"));
