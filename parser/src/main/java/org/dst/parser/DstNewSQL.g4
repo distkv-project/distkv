@@ -39,10 +39,13 @@ listDeleteRange: key index index;
 
 
 // set concept
-setStatement: setPut | setGet | setDropByKey;
+setStatement: setPut | setGet | setRemoveItem | setExists | setDrop;
 setPut: 'set.put' key valueArray;
 setGet:'set.get' key;
-setDropByKey: 'set.dropByKey' key;
+setRemoveItem: ('set.remove'|'set.removeItem') key itemValue;
+setExists: 'set.exists' key itemValue;
+setDrop: 'set.dropByKey' key;
+
 
 // dict concept
 dictStatement: dictPut | dictGet | dictPutItem | dictGetItem | dictPopItem | dictRemoveItem | dictDrop;
