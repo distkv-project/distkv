@@ -7,8 +7,8 @@ import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class ListProxyTest extends BaseTestSupplier {
 
@@ -61,6 +61,7 @@ public class ListProxyTest extends BaseTestSupplier {
     client.lists().delete("k1", 4);
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"), client.lists().get("k1"));
     client.lists().delete("k1", 1, 2);
+    Assert.assertEquals(ImmutableList.of("v1", "v4"), client.lists().get("k1"));
     //exception test
     client.lists().delete("k2", 1);
     client.disconnect();
@@ -68,9 +69,10 @@ public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testMDelete() {
+    //TODO(LCM):exist problemXX
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
-    List<Integer> list = new Vector<Integer>();
+    List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(3);
     client.lists().mdelete("k1",list);

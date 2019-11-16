@@ -3,7 +3,6 @@ package org.dst.test.core.operator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 import com.google.common.collect.ImmutableList;
 import org.dst.core.KVStoreImpl;
@@ -72,16 +71,18 @@ public class KVSListTest {
     store.lists().delete("-k", 0).toString();
   }
 
-  @Test//(expectedExceptions = KeyNotFoundException.class)
+  @Test(expectedExceptions = KeyNotFoundException.class)
   public void testMDelete() {
     KVStore store = new KVStoreImpl();
-    List<Integer> list = new Vector<>();
+    List<Integer> list = new ArrayList<>();
     list.add(0);
     list.add(2);
     store.lists().put("k1", listForKVSTest());
     store.lists().mdelete("k1", list);
-    Assert.assertEquals(Arrays.asList("v2"), store.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v2"), store.lists().get("k1"));
     //test exceptions
+    list.clear();
+    list.add(0);
     store.lists().mdelete("-k", list).toString();
   }
 

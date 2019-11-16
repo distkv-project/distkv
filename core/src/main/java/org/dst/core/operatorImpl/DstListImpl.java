@@ -6,6 +6,8 @@ import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstList;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.common.utils.Status;
+
+import java.util.Collections;
 import java.util.List;
 
 public class DstListImpl implements DstList {
@@ -101,13 +103,13 @@ public class DstListImpl implements DstList {
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     try {
       List<String> list = listMap.get(key);
-      for (int i = from; i <= end; i++) {
+      for (int i = end; i >= from; i--) {
         list.remove(i);
       }
       return Status.OK;
-    } catch (KeyNotFoundException e) {
+    } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
-    } catch (DstListIndexOutOfBoundsException e) {
+    } catch (IndexOutOfBoundsException e) {
       throw new DstListIndexOutOfBoundsException(key, e);
     }
   }
@@ -115,16 +117,16 @@ public class DstListImpl implements DstList {
   @Override
   public Status mdelete(String key, List<Integer> index)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
-    //TODO(LCM):Not Clear
     try {
       List<String> list = listMap.get(key);
-      for (int i : index) {
-        list.remove(i);
+      Collections.sort(index);
+      for (int i = (index.size() - 1); i >= 0; i--) {
+        list.remove(index.get(i).intValue());
       }
       return Status.OK;
-    } catch (KeyNotFoundException e) {
+    } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
-    } catch (DstListIndexOutOfBoundsException e) {
+    } catch (IndexOutOfBoundsException e) {
       throw new DstListIndexOutOfBoundsException(key, e);
     }
   }

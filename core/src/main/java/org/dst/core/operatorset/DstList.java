@@ -64,7 +64,8 @@ public interface DstList {
    * @param index The index that we want delete the element at.
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  Status delete(String key, int index);
+  Status delete(String key, int index)
+          throws KeyNotFoundException, IndexOutOfBoundsException;
 
   /**
    * This method will delete a range of elements of the list which based on the key
@@ -74,7 +75,8 @@ public interface DstList {
    * @param end The right index of the range.
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  Status delete(String key, int from, int end);
+  Status delete(String key, int from, int end)
+          throws KeyNotFoundException, IndexOutOfBoundsException;
 
   /**
    * This method will delete a series of elements of the list which based on the key
@@ -83,6 +85,7 @@ public interface DstList {
    * @param index A list of index for those elements you wanna to delete
    * @return true or false, indicates that the deletion succeeded or failed.
    */
-  Status mdelete(String key, List<Integer> index);
+  Status mdelete(String key, List<Integer> index)
+          throws KeyNotFoundException, IndexOutOfBoundsException;
 
 }

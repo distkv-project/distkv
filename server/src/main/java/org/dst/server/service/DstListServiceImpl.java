@@ -161,9 +161,12 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
           status = CommonProtocol.Status.KEY_NOT_FOUND;
         }
       }
-    } catch (DstException e) {
-      LOGGER.error("Failed to ldel a list from store: {1}", e);
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    } catch (KeyNotFoundException e) {
+      LOGGER.info("Failed to delete from store: {1}", e);
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstListIndexOutOfBoundsException e) {
+      LOGGER.info("Failed to delete from store: {1}", e);
+      status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
@@ -181,9 +184,12 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
-    } catch (DstException e) {
-      LOGGER.error("Failed to rdel a list from store: {1}", e);
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    } catch (KeyNotFoundException e) {
+      LOGGER.info("Failed to mdelete from store: {1}", e);
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstListIndexOutOfBoundsException e) {
+      LOGGER.info("Failed to mdelete from store: {1}", e);
+      status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
