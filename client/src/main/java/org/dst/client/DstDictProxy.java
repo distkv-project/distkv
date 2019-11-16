@@ -132,12 +132,12 @@ public class DstDictProxy {
     }
   }
 
-  // Delete the item in the dict corresponding to the key
-  public void delItem(String key, String itemKey) {
-    DictProtocol.DelItemRequest.Builder request = DictProtocol.DelItemRequest.newBuilder();
+  // Remove the item in the dict corresponding to the key
+  public void removeItem(String key, String itemKey) {
+    DictProtocol.RemoveItemRequest.Builder request = DictProtocol.RemoveItemRequest.newBuilder();
     request.setKey(key);
     request.setItemKey(itemKey);
-    DictProtocol.DelItemResponse response = service.delItem(request.build());
+    DictProtocol.RemoveItemResponse response = service.removeItem(request.build());
     switch (response.getStatus()) {
       case OK:
         break;

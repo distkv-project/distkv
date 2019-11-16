@@ -73,12 +73,12 @@ public class DictRpcTest extends BaseTestSupplier {
       Assert.assertEquals(CommonProtocol.Status.OK, popItemResponse.getStatus());
       Assert.assertEquals(popItemResponse.getItemValue(), "v3");
       // Test delItem
-      DictProtocol.DelItemRequest.Builder delItemBuilder =
-              DictProtocol.DelItemRequest.newBuilder();
+      DictProtocol.RemoveItemRequest.Builder delItemBuilder =
+              DictProtocol.RemoveItemRequest.newBuilder();
       delItemBuilder.setKey("m1");
       delItemBuilder.setItemKey("k2");
-      DictProtocol.DelItemResponse delItemResponse =
-              dictService.delItem(delItemBuilder.build());
+      DictProtocol.RemoveItemResponse delItemResponse =
+              dictService.removeItem(delItemBuilder.build());
       Assert.assertEquals(CommonProtocol.Status.OK, delItemResponse.getStatus());
       // Test dict get.
       DictProtocol.GetRequest.Builder dictGetRequestBuilder =
