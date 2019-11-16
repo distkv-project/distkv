@@ -15,10 +15,10 @@ public class SetRpcTest extends BaseTestSupplier {
   @Test
   public void testSet() {
     // The following methods should be called as ordered
-    // because some methods depends on other methods.
+    // because some methods depend on other methods.
     testPut(rpcServerPort);
     testGet(rpcServerPort);
-    testDelete(rpcServerPort);
+    testRemoveItem(rpcServerPort);
     testDropByKey(rpcServerPort);
     testExists(rpcServerPort);
   }
@@ -57,17 +57,17 @@ public class SetRpcTest extends BaseTestSupplier {
 
   }
 
-  private static void testDelete(int rpcServerPort) {
+  private static void testRemoveItem(int rpcServerPort) {
     try (ProxyOnClient<DstSetService> setProxy = new ProxyOnClient<>(
         DstSetService.class, rpcServerPort)) {
       DstSetService setService = setProxy.getService();
-      SetProtocol.RemoveRequest.Builder setRemoveRequestBuilder =
-              SetProtocol.RemoveRequest.newBuilder();
+      SetProtocol.RemoveItemRequest.Builder setRemoveRequestBuilder =
+              SetProtocol.RemoveItemRequest.newBuilder();
       setRemoveRequestBuilder.setKey("k1");
-      setRemoveRequestBuilder.setEntity("v1");
+      setRemoveRequestBuilder.setItemValue("v1");
 
-      SetProtocol.RemoveResponse setDeleteResponse =
-              setService.remove(setRemoveRequestBuilder.build());
+      SetProtocol.RemoveItemResponse setDeleteResponse =
+              setService.removeItem(setRemoveRequestBuilder.build());
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }
