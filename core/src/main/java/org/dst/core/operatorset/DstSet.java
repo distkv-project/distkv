@@ -24,6 +24,14 @@ public interface DstSet {
   Set<String> get(String key);
 
   /**
+   * Put item to the set.
+   *
+   * @param key The key that represents the name of the set.
+   * @param itemValue The value of the item which will be putted into the set.
+   */
+  void putItem(String key, String itemValue);
+
+  /**
    * This method will delete the whole set based on the key
    *
    * @param key delete the whole set based on the key

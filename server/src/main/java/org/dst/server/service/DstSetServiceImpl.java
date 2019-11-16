@@ -51,6 +51,20 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
   }
 
   @Override
+  public SetProtocol.PutItemResponse putItem(SetProtocol.PutItemRequest request) {
+    SetProtocol.PutItemResponse.Builder builder = SetProtocol.PutItemResponse.newBuilder();
+    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    try {
+      getStore().sets().putItem(request.getKey(), request.getItemValue());
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    }
+    builder.setStatus(status);
+    return builder.build();
+  }
+
+  @Override
   public SetProtocol.RemoveItemResponse removeItem(SetProtocol.RemoveItemRequest request) {
     SetProtocol.RemoveItemResponse.Builder setDeleteResponseBuilder =
             SetProtocol.RemoveItemResponse.newBuilder();

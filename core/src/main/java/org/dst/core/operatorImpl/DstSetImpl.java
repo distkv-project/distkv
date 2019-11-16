@@ -1,5 +1,6 @@
 package org.dst.core.operatorImpl;
 
+import com.google.common.collect.ImmutableSet;
 import org.dst.core.DstMapInterface;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstSet;
@@ -27,6 +28,15 @@ public class DstSetImpl implements DstSet {
     }
 
     return setMap.get(key);
+  }
+
+  @Override
+  public void putItem(String key, String itemValue) {
+    if (!setMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
+
+    setMap.put(key, ImmutableSet.of(itemValue));
   }
 
   @Override
