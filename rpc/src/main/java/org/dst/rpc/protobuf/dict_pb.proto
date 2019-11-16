@@ -61,21 +61,21 @@ message PutItemResponse {
     required Status status = 1;
 }
 
-message DelItemRequest {
+message RemoveItemRequest {
     required string key = 1;
     required string itemKey = 2;
 }
 
-message DelItemResponse {
+message RemoveItemResponse {
     required Status status = 1;
 }
 
 service DstDictService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
+    rpc putItem(PutItemRequest) returns (PutItemResponse);
     rpc getItem(GetItemRequest) returns (GetItemResponse);
     rpc popItem(PopItemRequest) returns (PopItemResponse);
-    rpc putItem(PutItemRequest) returns (PutItemResponse);
-    rpc delItem(DelItemRequest) returns (DelItemResponse);
+    rpc RemoveItem(RemoveItemRequest) returns (RemoveItemResponse);
     rpc drop(DropRequest) returns (DropResponse);
 }

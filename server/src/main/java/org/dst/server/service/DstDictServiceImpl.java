@@ -111,9 +111,9 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public DictProtocol.DelItemResponse delItem(DictProtocol.DelItemRequest request) {
-    DictProtocol.DelItemResponse.Builder responseBuilder =
-          DictProtocol.DelItemResponse.newBuilder();
+  public DictProtocol.RemoveItemResponse removeItem(DictProtocol.RemoveItemRequest request) {
+    DictProtocol.RemoveItemResponse.Builder responseBuilder =
+          DictProtocol.RemoveItemResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
     final Map<String, String> dict = getStore().dicts().get(request.getKey());
     if (dict == null) {
