@@ -8,7 +8,6 @@ option java_package="org.dst.rpc.protobuf.generated";
 option java_outer_classname="SetProtocol";
 option cc_generic_services = true;
 
-//set
 message PutRequest {
     required string key = 1;
     repeated string values = 2;
@@ -27,13 +26,22 @@ message GetResponse {
     repeated string values = 2;
 }
 
-//The entity that will be deleted from the set.
-message RemoveRequest {
+message PutItemRequest {
     required string key = 1;
-    required string entity = 2;
+    required string itemValue = 2;
 }
 
-message RemoveResponse {
+message PutItemResponse {
+    required Status status = 1;
+}
+
+message RemoveItemRequest {
+    required string key = 1;
+    // The entity that will be deleted from the set.
+    required string itemValue = 2;
+}
+
+message RemoveItemResponse {
     required Status status = 1;
 }
 
@@ -46,14 +54,15 @@ message ExistsRequest {
 
 message ExistsResponse {
     required Status status = 1;
-    //if exist throws a exception, the result wouldn't be set
+    // If status is not OK, the result is undefined.
     optional bool result = 2;
 }
 
 service DstSetService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
-    rpc remove(RemoveRequest) returns (RemoveResponse);
+    rpc putItem(PutItemRequest) returns (PutItemResponse);
+    rpc removeItem(RemoveItemRequest) returns (RemoveItemResponse);
     rpc exists(ExistsRequest) returns (ExistsResponse);
     rpc drop(DropRequest) returns (DropResponse);
 }

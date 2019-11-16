@@ -21,12 +21,12 @@ public class SetProxyTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testDelete() {
+  public void testRemoveItem() {
     Set<String> set1 = ImmutableSet.of("v1", "v2", "v3");
 
     DstClient client = newDstClient();
     client.sets().put("k1", set1);
-    client.sets().remove("k1", "v3");
+    client.sets().removeItem("k1", "v3");
 
     Set<String> set2 = ImmutableSet.of("v1", "v2");
     Assert.assertEquals(set2, client.sets().get("k1"));
@@ -54,7 +54,7 @@ public class SetProxyTest extends BaseTestSupplier {
     client.sets().put("k1", set);
     Assert.assertTrue(client.sets().exists("k1", "v1"));
 
-    client.sets().remove("k1", "v1");
+    client.sets().removeItem("k1", "v1");
     Assert.assertFalse(client.sets().exists("k1", "v1"));
 
     client.sets().drop("k1");

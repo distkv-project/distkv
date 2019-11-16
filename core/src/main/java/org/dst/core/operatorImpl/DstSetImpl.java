@@ -40,12 +40,12 @@ public class DstSetImpl implements DstSet {
   }
 
   @Override
-  public Status remove(String key, String value) {
+  public Status removeItem(String key, String itemValue) {
     if (!setMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
     }
 
-    setMap.get(key).remove(value);
+    setMap.get(key).remove(itemValue);
     return Status.OK;
   }
 

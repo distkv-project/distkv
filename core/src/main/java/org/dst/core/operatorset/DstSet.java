@@ -32,13 +32,13 @@ public interface DstSet {
   Status drop(String key);
 
   /**
-   * This method will delete a value according to the key
+   * This method will delete a value according to the key.
    *
-   * @param key the key existing in set
-   * @param value the value will be deleted
-   * @return Status indicates that the deletion succeeded or failed.
+   * @param key The key existing in set.
+   * @param itemValue The item value will be deleted.
+   * @return Status Indicates that the deletion succeeded or failed.
    * */
-  Status remove(String key, String value);
+  Status removeItem(String key, String itemValue);
 
   /**
    * This method will judge that if the value exists in map or not.
