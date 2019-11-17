@@ -24,6 +24,14 @@ public interface DstSet {
   Set<String> get(String key);
 
   /**
+   * Put item to the set.
+   *
+   * @param key The key that represents the name of the set.
+   * @param itemValue The value of the item which will be putted into the set.
+   */
+  void putItem(String key, String itemValue);
+
+  /**
    * This method will delete the whole set based on the key
    *
    * @param key delete the whole set based on the key
@@ -32,13 +40,13 @@ public interface DstSet {
   Status drop(String key);
 
   /**
-   * This method will delete a value according to the key
+   * This method will delete a value according to the key.
    *
-   * @param key the key existing in set
-   * @param value the value will be deleted
-   * @return Status indicates that the deletion succeeded or failed.
+   * @param key The key existing in set.
+   * @param itemValue The item value will be deleted.
+   * @return Status Indicates that the deletion succeeded or failed.
    * */
-  Status remove(String key, String value);
+  Status removeItem(String key, String itemValue);
 
   /**
    * This method will judge that if the value exists in map or not.
