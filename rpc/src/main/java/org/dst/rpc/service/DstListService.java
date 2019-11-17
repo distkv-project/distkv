@@ -21,10 +21,10 @@ public interface DstListService {
   @BrpcMeta(serviceName = "DstListService", methodName = "rput")
   ListProtocol.RPutResponse rput(ListProtocol.RPutRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "ldel")
-  ListProtocol.LDelResponse ldel(ListProtocol.LDelRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "remove")
+  ListProtocol.RemoveResponse remove(ListProtocol.RemoveRequest request);
 
-  @BrpcMeta(serviceName = "DstListService", methodName = "rdel")
-  ListProtocol.RDelResponse rdel(ListProtocol.RDelRequest request);
+  @BrpcMeta(serviceName = "DstListService", methodName = "mRemove")
+  ListProtocol.MRemoveResponse multipleRemove(ListProtocol.MRemoveRequest request);
 
 }

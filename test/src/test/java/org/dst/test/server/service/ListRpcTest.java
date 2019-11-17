@@ -51,7 +51,7 @@ public class ListRpcTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testDel() {
+  public void testDrop() {
     try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
         DstListService.class, rpcServerPort)) {
       //put
@@ -63,17 +63,17 @@ public class ListRpcTest extends BaseTestSupplier {
             ListRpcTestUtil.putResponseBuilder(putRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.OK, putResponseBuilder.getStatus());
 
-      //del
-      CommonProtocol.DropRequest.Builder delRequestBuilder = ListRpcTestUtil.delRequestBuilder();
-      delRequestBuilder.setKey("k1");
+      //drop
+      CommonProtocol.DropRequest.Builder dropRequestBuilder = ListRpcTestUtil.dropRequestBuilder();
+      dropRequestBuilder.setKey("k1");
       CommonProtocol.DropResponse delResponseBuilder =
-            ListRpcTestUtil.delResponseBuilder(delRequestBuilder, proxy);
+            ListRpcTestUtil.dropResponseBuilder(dropRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.OK, delResponseBuilder.getStatus());
 
       //KEY_NOT_FOUND
-      delRequestBuilder.setKey("k2");
+      dropRequestBuilder.setKey("k2");
       CommonProtocol.DropResponse delResponse2Builder =
-            ListRpcTestUtil.delResponseBuilder(delRequestBuilder, proxy);
+            ListRpcTestUtil.dropResponseBuilder(dropRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, delResponse2Builder.getStatus());
     }
   }
@@ -170,7 +170,7 @@ public class ListRpcTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testLDel() {
+  public void testRemove() {
     try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
         DstListService.class, rpcServerPort)) {
       //put
@@ -182,13 +182,15 @@ public class ListRpcTest extends BaseTestSupplier {
             ListRpcTestUtil.putResponseBuilder(putRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.OK, putResponseBuilder.getStatus());
 
-      //rdel
-      ListProtocol.LDelRequest.Builder ldelRequestBuilder = ListRpcTestUtil.ldelRequestBuilder();
-      ldelRequestBuilder.setKey("k1");
-      ldelRequestBuilder.setIndex(1);
-      ListProtocol.LDelResponse ldelResponseBuilder =
-            ListRpcTestUtil.ldelResponseBuilder(ldelRequestBuilder, proxy);
-      Assert.assertEquals(CommonProtocol.Status.OK, ldelResponseBuilder.getStatus());
+      //removeOne
+      ListProtocol.RemoveRequest.Builder removeOneRequestBuilder =
+              ListRpcTestUtil.removeRequestBuilder();
+      removeOneRequestBuilder.setType(ListProtocol.RemoveType.RemoveOne);
+      removeOneRequestBuilder.setKey("k1");
+      removeOneRequestBuilder.setIndex(1);
+      ListProtocol.RemoveResponse removeOneResponseBuilder =
+            ListRpcTestUtil.removeResponseBuilder(removeOneRequestBuilder, proxy);
+      Assert.assertEquals(CommonProtocol.Status.OK, removeOneResponseBuilder.getStatus());
 
       //get
       ListProtocol.GetRequest.Builder getRequestBuilder = ListRpcTestUtil.getRequestBuilder();
@@ -196,19 +198,30 @@ public class ListRpcTest extends BaseTestSupplier {
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
-      Assert.assertEquals(ImmutableList.of("v1", "v2"), getResponseBuilder.getValuesList());
+      Assert.assertEquals(ImmutableList.of("v0", "v2"), getResponseBuilder.getValuesList());
+
+      //removeOne
+      ListProtocol.RemoveRequest.Builder removeRangeRequestBuilder =
+              ListRpcTestUtil.removeRequestBuilder();
+      removeRangeRequestBuilder.setType(ListProtocol.RemoveType.RemoveRange);
+      removeRangeRequestBuilder.setKey("k1");
+      removeRangeRequestBuilder.setFrom(0);
+      removeRangeRequestBuilder.setEnd(1);
+      ListProtocol.RemoveResponse removeRangeResponseBuilder =
+              ListRpcTestUtil.removeResponseBuilder(removeRangeRequestBuilder, proxy);
+      Assert.assertEquals(CommonProtocol.Status.OK, removeRangeResponseBuilder.getStatus());
 
       //KEY_NOT_FOUND
-      ldelRequestBuilder.setKey("k2");
-      ldelRequestBuilder.setIndex(1);
-      ListProtocol.LDelResponse ldelResponse2Builder =
-            ListRpcTestUtil.ldelResponseBuilder(ldelRequestBuilder, proxy);
-      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, ldelResponse2Builder.getStatus());
+      removeRangeRequestBuilder.setKey("k2");
+      removeRangeRequestBuilder.setIndex(1);
+      ListProtocol.RemoveResponse removeResponse2Builder =
+            ListRpcTestUtil.removeResponseBuilder(removeRangeRequestBuilder, proxy);
+      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, removeResponse2Builder.getStatus());
     }
   }
 
   @Test
-  public void testRDel() {
+  public void testMRemove() {
     try (ProxyOnClient<DstListService> proxy = new ProxyOnClient<>(
         DstListService.class, rpcServerPort)) {
       //put
@@ -220,13 +233,15 @@ public class ListRpcTest extends BaseTestSupplier {
             ListRpcTestUtil.putResponseBuilder(putRequestBuilder, proxy);
       Assert.assertEquals(CommonProtocol.Status.OK, putResponseBuilder.getStatus());
 
-      //rdel
-      ListProtocol.RDelRequest.Builder rdelRequestBuilder = ListRpcTestUtil.rdelRequestBuilder();
-      rdelRequestBuilder.setKey("k1");
-      rdelRequestBuilder.setIndex(1);
-      ListProtocol.RDelResponse rdelResponseBuilder =
-            ListRpcTestUtil.rdelResponseBuilder(rdelRequestBuilder, proxy);
-      Assert.assertEquals(CommonProtocol.Status.OK, rdelResponseBuilder.getStatus());
+      //mRemove
+      ListProtocol.MRemoveRequest.Builder multipleRemoveRequestBuilder =
+              ListRpcTestUtil.multipleRemoveRequestBuilder();
+      multipleRemoveRequestBuilder.setKey("k1");
+      multipleRemoveRequestBuilder.addIndexes(1);
+      multipleRemoveRequestBuilder.addIndexes(0);
+      ListProtocol.MRemoveResponse multipleRemoveResponseBuilder =
+            ListRpcTestUtil.multipleRemoveResponseBuilder(multipleRemoveRequestBuilder, proxy);
+      Assert.assertEquals(CommonProtocol.Status.OK, multipleRemoveResponseBuilder.getStatus());
 
       //get
       ListProtocol.GetRequest.Builder getRequestBuilder = ListRpcTestUtil.getRequestBuilder();
@@ -234,14 +249,15 @@ public class ListRpcTest extends BaseTestSupplier {
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       ListProtocol.GetResponse getResponseBuilder =
             ListRpcTestUtil.getResponseBuilder(getRequestBuilder, proxy);
-      Assert.assertEquals(ImmutableList.of("v0", "v1"), getResponseBuilder.getValuesList());
+      Assert.assertEquals(ImmutableList.of("v2"), getResponseBuilder.getValuesList());
 
       //KEY_NOT_FOUND
-      rdelRequestBuilder.setKey("k2");
-      rdelRequestBuilder.setIndex(1);
-      ListProtocol.RDelResponse rdelResponse2Builder =
-            ListRpcTestUtil.rdelResponseBuilder(rdelRequestBuilder, proxy);
-      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, rdelResponse2Builder.getStatus());
+      multipleRemoveRequestBuilder.setKey("k2");
+      multipleRemoveRequestBuilder.addIndexes(1);
+      ListProtocol.MRemoveResponse multipleRemoveResponse2Builder =
+            ListRpcTestUtil.multipleRemoveResponseBuilder(multipleRemoveRequestBuilder, proxy);
+      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND,
+              multipleRemoveResponse2Builder.getStatus());
     }
   }
 }

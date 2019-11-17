@@ -16,7 +16,7 @@ public class ListRpcTestUtil {
     return ListProtocol.GetRequest.newBuilder();
   }
 
-  public static CommonProtocol.DropRequest.Builder delRequestBuilder() {
+  public static CommonProtocol.DropRequest.Builder dropRequestBuilder() {
     return CommonProtocol.DropRequest.newBuilder();
   }
 
@@ -28,12 +28,12 @@ public class ListRpcTestUtil {
     return ListProtocol.RPutRequest.newBuilder();
   }
 
-  public static ListProtocol.LDelRequest.Builder ldelRequestBuilder() {
-    return ListProtocol.LDelRequest.newBuilder();
+  public static ListProtocol.RemoveRequest.Builder removeRequestBuilder() {
+    return ListProtocol.RemoveRequest.newBuilder();
   }
 
-  public static ListProtocol.RDelRequest.Builder rdelRequestBuilder() {
-    return ListProtocol.RDelRequest.newBuilder();
+  public static ListProtocol.MRemoveRequest.Builder multipleRemoveRequestBuilder() {
+    return ListProtocol.MRemoveRequest.newBuilder();
   }
 
   ////all types of response
@@ -49,7 +49,7 @@ public class ListRpcTestUtil {
     return setProxy.getService().get(build);
   }
 
-  public static CommonProtocol.DropResponse delResponseBuilder(
+  public static CommonProtocol.DropResponse dropResponseBuilder(
           CommonProtocol.DropRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
     CommonProtocol.DropRequest build = builder.build();
     return setProxy.getService().drop(build);
@@ -67,15 +67,15 @@ public class ListRpcTestUtil {
     return setProxy.getService().rput(build);
   }
 
-  public static ListProtocol.LDelResponse ldelResponseBuilder(
-        ListProtocol.LDelRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
-    ListProtocol.LDelRequest build = builder.build();
-    return setProxy.getService().ldel(build);
+  public static ListProtocol.RemoveResponse removeResponseBuilder(
+        ListProtocol.RemoveRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+    ListProtocol.RemoveRequest build = builder.build();
+    return setProxy.getService().remove(build);
   }
 
-  public static ListProtocol.RDelResponse rdelResponseBuilder(
-        ListProtocol.RDelRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
-    ListProtocol.RDelRequest build = builder.build();
-    return setProxy.getService().rdel(build);
+  public static ListProtocol.MRemoveResponse multipleRemoveResponseBuilder(
+        ListProtocol.MRemoveRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+    ListProtocol.MRemoveRequest build = builder.build();
+    return setProxy.getService().multipleRemove(build);
   }
 }

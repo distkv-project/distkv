@@ -6,6 +6,8 @@ import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstList;
 import org.dst.common.exception.KeyNotFoundException;
 import org.dst.common.utils.Status;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DstListImpl implements DstList {
@@ -83,36 +85,51 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status ldel(String key, int n) {
-    if (!listMap.containsKey(key)) {
-      return Status.KEY_NOT_FOUND;
-    }
-    List<String> original = listMap.get(key);
-    if (original.size() < n) {
-      original.clear();
+  public Status remove(String key, int index)
+          throws KeyNotFoundException, DstListIndexOutOfBoundsException {
+    try {
+      List<String> list = listMap.get(key);
+      list.remove(index);
       return Status.OK;
+    } catch (NullPointerException e) {
+      throw new KeyNotFoundException(key);
+    } catch (IndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
     }
-    for (int i = 0; i < n; i++) {
-      original.remove(0);
-    }
-    return Status.OK;
   }
 
   @Override
-  public Status rdel(String key, int n) {
-    if (!listMap.containsKey(key)) {
-      return Status.KEY_NOT_FOUND;
-    }
-    List<String> original = listMap.get(key);
-    int size = original.size();
-    if (size <= n) {
-      original.clear();
+  public Status remove(String key, int from, int end)
+          throws KeyNotFoundException, DstListIndexOutOfBoundsException {
+    try {
+      List<String> list = listMap.get(key);
+      for (int i = end; i >= from; i--) {
+        list.remove(i);
+      }
       return Status.OK;
+    } catch (NullPointerException e) {
+      throw new KeyNotFoundException(key);
+    } catch (IndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
     }
-    for (int i = 0; i < n; i++) {
-      original.remove(size - 1);
-      size--;
+  }
+
+  @Override
+  public Status multipleRemove(String key, List<Integer> indexes)
+          throws KeyNotFoundException, DstListIndexOutOfBoundsException {
+    try {
+      List<String> list = listMap.get(key);
+      ArrayList<Integer> thisIndex = new ArrayList<>();
+      thisIndex.addAll(indexes);
+      Collections.sort(thisIndex);
+      for (int i = (thisIndex.size() - 1); i >= 0; i--) {
+        list.remove(thisIndex.get(i).intValue());
+      }
+      return Status.OK;
+    } catch (NullPointerException e) {
+      throw new KeyNotFoundException(key);
+    } catch (IndexOutOfBoundsException e) {
+      throw new DstListIndexOutOfBoundsException(key, e);
     }
-    return Status.OK;
   }
 }

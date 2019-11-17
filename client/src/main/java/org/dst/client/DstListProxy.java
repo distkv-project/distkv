@@ -40,6 +40,37 @@ public class DstListProxy {
     return response.getValuesList();
   }
 
+  public List<String> get(String key, Integer index) {
+    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
+            .setType(ListProtocol.GetType.GET_ONE)
+            .setKey(key)
+            .setIndex(index)
+            .build();
+    ListProtocol.GetResponse response = service.get(request);
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d",response.getStatus().getNumber()));
+    }
+    return response.getValuesList();
+  }
+
+  public List<String> get(String key, Integer from, Integer end) {
+    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
+            .setType(ListProtocol.GetType.GET_RANGE)
+            .setKey(key)
+            .setFrom(from)
+            .setEnd(end)
+            .build();
+    ListProtocol.GetResponse response = service.get(request);
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d",response.getStatus().getNumber()));
+    }
+    return response.getValuesList();
+  }
+
   public void drop(String key) {
     CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
           .setKey(key)
@@ -78,12 +109,13 @@ public class DstListProxy {
     }
   }
 
-  public void ldel(String key, Integer index) {
-    ListProtocol.LDelRequest request = ListProtocol.LDelRequest.newBuilder()
-          .setKey(key)
-          .setIndex(index)
-          .build();
-    ListProtocol.LDelResponse response = service.ldel(request);
+  public void remove(String key, Integer index) {
+    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
+            .setType(ListProtocol.RemoveType.RemoveOne)
+            .setKey(key)
+            .setIndex(index)
+            .build();
+    ListProtocol.RemoveResponse response = service.remove(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -91,12 +123,27 @@ public class DstListProxy {
     }
   }
 
-  public void rdel(String key, Integer index) {
-    ListProtocol.RDelRequest request = ListProtocol.RDelRequest.newBuilder()
+  public void remove(String key, Integer from, Integer end) {
+    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
+            .setType(ListProtocol.RemoveType.RemoveRange)
+            .setKey(key)
+            .setFrom(from)
+            .setEnd(end)
+            .build();
+    ListProtocol.RemoveResponse response = service.remove(request);
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+    }
+  }
+
+  public void multipleRemove(String key, List<Integer> indexes) {
+    ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
           .setKey(key)
-          .setIndex(index)
+          .addAllIndexes(indexes)
           .build();
-    ListProtocol.RDelResponse response = service.rdel(request);
+    ListProtocol.MRemoveResponse response = service.multipleRemove(request);
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {

@@ -57,10 +57,35 @@ public interface DstList {
   //insert value from the right of list
   Status rput(String key, List<String> value);
 
-  //delete n values from the left of list
-  Status ldel(String key, int n);
+  /**
+   * This method will remove an item from the list.
+   *
+   * @param key The name of the list in store.
+   * @param index The index that we want remove the item at.
+   * @return Whether we succeed to remove the item.
+   */
+  Status remove(String key, int index)
+          throws KeyNotFoundException, IndexOutOfBoundsException;
 
-  //delete n values from the right of list
-  Status rdel(String key, int n);
+  /**
+   * This method will remove a range of items from the list.
+   *
+   * @param key The name of the list in store.
+   * @param from The left index of the range.
+   * @param end The right index of the range.
+   * @return Whether we succeed to remove the range of the items.
+   */
+  Status remove(String key, int from, int end)
+          throws KeyNotFoundException, IndexOutOfBoundsException;
+
+  /**
+   * This method will remove multiple items from the list.
+   *
+   * @param key The name of the list in store.
+   * @param indexes A list of indexes for those items you wanna to remove.
+   * @return Whether we succeed to remove the items.
+   */
+  Status multipleRemove(String key, List<Integer> indexes)
+          throws KeyNotFoundException, IndexOutOfBoundsException;
 
 }

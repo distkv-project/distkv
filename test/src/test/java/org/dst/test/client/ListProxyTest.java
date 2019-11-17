@@ -7,6 +7,9 @@ import org.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -20,7 +23,7 @@ public class ListProxyTest extends BaseTestSupplier {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testDel() {
+  public void testDrop() {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().drop("k1");
@@ -51,24 +54,30 @@ public class ListProxyTest extends BaseTestSupplier {
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testLDel() {
+  public void testRemove() {
     DstClient client = newDstClient();
-    client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
-    client.lists().ldel("k1",2);
-    Assert.assertEquals(ImmutableList.of("v3", "v4"),client.lists().get("k1"));
+    client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4", "v5"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"),client.lists().get("k1"));
+    client.lists().remove("k1", 4);
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"), client.lists().get("k1"));
+    client.lists().remove("k1", 1, 2);
+    Assert.assertEquals(ImmutableList.of("v1", "v4"), client.lists().get("k1"));
     //exception test
-    client.lists().ldel("k2",1);
+    client.lists().remove("k2", 1);
     client.disconnect();
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
-  public void testRDel() {
+  public void testMRemove() {
     DstClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
-    client.lists().rdel("k1",2);
-    Assert.assertEquals(ImmutableList.of("v1", "v2"),client.lists().get("k1"));
+    List<Integer> list = new ArrayList<>();
+    list.add(1);
+    list.add(3);
+    client.lists().multipleRemove("k1",list);
+    Assert.assertEquals(ImmutableList.of("v1", "v3"),client.lists().get("k1"));
     //exception test
-    client.lists().rdel("k2",1);
+    client.lists().multipleRemove("k2",list);
     client.disconnect();
   }
 

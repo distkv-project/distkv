@@ -137,40 +137,60 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public ListProtocol.LDelResponse ldel(ListProtocol.LDelRequest request) {
-    ListProtocol.LDelResponse.Builder responseBuilder =
-            ListProtocol.LDelResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+  public ListProtocol.RemoveResponse remove(ListProtocol.RemoveRequest request) {
+    ListProtocol.RemoveResponse.Builder responseBuilder =
+            ListProtocol.RemoveResponse.newBuilder();
+    CommonProtocol.Status status = CommonProtocol.Status.OK;
+
+    final String key = request.getKey();
+    final ListProtocol.RemoveType type = request.getType();
     try {
-      Status localStatus = getStore().lists().ldel(request.getKey(), request.getIndex());
+      Status localStatus = null;
+      if (type == ListProtocol.RemoveType.RemoveOne) {
+        localStatus = getStore().lists().remove(key, request.getIndex());
+        if (localStatus == Status.OK) {
+          status = CommonProtocol.Status.OK;
+        } else if (localStatus == Status.KEY_NOT_FOUND) {
+          status = CommonProtocol.Status.KEY_NOT_FOUND;
+        }
+      } else if (type == ListProtocol.RemoveType.RemoveRange) {
+        localStatus = getStore().lists().remove(key, request.getFrom(), request.getEnd());
+      }
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
-    } catch (DstException e) {
-      LOGGER.error("Failed to ldel a list from store: {1}", e);
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    } catch (KeyNotFoundException e) {
+      LOGGER.info("Failed to remove item from store: {1}", e);
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstListIndexOutOfBoundsException e) {
+      LOGGER.info("Failed to remove item from store: {1}", e);
+      status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
   }
 
   @Override
-  public ListProtocol.RDelResponse rdel(ListProtocol.RDelRequest request) {
-    ListProtocol.RDelResponse.Builder responseBuilder =
-            ListProtocol.RDelResponse.newBuilder();
+  public ListProtocol.MRemoveResponse multipleRemove(ListProtocol.MRemoveRequest request) {
+    ListProtocol.MRemoveResponse.Builder responseBuilder =
+            ListProtocol.MRemoveResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
-      Status localStatus = getStore().lists().rdel(request.getKey(), request.getIndex());
+      Status localStatus =
+              getStore().lists().multipleRemove(request.getKey(), request.getIndexesList());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
-    } catch (DstException e) {
-      LOGGER.error("Failed to rdel a list from store: {1}", e);
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    } catch (KeyNotFoundException e) {
+      LOGGER.info("Failed to mRemove item from store: {1}", e);
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstListIndexOutOfBoundsException e) {
+      LOGGER.info("Failed to mRemove item from store: {1}", e);
+      status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);
     return responseBuilder.build();
