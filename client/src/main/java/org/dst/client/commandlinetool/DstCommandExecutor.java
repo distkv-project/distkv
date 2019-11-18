@@ -92,6 +92,43 @@ public class DstCommandExecutor {
               (CommonProtocol.DropRequest) parsedResult.getRequest();
       dstClient.sets().drop(request.getKey());
       return STATUS_OK;
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.DICT_PUT) {
+      DictProtocol.PutRequest request =
+              (DictProtocol.PutRequest) parsedResult.getRequest();
+      DictProtocol.DstDict dict = request.getDict();
+      Map<String, String> map = new HashMap<>();
+      for (int i = 0; i < dict.getKeysCount(); i++) {
+        map.put(dict.getKeys(i), dict.getValues(i));
+      }
+      dstClient.dicts().put(request.getKey(), map);
+      return STATUS_OK;
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.DICT_GET) {
+      DictProtocol.GetRequest request =
+              (DictProtocol.GetRequest) parsedResult.getRequest();
+      return dstClient.dicts().get(request.getKey()).toString();
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.DICT_PUT_ITEM) {
+      DictProtocol.PutItemRequest request =
+              (DictProtocol.PutItemRequest) parsedResult.getRequest();
+      dstClient.dicts().putItem(request.getKey(), request.getItemKey(), request.getItemValue());
+      return STATUS_OK;
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.DICT_GET_ITEM) {
+      DictProtocol.GetItemRequest request =
+              (DictProtocol.GetItemRequest) parsedResult.getRequest();
+      return dstClient.dicts().getItem(request.getKey(),request.getItemKey());
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.DICT_POP_ITEM) {
+      DictProtocol.PopItemRequest request =
+              (DictProtocol.PopItemRequest) parsedResult.getRequest();
+      return dstClient.dicts().popItem(request.getKey(), request.getItemKey());
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.DICT_DROP) {
+      CommonProtocol.DropRequest request =
+              (CommonProtocol.DropRequest) parsedResult.getRequest();
+      dstClient.dicts().drop(request.getKey());
+      return STATUS_OK;
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.DICT_REMOVE_ITEM) {
+      DictProtocol.RemoveItemRequest request =
+              (DictProtocol.RemoveItemRequest) parsedResult.getRequest();
+      dstClient.dicts().removeItem(request.getKey(), request.getItemKey());
+      return STATUS_OK;
     }
     return null;
   }
