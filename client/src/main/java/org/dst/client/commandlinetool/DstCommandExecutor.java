@@ -3,9 +3,16 @@ package org.dst.client.commandlinetool;
 import org.dst.client.DstClient;
 import org.dst.parser.po.DstParsedResult;
 import org.dst.parser.po.RequestTypeEnum;
+import org.dst.rpc.protobuf.generated.DictProtocol;
+import org.dst.rpc.protobuf.generated.CommonProtocol;
+import org.dst.rpc.protobuf.generated.SetProtocol;
 import org.dst.rpc.protobuf.generated.ListProtocol;
 import org.dst.rpc.protobuf.generated.StringProtocol;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class DstCommandExecutor {
 
@@ -69,6 +76,21 @@ public class DstCommandExecutor {
       ListProtocol.MRemoveRequest request =
               (ListProtocol.MRemoveRequest) parsedResult.getRequest();
       dstClient.lists().multipleRemove(request.getKey(), request.getIndexesList());
+      return STATUS_OK;
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.SET_PUT) {
+      SetProtocol.PutRequest request =
+              (SetProtocol.PutRequest) parsedResult.getRequest();
+      Set<String> values = new HashSet(request.getValuesList());
+      dstClient.sets().put(request.getKey(), values);
+      return STATUS_OK;
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.SET_GET) {
+      SetProtocol.GetRequest request =
+              (SetProtocol.GetRequest) parsedResult.getRequest();
+      return dstClient.sets().get(request.getKey()).toString();
+    } else if (parsedResult.getRequestType() == RequestTypeEnum.SET_DROP_BY_KEY) {
+      CommonProtocol.DropRequest request =
+              (CommonProtocol.DropRequest) parsedResult.getRequest();
+      dstClient.sets().drop(request.getKey());
       return STATUS_OK;
     }
     return null;
