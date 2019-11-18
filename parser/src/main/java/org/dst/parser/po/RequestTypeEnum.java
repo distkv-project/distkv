@@ -13,7 +13,10 @@ public enum RequestTypeEnum {
 
   SET_PUT,
   SET_GET,
-  SET_DROP_BY_KEY,
+  SET_DROP,
+  SET_PUT_ITEM,
+  SET_REMOVE_ITEM,
+  SET_EXIST,
 
   DICT_PUT,
   DICT_GET,
