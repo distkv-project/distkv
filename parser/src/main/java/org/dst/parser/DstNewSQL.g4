@@ -39,12 +39,13 @@ listRemoveRange: key index index;
 
 
 // set concept
-setStatement: setPut | setGet | setRemoveItem | setExists | setDrop;
+setStatement: setPut | setGet | setPutItem | setRemoveItem | setExists | setDrop;
 setPut: 'set.put' key valueArray;
 setGet:'set.get' key;
+setPutItem: 'set.putItem' key itemValue;
 setRemoveItem: ('set.remove'|'set.removeItem') key itemValue;
 setExists: 'set.exists' key itemValue;
-setDrop: 'set.dropByKey' key;
+setDrop: 'set.drop' key;
 
 
 // dict concept

@@ -1,5 +1,6 @@
 package org.dst.core.operatorImpl;
 
+import com.google.common.collect.ImmutableSet;
 import org.dst.core.DstMapInterface;
 import org.dst.core.DstConcurrentHashMapImpl;
 import org.dst.core.operatorset.DstSet;
@@ -30,6 +31,15 @@ public class DstSetImpl implements DstSet {
   }
 
   @Override
+  public void putItem(String key, String itemValue) {
+    if (!setMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
+
+    setMap.put(key, ImmutableSet.of(itemValue));
+  }
+
+  @Override
   public Status drop(String key) {
     if (!setMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
@@ -40,12 +50,12 @@ public class DstSetImpl implements DstSet {
   }
 
   @Override
-  public Status remove(String key, String value) {
+  public Status removeItem(String key, String itemValue) {
     if (!setMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
     }
 
-    setMap.get(key).remove(value);
+    setMap.get(key).remove(itemValue);
     return Status.OK;
   }
 

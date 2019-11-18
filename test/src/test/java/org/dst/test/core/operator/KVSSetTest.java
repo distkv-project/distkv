@@ -20,7 +20,7 @@ public class KVSSetTest {
     store.sets().put("k1", set);
     Assert.assertEquals(set, store.sets().get("k1"));
     Assert.assertTrue(store.sets().exists("k1", "v3"));
-    Assert.assertEquals("ok", store.sets().remove("k1", "v1").toString());
+    Assert.assertEquals("ok", store.sets().removeItem("k1", "v1").toString());
     Assert.assertEquals("ok", store.sets().drop("k1").toString());
     Assert.assertNull(store.sets().get("k1"));
 
