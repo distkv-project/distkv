@@ -109,7 +109,8 @@ public class DstCommandExecutor {
       case SET_EXIST:
         SetProtocol.ExistsRequest existsRequestSet =
                 (SetProtocol.ExistsRequest) parsedResult.getRequest();
-        return String.valueOf(dstClient.sets().exists(existsRequestSet.getKey(), existsRequestSet.getEntity()));
+        return String.valueOf(dstClient.sets().exists(existsRequestSet.getKey(),
+                existsRequestSet.getEntity()));
       case DICT_PUT:
         DictProtocol.PutRequest putRequestDict =
                 (DictProtocol.PutRequest) parsedResult.getRequest();
