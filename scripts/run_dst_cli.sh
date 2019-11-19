@@ -12,4 +12,4 @@ fi
 
 SCRIPT_DIR=$(dirname $SCRIPT_ABS)
 
-java -classpath $SCRIPT_DIR/dst-client-0.1.1-SNAPSHOT-jar-with-dependencies.jar org.dst.client.cmd.DstCmdStarter
+java -classpath $SCRIPT_DIR/dst-client-0.1.1-SNAPSHOT-jar-with-dependencies.jar org.dst.client.commandlinetool.DstCmdStarter
