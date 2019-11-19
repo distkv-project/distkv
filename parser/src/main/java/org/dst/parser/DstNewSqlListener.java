@@ -166,7 +166,37 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 2);
     CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DstParsedResult(RequestTypeEnum.SET_DROP_BY_KEY, builder.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.SET_DROP, builder.build());
+  }
+
+  @Override
+  public void enterSetPutItem(DstNewSQLParser.SetPutItemContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+    SetProtocol.PutItemRequest.Builder builder = SetProtocol.PutItemRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setItemValue(ctx.children.get(2).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.SET_PUT_ITEM, builder.build());
+  }
+
+  @Override
+  public void enterSetRemoveItem(DstNewSQLParser.SetRemoveItemContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.getChildCount() == 3);
+    SetProtocol.RemoveItemRequest.Builder builder = SetProtocol.RemoveItemRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setItemValue(ctx.children.get(2).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.SET_REMOVE_ITEM, builder);
+  }
+
+  @Override
+  public void enterSetExists(DstNewSQLParser.SetExistsContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+    SetProtocol.ExistsRequest.Builder builder = SetProtocol.ExistsRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    builder.setEntity(ctx.children.get(2).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.SET_EXIST, builder);
   }
 
   @Override

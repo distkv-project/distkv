@@ -60,7 +60,7 @@ public class DictProxyTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testDictDel() {
+  public void testDictDrop() {
     DstClient client = newDstClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");

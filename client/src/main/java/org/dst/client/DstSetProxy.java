@@ -45,6 +45,19 @@ public class DstSetProxy {
     return set;
   }
 
+  public void putItem(String key, String entity) {
+    SetProtocol.PutItemRequest.Builder request = SetProtocol.PutItemRequest.newBuilder();
+    request.setKey(key);
+    request.setItemValue(entity);
+
+    SetProtocol.PutItemResponse response = service.putItem(request.build());
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+    }
+  }
+
   public void removeItem(String key, String entity) {
     SetProtocol.RemoveItemRequest.Builder request = SetProtocol.RemoveItemRequest.newBuilder();
     request.setKey(key);
