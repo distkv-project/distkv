@@ -16,6 +16,8 @@ import java.util.Set;
 public class DstCommandExecutor {
 
   private static final String STATUS_OK = "ok";
+  private static final String STATUS_TRUE = "true";
+  private static final String STATUS_FALSE = "false";
 
   DstClient dstClient;
 
@@ -110,9 +112,9 @@ public class DstCommandExecutor {
         SetProtocol.ExistsRequest existsRequestSet =
                 (SetProtocol.ExistsRequest) parsedResult.getRequest();
         if (dstClient.sets().exists(existsRequestSet.getKey(), existsRequestSet.getEntity())) {
-          return "true";
+          return STATUS_TRUE;
         } else {
-          return "false";
+          return STATUS_FALSE;
         }
       case DICT_PUT:
         DictProtocol.PutRequest putRequestDict =
