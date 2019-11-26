@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>dst-superpom</artifactId>
-        <groupId>com.dst-pro</groupId>
+        <groupId>com.distkv</groupId>
         <version>0.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -49,7 +49,7 @@
                             <includeStdTypes>true</includeStdTypes>
                             <outputDirectory>src/main/java</outputDirectory>
                             <inputDirectories>
-                                <include>src/main/java/org/dst/rpc/protobuf</include>
+                                <include>src/main/java/com/distkv/dst/rpc/protobuf</include>
                             </inputDirectories>
                         </configuration>
                     </execution>

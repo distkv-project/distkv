@@ -31,8 +31,8 @@ hs_err_pid*
 target/
 
 # generated files
-rpc/src/main/java/org/dst/rpc/protobuf/generated/*
-parser/src/main/java/org/dst/parser/generated/*
+rpc/src/main/java/com/distkv/dst/rpc/protobuf/generated/*
+parser/src/main/java/com/distkv/dst/parser/generated/*
 
 # build
 build/
