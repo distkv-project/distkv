@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>dst-superpom</artifactId>
-        <groupId>com.dst-pro</groupId>
+        <groupId>com.distkv</groupId>
         <version>0.1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -32,13 +32,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.dst-pro</groupId>
+            <groupId>com.distkv</groupId>
             <artifactId>dst-rpc</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.dst-pro</groupId>
+            <groupId>com.distkv</groupId>
             <artifactId>dst-common</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -58,8 +58,8 @@
                 <version>4.7</version>
                 <configuration>
                     <visitor>true</visitor>
-                    <outputDirectory>${basedir}/src/main/java/org/dst/parser/generated</outputDirectory>
-                    <sourceDirectory>${basedir}/src/main/java/org/dst/parser</sourceDirectory>
+                    <outputDirectory>src/main/java/com/distkv/dst/parser/generated</outputDirectory>
+                    <sourceDirectory>src/main/java/com/distkv/dst/parser</sourceDirectory>
                 </configuration>
                 <executions>
                     <execution>
