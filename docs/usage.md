@@ -1,29 +1,85 @@
 ## Usage
 
-### Client tool
+In this section, you can learn some basic concepts in Dst, and learn how to use these concepts as well.
 
 #### 1. String concept
+
+Put a string value into the Dst store.  
 ```bash
-dst-cli > put "k1" "v1"
+str.put key value
+```
+example:
+```bash
+dst-cli > str.put k1 v1
+dst-cli > ok
+```
+Get a string value from Dst store.
+```bash
+str.get key
+```
+example:
+```bash
+dst-cli > str.get k1
+dst-cli > v1
+```
+
+Drop a string from the Dst store.
+```bash
+str.drop key
+```
+example:
+```bash
+dst-cli > str.drop k1
 dst-cli > ok
 
-dst-cli > str.put "k1" "v1"   # the same as `put`
-dst-cli > ok
-
-dst-cli > get "k1"
-dst-cli > "v1"
-
-dst-cli > str.get "k1"       # the same as `get`
-dst-cli > "v1"
+dst-cli > str.get k1
+dst-cli > Error(A202): The Key `k1` is not found in the store.
 ```
 
 #### 2. List concept
-```bash
-dst-cli > list.put "k1" "v1" "v2" "v3"
-dst-cli > ok
 
-dst-cli > list.get "k1"
-dst-cli > ["v1", "v2", "v3"]
+Put a list into Dst store.
+```bash
+list.put key value1 [value2 [value3 [...]]]
+```
+example:
+```bash
+dst-cli > list.put k1 v1 v2 v3
+dst-cli > ok
+```
+
+Get a list from Dst store.
+```bash
+list.get key
+```
+
+example:
+```bash
+dst-cli > list.get k1
+dst-cli > [v1, v2, v3]
+```
+
+Get a range of items of the list from Dst store.
+```bash
+# Note that it's excluding the `end_index`.
+list.get key from_index end_index
+```
+
+example:
+```bash
+dst-cli > list.get k1 0 2
+dst-cli > [v1, v2]
+```
+
+Get one item of the list from Dst store.
+```bash
+list.get key index
+```
+example:
+```bash
+dst-cli > list.get k1 1
+dst-cli > v1
+```
 
 dst-cli > list.lput "k1" "v4" "v5" "v6"
 dst-cli > ok

@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>dst-superpom</artifactId>
-        <groupId>com.dst-pro</groupId>
-        <version>0.1.1-SNAPSHOT</version>
+        <groupId>com.distkv</groupId>
+        <version>0.1.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,7 +26,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.dst.server.service.DstRpcServer</mainClass>
+                            <mainClass>com.distkv.dst.server.service.DstRpcServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -45,12 +45,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.dst-pro</groupId>
+            <groupId>com.distkv</groupId>
             <artifactId>dst-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.dst-pro</groupId>
+            <groupId>com.distkv</groupId>
             <artifactId>dst-rpc</artifactId>
             <version>${project.version}</version>
         </dependency>
