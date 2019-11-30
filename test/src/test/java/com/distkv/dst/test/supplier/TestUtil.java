@@ -14,7 +14,7 @@ public class TestUtil {
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
-          + File.separator + "dst-server-0.1.1-SNAPSHOT-jar-with-dependencies.jar";
+          + File.separator + "dst-server-0.1.1-jar-with-dependencies.jar";
 
   private static Process rpcServerProcess = null;
 
