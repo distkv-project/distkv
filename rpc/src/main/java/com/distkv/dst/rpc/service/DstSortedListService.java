@@ -2,18 +2,26 @@ package com.distkv.dst.rpc.service;
 
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
+import java.util.concurrent.CompletableFuture;
 
 
 public interface DstSortedListService {
-  SortedListProtocol.PutResponse put(SortedListProtocol.PutRequest request);
 
-  SortedListProtocol.TopResponse top(SortedListProtocol.TopRequest request);
+  CompletableFuture<SortedListProtocol.PutResponse> put(
+      SortedListProtocol.PutRequest request);
 
-  CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
+  CompletableFuture<SortedListProtocol.TopResponse> top(
+      SortedListProtocol.TopRequest request);
 
-  SortedListProtocol.IncrScoreResponse incrItem(SortedListProtocol.IncrScoreRequest request);
+  CompletableFuture<CommonProtocol.DropResponse> drop(
+      CommonProtocol.DropRequest request);
 
-  SortedListProtocol.PutMemberResponse putItem(SortedListProtocol.PutMemberRequest request);
+  CompletableFuture<SortedListProtocol.IncrScoreResponse> incrItem(
+      SortedListProtocol.IncrScoreRequest request);
 
-  SortedListProtocol.DelMemberResponse delItem(SortedListProtocol.DelMemberRequest request);
+  CompletableFuture<SortedListProtocol.PutMemberResponse> putItem(
+      SortedListProtocol.PutMemberRequest request);
+
+  CompletableFuture<SortedListProtocol.DelMemberResponse> delItem(
+      SortedListProtocol.DelMemberRequest request);
 }

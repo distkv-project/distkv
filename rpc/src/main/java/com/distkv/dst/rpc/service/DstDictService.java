@@ -3,19 +3,22 @@ package com.distkv.dst.rpc.service;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface DstDictService {
 
-  DictProtocol.PutResponse put(DictProtocol.PutRequest request);
+  CompletableFuture<DictProtocol.PutResponse> put(DictProtocol.PutRequest request);
 
-  DictProtocol.GetResponse get(DictProtocol.GetRequest request);
+  CompletableFuture<DictProtocol.GetResponse> get(DictProtocol.GetRequest request);
 
-  DictProtocol.GetItemResponse getItemValue(DictProtocol.GetItemRequest request);
+  CompletableFuture<DictProtocol.GetItemResponse> getItemValue(DictProtocol.GetItemRequest request);
 
-  DictProtocol.PopItemResponse popItem(DictProtocol.PopItemRequest request);
+  CompletableFuture<DictProtocol.PopItemResponse> popItem(DictProtocol.PopItemRequest request);
 
-  DictProtocol.PutItemResponse putItem(DictProtocol.PutItemRequest request);
+  CompletableFuture<DictProtocol.PutItemResponse> putItem(DictProtocol.PutItemRequest request);
 
-  CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
+  CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request);
 
-  DictProtocol.RemoveItemResponse removeItem(DictProtocol.RemoveItemRequest request);
+  CompletableFuture<DictProtocol.RemoveItemResponse> removeItem(
+      DictProtocol.RemoveItemRequest request);
 }

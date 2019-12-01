@@ -1,10 +1,12 @@
 package com.distkv.dst.server.service;
 
+import com.distkv.dst.common.utils.FutureUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.CompletableFuture;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.core.KVStore;
@@ -24,7 +26,8 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public SortedListProtocol.PutResponse put(SortedListProtocol.PutRequest request) {
+  public CompletableFuture<SortedListProtocol.PutResponse> put(
+      SortedListProtocol.PutRequest request) {
     SortedListProtocol.PutResponse.Builder responseBuilder =
         SortedListProtocol.PutResponse.newBuilder();
     CommonProtocol.Status status;
@@ -41,11 +44,12 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    return responseBuilder.build();
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
-  public SortedListProtocol.TopResponse top(SortedListProtocol.TopRequest request) {
+  public CompletableFuture<SortedListProtocol.TopResponse> top(
+      SortedListProtocol.TopRequest request) {
     SortedListProtocol.TopResponse.Builder responseBuilder =
         SortedListProtocol.TopResponse.newBuilder();
     CommonProtocol.Status status;
@@ -70,11 +74,12 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    return responseBuilder.build();
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
-  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(
+      CommonProtocol.DropRequest request) {
     CommonProtocol.DropResponse.Builder responseBuilder =
         CommonProtocol.DropResponse.newBuilder();
     CommonProtocol.Status status;
@@ -89,11 +94,11 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    return responseBuilder.build();
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
-  public SortedListProtocol.IncrScoreResponse incrItem(
+  public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrItem(
       SortedListProtocol.IncrScoreRequest request) {
     SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
         SortedListProtocol.IncrScoreResponse.newBuilder();
@@ -110,11 +115,12 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    return responseBuilder.build();
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
-  public SortedListProtocol.PutMemberResponse putItem(SortedListProtocol.PutMemberRequest request) {
+  public CompletableFuture<SortedListProtocol.PutMemberResponse> putItem(
+      SortedListProtocol.PutMemberRequest request) {
     SortedListProtocol.PutMemberResponse.Builder responseBuilder =
         SortedListProtocol.PutMemberResponse.newBuilder();
     CommonProtocol.Status status;
@@ -130,11 +136,12 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    return responseBuilder.build();
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
-  public SortedListProtocol.DelMemberResponse delItem(SortedListProtocol.DelMemberRequest request) {
+  public CompletableFuture<SortedListProtocol.DelMemberResponse> delItem(
+      SortedListProtocol.DelMemberRequest request) {
     SortedListProtocol.DelMemberResponse.Builder responseBuilder =
         SortedListProtocol.DelMemberResponse.newBuilder();
     CommonProtocol.Status status;
@@ -150,6 +157,6 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    return responseBuilder.build();
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 }

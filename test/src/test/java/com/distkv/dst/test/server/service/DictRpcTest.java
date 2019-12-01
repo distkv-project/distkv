@@ -1,5 +1,6 @@
 package com.distkv.dst.test.server.service;
 
+import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.service.DstDictService;
@@ -42,25 +43,27 @@ public class DictRpcTest extends BaseTestSupplier {
         dstDictBuilder.addValues(entry.getValue());
       }
       dictPutRequestBuilder.setDict(dstDictBuilder.build());
-      DictProtocol.PutResponse setPutResponse =
-              dictService.put(dictPutRequestBuilder.build());
+      DictProtocol.PutResponse setPutResponse = FutureUtils.get(
+          dictService.put(dictPutRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
+
       // Test putItem
       DictProtocol.PutItemRequest.Builder putBuilder =
               DictProtocol.PutItemRequest.newBuilder();
       putBuilder.setKey("m1");
       putBuilder.setItemKey("k4");
       putBuilder.setItemValue("v4");
-      DictProtocol.PutItemResponse putItemResponse =
-              dictService.putItem(putBuilder.build());
+      DictProtocol.PutItemResponse putItemResponse = FutureUtils.get(
+          dictService.putItem(putBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, putItemResponse.getStatus());
+
       // Test getItemValue
       DictProtocol.GetItemRequest.Builder getItemValueBuilder =
               DictProtocol.GetItemRequest.newBuilder();
       getItemValueBuilder.setKey("m1");
       getItemValueBuilder.setItemKey("k3");
-      DictProtocol.GetItemResponse getItemValueResponse =
-              dictService.getItemValue(getItemValueBuilder.build());
+      DictProtocol.GetItemResponse getItemValueResponse = FutureUtils.get(
+          dictService.getItemValue(getItemValueBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, getItemValueResponse.getStatus());
       Assert.assertEquals(getItemValueResponse.getItemValue(), "v3");
       // Test popItem
@@ -68,8 +71,8 @@ public class DictRpcTest extends BaseTestSupplier {
               DictProtocol.PopItemRequest.newBuilder();
       popItemBuilder.setKey("m1");
       popItemBuilder.setItemKey("k3");
-      DictProtocol.PopItemResponse popItemResponse =
-              dictService.popItem(popItemBuilder.build());
+      DictProtocol.PopItemResponse popItemResponse = FutureUtils.get(
+          dictService.popItem(popItemBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, popItemResponse.getStatus());
       Assert.assertEquals(popItemResponse.getItemValue(), "v3");
       // Test delItem
@@ -77,15 +80,15 @@ public class DictRpcTest extends BaseTestSupplier {
               DictProtocol.RemoveItemRequest.newBuilder();
       delItemBuilder.setKey("m1");
       delItemBuilder.setItemKey("k2");
-      DictProtocol.RemoveItemResponse delItemResponse =
-              dictService.removeItem(delItemBuilder.build());
+      DictProtocol.RemoveItemResponse delItemResponse = FutureUtils.get(
+          dictService.removeItem(delItemBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, delItemResponse.getStatus());
       // Test dict get.
       DictProtocol.GetRequest.Builder dictGetRequestBuilder =
               DictProtocol.GetRequest.newBuilder();
       dictGetRequestBuilder.setKey("m1");
-      DictProtocol.GetResponse dictGetResponse =
-              dictService.get(dictGetRequestBuilder.build());
+      DictProtocol.GetResponse dictGetResponse = FutureUtils.get(
+          dictService.get(dictGetRequestBuilder.build()));
       final Map<String, String> judgeDict = new HashMap<>();
       judgeDict.put("k1", "v1");
       judgeDict.put("k4", "v4");

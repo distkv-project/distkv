@@ -3,6 +3,7 @@ package com.distkv.dst.client;
 import com.distkv.dst.common.exception.DictKeyNotFoundException;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
+import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.service.DstDictService;
@@ -23,7 +24,7 @@ public class DstDictProxy {
     request.setKey(key);
     DictProtocol.DstDict dstDict = DictUtil.buildDstDict(dict);
     request.setDict(dstDict);
-    DictProtocol.PutResponse response = service.put(request.build());
+    DictProtocol.PutResponse response = FutureUtils.get(service.put(request.build()));
     if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
@@ -34,7 +35,7 @@ public class DstDictProxy {
     Map<String, String> dict = new HashMap();
     DictProtocol.GetRequest.Builder request = DictProtocol.GetRequest.newBuilder();
     request.setKey(key);
-    DictProtocol.GetResponse response = service.get(request.build());
+    DictProtocol.GetResponse response = FutureUtils.get(service.get(request.build()));
     switch (response.getStatus()) {
       case OK:
         break;
@@ -58,7 +59,8 @@ public class DstDictProxy {
         DictProtocol.GetItemRequest.newBuilder();
     request.setKey(key);
     request.setItemKey(itemKey);
-    DictProtocol.GetItemResponse response = service.getItemValue(request.build());
+    DictProtocol.GetItemResponse response = FutureUtils.get(
+        service.getItemValue(request.build()));
     switch (response.getStatus()) {
       case OK:
         break;
@@ -77,7 +79,8 @@ public class DstDictProxy {
     DictProtocol.PopItemRequest.Builder request = DictProtocol.PopItemRequest.newBuilder();
     request.setKey(key);
     request.setItemKey(itemKey);
-    DictProtocol.PopItemResponse response = service.popItem(request.build());
+    DictProtocol.PopItemResponse response = FutureUtils.get(
+        service.popItem(request.build()));
     switch (response.getStatus()) {
       case OK:
         break;
@@ -97,7 +100,7 @@ public class DstDictProxy {
     request.setKey(key);
     request.setItemKey(itemKey);
     request.setItemValue(itemValue);
-    DictProtocol.PutItemResponse response = service.putItem(request.build());
+    DictProtocol.PutItemResponse response = FutureUtils.get(service.putItem(request.build()));
     switch (response.getStatus()) {
       case OK:
         break;
@@ -119,7 +122,7 @@ public class DstDictProxy {
   public void drop(String key) {
     CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
     request.setKey(key);
-    CommonProtocol.DropResponse response = service.drop(request.build());
+    CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request.build()));
     switch (response.getStatus()) {
       case OK:
         break;
@@ -137,7 +140,7 @@ public class DstDictProxy {
     DictProtocol.RemoveItemRequest.Builder request = DictProtocol.RemoveItemRequest.newBuilder();
     request.setKey(key);
     request.setItemKey(itemKey);
-    DictProtocol.RemoveItemResponse response = service.removeItem(request.build());
+    DictProtocol.RemoveItemResponse response = FutureUtils.get(service.removeItem(request.build()));
     switch (response.getStatus()) {
       case OK:
         break;

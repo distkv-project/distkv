@@ -1,6 +1,7 @@
 package com.distkv.dst.test.server.service;
 
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.service.DstSortedListService;
 import com.distkv.dst.test.supplier.BaseTestSupplier;
@@ -36,15 +37,15 @@ public class SortedListRpcTest extends BaseTestSupplier {
         listEntities.add(builder.build());
       }
       requestBuilder.addAllList(listEntities);
-      SortedListProtocol.PutResponse put =
-          service.put(requestBuilder.build());
+      SortedListProtocol.PutResponse put = FutureUtils.get(
+          service.put(requestBuilder.build()));
 
       SortedListProtocol.TopRequest.Builder topRequestBuilder =
           SortedListProtocol.TopRequest.newBuilder();
       topRequestBuilder.setKey("k1");
       topRequestBuilder.setCount(2);
-      SortedListProtocol.TopResponse top =
-          service.top(topRequestBuilder.build());
+      SortedListProtocol.TopResponse top = FutureUtils.get(
+          service.top(topRequestBuilder.build()));
       Assert.assertEquals(top.getList(0).getMember(), "xswl");
       Assert.assertEquals(top.getList(1).getMember(), "fw");
 
@@ -53,13 +54,13 @@ public class SortedListRpcTest extends BaseTestSupplier {
       putRequestBuilder.setKey("k1");
       putRequestBuilder.setMember("asd");
       putRequestBuilder.setScore(1000);
-      SortedListProtocol.PutMemberResponse response =
-          service.putItem(putRequestBuilder.build());
+      SortedListProtocol.PutMemberResponse response = FutureUtils.get(
+          service.putItem(putRequestBuilder.build()));
 
       topRequestBuilder.setKey("k1");
       topRequestBuilder.setCount(2);
-      SortedListProtocol.TopResponse top1 =
-          service.top(topRequestBuilder.build());
+      SortedListProtocol.TopResponse top1 = FutureUtils.get(
+          service.top(topRequestBuilder.build()));
       Assert.assertEquals(top1.getList(0).getMember(), "asd");
     }
   }

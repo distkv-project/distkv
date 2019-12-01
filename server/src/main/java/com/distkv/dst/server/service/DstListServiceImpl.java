@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+
+import com.distkv.dst.common.utils.FutureUtils;
 import com.google.common.base.Preconditions;
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.core.KVStore;
@@ -38,9 +40,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    CompletableFuture<ListProtocol.PutResponse> responseFuture = new CompletableFuture<>();
-    responseFuture.complete(responseBuilder.build());
-    return responseFuture;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -76,9 +76,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
     }
 
     responseBuilder.setStatus(status);
-    CompletableFuture<ListProtocol.GetResponse> responseFuture = new CompletableFuture<>();
-    responseFuture.complete(responseBuilder.build());
-    return responseFuture;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -98,9 +96,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    CompletableFuture<CommonProtocol.DropResponse> responseFuture = new CompletableFuture<>();
-    responseFuture.complete(responseBuilder.build());
-    return responseFuture;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -120,9 +116,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    CompletableFuture<ListProtocol.LPutResponse> responseFuture = new CompletableFuture<>();
-    responseFuture.complete(responseBuilder.build());
-    return responseFuture;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -142,9 +136,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     responseBuilder.setStatus(status);
-    CompletableFuture<ListProtocol.RPutResponse> responseFuture = new CompletableFuture<>();
-    responseFuture.complete(responseBuilder.build());
-    return responseFuture;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -181,9 +173,7 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
     }
 
     responseBuilder.setStatus(status);
-    CompletableFuture<ListProtocol.RemoveResponse> responseFuture = new CompletableFuture<>();
-    responseFuture.complete(responseBuilder.build());
-    return responseFuture;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -208,8 +198,6 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
       status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);
-    CompletableFuture<ListProtocol.MRemoveResponse> responseFuture = new CompletableFuture<>();
-    responseFuture.complete(responseBuilder.build());
-    return responseFuture;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 }
