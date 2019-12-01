@@ -7,13 +7,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import com.distkv.dst.test.supplier.BaseTestSupplier;
 import com.distkv.dst.test.supplier.ProxyOnClient;
+import java.util.concurrent.CompletableFuture;
 
 public class StringRpcTest extends BaseTestSupplier {
   @Test
   public void testRpcServer() {
-    try (ProxyOnClient<DstStringService> setProxy = new ProxyOnClient<>(
+    try (ProxyOnClient<DstStringService> stringProxy = new ProxyOnClient<>(
         DstStringService.class, rpcServerPort)) {
-      DstStringService stringService = setProxy.getService();
+      DstStringService stringService = stringProxy.getService();
       // Test string put request
       StringProtocol.PutRequest putRequest =
               StringProtocol.PutRequest.newBuilder()
@@ -21,16 +22,24 @@ public class StringRpcTest extends BaseTestSupplier {
                       .setValue("v1")
                       .build();
 
-      StringProtocol.PutResponse putResponse = stringService.put(putRequest);
-      Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
-      // Test string get request
+      CompletableFuture<StringProtocol.PutResponse> putFuture = stringService.put(putRequest);
+      putFuture.whenComplete((response, throwable) -> {
+        Assert.assertEquals(CommonProtocol.Status.OK, response.getStatus());
+        Assert.assertNotNull(throwable);
+      });
+
+      // Test string get request.
       StringProtocol.GetRequest getRequest =
               StringProtocol.GetRequest.newBuilder()
                       .setKey("k1")
                       .build();
 
-      StringProtocol.GetResponse getResponse = stringService.get(getRequest);
-      Assert.assertEquals("v1", getResponse.getValue());
+      CompletableFuture<StringProtocol.GetResponse> getFuture = stringService.get(getRequest);
+      getFuture.whenComplete((response, throwable) -> {
+        Assert.assertEquals(CommonProtocol.Status.OK, response.getStatus());
+        Assert.assertEquals("v1", response.getValue());
+        Assert.assertNotNull(throwable);
+      });
     }
   }
 }

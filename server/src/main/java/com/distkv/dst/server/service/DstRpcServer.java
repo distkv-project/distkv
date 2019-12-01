@@ -1,9 +1,9 @@
 package com.distkv.dst.server.service;
 
-import com.baidu.brpc.server.RpcServer;
-import com.baidu.brpc.server.RpcServerOptions;
+import com.distkv.drpc.Exporter;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
+import com.distkv.dst.rpc.service.DstStringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public class DstRpcServer {
     return kvStore;
   }
 
-  private static String WELCOME_WORD =
+  private static String WELCOME_WORDS =
       "                                   \n" +
       "                                   \n" +
       "    ,---,                  ___     \n" +
@@ -64,28 +64,23 @@ public class DstRpcServer {
       }
     }
 
-    RpcServerOptions options = new RpcServerOptions();
-    // TODO(qwang): This should be configurable.
-    options.setReceiveBufferSize(RECEIVE_BUFFER_SIZE);
-    options.setSendBufferSize(SEND_BUFFER_SIZE);
-    options.setKeepAliveTime(KEEP_ALIVE_TIME);
+    // TODO(qwang): Rename exporter to DrcpServer.
+    Exporter exporter = new Exporter();
+    // TODO(qwang): Refine this protocol name.
+    exporter.setProtocol("dst");
+    exporter.registerService(DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
+    exporter.isLocal(false);
+    exporter.setPort(LISTENING_PORT);
 
-    RpcServer server = new RpcServer(listeningPort, options);
-
-    // Register all services to rpc server.
-    server.registerService(new DstStringServiceImpl(rpcServer.getKvStore()));
-    server.registerService(new DstSetServiceImpl(rpcServer.getKvStore()));
-    server.registerService(new DstListServiceImpl(rpcServer.getKvStore()));
-    server.registerService(new DstDictServiceImpl(rpcServer.getKvStore()));
-    server.registerService(new DstSortedListServiceImpl(rpcServer.getKvStore()));
-    server.start();
-
-    // print welcome word.
-    System.out.println(WELCOME_WORD);
+    // TODO(qwang): Rename this to drpcServer.run();
+    exporter.export();
 
     LOGGER.info("Succeeded to start dst server on port {}.", listeningPort);
 
-    // Run server.
+    // Print welcome words.
+    System.out.println(WELCOME_WORDS);
+
+    // Run Dst server.
     synchronized (DstRpcServer.class) {
       try {
         DstRpcServer.class.wait();
