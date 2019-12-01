@@ -9,7 +9,7 @@ import com.distkv.dst.client.DstClient;
 import com.distkv.dst.parser.DstParser;
 import com.distkv.dst.parser.po.DstParsedResult;
 
-public class DstCmdStarter {
+public class DstCommandLineToolStarter {
 
   private static final String DEFAULT_VERSION = "0.1.0";
 
@@ -28,8 +28,9 @@ public class DstCmdStarter {
 
   public static void main(String[] args) {
 
-    DstCmdStarter dstCmdStarter = new DstCmdStarter();
-    JCommander jcommander = JCommander.newBuilder().addObject(dstCmdStarter).build();
+    DstCommandLineToolStarter dstCommandLineToolStarter = new DstCommandLineToolStarter();
+    JCommander jcommander = JCommander.newBuilder().addObject(
+        dstCommandLineToolStarter).build();
     jcommander.setProgramName("dst");
 
     try {
@@ -51,14 +52,13 @@ public class DstCmdStarter {
 
     DstClient dstClient = null;
     try {
-      dstClient = new DefaultDstClient(String.format("list://%s", ADDRESS));
+      dstClient = new DefaultDstClient(String.format("dst://%s", ADDRESS));
     } catch (Exception e) {
       System.out.println(String.format("Failed to connect to dst server, %s, "
               + "please check your input.", ADDRESS));
       return;
     }
-
-    new DstCmdStarter().loop(dstClient);
+    new DstCommandLineToolStarter().loop(dstClient);
   }
 
   private void loop(DstClient dstClient) {
