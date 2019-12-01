@@ -2,18 +2,21 @@ package com.distkv.dst.rpc.service;
 
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import java.util.concurrent.CompletableFuture;
 
 public interface DstSetService {
-  SetProtocol.PutResponse put(SetProtocol.PutRequest request);
 
-  SetProtocol.GetResponse get(SetProtocol.GetRequest request);
+  CompletableFuture<SetProtocol.PutResponse> put(SetProtocol.PutRequest request);
 
-  SetProtocol.PutItemResponse putItem(SetProtocol.PutItemRequest request);
+  CompletableFuture<SetProtocol.GetResponse> get(SetProtocol.GetRequest request);
 
-  SetProtocol.RemoveItemResponse removeItem(SetProtocol.RemoveItemRequest request);
+  CompletableFuture<SetProtocol.PutItemResponse> putItem(SetProtocol.PutItemRequest request);
 
-  CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
+  CompletableFuture<SetProtocol.RemoveItemResponse> removeItem(
+      SetProtocol.RemoveItemRequest request);
 
-  SetProtocol.ExistsResponse exists(SetProtocol.ExistsRequest request);
+  CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request);
+
+  CompletableFuture<SetProtocol.ExistsResponse> exists(SetProtocol.ExistsRequest request);
 
 }

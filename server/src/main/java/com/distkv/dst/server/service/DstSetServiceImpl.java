@@ -2,6 +2,7 @@ package com.distkv.dst.server.service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
@@ -22,18 +23,20 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
   }
 
   @Override
-  public SetProtocol.PutResponse put(SetProtocol.PutRequest request) {
+  public CompletableFuture<SetProtocol.PutResponse> put(SetProtocol.PutRequest request) {
     SetProtocol.PutResponse.Builder setPutResponseBuilder =
             SetProtocol.PutResponse.newBuilder();
 
     getStore().sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
     setPutResponseBuilder.setStatus(CommonProtocol.Status.OK);
 
-    return setPutResponseBuilder.build();
+    CompletableFuture<SetProtocol.PutResponse> future = new CompletableFuture<>();
+    future.complete(setPutResponseBuilder.build());
+    return future;
   }
 
   @Override
-  public SetProtocol.GetResponse get(SetProtocol.GetRequest request) {
+  public CompletableFuture<SetProtocol.GetResponse> get(SetProtocol.GetRequest request) {
     SetProtocol.GetResponse.Builder setGetResponseBuilder =
             SetProtocol.GetResponse.newBuilder();
 
@@ -47,11 +50,14 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
       setGetResponseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
     }
 
-    return setGetResponseBuilder.build();
+    CompletableFuture<SetProtocol.GetResponse> future = new CompletableFuture<>();
+    future.complete(setGetResponseBuilder.build());
+    return future;
   }
 
   @Override
-  public SetProtocol.PutItemResponse putItem(SetProtocol.PutItemRequest request) {
+  public CompletableFuture<SetProtocol.PutItemResponse> putItem(
+      SetProtocol.PutItemRequest request) {
     SetProtocol.PutItemResponse.Builder builder = SetProtocol.PutItemResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
@@ -61,14 +67,16 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
       status = CommonProtocol.Status.KEY_NOT_FOUND;
     }
     builder.setStatus(status);
-    return builder.build();
+    CompletableFuture<SetProtocol.PutItemResponse> future = new CompletableFuture<>();
+    future.complete(builder.build());
+    return future;
   }
 
   @Override
-  public SetProtocol.RemoveItemResponse removeItem(SetProtocol.RemoveItemRequest request) {
+  public CompletableFuture<SetProtocol.RemoveItemResponse> removeItem(
+      SetProtocol.RemoveItemRequest request) {
     SetProtocol.RemoveItemResponse.Builder setDeleteResponseBuilder =
             SetProtocol.RemoveItemResponse.newBuilder();
-
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
 
     try {
@@ -84,15 +92,15 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     }
 
     setDeleteResponseBuilder.setStatus(status);
-
-    return setDeleteResponseBuilder.build();
+    CompletableFuture<SetProtocol.RemoveItemResponse> future = new CompletableFuture<>();
+    future.complete(setDeleteResponseBuilder.build());
+    return future;
   }
 
   @Override
-  public CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request) {
     CommonProtocol.DropResponse.Builder setDropByKeyResponseBuilder =
             CommonProtocol.DropResponse.newBuilder();
-
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus = getStore().sets().drop(request.getKey());
@@ -106,11 +114,13 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
     }
 
     setDropByKeyResponseBuilder.setStatus(status);
-    return setDropByKeyResponseBuilder.build();
+    CompletableFuture<CommonProtocol.DropResponse> future = new CompletableFuture<>();
+    future.complete(setDropByKeyResponseBuilder.build());
+    return future;
   }
 
   @Override
-  public SetProtocol.ExistsResponse exists(SetProtocol.ExistsRequest request) {
+  public CompletableFuture<SetProtocol.ExistsResponse> exists(SetProtocol.ExistsRequest request) {
     SetProtocol.ExistsResponse.Builder setExistResponseBuilder =
             SetProtocol.ExistsResponse.newBuilder();
 
@@ -125,7 +135,9 @@ public class DstSetServiceImpl extends DstBaseService implements DstSetService {
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }
     setExistResponseBuilder.setStatus(status);
-    return setExistResponseBuilder.build();
+    CompletableFuture<SetProtocol.ExistsResponse> future = new CompletableFuture<>();
+    future.complete(setExistResponseBuilder.build());
+    return future;
   }
 
 }
