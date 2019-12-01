@@ -1,7 +1,5 @@
 package com.distkv.dst.common.worker;
 
-import com.distkv.dst.common.work.DstExecutor;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
