@@ -19,5 +19,6 @@ public interface DstDictService {
 
   CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request);
 
-  CompletableFuture<DictProtocol.RemoveItemResponse> removeItem(DictProtocol.RemoveItemRequest request);
+  CompletableFuture<DictProtocol.RemoveItemResponse> removeItem(
+      DictProtocol.RemoveItemRequest request);
 }

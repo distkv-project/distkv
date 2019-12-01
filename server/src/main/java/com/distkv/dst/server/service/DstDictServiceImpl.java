@@ -21,7 +21,8 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public CompletableFuture<DictProtocol.PutResponse> put(DictProtocol.PutRequest request) {
+  public CompletableFuture<DictProtocol.PutResponse> put(
+      DictProtocol.PutRequest request) {
     DictProtocol.PutResponse.Builder responseBuilder =
           DictProtocol.PutResponse.newBuilder();
     try {
@@ -41,7 +42,8 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public CompletableFuture<DictProtocol.GetResponse> get(DictProtocol.GetRequest request) {
+  public CompletableFuture<DictProtocol.GetResponse> get(
+      DictProtocol.GetRequest request) {
     DictProtocol.GetResponse.Builder responseBuilder =
           DictProtocol.GetResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -60,7 +62,8 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public CompletableFuture<DictProtocol.GetItemResponse> getItemValue(DictProtocol.GetItemRequest request) {
+  public CompletableFuture<DictProtocol.GetItemResponse> getItemValue(
+      DictProtocol.GetItemRequest request) {
     DictProtocol.GetItemResponse.Builder responseBuilder =
           DictProtocol.GetItemResponse.newBuilder();
     final Map<String, String> dict = getStore().dicts().get(request.getKey());
@@ -79,7 +82,8 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public CompletableFuture<DictProtocol.PopItemResponse> popItem(DictProtocol.PopItemRequest request) {
+  public CompletableFuture<DictProtocol.PopItemResponse> popItem(
+      DictProtocol.PopItemRequest request) {
     DictProtocol.PopItemResponse.Builder responseBuilder =
           DictProtocol.PopItemResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -99,7 +103,8 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public CompletableFuture<DictProtocol.PutItemResponse> putItem(DictProtocol.PutItemRequest request) {
+  public CompletableFuture<DictProtocol.PutItemResponse> putItem(
+      DictProtocol.PutItemRequest request) {
     DictProtocol.PutItemResponse.Builder responseBuilder =
           DictProtocol.PutItemResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -113,7 +118,8 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
   }
 
   @Override
-  public CompletableFuture<DictProtocol.RemoveItemResponse> removeItem(DictProtocol.RemoveItemRequest request) {
+  public CompletableFuture<DictProtocol.RemoveItemResponse> removeItem(
+      DictProtocol.RemoveItemRequest request) {
     DictProtocol.RemoveItemResponse.Builder responseBuilder =
           DictProtocol.RemoveItemResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -133,7 +139,8 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
 
 
   @Override
-  public CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(
+      CommonProtocol.DropRequest request) {
     CommonProtocol.DropResponse.Builder responseBuilder =
         CommonProtocol.DropResponse.newBuilder();
     responseBuilder.setStatus(CommonProtocol.Status.OK);
