@@ -5,12 +5,12 @@ import com.distkv.dst.common.exception.DstException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class Utils {
+public class FutureUtils {
 
   /**
    * Get the object from the given future. This will throw DstException.
    */
-  public static <T> T getFromFuture(Future<T> future) throws DstException {
+  public static <T> T get(Future<T> future) throws DstException {
     try {
       return future.get();
     } catch (InterruptedException e) {

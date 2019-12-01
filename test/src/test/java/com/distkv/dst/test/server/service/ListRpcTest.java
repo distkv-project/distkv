@@ -1,6 +1,6 @@
 package com.distkv.dst.test.server.service;
 
-import com.distkv.dst.common.utils.Utils;
+import com.distkv.dst.common.utils.FutureUtils;
 import com.google.common.collect.ImmutableList;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
@@ -29,7 +29,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       putRequestBuilder.setKey("k1");
       values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse response = Utils.getFromFuture(
+      ListProtocol.PutResponse response = FutureUtils.get(
           listService.put(putRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, response.getStatus());
 
@@ -37,7 +37,7 @@ public class ListRpcTest extends BaseTestSupplier {
       ListProtocol.GetRequest.Builder getRequestBuilder = ListProtocol.GetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       getRequestBuilder.setKey("k1");
-      ListProtocol.GetResponse getResponse = Utils.getFromFuture(
+      ListProtocol.GetResponse getResponse = FutureUtils.get(
           listService.get(getRequestBuilder.build()));
       Assert.assertEquals(dummyListTestData(), getResponse.getValuesList());
 
@@ -45,7 +45,7 @@ public class ListRpcTest extends BaseTestSupplier {
       ListProtocol.GetRequest.Builder getRequest2Builder = ListProtocol.GetRequest.newBuilder();
       getRequest2Builder.setKey("k2");
       getRequest2Builder.setType(ListProtocol.GetType.GET_ALL);
-      ListProtocol.GetResponse getResponse2 = Utils.getFromFuture(
+      ListProtocol.GetResponse getResponse2 = FutureUtils.get(
           listService.get(getRequest2Builder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, getResponse2.getStatus());
     }
@@ -62,7 +62,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       putRequestBuilder.setKey("k1");
       values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse putResponse = Utils.getFromFuture(
+      ListProtocol.PutResponse putResponse = FutureUtils.get(
           listService.put(putRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
@@ -71,13 +71,13 @@ public class ListRpcTest extends BaseTestSupplier {
           = CommonProtocol.DropRequest.newBuilder();
       dropRequestBuilder.setKey("k1");
 
-      CommonProtocol.DropResponse dropResponse = Utils.getFromFuture(
+      CommonProtocol.DropResponse dropResponse = FutureUtils.get(
           listService.drop(dropRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, dropResponse.getStatus());
 
       // Test drop a non-exist key.
       dropRequestBuilder.setKey("k2");
-      CommonProtocol.DropResponse dropResponse2 = Utils.getFromFuture(
+      CommonProtocol.DropResponse dropResponse2 = FutureUtils.get(
           listService.drop(dropRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, dropResponse2.getStatus());
     }
@@ -95,7 +95,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       putRequestBuilder.setKey("k1");
       values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse putResponse = Utils.getFromFuture(
+      ListProtocol.PutResponse putResponse = FutureUtils.get(
           listService.put(putRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
@@ -107,7 +107,7 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesLput.add("v3");
       valuesLput.add("v4");
       lputRequestBuilder.addAllValues(valuesLput);
-      ListProtocol.LPutResponse lputResponse = Utils.getFromFuture(
+      ListProtocol.LPutResponse lputResponse = FutureUtils.get(
           listService.lput(lputRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, lputResponse.getStatus());
 
@@ -116,7 +116,7 @@ public class ListRpcTest extends BaseTestSupplier {
           = ListProtocol.GetRequest.newBuilder();
       getRequestBuilder.setKey("k1");
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-      ListProtocol.GetResponse getResponse = Utils.getFromFuture(
+      ListProtocol.GetResponse getResponse = FutureUtils.get(
           listService.get(getRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, getResponse.getStatus());
       Assert.assertEquals(ImmutableList.of("v3", "v4", "v0", "v1", "v2"),
@@ -129,7 +129,7 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesLput2.add("v4");
       valuesLput2.forEach(value -> lputRequestBuilder.addValues(value));
 
-      ListProtocol.LPutResponse lputResponse2 = Utils.getFromFuture(
+      ListProtocol.LPutResponse lputResponse2 = FutureUtils.get(
           listService.lput(lputRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, lputResponse2.getStatus());
     }
@@ -148,7 +148,7 @@ public class ListRpcTest extends BaseTestSupplier {
       putRequestBuilder.setKey("k1");
       values.forEach(value -> putRequestBuilder.addValues(value));
 
-      ListProtocol.PutResponse putResponse = Utils.getFromFuture(
+      ListProtocol.PutResponse putResponse = FutureUtils.get(
           listService.put(putRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
@@ -161,7 +161,7 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesRput.add("v4");
       valuesRput.forEach(value -> rputRequestBuilder.addValues(value));
 
-      ListProtocol.RPutResponse rputResponse = Utils.getFromFuture(
+      ListProtocol.RPutResponse rputResponse = FutureUtils.get(
           listService.rput(rputRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, rputResponse.getStatus());
 
@@ -171,7 +171,7 @@ public class ListRpcTest extends BaseTestSupplier {
       getRequestBuilder.setKey("k1");
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
 
-      ListProtocol.GetResponse getResponse = Utils.getFromFuture(
+      ListProtocol.GetResponse getResponse = FutureUtils.get(
           listService.get(getRequestBuilder.build()));
       Assert.assertEquals(ImmutableList.of("v0", "v1", "v2", "v3", "v4"),
           getResponse.getValuesList());
@@ -182,7 +182,7 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesRput2.add("v3");
       valuesRput2.add("v4");
       valuesRput2.forEach(value -> rputRequestBuilder.addValues(value));
-      ListProtocol.RPutResponse rputResponse2 = Utils.getFromFuture(
+      ListProtocol.RPutResponse rputResponse2 = FutureUtils.get(
           listService.rput(rputRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, rputResponse2.getStatus());
     }
@@ -201,7 +201,7 @@ public class ListRpcTest extends BaseTestSupplier {
       putRequestBuilder.setKey("k1");
       values.forEach(value -> putRequestBuilder.addValues(value));
 
-      ListProtocol.PutResponse putResponse = Utils.getFromFuture(
+      ListProtocol.PutResponse putResponse = FutureUtils.get(
           listService.put(putRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
@@ -212,7 +212,7 @@ public class ListRpcTest extends BaseTestSupplier {
       removeOneRequestBuilder.setKey("k1");
       removeOneRequestBuilder.setIndex(1);
 
-      ListProtocol.RemoveResponse removeOneResponse = Utils.getFromFuture(
+      ListProtocol.RemoveResponse removeOneResponse = FutureUtils.get(
           listService.remove(removeOneRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, removeOneResponse.getStatus());
 
@@ -222,7 +222,7 @@ public class ListRpcTest extends BaseTestSupplier {
       getRequestBuilder.setKey("k1");
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
 
-      ListProtocol.GetResponse getResponse = Utils.getFromFuture(
+      ListProtocol.GetResponse getResponse = FutureUtils.get(
           listService.get(getRequestBuilder.build()));
       Assert.assertEquals(ImmutableList.of("v0", "v2"), getResponse.getValuesList());
 
@@ -233,14 +233,14 @@ public class ListRpcTest extends BaseTestSupplier {
       removeRangeRequestBuilder.setKey("k1");
       removeRangeRequestBuilder.setFrom(0);
       removeRangeRequestBuilder.setEnd(1);
-      ListProtocol.RemoveResponse removeRangeResponse = Utils.getFromFuture(
+      ListProtocol.RemoveResponse removeRangeResponse = FutureUtils.get(
           listService.remove(removeRangeRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, removeRangeResponse.getStatus());
 
       // Test remove range with a non-exist key.
       removeRangeRequestBuilder.setKey("k2");
       removeRangeRequestBuilder.setIndex(1);
-      ListProtocol.RemoveResponse removeResponse2 = Utils.getFromFuture(
+      ListProtocol.RemoveResponse removeResponse2 = FutureUtils.get(
           listService.remove(removeRangeRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, removeResponse2.getStatus());
     }
@@ -258,7 +258,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       putRequestBuilder.setKey("k1");
       values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse putResponse = Utils.getFromFuture(
+      ListProtocol.PutResponse putResponse = FutureUtils.get(
           listService.put(putRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
@@ -268,7 +268,7 @@ public class ListRpcTest extends BaseTestSupplier {
       multipleRemoveRequestBuilder.setKey("k1");
       multipleRemoveRequestBuilder.addIndexes(1);
       multipleRemoveRequestBuilder.addIndexes(0);
-      ListProtocol.MRemoveResponse multipleRemoveResponse = Utils.getFromFuture(
+      ListProtocol.MRemoveResponse multipleRemoveResponse = FutureUtils.get(
           listService.multipleRemove(multipleRemoveRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, multipleRemoveResponse.getStatus());
 
@@ -277,14 +277,14 @@ public class ListRpcTest extends BaseTestSupplier {
           = ListProtocol.GetRequest.newBuilder();
       getRequestBuilder.setKey("k1");
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-      ListProtocol.GetResponse getResponse = Utils.getFromFuture(
+      ListProtocol.GetResponse getResponse = FutureUtils.get(
           listService.get(getRequestBuilder.build()));
       Assert.assertEquals(ImmutableList.of("v2"), getResponse.getValuesList());
 
       // Test multi-remove a non-exist key.
       multipleRemoveRequestBuilder.setKey("k2");
       multipleRemoveRequestBuilder.addIndexes(1);
-      ListProtocol.MRemoveResponse multipleRemoveResponse2 = Utils.getFromFuture(
+      ListProtocol.MRemoveResponse multipleRemoveResponse2 = FutureUtils.get(
           listService.multipleRemove(multipleRemoveRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND,
           multipleRemoveResponse2.getStatus());
