@@ -1,7 +1,6 @@
 package com.distkv.dst.test.server.service;
 
 import com.distkv.dst.common.utils.Utils;
-import com.distkv.dst.test.supplier.TestUtil;
 import com.google.common.collect.ImmutableList;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
