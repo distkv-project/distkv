@@ -80,19 +80,4 @@ public class TestUtil {
 
   }
 
-  /**
-   * A helper method to get object from complete future.
-   *
-   * Note that this method is only used for tests.
-   */
-  public static <T> T getCompleteFuture(CompletableFuture<T> future) {
-    try {
-      return future.get();
-    } catch (ExecutionException e) {
-      throw new RuntimeException(e);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
 }
