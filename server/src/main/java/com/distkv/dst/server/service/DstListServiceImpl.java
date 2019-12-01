@@ -187,7 +187,8 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public CompletableFuture<ListProtocol.MRemoveResponse> multipleRemove(ListProtocol.MRemoveRequest request) {
+  public CompletableFuture<ListProtocol.MRemoveResponse> multipleRemove(
+      ListProtocol.MRemoveRequest request) {
     ListProtocol.MRemoveResponse.Builder responseBuilder =
             ListProtocol.MRemoveResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;

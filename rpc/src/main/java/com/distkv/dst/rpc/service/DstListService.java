@@ -18,6 +18,7 @@ public interface DstListService {
 
   CompletableFuture<ListProtocol.RemoveResponse> remove(ListProtocol.RemoveRequest request);
 
-  CompletableFuture<ListProtocol.MRemoveResponse> multipleRemove(ListProtocol.MRemoveRequest request);
+  CompletableFuture<ListProtocol.MRemoveResponse> multipleRemove(
+      ListProtocol.MRemoveRequest request);
 
 }
