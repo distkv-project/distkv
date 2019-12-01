@@ -8,7 +8,6 @@ import com.distkv.dst.rpc.service.DstListService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import com.distkv.dst.test.supplier.BaseTestSupplier;
-import com.distkv.dst.test.supplier.ListRpcTestUtil;
 import com.distkv.dst.test.supplier.ProxyOnClient;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,9 +107,9 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesLput.add("v3");
       valuesLput.add("v4");
       lputRequestBuilder.addAllValues(valuesLput);
-      ListProtocol.LPutResponse lPutResponse = TestUtil.getCompleteFuture(
+      ListProtocol.LPutResponse lputResponse = TestUtil.getCompleteFuture(
           listService.lput(lputRequestBuilder.build()));
-      Assert.assertEquals(CommonProtocol.Status.OK, lPutResponse.getStatus());
+      Assert.assertEquals(CommonProtocol.Status.OK, lputResponse.getStatus());
 
       // Get.
       ListProtocol.GetRequest.Builder getRequestBuilder
@@ -130,9 +129,9 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesLput2.add("v4");
       valuesLput2.forEach(value -> lputRequestBuilder.addValues(value));
 
-      ListProtocol.LPutResponse lPutResponse2 = TestUtil.getCompleteFuture(
+      ListProtocol.LPutResponse lputResponse2 = TestUtil.getCompleteFuture(
           listService.lput(lputRequestBuilder.build()));
-      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, lPutResponse2.getStatus());
+      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, lputResponse2.getStatus());
     }
   }
 
@@ -162,9 +161,9 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesRput.add("v4");
       valuesRput.forEach(value -> rputRequestBuilder.addValues(value));
 
-      ListProtocol.RPutResponse rPutResponse = TestUtil.getCompleteFuture(
+      ListProtocol.RPutResponse rputResponse = TestUtil.getCompleteFuture(
           listService.rput(rputRequestBuilder.build()));
-      Assert.assertEquals(CommonProtocol.Status.OK, rPutResponse.getStatus());
+      Assert.assertEquals(CommonProtocol.Status.OK, rputResponse.getStatus());
 
       // Get.
       ListProtocol.GetRequest.Builder getRequestBuilder
@@ -183,9 +182,9 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesRput2.add("v3");
       valuesRput2.add("v4");
       valuesRput2.forEach(value -> rputRequestBuilder.addValues(value));
-      ListProtocol.RPutResponse rPutResponse2 = TestUtil.getCompleteFuture(
+      ListProtocol.RPutResponse rputResponse2 = TestUtil.getCompleteFuture(
           listService.rput(rputRequestBuilder.build()));
-      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, rPutResponse2.getStatus());
+      Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, rputResponse2.getStatus());
     }
   }
 

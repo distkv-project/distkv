@@ -3,6 +3,7 @@ package com.distkv.dst.server.service;
 import com.distkv.drpc.Exporter;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
+import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstStringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,8 +69,10 @@ public class DstRpcServer {
     Exporter exporter = new Exporter();
     // TODO(qwang): Refine this protocol name.
     exporter.setProtocol("dst");
-    exporter.registerService(
-        DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(DstStringService.class,
+        new DstStringServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(DstListService.class,
+        new DstListServiceImpl(rpcServer.getKvStore()));
     exporter.isLocal(false);
     exporter.setPort(listeningPort);
 
