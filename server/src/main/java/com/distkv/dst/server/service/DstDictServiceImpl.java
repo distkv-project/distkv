@@ -146,7 +146,6 @@ public class DstDictServiceImpl extends DstBaseService implements DstDictService
     responseBuilder.setStatus(CommonProtocol.Status.OK);
     if (!getStore().dicts().drop(request.getKey())) {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-      return FutureUtils.newCompletableFuture(responseBuilder.build());
     }
     return FutureUtils.newCompletableFuture(responseBuilder.build());
   }

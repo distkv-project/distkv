@@ -15,7 +15,6 @@ import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.service.DstSortedListService;
 import com.distkv.dst.server.base.DstBaseService;
-import sun.jvm.hotspot.debugger.win32.coff.COMDATSelectionTypes;
 
 
 public class DstSortedListServiceImpl extends DstBaseService implements DstSortedListService {
