@@ -3,6 +3,7 @@ package com.distkv.dst.client;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.service.DstSortedListService;
@@ -29,8 +30,8 @@ public class DstSortedListProxy {
       listEntities.add(builder.build());
     }
     requestBuilder.addAllList(listEntities);
-    SortedListProtocol.PutResponse response =
-        service.put(requestBuilder.build());
+    SortedListProtocol.PutResponse response = FutureUtils.get(
+        service.put(requestBuilder.build()));
     checkException(response.getStatus(),key);
   }
 
@@ -40,8 +41,8 @@ public class DstSortedListProxy {
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
     requestBuilder.setDelta(delta);
-    SortedListProtocol.IncrScoreResponse response =
-        service.incrItem(requestBuilder.build());
+    SortedListProtocol.IncrScoreResponse response = FutureUtils.get(
+        service.incrItem(requestBuilder.build()));
     checkException(response.getStatus(),key);
   }
 
@@ -50,8 +51,8 @@ public class DstSortedListProxy {
         SortedListProtocol.TopRequest.newBuilder();
     topRequestBuilder.setKey(key);
     topRequestBuilder.setCount(topNum);
-    SortedListProtocol.TopResponse response =
-        service.top(topRequestBuilder.build());
+    SortedListProtocol.TopResponse response = FutureUtils.get(
+        service.top(topRequestBuilder.build()));
     checkException(response.getStatus(),key);
     LinkedList<SortedListEntity> list = new LinkedList<>();
     for (SortedListProtocol.SortedListEntity entity : response.getListList()) {
@@ -64,8 +65,8 @@ public class DstSortedListProxy {
     CommonProtocol.DropRequest.Builder requestBuilder =
         CommonProtocol.DropRequest.newBuilder();
     requestBuilder.setKey(key);
-    CommonProtocol.DropResponse response =
-        service.drop(requestBuilder.build());
+    CommonProtocol.DropResponse response = FutureUtils.get(
+        service.drop(requestBuilder.build()));
     checkException(response.getStatus(),key);
   }
 
@@ -74,8 +75,8 @@ public class DstSortedListProxy {
         SortedListProtocol.DelMemberRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
-    SortedListProtocol.DelMemberResponse response =
-        service.delItem(requestBuilder.build());
+    SortedListProtocol.DelMemberResponse response = FutureUtils.get(
+        service.delItem(requestBuilder.build()));
     checkException(response.getStatus(),key);
   }
 
@@ -85,8 +86,8 @@ public class DstSortedListProxy {
     requestBuilder.setKey(key);
     requestBuilder.setMember(entity.getMember());
     requestBuilder.setScore(entity.getScore());
-    SortedListProtocol.PutMemberResponse response =
-        service.putItem(requestBuilder.build());
+    SortedListProtocol.PutMemberResponse response = FutureUtils.get(
+        service.putItem(requestBuilder.build()));
     checkException(response.getStatus(),key);
   }
 
