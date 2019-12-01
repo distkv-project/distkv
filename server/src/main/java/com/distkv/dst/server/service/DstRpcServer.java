@@ -3,8 +3,11 @@ package com.distkv.dst.server.service;
 import com.distkv.drpc.Exporter;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
+import com.distkv.dst.rpc.service.DstDictService;
 import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstStringService;
+import com.distkv.dst.rpc.service.DstSetService;
+import com.distkv.dst.rpc.service.DstSortedListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +16,6 @@ public class DstRpcServer {
   private static final Logger LOGGER = LoggerFactory.getLogger(DstRpcServer.class);
 
   private static final int LISTENING_PORT = 8082;
-
-  private static final int RECEIVE_BUFFER_SIZE = 64 * 1024 * 1024;
-
-  private static final int SEND_BUFFER_SIZE = 64 * 1024 * 1024;
-
-  private static final int KEEP_ALIVE_TIME = 20;
 
   // TODO(qwang): This should be a Dst Runtime.
   private KVStore kvStore;
@@ -69,10 +66,16 @@ public class DstRpcServer {
     Exporter exporter = new Exporter();
     // TODO(qwang): Refine this protocol name.
     exporter.setProtocol("dst");
-    exporter.registerService(DstStringService.class,
-        new DstStringServiceImpl(rpcServer.getKvStore()));
-    exporter.registerService(DstListService.class,
-        new DstListServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(
+        DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(
+        DstListService.class, new DstListServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(
+        DstSetService.class, new DstSetServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(
+        DstDictService.class, new DstDictServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(
+        DstSortedListService.class, new DstSortedListServiceImpl(rpcServer.getKvStore()));
     exporter.isLocal(false);
     exporter.setPort(listeningPort);
 
