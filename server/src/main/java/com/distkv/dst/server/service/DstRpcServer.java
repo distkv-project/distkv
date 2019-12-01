@@ -68,9 +68,10 @@ public class DstRpcServer {
     Exporter exporter = new Exporter();
     // TODO(qwang): Refine this protocol name.
     exporter.setProtocol("dst");
-    exporter.registerService(DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(
+        DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
     exporter.isLocal(false);
-    exporter.setPort(LISTENING_PORT);
+    exporter.setPort(listeningPort);
 
     // TODO(qwang): Rename this to drpcServer.run();
     exporter.export();
