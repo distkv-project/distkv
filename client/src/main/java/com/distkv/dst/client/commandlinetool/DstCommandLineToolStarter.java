@@ -29,19 +29,19 @@ public class DstCommandLineToolStarter {
   public static void main(String[] args) {
 
     DstCommandLineToolStarter dstCommandLineToolStarter = new DstCommandLineToolStarter();
-    JCommander jCommander = JCommander.newBuilder().addObject(
+    JCommander jcommander = JCommander.newBuilder().addObject(
         dstCommandLineToolStarter).build();
-    jCommander.setProgramName("dst");
+    jcommander.setProgramName("dst");
 
     try {
-      jCommander.parse(args);
+      jcommander.parse(args);
     } catch (ParameterException e) {
-      jCommander.usage();
+      jcommander.usage();
       return;
     }
 
     if (HELP) {
-      jCommander.usage();
+      jcommander.usage();
       return;
     }
 
