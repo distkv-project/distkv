@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class TestUtil {
@@ -77,4 +79,20 @@ public class TestUtil {
     }
 
   }
+
+  /**
+   * A helper method to get object from complete future.
+   *
+   * Note that this method is only used for tests.
+   */
+  public static <T> T getCompleteFuture(CompletableFuture<T> future) {
+    try {
+      return future.get();
+    } catch (ExecutionException e) {
+      throw new RuntimeException(e);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }

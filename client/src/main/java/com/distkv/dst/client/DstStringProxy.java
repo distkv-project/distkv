@@ -26,6 +26,7 @@ public class DstStringProxy {
 
     CompletableFuture<StringProtocol.PutResponse> responseFuture = service.put(request);
     StringProtocol.PutResponse response = null;
+
     try {
       response = responseFuture.get();
     } catch (ExecutionException e) {
@@ -33,6 +34,7 @@ public class DstStringProxy {
     } catch (InterruptedException e) {
       // TODO(qwang): How to handle this exception?
     }
+
     Preconditions.checkNotNull(response);
 
     if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -50,9 +52,9 @@ public class DstStringProxy {
     StringProtocol.GetResponse response = null;
     try {
       response = responseFuture.get();
-    } catch (InterruptedException e) {
-      // TODO(qwang): How to handle this exception?
     } catch (ExecutionException e) {
+      // TODO(qwang): How to handle this exception?
+    } catch (InterruptedException e) {
       // TODO(qwang): How to handle this exception?
     }
     Preconditions.checkNotNull(response);

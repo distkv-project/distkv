@@ -3,10 +3,11 @@ package com.distkv.dst.test.supplier;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.service.DstListService;
+import java.util.concurrent.CompletableFuture;
 
 public class ListRpcTestUtil {
 
-  //all types of requests
+  // All types of requests.
   public static ListProtocol.PutRequest.Builder putRequestBuilder() {
     return ListProtocol.PutRequest.newBuilder();
   }
@@ -35,46 +36,35 @@ public class ListRpcTestUtil {
     return ListProtocol.MRemoveRequest.newBuilder();
   }
 
-  ////all types of response
-  public static ListProtocol.PutResponse putResponseBuilder(
-        ListProtocol.PutRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+  // All types of responses.
+  // TODO(qwang): Remove this methods.
+  public static CompletableFuture<ListProtocol.PutResponse> putResponseBuilder(
+        ListProtocol.PutRequest.Builder builder, ProxyOnClient<DstListService> listProxy) {
     ListProtocol.PutRequest build = builder.build();
-    return setProxy.getService().put(build);
+    return listProxy.getService().put(build);
   }
 
-  public static ListProtocol.GetResponse getResponseBuilder(
-        ListProtocol.GetRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+  public static CompletableFuture<ListProtocol.GetResponse> getResponseBuilder(
+        ListProtocol.GetRequest.Builder builder, ProxyOnClient<DstListService> listProxy) {
     ListProtocol.GetRequest build = builder.build();
-    return setProxy.getService().get(build);
+    return listProxy.getService().get(build);
   }
 
-  public static CommonProtocol.DropResponse dropResponseBuilder(
-          CommonProtocol.DropRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
-    CommonProtocol.DropRequest build = builder.build();
-    return setProxy.getService().drop(build);
-  }
-
-  public static ListProtocol.LPutResponse lputResponseBuilder(
-        ListProtocol.LPutRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
-    ListProtocol.LPutRequest build = builder.build();
-    return setProxy.getService().lput(build);
-  }
-
-  public static ListProtocol.RPutResponse rputResponseBuilder(
-        ListProtocol.RPutRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+  public static CompletableFuture<ListProtocol.RPutResponse> rputResponseBuilder(
+        ListProtocol.RPutRequest.Builder builder, ProxyOnClient<DstListService> listProxy) {
     ListProtocol.RPutRequest build = builder.build();
-    return setProxy.getService().rput(build);
+    return listProxy.getService().rput(build);
   }
 
-  public static ListProtocol.RemoveResponse removeResponseBuilder(
-        ListProtocol.RemoveRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+  public static CompletableFuture<ListProtocol.RemoveResponse> removeResponseBuilder(
+        ListProtocol.RemoveRequest.Builder builder, ProxyOnClient<DstListService> listProxy) {
     ListProtocol.RemoveRequest build = builder.build();
-    return setProxy.getService().remove(build);
+    return listProxy.getService().remove(build);
   }
 
-  public static ListProtocol.MRemoveResponse multipleRemoveResponseBuilder(
-        ListProtocol.MRemoveRequest.Builder builder, ProxyOnClient<DstListService> setProxy) {
+  public static CompletableFuture<ListProtocol.MRemoveResponse> multipleRemoveResponseBuilder(
+        ListProtocol.MRemoveRequest.Builder builder, ProxyOnClient<DstListService> listProxy) {
     ListProtocol.MRemoveRequest build = builder.build();
-    return setProxy.getService().multipleRemove(build);
+    return listProxy.getService().multipleRemove(build);
   }
 }

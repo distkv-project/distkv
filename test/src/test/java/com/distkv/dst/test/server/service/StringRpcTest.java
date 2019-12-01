@@ -23,6 +23,7 @@ public class StringRpcTest extends BaseTestSupplier {
                       .build();
 
       CompletableFuture<StringProtocol.PutResponse> putFuture = stringService.put(putRequest);
+      // TODO(qwang): Use get instead of whenComplete.
       putFuture.whenComplete((response, throwable) -> {
         Assert.assertEquals(CommonProtocol.Status.OK, response.getStatus());
         Assert.assertNotNull(throwable);
