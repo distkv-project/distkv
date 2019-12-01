@@ -1,5 +1,6 @@
 package com.distkv.dst.server.service;
 
+import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.server.base.DstBaseService;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
@@ -25,9 +26,7 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
             StringProtocol.PutResponse.newBuilder();
     getStore().strs().put(request.getKey(), request.getValue());
     responseBuilder.setStatus(CommonProtocol.Status.OK);
-    CompletableFuture<StringProtocol.PutResponse> future = new CompletableFuture<>();
-    future.complete(responseBuilder.build());
-    return future;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -42,9 +41,7 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
     } else {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
     }
-    CompletableFuture<StringProtocol.GetResponse> future = new CompletableFuture<>();
-    future.complete(responseBuilder.build());
-    return future;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
   @Override
@@ -56,9 +53,7 @@ public class DstStringServiceImpl extends DstBaseService implements DstStringSer
     if (!getStore().strs().drop(request.getKey())) {
       responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
     }
-    CompletableFuture<CommonProtocol.DropResponse> future = new CompletableFuture<>();
-    future.complete(responseBuilder.build());
-    return future;
+    return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
 
 }
