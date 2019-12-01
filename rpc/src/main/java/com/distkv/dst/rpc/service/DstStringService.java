@@ -1,17 +1,15 @@
 package com.distkv.dst.rpc.service;
 
-import com.baidu.brpc.protocol.BrpcMeta;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface DstStringService {
 
-  @BrpcMeta(serviceName = "DstStringService", methodName = "put")
-  StringProtocol.PutResponse put(StringProtocol.PutRequest request);
+  CompletableFuture<StringProtocol.PutResponse> put(StringProtocol.PutRequest request);
 
-  @BrpcMeta(serviceName = "DstStringService", methodName = "get")
-  StringProtocol.GetResponse get(StringProtocol.GetRequest request);
+  CompletableFuture<StringProtocol.GetResponse> get(StringProtocol.GetRequest request);
 
-  @BrpcMeta(serviceName = "DstStringService", methodName = "drop")
-  CommonProtocol.DropResponse drop(CommonProtocol.DropRequest request);
+  CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request);
 }

@@ -11,8 +11,8 @@
 
     <artifactId>dst-rpc</artifactId>
     <properties>
-        <brpc.version>2.5.1</brpc.version>
         <protobuf.version>3.8.0</protobuf.version>
+        <drpc.version>0.1.0-SNAPSHOT</drpc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.baidu</groupId>
-            <artifactId>brpc-java</artifactId>
-            <version>${brpc.version}</version>
+            <groupId>com.distkv</groupId>
+            <artifactId>drpc-protocol</artifactId>
+            <version>${drpc.version}</version>
         </dependency>
     </dependencies>
 

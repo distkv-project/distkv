@@ -2,6 +2,7 @@ package com.distkv.dst.client;
 
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
+import com.distkv.dst.common.utils.Utils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.service.DstListService;
@@ -15,12 +16,12 @@ public class DstListProxy {
     this.service = service;
   }
 
-  public void put(String key, List<String> value) {
+  public void put(String key, List<String> value) throws DstException {
     ListProtocol.PutRequest request = ListProtocol.PutRequest.newBuilder()
           .setKey(key)
           .addAllValues(value)
           .build();
-    ListProtocol.PutResponse response = service.put(request);
+    ListProtocol.PutResponse response = Utils.getFromFuture(service.put(request));
     if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
@@ -31,7 +32,7 @@ public class DstListProxy {
         .setType(ListProtocol.GetType.GET_ALL)
         .setKey(key)
         .build();
-    ListProtocol.GetResponse response = service.get(request);
+    ListProtocol.GetResponse response = Utils.getFromFuture(service.get(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -46,7 +47,7 @@ public class DstListProxy {
             .setKey(key)
             .setIndex(index)
             .build();
-    ListProtocol.GetResponse response = service.get(request);
+    ListProtocol.GetResponse response = Utils.getFromFuture(service.get(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -62,7 +63,7 @@ public class DstListProxy {
             .setFrom(from)
             .setEnd(end)
             .build();
-    ListProtocol.GetResponse response = service.get(request);
+    ListProtocol.GetResponse response = Utils.getFromFuture(service.get(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -75,7 +76,7 @@ public class DstListProxy {
     CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
           .setKey(key)
           .build();
-    CommonProtocol.DropResponse response = service.drop(request);
+    CommonProtocol.DropResponse response = Utils.getFromFuture(service.drop(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -88,7 +89,7 @@ public class DstListProxy {
           .setKey(key)
           .addAllValues(value)
           .build();
-    ListProtocol.LPutResponse response = service.lput(request);
+    ListProtocol.LPutResponse response = Utils.getFromFuture(service.lput(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -101,7 +102,7 @@ public class DstListProxy {
           .setKey(key)
           .addAllValues(value)
           .build();
-    ListProtocol.RPutResponse response = service.rput(request);
+    ListProtocol.RPutResponse response = Utils.getFromFuture(service.rput(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -115,7 +116,7 @@ public class DstListProxy {
             .setKey(key)
             .setIndex(index)
             .build();
-    ListProtocol.RemoveResponse response = service.remove(request);
+    ListProtocol.RemoveResponse response = Utils.getFromFuture(service.remove(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -130,7 +131,7 @@ public class DstListProxy {
             .setFrom(from)
             .setEnd(end)
             .build();
-    ListProtocol.RemoveResponse response = service.remove(request);
+    ListProtocol.RemoveResponse response = Utils.getFromFuture(service.remove(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
@@ -143,7 +144,7 @@ public class DstListProxy {
           .setKey(key)
           .addAllIndexes(indexes)
           .build();
-    ListProtocol.MRemoveResponse response = service.multipleRemove(request);
+    ListProtocol.MRemoveResponse response = Utils.getFromFuture(service.multipleRemove(request));
     if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
       throw new KeyNotFoundException(key);
     } else if (response.getStatus() != CommonProtocol.Status.OK) {

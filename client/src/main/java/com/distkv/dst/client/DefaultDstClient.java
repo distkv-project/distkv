@@ -1,9 +1,6 @@
 package com.distkv.dst.client;
 
-import com.baidu.brpc.client.BrpcProxy;
-import com.baidu.brpc.client.RpcClient;
-import com.baidu.brpc.client.RpcClientOptions;
-import com.baidu.brpc.protocol.Options;
+import com.distkv.drpc.Reference;
 import com.distkv.dst.rpc.service.DstDictService;
 import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstSetService;
@@ -11,16 +8,6 @@ import com.distkv.dst.rpc.service.DstSortedListService;
 import com.distkv.dst.rpc.service.DstStringService;
 
 public class DefaultDstClient implements DstClient {
-
-  private RpcClient stringClient;
-
-  private RpcClient listClient;
-
-  private RpcClient setClient;
-
-  private RpcClient dictClient;
-
-  private RpcClient sortedListClient;
 
   private DstStringProxy stringProxy;
 
@@ -34,30 +21,35 @@ public class DefaultDstClient implements DstClient {
 
 
   public DefaultDstClient(String serverAddress) {
-    RpcClientOptions clientOptions = new RpcClientOptions();
-    clientOptions.setProtocolType(Options.ProtocolType.PROTOCOL_BAIDU_STD_VALUE);
-    clientOptions.setWriteTimeoutMillis(1000);
-    clientOptions.setReadTimeoutMillis(1000);
-    clientOptions.setMaxTotalConnections(1000);
-    clientOptions.setMinIdleConnections(10);
+    // Setup string proxy.
+    Reference<DstStringService> stringRpcProxy = new Reference<>();
+    stringRpcProxy.setAddress(serverAddress);
+    stringRpcProxy.setInterfaceClass(DstStringService.class);
+    stringProxy = new DstStringProxy(stringRpcProxy.getReference());
 
-    stringClient = new RpcClient(serverAddress, clientOptions);
-    listClient = new RpcClient(serverAddress, clientOptions);
-    setClient = new RpcClient(serverAddress, clientOptions);
-    dictClient = new RpcClient(serverAddress, clientOptions);
-    sortedListClient = new RpcClient(serverAddress, clientOptions);
-    DstStringService stringService = BrpcProxy.getProxy(stringClient, DstStringService.class);
-    DstListService listService = BrpcProxy.getProxy(listClient, DstListService.class);
-    DstSetService setService = BrpcProxy.getProxy(setClient, DstSetService.class);
-    DstDictService dictService = BrpcProxy.getProxy(dictClient, DstDictService.class);
-    DstSortedListService sortedListService =
-        BrpcProxy.getProxy(sortedListClient, DstSortedListService.class);
+    // Setup list proxy.
+    Reference<DstListService> listRpcProxy = new Reference<>();
+    listRpcProxy.setAddress(serverAddress);
+    listRpcProxy.setInterfaceClass(DstListService.class);
+    listProxy = new DstListProxy(listRpcProxy.getReference());
 
-    stringProxy = new DstStringProxy(stringService);
-    listProxy = new DstListProxy(listService);
-    setProxy = new DstSetProxy(setService);
-    dictProxy = new DstDictProxy(dictService);
-    sortedListProxy = new DstSortedListProxy(sortedListService);
+    // Setup set proxy.
+    Reference<DstSetService> setRpcProxy = new Reference<>();
+    setRpcProxy.setAddress(serverAddress);
+    setRpcProxy.setInterfaceClass(DstSetService.class);
+    setProxy = new DstSetProxy(setRpcProxy.getReference());
+
+    // Setup dict proxy.
+    Reference<DstDictService> dictRpcProxy = new Reference<>();
+    dictRpcProxy.setAddress(serverAddress);
+    dictRpcProxy.setInterfaceClass(DstDictService.class);
+    dictProxy = new DstDictProxy(dictRpcProxy.getReference());
+
+    // Setup sortedList proxy.
+    Reference<DstSortedListService> sortedListRpcProxy = new Reference<>();
+    sortedListRpcProxy.setAddress(serverAddress);
+    sortedListRpcProxy.setInterfaceClass(DstSortedListService.class);
+    sortedListProxy = new DstSortedListProxy(sortedListRpcProxy.getReference());
   }
 
   @Override
@@ -72,11 +64,7 @@ public class DefaultDstClient implements DstClient {
 
   @Override
   public boolean disconnect() {
-    stringClient.stop();
-    listClient.stop();
-    setClient.stop();
-    dictClient.stop();
-    sortedListClient.stop();
+    // TODO(qwang): What should we do here?
     return true;
   }
 

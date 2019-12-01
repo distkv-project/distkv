@@ -1,5 +1,6 @@
 package com.distkv.dst.test.server.service;
 
+import com.distkv.dst.common.utils.Utils;
 import com.google.common.collect.ImmutableList;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
@@ -33,8 +34,8 @@ public class SetRpcTest extends BaseTestSupplier {
       final List<String> values = ImmutableList.of("v1", "v2", "v3", "v1");
       values.forEach(value -> setPutRequestBuilder.addValues(value));
 
-      SetProtocol.PutResponse setPutResponse =
-              setService.put(setPutRequestBuilder.build());
+      SetProtocol.PutResponse setPutResponse = Utils.getFromFuture(
+          setService.put(setPutRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
     }
   }
@@ -47,9 +48,8 @@ public class SetRpcTest extends BaseTestSupplier {
               SetProtocol.GetRequest.newBuilder();
       setGetRequestBuilder.setKey("k1");
 
-      SetProtocol.GetResponse setGetResponse =
-              setService.get(setGetRequestBuilder.build());
-
+      SetProtocol.GetResponse setGetResponse = Utils.getFromFuture(
+          setService.get(setGetRequestBuilder.build()));
       final List<String> results = ImmutableList.of("v1", "v2", "v3");
       Assert.assertEquals(CommonProtocol.Status.OK, setGetResponse.getStatus());
       Assert.assertEquals(results, setGetResponse.getValuesList());
@@ -66,9 +66,8 @@ public class SetRpcTest extends BaseTestSupplier {
       setRemoveRequestBuilder.setKey("k1");
       setRemoveRequestBuilder.setItemValue("v1");
 
-      SetProtocol.RemoveItemResponse setDeleteResponse =
-              setService.removeItem(setRemoveRequestBuilder.build());
-
+      SetProtocol.RemoveItemResponse setDeleteResponse = Utils.getFromFuture(
+          setService.removeItem(setRemoveRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }
   }
@@ -82,8 +81,8 @@ public class SetRpcTest extends BaseTestSupplier {
               CommonProtocol.DropRequest.newBuilder();
       setDropByKeyRequestBuilder.setKey("k1");
 
-      CommonProtocol.DropResponse setDropByKeyResponse =
-              setService.drop(setDropByKeyRequestBuilder.build());
+      CommonProtocol.DropResponse setDropByKeyResponse = Utils.getFromFuture(
+          setService.drop(setDropByKeyRequestBuilder.build()));
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDropByKeyResponse.getStatus());
     }
@@ -98,8 +97,8 @@ public class SetRpcTest extends BaseTestSupplier {
       setExistRequestBuilder.setKey("k1");
       setExistRequestBuilder.setEntity("v1");
 
-      SetProtocol.ExistsResponse setExistResponse =
-              setService.exists(setExistRequestBuilder.build());
+      SetProtocol.ExistsResponse setExistResponse = Utils.getFromFuture(
+          setService.exists(setExistRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, setExistResponse.getStatus());
     }
   }
