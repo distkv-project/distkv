@@ -15,7 +15,9 @@ fi
 
 SCRIPT_DIR=$(dirname $SCRIPT_ABS)
 
+pushd ..
 mvn clean install -DskipTests
+popd
 
 SERVER_JAR=$SCRIPT_DIR/../server/target/dst-server-0.1.2-SNAPSHOT-jar-with-dependencies.jar
 CLIENT_JAR=$SCRIPT_DIR/../client/target/dst-client-0.1.2-SNAPSHOT-jar-with-dependencies.jar
