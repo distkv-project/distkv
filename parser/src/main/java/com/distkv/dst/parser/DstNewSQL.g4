@@ -12,12 +12,13 @@ statement: (conceptStatement) EOF;
 conceptStatement: strStatement | listStatement | setStatement | dictStatement;
 
 // str concept
-strStatement: strPut | strGet;
+strStatement: strPut | strGet | strDrop;
 strPut: 'str.put' key value;
 strGet: 'str.get' key ;
+strDrop: 'str.drop' key ;
 
 // list concept
-listStatement: listPut | listLput | listRput | listGet | listRGet | listDelete | listMDelete;
+listStatement: listPut | listLput | listRput | listGet | listRGet | listDelete | listMDelete | listDrop;
 listPut: 'list.put' key valueArray;
 listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
@@ -25,6 +26,7 @@ listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
 listRGet: 'list.rget' listGetArguments;
 listDelete: 'list.remove' (listRemoveOne | listRemoveRange);
 listMDelete: 'list.mRemove' key (index)+;
+listDrop: 'list.drop' key;
 
 listGetArguments: listGetAll | listGetOne | listGetRange;
 // Get the all values of this list.
