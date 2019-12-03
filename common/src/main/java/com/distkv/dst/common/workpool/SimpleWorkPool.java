@@ -3,7 +3,7 @@ package com.distkv.dst.common.workpool;
 import com.distkv.dst.common.queue.DefaultConcurrentQueue;
 import com.distkv.dst.common.queue.DstConcurrentQueue;
 
-public class SimpleWorkPool extends AbstractExecutor{
+public class SimpleWorkPool extends AbstractExecutor {
 
   /*
     The capacity of the thread pool

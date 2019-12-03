@@ -11,27 +11,28 @@ public class JDKWorkPool extends AbstractExecutor {
 
   private ThreadPoolExecutor threadPoolExecutor;
 
-  public JDKWorkPool (int corePoolSize,
-                      int maximumPoolSize,
-                      long keepAliveTime,
-                      TimeUnit unit,
-                      BlockingQueue<Runnable> workQueue) {
-    threadPoolExecutor =new ThreadPoolExecutor(
+  public JDKWorkPool(int corePoolSize,
+                     int maximumPoolSize,
+                     long keepAliveTime,
+                     TimeUnit unit,
+                     BlockingQueue<Runnable> workQueue) {
+    threadPoolExecutor = new ThreadPoolExecutor(
           corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
   }
 
-  public JDKWorkPool (int corePoolSize,
-                      int maximumPoolSize,
-                      long keepAliveTime,
-                      TimeUnit unit,
-                      BlockingQueue<Runnable> workQueue,
-                      ThreadFactory threadFactory) {
-    threadPoolExecutor =new ThreadPoolExecutor(
-          corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,threadFactory);
+  public JDKWorkPool(int corePoolSize,
+                     int maximumPoolSize,
+                     long keepAliveTime,
+                     TimeUnit unit,
+                     BlockingQueue<Runnable> workQueue,
+                     ThreadFactory threadFactory) {
+    threadPoolExecutor = new ThreadPoolExecutor(
+          corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
   }
 
   /**
    * Return JDK ExecutorService newCachedThreadPool()
+   *
    * @return JDK ExecutorService
    */
   public ExecutorService newCachedThreadPool() {
@@ -40,14 +41,16 @@ public class JDKWorkPool extends AbstractExecutor {
 
   /**
    * Return JDK ExecutorService newFixedThreadPool()
+   *
    * @return JDK ExecutorService
    */
   public ExecutorService newFixedThreadPool(int nThreads, ThreadFactory threadFactory) {
-    return Executors.newFixedThreadPool(nThreads,threadFactory);
+    return Executors.newFixedThreadPool(nThreads, threadFactory);
   }
 
   /**
    * Return JDK ExecutorService newSingleThreadExecutor()
+   *
    * @return JDK ExecutorService
    */
   public ExecutorService newSingleThreadExecutor() {

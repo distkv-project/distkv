@@ -5,12 +5,12 @@ public class DefaultWorkPool extends AbstractExecutor {
 
   private DrpcThreadPool drpcThreadPool;
 
-  public DefaultWorkPool (int initialThreadNum) {
-    drpcThreadPool =new DrpcThreadPool(initialThreadNum);
+  public DefaultWorkPool(int initialThreadNum) {
+    drpcThreadPool = new DrpcThreadPool(initialThreadNum);
   }
 
-  public DefaultWorkPool (int initialThreadNum, int queueSize) {
-    drpcThreadPool =new DrpcThreadPool(initialThreadNum,queueSize);
+  public DefaultWorkPool(int initialThreadNum, int queueSize) {
+    drpcThreadPool = new DrpcThreadPool(initialThreadNum, queueSize);
   }
 
   public boolean submit(Runnable runnable) {
@@ -18,7 +18,7 @@ public class DefaultWorkPool extends AbstractExecutor {
   }
 
   public long submit(Runnable[] tasks, int offset, int len) {
-    return drpcThreadPool.submit(tasks,offset,len);
+    return drpcThreadPool.submit(tasks, offset, len);
   }
 
   @Override
