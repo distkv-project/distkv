@@ -13,6 +13,7 @@ public interface DstExecutor {
    * @param runnable the runnable task
    */
   void exec(Runnable runnable);
+
   /**
    * Initiates an orderly shutdown in which previously submitted
    * tasks are executed, but no new tasks will be accepted.
@@ -39,4 +40,5 @@ public interface DstExecutor {
    *
    */
   <T> Future<T> submit(Callable<T> task);
+
 }

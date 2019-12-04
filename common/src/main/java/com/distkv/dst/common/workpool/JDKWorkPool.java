@@ -44,8 +44,8 @@ public class JDKWorkPool extends AbstractExecutor {
    *
    * @return JDK ExecutorService
    */
-  public ExecutorService newFixedThreadPool(int nThreads, ThreadFactory threadFactory) {
-    return Executors.newFixedThreadPool(nThreads, threadFactory);
+  public ExecutorService newFixedThreadPool(int threadNum, ThreadFactory threadFactory) {
+    return Executors.newFixedThreadPool(threadNum, threadFactory);
   }
 
   /**

@@ -25,7 +25,8 @@ public final class DrpcThreadPool {
   public DrpcThreadPool(int initialThreadNum, int queueSize) {
     if (initialThreadNum <= 0) {
       throw new IllegalArgumentException(
-            String.format("DrpcThreadPool initialThreadNum %s should be positive ", initialThreadNum));
+            String.format("DrpcThreadPool initialThreadNum %s should be positive ",
+                  initialThreadNum));
     }
     threads = new ArrayList<>(initialThreadNum);
     shutdown = false;
