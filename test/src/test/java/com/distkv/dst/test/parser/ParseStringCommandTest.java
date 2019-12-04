@@ -5,6 +5,7 @@ import com.distkv.dst.parser.DstParser;
 import com.distkv.dst.parser.po.DstParsedResult;
 import com.distkv.dst.parser.po.RequestTypeEnum;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.dst.common.RequestTypeEnum;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.testng.Assert;
 import org.testng.annotations.Test;
