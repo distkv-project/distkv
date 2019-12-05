@@ -1,6 +1,7 @@
 package com.distkv.dst.server.service;
 
 import com.distkv.drpc.Exporter;
+import com.distkv.drpc.config.ServerConfig;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.rpc.service.DstDictService;
@@ -62,10 +63,13 @@ public class DstRpcServer {
       }
     }
 
+    ServerConfig serverConfig = ServerConfig.builder()
+          .port(listeningPort)
+          .build();
+
     // TODO(qwang): Rename exporter to DrcpServer.
-    Exporter exporter = new Exporter();
+    Exporter exporter = new Exporter(serverConfig);
     // TODO(qwang): Refine this protocol name.
-    exporter.setProtocol("dst");
     exporter.registerService(
         DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
     exporter.registerService(
@@ -76,9 +80,6 @@ public class DstRpcServer {
         DstDictService.class, new DstDictServiceImpl(rpcServer.getKvStore()));
     exporter.registerService(
         DstSortedListService.class, new DstSortedListServiceImpl(rpcServer.getKvStore()));
-    exporter.isLocal(false);
-    exporter.setPort(listeningPort);
-
     // TODO(qwang): Rename this to drpcServer.run();
     exporter.export();
 
