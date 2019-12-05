@@ -57,7 +57,7 @@ public class CounterServer {
     return this.node;
   }
 
-  public RaftGroupService RaftGroupService() {
+  public RaftGroupService aftGroupService() {
     return this.raftGroupService;
   }
 
@@ -81,7 +81,8 @@ public class CounterServer {
       System.out
           .println("Useage : CounterServer {dataPath} {groupId} {serverId} {initConf}");
       System.out
-          .println("Example: CounterServer /tmp/server1 counter 127.0.0.1:8081 127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083");
+          .println("Example: CounterServer /tmp/server1 counter " +
+              "127.0.0.1:8081 127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083");
       System.exit(1);
     }
     final String dataPath = args[0];

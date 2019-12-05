@@ -61,7 +61,12 @@ public class ValueResponse implements Serializable {
 
   @Override
   public String toString() {
-    return "ValueResponse [value=" + this.value + ", success=" + this.success + ", redirect=" + this.redirect
+    return "ValueResponse [value=" +
+        this.value
+        + ", success="
+        + this.success
+        + ", redirect="
+        + this.redirect
         + ", errorMsg=" + this.errorMsg + "]";
   }
 }

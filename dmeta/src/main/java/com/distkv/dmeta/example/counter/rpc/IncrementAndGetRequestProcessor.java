@@ -25,21 +25,24 @@ public class IncrementAndGetRequestProcessor extends AsyncUserProcessor<Incremen
   }
 
   @Override
-  public void handleRequest(final BizContext bizCtx, final AsyncContext asyncCtx, final IncrementAndGetRequest request) {
+  public void handleRequest(final BizContext bizCtx,
+                            final AsyncContext asyncCtx,
+                            final IncrementAndGetRequest request) {
     if (!this.counterServer.getFsm().isLeader()) {
       asyncCtx.sendResponse(this.counterServer.redirect());
       return;
     }
 
     final ValueResponse response = new ValueResponse();
-    final IncrementAndAddClosure closure = new IncrementAndAddClosure(counterServer, request, response,
-        status -> {
-          if (!status.isOk()) {
-            response.setErrorMsg(status.getErrorMsg());
-            response.setSuccess(false);
-          }
-          asyncCtx.sendResponse(response);
-        });
+    final IncrementAndAddClosure closure =
+        new IncrementAndAddClosure(counterServer, request, response,
+            status -> {
+              if (!status.isOk()) {
+                response.setErrorMsg(status.getErrorMsg());
+                response.setSuccess(false);
+              }
+              asyncCtx.sendResponse(response);
+            });
 
     try {
       final Task task = new Task();

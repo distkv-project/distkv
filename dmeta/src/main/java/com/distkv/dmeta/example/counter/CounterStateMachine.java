@@ -60,7 +60,8 @@ public class CounterStateMachine extends StateMachineAdapter {
         // Have to parse FetchAddRequest from this user log.
         final ByteBuffer data = iter.getData();
         try {
-          final IncrementAndGetRequest request = SerializerManager.getSerializer(SerializerManager.Hessian2)
+          final IncrementAndGetRequest request = SerializerManager
+              .getSerializer(SerializerManager.Hessian2)
               .deserialize(data.array(), IncrementAndGetRequest.class.getName());
           delta = request.getDelta();
         } catch (final CodecException e) {
@@ -83,7 +84,8 @@ public class CounterStateMachine extends StateMachineAdapter {
   public void onSnapshotSave(final SnapshotWriter writer, final Closure done) {
     final long currVal = this.value.get();
     Utils.runInThread(() -> {
-      final CounterSnapshotFile snapshot = new CounterSnapshotFile(writer.getPath() + File.separator + "data");
+      final CounterSnapshotFile snapshot =
+          new CounterSnapshotFile(writer.getPath() + File.separator + "data");
       if (snapshot.save(currVal)) {
         if (writer.addFile("data")) {
           done.run(Status.OK());
@@ -111,7 +113,8 @@ public class CounterStateMachine extends StateMachineAdapter {
       LOG.error("Fail to find data file in {}", reader.getPath());
       return false;
     }
-    final CounterSnapshotFile snapshot = new CounterSnapshotFile(reader.getPath() + File.separator + "data");
+    final CounterSnapshotFile snapshot =
+        new CounterSnapshotFile(reader.getPath() + File.separator + "data");
     try {
       this.value.set(snapshot.load());
       return true;

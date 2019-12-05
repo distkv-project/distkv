@@ -18,7 +18,8 @@ public class GetValueRequestProcessor extends SyncUserProcessor<GetValueRequest>
   }
 
   @Override
-  public Object handleRequest(final BizContext bizCtx, final GetValueRequest request) throws Exception {
+  public Object handleRequest(final BizContext bizCtx,
+                              final GetValueRequest request) throws Exception {
     if (!this.counterServer.getFsm().isLeader()) {
       return this.counterServer.redirect();
     }

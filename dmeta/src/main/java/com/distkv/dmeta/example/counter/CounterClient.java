@@ -18,9 +18,9 @@ public class CounterClient {
 
   private BoltCliClientService cliClientService = null;
 
-  public final static String groupId = "counter";
+  public static final String groupId = "counter";
 
-  public final static String confStr = "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083";
+  public static final String confStr = "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083";
 
   public static void main(final String[] args) throws Exception {
     CounterClient client = new CounterClient();
@@ -115,8 +115,10 @@ public class CounterClient {
     }
   }
 
-  private static void incrementAndGet(final BoltCliClientService cliClientService, final PeerId leader,
-                                      final long delta, CountDownLatch latch) throws RemotingException,
+  private static void incrementAndGet(final BoltCliClientService cliClientService,
+                                      final PeerId leader,
+                                      final long delta,
+                                      CountDownLatch latch) throws RemotingException,
       InterruptedException {
     final IncrementAndGetRequest request = new IncrementAndGetRequest();
     request.setDelta(delta);

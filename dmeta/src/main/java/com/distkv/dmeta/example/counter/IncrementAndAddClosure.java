@@ -11,7 +11,9 @@ public class IncrementAndAddClosure implements Closure {
   private ValueResponse response;
   private Closure done; // callback
 
-  public IncrementAndAddClosure(CounterServer counterServer, IncrementAndGetRequest request, ValueResponse response,
+  public IncrementAndAddClosure(CounterServer counterServer,
+                                IncrementAndGetRequest request,
+                                ValueResponse response,
                                 Closure done) {
     super();
     this.counterServer = counterServer;

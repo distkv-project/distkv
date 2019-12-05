@@ -12,8 +12,8 @@ public class TestUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
 
-  private static final String SERVER_SUFFIX_JAR_DIR = "server" + File.separator + "target"
-      + File.separator + "dmeta-server-1.0-SNAPSHOT-jar-with-dependencies.jar";
+  private static final String SERVER_SUFFIX_JAR_DIR = "dmeta" + File.separator + "target"
+      + File.separator + "dst-dmeta-0.1.2-SNAPSHOT-jar-with-dependencies.jar";
   private static final int NODE_NUM = 3;
   private static Process[] nodeProcess = new Process[NODE_NUM];
 
