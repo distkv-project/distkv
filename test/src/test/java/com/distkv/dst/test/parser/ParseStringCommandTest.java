@@ -54,12 +54,6 @@ public class ParseStringCommandTest {
   }
 
   @Test(expectedExceptions = DstException.class)
-  public void testInvalidDropCommand() {
-    final String command = "str.drop k1";
-    dstParser.parse(command);
-  }
-
-  @Test(expectedExceptions = DstException.class)
   public void testInvalidStrCommand() {
     final String command = "str.get";
     dstParser.parse(command);

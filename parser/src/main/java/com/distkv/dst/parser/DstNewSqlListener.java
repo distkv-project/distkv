@@ -51,7 +51,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    StringProtocol.GetRequest.Builder builder = StringProtocol.GetRequest.newBuilder();
+    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.STR_DROP, builder.build());
   }
@@ -148,7 +148,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    StringProtocol.GetRequest.Builder builder = StringProtocol.GetRequest.newBuilder();
+    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.LIST_DROP, builder.build());
   }

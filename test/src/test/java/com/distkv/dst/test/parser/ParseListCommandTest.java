@@ -90,12 +90,6 @@ public class ParseListCommandTest {
   }
 
   @Test(expectedExceptions = DstException.class)
-  public void testInvalidDropCommand() {
-    final String command = "list.drop k1";
-    dstParser.parse(command);
-  }
-
-  @Test(expectedExceptions = DstException.class)
   public void testInvalidPutCommand() {
     final String command = "list.ldel k1";
     dstParser.parse(command);
