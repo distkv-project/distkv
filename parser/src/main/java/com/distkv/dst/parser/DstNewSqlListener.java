@@ -47,6 +47,16 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
+  public void enterStrDrop(DstNewSQLParser.StrDropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.STR_DROP, builder.build());
+  }
+
+  @Override
   public void enterListPut(DstNewSQLParser.ListPutContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
@@ -131,6 +141,16 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   @Override
   public void enterListMDelete(DstNewSQLParser.ListMDeleteContext ctx) {
     // TODO(qwang): Refine.
+  }
+
+  @Override
+  public void enterListDrop(DstNewSQLParser.ListDropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
+    builder.setKey(ctx.children.get(1).getText());
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_DROP, builder.build());
   }
 
   @Override

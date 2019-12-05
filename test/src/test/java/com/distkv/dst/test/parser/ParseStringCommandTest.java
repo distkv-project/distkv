@@ -4,6 +4,7 @@ import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.parser.DstParser;
 import com.distkv.dst.parser.po.DstParsedResult;
 import com.distkv.dst.parser.po.RequestTypeEnum;
+import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -28,6 +29,15 @@ public class ParseStringCommandTest {
     DstParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.STR_GET);
     StringProtocol.GetRequest request = (StringProtocol.GetRequest) result.getRequest();
+    Assert.assertEquals(request.getKey(), "k1");
+  }
+
+  @Test
+  public void testDrop() {
+    final String command = "str.drop k1";
+    DstParsedResult result = dstParser.parse(command);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.STR_DROP);
+    CommonProtocol.DropRequest request = (CommonProtocol.DropRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
   }
 
