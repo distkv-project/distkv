@@ -48,4 +48,20 @@ public class DstStringProxy {
     return response.getValue();
   }
 
+  public boolean drop(String key) {
+    CommonProtocol.DropRequest request =
+            CommonProtocol.DropRequest.newBuilder()
+            .setKey(key)
+            .build();
+
+    CompletableFuture<CommonProtocol.DropResponse> responseFuture = service.drop(request);
+    CommonProtocol.DropResponse response = FutureUtils.get(responseFuture);
+
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      return false;
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+    }
+    return true;
+  }
 }
