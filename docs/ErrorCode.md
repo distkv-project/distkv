@@ -1,9 +1,9 @@
 ## Dst-ErrorCode Rule
 
 ### Introduction：
-Dst_Errorcode provides specific rules to identify any errors that 
+Dst_ErrorCode provides specific rules to identify any errors that 
 occur during the execution of user command statement.
-According to the rules of Errorcode, users can clearly interpret 
+According to the rules of ErrorCode, users can clearly interpret 
 the error class information from it.
 
 ### The meaning of each code：
@@ -11,10 +11,10 @@ the error class information from it.
 
 Digit Code|Meaning 
 ---|---
-A|Dict
+A|String
 B|List
 C|Set
-D|String
+D|Dict
 E|SortedList
 F|Table
 X|Grammatical errors 
