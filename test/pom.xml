@@ -43,6 +43,12 @@
             <version>${drpc.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.distkv</groupId>
+            <artifactId>dst-dmeta</artifactId>
+            <version>0.1.2-SNAPSHOT</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
             <groupId>org.testng</groupId>
