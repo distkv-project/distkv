@@ -34,6 +34,11 @@ public class DstCommandExecutor {
         StringProtocol.GetRequest getRequestStr =
                 (StringProtocol.GetRequest) parsedResult.getRequest();
         return dstClient.strs().get(getRequestStr.getKey());
+      case STR_DROP:
+        CommonProtocol.DropRequest dropRequestStr =
+                (CommonProtocol.DropRequest) parsedResult.getRequest();
+        dstClient.strs().drop(dropRequestStr.getKey());
+        return STATUS_OK;
       case LIST_PUT:
         ListProtocol.PutRequest putRequestList =
                 (ListProtocol.PutRequest) parsedResult.getRequest();
@@ -79,6 +84,11 @@ public class DstCommandExecutor {
                 (ListProtocol.MRemoveRequest) parsedResult.getRequest();
         dstClient.lists().multipleRemove(multipleRemoveRequestList.getKey(),
                 multipleRemoveRequestList.getIndexesList());
+        return STATUS_OK;
+      case LIST_DROP:
+        CommonProtocol.DropRequest dropReqeustList =
+                (CommonProtocol.DropRequest) parsedResult.getRequest();
+        dstClient.lists().drop(dropReqeustList.getKey());
         return STATUS_OK;
       case SET_PUT:
         SetProtocol.PutRequest putRequestSet =

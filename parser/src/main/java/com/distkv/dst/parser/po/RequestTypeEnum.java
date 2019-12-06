@@ -3,6 +3,7 @@ package com.distkv.dst.parser.po;
 public enum RequestTypeEnum {
   STR_PUT,
   STR_GET,
+  STR_DROP,
 
   LIST_PUT,
   LIST_GET,
@@ -10,6 +11,7 @@ public enum RequestTypeEnum {
   LIST_RPUT,
   LIST_REMOVE,
   LIST_M_REMOVE,
+  LIST_DROP,
 
   SET_PUT,
   SET_GET,

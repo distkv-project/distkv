@@ -16,6 +16,7 @@
         <module>common</module>
         <module>rpc</module>
         <module>parser</module>
+        <module>dmeta</module>
     </modules>
 
     <properties>

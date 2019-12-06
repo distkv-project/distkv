@@ -36,3 +36,7 @@ parser/src/main/java/com/distkv/dst/parser/generated/*
 
 # build
 build/
+
+#test_file
+test/tmp/*
+test/tmp
