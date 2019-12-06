@@ -11,6 +11,7 @@ the error class information from it.
 
 Digit Code|Meaning 
 ---|---
+0|Meaningless/Error-free
 A|String
 B|List
 C|Set
@@ -23,6 +24,7 @@ X|Grammatical errors
 
 Digit Code|Meaning
 ---|---
+0|Meaningless/Error-free
 1|KeyNotFound
 2|OutOfBounds
 3|Incorrect number of parameters
@@ -31,12 +33,14 @@ Digit Code|Meaning
 
 Digit Code|Meaning
 ---|---
+0|Meaningless/Error-free
 1|Incomprehensible input
 
 ####4. Fourth digit: Concrete error class
 
 Digit Code|Meaning
 ---|---
+0|Meaningless/Error-free
 1|DictKeyNotFound
 2|ListIndexOutOfBounds
 3|SetNonExistItem
