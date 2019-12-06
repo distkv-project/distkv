@@ -1,13 +1,13 @@
 ## Dst-ErrorCode Rule
 
-### Introduction：
-Dst_ErrorCode provides specific rules to identify any errors that 
-occur during the execution of user command statement.
+### Introduction:
+Dst_ErrorCode provides specific rules to identify any error that 
+was occurred during the execution.
 According to the rules of ErrorCode, users can clearly interpret 
 the error class information from it.
 
-### The meaning of each code：
-####1. First digit: Data class / Grammatical errors
+### The meaning of each code:
+#### 1. First digit: Data class / Grammatical errors
 
 Digit Code|Meaning 
 ---|---
@@ -20,7 +20,7 @@ E|SortedList
 F|Table
 X|Grammatical errors 
 
-####2. Second digit: Common advanced error class
+#### 2. Second digit: Common advanced error class
 
 Digit Code|Meaning
 ---|---
@@ -29,25 +29,25 @@ Digit Code|Meaning
 2|OutOfBounds
 3|Incorrect number of parameters
 
-####3. Third digit: Grammatical error identification
+#### 3. Third digit: Grammatical error identification
 
 Digit Code|Meaning
 ---|---
 0|Meaningless/Error-free
 1|Incomprehensible input
 
-####4. Fourth digit: Concrete error class
+#### 4. Fourth digit: Concrete error class
 
 Digit Code|Meaning
 ---|---
 0|Meaningless/Error-free
 1|DictKeyNotFound
 2|ListIndexOutOfBounds
-3|SetNonExistItem
-4|SortedListNonFoundItem
+3|ItemNotExistInSet
+4|ItemNotFoundSortedList
 5|SortedListTopNumBePositive
 
-###5. ErrorCode List
+### ErrorCode List:
 Digit Code|Meaning|Suggest
 ---|:---:|---
 X010|Grammatical error.Incomprehensible input.|Please check your command.
