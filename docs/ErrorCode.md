@@ -18,7 +18,7 @@ C|Set
 D|Dict
 E|SortedList
 F|Table
-X|Grammatical errors 
+X|Grammatical error 
 
 #### 2. Second digit: Common advanced error class
 
@@ -44,11 +44,11 @@ Digit Code|Meaning
 1|DictKeyNotFound
 2|ListIndexOutOfBounds
 3|ItemNotExistInSet
-4|ItemNotFoundSortedList
+4|ItemNotFoundInSortedList
 5|SortedListTopNumBePositive
 
 ### ErrorCode List:
-Digit Code|Meaning|Suggest
+ErrorCode|Meaning|Suggest
 ---|:---:|---
 X010|Grammatical error.Incomprehensible input.|Please check your command.
 A100|String command. Key not found.|Please check whether the content of 'key' is correct.
