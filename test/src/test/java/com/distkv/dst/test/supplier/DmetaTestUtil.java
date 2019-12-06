@@ -16,7 +16,7 @@ public class DmetaTestUtil {
       + File.separator + "dst-dmeta-0.1.2-SNAPSHOT-jar-with-dependencies.jar";
   private static final int NODE_NUM = 3;
 
-  private static Process[] nodeProcess = new Process[NODE_NUM];
+  private static Process[] processes = new Process[NODE_NUM];
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
@@ -60,14 +60,14 @@ public class DmetaTestUtil {
       );
       System.out.println(startCommand.toString());
       int finalI = i;
-      new Thread(() -> nodeProcess[finalI] = executeCommand(startCommand)).start();
+      new Thread(() -> processes[finalI] = executeCommand(startCommand)).start();
     }
   }
 
   public static void stopAllDmetaProcess() {
     for (int i = 0; i < NODE_NUM; i++) {
       int finalI = i;
-      new Thread(() -> stopADmetaProcess(nodeProcess[finalI])).start();
+      new Thread(() -> stopADmetaProcess(processes[finalI])).start();
     }
   }
 
