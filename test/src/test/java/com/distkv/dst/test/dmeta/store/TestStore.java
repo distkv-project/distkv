@@ -1,4 +1,4 @@
-package com.distkv.dmeta.test.store;
+package com.distkv.dst.test.dmeta.store;
 
 import com.distkv.dmeta.server.statemachine.DataSpace;
 import com.distkv.dmeta.server.statemachine.NameSpace;

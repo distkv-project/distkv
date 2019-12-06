@@ -52,7 +52,7 @@ public class DmetaStateMachine extends StateMachineAdapter {
     return ((DataSpace) spi).getValue();
   }
 
-  public void putKVByPath(String path, String key, String value) throws Exception {
+  public void putKV(String path, String key, String value) throws Exception {
     String[] names = path.split("&");
     SpaceInterface spi = store;
     for (int i = 0; i < names.length; i++) {
@@ -112,7 +112,7 @@ public class DmetaStateMachine extends StateMachineAdapter {
         switch (type) {
           default:
           case PutKVType.PUT_KV:
-            putKVByPath(path, key, value);
+            putKV(path, key, value);
             break;
           case PutKVType.CREATE_PATH:
             createPath(path);
@@ -134,21 +134,7 @@ public class DmetaStateMachine extends StateMachineAdapter {
 
   @Override
   public void onSnapshotSave(final SnapshotWriter writer, final Closure done) {
-    //    final ConcurrentHashMap<String, String> currVal = this.getStore();
-    //    Utils.runInThread(() -> {
-    //      final DmetaSnapshotFile snapshot =
-    //          new DmetaSnapshotFile(writer.getPath() + File.separator + "data");
-    //      if (snapshot.save(currVal)) {
-    //        if (writer.addFile("data")) {
-    //          done.run(Status.OK());
-    //        } else {
-    //          done.run(new Status(RaftError.EIO, "Fail to add file to writer"));
-    //        }
-    //      } else {
-    //        done.run(new Status(RaftError.EIO, "Fail to save snapshot %s", snapshot.getPath()));
-    //      }
-    //    });
-    // TODO(kairbon): add snapshot
+    // TODO(kairbon): Add snapshot
   }
 
   @Override
@@ -158,27 +144,7 @@ public class DmetaStateMachine extends StateMachineAdapter {
 
   @Override
   public boolean onSnapshotLoad(final SnapshotReader reader) {
-    //    if (isLeader()) {
-    //      LOG.warn("Leader is not supposed to load snapshot");
-    //      return false;
-    //    }
-    //    if (reader.getFileMeta("data") == null) {
-    //      LOG.error("Fail to find data file in {}", reader.getPath());
-    //      return false;
-    //    }
-    //    final DmetaSnapshotFile snapshot =
-    //        new DmetaSnapshotFile(reader.getPath() + File.separator + "data");
-    //    try {
-    //      this.storeMap.putAll(snapshot.load());
-    //      return true;
-    //    } catch (final IOException e) {
-    //      LOG.error("Fail to load snapshot from {}", snapshot.getPath());
-    //      return false;
-    //    } catch (CodecException e) {
-    //      LOG.error("Fail to decode snapshot from {}", snapshot.getPath());
-    //      return false;
-    //    }
-    // TODO(kairbon): add snapshot
+    // TODO(kairbon): Add snapshot
     return false;
   }
 
