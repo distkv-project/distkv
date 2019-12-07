@@ -66,8 +66,7 @@ public class DstServer {
     Exporter exporter = new Exporter();
     // TODO(qwang): Refine this protocol name.
     exporter.setProtocol("dst");
-    exporter.registerService(
-        DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
+    exporter.registerService(DstStringService.class, new DstStringServiceImpl());
     exporter.registerService(
         DstListService.class, new DstListServiceImpl(rpcServer.getKvStore()));
     exporter.registerService(

@@ -1,7 +1,6 @@
 package com.distkv.dst.server.runtime.workerpool;
 
 import com.distkv.dst.common.NodeInfo;
-import com.distkv.dst.common.RequestTypeEnum;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Worker extends Thread {
 
@@ -18,6 +18,10 @@ public class Worker extends Thread {
   private NodeInstance nodeInstance;
 
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
+
+  public Worker() {
+    queue = new LinkedBlockingQueue<>();
+  }
 
   /**
    * The blocking queue to used for queue the requests.
@@ -44,26 +48,39 @@ public class Worker extends Thread {
         switch (internalRequest.getRequestType()) {
           case STR_PUT:
           {
-            StringProtocol.PutRequest strPutRequest = (StringProtocol.PutRequest) internalRequest.getRequest();
+            StringProtocol.PutRequest strPutRequest =
+                (StringProtocol.PutRequest) internalRequest.getRequest();
             // try put.
             storeEngine.strs().put(strPutRequest.getKey(), strPutRequest.getValue());
-            CompletableFuture<StringProtocol.PutResponse> future = (CompletableFuture<StringProtocol.PutResponse>) internalRequest.getCompletableFuture();
-            future.complete(StringProtocol.PutResponse.newBuilder().setStatus(CommonProtocol.Status.OK).build());
+            CompletableFuture<StringProtocol.PutResponse> future =
+                (CompletableFuture<StringProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(StringProtocol.PutResponse.newBuilder()
+                .setStatus(CommonProtocol.Status.OK).build());
+            break;
           }
           case STR_GET:
           {
-            StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest) internalRequest.getRequest();
+            StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest)
+                internalRequest.getRequest();
             String value = storeEngine.strs().get(strGetRequest.getKey());
-            CompletableFuture<StringProtocol.GetResponse> future = (CompletableFuture<StringProtocol.GetResponse>) internalRequest.getCompletableFuture();
+            CompletableFuture<StringProtocol.GetResponse> future =
+                (CompletableFuture<StringProtocol.GetResponse>)
+                    internalRequest.getCompletableFuture();
             StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
                 .setStatus(CommonProtocol.Status.OK)
                 .setValue(value)
                 .build();
             future.complete(response);
+            break;
+          }
+          default:
+          {
+
           }
         }
       } catch (Exception e) {
-        LOGGER.error("Failed to execute event loop.");
+        LOGGER.error("Failed to execute event loop:" + e);
       }
     }
   }
