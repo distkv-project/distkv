@@ -134,12 +134,12 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListDelete(DstNewSQLParser.ListDeleteContext ctx) {
+  public void enterListRemove(DstNewSQLParser.ListRemoveContext ctx) {
     // TODO(qwang): Refine.
   }
 
   @Override
-  public void enterListMDelete(DstNewSQLParser.ListMDeleteContext ctx) {
+  public void enterListMRemove(DstNewSQLParser.ListMRemoveContext ctx) {
     // TODO(qwang): Refine.
   }
 

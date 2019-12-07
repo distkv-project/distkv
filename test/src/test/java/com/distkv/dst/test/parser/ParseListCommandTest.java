@@ -85,6 +85,16 @@ public class ParseListCommandTest {
   }
 
   @Test
+  public void testRemove() {
+
+  }
+
+  @Test
+  public void testMRemove() {
+
+  }
+
+  @Test
   public void testRdel() {
     // TODO(qwang): Should be finished.
   }
