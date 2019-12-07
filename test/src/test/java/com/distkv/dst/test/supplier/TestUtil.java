@@ -50,7 +50,7 @@ public class TestUtil {
         "java",
         "-classpath",
         jarDir,
-        "com.distkv.dst.server.service.DstRpcServer",
+        "com.distkv.dst.server.service.DstServer",
         String.valueOf(serverPort)
     );
     executeCommand(startCommand);

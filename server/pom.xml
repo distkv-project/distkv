@@ -26,7 +26,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.distkv.dst.server.service.DstRpcServer</mainClass>
+                            <mainClass>com.distkv.dst.server.service.DstServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
