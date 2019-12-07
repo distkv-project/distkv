@@ -26,6 +26,7 @@ public class Worker extends Thread {
   //private DstConcurrentQueue<Object> queue;
   private BlockingQueue<InternalRequest> queue;
 
+  // Note that this method is threading-safe.
   public void post(InternalRequest internalRequest) throws InterruptedException {
     queue.put(internalRequest);
   }
@@ -40,20 +41,20 @@ public class Worker extends Thread {
     while (true) {
       try {
         InternalRequest internalRequest = queue.take();
-        switch (internalRequest.requestType) {
+        switch (internalRequest.getRequestType()) {
           case STR_PUT:
           {
-            StringProtocol.PutRequest strPutRequest = (StringProtocol.PutRequest) internalRequest.request;
+            StringProtocol.PutRequest strPutRequest = (StringProtocol.PutRequest) internalRequest.getRequest();
             // try put.
             storeEngine.strs().put(strPutRequest.getKey(), strPutRequest.getValue());
-            CompletableFuture<StringProtocol.PutResponse> future = (CompletableFuture<StringProtocol.PutResponse>) internalRequest.completableFuture;
+            CompletableFuture<StringProtocol.PutResponse> future = (CompletableFuture<StringProtocol.PutResponse>) internalRequest.getCompletableFuture();
             future.complete(StringProtocol.PutResponse.newBuilder().setStatus(CommonProtocol.Status.OK).build());
           }
           case STR_GET:
           {
-            StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest) internalRequest.request;
+            StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest) internalRequest.getRequest();
             String value = storeEngine.strs().get(strGetRequest.getKey());
-            CompletableFuture<StringProtocol.GetResponse> future = (CompletableFuture<StringProtocol.GetResponse>) internalRequest.completableFuture;
+            CompletableFuture<StringProtocol.GetResponse> future = (CompletableFuture<StringProtocol.GetResponse>) internalRequest.getCompletableFuture();
             StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
                 .setStatus(CommonProtocol.Status.OK)
                 .setValue(value)
@@ -64,21 +65,6 @@ public class Worker extends Thread {
       } catch (Exception e) {
         LOGGER.error("Failed to execute event loop.");
       }
-    }
-  }
-
-  private class InternalRequest {
-
-    private RequestTypeEnum requestType;
-
-    private Object request;
-
-    private Object completableFuture;
-
-    public InternalRequest(RequestTypeEnum requestType, Object request, Object completableFuture) {
-      this.requestType = requestType;
-      this.request = request;
-      this.completableFuture = completableFuture;
     }
   }
 
