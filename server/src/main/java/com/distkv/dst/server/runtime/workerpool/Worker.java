@@ -40,6 +40,7 @@ public class Worker extends Thread {
    */
   private KVStore storeEngine = new KVStoreImpl();
 
+  @SuppressWarnings({"unchecked"})
   @Override
   public void run() {
     while (true) {
@@ -64,14 +65,16 @@ public class Worker extends Thread {
             StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest)
                 internalRequest.getRequest();
             String value = storeEngine.strs().get(strGetRequest.getKey());
+            StringProtocol.GetResponse.Builder builder = StringProtocol.GetResponse.newBuilder();
+            if (value == null) {
+              builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else {
+              builder.setStatus(CommonProtocol.Status.OK).setValue(value);
+            }
             CompletableFuture<StringProtocol.GetResponse> future =
                 (CompletableFuture<StringProtocol.GetResponse>)
                     internalRequest.getCompletableFuture();
-            StringProtocol.GetResponse response = StringProtocol.GetResponse.newBuilder()
-                .setStatus(CommonProtocol.Status.OK)
-                .setValue(value)
-                .build();
-            future.complete(response);
+            future.complete(builder.build());
             break;
           }
           default:
