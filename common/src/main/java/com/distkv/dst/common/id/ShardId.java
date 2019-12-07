@@ -17,6 +17,7 @@ public class ShardId implements Serializable {
   private ShardId(int index) {
     this.index = index;
   }
+
   public int getIndex() {
     return index;
   }

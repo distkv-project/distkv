@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.distkv</groupId>
             <artifactId>dst-dmeta</artifactId>
-            <version>0.1.2-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
