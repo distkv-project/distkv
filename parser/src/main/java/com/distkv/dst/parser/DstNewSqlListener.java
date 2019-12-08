@@ -142,28 +142,28 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
 
     final ParseTree listRemoveArgumentsParseTree = ctx.children.get(1);
     final int numArguments = listRemoveArgumentsParseTree.getChildCount();
-    ListProtocol.RemoveRequest.Builder builder = ListProtocol.RemoveRequest.newBuilder();
+    ListProtocol.RemoveRequest.Builder removeRequest = ListProtocol.RemoveRequest.newBuilder();
     final String key = listRemoveArgumentsParseTree.getChild(0).getText();
-    builder.setKey(key);
+    removeRequest.setKey(key);
 
     if (2 == numArguments) {
       // RemoveOne
       Preconditions.checkState(listRemoveArgumentsParseTree.getChildCount() == 2);
 
-      builder.setType(ListProtocol.RemoveType.RemoveOne);
-      builder.setIndex(Integer.valueOf(listRemoveArgumentsParseTree.getChild(1).getText()));
+      removeRequest.setType(ListProtocol.RemoveType.RemoveOne);
+      removeRequest.setIndex(Integer.valueOf(listRemoveArgumentsParseTree.getChild(1).getText()));
     } else if (3 == numArguments) {
       // RemoveRange
       Preconditions.checkState(listRemoveArgumentsParseTree.getChildCount() == 3);
 
-      builder.setType(ListProtocol.RemoveType.RemoveRange);
-      builder.setFrom(Integer.valueOf(listRemoveArgumentsParseTree.getChild(1).getText()));
-      builder.setEnd(Integer.valueOf(listRemoveArgumentsParseTree.getChild(2).getText()));
+      removeRequest.setType(ListProtocol.RemoveType.RemoveRange);
+      removeRequest.setFrom(Integer.valueOf(listRemoveArgumentsParseTree.getChild(1).getText()));
+      removeRequest.setEnd(Integer.valueOf(listRemoveArgumentsParseTree.getChild(2).getText()));
     } else {
       throw new RuntimeException("Failed to parser the command.");
     }
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, builder.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequest.build());
   }
 
   @Override
@@ -171,16 +171,16 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() >= 3);
 
-    ListProtocol.MRemoveRequest.Builder builder = ListProtocol.MRemoveRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
+    ListProtocol.MRemoveRequest.Builder mRemoveRequest = ListProtocol.MRemoveRequest.newBuilder();
+    mRemoveRequest.setKey(ctx.children.get(1).getText());
 
     List<Integer> indexesList = new ArrayList<>();
     for (int i = 2; i < ctx.children.size(); i++) {
       indexesList.add(Integer.valueOf(ctx.children.get(i).getText()));
     }
-    builder.addAllIndexes(indexesList);
+    mRemoveRequest.addAllIndexes(indexesList);
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_M_REMOVE, builder.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_M_REMOVE, mRemoveRequest.build());
   }
 
   @Override
