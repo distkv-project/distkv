@@ -171,16 +171,16 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() >= 3);
 
-    ListProtocol.MRemoveRequest.Builder mRemoveRequest = ListProtocol.MRemoveRequest.newBuilder();
-    mRemoveRequest.setKey(ctx.children.get(1).getText());
+    ListProtocol.MRemoveRequest.Builder mremoveRequest = ListProtocol.MRemoveRequest.newBuilder();
+    mremoveRequest.setKey(ctx.children.get(1).getText());
 
     List<Integer> indexesList = new ArrayList<>();
     for (int i = 2; i < ctx.children.size(); i++) {
       indexesList.add(Integer.valueOf(ctx.children.get(i).getText()));
     }
-    mRemoveRequest.addAllIndexes(indexesList);
+    mremoveRequest.addAllIndexes(indexesList);
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_M_REMOVE, mRemoveRequest.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_M_REMOVE, mremoveRequest.build());
   }
 
   @Override
