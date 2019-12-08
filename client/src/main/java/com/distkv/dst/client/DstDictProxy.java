@@ -18,7 +18,7 @@ public class DstDictProxy {
     this.service = service;
   }
 
-  // Put a new dict
+  // Put a new dict.
   public void put(String key, Map<String, String> dict) {
     DictProtocol.PutRequest.Builder request = DictProtocol.PutRequest.newBuilder();
     request.setKey(key);
@@ -28,7 +28,7 @@ public class DstDictProxy {
     checkStatus(response.getStatus(),request.getKey());
   }
 
-  // Get a dict
+  // Get a dict.
   public Map<String, String> get(String key) {
     Map<String, String> dict = new HashMap();
     DictProtocol.GetRequest.Builder request = DictProtocol.GetRequest.newBuilder();
@@ -42,7 +42,7 @@ public class DstDictProxy {
     return dict;
   }
 
-  // Get the value in the dict corresponding to the key
+  // Get the value in the dict corresponding to the key.
   public String getItem(String key, String itemKey) {
     DictProtocol.GetItemRequest.Builder request =
         DictProtocol.GetItemRequest.newBuilder();
@@ -54,7 +54,7 @@ public class DstDictProxy {
     return response.getItemValue();
   }
 
-  // Pop the item in the dict corresponding to the key
+  // Pop the item in the dict corresponding to the key.
   public String popItem(String key, String itemKey) {
     DictProtocol.PopItemRequest.Builder request = DictProtocol.PopItemRequest.newBuilder();
     request.setKey(key);
@@ -65,7 +65,7 @@ public class DstDictProxy {
     return response.getItemValue();
   }
 
-  // Put the item in the dict corresponding to the key
+  // Put the item in the dict corresponding to the key.
   public void putItem(String key, String itemKey, String itemValue) {
     DictProtocol.PutItemRequest.Builder request = DictProtocol.PutItemRequest.newBuilder();
     request.setKey(key);
@@ -88,7 +88,7 @@ public class DstDictProxy {
     checkStatus(response.getStatus(),request.getKey());
   }
 
-  // Remove the item in the dict corresponding to the key
+  // Remove the item in the dict corresponding to the key.
   public void removeItem(String key, String itemKey) {
     DictProtocol.RemoveItemRequest.Builder request = DictProtocol.RemoveItemRequest.newBuilder();
     request.setKey(key);
