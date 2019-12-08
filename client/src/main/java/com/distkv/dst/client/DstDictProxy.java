@@ -25,7 +25,7 @@ public class DstDictProxy {
     DictProtocol.DstDict dstDict = DictUtil.buildDstDict(dict);
     request.setDict(dstDict);
     DictProtocol.PutResponse response = FutureUtils.get(service.put(request.build()));
-    handleResponse(response.getStatus(),request.getKey());
+    checkStatus(response.getStatus(),request.getKey());
   }
 
   // Get a dict
@@ -34,7 +34,7 @@ public class DstDictProxy {
     DictProtocol.GetRequest.Builder request = DictProtocol.GetRequest.newBuilder();
     request.setKey(key);
     DictProtocol.GetResponse response = FutureUtils.get(service.get(request.build()));
-    handleResponse(response.getStatus(),request.getKey());
+    checkStatus(response.getStatus(),request.getKey());
     DictProtocol.DstDict dstDict = response.getDict();
     for (int i = 0; i < dstDict.getKeysCount(); i++) {
       dict.put(dstDict.getKeys(i), dstDict.getValues(i));
@@ -50,7 +50,7 @@ public class DstDictProxy {
     request.setItemKey(itemKey);
     DictProtocol.GetItemResponse response = FutureUtils.get(
         service.getItemValue(request.build()));
-    handleResponse(response.getStatus(),request.getKey());
+    checkStatus(response.getStatus(),request.getKey());
     return response.getItemValue();
   }
 
@@ -61,7 +61,7 @@ public class DstDictProxy {
     request.setItemKey(itemKey);
     DictProtocol.PopItemResponse response = FutureUtils.get(
         service.popItem(request.build()));
-    handleResponse(response.getStatus(),request.getKey());
+    checkStatus(response.getStatus(),request.getKey());
     return response.getItemValue();
   }
 
@@ -72,7 +72,7 @@ public class DstDictProxy {
     request.setItemKey(itemKey);
     request.setItemValue(itemValue);
     DictProtocol.PutItemResponse response = FutureUtils.get(service.putItem(request.build()));
-    handleResponse(response.getStatus(),request.getKey());
+    checkStatus(response.getStatus(),request.getKey());
   }
 
 
@@ -85,7 +85,7 @@ public class DstDictProxy {
     CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
     request.setKey(key);
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request.build()));
-    handleResponse(response.getStatus(),request.getKey());
+    checkStatus(response.getStatus(),request.getKey());
   }
 
   // Remove the item in the dict corresponding to the key
@@ -94,10 +94,11 @@ public class DstDictProxy {
     request.setKey(key);
     request.setItemKey(itemKey);
     DictProtocol.RemoveItemResponse response = FutureUtils.get(service.removeItem(request.build()));
-    handleResponse(response.getStatus(),request.getKey());
+    checkStatus(response.getStatus(),request.getKey());
   }
 
-  private void handleResponse(CommonProtocol.Status status, String key) {
+  //Used to check the status and throw the corresponding exception
+  private void checkStatus(CommonProtocol.Status status, String key) {
     switch (status) {
       case OK:
         break;
