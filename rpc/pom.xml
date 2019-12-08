@@ -24,7 +24,7 @@
 
         <dependency>
             <groupId>com.distkv</groupId>
-            <artifactId>drpc-protocol</artifactId>
+            <artifactId>drpc-all</artifactId>
             <version>${drpc.version}</version>
         </dependency>
     </dependencies>
