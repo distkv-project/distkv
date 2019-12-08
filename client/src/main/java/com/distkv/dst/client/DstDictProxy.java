@@ -106,7 +106,6 @@ public class DstDictProxy {
       case DICT_KEY_NOT_FOUND:
         throw new DictKeyNotFoundException(key);
       default:
-        throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
         throw new DstException(String.format("Error code is %d", status.getNumber()));
     }
   }
