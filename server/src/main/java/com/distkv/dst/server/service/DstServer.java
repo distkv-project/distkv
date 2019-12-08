@@ -12,16 +12,16 @@ import com.distkv.dst.rpc.service.DstSortedListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DstRpcServer {
+public class DstServer {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DstRpcServer.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstServer.class);
 
   private static final int LISTENING_PORT = 8082;
 
   // TODO(qwang): This should be a Dst Runtime.
   private KVStore kvStore;
 
-  private DstRpcServer() {
+  private DstServer() {
     kvStore = new KVStoreImpl();
   }
 
@@ -49,7 +49,7 @@ public class DstRpcServer {
 
   public static void main(String[] args) {
 
-    DstRpcServer rpcServer = new DstRpcServer();
+    DstServer rpcServer = new DstServer();
 
     int listeningPort = LISTENING_PORT;
 
@@ -89,9 +89,9 @@ public class DstRpcServer {
     System.out.println(WELCOME_WORDS);
 
     // Run Dst server.
-    synchronized (DstRpcServer.class) {
+    synchronized (DstServer.class) {
       try {
-        DstRpcServer.class.wait();
+        DstServer.class.wait();
       } catch (Throwable e) {
         LOGGER.error("Failed with the exception: {}", e.toString());
         System.exit(-1);
