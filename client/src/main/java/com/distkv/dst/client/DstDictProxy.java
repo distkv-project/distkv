@@ -97,7 +97,7 @@ public class DstDictProxy {
     checkStatus(response.getStatus(),request.getKey());
   }
 
-  //Used to check the status and throw the corresponding exception
+  // Used to check the status and throw the corresponding exception.
   private void checkStatus(CommonProtocol.Status status, String key) {
     switch (status) {
       case OK:
