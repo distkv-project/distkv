@@ -1,20 +1,28 @@
 package com.distkv.dst.test.supplier;
 
 
-import com.distkv.drpc.Reference;
+import com.distkv.drpc.Proxy;
+import com.distkv.drpc.api.Client;
+import com.distkv.drpc.config.ClientConfig;
+import com.distkv.drpc.netty.NettyClient;
 
 public class ProxyOnClient<T> implements AutoCloseable {
 
-  private Reference<T> realProxy = new Reference<>();
+  private Client client;
+  private Proxy<T> proxy;
 
-  public ProxyOnClient(Class<T> proxyClass, int serverPort) {
-    realProxy.setAddress(String.format("dst://127.0.0.1:%d", serverPort));
-    realProxy.setInterfaceClass(proxyClass);
+  public ProxyOnClient(Class<T> clazz, int serverPort) {
+    ClientConfig clientConfig = ClientConfig.builder()
+          .address(String.format("dst://127.0.0.1:%d", serverPort))
+          .build();
+    client = new NettyClient(clientConfig);
+    client.open();
+    proxy = new Proxy<>();
+    proxy.setInterfaceClass(clazz);
   }
 
-
   public T getService() {
-    return realProxy.getReference();
+    return proxy.getService(client);
   }
 
   private void closeConnection() {
