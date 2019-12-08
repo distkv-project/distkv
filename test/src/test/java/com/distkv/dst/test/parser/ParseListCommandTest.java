@@ -85,13 +85,42 @@ public class ParseListCommandTest {
   }
 
   @Test
-  public void testRemove() {
+  public void testRemoveOne() {
+    final String command = "list.remove k1 3";
+    DstParsedResult result = dstParser.parse(command);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_REMOVE);
+    ListProtocol.RemoveRequest request = (ListProtocol.RemoveRequest) result.getRequest();
 
+    Assert.assertEquals(request.getType(), ListProtocol.RemoveType.RemoveOne);
+    Assert.assertEquals(request.getKey(), "k1");
+    Assert.assertEquals(request.getIndex(), 3);
+  }
+
+  @Test
+  public void testRemoveRange() {
+    final String command = "list.remove k1 3 5";
+    DstParsedResult result = dstParser.parse(command);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_REMOVE);
+    ListProtocol.RemoveRequest request = (ListProtocol.RemoveRequest) result.getRequest();
+
+    Assert.assertEquals(request.getType(), ListProtocol.RemoveType.RemoveRange);
+    Assert.assertEquals(request.getKey(), "k1");
+    Assert.assertEquals(request.getFrom(), 3);
+    Assert.assertEquals(request.getEnd(), 5);
   }
 
   @Test
   public void testMRemove() {
+    final String command = "list.mRemove k1 2 4 5 7";
+    DstParsedResult result = dstParser.parse(command);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_M_REMOVE);
+    ListProtocol.MRemoveRequest request = (ListProtocol.MRemoveRequest) result.getRequest();
 
+    Assert.assertEquals(request.getKey(), "k1");
+    Assert.assertEquals(request.getIndexes(0), 2);
+    Assert.assertEquals(request.getIndexes(1), 4);
+    Assert.assertEquals(request.getIndexes(2), 5);
+    Assert.assertEquals(request.getIndexes(3), 7);
   }
 
   @Test
