@@ -23,11 +23,6 @@ public class Worker extends Thread {
     queue = new LinkedBlockingQueue<>();
   }
 
-  /**
-   * The blocking queue to used for queue the requests.
-   */
-  // TODO(qwang): Remove the class DstConcurrentQueue.
-  //private DstConcurrentQueue<Object> queue;
   private BlockingQueue<InternalRequest> queue;
 
   // Note that this method is threading-safe.

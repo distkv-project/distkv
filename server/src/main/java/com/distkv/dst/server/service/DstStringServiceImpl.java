@@ -4,7 +4,7 @@ import com.distkv.dst.common.RequestTypeEnum;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import com.distkv.dst.rpc.service.DstStringService;
-import com.distkv.dst.server.runtime.workerpool.WorkerPool;
+import com.distkv.dst.server.runtime.DstRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -15,22 +15,23 @@ public class DstStringServiceImpl implements DstStringService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstStringServiceImpl.class);
 
-  private WorkerPool workerPool = new WorkerPool(1);
+  private DstRuntime runtime;
 
-  public DstStringServiceImpl() {
+  public DstStringServiceImpl(DstRuntime runtime) {
+    this.runtime = runtime;
   }
 
   @Override
   public CompletableFuture<StringProtocol.PutResponse> put(StringProtocol.PutRequest request) {
     CompletableFuture<StringProtocol.PutResponse> future = new CompletableFuture<>();
-    workerPool.postRequest(request.getKey(), RequestTypeEnum.STR_PUT, request, future);
+    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.STR_PUT, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<StringProtocol.GetResponse> get(StringProtocol.GetRequest request) {
     CompletableFuture<StringProtocol.GetResponse> future = new CompletableFuture<>();
-    workerPool.postRequest(request.getKey(), RequestTypeEnum.STR_GET, request, future);
+    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.STR_GET, request, future);
     return future;
   }
 

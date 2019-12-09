@@ -2,12 +2,14 @@ package com.distkv.dst.server.runtime.workerpool;
 
 import com.distkv.dst.common.RequestTypeEnum;
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WorkerPool {
 
-  private final int shardNum;
+  private static final Logger LOGGER = LoggerFactory.getLogger(WorkerPool.class);
 
-  //private HashMap<ShardId, Worker> workers;
+  private final int shardNum;
 
   private final ImmutableList<Worker> workers;
 
@@ -29,7 +31,7 @@ public class WorkerPool {
     try {
       worker.post(new InternalRequest(requestType, request, completableFuture));
     } catch (InterruptedException e) {
-      // TODO(qwang): xxxxx
+      LOGGER.error("Failed to post request to worker pool, key is {}", key);
     }
   }
 
