@@ -31,6 +31,7 @@ public class WorkerPool {
     try {
       worker.post(new InternalRequest(requestType, request, completableFuture));
     } catch (InterruptedException e) {
+      // TODO(qwang): Should be an assert here.
       LOGGER.error("Failed to post request to worker pool, key is {}", key);
     }
   }
