@@ -136,34 +136,32 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListRemove(DstNewSQLParser.ListRemoveContext ctx) {
+  public void enterListRemoveOne(DstNewSQLParser.ListRemoveOneContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    final ParseTree listRemoveArgumentsParseTree = ctx.children.get(1);
-    final int numArguments = listRemoveArgumentsParseTree.getChildCount();
-    ListProtocol.RemoveRequest.Builder removeRequest = ListProtocol.RemoveRequest.newBuilder();
-    final String key = listRemoveArgumentsParseTree.getChild(0).getText();
-    removeRequest.setKey(key);
+    ListProtocol.RemoveRequest.Builder removeRequestBuilder =
+            ListProtocol.RemoveRequest.newBuilder();
 
-    if (2 == numArguments) {
-      // RemoveOne
-      Preconditions.checkState(listRemoveArgumentsParseTree.getChildCount() == 2);
+    removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveOne);
+    removeRequestBuilder.setKey(ctx.children.get(0).getText());
+    removeRequestBuilder.setIndex(Integer.valueOf(ctx.children.get(1).getText()));
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequestBuilder.build());
+  }
 
-      removeRequest.setType(ListProtocol.RemoveType.RemoveOne);
-      removeRequest.setIndex(Integer.valueOf(listRemoveArgumentsParseTree.getChild(1).getText()));
-    } else if (3 == numArguments) {
-      // RemoveRange
-      Preconditions.checkState(listRemoveArgumentsParseTree.getChildCount() == 3);
+  @Override
+  public void enterListRemoveRange(DstNewSQLParser.ListRemoveRangeContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
 
-      removeRequest.setType(ListProtocol.RemoveType.RemoveRange);
-      removeRequest.setFrom(Integer.valueOf(listRemoveArgumentsParseTree.getChild(1).getText()));
-      removeRequest.setEnd(Integer.valueOf(listRemoveArgumentsParseTree.getChild(2).getText()));
-    } else {
-      throw new RuntimeException("Failed to parser the command.");
-    }
+    ListProtocol.RemoveRequest.Builder removeRequestBuilder =
+            ListProtocol.RemoveRequest.newBuilder();
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequest.build());
+    removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveRange);
+    removeRequestBuilder.setKey(ctx.children.get(0).getText());
+    removeRequestBuilder.setFrom(Integer.valueOf(ctx.children.get(1).getText()));
+    removeRequestBuilder.setEnd(Integer.valueOf(ctx.children.get(2).getText()));
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequestBuilder.build());
   }
 
   @Override
