@@ -82,7 +82,7 @@ public class DstServer {
     exporter.registerService(
         DstDictService.class, new DstDictServiceImpl(server.getKvStore()));
     exporter.registerService(
-        DstSortedListService.class, new DstSortedListServiceImpl(rpcServer.getKvStore()));
+        DstSortedListService.class, new DstSortedListServiceImpl(server.getKvStore()));
     // TODO(qwang): Rename this to drpcServer.run();
     exporter.export();
 
