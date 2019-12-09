@@ -73,8 +73,6 @@ public class DstServer {
 
     // TODO(qwang): Rename exporter to DrcpServer.
     Exporter exporter = new Exporter(serverConfig);
-    // TODO(qwang): Refine this protocol name.
-
     exporter.registerService(
         DstStringService.class, new DstStringServiceImpl(server.runtime));
     exporter.registerService(
