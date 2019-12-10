@@ -1,6 +1,6 @@
 package com.distkv.dst.parser;
 
-import com.distkv.dst.parser.po.RequestTypeEnum;
+import com.distkv.dst.common.RequestTypeEnum;
 import com.google.common.base.Preconditions;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.distkv.dst.parser.generated.DstNewSQLBaseListener;
