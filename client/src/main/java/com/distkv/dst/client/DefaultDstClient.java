@@ -20,9 +20,9 @@ public class DefaultDstClient implements DstClient {
   private DstSortedListProxy sortedListProxy;
   private Client strRpcClient;
   private Client listRpcClient;
-  private Client clientSet;
+  private Client setRpcclient;
   private Client dictRpcClient;
-  private Client sortedListClient;
+  private Client sortedListRpcClient;
 
   public DefaultDstClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
@@ -44,11 +44,11 @@ public class DefaultDstClient implements DstClient {
     listProxy = new DstListProxy(listRpcProxy.getService(listRpcClient));
 
     // Setup set proxy.
-    clientSet = new NettyClient(clientConfig);
-    clientSet.open();
+    setRpcclient = new NettyClient(clientConfig);
+    setRpcclient.open();
     Proxy<DstSetService> setRpcProxy = new Proxy<>();
     setRpcProxy.setInterfaceClass(DstSetService.class);
-    setProxy = new DstSetProxy(setRpcProxy.getService(clientSet));
+    setProxy = new DstSetProxy(setRpcProxy.getService(setRpcclient));
 
     // Setup dict proxy.
     dictRpcClient = new NettyClient(clientConfig);
@@ -58,11 +58,11 @@ public class DefaultDstClient implements DstClient {
     dictProxy = new DstDictProxy(dictRpcProxy.getService(dictRpcClient));
 
     // Setup sortedList proxy.
-    sortedListClient = new NettyClient(clientConfig);
-    sortedListClient.open();
+    sortedListRpcClient = new NettyClient(clientConfig);
+    sortedListRpcClient.open();
     Proxy<DstSortedListService> sortedListRpcProxy = new Proxy<>();
     sortedListRpcProxy.setInterfaceClass(DstSortedListService.class);
-    sortedListProxy = new DstSortedListProxy(sortedListRpcProxy.getService(sortedListClient));
+    sortedListProxy = new DstSortedListProxy(sortedListRpcProxy.getService(sortedListRpcClient));
   }
 
   @Override
@@ -80,9 +80,9 @@ public class DefaultDstClient implements DstClient {
     try {
       strRpcClient.close();
       listRpcClient.close();
-      clientSet.close();
+      setRpcclient.close();
       dictRpcClient.close();
-      sortedListClient.close();
+      sortedListRpcClient.close();
       return true;
     } catch (DstException ex) {
       throw new DstException(String.format("Failed close the clients : %s", ex.getMessage()));
