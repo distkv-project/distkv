@@ -20,7 +20,7 @@ public class DefaultDstClient implements DstClient {
   private DstSortedListProxy sortedListProxy;
   private Client strRpcClient;
   private Client listRpcClient;
-  private Client setRpcclient;
+  private Client setRpcClient;
   private Client dictRpcClient;
   private Client sortedListRpcClient;
 
@@ -44,11 +44,11 @@ public class DefaultDstClient implements DstClient {
     listProxy = new DstListProxy(listRpcProxy.getService(listRpcClient));
 
     // Setup set proxy.
-    setRpcclient = new NettyClient(clientConfig);
-    setRpcclient.open();
+    setRpcClient = new NettyClient(clientConfig);
+    setRpcClient.open();
     Proxy<DstSetService> setRpcProxy = new Proxy<>();
     setRpcProxy.setInterfaceClass(DstSetService.class);
-    setProxy = new DstSetProxy(setRpcProxy.getService(setRpcclient));
+    setProxy = new DstSetProxy(setRpcProxy.getService(setRpcClient));
 
     // Setup dict proxy.
     dictRpcClient = new NettyClient(clientConfig);
@@ -80,7 +80,7 @@ public class DefaultDstClient implements DstClient {
     try {
       strRpcClient.close();
       listRpcClient.close();
-      setRpcclient.close();
+      setRpcClient.close();
       dictRpcClient.close();
       sortedListRpcClient.close();
       return true;
