@@ -92,7 +92,7 @@ public class Worker extends Thread {
           }
           case SET_GET: {
             SetProtocol.GetRequest setGetRequest =
-                (SetProtocol.GetRequest) internalRequest.getCompletableFuture();
+                (SetProtocol.GetRequest) internalRequest.getRequest();
             SetProtocol.GetResponse.Builder setGetResponseBuilder =
                 SetProtocol.GetResponse.newBuilder();
             try {
