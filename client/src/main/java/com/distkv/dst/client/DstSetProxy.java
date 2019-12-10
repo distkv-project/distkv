@@ -2,12 +2,15 @@ package com.distkv.dst.client;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+
 import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.service.DstSetService;
+
+import static com.distkv.dst.client.CheckStatusUtil.checkStatus;
 
 public class DstSetProxy {
 
@@ -23,9 +26,24 @@ public class DstSetProxy {
     values.forEach(value -> request.addValues(value));
 
     SetProtocol.PutResponse response = FutureUtils.get(service.put(request.build()));
-    if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    checkStatus(response.getStatus(), request.getKey());
+  }
+
+  public CompletableFuture<SetProtocol.PutResponse> asyncPut(
+          String key, Set<String> values) {
+    SetProtocol.PutRequest request = SetProtocol.PutRequest.newBuilder()
+            .setKey(key)
+            .addAllValues(values)
+            .build();
+    CompletableFuture<SetProtocol.PutResponse> future = service.put(request);
+    future.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      } else {
+        checkStatus(r.getStatus(), request.getKey());
+      }
+    });
+    return future;
   }
 
   public Set<String> get(String key) throws DstException {
@@ -35,14 +53,24 @@ public class DstSetProxy {
                     .build();
 
     SetProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
-
+    checkStatus(response.getStatus(), request.getKey());
     Set<String> set = new HashSet<>(response.getValuesList());
     return set;
+  }
+
+  public CompletableFuture<SetProtocol.GetResponse> asyncGet(String key) {
+    SetProtocol.GetRequest request = SetProtocol.GetRequest.newBuilder()
+            .setKey(key)
+            .build();
+    CompletableFuture<SetProtocol.GetResponse> future = service.get(request);
+    future.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      } else {
+        checkStatus(r.getStatus(), request.getKey());
+      }
+    });
+    return future;
   }
 
   public void putItem(String key, String entity) {
@@ -51,11 +79,24 @@ public class DstSetProxy {
     request.setItemValue(entity);
 
     SetProtocol.PutItemResponse response = FutureUtils.get(service.putItem(request.build()));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    checkStatus(response.getStatus(), request.getKey());
+  }
+
+  public CompletableFuture<SetProtocol.PutItemResponse> asyncPutItem(
+          String key, String entity) {
+    SetProtocol.PutItemRequest request = SetProtocol.PutItemRequest.newBuilder()
+            .setKey(key)
+            .setItemValue(entity)
+            .build();
+    CompletableFuture<SetProtocol.PutItemResponse> future = service.putItem(request);
+    future.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      } else {
+        checkStatus(r.getStatus(), request.getKey());
+      }
+    });
+    return future;
   }
 
   public void removeItem(String key, String entity) {
@@ -65,11 +106,24 @@ public class DstSetProxy {
 
     SetProtocol.RemoveItemResponse response = FutureUtils.get(
         service.removeItem(request.build()));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    checkStatus(response.getStatus(), request.getKey());
+  }
+
+  public CompletableFuture<SetProtocol.RemoveItemResponse> asyncRemoveItem(
+          String key, String entity) {
+    SetProtocol.RemoveItemRequest request = SetProtocol.RemoveItemRequest.newBuilder()
+            .setKey(key)
+            .setItemValue(entity)
+            .build();
+    CompletableFuture<SetProtocol.RemoveItemResponse> future = service.removeItem(request);
+    future.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      } else {
+        checkStatus(r.getStatus(), request.getKey());
+      }
+    });
+    return future;
   }
 
   public boolean drop(String key) {
@@ -77,13 +131,23 @@ public class DstSetProxy {
     request.setKey(key);
 
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request.build()));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      return false;
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
-
+    checkStatus(response.getStatus(), request.getKey());
     return true;
+  }
+
+  public CompletableFuture<CommonProtocol.DropResponse> asyncDrop(String key) {
+    CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
+            .setKey(key)
+            .build();
+    CompletableFuture<CommonProtocol.DropResponse> future = service.drop(request);
+    future.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      } else {
+        checkStatus(r.getStatus(), request.getKey());
+      }
+    });
+    return future;
   }
 
   public boolean exists(String key, String entity) {
@@ -92,14 +156,25 @@ public class DstSetProxy {
     request.setEntity(entity);
 
     SetProtocol.ExistsResponse response = FutureUtils.get(service.exists(request.build()));
-
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
-
+    checkStatus(response.getStatus(), request.getKey());
     return response.getResult();
+  }
+
+  public CompletableFuture<SetProtocol.ExistsResponse> asyncExists(
+          String key, String entity) {
+    SetProtocol.ExistsRequest request = SetProtocol.ExistsRequest.newBuilder()
+            .setKey(key)
+            .setEntity(entity)
+            .build();
+    CompletableFuture<SetProtocol.ExistsResponse> future = service.exists(request);
+    future.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      } else {
+        checkStatus(r.getStatus(), request.getKey());
+      }
+    });
+    return future;
   }
 
 }
