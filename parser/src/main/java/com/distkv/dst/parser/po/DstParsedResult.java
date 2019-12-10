@@ -1,5 +1,7 @@
 package com.distkv.dst.parser.po;
 
+import com.distkv.dst.common.RequestTypeEnum;
+
 public class DstParsedResult {
   public RequestTypeEnum requestType;
   public Object request;

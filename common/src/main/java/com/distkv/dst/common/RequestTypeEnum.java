@@ -1,4 +1,4 @@
-package com.distkv.dst.parser.po;
+package com.distkv.dst.common;
 
 public enum RequestTypeEnum {
   STR_PUT,

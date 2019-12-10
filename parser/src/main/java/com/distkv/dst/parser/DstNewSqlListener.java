@@ -1,6 +1,6 @@
 package com.distkv.dst.parser;
 
-import com.distkv.dst.parser.po.RequestTypeEnum;
+import com.distkv.dst.common.RequestTypeEnum;
 import com.google.common.base.Preconditions;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.distkv.dst.parser.generated.DstNewSQLBaseListener;
@@ -13,6 +13,8 @@ import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DstNewSqlListener extends DstNewSQLBaseListener {
@@ -141,13 +143,49 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListDelete(DstNewSQLParser.ListDeleteContext ctx) {
-    // TODO(qwang): Refine.
+  public void enterListRemoveOne(DstNewSQLParser.ListRemoveOneContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    ListProtocol.RemoveRequest.Builder removeRequestBuilder =
+            ListProtocol.RemoveRequest.newBuilder();
+
+    removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveOne);
+    removeRequestBuilder.setKey(ctx.children.get(0).getText());
+    removeRequestBuilder.setIndex(Integer.valueOf(ctx.children.get(1).getText()));
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequestBuilder.build());
   }
 
   @Override
-  public void enterListMDelete(DstNewSQLParser.ListMDeleteContext ctx) {
-    // TODO(qwang): Refine.
+  public void enterListRemoveRange(DstNewSQLParser.ListRemoveRangeContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ListProtocol.RemoveRequest.Builder removeRequestBuilder =
+            ListProtocol.RemoveRequest.newBuilder();
+
+    removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveRange);
+    removeRequestBuilder.setKey(ctx.children.get(0).getText());
+    removeRequestBuilder.setFrom(Integer.valueOf(ctx.children.get(1).getText()));
+    removeRequestBuilder.setEnd(Integer.valueOf(ctx.children.get(2).getText()));
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequestBuilder.build());
+  }
+
+  @Override
+  public void enterListMRemove(DstNewSQLParser.ListMRemoveContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() >= 3);
+
+    ListProtocol.MRemoveRequest.Builder mremoveRequest = ListProtocol.MRemoveRequest.newBuilder();
+    mremoveRequest.setKey(ctx.children.get(1).getText());
+
+    List<Integer> indexesList = new ArrayList<>();
+    for (int i = 2; i < ctx.children.size(); i++) {
+      indexesList.add(Integer.valueOf(ctx.children.get(i).getText()));
+    }
+    mremoveRequest.addAllIndexes(indexesList);
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_M_REMOVE, mremoveRequest.build());
   }
 
   @Override
