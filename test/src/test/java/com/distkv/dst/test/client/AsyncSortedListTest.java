@@ -7,7 +7,6 @@ import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
