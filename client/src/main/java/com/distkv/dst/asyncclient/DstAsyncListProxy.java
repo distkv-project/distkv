@@ -3,20 +3,16 @@ package com.distkv.dst.asyncclient;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.service.DstListService;
-import com.distkv.dst.rpc.service.DstSetService;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static com.distkv.dst.client.CheckStatusUtil.checkStatus;
-
-public class DstListProxy {
+public class DstAsyncListProxy {
 
   private DstListService service;
 
-  public DstListProxy(DstListService service) {this.service = service; }
+  public DstAsyncListProxy(DstListService service) {this.service = service; }
 
-  public CompletableFuture<ListProtocol.PutResponse> asyncPut(
+  public CompletableFuture<ListProtocol.PutResponse> put(
           String key, List<String> values) {
     ListProtocol.PutRequest request = ListProtocol.PutRequest.newBuilder()
             .setKey(key)
@@ -26,7 +22,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.GetResponse> asyncGet(String key) {
+  public CompletableFuture<ListProtocol.GetResponse> get(String key) {
     ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
             .setType(ListProtocol.GetType.GET_ALL)
             .setKey(key)
@@ -35,7 +31,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.GetResponse> asyncGet(
+  public CompletableFuture<ListProtocol.GetResponse> get(
           String key, Integer index) {
     ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
             .setType(ListProtocol.GetType.GET_ONE)
@@ -46,7 +42,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.GetResponse> asyncGet(
+  public CompletableFuture<ListProtocol.GetResponse> get(
           String key, Integer from, Integer end) {
     ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
             .setType(ListProtocol.GetType.GET_RANGE)
@@ -58,7 +54,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> asyncDrop(String key) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
     CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
             .setKey(key)
             .build();
@@ -66,7 +62,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.LPutResponse> asyncLput(
+  public CompletableFuture<ListProtocol.LPutResponse> lput(
           String key, List<String> values) {
     ListProtocol.LPutRequest request = ListProtocol.LPutRequest.newBuilder()
             .setKey(key)
@@ -76,7 +72,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.RPutResponse> asyncRput(
+  public CompletableFuture<ListProtocol.RPutResponse> rput(
           String key, List<String> values) {
     ListProtocol.RPutRequest request = ListProtocol.RPutRequest.newBuilder()
             .setKey(key)
@@ -86,7 +82,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.RemoveResponse> asyncRemove(
+  public CompletableFuture<ListProtocol.RemoveResponse> remove(
           String key, Integer index) {
     ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
             .setType(ListProtocol.RemoveType.RemoveOne)
@@ -97,7 +93,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.RemoveResponse> asyncRemove(
+  public CompletableFuture<ListProtocol.RemoveResponse> remove(
           String key, Integer from, Integer end) {
     ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
             .setType(ListProtocol.RemoveType.RemoveRange)
@@ -109,7 +105,7 @@ public class DstListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.MRemoveResponse> asyncMutiRemove(
+  public CompletableFuture<ListProtocol.MRemoveResponse> mutiRemove(
           String key, List<Integer> indexes) {
     ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
             .setKey(key)

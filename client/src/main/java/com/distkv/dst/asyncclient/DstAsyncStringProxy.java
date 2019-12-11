@@ -6,14 +6,14 @@ import com.distkv.dst.rpc.service.DstStringService;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DstStringProxy {
+public class DstAsyncStringProxy {
   private DstStringService service;
 
-  public DstStringProxy(DstStringService service) {
+  public DstAsyncStringProxy(DstStringService service) {
         this.service = service;
     }
 
-  public CompletableFuture<StringProtocol.PutResponse> asyncPut(
+  public CompletableFuture<StringProtocol.PutResponse> put(
           String key, String value) {
     StringProtocol.PutRequest request = StringProtocol.PutRequest.newBuilder()
             .setKey(key)
@@ -23,7 +23,7 @@ public class DstStringProxy {
     return future;
   }
 
-  public CompletableFuture<StringProtocol.GetResponse> asyncGet(String key) {
+  public CompletableFuture<StringProtocol.GetResponse> get(String key) {
     StringProtocol.GetRequest request = StringProtocol.GetRequest.newBuilder()
             .setKey(key)
             .build();
@@ -31,7 +31,7 @@ public class DstStringProxy {
     return future;
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> asyncDrop(String key) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
     CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
             .setKey(key)
             .build();

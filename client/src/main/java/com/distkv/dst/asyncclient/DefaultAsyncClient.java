@@ -4,21 +4,19 @@ import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.netty.NettyClient;
-import com.distkv.dst.rpc.service.DstListService;
-import com.distkv.dst.rpc.service.DstSetService;
-import com.distkv.dst.rpc.service.DstStringService;
+import com.distkv.dst.rpc.service.*;
 
 public class DefaultAsyncClient implements DstAsyncClient {
 
-  private DstStringProxy stringProxy;
+  private DstAsyncStringProxy stringProxy;
 
-  private DstListProxy listProxy;
+  private DstAsyncListProxy listProxy;
 
-  private DstSetProxy setProxy;
+  private DstAsyncSetProxy setProxy;
 
-  private DstDictProxy dictProxy;
+  private DstAsyncDictProxy dictProxy;
 
-  private DstSortedListProxy sortedListProxy;
+  private DstAsyncSortedListProxy sortedListProxy;
 
   public DefaultAsyncClient(String serverAddress) {
   	ClientConfig clientConfig = ClientConfig.builder()
@@ -30,22 +28,35 @@ public class DefaultAsyncClient implements DstAsyncClient {
 	strRpcClient.open();
 	Proxy<DstStringService> strRpcProxy = new Proxy<>();
 	strRpcProxy.setInterfaceClass(DstStringService.class);
-	stringProxy = new DstStringProxy(strRpcProxy.getService(strRpcClient));
+	stringProxy = new DstAsyncStringProxy(strRpcProxy.getService(strRpcClient));
 
-	//Setup list proxy.
-//	Client listRpcClient = new NettyClient(clientConfig);
-//	listRpcClient.open();
-//	Proxy<DstListService> listRpcProxy = new Proxy<>();
-//	listRpcProxy.setInterfaceClass(DstListService.class);
-//	listProxy = new DstListProxy(listRpcProxy.getService(listRpcClient));
+	// Setup list proxy.
+	Client listRpcClient = new NettyClient(clientConfig);
+	listRpcClient.open();
+	Proxy<DstListService> listRpcProxy = new Proxy<>();
+	listRpcProxy.setInterfaceClass(DstListService.class);
+	listProxy = new DstAsyncListProxy(listRpcProxy.getService(listRpcClient));
 
-	//Setup set proxy.
-//	Client setRpcClient = new NettyClient(clientConfig);
-//	setRpcClient.open();
-//	Proxy<DstSetService> setRpcProxy = new Proxy<>();
-//	setRpcProxy.setInterfaceClass(DstSetService.class);
-//	setProxy = new DstSetProxy(setRpcProxy.getService(setRpcClient));
+	// Setup set proxy.
+	Client setRpcClient = new NettyClient(clientConfig);
+	setRpcClient.open();
+	Proxy<DstSetService> setRpcProxy = new Proxy<>();
+	setRpcProxy.setInterfaceClass(DstSetService.class);
+	setProxy = new DstAsyncSetProxy(setRpcProxy.getService(setRpcClient));
 
+	// Setup dict proxy.
+	Client dictRpcClient = new NettyClient(clientConfig);
+	dictRpcClient.open();
+	Proxy<DstDictService> dictRpcProxy = new Proxy<>();
+	dictRpcProxy.setInterfaceClass(DstDictService.class);
+	dictProxy = new DstAsyncDictProxy(dictRpcProxy.getService(dictRpcClient));
+
+	// Setup sortedList proxy.
+	Client sortedListClient = new NettyClient(clientConfig);
+	sortedListClient.open();
+	Proxy<DstSortedListService> sortedListRpcProxy = new Proxy<>();
+	sortedListRpcProxy.setInterfaceClass(DstSortedListService.class);
+	sortedListProxy = new DstAsyncSortedListProxy(sortedListRpcProxy.getService(sortedListClient));
   }
 
   @Override
@@ -55,10 +66,21 @@ public class DefaultAsyncClient implements DstAsyncClient {
   public boolean isConnect() { return true; }
 
   @Override
-  public boolean disConnect() {
-  	return true;
-  }
+  public boolean disConnect() { return true; }
 
   @Override
-  public DstStringProxy strs() { return stringProxy; }
+  public DstAsyncStringProxy strs() { return stringProxy; }
+
+  @Override
+  public DstAsyncListProxy lists() { return listProxy; }
+
+  @Override
+  public DstAsyncSetProxy sets() { return setProxy; }
+
+  @Override
+  public DstAsyncDictProxy dicts() { return dictProxy; }
+
+  @Override
+  public DstAsyncSortedListProxy sortedLists() { return sortedListProxy; }
+
 }

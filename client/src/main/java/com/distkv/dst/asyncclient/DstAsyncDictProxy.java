@@ -7,13 +7,13 @@ import com.distkv.dst.rpc.service.DstDictService;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class DstDictProxy {
+public class DstAsyncDictProxy {
 
   private DstDictService service;
 
-  public DstDictProxy(DstDictService service) {this.service = service; }
+  public DstAsyncDictProxy(DstDictService service) {this.service = service; }
 
-  public CompletableFuture<DictProtocol.PutResponse> asyncPut(
+  public CompletableFuture<DictProtocol.PutResponse> put(
           String key, Map<String, String> dict) {
     DictProtocol.PutRequest.Builder request = DictProtocol.PutRequest.newBuilder();
     request.setKey(key);
@@ -23,7 +23,7 @@ public class DstDictProxy {
     return future;
   }
 
-  public CompletableFuture<DictProtocol.GetResponse> asyncGet(
+  public CompletableFuture<DictProtocol.GetResponse> get(
           String key) {
     DictProtocol.GetRequest.Builder request = DictProtocol.GetRequest.newBuilder();
     request.setKey(key);
@@ -31,7 +31,7 @@ public class DstDictProxy {
     return future;
   }
 
-  public CompletableFuture<DictProtocol.GetItemResponse> asyncGetItem(
+  public CompletableFuture<DictProtocol.GetItemResponse> getItem(
           String key, String itemKey) {
     DictProtocol.GetItemRequest.Builder request =
           DictProtocol.GetItemRequest.newBuilder();
@@ -41,7 +41,7 @@ public class DstDictProxy {
     return future;
   }
 
-  public CompletableFuture<DictProtocol.PopItemResponse> asyncPopItem(String key, String itemKey) {
+  public CompletableFuture<DictProtocol.PopItemResponse> popItem(String key, String itemKey) {
     DictProtocol.PopItemRequest.Builder request = DictProtocol.PopItemRequest.newBuilder();
     request.setKey(key);
     request.setItemKey(itemKey);
@@ -49,7 +49,7 @@ public class DstDictProxy {
     return future;
   }
 
-  public CompletableFuture<DictProtocol.PutItemResponse> asyncPutItem(
+  public CompletableFuture<DictProtocol.PutItemResponse> putItem(
           String key, String itemKey, String itemValue) {
     DictProtocol.PutItemRequest.Builder request = DictProtocol.PutItemRequest.newBuilder();
     request.setKey(key);
@@ -59,14 +59,14 @@ public class DstDictProxy {
     return future;
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> asyncDrop(String key) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
     CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
     request.setKey(key);
     CompletableFuture<CommonProtocol.DropResponse> future = service.drop(request.build());
     return future;
   }
 
-  public CompletableFuture<DictProtocol.RemoveItemResponse> asyncRemoveItem(
+  public CompletableFuture<DictProtocol.RemoveItemResponse> removeItem(
           String key, String itemKey) {
     DictProtocol.RemoveItemRequest.Builder request = DictProtocol.RemoveItemRequest.newBuilder();
     request.setKey(key);

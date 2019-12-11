@@ -6,13 +6,13 @@ import com.distkv.dst.rpc.service.DstSetService;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class DstSetProxy {
+public class DstAsyncSetProxy {
 
   private DstSetService service;
 
-  public DstSetProxy(DstSetService service) { this.service = service; }
+  public DstAsyncSetProxy(DstSetService service) { this.service = service; }
 
-  public CompletableFuture<SetProtocol.PutResponse> asyncPut(
+  public CompletableFuture<SetProtocol.PutResponse> put(
           String key, Set<String> values) {
     SetProtocol.PutRequest request = SetProtocol.PutRequest.newBuilder()
             .setKey(key)
@@ -22,7 +22,7 @@ public class DstSetProxy {
     return future;
   }
 
-  public CompletableFuture<SetProtocol.GetResponse> asyncGet(String key) {
+  public CompletableFuture<SetProtocol.GetResponse> get(String key) {
     SetProtocol.GetRequest request = SetProtocol.GetRequest.newBuilder()
             .setKey(key)
             .build();
@@ -30,7 +30,7 @@ public class DstSetProxy {
     return future;
   }
 
-  public CompletableFuture<SetProtocol.PutItemResponse> asyncPutItem(
+  public CompletableFuture<SetProtocol.PutItemResponse> putItem(
           String key, String entity) {
     SetProtocol.PutItemRequest request = SetProtocol.PutItemRequest.newBuilder()
             .setKey(key)
@@ -40,7 +40,7 @@ public class DstSetProxy {
     return future;
   }
 
-  public CompletableFuture<SetProtocol.RemoveItemResponse> asyncRemoveItem(
+  public CompletableFuture<SetProtocol.RemoveItemResponse> removeItem(
           String key, String entity) {
     SetProtocol.RemoveItemRequest request = SetProtocol.RemoveItemRequest.newBuilder()
             .setKey(key)
@@ -50,7 +50,7 @@ public class DstSetProxy {
     return future;
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> asyncDrop(String key) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
     CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
             .setKey(key)
             .build();
@@ -58,7 +58,7 @@ public class DstSetProxy {
     return future;
   }
 
-  public CompletableFuture<SetProtocol.ExistsResponse> asyncExists(
+  public CompletableFuture<SetProtocol.ExistsResponse> exists(
           String key, String entity) {
     SetProtocol.ExistsRequest request = SetProtocol.ExistsRequest.newBuilder()
             .setKey(key)

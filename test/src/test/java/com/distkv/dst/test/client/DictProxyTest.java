@@ -2,15 +2,11 @@ package com.distkv.dst.test.client;
 
 import com.distkv.dst.client.DstClient;
 import com.distkv.dst.common.exception.KeyNotFoundException;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class DictProxyTest extends BaseTestSupplier {
 

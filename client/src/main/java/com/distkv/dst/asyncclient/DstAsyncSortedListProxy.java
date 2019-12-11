@@ -8,13 +8,13 @@ import com.distkv.dst.rpc.service.DstSortedListService;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
-public class DstSortedListProxy {
+public class DstAsyncSortedListProxy {
 
   DstSortedListService service;
 
-  public DstSortedListProxy(DstSortedListService service) { this.service = service; }
+  public DstAsyncSortedListProxy(DstSortedListService service) { this.service = service; }
 
-  public CompletableFuture<SortedListProtocol.PutResponse> asyncPut(
+  public CompletableFuture<SortedListProtocol.PutResponse> put(
           String key, LinkedList<SortedListEntity> list) {
     SortedListProtocol.PutRequest.Builder requestBuilder =
             SortedListProtocol.PutRequest.newBuilder();
@@ -33,7 +33,7 @@ public class DstSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.IncrScoreResponse> asyncIncrItem(
+  public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrItem(
           String key, String member, int delta) {
     SortedListProtocol.IncrScoreRequest.Builder requestBuilder =
             SortedListProtocol.IncrScoreRequest.newBuilder();
@@ -45,7 +45,7 @@ public class DstSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.TopResponse> asyncTop(
+  public CompletableFuture<SortedListProtocol.TopResponse> top(
           String key, int topNum) {
     SortedListProtocol.TopRequest.Builder topRequestBuilder =
             SortedListProtocol.TopRequest.newBuilder();
@@ -56,7 +56,7 @@ public class DstSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> asyncDrop(String key) {
+  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
     CommonProtocol.DropRequest.Builder requestBuilder =
             CommonProtocol.DropRequest.newBuilder();
     requestBuilder.setKey(key);
@@ -65,7 +65,7 @@ public class DstSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.DelMemberResponse> asyncDelItem(
+  public CompletableFuture<SortedListProtocol.DelMemberResponse> delItem(
           String key, String member) {
     SortedListProtocol.DelMemberRequest.Builder requestBuilder =
             SortedListProtocol.DelMemberRequest.newBuilder();
@@ -76,7 +76,7 @@ public class DstSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.PutMemberResponse> asyncPutItem(
+  public CompletableFuture<SortedListProtocol.PutMemberResponse> putItem(
           String key, SortedListEntity entity) {
     SortedListProtocol.PutMemberRequest.Builder requestBuilder =
             SortedListProtocol.PutMemberRequest.newBuilder();
