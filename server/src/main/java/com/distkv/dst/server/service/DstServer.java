@@ -9,6 +9,7 @@ import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstStringService;
 import com.distkv.dst.rpc.service.DstSetService;
 import com.distkv.dst.rpc.service.DstSortedListService;
+import com.distkv.dst.server.runtime.DstRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +22,11 @@ public class DstServer {
   // TODO(qwang): This should be a Dst Runtime.
   private KVStore kvStore;
 
+  private DstRuntime runtime;
+
   private DstServer() {
     kvStore = new KVStoreImpl();
+    runtime = new DstRuntime();
   }
 
   private KVStore getKvStore() {
@@ -49,7 +53,7 @@ public class DstServer {
 
   public static void main(String[] args) {
 
-    DstServer rpcServer = new DstServer();
+    DstServer server = new DstServer();
 
     int listeningPort = LISTENING_PORT;
 
@@ -69,17 +73,16 @@ public class DstServer {
 
     // TODO(qwang): Rename exporter to DrcpServer.
     Exporter exporter = new Exporter(serverConfig);
-    // TODO(qwang): Refine this protocol name.
     exporter.registerService(
-        DstStringService.class, new DstStringServiceImpl(rpcServer.getKvStore()));
+        DstStringService.class, new DstStringServiceImpl(server.runtime));
     exporter.registerService(
-        DstListService.class, new DstListServiceImpl(rpcServer.getKvStore()));
+        DstListService.class, new DstListServiceImpl(server.getKvStore()));
     exporter.registerService(
-        DstSetService.class, new DstSetServiceImpl(rpcServer.getKvStore()));
+        DstSetService.class, new DstSetServiceImpl(server.runtime));
     exporter.registerService(
-        DstDictService.class, new DstDictServiceImpl(rpcServer.getKvStore()));
+        DstDictService.class, new DstDictServiceImpl(server.getKvStore()));
     exporter.registerService(
-        DstSortedListService.class, new DstSortedListServiceImpl(rpcServer.getKvStore()));
+        DstSortedListService.class, new DstSortedListServiceImpl(server.getKvStore()));
     // TODO(qwang): Rename this to drpcServer.run();
     exporter.export();
 

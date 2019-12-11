@@ -1,18 +1,21 @@
 package com.distkv.dst.parser;
 
-import com.distkv.dst.parser.po.RequestTypeEnum;
+import com.distkv.dst.common.RequestTypeEnum;
+import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.google.common.base.Preconditions;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.distkv.dst.parser.generated.DstNewSQLBaseListener;
 import com.distkv.dst.parser.generated.DstNewSQLParser;
 import com.distkv.dst.parser.po.DstParsedResult;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
-import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
-import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DstNewSqlListener extends DstNewSQLBaseListener {
@@ -97,35 +100,42 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListGet(DstNewSQLParser.ListGetContext ctx) {
+  public void enterListGetAll(DstNewSQLParser.ListGetAllContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 1);
+
+    ListProtocol.GetRequest.Builder getRequestBuilder = ListProtocol.GetRequest.newBuilder();
+    getRequestBuilder.setKey(ctx.getChild(0).getText());
+    getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, getRequestBuilder.build());
+  }
+
+  @Override
+  public void enterListGetOne(DstNewSQLParser.ListGetOneContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
-    final ParseTree listGetArgumentsParseTree = ctx.children.get(1);
-    final int numArguments = listGetArgumentsParseTree.getChildCount();
 
-    ListProtocol.GetRequest.Builder builder = ListProtocol.GetRequest.newBuilder();
-    final String key = listGetArgumentsParseTree.getChild(0).getText();
-    builder.setKey(key);
-    if (1 == numArguments) {
-      // GET_ALL
-      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 1);
-      builder.setType(ListProtocol.GetType.GET_ALL);
-    } else if (2 == numArguments) {
-      // GET_ONE
-      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 2);
-      builder.setType(ListProtocol.GetType.GET_ONE);
-      builder.setIndex(Integer.valueOf(listGetArgumentsParseTree.getChild(1).getText()));
-    } else if (3 == numArguments) {
-      // GET_RANGE
-      Preconditions.checkState(listGetArgumentsParseTree.getChildCount() == 3);
-      builder.setType(ListProtocol.GetType.GET_RANGE);
-      builder.setFrom(Integer.valueOf(listGetArgumentsParseTree.getChild(1).getText()));
-      builder.setEnd(Integer.valueOf(listGetArgumentsParseTree.getChild(2).getText()));
-    } else {
-      throw new RuntimeException("Failed to parser the command.");
-    }
+    ListProtocol.GetRequest.Builder getRequestBuilder = ListProtocol.GetRequest.newBuilder();
+    getRequestBuilder.setKey(ctx.getChild(0).getText());
+    getRequestBuilder.setIndex(Integer.valueOf(ctx.getChild(1).getText()));
+    getRequestBuilder.setType(ListProtocol.GetType.GET_ONE);
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, builder.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, getRequestBuilder.build());
+  }
+
+  @Override
+  public void enterListGetRange(DstNewSQLParser.ListGetRangeContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ListProtocol.GetRequest.Builder getRequestBuilder = ListProtocol.GetRequest.newBuilder();
+    getRequestBuilder.setKey(ctx.getChild(0).getText());
+    getRequestBuilder.setFrom(Integer.valueOf(ctx.getChild(1).getText()));
+    getRequestBuilder.setEnd(Integer.valueOf(ctx.getChild(2).getText()));
+    getRequestBuilder.setType(ListProtocol.GetType.GET_RANGE);
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_GET, getRequestBuilder.build());
   }
 
   @Override
@@ -134,13 +144,49 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListDelete(DstNewSQLParser.ListDeleteContext ctx) {
-    // TODO(qwang): Refine.
+  public void enterListRemoveOne(DstNewSQLParser.ListRemoveOneContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    ListProtocol.RemoveRequest.Builder removeRequestBuilder =
+            ListProtocol.RemoveRequest.newBuilder();
+
+    removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveOne);
+    removeRequestBuilder.setKey(ctx.children.get(0).getText());
+    removeRequestBuilder.setIndex(Integer.valueOf(ctx.children.get(1).getText()));
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequestBuilder.build());
   }
 
   @Override
-  public void enterListMDelete(DstNewSQLParser.ListMDeleteContext ctx) {
-    // TODO(qwang): Refine.
+  public void enterListRemoveRange(DstNewSQLParser.ListRemoveRangeContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ListProtocol.RemoveRequest.Builder removeRequestBuilder =
+            ListProtocol.RemoveRequest.newBuilder();
+
+    removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveRange);
+    removeRequestBuilder.setKey(ctx.children.get(0).getText());
+    removeRequestBuilder.setFrom(Integer.valueOf(ctx.children.get(1).getText()));
+    removeRequestBuilder.setEnd(Integer.valueOf(ctx.children.get(2).getText()));
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_REMOVE, removeRequestBuilder.build());
+  }
+
+  @Override
+  public void enterListMRemove(DstNewSQLParser.ListMRemoveContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() >= 3);
+
+    ListProtocol.MRemoveRequest.Builder mremoveRequest = ListProtocol.MRemoveRequest.newBuilder();
+    mremoveRequest.setKey(ctx.children.get(1).getText());
+
+    List<Integer> indexesList = new ArrayList<>();
+    for (int i = 2; i < ctx.children.size(); i++) {
+      indexesList.add(Integer.valueOf(ctx.children.get(i).getText()));
+    }
+    mremoveRequest.addAllIndexes(indexesList);
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.LIST_M_REMOVE, mremoveRequest.build());
   }
 
   @Override
@@ -296,6 +342,115 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.DICT_DROP, builder.build());
+  }
+
+  @Override
+  public void enterSlistPut(DstNewSQLParser.SlistPutContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.PutRequest.Builder slistPutRequestBuilder =
+            SortedListProtocol.PutRequest.newBuilder();
+    final ParseTree sortedListEntityPairsParseTree = ctx.children.get(2);
+    final int sortedListEntityPairs = sortedListEntityPairsParseTree.getChildCount();
+
+    slistPutRequestBuilder.setKey(ctx.children.get(1).getText());
+    for (int i = 0; i < sortedListEntityPairs; i++) {
+      final SortedListProtocol.SortedListEntity.Builder slistBuilder =
+              SortedListProtocol.SortedListEntity.newBuilder();
+      final ParseTree sortedListEntityParseTree =
+              sortedListEntityPairsParseTree.getChild(i);
+      Preconditions.checkState(sortedListEntityParseTree.getChildCount() == 2);
+      slistBuilder.setScore(Integer.valueOf(sortedListEntityParseTree.getChild(1).getText()));
+      slistBuilder.setMember(sortedListEntityParseTree.getChild(0).getText());
+      slistPutRequestBuilder.addList(slistBuilder);
+    }
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_PUT, slistPutRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistTop(DstNewSQLParser.SlistTopContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.TopRequest.Builder slistTopRequestBuilder =
+            SortedListProtocol.TopRequest.newBuilder();
+    slistTopRequestBuilder.setKey(ctx.children.get(1).getText());
+    slistTopRequestBuilder.setCount(Integer.valueOf(ctx.children.get(2).getText()));
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_TOP, slistTopRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistIncrScoreDefault(DstNewSQLParser.SlistIncrScoreDefaultContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    SortedListProtocol.IncrScoreRequest.Builder slistIncrScoreRequest =
+            SortedListProtocol.IncrScoreRequest.newBuilder();
+    slistIncrScoreRequest.setKey(ctx.children.get(0).getText());
+    slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
+    slistIncrScoreRequest.setDelta(1);
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCR_SCORE,
+            slistIncrScoreRequest.build());
+  }
+
+  @Override
+  public void enterSlistIncrScoreDelta(DstNewSQLParser.SlistIncrScoreDeltaContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.IncrScoreRequest.Builder slistIncrScoreRequest =
+            SortedListProtocol.IncrScoreRequest.newBuilder();
+    slistIncrScoreRequest.setKey(ctx.children.get(0).getText());
+    slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
+    slistIncrScoreRequest.setDelta(Integer.valueOf(ctx.children.get(2).getText()));
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCR_SCORE,
+            slistIncrScoreRequest.build());
+  }
+
+  @Override
+  public void enterSlistPutMember(DstNewSQLParser.SlistPutMemberContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 4);
+
+    SortedListProtocol.PutMemberRequest.Builder slistPutMemberRequestBuilder =
+            SortedListProtocol.PutMemberRequest.newBuilder();
+    slistPutMemberRequestBuilder.setKey(ctx.children.get(1).getText());
+    slistPutMemberRequestBuilder.setScore(Integer.valueOf(ctx.children.get(3).getText()));
+    slistPutMemberRequestBuilder.setMember(ctx.children.get(2).getText());
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_PUT_MEMBER,
+            slistPutMemberRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistRemoveMember(DstNewSQLParser.SlistRemoveMemberContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.DelMemberRequest.Builder delMemberRequestBuilder =
+            SortedListProtocol.DelMemberRequest.newBuilder();
+    delMemberRequestBuilder.setKey(ctx.children.get(1).getText());
+    delMemberRequestBuilder.setMember(ctx.children.get(2).getText());
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_REMOVE_MEMBER,
+            delMemberRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistDrop(DstNewSQLParser.SlistDropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    CommonProtocol.DropRequest.Builder dropRequestBuilder =
+            CommonProtocol.DropRequest.newBuilder();
+    dropRequestBuilder.setKey(ctx.children.get(1).getText());
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_DROP, dropRequestBuilder.build());
   }
 
 }

@@ -9,7 +9,7 @@ package com.distkv.dst.parser.generated;
 */
 
 statement: (conceptStatement) EOF;
-conceptStatement: strStatement | listStatement | setStatement | dictStatement;
+conceptStatement: strStatement | listStatement | setStatement | dictStatement | slistStatement;
 
 // str concept
 strStatement: strPut | strGet | strDrop;
@@ -18,14 +18,14 @@ strGet: 'str.get' key ;
 strDrop: 'str.drop' key ;
 
 // list concept
-listStatement: listPut | listLput | listRput | listGet | listRGet | listDelete | listMDelete | listDrop;
+listStatement: listPut | listLput | listRput | listGet | listRGet | listRemove | listMRemove | listDrop;
 listPut: 'list.put' key valueArray;
 listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
 listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
 listRGet: 'list.rget' listGetArguments;
-listDelete: 'list.remove' (listRemoveOne | listRemoveRange);
-listMDelete: 'list.mRemove' key (index)+;
+listRemove: 'list.remove' (listRemoveOne | listRemoveRange);
+listMRemove: 'list.mRemove' key (index)+;
 listDrop: 'list.drop' key;
 
 listGetArguments: listGetAll | listGetOne | listGetRange;
@@ -60,19 +60,43 @@ dictPopItem: 'dict.popItem' key itemKey;
 dictRemoveItem: 'dict.removeItem' key itemKey;
 dictDrop: 'dict.drop' key;
 
+// slist concept
+slistStatement: slistPut | slistTop | slistIncrScore | slistPutMember | slistRemoveMember | slistDrop;
+slistPut: 'slist.put' key sortedListEntityPairs;
+slistTop: 'slist.top' key topCount;
+slistIncrScore: 'slist.incrScore' (slistIncrScoreDefault | slistIncrScoreDelta);
+slistPutMember: 'slist.putMember' key itemMember itemScore;
+slistRemoveMember: 'slist.removeMember' key itemMember;
+slistDrop: 'slist.drop' key;
+
+// slist.incrScore arguments
+// slist increase one score by default
+slistIncrScoreDefault: key itemMember;
+// slist increase delta scores
+slistIncrScoreDelta: key itemMember anyInt;
+
 keyValuePairs: (keyValuePair)+;
 keyValuePair: itemKey itemValue;
 itemKey: STRING;
 itemValue: STRING;
 
+sortedListEntityPairs: (sortedListEntity)+;
+sortedListEntity: itemMember itemScore;
+itemMember: STRING;
+itemScore: anyInt;
+topCount: POSITIVE_INT;
+
 // meta
 key: STRING;
 value: STRING;
 valueArray: (STRING)+;
-index: NON_NEGATIVE_INT;
+index: POSITIVE_INT | ZERO;
+anyInt: NEGATIVE_INT | POSITIVE_INT | ZERO;
 
 
-NON_NEGATIVE_INT: [1-9][0-9]* | '0';
+NEGATIVE_INT: '-'[1-9][0-9]*;
+POSITIVE_INT: [1-9][0-9]*;
+ZERO: '0';
 STRING: (~[ \t\r\n])+;
 
  // Skip spaces, tabs, and newlines.

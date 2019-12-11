@@ -1,4 +1,4 @@
-package com.distkv.dst.parser.po;
+package com.distkv.dst.common;
 
 public enum RequestTypeEnum {
   STR_PUT,
@@ -27,4 +27,11 @@ public enum RequestTypeEnum {
   DICT_POP_ITEM,
   DICT_REMOVE_ITEM,
   DICT_DROP,
+
+  SLIST_PUT,
+  SLIST_TOP,
+  SLIST_INCR_SCORE,
+  SLIST_PUT_MEMBER,
+  SLIST_REMOVE_MEMBER,
+  SLIST_DROP,
 }
