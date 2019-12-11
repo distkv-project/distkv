@@ -1,7 +1,7 @@
 package com.distkv.dst.asyncclient;
 
 /**
- * The DstAsyncClient class is used to connect to the dst server with async way.
+ * The DstAsyncClient class is used to connect to the Dst server and do operations asynchronously.
  */
 public interface DstAsyncClient {
 
@@ -17,12 +17,12 @@ public interface DstAsyncClient {
    *
    * @return True if it connected, otherwise it's false.
    */
-  boolean isConnect();
+  boolean isConnected();
 
   /**
    * Disconnect to dst server.
    */
-  boolean disConnect();
+  boolean disconnect();
 
   /**
    * Get the dst string proxy.

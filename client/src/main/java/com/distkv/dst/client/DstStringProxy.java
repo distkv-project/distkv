@@ -7,8 +7,6 @@ import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import com.distkv.dst.rpc.service.DstStringService;
 import java.util.concurrent.CompletableFuture;
 
-import static com.distkv.dst.client.CheckStatusUtil.checkStatus;
-
 public class DstStringProxy {
 
   private DstStringService service;
@@ -26,7 +24,7 @@ public class DstStringProxy {
 
     CompletableFuture<StringProtocol.PutResponse> responseFuture = service.put(request);
     StringProtocol.PutResponse response = FutureUtils.get(responseFuture);
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public String get(String key) throws DstException {
@@ -37,7 +35,7 @@ public class DstStringProxy {
 
     CompletableFuture<StringProtocol.GetResponse> responseFuture = service.get(request);
     StringProtocol.GetResponse response = FutureUtils.get(responseFuture);
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getValue();
   }
 
@@ -49,7 +47,7 @@ public class DstStringProxy {
 
     CompletableFuture<CommonProtocol.DropResponse> responseFuture = service.drop(request);
     CommonProtocol.DropResponse response = FutureUtils.get(responseFuture);
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return true;
   }
 }

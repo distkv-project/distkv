@@ -8,8 +8,6 @@ import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.service.DstListService;
 import java.util.List;
 
-import static com.distkv.dst.client.CheckStatusUtil.checkStatus;
-
 public class DstListProxy {
 
   private DstListService service;
@@ -24,7 +22,7 @@ public class DstListProxy {
           .addAllValues(values)
           .build();
     ListProtocol.PutResponse response = FutureUtils.get(service.put(request));
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public List<String> get(String key) {
@@ -33,7 +31,7 @@ public class DstListProxy {
         .setKey(key)
         .build();
     ListProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getValuesList();
   }
 
@@ -44,7 +42,7 @@ public class DstListProxy {
             .setIndex(index)
             .build();
     ListProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getValuesList();
   }
 
@@ -70,7 +68,7 @@ public class DstListProxy {
           .setKey(key)
           .build();
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request));
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public void lput(String key, List<String> values) {
@@ -106,7 +104,7 @@ public class DstListProxy {
             .setIndex(index)
             .build();
     ListProtocol.RemoveResponse response = FutureUtils.get(service.remove(request));
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public void remove(String key, Integer from, Integer end) {
@@ -117,7 +115,7 @@ public class DstListProxy {
             .setEnd(end)
             .build();
     ListProtocol.RemoveResponse response = FutureUtils.get(service.remove(request));
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public void multipleRemove(String key, List<Integer> indexes) {
@@ -126,6 +124,6 @@ public class DstListProxy {
           .addAllIndexes(indexes)
           .build();
     ListProtocol.MRemoveResponse response = FutureUtils.get(service.multipleRemove(request));
-    checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 }

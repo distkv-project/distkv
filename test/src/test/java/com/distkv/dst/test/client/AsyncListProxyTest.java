@@ -57,7 +57,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     } catch (ExecutionException e) {
       e.printStackTrace();
     }
-    client.disConnect();
+    client.disconnect();
   }
 
   @Test
@@ -116,7 +116,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     } catch (ExecutionException e) {
       e.printStackTrace();
     }
-    client.disConnect();
+    client.disconnect();
   }
 
   @Test
@@ -151,6 +151,6 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     } catch (ExecutionException e) {
       e.printStackTrace();
     }
-    client.disConnect();
+    client.disconnect();
   }
 }

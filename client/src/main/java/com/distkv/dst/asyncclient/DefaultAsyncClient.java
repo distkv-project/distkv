@@ -69,12 +69,12 @@ public class DefaultAsyncClient implements DstAsyncClient {
   }
 
   @Override
-  public boolean isConnect() {
+  public boolean isConnected() {
     return true;
   }
 
   @Override
-  public boolean disConnect() {
+  public boolean disconnect() {
     return true;
   }
 

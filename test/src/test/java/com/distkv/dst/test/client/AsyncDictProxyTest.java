@@ -91,6 +91,6 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
     } catch (ExecutionException e) {
       e.printStackTrace();
     }
-    client.disConnect();
+    client.disconnect();
   }
 }
