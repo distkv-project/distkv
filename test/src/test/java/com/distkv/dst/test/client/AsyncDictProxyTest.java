@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class AsyncDictProxyTest extends BaseTestSupplier {
 
@@ -42,9 +43,9 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
     });
 
     // TestPopItem
-    CompletableFuture<DictProtocol.PopItemResponse> futurePop =
+    CompletableFuture<DictProtocol.PopItemResponse> futurePopItem =
             client.dicts().popItem("m1", "k1");
-    futurePop.whenComplete((r, t) -> {
+    futurePopItem.whenComplete((r, t) -> {
       Assert.assertEquals(r.getItemValue(), "v1");
     });
 
@@ -77,6 +78,19 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
+    try {
+      futurePut.get();
+      futurePutItem.get();
+      futureGetItem.get();
+      futurePopItem.get();
+      futureRemove.get();
+      futureGet.get();
+      futureDrop.get();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
     client.disConnect();
   }
 }

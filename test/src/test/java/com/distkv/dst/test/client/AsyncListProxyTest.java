@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class AsyncListProxyTest extends BaseTestSupplier {
 
@@ -46,6 +47,16 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getValuesList(), ImmutableList.of("v2", "v3"));
     });
 
+    try {
+      futurePut.get();
+      futureGetAll.get();
+      futureGetOne.get();
+      futureGetRange.get();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
     client.disConnect();
   }
 
@@ -93,6 +104,18 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getValuesList(), ImmutableList.of("v0", "v4"));
     });
 
+    try {
+      futurePut.get();
+      futureLPut.get();
+      futureOne.get();
+      futureRPut.get();
+      futureRange.get();
+      futureGet.get();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
     client.disConnect();
   }
 
@@ -119,6 +142,15 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getValuesList(), ImmutableList.of("v0"));
     });
 
+    try {
+      futurePut.get();
+      futureMRemove.get();
+      futureGet.get();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
     client.disConnect();
   }
 }

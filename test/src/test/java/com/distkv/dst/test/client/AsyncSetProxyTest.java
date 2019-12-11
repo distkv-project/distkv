@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class AsyncSetProxyTest extends BaseTestSupplier {
 
@@ -58,6 +59,18 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
+    try {
+      futurePut.get();
+      futurePutItem.get();
+      futureExists.get();
+      futureRemove.get();
+      futureGet.get();
+      futureDrop.get();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
     client.disConnect();
   }
 }

@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class AsyncSortedListTest extends BaseTestSupplier {
 
@@ -66,6 +67,18 @@ public class AsyncSortedListTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
+    try {
+      futurePut.get();
+      futureInc.get();
+      futurePutItem.get();
+      futuredel.get();
+      futureTop.get();
+      futureDrop.get();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
     client.disConnect();
   }
 }

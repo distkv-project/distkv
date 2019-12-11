@@ -7,6 +7,7 @@ import com.distkv.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class AsyncStrProxyTest extends BaseTestSupplier {
 
@@ -32,6 +33,15 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
+    try {
+      futurePut.get();
+      futureGet.get();
+      futureDrop.get();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    }
     client.disConnect();
   }
 }
