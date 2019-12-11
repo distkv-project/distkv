@@ -50,7 +50,7 @@ public class ParseSortedListCommandTest {
     final SortedListProtocol.IncrScoreRequest incrScoreRequest =
             (SortedListProtocol.IncrScoreRequest) result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_INCRSCORE);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_INCR_SCORE);
     Assert.assertEquals(incrScoreRequest.getKey(), "k1");
     Assert.assertEquals(incrScoreRequest.getMember(), "m1");
     Assert.assertEquals(incrScoreRequest.getDelta(), 1);
@@ -63,7 +63,7 @@ public class ParseSortedListCommandTest {
     final SortedListProtocol.IncrScoreRequest incrScoreRequest =
             (SortedListProtocol.IncrScoreRequest) result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_INCRSCORE);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_INCR_SCORE);
     Assert.assertEquals(incrScoreRequest.getKey(), "k1");
     Assert.assertEquals(incrScoreRequest.getMember(), "m1");
     Assert.assertEquals(incrScoreRequest.getDelta(), 20);
@@ -76,7 +76,7 @@ public class ParseSortedListCommandTest {
     final SortedListProtocol.PutMemberRequest putMemberRequest =
             (SortedListProtocol.PutMemberRequest) result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_PUTMEMBER);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_PUT_MEMBER);
     Assert.assertEquals(putMemberRequest.getKey(), "k1");
     Assert.assertEquals(putMemberRequest.getScore(), 4);
     Assert.assertEquals(putMemberRequest.getMember(), "m4");
@@ -89,7 +89,7 @@ public class ParseSortedListCommandTest {
     final SortedListProtocol.DelMemberRequest delMemberRequest =
             (SortedListProtocol.DelMemberRequest) result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_REMOVEMEMBER);
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_REMOVE_MEMBER);
     Assert.assertEquals(delMemberRequest.getKey(), "k1");
     Assert.assertEquals(delMemberRequest.getMember(), "m4");
   }
