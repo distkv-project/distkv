@@ -1,131 +1,71 @@
 package com.distkv.dst.server.service;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-
-import com.distkv.dst.common.utils.FutureUtils;
-import com.distkv.dst.core.KVStore;
-import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
-import com.distkv.dst.server.base.DstBaseService;
+import com.distkv.dst.common.RequestTypeEnum;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.service.DstSetService;
-import com.distkv.dst.common.utils.Status;
+import com.distkv.dst.server.runtime.DstRuntime;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-public class DstSetServiceImpl extends DstBaseService implements DstSetService {
+public class DstSetServiceImpl implements DstSetService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstSetServiceImpl.class);
 
-  public DstSetServiceImpl(KVStore store) {
-    super(store);
+  private DstRuntime runtime;
+
+  public DstSetServiceImpl(DstRuntime runtime) {
+    this.runtime = runtime;
   }
 
   @Override
   public CompletableFuture<SetProtocol.PutResponse> put(SetProtocol.PutRequest request) {
-    SetProtocol.PutResponse.Builder setPutResponseBuilder =
-            SetProtocol.PutResponse.newBuilder();
-
-    getStore().sets().put(request.getKey(), new HashSet<>(request.getValuesList()));
-    setPutResponseBuilder.setStatus(CommonProtocol.Status.OK);
-    return FutureUtils.newCompletableFuture(setPutResponseBuilder.build());
+    CompletableFuture<SetProtocol.PutResponse> future = new CompletableFuture<>();
+    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SET_PUT, request, future);
+    return future;
   }
 
   @Override
   public CompletableFuture<SetProtocol.GetResponse> get(SetProtocol.GetRequest request) {
-    SetProtocol.GetResponse.Builder setGetResponseBuilder =
-            SetProtocol.GetResponse.newBuilder();
-
-    try {
-      Set<String> values = getStore().sets().get(request.getKey());
-      values.forEach(value -> setGetResponseBuilder.addValues(value));
-      setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
-    } catch (KeyNotFoundException e) {
-      setGetResponseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-    } catch (DstException e) {
-      setGetResponseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
-    }
-    return FutureUtils.newCompletableFuture(setGetResponseBuilder.build());
+    CompletableFuture<SetProtocol.GetResponse> future = new CompletableFuture<>();
+    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SET_GET, request, future);
+    return future;
   }
 
   @Override
   public CompletableFuture<SetProtocol.PutItemResponse> putItem(
       SetProtocol.PutItemRequest request) {
-    SetProtocol.PutItemResponse.Builder builder = SetProtocol.PutItemResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
-    try {
-      getStore().sets().putItem(request.getKey(), request.getItemValue());
-      status = CommonProtocol.Status.OK;
-    } catch (KeyNotFoundException e) {
-      status = CommonProtocol.Status.KEY_NOT_FOUND;
-    }
-    builder.setStatus(status);
-    return FutureUtils.newCompletableFuture(builder.build());
+    CompletableFuture<SetProtocol.PutItemResponse> future = new CompletableFuture<>();
+    runtime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.SET_PUT_ITEM, request, future);
+    return future;
   }
 
   @Override
   public CompletableFuture<SetProtocol.RemoveItemResponse> removeItem(
       SetProtocol.RemoveItemRequest request) {
-    SetProtocol.RemoveItemResponse.Builder setDeleteResponseBuilder =
-            SetProtocol.RemoveItemResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+    CompletableFuture<SetProtocol.RemoveItemResponse> future = new CompletableFuture<>();
+    runtime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.SET_REMOVE_ITEM, request, future);
+    return future;
+  }
 
-    try {
-      Status localStatus = getStore().sets().removeItem(
-          request.getKey(), request.getItemValue());
-      if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
-      }
-    } catch (DstException e) {
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
-    }
 
-    setDeleteResponseBuilder.setStatus(status);
-    return FutureUtils.newCompletableFuture(setDeleteResponseBuilder.build());
+  @Override
+  public CompletableFuture<SetProtocol.ExistsResponse> exists(SetProtocol.ExistsRequest request) {
+    CompletableFuture<SetProtocol.ExistsResponse> future = new CompletableFuture<>();
+    runtime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.SET_EXIST, request, future);
+    return future;
   }
 
   @Override
   public CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request) {
-    CommonProtocol.DropResponse.Builder setDropByKeyResponseBuilder =
-            CommonProtocol.DropResponse.newBuilder();
-    CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
-    try {
-      Status localStatus = getStore().sets().drop(request.getKey());
-      if (localStatus == Status.OK) {
-        status = CommonProtocol.Status.OK;
-      } else if (localStatus == Status.KEY_NOT_FOUND) {
-        status = CommonProtocol.Status.KEY_NOT_FOUND;
-      }
-    } catch (DstException e) {
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
-    }
-
-    setDropByKeyResponseBuilder.setStatus(status);
-    return FutureUtils.newCompletableFuture(setDropByKeyResponseBuilder.build());
-  }
-
-  @Override
-  public CompletableFuture<SetProtocol.ExistsResponse> exists(SetProtocol.ExistsRequest request) {
-    SetProtocol.ExistsResponse.Builder setExistResponseBuilder =
-            SetProtocol.ExistsResponse.newBuilder();
-
-    CommonProtocol.Status status;
-    try {
-      boolean result = getStore().sets().exists(request.getKey(), request.getEntity());
-      setExistResponseBuilder.setResult(result);
-      status = CommonProtocol.Status.OK;
-    } catch (KeyNotFoundException e) {
-      status = CommonProtocol.Status.KEY_NOT_FOUND;
-    } catch (DstException e) {
-      status = CommonProtocol.Status.UNKNOWN_ERROR;
-    }
-    setExistResponseBuilder.setStatus(status);
-    return FutureUtils.newCompletableFuture(setExistResponseBuilder.build());
+    CompletableFuture<CommonProtocol.DropResponse> future = new CompletableFuture<>();
+    runtime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.SET_DROP, request, future);
+    return future;
   }
 
 }
