@@ -28,23 +28,6 @@ public class DstListProxy {
     checkStatus(response.getStatus(), request.getKey());
   }
 
-  public CompletableFuture<ListProtocol.PutResponse> asyncPut(
-          String key, List<String> values) {
-    ListProtocol.PutRequest request = ListProtocol.PutRequest.newBuilder()
-            .setKey(key)
-            .addAllValues(values)
-            .build();
-    CompletableFuture<ListProtocol.PutResponse> future = service.put(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
-  }
-
   public List<String> get(String key) {
     ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
         .setType(ListProtocol.GetType.GET_ALL)
@@ -83,80 +66,12 @@ public class DstListProxy {
     return response.getValuesList();
   }
 
-  public CompletableFuture<ListProtocol.GetResponse> asyncGet(String key) {
-    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
-            .setType(ListProtocol.GetType.GET_ALL)
-            .setKey(key)
-            .build();
-    CompletableFuture<ListProtocol.GetResponse> future = service.get(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
-  }
-
-  public CompletableFuture<ListProtocol.GetResponse> asyncGet(
-          String key, Integer index) {
-    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
-            .setType(ListProtocol.GetType.GET_ONE)
-            .setKey(key)
-            .setIndex(index)
-            .build();
-    CompletableFuture<ListProtocol.GetResponse> future = service.get(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
-  }
-
-  public CompletableFuture<ListProtocol.GetResponse> asyncGet(
-          String key, Integer from, Integer end) {
-    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
-            .setType(ListProtocol.GetType.GET_RANGE)
-            .setKey(key)
-            .setFrom(from)
-            .setEnd(end)
-            .build();
-    CompletableFuture<ListProtocol.GetResponse> future = service.get(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
-  }
-
   public void drop(String key) {
     CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
           .setKey(key)
           .build();
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request));
     checkStatus(response.getStatus(), request.getKey());
-  }
-
-  public CompletableFuture<CommonProtocol.DropResponse> asyncDrop(String key) {
-    CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
-            .setKey(key)
-            .build();
-    CompletableFuture<CommonProtocol.DropResponse> future = service.drop(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
   }
 
   public void lput(String key, List<String> values) {
@@ -172,23 +87,6 @@ public class DstListProxy {
     }
   }
 
-  public CompletableFuture<ListProtocol.LPutResponse> asyncLput(
-          String key, List<String> values) {
-    ListProtocol.LPutRequest request = ListProtocol.LPutRequest.newBuilder()
-            .setKey(key)
-            .addAllValues(values)
-            .build();
-    CompletableFuture<ListProtocol.LPutResponse> future = service.lput(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
-  }
-
   public void rput(String key, List<String> values) {
     ListProtocol.RPutRequest request = ListProtocol.RPutRequest.newBuilder()
           .setKey(key)
@@ -200,23 +98,6 @@ public class DstListProxy {
     } else if (response.getStatus() != CommonProtocol.Status.OK) {
       throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
     }
-  }
-
-  public CompletableFuture<ListProtocol.RPutResponse> asyncRput(
-          String key, List<String> values) {
-    ListProtocol.RPutRequest request = ListProtocol.RPutRequest.newBuilder()
-            .setKey(key)
-            .addAllValues(values)
-            .build();
-    CompletableFuture<ListProtocol.RPutResponse> future = service.rput(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
   }
 
   public void remove(String key, Integer index) {
@@ -240,43 +121,6 @@ public class DstListProxy {
     checkStatus(response.getStatus(), request.getKey());
   }
 
-  public CompletableFuture<ListProtocol.RemoveResponse> asyncRemove(
-          String key, Integer index) {
-    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
-            .setType(ListProtocol.RemoveType.RemoveOne)
-            .setKey(key)
-            .setIndex(index)
-            .build();
-    CompletableFuture<ListProtocol.RemoveResponse> future = service.remove(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
-  }
-
-  public CompletableFuture<ListProtocol.RemoveResponse> asyncRemove(
-          String key, Integer from, Integer end) {
-    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
-            .setType(ListProtocol.RemoveType.RemoveRange)
-            .setKey(key)
-            .setFrom(from)
-            .setEnd(end)
-            .build();
-    CompletableFuture<ListProtocol.RemoveResponse> future = service.remove(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
-  }
-
   public void multipleRemove(String key, List<Integer> indexes) {
     ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
           .setKey(key)
@@ -284,22 +128,5 @@ public class DstListProxy {
           .build();
     ListProtocol.MRemoveResponse response = FutureUtils.get(service.multipleRemove(request));
     checkStatus(response.getStatus(), request.getKey());
-  }
-
-  public CompletableFuture<ListProtocol.MRemoveResponse> asyncMutiRemove(
-          String key, List<Integer> indexes) {
-    ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
-            .setKey(key)
-            .addAllIndexes(indexes)
-            .build();
-    CompletableFuture<ListProtocol.MRemoveResponse> future = service.multipleRemove(request);
-    future.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      } else {
-        checkStatus(r.getStatus(), request.getKey());
-      }
-    });
-    return future;
   }
 }
