@@ -393,7 +393,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
     slistIncrScoreRequest.setDelta(1);
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCRSCORE,
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCR_SCORE,
             slistIncrScoreRequest.build());
   }
 
@@ -408,7 +408,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
     slistIncrScoreRequest.setDelta(Integer.valueOf(ctx.children.get(2).getText()));
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCRSCORE,
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCR_SCORE,
             slistIncrScoreRequest.build());
   }
 
@@ -423,7 +423,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     slistPutMemberRequestBuilder.setScore(Integer.valueOf(ctx.children.get(3).getText()));
     slistPutMemberRequestBuilder.setMember(ctx.children.get(2).getText());
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_PUTMEMBER,
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_PUT_MEMBER,
             slistPutMemberRequestBuilder.build());
   }
 
@@ -437,7 +437,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     delMemberRequestBuilder.setKey(ctx.children.get(1).getText());
     delMemberRequestBuilder.setMember(ctx.children.get(2).getText());
 
-    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_REMOVEMEMBER,
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_REMOVE_MEMBER,
             delMemberRequestBuilder.build());
   }
 
