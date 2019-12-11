@@ -6,7 +6,6 @@ import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.service.DstSortedListService;
 import java.util.LinkedList;
-import java.util.concurrent.CompletableFuture;
 
 import static com.distkv.dst.client.CheckStatusUtil.checkStatus;
 

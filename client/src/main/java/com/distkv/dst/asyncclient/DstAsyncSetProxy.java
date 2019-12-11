@@ -10,7 +10,9 @@ public class DstAsyncSetProxy {
 
   private DstSetService service;
 
-  public DstAsyncSetProxy(DstSetService service) { this.service = service; }
+  public DstAsyncSetProxy(DstSetService service) {
+    this.service = service;
+  }
 
   public CompletableFuture<SetProtocol.PutResponse> put(
           String key, Set<String> values) {

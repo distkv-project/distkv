@@ -3,15 +3,14 @@ package com.distkv.dst.asyncclient;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import com.distkv.dst.rpc.service.DstStringService;
-
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncStringProxy {
   private DstStringService service;
 
   public DstAsyncStringProxy(DstStringService service) {
-        this.service = service;
-    }
+    this.service = service;
+  }
 
   public CompletableFuture<StringProtocol.PutResponse> put(
           String key, String value) {

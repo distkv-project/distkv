@@ -6,7 +6,6 @@ import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.service.DstDictService;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import static com.distkv.dst.client.CheckStatusUtil.checkStatus;
 

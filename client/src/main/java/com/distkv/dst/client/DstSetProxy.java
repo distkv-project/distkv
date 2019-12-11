@@ -2,8 +2,6 @@ package com.distkv.dst.client;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;

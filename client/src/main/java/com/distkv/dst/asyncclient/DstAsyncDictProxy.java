@@ -11,7 +11,9 @@ public class DstAsyncDictProxy {
 
   private DstDictService service;
 
-  public DstAsyncDictProxy(DstDictService service) {this.service = service; }
+  public DstAsyncDictProxy(DstDictService service) {
+    this.service = service;
+  }
 
   public CompletableFuture<DictProtocol.PutResponse> put(
           String key, Map<String, String> dict) {

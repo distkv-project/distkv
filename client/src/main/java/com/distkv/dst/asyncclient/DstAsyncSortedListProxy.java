@@ -12,7 +12,9 @@ public class DstAsyncSortedListProxy {
 
   DstSortedListService service;
 
-  public DstAsyncSortedListProxy(DstSortedListService service) { this.service = service; }
+  public DstAsyncSortedListProxy(DstSortedListService service) {
+    this.service = service;
+  }
 
   public CompletableFuture<SortedListProtocol.PutResponse> put(
           String key, LinkedList<SortedListEntity> list) {
@@ -22,11 +24,11 @@ public class DstAsyncSortedListProxy {
     LinkedList<SortedListProtocol.SortedListEntity> listEntities =
             new LinkedList<>();
     for (SortedListEntity entity : list) {
-        SortedListProtocol.SortedListEntity.Builder builder =
-                SortedListProtocol.SortedListEntity.newBuilder();
-        builder.setMember(entity.getMember());
-        builder.setScore(entity.getScore());
-        listEntities.add(builder.build());
+      SortedListProtocol.SortedListEntity.Builder builder =
+              SortedListProtocol.SortedListEntity.newBuilder();
+      builder.setMember(entity.getMember());
+      builder.setScore(entity.getScore());
+      listEntities.add(builder.build());
     }
     requestBuilder.addAllList(listEntities);
     CompletableFuture<SortedListProtocol.PutResponse> future = service.put(requestBuilder.build());

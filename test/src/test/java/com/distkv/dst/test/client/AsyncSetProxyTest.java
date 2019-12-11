@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncSetProxyTest extends BaseTestSupplier {
 
   @Test
-  public void TestAsyncSet() {
+  public void testAsyncSet() {
     DstAsyncClient client = newAsyncDstClient();
 
     // TestPut

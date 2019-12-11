@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncStrProxyTest extends BaseTestSupplier {
 
   @Test
-  public void TestPutGetDrop() {
+  public void testPutGetDrop() {
     DstAsyncClient client = newAsyncDstClient();
     CompletableFuture<StringProtocol.PutResponse> futurePut =
             client.strs().put("k1", "v1");

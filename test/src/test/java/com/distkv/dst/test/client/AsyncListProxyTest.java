@@ -12,11 +12,8 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncListProxyTest extends BaseTestSupplier {
 
   @Test
-  public void TestAsyncPutGet() {
+  public void testAsyncPutGet() {
     DstAsyncClient client = newAsyncDstClient();
-    if (client.isConnect()) {
-        System.out.println("OK");
-    }
 
     // testPut
     CompletableFuture<ListProtocol.PutResponse> futurePut =
@@ -55,9 +52,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
   @Test
   public void testAsyncLRPutRemove() {
     DstAsyncClient client = newAsyncDstClient();
-    if (client.isConnect()) {
-        System.out.println("OK");
-    }
+
     CompletableFuture<ListProtocol.PutResponse> futurePut =
             client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     futurePut.whenComplete((r, t) -> {
@@ -104,9 +99,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
   @Test
   public void testMutiRemove() {
     DstAsyncClient client = newAsyncDstClient();
-    if (client.isConnect()) {
-        System.out.println("OK");
-    }
+
     CompletableFuture<ListProtocol.PutResponse> futurePut =
             client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     futurePut.whenComplete((r, t) -> {

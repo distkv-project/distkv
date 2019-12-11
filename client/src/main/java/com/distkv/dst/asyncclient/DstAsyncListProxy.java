@@ -10,7 +10,9 @@ public class DstAsyncListProxy {
 
   private DstListService service;
 
-  public DstAsyncListProxy(DstListService service) {this.service = service; }
+  public DstAsyncListProxy(DstListService service) {
+    this.service = service;
+  }
 
   public CompletableFuture<ListProtocol.PutResponse> put(
           String key, List<String> values) {
