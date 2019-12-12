@@ -53,4 +53,14 @@ public interface DstSortedList {
    * @param topNum  the size of topList
    */
   List<SortedListEntity> top(String key, int topNum);
+
+  /**
+   * Get the score and ranking values of the given key and member
+   *
+   * @param key the key to store
+   * @param member the itemEntity info in sortedList, Find the item by info
+   * @return the list value where the first element is the score and
+   * the second element is the ranking of the given key and member
+   */
+  List<Integer> getItem(String key, String member);
 }

@@ -211,6 +211,34 @@ public class DstCommandExecutor {
                 (CommonProtocol.DropRequest) parsedResult.getRequest();
         dstClient.sortedLists().del(dropRequest.getKey());
         return STATUS_OK;
+      case SLIST_GET_MEMBER:
+        SortedListProtocol.GetMemberRequest getMemberRequest =
+                (SortedListProtocol.GetMemberRequest) parsedResult.getRequest();
+        final List<Integer> scoreAndRankingValues = dstClient.sortedLists().getItem(
+                getMemberRequest.getKey(), getMemberRequest.getMember());
+        // output: (member, score), ranking
+        final StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(\"");
+        stringBuilder.append(getMemberRequest.getMember());
+        stringBuilder.append("\", ");
+        stringBuilder.append(scoreAndRankingValues.get(0));
+        stringBuilder.append("), ");
+        final int ranking = scoreAndRankingValues.get(1);
+        stringBuilder.append(ranking);
+        switch (ranking) {
+          case 1:
+            stringBuilder.append("st");
+            break;
+          case 2:
+            stringBuilder.append("nd");
+            break;
+          case 3:
+            stringBuilder.append("rd");
+            break;
+          default:
+            stringBuilder.append("th");
+        }
+        return stringBuilder.toString();
       default:
         return null;
     }
