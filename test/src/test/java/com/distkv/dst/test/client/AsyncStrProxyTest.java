@@ -12,30 +12,24 @@ import java.util.concurrent.ExecutionException;
 public class AsyncStrProxyTest extends BaseTestSupplier {
 
   @Test
-  public void testPutGetDrop() {
+  public void testPutGetDrop() throws ExecutionException, InterruptedException {
     DstAsyncClient client = newAsyncDstClient();
 
-    CompletableFuture<StringProtocol.PutResponse> futurePut =
+    CompletableFuture<StringProtocol.PutResponse> putFuture =
             client.strs().put("k1", "v1");
-    futurePut.whenComplete((r, t) -> {
+    putFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    CompletableFuture<StringProtocol.GetResponse> futureGet =
+    CompletableFuture<StringProtocol.GetResponse> getFuture =
             client.strs().get("k1");
-    futureGet.whenComplete((r, t) -> {
+    getFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
       Assert.assertEquals(r.getValue(), "v1");
     });
 
-    try {
-      futurePut.get();
-      futureGet.get();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
+    putFuture.get();
+    getFuture.get();
     client.disconnect();
   }
 }

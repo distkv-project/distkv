@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 public class AsyncSortedListTest extends BaseTestSupplier {
 
   @Test
-  public void testAsyncSortedList() {
+  public void testAsyncSortedList() throws ExecutionException, InterruptedException {
     DstAsyncClient client = newAsyncDstClient();
 
     // TestPut
@@ -24,60 +24,54 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     list.add(new SortedListEntity("wlll", 8));
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
-    CompletableFuture<SortedListProtocol.PutResponse> futurePut =
+    CompletableFuture<SortedListProtocol.PutResponse> putFuture =
             client.sortedLists().put("k1", list);
-    futurePut.whenComplete((r, t) -> {
+    putFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     // TestIncItem
-    CompletableFuture<SortedListProtocol.IncrScoreResponse> futureInc =
+    CompletableFuture<SortedListProtocol.IncrScoreResponse> incFuture =
             client.sortedLists().incrItem("k1", "fw", 1);
-    futureInc.whenComplete((r, t) -> {
+    incFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     // TestPutItem
-    CompletableFuture<SortedListProtocol.PutMemberResponse> futurePutItem =
+    CompletableFuture<SortedListProtocol.PutMemberResponse> putItemFuture =
             client.sortedLists().putItem("k1", new SortedListEntity("aa", 10));
-    futurePutItem.whenComplete((r, t) -> {
+    putItemFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     // TestDel
-    CompletableFuture<SortedListProtocol.RemoveMemberResponse> futuredel =
-            client.sortedLists().delItem("k1", "xswl");
-    futuredel.whenComplete((r, t) -> {
+    CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeFuture =
+            client.sortedLists().removeItem("k1", "xswl");
+    removeFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     // TestTop
-    CompletableFuture<SortedListProtocol.TopResponse> futureTop =
+    CompletableFuture<SortedListProtocol.TopResponse> topFuture =
             client.sortedLists().top("k1", 3);
-    futureTop.whenComplete((r, t) -> {
+    topFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getList(0).getMember(), "55");
       Assert.assertEquals(r.getList(1).getMember(), "wlll");
     });
 
     //TestDrop
-    CompletableFuture<CommonProtocol.DropResponse> futureDrop =
+    CompletableFuture<CommonProtocol.DropResponse> dropFuture =
             client.sortedLists().drop("k1");
-    futureDrop.whenComplete((r, t) -> {
+    dropFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    try {
-      futurePut.get();
-      futureInc.get();
-      futurePutItem.get();
-      futuredel.get();
-      futureTop.get();
-      futureDrop.get();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
+    putFuture.get();
+    incFuture.get();
+    putItemFuture.get();
+    removeFuture.get();
+    topFuture.get();
+    dropFuture.get();
     client.disconnect();
   }
 }

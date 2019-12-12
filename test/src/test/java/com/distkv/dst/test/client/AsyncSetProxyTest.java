@@ -14,63 +14,57 @@ import java.util.concurrent.ExecutionException;
 public class AsyncSetProxyTest extends BaseTestSupplier {
 
   @Test
-  public void testAsyncSet() {
+  public void testAsyncSet() throws ExecutionException, InterruptedException {
     DstAsyncClient client = newAsyncDstClient();
 
     // TestPut
-    CompletableFuture<SetProtocol.PutResponse> futurePut =
+    CompletableFuture<SetProtocol.PutResponse> putFuture =
             client.sets().put("k1", ImmutableSet.of("v1", "v2", "v3"));
-    futurePut.whenComplete((r, t) -> {
+    putFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     //TestPutItem
-    CompletableFuture<SetProtocol.PutItemResponse> futurePutItem =
+    CompletableFuture<SetProtocol.PutItemResponse> putItemFuture =
             client.sets().putItem("k1", "v4");
-    futurePutItem.whenComplete((r, t) -> {
+    putItemFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     //TestExists
-    CompletableFuture<SetProtocol.ExistsResponse> futureExists =
+    CompletableFuture<SetProtocol.ExistsResponse> existsFuture =
             client.sets().exists("k1", "v4");
-    futureExists.whenComplete((r, t) -> {
+    existsFuture.whenComplete((r, t) -> {
       Assert.assertTrue(r.getResult());
     });
 
     //TestRemoveItem
-    CompletableFuture<SetProtocol.RemoveItemResponse> futureRemove =
+    CompletableFuture<SetProtocol.RemoveItemResponse> removeFuture =
             client.sets().removeItem("k1", "v1");
-    futureRemove.whenComplete((r, t) -> {
+    removeFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     //TestGet
-    CompletableFuture<SetProtocol.GetResponse> futureGet =
+    CompletableFuture<SetProtocol.GetResponse> getFuture =
             client.sets().get("k1");
-    futureGet.whenComplete((r, t) -> {
+    getFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getValuesList(), ImmutableList.of("v2", "v3", "v4"));
     });
 
     //TestDrop
-    CompletableFuture<CommonProtocol.DropResponse> futureDrop =
+    CompletableFuture<CommonProtocol.DropResponse> dropFuture =
             client.sets().drop("k1");
-    futureDrop.whenComplete((r, t) -> {
+    dropFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    try {
-      futurePut.get();
-      futurePutItem.get();
-      futureExists.get();
-      futureRemove.get();
-      futureGet.get();
-      futureDrop.get();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
+    putFuture.get();
+    putItemFuture.get();
+    existsFuture.get();
+    removeFuture.get();
+    getFuture.get();
+    dropFuture.get();
     client.disconnect();
   }
 }

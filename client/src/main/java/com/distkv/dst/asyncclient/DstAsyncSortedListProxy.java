@@ -67,7 +67,7 @@ public class DstAsyncSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> delItem(
+  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeItem(
           String key, String member) {
     SortedListProtocol.RemoveMemberRequest.Builder requestBuilder =
             SortedListProtocol.RemoveMemberRequest.newBuilder();

@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutionException;
 public class AsyncDictProxyTest extends BaseTestSupplier {
 
   @Test
-  public void testAsyncDict() {
+  public void testAsyncDict() throws ExecutionException, InterruptedException {
     DstAsyncClient client = newAsyncDstClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
@@ -22,44 +22,44 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
     dict.put("k3", "v3");
 
     // TestPut
-    CompletableFuture<DictProtocol.PutResponse> futurePut =
+    CompletableFuture<DictProtocol.PutResponse> putFuture =
             client.dicts().put("m1", dict);
-    futurePut.whenComplete((r, t) -> {
+    putFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     // TestPutItem
-    CompletableFuture<DictProtocol.PutItemResponse> futurePutItem =
+    CompletableFuture<DictProtocol.PutItemResponse> putItemFuture =
             client.dicts().putItem("m1", "k4", "v4");
-    futurePutItem.whenComplete((r, t) -> {
+    putItemFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     // TestGetItem
-    CompletableFuture<DictProtocol.GetItemResponse> futureGetItem =
+    CompletableFuture<DictProtocol.GetItemResponse> getItemFuture =
             client.dicts().getItem("m1", "k4");
-    futureGetItem.whenComplete((r, t) -> {
+    getItemFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getItemValue(), "v4");
     });
 
     // TestPopItem
-    CompletableFuture<DictProtocol.PopItemResponse> futurePopItem =
+    CompletableFuture<DictProtocol.PopItemResponse> popItemFuture =
             client.dicts().popItem("m1", "k1");
-    futurePopItem.whenComplete((r, t) -> {
+    popItemFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getItemValue(), "v1");
     });
 
     // TestRemove
-    CompletableFuture<DictProtocol.RemoveItemResponse> futureRemove =
+    CompletableFuture<DictProtocol.RemoveItemResponse> removeFuture =
             client.dicts().removeItem("m1", "k4");
-    futureRemove.whenComplete((r, t) -> {
+    removeFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     //TestGet
-    CompletableFuture<DictProtocol.GetResponse> futureGet =
+    CompletableFuture<DictProtocol.GetResponse> getFuture =
             client.dicts().get("m1");
-    futureGet.whenComplete((r, t) -> {
+    getFuture.whenComplete((r, t) -> {
       final Map<String, String> judgeDict = new HashMap<>();
       DictProtocol.DstDict result = r.getDict();
       for (int i = 0; i < result.getKeysCount(); i++) {
@@ -72,25 +72,19 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
     });
 
     //TestDrop
-    CompletableFuture<CommonProtocol.DropResponse> futureDrop =
+    CompletableFuture<CommonProtocol.DropResponse> dropFuture =
             client.dicts().drop("m1");
-    futureDrop.whenComplete((r, t) -> {
+    dropFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    try {
-      futurePut.get();
-      futurePutItem.get();
-      futureGetItem.get();
-      futurePopItem.get();
-      futureRemove.get();
-      futureGet.get();
-      futureDrop.get();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
+    putFuture.get();
+    putItemFuture.get();
+    getItemFuture.get();
+    popItemFuture.get();
+    removeFuture.get();
+    getFuture.get();
+    dropFuture.get();
     client.disconnect();
   }
 }
