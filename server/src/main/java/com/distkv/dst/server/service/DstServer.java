@@ -76,7 +76,7 @@ public class DstServer {
     exporter.registerService(
         DstStringService.class, new DstStringServiceImpl(server.runtime));
     exporter.registerService(
-        DstListService.class, new DstListServiceImpl(server.getKvStore()));
+        DstListService.class, new DstListServiceImpl(server.runtime));
     exporter.registerService(
         DstSetService.class, new DstSetServiceImpl(server.runtime));
     exporter.registerService(
