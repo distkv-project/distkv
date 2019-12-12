@@ -55,19 +55,19 @@ public class Worker extends Thread {
         switch (internalRequest.getRequestType()) {
           case STR_PUT: {
             StringProtocol.PutRequest strPutRequest =
-                  (StringProtocol.PutRequest) internalRequest.getRequest();
+                (StringProtocol.PutRequest) internalRequest.getRequest();
             // try put.
             storeEngine.strs().put(strPutRequest.getKey(), strPutRequest.getValue());
             CompletableFuture<StringProtocol.PutResponse> future =
-                  (CompletableFuture<StringProtocol.PutResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<StringProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(StringProtocol.PutResponse.newBuilder()
-                  .setStatus(CommonProtocol.Status.OK).build());
+                .setStatus(CommonProtocol.Status.OK).build());
             break;
           }
           case STR_GET: {
             StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest)
-                  internalRequest.getRequest();
+                internalRequest.getRequest();
             String value = storeEngine.strs().get(strGetRequest.getKey());
             StringProtocol.GetResponse.Builder builder = StringProtocol.GetResponse.newBuilder();
             if (value == null) {
@@ -76,29 +76,29 @@ public class Worker extends Thread {
               builder.setStatus(CommonProtocol.Status.OK).setValue(value);
             }
             CompletableFuture<StringProtocol.GetResponse> future =
-                  (CompletableFuture<StringProtocol.GetResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<StringProtocol.GetResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(builder.build());
             break;
           }
           case SET_PUT: {
             SetProtocol.PutRequest setPutRequest =
-                  (SetProtocol.PutRequest) internalRequest.getRequest();
+                (SetProtocol.PutRequest) internalRequest.getRequest();
             // TODO(qwang): Any thoughts on how to avoid this `new HasSet`.
             storeEngine.sets().put(
-                  setPutRequest.getKey(), new HashSet<>(setPutRequest.getValuesList()));
+                setPutRequest.getKey(), new HashSet<>(setPutRequest.getValuesList()));
             CompletableFuture<SetProtocol.PutResponse> future =
-                  (CompletableFuture<SetProtocol.PutResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(
-                  SetProtocol.PutResponse.newBuilder().setStatus(CommonProtocol.Status.OK).build());
+                SetProtocol.PutResponse.newBuilder().setStatus(CommonProtocol.Status.OK).build());
             break;
           }
           case SET_GET: {
             SetProtocol.GetRequest setGetRequest =
-                  (SetProtocol.GetRequest) internalRequest.getRequest();
+                (SetProtocol.GetRequest) internalRequest.getRequest();
             SetProtocol.GetResponse.Builder setGetResponseBuilder =
-                  SetProtocol.GetResponse.newBuilder();
+                SetProtocol.GetResponse.newBuilder();
             try {
               Set<String> values = storeEngine.sets().get(setGetRequest.getKey());
               values.forEach(value -> setGetResponseBuilder.addValues(value));
@@ -109,14 +109,14 @@ public class Worker extends Thread {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
             CompletableFuture<SetProtocol.GetResponse> future =
-                  (CompletableFuture<SetProtocol.GetResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.GetResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(setGetResponseBuilder.build());
             break;
           }
           case SET_PUT_ITEM: {
             SetProtocol.PutItemRequest request =
-                  (SetProtocol.PutItemRequest) internalRequest.getRequest();
+                (SetProtocol.PutItemRequest) internalRequest.getRequest();
             CommonProtocol.Status status;
             try {
               storeEngine.sets().putItem(request.getKey(), request.getItemValue());
@@ -125,18 +125,18 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             }
             CompletableFuture<SetProtocol.PutItemResponse> future =
-                  (CompletableFuture<SetProtocol.PutItemResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.PutItemResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(SetProtocol.PutItemResponse.newBuilder().setStatus(status).build());
             break;
           }
           case SET_REMOVE_ITEM: {
             SetProtocol.RemoveItemRequest request =
-                  (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
+                (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.sets()
-                    .removeItem(request.getKey(), request.getItemValue());
+                  .removeItem(request.getKey(), request.getItemValue());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -146,17 +146,17 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             CompletableFuture<SetProtocol.RemoveItemResponse> future =
-                  (CompletableFuture<SetProtocol.RemoveItemResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.RemoveItemResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(
-                  SetProtocol.RemoveItemResponse.newBuilder().setStatus(status).build());
+                SetProtocol.RemoveItemResponse.newBuilder().setStatus(status).build());
             break;
           }
           case SET_EXIST: {
             SetProtocol.ExistsRequest request =
-                  (SetProtocol.ExistsRequest) internalRequest.getRequest();
+                (SetProtocol.ExistsRequest) internalRequest.getRequest();
             SetProtocol.ExistsResponse.Builder responseBuilder =
-                  SetProtocol.ExistsResponse.newBuilder();
+                SetProtocol.ExistsResponse.newBuilder();
             try {
               boolean result = storeEngine.sets().exists(request.getKey(), request.getEntity());
               responseBuilder.setResult(result);
@@ -168,16 +168,16 @@ public class Worker extends Thread {
             }
 
             CompletableFuture<SetProtocol.ExistsResponse> future =
-                  (CompletableFuture<SetProtocol.ExistsResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.ExistsResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SET_DROP: {
             CommonProtocol.DropRequest request =
-                  (CommonProtocol.DropRequest) internalRequest.getRequest();
+                (CommonProtocol.DropRequest) internalRequest.getRequest();
             CommonProtocol.DropResponse.Builder responseBuilder =
-                  CommonProtocol.DropResponse.newBuilder();
+                CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.sets().drop(request.getKey());
@@ -191,8 +191,8 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
-                  (CompletableFuture<CommonProtocol.DropResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
