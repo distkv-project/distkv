@@ -140,19 +140,19 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public CompletableFuture<SortedListProtocol.DelMemberResponse> delItem(
-      SortedListProtocol.DelMemberRequest request) {
-    SortedListProtocol.DelMemberResponse.Builder responseBuilder =
-        SortedListProtocol.DelMemberResponse.newBuilder();
+  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeItem(
+      SortedListProtocol.RemoveMemberRequest request) {
+    SortedListProtocol.RemoveMemberResponse.Builder responseBuilder =
+        SortedListProtocol.RemoveMemberResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().delItem(request.getKey(),request.getMember());
+      getStore().sortLists().removeItem(request.getKey(),request.getMember());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
-      LOGGER.error("Failed to delete SortedList, caused by key not found: %s", request.getKey());
+      LOGGER.error("Failed to remove SortedList, caused by key not found: %s", request.getKey());
       status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (DstException e) {
-      LOGGER.error("Failed to delete SortedList Member, caused by member not found: %s",
+      LOGGER.error("Failed to remove SortedList Member, caused by member not found: %s",
           request.getMember());
       status = CommonProtocol.Status.UNKNOWN_ERROR;
     }

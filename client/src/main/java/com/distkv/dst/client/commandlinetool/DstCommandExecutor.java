@@ -1,17 +1,20 @@
 package com.distkv.dst.client.commandlinetool;
 
 import com.distkv.dst.client.DstClient;
+import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.parser.po.DstParsedResult;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedList;
 
 public class DstCommandExecutor {
 
@@ -161,6 +164,52 @@ public class DstCommandExecutor {
         CommonProtocol.DropRequest dropRequestDict =
                 (CommonProtocol.DropRequest) parsedResult.getRequest();
         dstClient.dicts().drop(dropRequestDict.getKey());
+        return STATUS_OK;
+      case SLIST_PUT:
+        SortedListProtocol.PutRequest putRequestSlist =
+                (SortedListProtocol.PutRequest) parsedResult.getRequest();
+        final LinkedList<SortedListEntity> sortedListEntitiesResult = new LinkedList<>();
+
+        final List<SortedListProtocol.SortedListEntity> sortedListEntities
+                = putRequestSlist.getListList();
+        for (SortedListProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
+          final String sortedListEntityMember = sortedListEntity.getMember();
+          final int sortedListEntityScore = sortedListEntity.getScore();
+          sortedListEntitiesResult.add(new SortedListEntity(sortedListEntityMember,
+                  sortedListEntityScore));
+        }
+        dstClient.sortedLists().put(putRequestSlist.getKey(),
+                sortedListEntitiesResult);
+        return STATUS_OK;
+      case SLIST_TOP:
+        SortedListProtocol.TopRequest topRequestSlist =
+                (SortedListProtocol.TopRequest) parsedResult.getRequest();
+        return dstClient.sortedLists().top(topRequestSlist.getKey(),
+                topRequestSlist.getCount()).toString();
+      case SLIST_INCR_SCORE:
+        SortedListProtocol.IncrScoreRequest incrScoreRequest =
+                (SortedListProtocol.IncrScoreRequest) parsedResult.getRequest();
+        dstClient.sortedLists().incrItem(incrScoreRequest.getKey(),
+                incrScoreRequest.getMember(), incrScoreRequest.getDelta());
+        return STATUS_OK;
+      case SLIST_PUT_MEMBER:
+        SortedListProtocol.PutMemberRequest putMemberRequest =
+                (SortedListProtocol.PutMemberRequest) parsedResult.getRequest();
+        final String member = putMemberRequest.getMember();
+        final int score = putMemberRequest.getScore();
+        dstClient.sortedLists().putItem(putMemberRequest.getKey(),
+                new SortedListEntity(member, score));
+        return STATUS_OK;
+      case SLIST_REMOVE_MEMBER:
+        SortedListProtocol.RemoveMemberRequest removeMemberRequest =
+                (SortedListProtocol.RemoveMemberRequest) parsedResult.getRequest();
+        dstClient.sortedLists().removeItem(removeMemberRequest.getKey(),
+                removeMemberRequest.getMember());
+        return STATUS_OK;
+      case SLIST_DROP:
+        CommonProtocol.DropRequest dropRequest =
+                (CommonProtocol.DropRequest) parsedResult.getRequest();
+        dstClient.sortedLists().del(dropRequest.getKey());
         return STATUS_OK;
       default:
         return null;

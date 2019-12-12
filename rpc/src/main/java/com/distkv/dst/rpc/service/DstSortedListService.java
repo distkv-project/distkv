@@ -22,6 +22,6 @@ public interface DstSortedListService {
   CompletableFuture<SortedListProtocol.PutMemberResponse> putItem(
       SortedListProtocol.PutMemberRequest request);
 
-  CompletableFuture<SortedListProtocol.DelMemberResponse> delItem(
-      SortedListProtocol.DelMemberRequest request);
+  CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeItem(
+      SortedListProtocol.RemoveMemberRequest request);
 }

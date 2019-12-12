@@ -20,7 +20,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     testIncItem();
     testPutItem();
     testTop();
-    testDelItem();
+    testRemoveItem();
     testTop();
     dstClient.disconnect();
   }
@@ -31,8 +31,8 @@ public class SortedListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(list.get(1).getMember(),"fw");
   }
 
-  private void testDelItem() {
-    dstClient.sortedLists().delItem("k1","55");
+  private void testRemoveItem() {
+    dstClient.sortedLists().removeItem("k1","55");
   }
 
   private void testPutItem() {

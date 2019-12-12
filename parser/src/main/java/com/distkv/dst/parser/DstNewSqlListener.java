@@ -1,16 +1,17 @@
 package com.distkv.dst.parser;
 
 import com.distkv.dst.common.RequestTypeEnum;
+import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.google.common.base.Preconditions;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.distkv.dst.parser.generated.DstNewSQLBaseListener;
 import com.distkv.dst.parser.generated.DstNewSQLParser;
 import com.distkv.dst.parser.po.DstParsedResult;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
-import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
-import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -341,6 +342,115 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     parsedResult = new DstParsedResult(RequestTypeEnum.DICT_DROP, builder.build());
+  }
+
+  @Override
+  public void enterSlistPut(DstNewSQLParser.SlistPutContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.PutRequest.Builder slistPutRequestBuilder =
+            SortedListProtocol.PutRequest.newBuilder();
+    final ParseTree sortedListEntityPairsParseTree = ctx.children.get(2);
+    final int sortedListEntityPairs = sortedListEntityPairsParseTree.getChildCount();
+
+    slistPutRequestBuilder.setKey(ctx.children.get(1).getText());
+    for (int i = 0; i < sortedListEntityPairs; i++) {
+      final SortedListProtocol.SortedListEntity.Builder slistBuilder =
+              SortedListProtocol.SortedListEntity.newBuilder();
+      final ParseTree sortedListEntityParseTree =
+              sortedListEntityPairsParseTree.getChild(i);
+      Preconditions.checkState(sortedListEntityParseTree.getChildCount() == 2);
+      slistBuilder.setScore(Integer.valueOf(sortedListEntityParseTree.getChild(1).getText()));
+      slistBuilder.setMember(sortedListEntityParseTree.getChild(0).getText());
+      slistPutRequestBuilder.addList(slistBuilder);
+    }
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_PUT, slistPutRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistTop(DstNewSQLParser.SlistTopContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.TopRequest.Builder slistTopRequestBuilder =
+            SortedListProtocol.TopRequest.newBuilder();
+    slistTopRequestBuilder.setKey(ctx.children.get(1).getText());
+    slistTopRequestBuilder.setCount(Integer.valueOf(ctx.children.get(2).getText()));
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_TOP, slistTopRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistIncrScoreDefault(DstNewSQLParser.SlistIncrScoreDefaultContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    SortedListProtocol.IncrScoreRequest.Builder slistIncrScoreRequest =
+            SortedListProtocol.IncrScoreRequest.newBuilder();
+    slistIncrScoreRequest.setKey(ctx.children.get(0).getText());
+    slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
+    slistIncrScoreRequest.setDelta(1);
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCR_SCORE,
+            slistIncrScoreRequest.build());
+  }
+
+  @Override
+  public void enterSlistIncrScoreDelta(DstNewSQLParser.SlistIncrScoreDeltaContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.IncrScoreRequest.Builder slistIncrScoreRequest =
+            SortedListProtocol.IncrScoreRequest.newBuilder();
+    slistIncrScoreRequest.setKey(ctx.children.get(0).getText());
+    slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
+    slistIncrScoreRequest.setDelta(Integer.valueOf(ctx.children.get(2).getText()));
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_INCR_SCORE,
+            slistIncrScoreRequest.build());
+  }
+
+  @Override
+  public void enterSlistPutMember(DstNewSQLParser.SlistPutMemberContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 4);
+
+    SortedListProtocol.PutMemberRequest.Builder slistPutMemberRequestBuilder =
+            SortedListProtocol.PutMemberRequest.newBuilder();
+    slistPutMemberRequestBuilder.setKey(ctx.children.get(1).getText());
+    slistPutMemberRequestBuilder.setScore(Integer.valueOf(ctx.children.get(3).getText()));
+    slistPutMemberRequestBuilder.setMember(ctx.children.get(2).getText());
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_PUT_MEMBER,
+            slistPutMemberRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistRemoveMember(DstNewSQLParser.SlistRemoveMemberContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.RemoveMemberRequest.Builder removeMemberRequestBuilder =
+            SortedListProtocol.RemoveMemberRequest.newBuilder();
+    removeMemberRequestBuilder.setKey(ctx.children.get(1).getText());
+    removeMemberRequestBuilder.setMember(ctx.children.get(2).getText());
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_REMOVE_MEMBER,
+            removeMemberRequestBuilder.build());
+  }
+
+  @Override
+  public void enterSlistDrop(DstNewSQLParser.SlistDropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    CommonProtocol.DropRequest.Builder dropRequestBuilder =
+            CommonProtocol.DropRequest.newBuilder();
+    dropRequestBuilder.setKey(ctx.children.get(1).getText());
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_DROP, dropRequestBuilder.build());
   }
 
 }
