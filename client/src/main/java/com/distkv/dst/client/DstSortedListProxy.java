@@ -68,13 +68,13 @@ public class DstSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
-  public void delItem(String key, String member) {
-    SortedListProtocol.DelMemberRequest.Builder requestBuilder =
-        SortedListProtocol.DelMemberRequest.newBuilder();
+  public void removeItem(String key, String member) {
+    SortedListProtocol.RemoveMemberRequest.Builder requestBuilder =
+        SortedListProtocol.RemoveMemberRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
-    SortedListProtocol.DelMemberResponse response = FutureUtils.get(
-        service.delItem(requestBuilder.build()));
+    SortedListProtocol.RemoveMemberResponse response = FutureUtils.get(
+        service.removeItem(requestBuilder.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
