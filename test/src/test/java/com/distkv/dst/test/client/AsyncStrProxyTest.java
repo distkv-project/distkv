@@ -14,6 +14,7 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
   @Test
   public void testPutGetDrop() {
     DstAsyncClient client = newAsyncDstClient();
+
     CompletableFuture<StringProtocol.PutResponse> futurePut =
             client.strs().put("k1", "v1");
     futurePut.whenComplete((r, t) -> {
@@ -27,16 +28,9 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getValue(), "v1");
     });
 
-    CompletableFuture<CommonProtocol.DropResponse> futureDrop =
-            client.strs().drop("k1");
-    futureDrop.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
-    });
-
     try {
       futurePut.get();
       futureGet.get();
-      futureDrop.get();
     } catch (InterruptedException e) {
       e.printStackTrace();
     } catch (ExecutionException e) {
