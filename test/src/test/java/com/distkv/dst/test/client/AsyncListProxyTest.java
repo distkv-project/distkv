@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 public class AsyncListProxyTest extends BaseTestSupplier {
 
   @Test
-  public void testAsyncPutGet() {
+  public void testAsyncList() {
     DstAsyncClient client = newAsyncDstClient();
 
     // testPut
@@ -23,20 +23,12 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    // testGetAll
-    CompletableFuture<ListProtocol.GetResponse> futureGetAll =
-            client.lists().get("k1");
-    futureGetAll.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
-      Assert.assertEquals(r.getValuesList(), ImmutableList.of("v1", "v2", "v3"));
-    });
-
     // testGetOne
     CompletableFuture<ListProtocol.GetResponse> futureGetOne =
-            client.lists().get("k1", 1);
+            client.lists().get("k1", 0);
     futureGetOne.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
-      Assert.assertEquals(r.getValuesList(), ImmutableList.of("v2"));
+      Assert.assertEquals(r.getValuesList(), ImmutableList.of("v1"));
     });
 
     // testGetRange
@@ -45,29 +37,6 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     futureGetRange.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
       Assert.assertEquals(r.getValuesList(), ImmutableList.of("v2", "v3"));
-    });
-
-    try {
-      futurePut.get();
-      futureGetAll.get();
-      futureGetOne.get();
-      futureGetRange.get();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
-    client.disconnect();
-  }
-
-  @Test
-  public void testAsyncLRPutRemove() {
-    DstAsyncClient client = newAsyncDstClient();
-
-    CompletableFuture<ListProtocol.PutResponse> futurePut =
-            client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    futurePut.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
     // testLPut
@@ -86,7 +55,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testRPut
     CompletableFuture<ListProtocol.RPutResponse> futureRPut =
-            client.lists().rput("k1", ImmutableList.of("v4"));
+            client.lists().rput("k1", ImmutableList.of("v3", "v4"));
     futureRPut.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
@@ -98,54 +67,31 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    CompletableFuture<ListProtocol.GetResponse> futureGet =
-            client.lists().get("k1");
-    futureGet.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getValuesList(), ImmutableList.of("v0", "v4"));
-    });
-
-    try {
-      futurePut.get();
-      futureLPut.get();
-      futureOne.get();
-      futureRPut.get();
-      futureRange.get();
-      futureGet.get();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
-    client.disconnect();
-  }
-
-  @Test
-  public void testMutiRemove() {
-    DstAsyncClient client = newAsyncDstClient();
-
-    CompletableFuture<ListProtocol.PutResponse> futurePut =
-            client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    futurePut.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
-    });
-
     // testMutiRemove
     CompletableFuture<ListProtocol.MRemoveResponse> futureMRemove =
-            client.lists().mutiRemove("k1", ImmutableList.of(1, 2));
+            client.lists().mutiRemove("k1", ImmutableList.of(0, 2));
     futureMRemove.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    CompletableFuture<ListProtocol.GetResponse> futureGet =
+    // testGetAll
+    CompletableFuture<ListProtocol.GetResponse> futureGetAll =
             client.lists().get("k1");
-    futureGet.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getValuesList(), ImmutableList.of("v0"));
+    futureGetAll.whenComplete((r, t) -> {
+      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
+      Assert.assertEquals(r.getValuesList(), ImmutableList.of("v1"));
     });
 
     try {
       futurePut.get();
+      futureGetOne.get();
+      futureGetRange.get();
+      futureLPut.get();
+      futureOne.get();
+      futureRPut.get();
+      futureRange.get();
       futureMRemove.get();
-      futureGet.get();
+      futureGetAll.get();
     } catch (InterruptedException e) {
       e.printStackTrace();
     } catch (ExecutionException e) {
