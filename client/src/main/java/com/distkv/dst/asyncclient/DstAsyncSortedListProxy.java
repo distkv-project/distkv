@@ -67,14 +67,14 @@ public class DstAsyncSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.DelMemberResponse> delItem(
+  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> delItem(
           String key, String member) {
-    SortedListProtocol.DelMemberRequest.Builder requestBuilder =
-            SortedListProtocol.DelMemberRequest.newBuilder();
+    SortedListProtocol.RemoveMemberRequest.Builder requestBuilder =
+            SortedListProtocol.RemoveMemberRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
-    CompletableFuture<SortedListProtocol.DelMemberResponse> future =
-            service.delItem(requestBuilder.build());
+    CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
+            service.removeItem(requestBuilder.build());
     return future;
   }
 

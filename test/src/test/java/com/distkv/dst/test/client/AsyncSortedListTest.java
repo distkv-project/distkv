@@ -45,7 +45,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     });
 
     // TestDel
-    CompletableFuture<SortedListProtocol.DelMemberResponse> futuredel =
+    CompletableFuture<SortedListProtocol.RemoveMemberResponse> futuredel =
             client.sortedLists().delItem("k1", "xswl");
     futuredel.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
