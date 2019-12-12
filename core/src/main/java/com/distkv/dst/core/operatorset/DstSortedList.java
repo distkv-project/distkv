@@ -35,7 +35,7 @@ public interface DstSortedList {
    * @param key   the key to store
    * @param member  the itemEntity info in sortedList, Find the item by info
    */
-  void delItem(String key, String member);
+  void removeItem(String key, String member);
 
   /**
    * This method will inc a itemEntity score in sortedList

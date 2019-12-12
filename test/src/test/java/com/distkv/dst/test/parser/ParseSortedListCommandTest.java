@@ -86,12 +86,12 @@ public class ParseSortedListCommandTest {
   public void testSlistRemoveMember() {
     final String command = "slist.removeMember k1 m4";
     DstParsedResult result = dstParser.parse(command);
-    final SortedListProtocol.DelMemberRequest delMemberRequest =
-            (SortedListProtocol.DelMemberRequest) result.getRequest();
+    final SortedListProtocol.RemoveMemberRequest removeMemberRequest =
+            (SortedListProtocol.RemoveMemberRequest) result.getRequest();
 
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_REMOVE_MEMBER);
-    Assert.assertEquals(delMemberRequest.getKey(), "k1");
-    Assert.assertEquals(delMemberRequest.getMember(), "m4");
+    Assert.assertEquals(removeMemberRequest.getKey(), "k1");
+    Assert.assertEquals(removeMemberRequest.getMember(), "m4");
   }
 
   @Test
