@@ -432,13 +432,13 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
 
-    SortedListProtocol.DelMemberRequest.Builder delMemberRequestBuilder =
-            SortedListProtocol.DelMemberRequest.newBuilder();
-    delMemberRequestBuilder.setKey(ctx.children.get(1).getText());
-    delMemberRequestBuilder.setMember(ctx.children.get(2).getText());
+    SortedListProtocol.RemoveMemberRequest.Builder removeMemberRequestBuilder =
+            SortedListProtocol.RemoveMemberRequest.newBuilder();
+    removeMemberRequestBuilder.setKey(ctx.children.get(1).getText());
+    removeMemberRequestBuilder.setMember(ctx.children.get(2).getText());
 
     parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_REMOVE_MEMBER,
-            delMemberRequestBuilder.build());
+            removeMemberRequestBuilder.build());
   }
 
   @Override

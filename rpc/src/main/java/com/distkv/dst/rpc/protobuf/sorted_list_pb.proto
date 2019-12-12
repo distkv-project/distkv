@@ -52,12 +52,12 @@ message PutMemberResponse {
     required Status status = 1;
 }
 
-message DelMemberRequest {
+message RemoveMemberRequest {
     required string key = 1;
     required string member = 2;
 }
 
-message DelMemberResponse {
+message RemoveMemberResponse {
     required Status status = 1;
 }
 
@@ -66,6 +66,6 @@ service DstListService {
     rpc top (TopRequest) returns (TopResponse);
     rpc incrItem (IncrScoreRequest) returns (IncrScoreResponse);
     rpc putItem (PutMemberRequest) returns (PutMemberResponse);
-    rpc delItem (DelMemberRequest) returns (DelMemberResponse);
+    rpc removeItem (RemoveMemberRequest) returns (RemoveMemberResponse);
     rpc drop(DropRequest) returns (DropResponse);
 }

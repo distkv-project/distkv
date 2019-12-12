@@ -54,7 +54,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void delItem(String key, String member) {
+  public void removeItem(String key, String member) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }

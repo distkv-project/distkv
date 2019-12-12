@@ -201,10 +201,10 @@ public class DstCommandExecutor {
                 new SortedListEntity(member, score));
         return STATUS_OK;
       case SLIST_REMOVE_MEMBER:
-        SortedListProtocol.DelMemberRequest delMemberRequest =
-                (SortedListProtocol.DelMemberRequest) parsedResult.getRequest();
-        dstClient.sortedLists().delItem(delMemberRequest.getKey(),
-                delMemberRequest.getMember());
+        SortedListProtocol.RemoveMemberRequest removeMemberRequest =
+                (SortedListProtocol.RemoveMemberRequest) parsedResult.getRequest();
+        dstClient.sortedLists().removeItem(removeMemberRequest.getKey(),
+                removeMemberRequest.getMember());
         return STATUS_OK;
       case SLIST_DROP:
         CommonProtocol.DropRequest dropRequest =
