@@ -88,8 +88,7 @@ public class DstSortedListProxy {
     requestBuilder.setScore(entity.getScore());
     SortedListProtocol.PutMemberResponse response = FutureUtils.get(
         service.putItem(requestBuilder.build()));
-<<<<<<< HEAD
-    checkException(response.getStatus(),key);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public List<Integer> getItem(String key, String member) {
@@ -99,22 +98,8 @@ public class DstSortedListProxy {
     getMemberRequest.setMember(member);
     SortedListProtocol.GetMemberResponse getMemberResponse = FutureUtils.get(
             service.getItem(getMemberRequest.build()));
-    checkException(getMemberResponse.getStatus(), key);
+    CheckStatusUtil.checkStatus(getMemberResponse.getStatus(), key);
     SortedListProtocol.SortedListEntity sortedListEntity = getMemberResponse.getEntity();
     return Arrays.asList(sortedListEntity.getScore(), getMemberResponse.getCount());
-  }
-
-  private void checkException(CommonProtocol.Status status, String key) {
-    switch (status) {
-      case OK:
-        break;
-      case KEY_NOT_FOUND:
-        throw new KeyNotFoundException(key);
-      default:
-        throw new DstException(String.format("Error code is %d", status.getNumber()));
-    }
-=======
-    CheckStatusUtil.checkStatus(response.getStatus(), key);
->>>>>>> 677f0315abd12bff53563897ce8e95e8d2d3ed00
   }
 }
