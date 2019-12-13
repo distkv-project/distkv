@@ -209,7 +209,7 @@ public class DstCommandExecutor {
       case SLIST_DROP:
         CommonProtocol.DropRequest dropRequest =
                 (CommonProtocol.DropRequest) parsedResult.getRequest();
-        dstClient.sortedLists().del(dropRequest.getKey());
+        dstClient.sortedLists().drop(dropRequest.getKey());
         return STATUS_OK;
       case SLIST_GET_MEMBER:
         SortedListProtocol.GetMemberRequest getMemberRequest =

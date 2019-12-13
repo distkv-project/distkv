@@ -1,7 +1,5 @@
 package com.distkv.dst.client;
 
-import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
@@ -34,7 +32,7 @@ public class DstSortedListProxy {
     requestBuilder.addAllList(listEntities);
     SortedListProtocol.PutResponse response = FutureUtils.get(
         service.put(requestBuilder.build()));
-    checkException(response.getStatus(),key);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public void incrItem(String key, String member, int delta) {
@@ -45,7 +43,7 @@ public class DstSortedListProxy {
     requestBuilder.setDelta(delta);
     SortedListProtocol.IncrScoreResponse response = FutureUtils.get(
         service.incrItem(requestBuilder.build()));
-    checkException(response.getStatus(),key);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public LinkedList<SortedListEntity> top(String key, int topNum) {
@@ -55,7 +53,7 @@ public class DstSortedListProxy {
     topRequestBuilder.setCount(topNum);
     SortedListProtocol.TopResponse response = FutureUtils.get(
         service.top(topRequestBuilder.build()));
-    checkException(response.getStatus(),key);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
     LinkedList<SortedListEntity> list = new LinkedList<>();
     for (SortedListProtocol.SortedListEntity entity : response.getListList()) {
       list.add(new SortedListEntity(entity.getMember(), entity.getScore()));
@@ -63,13 +61,13 @@ public class DstSortedListProxy {
     return list;
   }
 
-  public void del(String key) {
+  public void drop(String key) {
     CommonProtocol.DropRequest.Builder requestBuilder =
         CommonProtocol.DropRequest.newBuilder();
     requestBuilder.setKey(key);
     CommonProtocol.DropResponse response = FutureUtils.get(
         service.drop(requestBuilder.build()));
-    checkException(response.getStatus(),key);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public void removeItem(String key, String member) {
@@ -79,7 +77,7 @@ public class DstSortedListProxy {
     requestBuilder.setMember(member);
     SortedListProtocol.RemoveMemberResponse response = FutureUtils.get(
         service.removeItem(requestBuilder.build()));
-    checkException(response.getStatus(),key);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public void putItem(String key, SortedListEntity entity) {
@@ -90,6 +88,7 @@ public class DstSortedListProxy {
     requestBuilder.setScore(entity.getScore());
     SortedListProtocol.PutMemberResponse response = FutureUtils.get(
         service.putItem(requestBuilder.build()));
+<<<<<<< HEAD
     checkException(response.getStatus(),key);
   }
 
@@ -114,5 +113,8 @@ public class DstSortedListProxy {
       default:
         throw new DstException(String.format("Error code is %d", status.getNumber()));
     }
+=======
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
+>>>>>>> 677f0315abd12bff53563897ce8e95e8d2d3ed00
   }
 }

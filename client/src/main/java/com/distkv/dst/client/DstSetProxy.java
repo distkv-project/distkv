@@ -3,7 +3,6 @@ package com.distkv.dst.client;
 import java.util.HashSet;
 import java.util.Set;
 import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
@@ -23,9 +22,7 @@ public class DstSetProxy {
     values.forEach(value -> request.addValues(value));
 
     SetProtocol.PutResponse response = FutureUtils.get(service.put(request.build()));
-    if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public Set<String> get(String key) throws DstException {
@@ -35,12 +32,7 @@ public class DstSetProxy {
                     .build();
 
     SetProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
-
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     Set<String> set = new HashSet<>(response.getValuesList());
     return set;
   }
@@ -51,11 +43,7 @@ public class DstSetProxy {
     request.setItemValue(entity);
 
     SetProtocol.PutItemResponse response = FutureUtils.get(service.putItem(request.build()));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public void removeItem(String key, String entity) {
@@ -65,11 +53,7 @@ public class DstSetProxy {
 
     SetProtocol.RemoveItemResponse response = FutureUtils.get(
         service.removeItem(request.build()));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public boolean drop(String key) {
@@ -77,12 +61,7 @@ public class DstSetProxy {
     request.setKey(key);
 
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request.build()));
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      return false;
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
-
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return true;
   }
 
@@ -92,14 +71,7 @@ public class DstSetProxy {
     request.setEntity(entity);
 
     SetProtocol.ExistsResponse response = FutureUtils.get(service.exists(request.build()));
-
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
-
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getResult();
   }
-
 }

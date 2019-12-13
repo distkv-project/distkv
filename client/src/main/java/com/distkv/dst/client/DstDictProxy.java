@@ -1,8 +1,5 @@
 package com.distkv.dst.client;
 
-import com.distkv.dst.common.exception.DictKeyNotFoundException;
-import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
@@ -25,7 +22,7 @@ public class DstDictProxy {
     DictProtocol.DstDict dstDict = DictUtil.buildDstDict(dict);
     request.setDict(dstDict);
     DictProtocol.PutResponse response = FutureUtils.get(service.put(request.build()));
-    checkStatus(response.getStatus(),request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   // Get a dict.
@@ -34,7 +31,7 @@ public class DstDictProxy {
     DictProtocol.GetRequest.Builder request = DictProtocol.GetRequest.newBuilder();
     request.setKey(key);
     DictProtocol.GetResponse response = FutureUtils.get(service.get(request.build()));
-    checkStatus(response.getStatus(),request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     DictProtocol.DstDict dstDict = response.getDict();
     for (int i = 0; i < dstDict.getKeysCount(); i++) {
       dict.put(dstDict.getKeys(i), dstDict.getValues(i));
@@ -50,7 +47,7 @@ public class DstDictProxy {
     request.setItemKey(itemKey);
     DictProtocol.GetItemResponse response = FutureUtils.get(
         service.getItemValue(request.build()));
-    checkStatus(response.getStatus(),request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getItemValue();
   }
 
@@ -61,7 +58,7 @@ public class DstDictProxy {
     request.setItemKey(itemKey);
     DictProtocol.PopItemResponse response = FutureUtils.get(
         service.popItem(request.build()));
-    checkStatus(response.getStatus(),request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getItemValue();
   }
 
@@ -72,9 +69,8 @@ public class DstDictProxy {
     request.setItemKey(itemKey);
     request.setItemValue(itemValue);
     DictProtocol.PutItemResponse response = FutureUtils.get(service.putItem(request.build()));
-    checkStatus(response.getStatus(),request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
-
 
   /**
    * Drop the k-v pair.
@@ -85,7 +81,7 @@ public class DstDictProxy {
     CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
     request.setKey(key);
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request.build()));
-    checkStatus(response.getStatus(),request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   // Remove the item in the dict corresponding to the key.
@@ -94,20 +90,6 @@ public class DstDictProxy {
     request.setKey(key);
     request.setItemKey(itemKey);
     DictProtocol.RemoveItemResponse response = FutureUtils.get(service.removeItem(request.build()));
-    checkStatus(response.getStatus(),request.getKey());
-  }
-
-  // Used to check the status and throw the corresponding exception.
-  private void checkStatus(CommonProtocol.Status status, String key) {
-    switch (status) {
-      case OK:
-        break;
-      case KEY_NOT_FOUND:
-        throw new KeyNotFoundException(key);
-      case DICT_KEY_NOT_FOUND:
-        throw new DictKeyNotFoundException(key);
-      default:
-        throw new DstException(String.format("Error code is %d", status.getNumber()));
-    }
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 }
