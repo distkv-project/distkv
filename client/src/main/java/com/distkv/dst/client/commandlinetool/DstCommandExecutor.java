@@ -73,6 +73,8 @@ public class DstCommandExecutor {
         return CommandExecutorHandler.slistRemoveMember(dstClient, parsedResult);
       case SLIST_DROP:
         return CommandExecutorHandler.slistDrop(dstClient, parsedResult);
+      case SLIST_GET_MEMBER:
+        return CommandExecutorHandler.slistGetMember(dstClient, parsedResult);
       default:
         return null;
     }
