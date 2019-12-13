@@ -159,4 +159,31 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
     responseBuilder.setStatus(status);
     return FutureUtils.newCompletableFuture(responseBuilder.build());
   }
+
+  @Override
+  public CompletableFuture<SortedListProtocol.GetMemberResponse> getItem(
+          SortedListProtocol.GetMemberRequest request) {
+    SortedListProtocol.GetMemberResponse.Builder getMemberResponseBuilder =
+            SortedListProtocol.GetMemberResponse.newBuilder();
+    CommonProtocol.Status status;
+    try {
+      List<Integer> scoreAndRankingValues =
+              getStore().sortLists().getItem(request.getKey(), request.getMember());
+      SortedListProtocol.SortedListEntity.Builder sortedListEntityBuilder =
+              SortedListProtocol.SortedListEntity.newBuilder();
+      sortedListEntityBuilder.setMember(request.getMember());
+      sortedListEntityBuilder.setScore(scoreAndRankingValues.get(0));
+      getMemberResponseBuilder.setEntity(sortedListEntityBuilder);
+      getMemberResponseBuilder.setCount(scoreAndRankingValues.get(1));
+      status = CommonProtocol.Status.OK;
+    } catch (KeyNotFoundException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.KEY_NOT_FOUND;
+    } catch (DstException e) {
+      LOGGER.error(e.getMessage());
+      status = CommonProtocol.Status.UNKNOWN_ERROR;
+    }
+    getMemberResponseBuilder.setStatus(status);
+    return FutureUtils.newCompletableFuture(getMemberResponseBuilder.build());
+  }
 }

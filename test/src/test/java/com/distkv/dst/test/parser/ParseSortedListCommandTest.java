@@ -105,6 +105,18 @@ public class ParseSortedListCommandTest {
     Assert.assertEquals(dropRequest.getKey(), "k1");
   }
 
+  @Test
+  public void testSlistGetMember() {
+    final String command = "slist.getMember k1 m1";
+    DstParsedResult result = dstParser.parse(command);
+    final SortedListProtocol.GetMemberRequest getMemberRequest =
+            (SortedListProtocol.GetMemberRequest) result.getRequest();
+
+    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.SLIST_GET_MEMBER);
+    Assert.assertEquals(getMemberRequest.getKey(), "k1");
+    Assert.assertEquals(getMemberRequest.getMember(), "m1");
+  }
+
   @Test(expectedExceptions = DstException.class)
   public void testInvalidPutCommand() {
     final String command = "slist.put k1 m1 012";

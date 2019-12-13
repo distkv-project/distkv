@@ -453,4 +453,17 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_DROP, dropRequestBuilder.build());
   }
 
+  @Override
+  public void enterSlistGetMember(DstNewSQLParser.SlistGetMemberContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    SortedListProtocol.GetMemberRequest.Builder getMemberRequestBuilder =
+            SortedListProtocol.GetMemberRequest.newBuilder();
+    getMemberRequestBuilder.setKey(ctx.children.get(1).getText());
+    getMemberRequestBuilder.setMember(ctx.children.get(2).getText());
+
+    parsedResult = new DstParsedResult(RequestTypeEnum.SLIST_GET_MEMBER,
+            getMemberRequestBuilder.build());
+  }
 }
