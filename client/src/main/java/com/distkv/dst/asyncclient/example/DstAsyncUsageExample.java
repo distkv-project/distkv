@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 public class DstAsyncUsageExample {
   public static void main(String[] args) throws ExecutionException, InterruptedException {
     DefaultAsyncClient dstClient = new DefaultAsyncClient("list://127.0.0.1:8082");
-    if(dstClient.isConnected()) {
+    if (dstClient.isConnected()) {
       CompletableFuture<StringProtocol.PutResponse> strPutFuture =
               dstClient.strs().put("k1","asd");
       CompletableFuture<ListProtocol.PutResponse> listPutFuture =
@@ -73,32 +73,36 @@ public class DstAsyncUsageExample {
               dstClient.dicts().get("dict");
 
       strGetFuture.whenComplete((r, t) -> {
-          if (t != null) {
-              throw new IllegalStateException(t);
-          } else {
-              System.out.println("The result of dstClient.strs().get(\"k1\") is: " + r.getValue());
-          }
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("The result of dstClient.strs().get(\"k1\") is: "
+                  + r.getValue());
+        }
       });
       listGetFuture.whenComplete((r, t) -> {
-          if (t != null) {
-              throw new IllegalStateException(t);
-          } else {
-              System.out.println("The result of dstClient.lists().get(\"k1\") is: " + r.getValuesList());
-          }
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("The result of dstClient.lists().get(\"k1\") is: "
+                  + r.getValuesList());
+        }
       });
       setGetFuture.whenComplete((r, t) -> {
-          if (t != null) {
-              throw new IllegalStateException(t);
-          } else {
-              System.out.println("The result of dstClient.sets().get(\"k1\") is: " + r.getValuesList());
-          }
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("The result of dstClient.sets().get(\"k1\") is: "
+                  + r.getValuesList());
+        }
       });
       dictGetFuture.whenComplete((r, t) -> {
-          if (t != null) {
-              throw new IllegalStateException(t);
-          } else {
-              System.out.println("The result of dstClient.dicts().get(\"dict1\") is: " + "\n" + r.getDict());
-          }
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("The result of dstClient.dicts().get(\"dict1\") is: "
+                  + "\n" + r.getDict());
+        }
       });
 
       strGetFuture.get();
