@@ -5,8 +5,6 @@ import com.distkv.dst.parser.po.DstParsedResult;
 
 public class DstCommandExecutor {
 
-  private static final String STATUS_OK = "ok";
-
   DstClient dstClient;
 
   public DstCommandExecutor(DstClient dstClient) {
