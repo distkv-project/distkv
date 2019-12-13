@@ -1,7 +1,6 @@
 package com.distkv.dst.client;
 
 import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
@@ -25,9 +24,7 @@ public class DstStringProxy {
 
     CompletableFuture<StringProtocol.PutResponse> responseFuture = service.put(request);
     StringProtocol.PutResponse response = FutureUtils.get(responseFuture);
-    if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public String get(String key) throws DstException {
@@ -38,13 +35,7 @@ public class DstStringProxy {
 
     CompletableFuture<StringProtocol.GetResponse> responseFuture = service.get(request);
     StringProtocol.GetResponse response = FutureUtils.get(responseFuture);
-
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      throw new KeyNotFoundException(key);
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
-
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getValue();
   }
 
@@ -56,12 +47,7 @@ public class DstStringProxy {
 
     CompletableFuture<CommonProtocol.DropResponse> responseFuture = service.drop(request);
     CommonProtocol.DropResponse response = FutureUtils.get(responseFuture);
-
-    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
-      return false;
-    } else if (response.getStatus() != CommonProtocol.Status.OK) {
-      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
-    }
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return true;
   }
 }

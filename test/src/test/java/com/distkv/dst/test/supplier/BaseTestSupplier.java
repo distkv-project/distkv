@@ -1,5 +1,7 @@
 package com.distkv.dst.test.supplier;
 
+import com.distkv.dst.asyncclient.DefaultAsyncClient;
+import com.distkv.dst.asyncclient.DstAsyncClient;
 import com.distkv.dst.client.DefaultDstClient;
 import com.distkv.dst.client.DstClient;
 import org.slf4j.Logger;
@@ -34,4 +36,7 @@ public class BaseTestSupplier {
     return new DefaultDstClient(String.format("list://127.0.0.1:%d", rpcServerPort));
   }
 
+  protected DstAsyncClient newAsyncDstClient() {
+    return new DefaultAsyncClient(String.format("list://127.0.0.1:%d", rpcServerPort));
+  }
 }
