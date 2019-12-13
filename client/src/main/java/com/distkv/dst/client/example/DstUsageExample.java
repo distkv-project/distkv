@@ -40,6 +40,7 @@ public class DstUsageExample {
       //print dictionary result
       System.out.println("The result of dstClient.dicts().get(\"dict1\") is: " + mapResult);
 
+      dstClient.disconnect();
     }
   }
 }
