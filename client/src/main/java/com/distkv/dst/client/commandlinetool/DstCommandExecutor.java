@@ -29,9 +29,7 @@ public class DstCommandExecutor {
   public String execute(DstParsedResult parsedResult) {
     switch (parsedResult.getRequestType()) {
       case STR_PUT:
-        StringProtocol.PutRequest putRequestStr =
-                (StringProtocol.PutRequest) parsedResult.getRequest();
-        dstClient.strs().put(putRequestStr.getKey(), putRequestStr.getValue());
+        CommandExecutorHandler.strPut(dstClient, parsedResult);
         return STATUS_OK;
       case STR_GET:
         StringProtocol.GetRequest getRequestStr =
