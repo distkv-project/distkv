@@ -3,9 +3,18 @@ package com.distkv.dst.client.commandlinetool;
 import com.distkv.dst.client.DstClient;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.parser.po.DstParsedResult;
-import com.distkv.dst.rpc.protobuf.generated.*;
-
-import java.util.*;
+import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
+import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class CommandExecutorHandler {
 
