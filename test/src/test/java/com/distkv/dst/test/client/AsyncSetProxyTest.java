@@ -10,61 +10,102 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class AsyncSetProxyTest extends BaseTestSupplier {
+  CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
-  public void testAsyncSet() throws ExecutionException, InterruptedException {
+  public void testAsyncSet() {
+    try {
+      testSet();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (TimeoutException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void testSet() throws ExecutionException, InterruptedException, TimeoutException {
     DstAsyncClient client = newAsyncDstClient();
 
     // TestPut
     CompletableFuture<SetProtocol.PutResponse> putFuture =
             client.sets().put("k1", ImmutableSet.of("v1", "v2", "v3"));
     putFuture.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
     });
+    SetProtocol.PutResponse putResponse =
+            putFuture.get(1, TimeUnit.SECONDS);
+    Assert.assertEquals(putResponse.getStatus(), status);
 
     //TestPutItem
     CompletableFuture<SetProtocol.PutItemResponse> putItemFuture =
             client.sets().putItem("k1", "v4");
     putItemFuture.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
     });
 
     //TestExists
     CompletableFuture<SetProtocol.ExistsResponse> existsFuture =
             client.sets().exists("k1", "v4");
     existsFuture.whenComplete((r, t) -> {
-      Assert.assertTrue(r.getResult());
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
     });
 
     //TestRemoveItem
     CompletableFuture<SetProtocol.RemoveItemResponse> removeFuture =
             client.sets().removeItem("k1", "v1");
     removeFuture.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
     });
 
     //TestGet
     CompletableFuture<SetProtocol.GetResponse> getFuture =
             client.sets().get("k1");
     getFuture.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getValuesList(), ImmutableList.of("v2", "v3", "v4"));
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
     });
 
     //TestDrop
     CompletableFuture<CommonProtocol.DropResponse> dropFuture =
             client.sets().drop("k1");
     dropFuture.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
     });
 
-    putFuture.get();
-    putItemFuture.get();
-    existsFuture.get();
-    removeFuture.get();
-    getFuture.get();
-    dropFuture.get();
+    SetProtocol.PutItemResponse putItemResponse =
+            putItemFuture.get(1, TimeUnit.SECONDS);
+    SetProtocol.ExistsResponse existsResponse =
+            existsFuture.get(1, TimeUnit.SECONDS);
+    SetProtocol.RemoveItemResponse removeItemResponse =
+            removeFuture.get(1, TimeUnit.SECONDS);
+    SetProtocol.GetResponse getResponse =
+            getFuture.get(1, TimeUnit.SECONDS);
+    CommonProtocol.DropResponse dropResponse =
+            dropFuture.get(1, TimeUnit.SECONDS);
+
+    Assert.assertEquals(putItemResponse.getStatus(), status);
+    Assert.assertTrue(existsResponse.getResult());
+    Assert.assertEquals(removeItemResponse.getStatus(), status);
+    Assert.assertEquals(getResponse.getValuesList(), ImmutableList.of("v2", "v3", "v4"));
+    Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     client.disconnect();
+
   }
 }
