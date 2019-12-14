@@ -93,7 +93,7 @@ public class CommandExecutorHandler {
   public static String listMRemove(DstClient dstClient, DstParsedResult parsedResult) {
     ListProtocol.MRemoveRequest multipleRemoveRequestList =
         (ListProtocol.MRemoveRequest) parsedResult.getRequest();
-    dstClient.lists().multipleRemove(multipleRemoveRequestList.getKey(),
+    dstClient.lists().mremove(multipleRemoveRequestList.getKey(),
         multipleRemoveRequestList.getIndexesList());
     return STATUS_OK;
   }

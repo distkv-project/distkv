@@ -35,7 +35,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void putItem(String key, SortedListEntity item) {
+  public void putMember(String key, SortedListEntity item) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -55,7 +55,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void removeItem(String key, String member) {
+  public void removeMember(String key, String member) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -75,7 +75,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public void incrItem(String key, String member, int delta) {
+  public void incrScore(String key, String member, int delta) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -129,7 +129,7 @@ public class DstSortedListImpl implements DstSortedList {
   }
 
   @Override
-  public List<Integer> getItem(String key, String member) {
+  public List<Integer> getMember(String key, String member) {
     if (!sortedListMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }

@@ -115,7 +115,7 @@ public class DstListImpl implements DstList {
   }
 
   @Override
-  public Status multipleRemove(String key, List<Integer> indexes)
+  public Status mremove(String key, List<Integer> indexes)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     try {
       List<String> list = listMap.get(key);

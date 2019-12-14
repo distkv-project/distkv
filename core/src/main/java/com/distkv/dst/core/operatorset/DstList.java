@@ -85,7 +85,7 @@ public interface DstList {
    * @param indexes A list of indexes for those items you wanna to remove.
    * @return Whether we succeed to remove the items.
    */
-  Status multipleRemove(String key, List<Integer> indexes)
+  Status mremove(String key, List<Integer> indexes)
           throws KeyNotFoundException, IndexOutOfBoundsException;
 
 }

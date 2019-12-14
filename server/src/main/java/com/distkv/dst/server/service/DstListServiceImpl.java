@@ -177,24 +177,24 @@ public class DstListServiceImpl extends DstBaseService implements DstListService
   }
 
   @Override
-  public CompletableFuture<ListProtocol.MRemoveResponse> multipleRemove(
+  public CompletableFuture<ListProtocol.MRemoveResponse> mremove(
       ListProtocol.MRemoveRequest request) {
     ListProtocol.MRemoveResponse.Builder responseBuilder =
             ListProtocol.MRemoveResponse.newBuilder();
     CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
     try {
       Status localStatus =
-              getStore().lists().multipleRemove(request.getKey(), request.getIndexesList());
+              getStore().lists().mremove(request.getKey(), request.getIndexesList());
       if (localStatus == Status.OK) {
         status = CommonProtocol.Status.OK;
       } else if (localStatus == Status.KEY_NOT_FOUND) {
         status = CommonProtocol.Status.KEY_NOT_FOUND;
       }
     } catch (KeyNotFoundException e) {
-      LOGGER.info("Failed to mRemove item from store: {1}", e);
+      LOGGER.info("Failed to mremove item from store: {1}", e);
       status = CommonProtocol.Status.KEY_NOT_FOUND;
     } catch (DstListIndexOutOfBoundsException e) {
-      LOGGER.info("Failed to mRemove item from store: {1}", e);
+      LOGGER.info("Failed to mremove item from store: {1}", e);
       status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
     }
     responseBuilder.setStatus(status);

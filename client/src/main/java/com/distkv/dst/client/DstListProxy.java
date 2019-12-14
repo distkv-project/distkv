@@ -118,12 +118,12 @@ public class DstListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
-  public void multipleRemove(String key, List<Integer> indexes) {
+  public void mremove(String key, List<Integer> indexes) {
     ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
           .setKey(key)
           .addAllIndexes(indexes)
           .build();
-    ListProtocol.MRemoveResponse response = FutureUtils.get(service.multipleRemove(request));
+    ListProtocol.MRemoveResponse response = FutureUtils.get(service.mremove(request));
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 }

@@ -67,10 +67,10 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    // testMutiRemove
-    CompletableFuture<ListProtocol.MRemoveResponse> mutiRemoveFuture =
-            client.lists().mutiRemove("k1", ImmutableList.of(0, 2));
-    mutiRemoveFuture.whenComplete((r, t) -> {
+    // testMRemove
+    CompletableFuture<ListProtocol.MRemoveResponse> mremoveFuture =
+            client.lists().mremove("k1", ImmutableList.of(0, 2));
+    mremoveFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
@@ -89,7 +89,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     removeOneFuture.get();
     rputFuture.get();
     removeRangeFuture.get();
-    mutiRemoveFuture.get();
+    mremoveFuture.get();
     getAllFuture.get();
     client.disconnect();
   }

@@ -20,14 +20,14 @@ public class KVSSortedListTest extends BaseTestSupplier {
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
     store.sortLists().put("k1", list);
-    store.sortLists().putItem("k1", new SortedListEntity("asd",1000));
+    store.sortLists().putMember("k1", new SortedListEntity("asd",1000));
     List<SortedListEntity> k1 = store.sortLists().top("k1", 2);
     new Thread(() -> {
-      store.sortLists().incrItem("k1", "xswl",1);
+      store.sortLists().incrScore("k1", "xswl",1);
     }).start();
 
     Runnable runnable = () -> {
-      store.sortLists().incrItem("k1", "fw",1);
+      store.sortLists().incrScore("k1", "fw",1);
     };
     new Thread(runnable).start();
     new Thread(runnable).start();

@@ -269,7 +269,7 @@ public class ListRpcTest extends BaseTestSupplier {
       multipleRemoveRequestBuilder.addIndexes(1);
       multipleRemoveRequestBuilder.addIndexes(0);
       ListProtocol.MRemoveResponse multipleRemoveResponse = FutureUtils.get(
-          listService.multipleRemove(multipleRemoveRequestBuilder.build()));
+          listService.mremove(multipleRemoveRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, multipleRemoveResponse.getStatus());
 
       // Get.
@@ -285,7 +285,7 @@ public class ListRpcTest extends BaseTestSupplier {
       multipleRemoveRequestBuilder.setKey("k2");
       multipleRemoveRequestBuilder.addIndexes(1);
       ListProtocol.MRemoveResponse multipleRemoveResponse2 = FutureUtils.get(
-          listService.multipleRemove(multipleRemoveRequestBuilder.build()));
+          listService.mremove(multipleRemoveRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND,
           multipleRemoveResponse2.getStatus());
     }

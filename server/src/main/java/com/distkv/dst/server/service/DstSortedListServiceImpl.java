@@ -104,7 +104,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
         SortedListProtocol.IncrScoreResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().incrItem(request.getKey(),
+      getStore().sortLists().incrScore(request.getKey(),
           request.getMember(), request.getDelta());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
@@ -125,7 +125,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
         SortedListProtocol.PutMemberResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().putItem(request.getKey(),
+      getStore().sortLists().putMember(request.getKey(),
           new SortedListEntity(request.getMember(), request.getScore()));
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
@@ -146,7 +146,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
         SortedListProtocol.RemoveMemberResponse.newBuilder();
     CommonProtocol.Status status;
     try {
-      getStore().sortLists().removeItem(request.getKey(),request.getMember());
+      getStore().sortLists().removeMember(request.getKey(),request.getMember());
       status = CommonProtocol.Status.OK;
     } catch (KeyNotFoundException e) {
       LOGGER.error("Failed to remove SortedList, caused by key not found: %s", request.getKey());
@@ -168,7 +168,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
     CommonProtocol.Status status;
     try {
       List<Integer> scoreAndRankingValues =
-              getStore().sortLists().getItem(request.getKey(), request.getMember());
+              getStore().sortLists().getMember(request.getKey(), request.getMember());
       SortedListProtocol.SortedListEntity.Builder sortedListEntityBuilder =
               SortedListProtocol.SortedListEntity.newBuilder();
       sortedListEntityBuilder.setMember(request.getMember());
