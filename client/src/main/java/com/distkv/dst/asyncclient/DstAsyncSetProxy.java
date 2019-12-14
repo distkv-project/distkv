@@ -3,10 +3,15 @@ package com.distkv.dst.asyncclient;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.service.DstSetService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncSetProxy {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(DstAsyncSetProxy.class);
 
   private DstSetService service;
 
@@ -21,6 +26,7 @@ public class DstAsyncSetProxy {
             .addAllValues(values)
             .build();
     CompletableFuture<SetProtocol.PutResponse> future = service.put(request);
+    LOGGER.debug("Set PUT proxy");
     return future;
   }
 
@@ -29,6 +35,7 @@ public class DstAsyncSetProxy {
             .setKey(key)
             .build();
     CompletableFuture<SetProtocol.GetResponse> future = service.get(request);
+    LOGGER.info("Set GET proxy");
     return future;
   }
 
@@ -39,6 +46,7 @@ public class DstAsyncSetProxy {
             .setItemValue(entity)
             .build();
     CompletableFuture<SetProtocol.PutItemResponse> future = service.putItem(request);
+    LOGGER.info("Set PUT_ITEM proxy");
     return future;
   }
 
@@ -49,6 +57,7 @@ public class DstAsyncSetProxy {
             .setItemValue(entity)
             .build();
     CompletableFuture<SetProtocol.RemoveItemResponse> future = service.removeItem(request);
+    LOGGER.info("Set REMOVE_ITEM proxy");
     return future;
   }
 
@@ -57,6 +66,7 @@ public class DstAsyncSetProxy {
             .setKey(key)
             .build();
     CompletableFuture<CommonProtocol.DropResponse> future = service.drop(request);
+    LOGGER.info("Set DROP proxy");
     return future;
   }
 
@@ -67,6 +77,7 @@ public class DstAsyncSetProxy {
             .setEntity(entity)
             .build();
     CompletableFuture<SetProtocol.ExistsResponse> future = service.exists(request);
+    LOGGER.info("Set EXISTS proxy");
     return future;
   }
 }

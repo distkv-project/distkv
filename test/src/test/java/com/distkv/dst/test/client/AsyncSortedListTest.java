@@ -17,19 +17,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
-  public void testAsyncSortedList() {
-    try {
-      testAsync();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private void testAsync()
+  public void testAsync()
           throws InterruptedException, ExecutionException, TimeoutException {
     DstAsyncClient client = newAsyncDstClient();
 

@@ -17,19 +17,7 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
-  public void testAsyncDict() {
-    try {
-      testDict();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private void testDict() throws ExecutionException, InterruptedException, TimeoutException {
+  public void testDict() throws ExecutionException, InterruptedException, TimeoutException {
     DstAsyncClient client = newAsyncDstClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");

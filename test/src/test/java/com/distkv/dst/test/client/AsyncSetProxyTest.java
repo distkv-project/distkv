@@ -17,19 +17,7 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
-  public void testAsyncSet() {
-    try {
-      testSet();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void testSet() throws ExecutionException, InterruptedException, TimeoutException {
+  public void testAsyncSet() throws ExecutionException, InterruptedException, TimeoutException {
     DstAsyncClient client = newAsyncDstClient();
 
     // TestPut
@@ -67,6 +55,7 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
             client.sets().removeItem("k1", "v1");
     removeFuture.whenComplete((r, t) -> {
       if (t != null) {
+        System.out.println(t);
         throw new IllegalStateException(t);
       }
     });

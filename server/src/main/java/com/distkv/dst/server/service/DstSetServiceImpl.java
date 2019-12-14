@@ -23,6 +23,7 @@ public class DstSetServiceImpl implements DstSetService {
   public CompletableFuture<SetProtocol.PutResponse> put(SetProtocol.PutRequest request) {
     CompletableFuture<SetProtocol.PutResponse> future = new CompletableFuture<>();
     runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SET_PUT, request, future);
+    LOGGER.debug("Set PUT service");
     return future;
   }
 
@@ -30,6 +31,7 @@ public class DstSetServiceImpl implements DstSetService {
   public CompletableFuture<SetProtocol.GetResponse> get(SetProtocol.GetRequest request) {
     CompletableFuture<SetProtocol.GetResponse> future = new CompletableFuture<>();
     runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SET_GET, request, future);
+    LOGGER.info("Set GET service");
     return future;
   }
 
@@ -39,6 +41,7 @@ public class DstSetServiceImpl implements DstSetService {
     CompletableFuture<SetProtocol.PutItemResponse> future = new CompletableFuture<>();
     runtime.getWorkerPool().postRequest(
         request.getKey(), RequestTypeEnum.SET_PUT_ITEM, request, future);
+    LOGGER.info("Set PUT_ITEM service");
     return future;
   }
 
@@ -48,15 +51,16 @@ public class DstSetServiceImpl implements DstSetService {
     CompletableFuture<SetProtocol.RemoveItemResponse> future = new CompletableFuture<>();
     runtime.getWorkerPool().postRequest(
         request.getKey(), RequestTypeEnum.SET_REMOVE_ITEM, request, future);
+    LOGGER.info("Set REMOVE_ITEM service");
     return future;
   }
-
 
   @Override
   public CompletableFuture<SetProtocol.ExistsResponse> exists(SetProtocol.ExistsRequest request) {
     CompletableFuture<SetProtocol.ExistsResponse> future = new CompletableFuture<>();
     runtime.getWorkerPool().postRequest(
         request.getKey(), RequestTypeEnum.SET_EXIST, request, future);
+    LOGGER.info("Set EXISTS service");
     return future;
   }
 
@@ -65,6 +69,7 @@ public class DstSetServiceImpl implements DstSetService {
     CompletableFuture<CommonProtocol.DropResponse> future = new CompletableFuture<>();
     runtime.getWorkerPool().postRequest(
         request.getKey(), RequestTypeEnum.SET_DROP, request, future);
+    LOGGER.info("Set DROP service");
     return future;
   }
 

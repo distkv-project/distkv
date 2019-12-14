@@ -16,18 +16,6 @@ public class AsyncListProxyTest extends BaseTestSupplier {
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
-  public void testAsyncList() {
-    try {
-      testList();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
-  }
-
   public void testList() throws ExecutionException, InterruptedException, TimeoutException {
     DstAsyncClient client = newAsyncDstClient();
 
