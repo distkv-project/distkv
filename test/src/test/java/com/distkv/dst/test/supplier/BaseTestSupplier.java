@@ -25,13 +25,12 @@ public class BaseTestSupplier {
         method.getDeclaringClass(), method.getName()));
     rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
     TestUtil.startRpcServer(rpcServerPort);
-    Thread.sleep(500);
+    Thread.sleep(1000);
   }
 
   @AfterMethod
   public void teardownBase() throws InterruptedException {
     TestUtil.stopRpcServer();
-    Thread.sleep(500);
   }
 
   protected DstClient newDstClient() {
