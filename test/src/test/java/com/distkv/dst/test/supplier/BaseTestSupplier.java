@@ -10,6 +10,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class BaseTestSupplier {
 
@@ -25,11 +26,11 @@ public class BaseTestSupplier {
         method.getDeclaringClass(), method.getName()));
     rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
     TestUtil.startRpcServer(rpcServerPort);
-    Thread.sleep(1000);
+    TimeUnit.SECONDS.sleep(1);
   }
 
   @AfterMethod
-  public void teardownBase() throws InterruptedException {
+  public void teardownBase() {
     TestUtil.stopRpcServer();
   }
 
