@@ -1,24 +1,10 @@
 package com.distkv.dst.client.commandlinetool;
 
-import com.distkv.dst.client.DstClient;
-import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.parser.po.DstParsedResult;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
-import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
-import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedList;
-import java.util.Set;
+import com.distkv.dst.client.DstClient;
+
 
 public class DstCommandExecutor {
-
-  private static final String STATUS_OK = "ok";
 
   DstClient dstClient;
 
@@ -29,219 +15,67 @@ public class DstCommandExecutor {
   public String execute(DstParsedResult parsedResult) {
     switch (parsedResult.getRequestType()) {
       case STR_PUT:
-        StringProtocol.PutRequest putRequestStr =
-                (StringProtocol.PutRequest) parsedResult.getRequest();
-        dstClient.strs().put(putRequestStr.getKey(), putRequestStr.getValue());
-        return STATUS_OK;
+        return CommandExecutorHandler.strPut(dstClient, parsedResult);
       case STR_GET:
-        StringProtocol.GetRequest getRequestStr =
-                (StringProtocol.GetRequest) parsedResult.getRequest();
-        return dstClient.strs().get(getRequestStr.getKey());
+        return CommandExecutorHandler.strGet(dstClient, parsedResult);
       case STR_DROP:
-        CommonProtocol.DropRequest dropRequestStr =
-                (CommonProtocol.DropRequest) parsedResult.getRequest();
-        dstClient.strs().drop(dropRequestStr.getKey());
-        return STATUS_OK;
+        return CommandExecutorHandler.strDrop(dstClient, parsedResult);
       case LIST_PUT:
-        ListProtocol.PutRequest putRequestList =
-                (ListProtocol.PutRequest) parsedResult.getRequest();
-        dstClient.lists().put(putRequestList.getKey(), putRequestList.getValuesList());
-        return STATUS_OK;
+        return CommandExecutorHandler.listPut(dstClient, parsedResult);
       case LIST_GET:
-        ListProtocol.GetRequest getRequestList =
-                (ListProtocol.GetRequest) parsedResult.getRequest();
-        List<String> list = null;
-        if (getRequestList.getType() == ListProtocol.GetType.GET_ALL) {
-          list = dstClient.lists().get(getRequestList.getKey());
-        } else if (getRequestList.getType() == ListProtocol.GetType.GET_ONE) {
-          list = dstClient.lists().get(getRequestList.getKey(), getRequestList.getIndex());
-        } else if (getRequestList.getType() == ListProtocol.GetType.GET_RANGE) {
-          list = dstClient.lists().get(getRequestList.getKey(),
-                  getRequestList.getFrom(), getRequestList.getEnd());
-        }
-        return list.toString();
+        return CommandExecutorHandler.listGet(dstClient, parsedResult);
       case LIST_LPUT:
-        ListProtocol.PutRequest lputRequestList =
-                (ListProtocol.PutRequest) parsedResult.getRequest();
-        dstClient.lists().lput(lputRequestList.getKey(), lputRequestList.getValuesList());
-        return STATUS_OK;
+        return CommandExecutorHandler.listLPut(dstClient, parsedResult);
       case LIST_RPUT:
-        ListProtocol.PutRequest rputRequestList =
-                (ListProtocol.PutRequest) parsedResult.getRequest();
-        dstClient.lists().rput(rputRequestList.getKey(), rputRequestList.getValuesList());
-        return STATUS_OK;
+        return CommandExecutorHandler.listRPut(dstClient, parsedResult);
       case LIST_REMOVE:
-        ListProtocol.RemoveRequest removeRequestList =
-                (ListProtocol.RemoveRequest) parsedResult.getRequest();
-        if (removeRequestList.getType() == ListProtocol.RemoveType.RemoveOne) {
-          dstClient.lists().remove(removeRequestList.getKey(), removeRequestList.getIndex());
-          return STATUS_OK;
-        } else if (removeRequestList.getType() == ListProtocol.RemoveType.RemoveRange) {
-          dstClient.lists().remove(removeRequestList.getKey(),
-                  removeRequestList.getFrom(), removeRequestList.getEnd());
-          return STATUS_OK;
-        }
-        break;
+        return CommandExecutorHandler.listRemove(dstClient, parsedResult);
       case LIST_M_REMOVE:
-        ListProtocol.MRemoveRequest multipleRemoveRequestList =
-                (ListProtocol.MRemoveRequest) parsedResult.getRequest();
-        dstClient.lists().multipleRemove(multipleRemoveRequestList.getKey(),
-                multipleRemoveRequestList.getIndexesList());
-        return STATUS_OK;
+        return CommandExecutorHandler.listMRemove(dstClient, parsedResult);
       case LIST_DROP:
-        CommonProtocol.DropRequest dropReqeustList =
-                (CommonProtocol.DropRequest) parsedResult.getRequest();
-        dstClient.lists().drop(dropReqeustList.getKey());
-        return STATUS_OK;
+        return CommandExecutorHandler.listDrop(dstClient, parsedResult);
       case SET_PUT:
-        SetProtocol.PutRequest putRequestSet =
-                (SetProtocol.PutRequest) parsedResult.getRequest();
-        Set<String> values = new HashSet(putRequestSet.getValuesList());
-        dstClient.sets().put(putRequestSet.getKey(), values);
-        return STATUS_OK;
+        return CommandExecutorHandler.setPut(dstClient, parsedResult);
       case SET_GET:
-        SetProtocol.GetRequest getRequestSet =
-                (SetProtocol.GetRequest) parsedResult.getRequest();
-        return dstClient.sets().get(getRequestSet.getKey()).toString();
+        return CommandExecutorHandler.setGet(dstClient, parsedResult);
       case SET_DROP:
-        CommonProtocol.DropRequest dropRequestSet =
-                (CommonProtocol.DropRequest) parsedResult.getRequest();
-        dstClient.sets().drop(dropRequestSet.getKey());
-        return STATUS_OK;
+        return CommandExecutorHandler.setDrop(dstClient, parsedResult);
       case SET_PUT_ITEM:
-        SetProtocol.PutItemRequest putItemRequestSet =
-                (SetProtocol.PutItemRequest) parsedResult.getRequest();
-        dstClient.sets().putItem(putItemRequestSet.getKey(), putItemRequestSet.getItemValue());
-        return STATUS_OK;
+        return CommandExecutorHandler.setPutItem(dstClient, parsedResult);
       case SET_REMOVE_ITEM:
-        SetProtocol.RemoveItemRequest removeItemRequestSet =
-                (SetProtocol.RemoveItemRequest) parsedResult.getRequest();
-        dstClient.sets().removeItem(removeItemRequestSet.getKey(),
-                removeItemRequestSet.getItemValue());
-        return STATUS_OK;
+        return CommandExecutorHandler.setRemoveItem(dstClient, parsedResult);
       case SET_EXIST:
-        SetProtocol.ExistsRequest existsRequestSet =
-                (SetProtocol.ExistsRequest) parsedResult.getRequest();
-        return String.valueOf(dstClient.sets().exists(existsRequestSet.getKey(),
-                existsRequestSet.getEntity()));
+        return CommandExecutorHandler.setExist(dstClient, parsedResult);
       case DICT_PUT:
-        DictProtocol.PutRequest putRequestDict =
-                (DictProtocol.PutRequest) parsedResult.getRequest();
-        DictProtocol.DstDict dict = putRequestDict.getDict();
-        Map<String, String> map = new HashMap<>();
-        for (int i = 0; i < dict.getKeysCount(); i++) {
-          map.put(dict.getKeys(i), dict.getValues(i));
-        }
-        dstClient.dicts().put(putRequestDict.getKey(), map);
-        return STATUS_OK;
+        return CommandExecutorHandler.dictPut(dstClient, parsedResult);
       case DICT_GET:
-        DictProtocol.GetRequest getRequestDict =
-                (DictProtocol.GetRequest) parsedResult.getRequest();
-        return dstClient.dicts().get(getRequestDict.getKey()).toString();
+        return CommandExecutorHandler.dictGet(dstClient, parsedResult);
       case DICT_PUT_ITEM:
-        DictProtocol.PutItemRequest putItemRequestDict =
-                (DictProtocol.PutItemRequest) parsedResult.getRequest();
-        dstClient.dicts().putItem(putItemRequestDict.getKey(),
-                putItemRequestDict.getItemKey(), putItemRequestDict.getItemValue());
-        return STATUS_OK;
+        return CommandExecutorHandler.dictPutItem(dstClient, parsedResult);
       case DICT_GET_ITEM:
-        DictProtocol.GetItemRequest getItemRequestDict =
-                (DictProtocol.GetItemRequest) parsedResult.getRequest();
-        return dstClient.dicts().getItem(getItemRequestDict.getKey(),
-                getItemRequestDict.getItemKey());
+        return CommandExecutorHandler.dictGetItem(dstClient, parsedResult);
       case DICT_POP_ITEM:
-        DictProtocol.PopItemRequest popItemRequestDict =
-                (DictProtocol.PopItemRequest) parsedResult.getRequest();
-        return dstClient.dicts().popItem(popItemRequestDict.getKey(),
-                popItemRequestDict.getItemKey());
+        return CommandExecutorHandler.dictPopItem(dstClient, parsedResult);
       case DICT_REMOVE_ITEM:
-        DictProtocol.RemoveItemRequest removeItemRequestDict =
-                (DictProtocol.RemoveItemRequest) parsedResult.getRequest();
-        dstClient.dicts().removeItem(removeItemRequestDict.getKey(),
-                removeItemRequestDict.getItemKey());
-        return STATUS_OK;
+        return CommandExecutorHandler.dictRemoveItem(dstClient, parsedResult);
       case DICT_DROP:
-        CommonProtocol.DropRequest dropRequestDict =
-                (CommonProtocol.DropRequest) parsedResult.getRequest();
-        dstClient.dicts().drop(dropRequestDict.getKey());
-        return STATUS_OK;
+        return CommandExecutorHandler.dictDrop(dstClient, parsedResult);
       case SLIST_PUT:
-        SortedListProtocol.PutRequest putRequestSlist =
-                (SortedListProtocol.PutRequest) parsedResult.getRequest();
-        final LinkedList<SortedListEntity> sortedListEntitiesResult = new LinkedList<>();
-
-        final List<SortedListProtocol.SortedListEntity> sortedListEntities
-                = putRequestSlist.getListList();
-        for (SortedListProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
-          final String sortedListEntityMember = sortedListEntity.getMember();
-          final int sortedListEntityScore = sortedListEntity.getScore();
-          sortedListEntitiesResult.add(new SortedListEntity(sortedListEntityMember,
-                  sortedListEntityScore));
-        }
-        dstClient.sortedLists().put(putRequestSlist.getKey(),
-                sortedListEntitiesResult);
-        return STATUS_OK;
+        return CommandExecutorHandler.slistPut(dstClient, parsedResult);
       case SLIST_TOP:
-        SortedListProtocol.TopRequest topRequestSlist =
-                (SortedListProtocol.TopRequest) parsedResult.getRequest();
-        return dstClient.sortedLists().top(topRequestSlist.getKey(),
-                topRequestSlist.getCount()).toString();
+        return CommandExecutorHandler.slistTop(dstClient, parsedResult);
       case SLIST_INCR_SCORE:
-        SortedListProtocol.IncrScoreRequest incrScoreRequest =
-                (SortedListProtocol.IncrScoreRequest) parsedResult.getRequest();
-        dstClient.sortedLists().incrItem(incrScoreRequest.getKey(),
-                incrScoreRequest.getMember(), incrScoreRequest.getDelta());
-        return STATUS_OK;
+        return CommandExecutorHandler.slistIncrScore(dstClient, parsedResult);
       case SLIST_PUT_MEMBER:
-        SortedListProtocol.PutMemberRequest putMemberRequest =
-                (SortedListProtocol.PutMemberRequest) parsedResult.getRequest();
-        final String member = putMemberRequest.getMember();
-        final int score = putMemberRequest.getScore();
-        dstClient.sortedLists().putItem(putMemberRequest.getKey(),
-                new SortedListEntity(member, score));
-        return STATUS_OK;
+        return CommandExecutorHandler.slistPutMember(dstClient, parsedResult);
       case SLIST_REMOVE_MEMBER:
-        SortedListProtocol.RemoveMemberRequest removeMemberRequest =
-                (SortedListProtocol.RemoveMemberRequest) parsedResult.getRequest();
-        dstClient.sortedLists().removeItem(removeMemberRequest.getKey(),
-                removeMemberRequest.getMember());
-        return STATUS_OK;
+        return CommandExecutorHandler.slistRemoveMember(dstClient, parsedResult);
       case SLIST_DROP:
-        CommonProtocol.DropRequest dropRequest =
-                (CommonProtocol.DropRequest) parsedResult.getRequest();
-        dstClient.sortedLists().drop(dropRequest.getKey());
-        return STATUS_OK;
+        return CommandExecutorHandler.slistDrop(dstClient, parsedResult);
       case SLIST_GET_MEMBER:
-        SortedListProtocol.GetMemberRequest getMemberRequest =
-                (SortedListProtocol.GetMemberRequest) parsedResult.getRequest();
-        final List<Integer> scoreAndRankingValues = dstClient.sortedLists().getItem(
-                getMemberRequest.getKey(), getMemberRequest.getMember());
-        // output: (member, score), ranking
-        final StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("(\"");
-        stringBuilder.append(getMemberRequest.getMember());
-        stringBuilder.append("\", ");
-        stringBuilder.append(scoreAndRankingValues.get(0));
-        stringBuilder.append("), ");
-        final int ranking = scoreAndRankingValues.get(1);
-        stringBuilder.append(ranking);
-        switch (ranking) {
-          case 1:
-            stringBuilder.append("st");
-            break;
-          case 2:
-            stringBuilder.append("nd");
-            break;
-          case 3:
-            stringBuilder.append("rd");
-            break;
-          default:
-            stringBuilder.append("th");
-        }
-        return stringBuilder.toString();
+        return CommandExecutorHandler.slistGetMember(dstClient, parsedResult);
       default:
         return null;
     }
-    return null;
   }
 }
