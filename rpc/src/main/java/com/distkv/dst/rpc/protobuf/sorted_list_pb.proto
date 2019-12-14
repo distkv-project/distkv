@@ -61,11 +61,23 @@ message RemoveMemberResponse {
     required Status status = 1;
 }
 
+message GetMemberRequest {
+    required string key = 1;
+    required string member = 2;
+}
+
+message GetMemberResponse {
+    required Status status = 1;
+    required SortedListEntity entity = 2;
+    required uint32 count = 3;
+}
+
 service DstListService {
     rpc put (PutRequest) returns (PutResponse);
     rpc top (TopRequest) returns (TopResponse);
     rpc incrItem (IncrScoreRequest) returns (IncrScoreResponse);
     rpc putItem (PutMemberRequest) returns (PutMemberResponse);
     rpc removeItem (RemoveMemberRequest) returns (RemoveMemberResponse);
+    rpc getItem (GetMemberRequest) returns (GetMemberResponse);
     rpc drop(DropRequest) returns (DropResponse);
 }

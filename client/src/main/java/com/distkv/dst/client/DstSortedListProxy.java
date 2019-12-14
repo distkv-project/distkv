@@ -5,7 +5,9 @@ import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.service.DstSortedListService;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class DstSortedListProxy {
   DstSortedListService service;
@@ -87,5 +89,17 @@ public class DstSortedListProxy {
     SortedListProtocol.PutMemberResponse response = FutureUtils.get(
         service.putItem(requestBuilder.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key);
+  }
+
+  public List<Integer> getItem(String key, String member) {
+    SortedListProtocol.GetMemberRequest.Builder getMemberRequest =
+            SortedListProtocol.GetMemberRequest.newBuilder();
+    getMemberRequest.setKey(key);
+    getMemberRequest.setMember(member);
+    SortedListProtocol.GetMemberResponse getMemberResponse = FutureUtils.get(
+            service.getItem(getMemberRequest.build()));
+    CheckStatusUtil.checkStatus(getMemberResponse.getStatus(), key);
+    SortedListProtocol.SortedListEntity sortedListEntity = getMemberResponse.getEntity();
+    return Arrays.asList(sortedListEntity.getScore(), getMemberResponse.getCount());
   }
 }

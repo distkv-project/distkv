@@ -1,6 +1,7 @@
 package com.distkv.dst.test.client;
 
 import java.util.LinkedList;
+import java.util.List;
 import com.distkv.dst.client.DstClient;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.test.supplier.BaseTestSupplier;
@@ -22,6 +23,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     testTop();
     testRemoveItem();
     testTop();
+    testGetItem();
     dstClient.disconnect();
   }
 
@@ -50,6 +52,12 @@ public class SortedListProxyTest extends BaseTestSupplier {
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
     dstClient.sortedLists().put("k1", list);
+  }
+
+  private void testGetItem() {
+    List<Integer> list = dstClient.sortedLists().getItem("k1", "fw");
+    Assert.assertEquals(list.get(0).intValue(), 10);
+    Assert.assertEquals(list.get(1).intValue(), 2);
   }
 
 }

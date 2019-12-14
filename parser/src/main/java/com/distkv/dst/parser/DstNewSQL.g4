@@ -61,13 +61,14 @@ dictRemoveItem: 'dict.removeItem' key itemKey;
 dictDrop: 'dict.drop' key;
 
 // slist concept
-slistStatement: slistPut | slistTop | slistIncrScore | slistPutMember | slistRemoveMember | slistDrop;
+slistStatement: slistPut | slistTop | slistIncrScore | slistPutMember | slistRemoveMember | slistDrop | slistGetMember;
 slistPut: 'slist.put' key sortedListEntityPairs;
 slistTop: 'slist.top' key topCount;
 slistIncrScore: 'slist.incrScore' (slistIncrScoreDefault | slistIncrScoreDelta);
 slistPutMember: 'slist.putMember' key itemMember itemScore;
 slistRemoveMember: 'slist.removeMember' key itemMember;
 slistDrop: 'slist.drop' key;
+slistGetMember: 'slist.getMember' key itemMember;
 
 // slist.incrScore arguments
 // slist increase one score by default

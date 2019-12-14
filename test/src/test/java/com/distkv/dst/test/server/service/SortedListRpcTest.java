@@ -62,6 +62,18 @@ public class SortedListRpcTest extends BaseTestSupplier {
       SortedListProtocol.TopResponse top1 = FutureUtils.get(
           service.top(topRequestBuilder.build()));
       Assert.assertEquals(top1.getList(0).getMember(), "asd");
+
+      SortedListProtocol.GetMemberRequest.Builder getMemberRequestBuilder =
+              SortedListProtocol.GetMemberRequest.newBuilder();
+      getMemberRequestBuilder.setKey("k1");
+      getMemberRequestBuilder.setMember("asd");
+      SortedListProtocol.GetMemberResponse getMemberResponse = FutureUtils.get(
+              service.getItem(getMemberRequestBuilder.build()));
+      SortedListProtocol.SortedListEntity sortedListEntity =
+              getMemberResponse.getEntity();
+      Assert.assertEquals(sortedListEntity.getMember(), "asd");
+      Assert.assertEquals(sortedListEntity.getScore(), 1000);
+      Assert.assertEquals(getMemberResponse.getCount(), 1);
     }
   }
 }

@@ -6,10 +6,11 @@ import com.distkv.dst.core.operatorset.DstSortedList;
 import com.distkv.dst.core.DstMapInterface;
 import com.distkv.dst.core.DstConcurrentHashMapImpl;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Collections;
 import java.util.ListIterator;
+import java.util.Arrays;
 
 public class DstSortedListImpl implements DstSortedList {
 
@@ -126,4 +127,22 @@ public class DstSortedListImpl implements DstSortedList {
     List<SortedListEntity> topList = list.subList(0, topNum);
     return topList;
   }
+
+  @Override
+  public List<Integer> getItem(String key, String member) {
+    if (!sortedListMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
+    int ranking = 1;
+    final LinkedList<SortedListEntity> sortedListEntities = sortedListMap.get(key);
+
+    for (final SortedListEntity sortedListEntity : sortedListEntities) {
+      if (sortedListEntity.getMember().equals(member)) {
+        return Arrays.asList(sortedListEntity.getScore(), ranking);
+      }
+      ranking++;
+    }
+    throw new DstException("not find info at SortedList");
+  }
+
 }

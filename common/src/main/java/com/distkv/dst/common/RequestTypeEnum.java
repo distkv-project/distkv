@@ -34,4 +34,5 @@ public enum RequestTypeEnum {
   SLIST_PUT_MEMBER,
   SLIST_REMOVE_MEMBER,
   SLIST_DROP,
+  SLIST_GET_MEMBER,
 }
