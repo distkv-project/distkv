@@ -74,10 +74,10 @@ public class ListProxyTest extends BaseTestSupplier {
     List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(3);
-    client.lists().multipleRemove("k1",list);
+    client.lists().mremove("k1",list);
     Assert.assertEquals(ImmutableList.of("v1", "v3"),client.lists().get("k1"));
     //exception test
-    client.lists().multipleRemove("k2",list);
+    client.lists().mremove("k2",list);
     client.disconnect();
   }
 

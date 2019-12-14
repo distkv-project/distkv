@@ -111,7 +111,7 @@ public class ParseListCommandTest {
 
   @Test
   public void testMRemove() {
-    final String command = "list.mRemove k1 2 4 5 7";
+    final String command = "list.mremove k1 2 4 5 7";
     DstParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_M_REMOVE);
     ListProtocol.MRemoveRequest request = (ListProtocol.MRemoveRequest) result.getRequest();

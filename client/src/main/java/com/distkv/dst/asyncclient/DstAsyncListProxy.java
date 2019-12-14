@@ -107,13 +107,13 @@ public class DstAsyncListProxy {
     return future;
   }
 
-  public CompletableFuture<ListProtocol.MRemoveResponse> mutiRemove(
+  public CompletableFuture<ListProtocol.MRemoveResponse> mremove(
           String key, List<Integer> indexes) {
     ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
             .setKey(key)
             .addAllIndexes(indexes)
             .build();
-    CompletableFuture<ListProtocol.MRemoveResponse> future = service.multipleRemove(request);
+    CompletableFuture<ListProtocol.MRemoveResponse> future = service.mremove(request);
     return future;
   }
 }

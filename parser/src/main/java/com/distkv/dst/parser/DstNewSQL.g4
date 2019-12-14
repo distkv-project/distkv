@@ -25,7 +25,7 @@ listRput: 'list.rput' key valueArray;
 listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
 listRGet: 'list.rget' listGetArguments;
 listRemove: 'list.remove' (listRemoveOne | listRemoveRange);
-listMRemove: 'list.mRemove' key (index)+;
+listMRemove: 'list.mremove' key (index)+;
 listDrop: 'list.drop' key;
 
 listGetArguments: listGetAll | listGetOne | listGetRange;

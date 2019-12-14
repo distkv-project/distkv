@@ -77,12 +77,12 @@ public class KVSListTest {
     list.add(2);
     list.add(0);
     store.lists().put("k1", listForKVSTest());
-    store.lists().multipleRemove("k1", list);
+    store.lists().mremove("k1", list);
     Assert.assertEquals(ImmutableList.of("v2"), store.lists().get("k1"));
     //test exceptions
     list.clear();
     list.add(0);
-    store.lists().multipleRemove("-k", list).toString();
+    store.lists().mremove("-k", list).toString();
   }
 
 }

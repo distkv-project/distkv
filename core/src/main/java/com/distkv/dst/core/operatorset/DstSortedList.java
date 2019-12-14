@@ -27,7 +27,7 @@ public interface DstSortedList {
    * @param key   the key to store
    * @param item  the item in sortedList
    */
-  void putItem(String key, SortedListEntity item);
+  void putMember(String key, SortedListEntity item);
 
   /**
    * This method will del a item in sortedList
@@ -35,7 +35,7 @@ public interface DstSortedList {
    * @param key   the key to store
    * @param member  the itemEntity info in sortedList, Find the item by info
    */
-  void removeItem(String key, String member);
+  void removeMember(String key, String member);
 
   /**
    * This method will inc a itemEntity score in sortedList
@@ -44,7 +44,7 @@ public interface DstSortedList {
    * @param member  the itemEntity info in sortedList, Find the item by info
    * @param delta amount of change in score
    */
-  void incrItem(String key, String member, int delta);
+  void incrScore(String key, String member, int delta);
 
   /**
    * This method will get a top list in map
@@ -62,5 +62,5 @@ public interface DstSortedList {
    * @return the list value where the first element is the score and
    * the second element is the ranking of the given key and member
    */
-  List<Integer> getItem(String key, String member);
+  List<Integer> getMember(String key, String member);
 }

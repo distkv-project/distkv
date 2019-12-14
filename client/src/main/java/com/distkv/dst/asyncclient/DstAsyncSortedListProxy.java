@@ -35,7 +35,7 @@ public class DstAsyncSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrItem(
+  public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrScore(
           String key, String member, int delta) {
     SortedListProtocol.IncrScoreRequest.Builder requestBuilder =
             SortedListProtocol.IncrScoreRequest.newBuilder();
@@ -43,7 +43,7 @@ public class DstAsyncSortedListProxy {
     requestBuilder.setMember(member);
     requestBuilder.setDelta(delta);
     CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
-            service.incrItem(requestBuilder.build());
+            service.incrScore(requestBuilder.build());
     return future;
   }
 
@@ -67,18 +67,18 @@ public class DstAsyncSortedListProxy {
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeItem(
+  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeMember(
           String key, String member) {
     SortedListProtocol.RemoveMemberRequest.Builder requestBuilder =
             SortedListProtocol.RemoveMemberRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
     CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
-            service.removeItem(requestBuilder.build());
+            service.removeMember(requestBuilder.build());
     return future;
   }
 
-  public CompletableFuture<SortedListProtocol.PutMemberResponse> putItem(
+  public CompletableFuture<SortedListProtocol.PutMemberResponse> putMember(
           String key, SortedListEntity entity) {
     SortedListProtocol.PutMemberRequest.Builder requestBuilder =
             SortedListProtocol.PutMemberRequest.newBuilder();
@@ -86,7 +86,7 @@ public class DstAsyncSortedListProxy {
     requestBuilder.setMember(entity.getMember());
     requestBuilder.setScore(entity.getScore());
     CompletableFuture<SortedListProtocol.PutMemberResponse> future =
-            service.putItem(requestBuilder.build());
+            service.putMember(requestBuilder.build());
     return future;
   }
 }

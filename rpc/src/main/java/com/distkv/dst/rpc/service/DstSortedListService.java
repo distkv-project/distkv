@@ -16,15 +16,15 @@ public interface DstSortedListService {
   CompletableFuture<CommonProtocol.DropResponse> drop(
       CommonProtocol.DropRequest request);
 
-  CompletableFuture<SortedListProtocol.IncrScoreResponse> incrItem(
+  CompletableFuture<SortedListProtocol.IncrScoreResponse> incrScore(
       SortedListProtocol.IncrScoreRequest request);
 
-  CompletableFuture<SortedListProtocol.PutMemberResponse> putItem(
+  CompletableFuture<SortedListProtocol.PutMemberResponse> putMember(
       SortedListProtocol.PutMemberRequest request);
 
-  CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeItem(
+  CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeMember(
       SortedListProtocol.RemoveMemberRequest request);
 
-  CompletableFuture<SortedListProtocol.GetMemberResponse> getItem(
+  CompletableFuture<SortedListProtocol.GetMemberResponse> getMember(
           SortedListProtocol.GetMemberRequest request);
 }
