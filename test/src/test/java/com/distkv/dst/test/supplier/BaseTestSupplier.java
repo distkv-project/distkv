@@ -10,6 +10,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class BaseTestSupplier {
 
@@ -18,13 +19,14 @@ public class BaseTestSupplier {
   protected int rpcServerPort = -1;
 
   @BeforeMethod
-  public void setupBase(Method method) {
+  public void setupBase(Method method) throws InterruptedException {
     LOGGER.info(String.format("\n==================== Running the test method: %s.%s",
             method.getDeclaringClass(), method.getName()));
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         method.getDeclaringClass(), method.getName()));
     rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
     TestUtil.startRpcServer(rpcServerPort);
+    TimeUnit.SECONDS.sleep(1);
   }
 
   @AfterMethod
