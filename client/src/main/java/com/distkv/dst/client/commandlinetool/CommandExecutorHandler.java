@@ -231,7 +231,7 @@ public class CommandExecutorHandler {
   public static String slistIncrScore(DstClient dstClient, DstParsedResult parsedResult) {
     SortedListProtocol.IncrScoreRequest incrScoreRequest =
         (SortedListProtocol.IncrScoreRequest) parsedResult.getRequest();
-    dstClient.sortedLists().incrItem(incrScoreRequest.getKey(),
+    dstClient.sortedLists().incrScore(incrScoreRequest.getKey(),
         incrScoreRequest.getMember(), incrScoreRequest.getDelta());
     return STATUS_OK;
   }
@@ -241,7 +241,7 @@ public class CommandExecutorHandler {
         (SortedListProtocol.PutMemberRequest) parsedResult.getRequest();
     final String member = putMemberRequest.getMember();
     final int score = putMemberRequest.getScore();
-    dstClient.sortedLists().putItem(putMemberRequest.getKey(),
+    dstClient.sortedLists().putMember(putMemberRequest.getKey(),
         new SortedListEntity(member, score));
     return STATUS_OK;
   }
@@ -249,7 +249,7 @@ public class CommandExecutorHandler {
   public static String slistRemoveMember(DstClient dstClient, DstParsedResult parsedResult) {
     SortedListProtocol.RemoveMemberRequest removeMemberRequest =
         (SortedListProtocol.RemoveMemberRequest) parsedResult.getRequest();
-    dstClient.sortedLists().removeItem(removeMemberRequest.getKey(),
+    dstClient.sortedLists().removeMember(removeMemberRequest.getKey(),
         removeMemberRequest.getMember());
     return STATUS_OK;
   }
@@ -264,7 +264,7 @@ public class CommandExecutorHandler {
   public static String slistGetMember(DstClient dstClient, DstParsedResult parsedResult) {
     SortedListProtocol.GetMemberRequest getMemberRequest =
         (SortedListProtocol.GetMemberRequest) parsedResult.getRequest();
-    final List<Integer> scoreAndRankingValues = dstClient.sortedLists().getItem(
+    final List<Integer> scoreAndRankingValues = dstClient.sortedLists().getMember(
         getMemberRequest.getKey(), getMemberRequest.getMember());
     // output: (member, score), ranking
     final StringBuilder stringBuilder = new StringBuilder();

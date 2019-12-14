@@ -30,23 +30,23 @@ public class AsyncSortedListTest extends BaseTestSupplier {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    // TestIncItem
+    // TestIncScore
     CompletableFuture<SortedListProtocol.IncrScoreResponse> incFuture =
-            client.sortedLists().incrItem("k1", "fw", 1);
+            client.sortedLists().incrScore("k1", "fw", 1);
     incFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    // TestPutItem
+    // TestPutMember
     CompletableFuture<SortedListProtocol.PutMemberResponse> putItemFuture =
-            client.sortedLists().putItem("k1", new SortedListEntity("aa", 10));
+            client.sortedLists().putMember("k1", new SortedListEntity("aa", 10));
     putItemFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });
 
-    // TestDel
+    // TestRemoveMember
     CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeFuture =
-            client.sortedLists().removeItem("k1", "xswl");
+            client.sortedLists().removeMember("k1", "xswl");
     removeFuture.whenComplete((r, t) -> {
       Assert.assertEquals(r.getStatus(), CommonProtocol.Status.OK);
     });

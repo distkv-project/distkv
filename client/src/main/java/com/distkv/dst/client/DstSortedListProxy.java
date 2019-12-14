@@ -35,14 +35,14 @@ public class DstSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
-  public void incrItem(String key, String member, int delta) {
+  public void incrScore(String key, String member, int delta) {
     SortedListProtocol.IncrScoreRequest.Builder requestBuilder =
         SortedListProtocol.IncrScoreRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
     requestBuilder.setDelta(delta);
     SortedListProtocol.IncrScoreResponse response = FutureUtils.get(
-        service.incrItem(requestBuilder.build()));
+        service.incrScore(requestBuilder.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
@@ -70,34 +70,34 @@ public class DstSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
-  public void removeItem(String key, String member) {
+  public void removeMember(String key, String member) {
     SortedListProtocol.RemoveMemberRequest.Builder requestBuilder =
         SortedListProtocol.RemoveMemberRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(member);
     SortedListProtocol.RemoveMemberResponse response = FutureUtils.get(
-        service.removeItem(requestBuilder.build()));
+        service.removeMember(requestBuilder.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
-  public void putItem(String key, SortedListEntity entity) {
+  public void putMember(String key, SortedListEntity entity) {
     SortedListProtocol.PutMemberRequest.Builder requestBuilder =
         SortedListProtocol.PutMemberRequest.newBuilder();
     requestBuilder.setKey(key);
     requestBuilder.setMember(entity.getMember());
     requestBuilder.setScore(entity.getScore());
     SortedListProtocol.PutMemberResponse response = FutureUtils.get(
-        service.putItem(requestBuilder.build()));
+        service.putMember(requestBuilder.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
-  public List<Integer> getItem(String key, String member) {
+  public List<Integer> getMember(String key, String member) {
     SortedListProtocol.GetMemberRequest.Builder getMemberRequest =
             SortedListProtocol.GetMemberRequest.newBuilder();
     getMemberRequest.setKey(key);
     getMemberRequest.setMember(member);
     SortedListProtocol.GetMemberResponse getMemberResponse = FutureUtils.get(
-            service.getItem(getMemberRequest.build()));
+            service.getMember(getMemberRequest.build()));
     CheckStatusUtil.checkStatus(getMemberResponse.getStatus(), key);
     SortedListProtocol.SortedListEntity sortedListEntity = getMemberResponse.getEntity();
     return Arrays.asList(sortedListEntity.getScore(), getMemberResponse.getCount());

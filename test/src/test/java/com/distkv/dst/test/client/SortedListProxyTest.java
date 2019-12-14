@@ -34,15 +34,15 @@ public class SortedListProxyTest extends BaseTestSupplier {
   }
 
   private void testRemoveItem() {
-    dstClient.sortedLists().removeItem("k1","55");
+    dstClient.sortedLists().removeMember("k1","55");
   }
 
   private void testPutItem() {
-    dstClient.sortedLists().putItem("k1", new SortedListEntity("whhh",100));
+    dstClient.sortedLists().putMember("k1", new SortedListEntity("whhh",100));
   }
 
   private void testIncItem() {
-    dstClient.sortedLists().incrItem("k1", "fw",1);
+    dstClient.sortedLists().incrScore("k1", "fw",1);
   }
 
   private void testPut() {
@@ -55,7 +55,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
   }
 
   private void testGetItem() {
-    List<Integer> list = dstClient.sortedLists().getItem("k1", "fw");
+    List<Integer> list = dstClient.sortedLists().getMember("k1", "fw");
     Assert.assertEquals(list.get(0).intValue(), 10);
     Assert.assertEquals(list.get(1).intValue(), 2);
   }

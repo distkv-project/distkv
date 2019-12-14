@@ -98,7 +98,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrItem(
+  public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrScore(
       SortedListProtocol.IncrScoreRequest request) {
     SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
         SortedListProtocol.IncrScoreResponse.newBuilder();
@@ -119,7 +119,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public CompletableFuture<SortedListProtocol.PutMemberResponse> putItem(
+  public CompletableFuture<SortedListProtocol.PutMemberResponse> putMember(
       SortedListProtocol.PutMemberRequest request) {
     SortedListProtocol.PutMemberResponse.Builder responseBuilder =
         SortedListProtocol.PutMemberResponse.newBuilder();
@@ -140,7 +140,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeItem(
+  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeMember(
       SortedListProtocol.RemoveMemberRequest request) {
     SortedListProtocol.RemoveMemberResponse.Builder responseBuilder =
         SortedListProtocol.RemoveMemberResponse.newBuilder();
@@ -161,7 +161,7 @@ public class DstSortedListServiceImpl extends DstBaseService implements DstSorte
   }
 
   @Override
-  public CompletableFuture<SortedListProtocol.GetMemberResponse> getItem(
+  public CompletableFuture<SortedListProtocol.GetMemberResponse> getMember(
           SortedListProtocol.GetMemberRequest request) {
     SortedListProtocol.GetMemberResponse.Builder getMemberResponseBuilder =
             SortedListProtocol.GetMemberResponse.newBuilder();
