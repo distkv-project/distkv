@@ -10,64 +10,71 @@ import com.distkv.dst.rpc.service.DstSortedListService;
 public class DstSortedListServiceImpl implements DstSortedListService {
 
   public DstSortedListServiceImpl(DstRuntime runtime) {
-    this.runtime=runtime;
+    this.runtime = runtime;
   }
 
   private DstRuntime runtime;
 
   @Override
   public CompletableFuture<SortedListProtocol.PutResponse> put(
-      SortedListProtocol.PutRequest request) {
+        SortedListProtocol.PutRequest request) {
     CompletableFuture<SortedListProtocol.PutResponse> future = new CompletableFuture<>();
-    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SLIST_PUT, request, future);
+    runtime.getWorkerPool().postRequest(
+          request.getKey(), RequestTypeEnum.SLIST_PUT, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<SortedListProtocol.TopResponse> top(
-      SortedListProtocol.TopRequest request) {
+        SortedListProtocol.TopRequest request) {
     CompletableFuture<SortedListProtocol.TopResponse> future = new CompletableFuture<>();
-    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SLIST_TOP, request, future);
+    runtime.getWorkerPool().postRequest(
+          request.getKey(), RequestTypeEnum.SLIST_TOP, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<CommonProtocol.DropResponse> drop(
-      CommonProtocol.DropRequest request) {
+        CommonProtocol.DropRequest request) {
     CompletableFuture<CommonProtocol.DropResponse> future = new CompletableFuture<>();
-    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SLIST_DROP, request, future);
+    runtime.getWorkerPool().postRequest(
+          request.getKey(), RequestTypeEnum.SLIST_DROP, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrScore(
-      SortedListProtocol.IncrScoreRequest request) {
+        SortedListProtocol.IncrScoreRequest request) {
     CompletableFuture<SortedListProtocol.IncrScoreResponse> future = new CompletableFuture<>();
-    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.STR_PUT, request, future);
+    runtime.getWorkerPool().postRequest(
+          request.getKey(), RequestTypeEnum.STR_PUT, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<SortedListProtocol.PutMemberResponse> putMember(
-      SortedListProtocol.PutMemberRequest request) {
+        SortedListProtocol.PutMemberRequest request) {
     CompletableFuture<SortedListProtocol.PutMemberResponse> future = new CompletableFuture<>();
-    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SLIST_PUT_MEMBER, request, future);
+    runtime.getWorkerPool().postRequest(
+          request.getKey(), RequestTypeEnum.SLIST_PUT_MEMBER, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeMember(
-      SortedListProtocol.RemoveMemberRequest request) {
+        SortedListProtocol.RemoveMemberRequest request) {
     CompletableFuture<SortedListProtocol.RemoveMemberResponse> future = new CompletableFuture<>();
-    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SLIST_REMOVE_MEMBER, request, future);
+    runtime.getWorkerPool().postRequest(
+          request.getKey(), RequestTypeEnum.SLIST_REMOVE_MEMBER, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<SortedListProtocol.GetMemberResponse> getMember(
-          SortedListProtocol.GetMemberRequest request) {
+        SortedListProtocol.GetMemberRequest request) {
     CompletableFuture<SortedListProtocol.GetMemberResponse> future = new CompletableFuture<>();
-    runtime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SLIST_GET_MEMBER, request, future);
+    runtime.getWorkerPool().postRequest(
+          request.getKey(), RequestTypeEnum.SLIST_GET_MEMBER, request, future);
     return future;
   }
 }

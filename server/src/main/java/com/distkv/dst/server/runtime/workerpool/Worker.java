@@ -13,8 +13,11 @@ import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
+import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -332,7 +335,8 @@ public class Worker extends Thread {
               storeEngine.sortLists().removeMember(request.getKey(), request.getMember());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error("Failed to remove SortedList, caused by key not found: %s", request.getKey());
+              LOGGER.error("Failed to remove SortedList, caused by key not found: %s",
+                    request.getKey());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
               LOGGER.error("Failed to remove SortedList Member, caused by member not found: %s",
