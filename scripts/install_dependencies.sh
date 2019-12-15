@@ -7,7 +7,7 @@ set -x
 
 # Install drpc.
 DRPC_REPOSITORY_URL=https://github.com/dst-project/drpc.git
-DRPC_COMMIT_ID=dbc184dd8a892cc485bfc5aae5f6a21884350c9d
+DRPC_COMMIT_ID=c9bfaa54db11af01df0645beaca560f74fbf93d2
 
 git clone ${DRPC_REPOSITORY_URL} drpc_tmp
 pushd drpc_tmp
