@@ -74,6 +74,15 @@ public class AsyncSortedListTest extends BaseTestSupplier {
       }
     });
 
+    // TestGetMember
+    CompletableFuture<SortedListProtocol.GetMemberResponse> getMemberFuture =
+            client.sortedLists().getMember("k1", "55");
+    getMemberFuture.whenComplete((r, t) -> {
+      Assert.assertEquals(r.getEntity().getMember(), "55");
+      Assert.assertEquals(r.getEntity().getScore(), 6);
+      Assert.assertEquals(r.getCount(), 4);
+    });
+
     //TestDrop
     CompletableFuture<CommonProtocol.DropResponse> dropFuture =
             client.sortedLists().drop("k1");
