@@ -398,6 +398,7 @@ public class Worker extends Thread {
             CompletableFuture<ListProtocol.RemoveResponse> future =
                     (CompletableFuture<ListProtocol.RemoveResponse>)
                             internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
             break;
           }
           case SLIST_PUT: {
