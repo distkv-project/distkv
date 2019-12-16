@@ -25,9 +25,6 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
         throw new IllegalStateException(t);
       }
     });
-    StringProtocol.PutResponse putResponse =
-            putFuture.get(1, TimeUnit.SECONDS);
-    Assert.assertEquals(putResponse.getStatus(), status);
 
     CompletableFuture<StringProtocol.GetResponse> getFuture =
             client.strs().get("k1");
@@ -37,8 +34,12 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
       }
     });
 
+    StringProtocol.PutResponse putResponse =
+            putFuture.get(1, TimeUnit.SECONDS);
     StringProtocol.GetResponse getResponse =
             getFuture.get(1, TimeUnit.SECONDS);
+
+    Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getStatus(), CommonProtocol.Status.OK);
     Assert.assertEquals(getResponse.getValue(), "v1");
     client.disconnect();

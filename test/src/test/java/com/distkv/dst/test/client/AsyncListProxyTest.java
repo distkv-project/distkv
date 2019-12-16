@@ -27,8 +27,6 @@ public class AsyncListProxyTest extends BaseTestSupplier {
         throw new IllegalStateException(t);
       }
     });
-    ListProtocol.PutResponse putResponse = putFuture.get(1, TimeUnit.SECONDS);
-    Assert.assertEquals(putResponse.getStatus(), status);
 
     // testGetOne
     CompletableFuture<ListProtocol.GetResponse> getOneFuture =
@@ -41,7 +39,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testGetRange
     CompletableFuture<ListProtocol.GetResponse> getRangeFuture =
-            client.lists().get("k1", 1, 2);
+            client.lists().get("k1", 1, 3);
     getRangeFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -102,16 +100,18 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       }
     });
 
-    ListProtocol.LPutResponse lputResponse =
-            lputFuture.get(1, TimeUnit.SECONDS);
-    ListProtocol.RPutResponse rputResponse =
-            rputFuture.get(1, TimeUnit.SECONDS);
+    ListProtocol.PutResponse putResponse =
+            putFuture.get(1, TimeUnit.SECONDS);
     ListProtocol.GetResponse getOneResponse =
             getOneFuture.get(1, TimeUnit.SECONDS);
     ListProtocol.GetResponse getRangeResponse =
             getRangeFuture.get(1, TimeUnit.SECONDS);
+    ListProtocol.LPutResponse lputResponse =
+            lputFuture.get(1, TimeUnit.SECONDS);
     ListProtocol.RemoveResponse removeOneResponse =
             removeOneFuture.get(1, TimeUnit.SECONDS);
+    ListProtocol.RPutResponse rputResponse =
+            rputFuture.get(1, TimeUnit.SECONDS);
     ListProtocol.RemoveResponse removeRangeResponse =
             removeRangeFuture.get(1, TimeUnit.SECONDS);
     ListProtocol.MRemoveResponse mremoveResponse =
@@ -119,6 +119,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     ListProtocol.GetResponse getResponse =
             getAllFuture.get(1, TimeUnit.SECONDS);
 
+    Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(rputResponse.getStatus(), status);
     Assert.assertEquals(lputResponse.getStatus(), status);
     Assert.assertEquals(getOneResponse.getStatus(), status);
@@ -129,7 +130,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(removeRangeResponse.getStatus(), status);
     Assert.assertEquals(mremoveResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getStatus(), status);
-    Assert.assertEquals(getResponse.getValuesList(), ImmutableList.of("v1"));
+    Assert.assertEquals(getResponse.getValuesList(), ImmutableList.of("v3"));
     client.disconnect();
   }
 }

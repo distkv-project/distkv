@@ -28,9 +28,6 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
         throw new IllegalStateException(t);
       }
     });
-    SetProtocol.PutResponse putResponse =
-            putFuture.get(1, TimeUnit.SECONDS);
-    Assert.assertEquals(putResponse.getStatus(), status);
 
     //TestPutItem
     CompletableFuture<SetProtocol.PutItemResponse> putItemFuture =
@@ -78,6 +75,8 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
       }
     });
 
+    SetProtocol.PutResponse putResponse =
+            putFuture.get(1, TimeUnit.SECONDS);
     SetProtocol.PutItemResponse putItemResponse =
             putItemFuture.get(1, TimeUnit.SECONDS);
     SetProtocol.ExistsResponse existsResponse =
@@ -89,12 +88,12 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
     CommonProtocol.DropResponse dropResponse =
             dropFuture.get(1, TimeUnit.SECONDS);
 
+    Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(putItemResponse.getStatus(), status);
     Assert.assertTrue(existsResponse.getResult());
     Assert.assertEquals(removeItemResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getValuesList(), ImmutableList.of("v2", "v3", "v4"));
     Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     client.disconnect();
-
   }
 }

@@ -32,9 +32,6 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
         throw new IllegalStateException(t);
       }
     });
-    DictProtocol.PutResponse putResponse =
-            putFuture.get(1, TimeUnit.SECONDS);
-    Assert.assertEquals(putResponse.getStatus(), status);
 
     // TestPutItem
     CompletableFuture<DictProtocol.PutItemResponse> putItemFuture =
@@ -44,9 +41,6 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
         throw new IllegalStateException(t);
       }
     });
-    DictProtocol.PutItemResponse putItemResponse =
-            putItemFuture.get(1, TimeUnit.SECONDS);
-    Assert.assertEquals(putItemResponse.getStatus(), status);
 
     // TestGetItem
     CompletableFuture<DictProtocol.GetItemResponse> getItemFuture =
@@ -93,6 +87,10 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
       }
     });
 
+    DictProtocol.PutResponse putResponse =
+            putFuture.get(1, TimeUnit.SECONDS);
+    DictProtocol.PutItemResponse putItemResponse =
+            putItemFuture.get(1, TimeUnit.SECONDS);
     DictProtocol.GetItemResponse getItemResponse =
             getItemFuture.get(1, TimeUnit.SECONDS);
     DictProtocol.PopItemResponse popItemResponse =
@@ -104,6 +102,8 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
     CommonProtocol.DropResponse dropResponse =
             dropFuture.get(1, TimeUnit.SECONDS);
 
+    Assert.assertEquals(putResponse.getStatus(), status);
+    Assert.assertEquals(putItemResponse.getStatus(), status);
     Assert.assertEquals(getItemResponse.getItemValue(), "v4");
     Assert.assertEquals(popItemResponse.getItemValue(), "v1");
     Assert.assertEquals(removeItemResponse.getStatus(), CommonProtocol.Status.OK);

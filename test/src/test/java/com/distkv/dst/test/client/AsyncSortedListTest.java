@@ -34,9 +34,6 @@ public class AsyncSortedListTest extends BaseTestSupplier {
         throw new IllegalStateException(t);
       }
     });
-    SortedListProtocol.PutResponse putResponse =
-            putFuture.get(1, TimeUnit.SECONDS);
-    Assert.assertEquals(putResponse.getStatus(), status);
 
     // TestIncScore
     CompletableFuture<SortedListProtocol.IncrScoreResponse> incFuture =
@@ -78,9 +75,9 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     CompletableFuture<SortedListProtocol.GetMemberResponse> getMemberFuture =
             client.sortedLists().getMember("k1", "55");
     getMemberFuture.whenComplete((r, t) -> {
-      Assert.assertEquals(r.getEntity().getMember(), "55");
-      Assert.assertEquals(r.getEntity().getScore(), 6);
-      Assert.assertEquals(r.getCount(), 4);
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
     });
 
     //TestDrop
@@ -92,6 +89,8 @@ public class AsyncSortedListTest extends BaseTestSupplier {
       }
     });
 
+    SortedListProtocol.PutResponse putResponse =
+            putFuture.get(1, TimeUnit.SECONDS);
     SortedListProtocol.IncrScoreResponse incrScoreResponse =
             incFuture.get(1, TimeUnit.SECONDS);
     SortedListProtocol.PutMemberResponse putMemberResponse =
@@ -103,6 +102,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     CommonProtocol.DropResponse dropResponse =
             dropFuture.get(1, TimeUnit.SECONDS);
 
+    Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(incrScoreResponse.getStatus(), status);
     Assert.assertEquals(putMemberResponse.getStatus(), status);
     Assert.assertEquals(removeMemberResponse.getStatus(), status);
