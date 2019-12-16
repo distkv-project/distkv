@@ -13,6 +13,7 @@ import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -55,19 +56,19 @@ public class Worker extends Thread {
         switch (internalRequest.getRequestType()) {
           case STR_PUT: {
             StringProtocol.PutRequest strPutRequest =
-                  (StringProtocol.PutRequest) internalRequest.getRequest();
+                (StringProtocol.PutRequest) internalRequest.getRequest();
             // try put.
             storeEngine.strs().put(strPutRequest.getKey(), strPutRequest.getValue());
             CompletableFuture<StringProtocol.PutResponse> future =
-                  (CompletableFuture<StringProtocol.PutResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<StringProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(StringProtocol.PutResponse.newBuilder()
-                  .setStatus(CommonProtocol.Status.OK).build());
+                .setStatus(CommonProtocol.Status.OK).build());
             break;
           }
           case STR_GET: {
             StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest)
-                  internalRequest.getRequest();
+                internalRequest.getRequest();
             String value = storeEngine.strs().get(strGetRequest.getKey());
             StringProtocol.GetResponse.Builder builder = StringProtocol.GetResponse.newBuilder();
             if (value == null) {
@@ -76,29 +77,29 @@ public class Worker extends Thread {
               builder.setStatus(CommonProtocol.Status.OK).setValue(value);
             }
             CompletableFuture<StringProtocol.GetResponse> future =
-                  (CompletableFuture<StringProtocol.GetResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<StringProtocol.GetResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(builder.build());
             break;
           }
           case SET_PUT: {
             SetProtocol.PutRequest setPutRequest =
-                  (SetProtocol.PutRequest) internalRequest.getRequest();
+                (SetProtocol.PutRequest) internalRequest.getRequest();
             // TODO(qwang): Any thoughts on how to avoid this `new HasSet`.
             storeEngine.sets().put(
-                  setPutRequest.getKey(), new HashSet<>(setPutRequest.getValuesList()));
+                setPutRequest.getKey(), new HashSet<>(setPutRequest.getValuesList()));
             CompletableFuture<SetProtocol.PutResponse> future =
-                  (CompletableFuture<SetProtocol.PutResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(
-                  SetProtocol.PutResponse.newBuilder().setStatus(CommonProtocol.Status.OK).build());
+                SetProtocol.PutResponse.newBuilder().setStatus(CommonProtocol.Status.OK).build());
             break;
           }
           case SET_GET: {
             SetProtocol.GetRequest setGetRequest =
-                  (SetProtocol.GetRequest) internalRequest.getRequest();
+                (SetProtocol.GetRequest) internalRequest.getRequest();
             SetProtocol.GetResponse.Builder setGetResponseBuilder =
-                  SetProtocol.GetResponse.newBuilder();
+                SetProtocol.GetResponse.newBuilder();
             try {
               Set<String> values = storeEngine.sets().get(setGetRequest.getKey());
               values.forEach(value -> setGetResponseBuilder.addValues(value));
@@ -109,14 +110,14 @@ public class Worker extends Thread {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
             CompletableFuture<SetProtocol.GetResponse> future =
-                  (CompletableFuture<SetProtocol.GetResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.GetResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(setGetResponseBuilder.build());
             break;
           }
           case SET_PUT_ITEM: {
             SetProtocol.PutItemRequest request =
-                  (SetProtocol.PutItemRequest) internalRequest.getRequest();
+                (SetProtocol.PutItemRequest) internalRequest.getRequest();
             CommonProtocol.Status status;
             try {
               storeEngine.sets().putItem(request.getKey(), request.getItemValue());
@@ -125,18 +126,18 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             }
             CompletableFuture<SetProtocol.PutItemResponse> future =
-                  (CompletableFuture<SetProtocol.PutItemResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.PutItemResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(SetProtocol.PutItemResponse.newBuilder().setStatus(status).build());
             break;
           }
           case SET_REMOVE_ITEM: {
             SetProtocol.RemoveItemRequest request =
-                  (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
+                (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.sets()
-                    .removeItem(request.getKey(), request.getItemValue());
+                  .removeItem(request.getKey(), request.getItemValue());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -146,17 +147,17 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             CompletableFuture<SetProtocol.RemoveItemResponse> future =
-                  (CompletableFuture<SetProtocol.RemoveItemResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.RemoveItemResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(
-                  SetProtocol.RemoveItemResponse.newBuilder().setStatus(status).build());
+                SetProtocol.RemoveItemResponse.newBuilder().setStatus(status).build());
             break;
           }
           case SET_EXIST: {
             SetProtocol.ExistsRequest request =
-                  (SetProtocol.ExistsRequest) internalRequest.getRequest();
+                (SetProtocol.ExistsRequest) internalRequest.getRequest();
             SetProtocol.ExistsResponse.Builder responseBuilder =
-                  SetProtocol.ExistsResponse.newBuilder();
+                SetProtocol.ExistsResponse.newBuilder();
             try {
               boolean result = storeEngine.sets().exists(request.getKey(), request.getEntity());
               responseBuilder.setResult(result);
@@ -168,16 +169,16 @@ public class Worker extends Thread {
             }
 
             CompletableFuture<SetProtocol.ExistsResponse> future =
-                  (CompletableFuture<SetProtocol.ExistsResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SetProtocol.ExistsResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SET_DROP: {
             CommonProtocol.DropRequest request =
-                  (CommonProtocol.DropRequest) internalRequest.getRequest();
+                (CommonProtocol.DropRequest) internalRequest.getRequest();
             CommonProtocol.DropResponse.Builder responseBuilder =
-                  CommonProtocol.DropResponse.newBuilder();
+                CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.sets().drop(request.getKey());
@@ -191,22 +192,22 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
-                  (CompletableFuture<CommonProtocol.DropResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SLIST_PUT: {
             SortedListProtocol.PutRequest request =
-                  (SortedListProtocol.PutRequest) internalRequest.getRequest();
+                (SortedListProtocol.PutRequest) internalRequest.getRequest();
             SortedListProtocol.PutResponse.Builder responseBuilder =
-                  SortedListProtocol.PutResponse.newBuilder();
+                SortedListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               LinkedList<SortedListEntity> linkedList = new LinkedList<>();
               for (int i = 0; i < request.getListCount(); i++) {
                 linkedList.add(new SortedListEntity(request.getList(i).getMember(),
-                      request.getList(i).getScore()));
+                    request.getList(i).getScore()));
               }
               storeEngine.sortLists().put(request.getKey(), linkedList);
               status = CommonProtocol.Status.OK;
@@ -216,25 +217,25 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<SortedListProtocol.PutResponse> future =
-                  (CompletableFuture<SortedListProtocol.PutResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SortedListProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SLIST_TOP: {
             SortedListProtocol.TopRequest request =
-                  (SortedListProtocol.TopRequest) internalRequest.getRequest();
+                (SortedListProtocol.TopRequest) internalRequest.getRequest();
             SortedListProtocol.TopResponse.Builder responseBuilder =
-                  SortedListProtocol.TopResponse.newBuilder();
+                SortedListProtocol.TopResponse.newBuilder();
             CommonProtocol.Status status;
             try {
               List<SortedListEntity> topList =
-                    storeEngine.sortLists().top(request.getKey(), request.getCount());
+                  storeEngine.sortLists().top(request.getKey(), request.getCount());
               ListIterator<SortedListEntity> listIterator = topList.listIterator();
               while (listIterator.hasNext()) {
                 SortedListEntity entity = listIterator.next();
                 SortedListProtocol.SortedListEntity.Builder builder =
-                      SortedListProtocol.SortedListEntity.newBuilder();
+                    SortedListProtocol.SortedListEntity.newBuilder();
                 builder.setScore(entity.getScore());
                 builder.setMember(entity.getMember());
                 responseBuilder.addList(builder.build());
@@ -249,16 +250,16 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<SortedListProtocol.TopResponse> future =
-                  (CompletableFuture<SortedListProtocol.TopResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SortedListProtocol.TopResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SLIST_DROP: {
             CommonProtocol.DropRequest request =
-                  (CommonProtocol.DropRequest) internalRequest.getRequest();
+                (CommonProtocol.DropRequest) internalRequest.getRequest();
             CommonProtocol.DropResponse.Builder responseBuilder =
-                  CommonProtocol.DropResponse.newBuilder();
+                CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status;
             try {
               storeEngine.sortLists().drop(request.getKey());
@@ -272,20 +273,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
-                  (CompletableFuture<CommonProtocol.DropResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SLIST_INCR_SCORE: {
             SortedListProtocol.IncrScoreRequest request =
-                  (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
+                (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
             SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
-                  SortedListProtocol.IncrScoreResponse.newBuilder();
+                SortedListProtocol.IncrScoreResponse.newBuilder();
             CommonProtocol.Status status;
             try {
               storeEngine.sortLists().incrScore(request.getKey(),
-                    request.getMember(), request.getDelta());
+                  request.getMember(), request.getDelta());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               LOGGER.error(e.getMessage());
@@ -296,20 +297,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
-                  (CompletableFuture<SortedListProtocol.IncrScoreResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SortedListProtocol.IncrScoreResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SLIST_PUT_MEMBER: {
             SortedListProtocol.PutMemberRequest request =
-                  (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
+                (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
             SortedListProtocol.PutMemberResponse.Builder responseBuilder =
-                  SortedListProtocol.PutMemberResponse.newBuilder();
+                SortedListProtocol.PutMemberResponse.newBuilder();
             CommonProtocol.Status status;
             try {
               storeEngine.sortLists().putMember(request.getKey(),
-                    new SortedListEntity(request.getMember(), request.getScore()));
+                  new SortedListEntity(request.getMember(), request.getScore()));
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               LOGGER.error(e.getMessage());
@@ -320,47 +321,47 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<SortedListProtocol.PutMemberResponse> future =
-                  (CompletableFuture<SortedListProtocol.PutMemberResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SortedListProtocol.PutMemberResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SLIST_REMOVE_MEMBER: {
             SortedListProtocol.RemoveMemberRequest request =
-                  (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
+                (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
             SortedListProtocol.RemoveMemberResponse.Builder responseBuilder =
-                  SortedListProtocol.RemoveMemberResponse.newBuilder();
+                SortedListProtocol.RemoveMemberResponse.newBuilder();
             CommonProtocol.Status status;
             try {
               storeEngine.sortLists().removeMember(request.getKey(), request.getMember());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               LOGGER.error("Failed to remove SortedList, caused by key not found: %s",
-                    request.getKey());
+                  request.getKey());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
               LOGGER.error("Failed to remove SortedList Member, caused by member not found: %s",
-                    request.getMember());
+                  request.getMember());
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
             CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
-                  (CompletableFuture<SortedListProtocol.RemoveMemberResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SortedListProtocol.RemoveMemberResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case SLIST_GET_MEMBER: {
             SortedListProtocol.GetMemberRequest request =
-                  (SortedListProtocol.GetMemberRequest) internalRequest.getRequest();
+                (SortedListProtocol.GetMemberRequest) internalRequest.getRequest();
             SortedListProtocol.GetMemberResponse.Builder responseBuilder =
-                  SortedListProtocol.GetMemberResponse.newBuilder();
+                SortedListProtocol.GetMemberResponse.newBuilder();
             CommonProtocol.Status status;
             try {
               List<Integer> scoreAndRankingValues =
-                    storeEngine.sortLists().getMember(request.getKey(), request.getMember());
+                  storeEngine.sortLists().getMember(request.getKey(), request.getMember());
               SortedListProtocol.SortedListEntity.Builder builder =
-                    SortedListProtocol.SortedListEntity.newBuilder();
+                  SortedListProtocol.SortedListEntity.newBuilder();
               builder.setMember(request.getMember());
               builder.setScore(scoreAndRankingValues.get(0));
               responseBuilder.setEntity(builder);
@@ -375,8 +376,8 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<SortedListProtocol.GetMemberResponse> future =
-                  (CompletableFuture<SortedListProtocol.GetMemberResponse>)
-                        internalRequest.getCompletableFuture();
+                (CompletableFuture<SortedListProtocol.GetMemberResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }

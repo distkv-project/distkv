@@ -47,7 +47,7 @@ public class DstSortedListServiceImpl implements DstSortedListService {
         SortedListProtocol.IncrScoreRequest request) {
     CompletableFuture<SortedListProtocol.IncrScoreResponse> future = new CompletableFuture<>();
     runtime.getWorkerPool().postRequest(
-          request.getKey(), RequestTypeEnum.STR_PUT, request, future);
+          request.getKey(), RequestTypeEnum.SLIST_INCR_SCORE, request, future);
     return future;
   }
 
