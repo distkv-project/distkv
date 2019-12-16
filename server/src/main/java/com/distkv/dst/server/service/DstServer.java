@@ -84,7 +84,6 @@ public class DstServer {
         DstSortedListService.class, new DstSortedListServiceImpl(server.runtime));
 
     drpcServer.run();
-
     LOGGER.info("Succeeded to start dst server on port {}.", listeningPort);
 
     // Print welcome words.
