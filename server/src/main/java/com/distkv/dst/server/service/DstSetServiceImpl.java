@@ -51,7 +51,6 @@ public class DstSetServiceImpl implements DstSetService {
     return future;
   }
 
-
   @Override
   public CompletableFuture<SetProtocol.ExistsResponse> exists(SetProtocol.ExistsRequest request) {
     CompletableFuture<SetProtocol.ExistsResponse> future = new CompletableFuture<>();
