@@ -2,17 +2,22 @@ package com.distkv.dst.server.runtime.workerpool;
 
 import com.distkv.dst.common.NodeInfo;
 import com.distkv.dst.common.exception.DstException;
+import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -189,6 +194,205 @@ public class Worker extends Thread {
             CompletableFuture<CommonProtocol.DropResponse> future =
                 (CompletableFuture<CommonProtocol.DropResponse>)
                     internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case LIST_PUT: {
+            ListProtocol.PutRequest request =
+                    (ListProtocol.PutRequest) internalRequest.getRequest();
+            ListProtocol.PutResponse.Builder responseBuilder =
+                    ListProtocol.PutResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.OK;
+            try {
+              Status localStatus =
+                      storeEngine.lists().put(request.getKey(), request.getValuesList());
+              if (localStatus == Status.OK) {
+                status = CommonProtocol.Status.OK;
+              }
+            } catch (DstException e) {
+              LOGGER.error("Failed to put a list to store: {1}", e);
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<ListProtocol.PutResponse> future =
+                    (CompletableFuture<ListProtocol.PutResponse>)
+                            internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case LIST_GET: {
+            ListProtocol.GetRequest request =
+                    (ListProtocol.GetRequest) internalRequest.getRequest();
+            ListProtocol.GetResponse.Builder responseBuilder =
+                    ListProtocol.GetResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.OK;
+            final String key = request.getKey();
+            final ListProtocol.GetType type = request.getType();
+            try {
+              if (type == ListProtocol.GetType.GET_ALL) {
+                final List<String> values = storeEngine.lists().get(key);
+                Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValues(values));
+              } else if (type == ListProtocol.GetType.GET_ONE) {
+                Preconditions.checkState(request.getIndex() >= 0);
+                responseBuilder.addValues(storeEngine.lists().get(key, request.getIndex()));
+              } else if (type == ListProtocol.GetType.GET_RANGE) {
+                final List<String> values = storeEngine.lists().get(
+                        key, request.getFrom(), request.getEnd());
+                Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValues(values));
+              } else {
+                LOGGER.error("Failed to get a list from store.");
+                status = CommonProtocol.Status.UNKNOWN_REQUEST_TYPE;
+              }
+            } catch (KeyNotFoundException e) {
+              LOGGER.info("Failed to get a list from store: {1}", e);
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstListIndexOutOfBoundsException e) {
+              LOGGER.info("Failed to get a list from store: {1}", e);
+              status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<ListProtocol.GetResponse> future =
+                    (CompletableFuture<ListProtocol.GetResponse>)
+                            internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case LIST_LPUT: {
+            ListProtocol.LPutRequest request =
+                    (ListProtocol.LPutRequest) internalRequest.getRequest();
+            ListProtocol.LPutResponse.Builder responseBuilder =
+                    ListProtocol.LPutResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.OK;
+            try {
+              Status localStatus =
+                      storeEngine.lists().lput(request.getKey(), request.getValuesList());
+              if (localStatus == Status.OK) {
+                status = CommonProtocol.Status.OK;
+              } else if (localStatus == Status.KEY_NOT_FOUND) {
+                status = CommonProtocol.Status.KEY_NOT_FOUND;
+              }
+            } catch (DstException e) {
+              LOGGER.error("Failed to rput a list to store: {1}", e);
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<ListProtocol.LPutResponse> future =
+                    (CompletableFuture<ListProtocol.LPutResponse>)
+                            internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case LIST_RPUT: {
+            ListProtocol.RPutRequest request =
+                    (ListProtocol.RPutRequest) internalRequest.getRequest();
+            ListProtocol.RPutResponse.Builder responseBuilder =
+                    ListProtocol.RPutResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.OK;
+            try {
+              Status localStatus =
+                      storeEngine.lists().rput(request.getKey(), request.getValuesList());
+              if (localStatus == Status.OK) {
+                status = CommonProtocol.Status.OK;
+              } else if (localStatus == Status.KEY_NOT_FOUND) {
+                status = CommonProtocol.Status.KEY_NOT_FOUND;
+              }
+            } catch (DstException e) {
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<ListProtocol.RPutResponse> future =
+                    (CompletableFuture<ListProtocol.RPutResponse>)
+                            internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case LIST_DROP: {
+            CommonProtocol.DropRequest request =
+                    (CommonProtocol.DropRequest) internalRequest.getRequest();
+            CommonProtocol.DropResponse.Builder responseBuilder =
+                    CommonProtocol.DropResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.OK;
+            try {
+              Status localStatus = storeEngine.lists().drop(request.getKey());
+              if (localStatus == Status.OK) {
+                status = CommonProtocol.Status.OK;
+              } else if (localStatus == Status.KEY_NOT_FOUND) {
+                status = CommonProtocol.Status.KEY_NOT_FOUND;
+              }
+            } catch (DstException e) {
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<CommonProtocol.DropResponse> future =
+                    (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case LIST_M_REMOVE: {
+            ListProtocol.MRemoveRequest request =
+                    (ListProtocol.MRemoveRequest) internalRequest.getRequest();
+            ListProtocol.MRemoveResponse.Builder responseBuilder =
+                    ListProtocol.MRemoveResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.OK;
+            try {
+              Status localStatus =
+                      storeEngine.lists().mremove(request.getKey(), request.getIndexesList());
+              if (localStatus == Status.OK) {
+                status = CommonProtocol.Status.OK;
+              } else if (localStatus == Status.KEY_NOT_FOUND) {
+                status = CommonProtocol.Status.KEY_NOT_FOUND;
+              }
+            } catch (KeyNotFoundException e) {
+              LOGGER.info("Failed to mRemove item from store: {1}", e);
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstListIndexOutOfBoundsException e) {
+              LOGGER.info("Failed to mRemove item from store: {1}", e);
+              status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<ListProtocol.MRemoveResponse> future =
+                    (CompletableFuture<ListProtocol.MRemoveResponse>)
+                            internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case LIST_REMOVE: {
+            ListProtocol.RemoveRequest request =
+                    (ListProtocol.RemoveRequest) internalRequest.getRequest();
+            ListProtocol.RPutResponse.Builder responseBuilder =
+                    ListProtocol.RPutResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.OK;
+            final String key = request.getKey();
+            final ListProtocol.RemoveType type = request.getType();
+            try {
+              Status localStatus = null;
+              if (type == ListProtocol.RemoveType.RemoveOne) {
+                localStatus = storeEngine.lists().remove(key, request.getIndex());
+                if (localStatus == Status.OK) {
+                  status = CommonProtocol.Status.OK;
+                } else if (localStatus == Status.KEY_NOT_FOUND) {
+                  status = CommonProtocol.Status.KEY_NOT_FOUND;
+                }
+              } else if (type == ListProtocol.RemoveType.RemoveRange) {
+                localStatus = storeEngine.lists().remove(key, request.getFrom(), request.getEnd());
+              }
+              if (localStatus == Status.OK) {
+                status = CommonProtocol.Status.OK;
+              } else if (localStatus == Status.KEY_NOT_FOUND) {
+                status = CommonProtocol.Status.KEY_NOT_FOUND;
+              }
+            } catch (KeyNotFoundException e) {
+              LOGGER.info("Failed to remove item from store: {1}", e);
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstListIndexOutOfBoundsException e) {
+              LOGGER.info("Failed to remove item from store: {1}", e);
+              status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<ListProtocol.RPutResponse> future =
+                    (CompletableFuture<ListProtocol.RPutResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
