@@ -7,9 +7,14 @@ import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
-import com.distkv.dst.rpc.protobuf.generated.*;
+import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -200,7 +205,6 @@ public class Worker extends Thread {
                 (DictProtocol.PutRequest) internalRequest.getRequest();
             DictProtocol.PutResponse.Builder responseBuilder =
                 DictProtocol.PutResponse.newBuilder();
-            CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               final Map<String, String> map = new HashMap<>();
               DictProtocol.DstDict dstDict = request.getDict();
@@ -213,7 +217,6 @@ public class Worker extends Thread {
               // TODO(qwang): Use DstException instead of Exception here.
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
             }
-            responseBuilder.setStatus(status);
             CompletableFuture<DictProtocol.PutResponse> future =
                 (CompletableFuture<DictProtocol.PutResponse>)
                     internalRequest.getCompletableFuture();
@@ -248,7 +251,6 @@ public class Worker extends Thread {
                 (DictProtocol.GetItemRequest) internalRequest.getRequest();
             DictProtocol.GetItemResponse.Builder responseBuilder =
                 DictProtocol.GetItemResponse.newBuilder();
-            CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             final Map<String, String> dict = storeEngine.dicts().get(request.getKey());
             responseBuilder.setStatus(CommonProtocol.Status.OK);
             if (dict == null) {
