@@ -1,6 +1,7 @@
 package com.distkv.dst.server.runtime.workerpool;
 
 import com.distkv.dst.common.NodeInfo;
+import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
@@ -8,11 +9,15 @@ import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -188,6 +193,190 @@ public class Worker extends Thread {
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
                 (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case SLIST_PUT: {
+            SortedListProtocol.PutRequest request =
+                (SortedListProtocol.PutRequest) internalRequest.getRequest();
+            SortedListProtocol.PutResponse.Builder responseBuilder =
+                SortedListProtocol.PutResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+            try {
+              LinkedList<SortedListEntity> linkedList = new LinkedList<>();
+              for (int i = 0; i < request.getListCount(); i++) {
+                linkedList.add(new SortedListEntity(request.getList(i).getMember(),
+                    request.getList(i).getScore()));
+              }
+              storeEngine.sortLists().put(request.getKey(), linkedList);
+              status = CommonProtocol.Status.OK;
+            } catch (DstException e) {
+              LOGGER.error("Failed to put a list to store: {}", e);
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<SortedListProtocol.PutResponse> future =
+                (CompletableFuture<SortedListProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case SLIST_TOP: {
+            SortedListProtocol.TopRequest request =
+                (SortedListProtocol.TopRequest) internalRequest.getRequest();
+            SortedListProtocol.TopResponse.Builder responseBuilder =
+                SortedListProtocol.TopResponse.newBuilder();
+            CommonProtocol.Status status;
+            try {
+              List<SortedListEntity> topList =
+                  storeEngine.sortLists().top(request.getKey(), request.getCount());
+              ListIterator<SortedListEntity> listIterator = topList.listIterator();
+              while (listIterator.hasNext()) {
+                SortedListEntity entity = listIterator.next();
+                SortedListProtocol.SortedListEntity.Builder builder =
+                    SortedListProtocol.SortedListEntity.newBuilder();
+                builder.setScore(entity.getScore());
+                builder.setMember(entity.getMember());
+                responseBuilder.addList(builder.build());
+              }
+              status = CommonProtocol.Status.OK;
+            } catch (KeyNotFoundException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<SortedListProtocol.TopResponse> future =
+                (CompletableFuture<SortedListProtocol.TopResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case SLIST_DROP: {
+            CommonProtocol.DropRequest request =
+                (CommonProtocol.DropRequest) internalRequest.getRequest();
+            CommonProtocol.DropResponse.Builder responseBuilder =
+                CommonProtocol.DropResponse.newBuilder();
+            CommonProtocol.Status status;
+            try {
+              storeEngine.sortLists().drop(request.getKey());
+              status = CommonProtocol.Status.OK;
+            } catch (KeyNotFoundException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<CommonProtocol.DropResponse> future =
+                (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case SLIST_INCR_SCORE: {
+            SortedListProtocol.IncrScoreRequest request =
+                (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
+            SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
+                SortedListProtocol.IncrScoreResponse.newBuilder();
+            CommonProtocol.Status status;
+            try {
+              storeEngine.sortLists().incrScore(request.getKey(),
+                  request.getMember(), request.getDelta());
+              status = CommonProtocol.Status.OK;
+            } catch (KeyNotFoundException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
+                (CompletableFuture<SortedListProtocol.IncrScoreResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case SLIST_PUT_MEMBER: {
+            SortedListProtocol.PutMemberRequest request =
+                (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
+            SortedListProtocol.PutMemberResponse.Builder responseBuilder =
+                SortedListProtocol.PutMemberResponse.newBuilder();
+            CommonProtocol.Status status;
+            try {
+              storeEngine.sortLists().putMember(request.getKey(),
+                  new SortedListEntity(request.getMember(), request.getScore()));
+              status = CommonProtocol.Status.OK;
+            } catch (KeyNotFoundException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<SortedListProtocol.PutMemberResponse> future =
+                (CompletableFuture<SortedListProtocol.PutMemberResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case SLIST_REMOVE_MEMBER: {
+            SortedListProtocol.RemoveMemberRequest request =
+                (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
+            SortedListProtocol.RemoveMemberResponse.Builder responseBuilder =
+                SortedListProtocol.RemoveMemberResponse.newBuilder();
+            CommonProtocol.Status status;
+            try {
+              storeEngine.sortLists().removeMember(request.getKey(), request.getMember());
+              status = CommonProtocol.Status.OK;
+            } catch (KeyNotFoundException e) {
+              LOGGER.error("Failed to remove SortedList, caused by key not found: %s",
+                  request.getKey());
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstException e) {
+              LOGGER.error("Failed to remove SortedList Member, caused by member not found: %s",
+                  request.getMember());
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
+                (CompletableFuture<SortedListProtocol.RemoveMemberResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case SLIST_GET_MEMBER: {
+            SortedListProtocol.GetMemberRequest request =
+                (SortedListProtocol.GetMemberRequest) internalRequest.getRequest();
+            SortedListProtocol.GetMemberResponse.Builder responseBuilder =
+                SortedListProtocol.GetMemberResponse.newBuilder();
+            CommonProtocol.Status status;
+            try {
+              List<Integer> scoreAndRankingValues =
+                  storeEngine.sortLists().getMember(request.getKey(), request.getMember());
+              SortedListProtocol.SortedListEntity.Builder builder =
+                  SortedListProtocol.SortedListEntity.newBuilder();
+              builder.setMember(request.getMember());
+              builder.setScore(scoreAndRankingValues.get(0));
+              responseBuilder.setEntity(builder);
+              responseBuilder.setCount(scoreAndRankingValues.get(1));
+              status = CommonProtocol.Status.OK;
+            } catch (KeyNotFoundException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.KEY_NOT_FOUND;
+            } catch (DstException e) {
+              LOGGER.error(e.getMessage());
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<SortedListProtocol.GetMemberResponse> future =
+                (CompletableFuture<SortedListProtocol.GetMemberResponse>)
                     internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
