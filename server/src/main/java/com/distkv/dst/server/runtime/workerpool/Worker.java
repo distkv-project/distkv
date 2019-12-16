@@ -360,8 +360,8 @@ public class Worker extends Thread {
           case LIST_REMOVE: {
             ListProtocol.RemoveRequest request =
                     (ListProtocol.RemoveRequest) internalRequest.getRequest();
-            ListProtocol.RPutResponse.Builder responseBuilder =
-                    ListProtocol.RPutResponse.newBuilder();
+            ListProtocol.RemoveResponse.Builder responseBuilder =
+                    ListProtocol.RemoveResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             final String key = request.getKey();
             final ListProtocol.RemoveType type = request.getType();
@@ -390,8 +390,8 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
             }
             responseBuilder.setStatus(status);
-            CompletableFuture<ListProtocol.RPutResponse> future =
-                    (CompletableFuture<ListProtocol.RPutResponse>)
+            CompletableFuture<ListProtocol.RemoveResponse> future =
+                    (CompletableFuture<ListProtocol.RemoveResponse> )
                             internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
