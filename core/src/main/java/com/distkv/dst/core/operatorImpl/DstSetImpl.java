@@ -1,7 +1,6 @@
 package com.distkv.dst.core.operatorImpl;
 
 import com.distkv.dst.core.operatorset.DstSet;
-import com.google.common.collect.ImmutableSet;
 import com.distkv.dst.core.DstMapInterface;
 import com.distkv.dst.core.DstConcurrentHashMapImpl;
 import com.distkv.dst.common.exception.KeyNotFoundException;
@@ -36,7 +35,7 @@ public class DstSetImpl implements DstSet {
       throw new KeyNotFoundException(key);
     }
 
-    setMap.put(key, ImmutableSet.of(itemValue));
+    setMap.get(key).add(itemValue);
   }
 
   @Override

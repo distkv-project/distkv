@@ -89,4 +89,15 @@ public class DstAsyncSortedListProxy {
             service.putMember(requestBuilder.build());
     return future;
   }
+
+  public CompletableFuture<SortedListProtocol.GetMemberResponse> getMember(
+          String key, String member) {
+    SortedListProtocol.GetMemberRequest.Builder requestBuilder =
+            SortedListProtocol.GetMemberRequest.newBuilder();
+    requestBuilder.setKey(key);
+    requestBuilder.setMember(member);
+    CompletableFuture<SortedListProtocol.GetMemberResponse> future =
+            service.getMember(requestBuilder.build());
+    return future;
+  }
 }

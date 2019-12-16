@@ -1,6 +1,6 @@
 package com.distkv.dst.server.service;
 
-import com.distkv.drpc.Exporter;
+import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
@@ -71,20 +71,19 @@ public class DstServer {
           .port(listeningPort)
           .build();
 
-    // TODO(qwang): Rename exporter to DrcpServer.
-    Exporter exporter = new Exporter(serverConfig);
-    exporter.registerService(
+    DrpcServer drpcServer = new DrpcServer(serverConfig);
+    drpcServer.registerService(
         DstStringService.class, new DstStringServiceImpl(server.runtime));
-    exporter.registerService(
+    drpcServer.registerService(
         DstListService.class, new DstListServiceImpl(server.getKvStore()));
-    exporter.registerService(
+    drpcServer.registerService(
         DstSetService.class, new DstSetServiceImpl(server.runtime));
-    exporter.registerService(
+    drpcServer.registerService(
         DstDictService.class, new DstDictServiceImpl(server.getKvStore()));
-    exporter.registerService(
-        DstSortedListService.class, new DstSortedListServiceImpl(server.runtime));
-    // TODO(qwang): Rename this to drpcServer.run();
-    exporter.export();
+    drpcServer.registerService(
+        DstSortedListService.class, new DstSortedListServiceImpl(server.getKvStore()));
+
+    drpcServer.run();
 
     LOGGER.info("Succeeded to start dst server on port {}.", listeningPort);
 
