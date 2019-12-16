@@ -81,9 +81,10 @@ public class DstServer {
     drpcServer.registerService(
         DstDictService.class, new DstDictServiceImpl(server.runtime));
     drpcServer.registerService(
-        DstSortedListService.class, new DstSortedListServiceImpl(server.runtime));
+        DstSortedListService.class, new DstSortedListServiceImpl(server.getKvStore()));
 
     drpcServer.run();
+
     LOGGER.info("Succeeded to start dst server on port {}.", listeningPort);
 
     // Print welcome words.
