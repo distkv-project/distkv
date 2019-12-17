@@ -10,16 +10,17 @@ import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import com.google.common.base.Preconditions;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -401,12 +402,160 @@ public class Worker extends Thread {
             future.complete(responseBuilder.build());
             break;
           }
+          case DICT_PUT: {
+            DictProtocol.PutRequest request =
+                (DictProtocol.PutRequest) internalRequest.getRequest();
+            DictProtocol.PutResponse.Builder responseBuilder =
+                DictProtocol.PutResponse.newBuilder();
+            try {
+              final Map<String, String> map = new HashMap<>();
+              DictProtocol.DstDict dstDict = request.getDict();
+              for (int i = 0; i < dstDict.getKeysCount(); i++) {
+                map.put(dstDict.getKeys(i), dstDict.getValues(i));
+              }
+              storeEngine.dicts().put(request.getKey(), map);
+              responseBuilder.setStatus(CommonProtocol.Status.OK);
+            } catch (Exception e) {
+              // TODO(qwang): Use DstException instead of Exception here.
+              responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            }
+            CompletableFuture<DictProtocol.PutResponse> future =
+                (CompletableFuture<DictProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case DICT_GET: {
+            DictProtocol.GetRequest request =
+                (DictProtocol.GetRequest) internalRequest.getRequest();
+            DictProtocol.GetResponse.Builder responseBuilder =
+                DictProtocol.GetResponse.newBuilder();
+            responseBuilder.setStatus(CommonProtocol.Status.OK);
+            final Map<String, String> dict = storeEngine.dicts().get(request.getKey());
+            if (dict == null) {
+              responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else {
+              DictProtocol.DstDict.Builder builder = DictProtocol.DstDict.newBuilder();
+              for (Map.Entry<String, String> entry : dict.entrySet()) {
+                builder.addKeys(entry.getKey());
+                builder.addValues(entry.getValue());
+              }
+              responseBuilder.setDict(builder.build());
+            }
+            CompletableFuture<DictProtocol.GetResponse> future =
+                (CompletableFuture<DictProtocol.GetResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case DICT_GET_ITEM: {
+            DictProtocol.GetItemRequest request =
+                (DictProtocol.GetItemRequest) internalRequest.getRequest();
+            DictProtocol.GetItemResponse.Builder responseBuilder =
+                DictProtocol.GetItemResponse.newBuilder();
+            final Map<String, String> dict = storeEngine.dicts().get(request.getKey());
+            responseBuilder.setStatus(CommonProtocol.Status.OK);
+            if (dict == null) {
+              responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else {
+              final String itemValue = dict.get(request.getItemKey());
+              if (itemValue == null) {
+                responseBuilder.setStatus(CommonProtocol.Status.DICT_KEY_NOT_FOUND);
+              } else {
+                responseBuilder.setItemValue(itemValue);
+              }
+            }
+            CompletableFuture<DictProtocol.GetItemResponse> future =
+                (CompletableFuture<DictProtocol.GetItemResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case DICT_POP_ITEM: {
+            DictProtocol.PopItemRequest request =
+                (DictProtocol.PopItemRequest) internalRequest.getRequest();
+            DictProtocol.PopItemResponse.Builder responseBuilder =
+                DictProtocol.PopItemResponse.newBuilder();
+            responseBuilder.setStatus(CommonProtocol.Status.OK);
+            final Map<String, String> dict = storeEngine.dicts().get(request.getKey());
+            if (dict == null) {
+              responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else {
+              final String itemValue = dict.remove(request.getItemKey());
+              if (itemValue == null) {
+                responseBuilder.setStatus(CommonProtocol.Status.DICT_KEY_NOT_FOUND);
+              } else {
+                responseBuilder.setItemValue(itemValue);
+              }
+            }
+            CompletableFuture<DictProtocol.PopItemResponse> future =
+                (CompletableFuture<DictProtocol.PopItemResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case DICT_PUT_ITEM: {
+            DictProtocol.PutItemRequest request =
+                (DictProtocol.PutItemRequest) internalRequest.getRequest();
+            DictProtocol.PutItemResponse.Builder responseBuilder =
+                DictProtocol.PutItemResponse.newBuilder();
+            responseBuilder.setStatus(CommonProtocol.Status.OK);
+            final Map<String, String> dict = storeEngine.dicts().get(request.getKey());
+            if (dict == null) {
+              responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else {
+              dict.put(request.getItemKey(), request.getItemValue());
+            }
+            CompletableFuture<DictProtocol.PutItemResponse> future =
+                (CompletableFuture<DictProtocol.PutItemResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case DICT_REMOVE_ITEM: {
+            DictProtocol.RemoveItemRequest request =
+                (DictProtocol.RemoveItemRequest) internalRequest.getRequest();
+            DictProtocol.RemoveItemResponse.Builder responseBuilder =
+                DictProtocol.RemoveItemResponse.newBuilder();
+            responseBuilder.setStatus(CommonProtocol.Status.OK);
+            final Map<String, String> dict = storeEngine.dicts().get(request.getKey());
+            if (dict == null) {
+              responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else {
+              final String itemValue = dict.remove(request.getItemKey());
+              if (itemValue == null) {
+                responseBuilder.setStatus(CommonProtocol.Status.DICT_KEY_NOT_FOUND);
+              }
+              dict.remove(request.getItemKey());
+            }
+            CompletableFuture<DictProtocol.RemoveItemResponse> future =
+                (CompletableFuture<DictProtocol.RemoveItemResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+          case DICT_DROP: {
+            CommonProtocol.DropRequest request =
+                (CommonProtocol.DropRequest) internalRequest.getRequest();
+            CommonProtocol.DropResponse.Builder responseBuilder =
+                CommonProtocol.DropResponse.newBuilder();
+            responseBuilder.setStatus(CommonProtocol.Status.OK);
+            if (!storeEngine.dicts().drop(request.getKey())) {
+              responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            }
+            CompletableFuture<CommonProtocol.DropResponse> future =
+                (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
+
           case SLIST_PUT: {
             SortedListProtocol.PutRequest request =
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
             SortedListProtocol.PutResponse.Builder responseBuilder =
                 SortedListProtocol.PutResponse.newBuilder();
-            CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+            CommonProtocol.Status status;
             try {
               LinkedList<SortedListEntity> linkedList = new LinkedList<>();
               for (int i = 0; i < request.getListCount(); i++) {
@@ -416,7 +565,7 @@ public class Worker extends Thread {
               storeEngine.sortLists().put(request.getKey(), linkedList);
               status = CommonProtocol.Status.OK;
             } catch (DstException e) {
-              LOGGER.error("Failed to put a list to store: {}", e);
+              LOGGER.error("Failed to put a slist to store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -446,10 +595,9 @@ public class Worker extends Thread {
               }
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to get a slist top in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -469,10 +617,9 @@ public class Worker extends Thread {
               storeEngine.sortLists().drop(request.getKey());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to drop a slist in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -493,10 +640,9 @@ public class Worker extends Thread {
                   request.getMember(), request.getDelta());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to incr a slist score in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -517,10 +663,9 @@ public class Worker extends Thread {
                   new SortedListEntity(request.getMember(), request.getScore()));
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to put a slist number in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -540,12 +685,9 @@ public class Worker extends Thread {
               storeEngine.sortLists().removeMember(request.getKey(), request.getMember());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error("Failed to remove SortedList, caused by key not found: %s",
-                  request.getKey());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error("Failed to remove SortedList Member, caused by member not found: %s",
-                  request.getMember());
+              LOGGER.error("Failed to remove slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -572,10 +714,9 @@ public class Worker extends Thread {
               responseBuilder.setCount(scoreAndRankingValues.get(1));
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to get slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
