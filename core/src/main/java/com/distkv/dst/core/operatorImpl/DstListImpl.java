@@ -20,8 +20,7 @@ public class DstListImpl implements DstList {
 
   @Override
   public Status put(String key, List<String> value) {
-    ArrayList<String> list = new ArrayList<>();
-    list.addAll(value);
+    ArrayList<String> list = new ArrayList<>(value);
     listMap.put(key, list);
     return Status.OK;
   }
