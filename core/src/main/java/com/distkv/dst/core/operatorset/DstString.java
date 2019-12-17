@@ -1,5 +1,7 @@
 package com.distkv.dst.core.operatorset;
 
+import com.distkv.dst.common.utils.Status;
+
 public interface DstString {
 
   /**
@@ -22,8 +24,8 @@ public interface DstString {
    * This method will delete a string value based on the key
    *
    * @param key delete a key-value pair based on the key
-   * @return true or false, indicates that the deletion succeeded or failed.
+   * @return The status of the drop operation.
    */
-  boolean drop(String key);
+  Status drop(String key);
 
 }

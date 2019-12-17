@@ -47,7 +47,7 @@ public interface DstList {
    * This method will delete a list value based on the key
    *
    * @param key delete a key-value pair based on the key
-   * @return true or false, indicates that the deletion succeeded or failed.
+   * @return The status of the drop operation.
    */
   Status drop(String key);
 

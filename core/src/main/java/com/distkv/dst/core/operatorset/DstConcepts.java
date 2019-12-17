@@ -1,18 +1,19 @@
 package com.distkv.dst.core.operatorset;
 
+import com.distkv.dst.common.utils.Status;
 import com.distkv.dst.core.DstMapInterface;
 
 public abstract class DstConcepts<T> {
 
   protected DstMapInterface<String, T> dstKeyValueMap;
 
-  public boolean drop(String key) {
+  public Status drop(String key) {
     if (!dstKeyValueMap.containsKey(key)) {
-      return false;
+      return Status.KEY_NOT_FOUND;
     }
 
     dstKeyValueMap.remove(key);
-    return true;
+    return Status.OK;
   }
 
 }
