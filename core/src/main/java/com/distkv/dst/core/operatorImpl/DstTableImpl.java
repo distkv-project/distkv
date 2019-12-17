@@ -7,7 +7,7 @@ import com.distkv.dst.common.exception.IncorrectTableFormatException;
 import com.distkv.dst.common.exception.TableAlreadyExistsException;
 import com.distkv.dst.core.operatorset.DstTable;
 import com.distkv.dst.core.DstMapInterface;
-import com.distkv.dst.core.DstConcurrentHashMapImpl;
+import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.core.table.TableEntry;
 import com.distkv.dst.core.table.TableSpecification;
 import com.distkv.dst.core.table.Record;
@@ -25,7 +25,7 @@ public class DstTableImpl implements DstTable {
   private DstMapInterface<String, TableEntry> tableMap;
 
   public DstTableImpl() {
-    this.tableMap = new DstConcurrentHashMapImpl<>();
+    this.tableMap = new DstHashMapImpl<>();
   }
 
   @Override
