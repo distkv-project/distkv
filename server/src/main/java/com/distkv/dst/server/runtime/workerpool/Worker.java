@@ -352,7 +352,7 @@ public class Worker extends Thread {
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
             SortedListProtocol.PutResponse.Builder responseBuilder =
                 SortedListProtocol.PutResponse.newBuilder();
-            CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+            CommonProtocol.Status status;
             try {
               LinkedList<SortedListEntity> linkedList = new LinkedList<>();
               for (int i = 0; i < request.getListCount(); i++) {
@@ -362,7 +362,7 @@ public class Worker extends Thread {
               storeEngine.sortLists().put(request.getKey(), linkedList);
               status = CommonProtocol.Status.OK;
             } catch (DstException e) {
-              LOGGER.error("Failed to put a list to store: {}", e);
+              LOGGER.error("Failed to put a slist to store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -392,10 +392,9 @@ public class Worker extends Thread {
               }
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to get a slist top in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -415,10 +414,9 @@ public class Worker extends Thread {
               storeEngine.sortLists().drop(request.getKey());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to drop a slist in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -439,10 +437,9 @@ public class Worker extends Thread {
                   request.getMember(), request.getDelta());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to incr a slist score in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -463,10 +460,9 @@ public class Worker extends Thread {
                   new SortedListEntity(request.getMember(), request.getScore()));
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to put a slist number in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -486,12 +482,9 @@ public class Worker extends Thread {
               storeEngine.sortLists().removeMember(request.getKey(), request.getMember());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error("Failed to remove SortedList, caused by key not found: %s",
-                  request.getKey());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error("Failed to remove SortedList Member, caused by member not found: %s",
-                  request.getMember());
+              LOGGER.error("Failed to remove slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -518,10 +511,9 @@ public class Worker extends Thread {
               responseBuilder.setCount(scoreAndRankingValues.get(1));
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
-              LOGGER.error(e.getMessage());
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (DstException e) {
-              LOGGER.error(e.getMessage());
+              LOGGER.error("Failed to get slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
