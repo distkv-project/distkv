@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DstListImpl implements DstList {
 
-  private DstMapInterface<String, List<String>> listMap;
+  private DstMapInterface<String, ArrayList<String>> listMap;
 
   public DstListImpl() {
     this.listMap = new DstConcurrentHashMapImpl<>();
@@ -20,7 +20,8 @@ public class DstListImpl implements DstList {
 
   @Override
   public Status put(String key, List<String> value) {
-    listMap.put(key, value);
+    ArrayList<String> list = new ArrayList<>(value);
+    listMap.put(key, list);
     return Status.OK;
   }
 

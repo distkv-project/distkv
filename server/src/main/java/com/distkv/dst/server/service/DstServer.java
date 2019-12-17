@@ -75,7 +75,7 @@ public class DstServer {
     drpcServer.registerService(
         DstStringService.class, new DstStringServiceImpl(server.runtime));
     drpcServer.registerService(
-        DstListService.class, new DstListServiceImpl(server.getKvStore()));
+        DstListService.class, new DstListServiceImpl(server.runtime));
     drpcServer.registerService(
         DstSetService.class, new DstSetServiceImpl(server.runtime));
     drpcServer.registerService(
