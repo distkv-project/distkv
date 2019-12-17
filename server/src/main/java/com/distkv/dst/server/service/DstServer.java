@@ -2,8 +2,6 @@ package com.distkv.dst.server.service;
 
 import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
-import com.distkv.dst.core.KVStore;
-import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.rpc.service.DstDictService;
 import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstStringService;

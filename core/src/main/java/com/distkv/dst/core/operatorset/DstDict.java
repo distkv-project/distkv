@@ -1,5 +1,6 @@
 package com.distkv.dst.core.operatorset;
 
+import com.distkv.dst.common.utils.Status;
 import java.util.Map;
 
 public interface DstDict {
@@ -24,8 +25,8 @@ public interface DstDict {
    * Delete a dictionary entry by the given key.
    *
    * @param key The key of the entry that we will delete.
-   * @return True if we succeed to delete, otherwise it's false.
+   * @return The status of this drop operation.
    */
-  boolean drop(String key);
+  Status drop(String key);
 }
 

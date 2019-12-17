@@ -5,8 +5,8 @@ import com.distkv.dst.common.exception.DuplicatedPrimaryKeyException;
 import com.distkv.dst.common.exception.IncorrectRecordFormatException;
 import com.distkv.dst.common.exception.IncorrectTableFormatException;
 import com.distkv.dst.common.exception.TableAlreadyExistsException;
+import com.distkv.dst.core.operatorset.DstConcepts;
 import com.distkv.dst.core.operatorset.DstTable;
-import com.distkv.dst.core.DstMapInterface;
 import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.core.table.TableEntry;
 import com.distkv.dst.core.table.TableSpecification;
@@ -20,12 +20,10 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-public class DstTableImpl implements DstTable {
-
-  private DstMapInterface<String, TableEntry> tableMap;
+public class DstTableImpl extends DstConcepts<TableEntry> implements DstTable {
 
   public DstTableImpl() {
-    this.tableMap = new DstHashMapImpl<>();
+    dstKeyValueMap = new DstHashMapImpl<>();
   }
 
   @Override
@@ -33,14 +31,14 @@ public class DstTableImpl implements DstTable {
     checkTableSpecificationFormat(tableSpec);
     checkTableAlreadyExist(tableSpec.getName());
     TableEntry table = new TableEntry.Builder().tableSpec(tableSpec).builder();
-    tableMap.put(tableSpec.getName(), table);
+    dstKeyValueMap.put(tableSpec.getName(), table);
   }
 
   @Override
   public void append(String tableName, List<Record> sourceRecords) {
     List<Record> records = new ArrayList<>(sourceRecords);
     checkTableExists(tableName);
-    TableEntry tableEntry = tableMap.get(tableName);
+    TableEntry tableEntry = dstKeyValueMap.get(tableName);
     checkRecordsFormat(tableEntry, records);
     List<Record> oldRecords = tableEntry.getRecords();
     int position = -1;
@@ -84,13 +82,13 @@ public class DstTableImpl implements DstTable {
   @Override
   public TableSpecification getTableSpecification(String tableName) {
     checkTableExists(tableName);
-    return tableMap.get(tableName).getTableSpec();
+    return dstKeyValueMap.get(tableName).getTableSpec();
   }
 
   @Override
   public List<Record> query(String tableName, Map<Field, Value> conditions) {
     checkTableExists(tableName);
-    List<Record> records = tableMap.get(tableName).getRecords();
+    List<Record> records = dstKeyValueMap.get(tableName).getRecords();
     if (conditions == null || conditions.isEmpty()) {
       return records;
     }
@@ -102,7 +100,7 @@ public class DstTableImpl implements DstTable {
       boolean primary = field.isPrimary();
       boolean index = field.isIndex();
       if (primary || index) {
-        Index indexs = tableMap.get(tableName).getIndex();
+        Index indexs = dstKeyValueMap.get(tableName).getIndex();
         List<Integer> currentPositions = indexs.getIndexs().get(value);
         if (positions.isEmpty()) {
           positions.addAll(currentPositions);
@@ -110,7 +108,7 @@ public class DstTableImpl implements DstTable {
           positions.retainAll(currentPositions);
         }
       } else {
-        TableSpecification tableSpec = tableMap.get(tableName).getTableSpec();
+        TableSpecification tableSpec = dstKeyValueMap.get(tableName).getTableSpec();
         List<Field> fields = tableSpec.getFields();
         List<Integer> currentPositions = new ArrayList<>();
         for (int i = 0; i < fields.size(); i++) {
@@ -137,22 +135,15 @@ public class DstTableImpl implements DstTable {
   }
 
   @Override
-  public boolean drop(String tableName) {
-    checkTableExists(tableName);
-    tableMap.remove(tableName);
-    return true;
-  }
-
-  @Override
   public void clearTable(String tableName) {
-    TableEntry table = tableMap.get(tableName);
+    TableEntry table = dstKeyValueMap.get(tableName);
     table.getIndex().getIndexs().clear();
     table.getRecords().clear();
   }
 
   @Override
   public void clear() {
-    tableMap.clear();
+    dstKeyValueMap.clear();
   }
 
   /**
@@ -240,6 +231,6 @@ public class DstTableImpl implements DstTable {
    * @return exists or not exist
    */
   private boolean isExist(String tableName) {
-    return tableMap.containsKey(tableName);
+    return dstKeyValueMap.containsKey(tableName);
   }
 }

@@ -1,25 +1,27 @@
 package com.distkv.dst.core.operatorset;
 
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+import com.distkv.dst.common.utils.Status;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public interface DstSortedList {
 
   /**
-   * This method will put a key-value pair to map
+   * This method will put a key-value pair to map.
    *
-   * @param key   the key to store
-   * @param list the SortedList value to store
+   * @param key The key to store.
+   * @param list The SortedList value to store.
    */
   void put(String key, LinkedList<SortedListEntity> list);
 
   /**
-   * This method will del a key-value pair to map
+   * This method will del a key-value pair to map.
    *
-   * @param key   the key to store
+   * @param key The key to store.
    */
-  void drop(String key);
+  Status drop(String key);
 
   /**
    * This method will put a item to a sortedList

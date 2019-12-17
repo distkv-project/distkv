@@ -2,8 +2,8 @@ package com.distkv.dst.core.operatorImpl;
 
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
+import com.distkv.dst.core.operatorset.DstConcepts;
 import com.distkv.dst.core.operatorset.DstSortedList;
-import com.distkv.dst.core.DstMapInterface;
 import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import java.util.List;
@@ -12,34 +12,25 @@ import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Arrays;
 
-public class DstSortedListImpl implements DstSortedList {
-
-  DstMapInterface<String, LinkedList<SortedListEntity>> sortedListMap;
+public class DstSortedListImpl extends DstConcepts<LinkedList<SortedListEntity>>
+    implements DstSortedList {
 
   public DstSortedListImpl() {
-    sortedListMap = new DstHashMapImpl<>();
+    dstKeyValueMap = new DstHashMapImpl<>();
   }
 
   @Override
   public void put(String key, LinkedList<SortedListEntity> list) {
     Collections.sort(list);
-    sortedListMap.put(key, list);
-  }
-
-  @Override
-  public void drop(String key) {
-    if (!sortedListMap.containsKey(key)) {
-      throw new KeyNotFoundException(key);
-    }
-    sortedListMap.remove(key);
+    dstKeyValueMap.put(key, list);
   }
 
   @Override
   public void putMember(String key, SortedListEntity item) {
-    if (!sortedListMap.containsKey(key)) {
+    if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList list = sortedListMap.get(key);
+    LinkedList list = dstKeyValueMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
@@ -56,10 +47,10 @@ public class DstSortedListImpl implements DstSortedList {
 
   @Override
   public void removeMember(String key, String member) {
-    if (!sortedListMap.containsKey(key)) {
+    if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList<SortedListEntity> list = sortedListMap.get(key);
+    LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
     boolean isFounnd = false;
     while (iterator.hasNext()) {
@@ -76,10 +67,10 @@ public class DstSortedListImpl implements DstSortedList {
 
   @Override
   public void incrScore(String key, String member, int delta) {
-    if (!sortedListMap.containsKey(key)) {
+    if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList<SortedListEntity> list = sortedListMap.get(key);
+    LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
     synchronized (this) {
       ListIterator<SortedListEntity> iterator = list.listIterator();
       boolean isFounnd = false;
@@ -114,10 +105,10 @@ public class DstSortedListImpl implements DstSortedList {
 
   @Override
   public List<SortedListEntity> top(String key, int topNum) {
-    if (!sortedListMap.containsKey(key)) {
+    if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList list = sortedListMap.get(key);
+    LinkedList list = dstKeyValueMap.get(key);
     if (topNum > list.size()) {
       topNum = list.size();
     }
@@ -130,11 +121,11 @@ public class DstSortedListImpl implements DstSortedList {
 
   @Override
   public List<Integer> getMember(String key, String member) {
-    if (!sortedListMap.containsKey(key)) {
+    if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
     int ranking = 1;
-    final LinkedList<SortedListEntity> sortedListEntities = sortedListMap.get(key);
+    final LinkedList<SortedListEntity> sortedListEntities = dstKeyValueMap.get(key);
 
     for (final SortedListEntity sortedListEntity : sortedListEntities) {
       if (sortedListEntity.getMember().equals(member)) {

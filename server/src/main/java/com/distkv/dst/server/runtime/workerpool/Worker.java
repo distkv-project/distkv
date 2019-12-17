@@ -540,8 +540,11 @@ public class Worker extends Thread {
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
-            if (!storeEngine.dicts().drop(request.getKey())) {
+            Status status = storeEngine.dicts().drop(request.getKey());
+            if (Status.KEY_NOT_FOUND == status) {
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else if (Status.OK != status) {
+              responseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
             CompletableFuture<CommonProtocol.DropResponse> future =
                 (CompletableFuture<CommonProtocol.DropResponse>)
