@@ -4,7 +4,7 @@ import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.core.operatorset.DstSortedList;
 import com.distkv.dst.core.DstMapInterface;
-import com.distkv.dst.core.DstConcurrentHashMapImpl;
+import com.distkv.dst.core.HashMapImpl;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import java.util.List;
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ public class DstSortedListImpl implements DstSortedList {
   DstMapInterface<String, LinkedList<SortedListEntity>> sortedListMap;
 
   public DstSortedListImpl() {
-    sortedListMap = new DstConcurrentHashMapImpl<>();
+    sortedListMap = new HashMapImpl<>();
   }
 
   @Override

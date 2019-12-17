@@ -2,14 +2,14 @@ package com.distkv.dst.core.operatorImpl;
 
 import com.distkv.dst.core.operatorset.DstString;
 import com.distkv.dst.core.DstMapInterface;
-import com.distkv.dst.core.DstConcurrentHashMapImpl;
+import com.distkv.dst.core.HashMapImpl;
 
 public class DstStringImpl implements DstString {
 
   private DstMapInterface<String, String> strMap;
 
   public DstStringImpl() {
-    this.strMap = new DstConcurrentHashMapImpl<>();
+    this.strMap = new HashMapImpl<>();
   }
 
   @Override
