@@ -5,7 +5,7 @@ import com.distkv.dst.common.utils.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface DstList {
+public interface DstLists {
 
   /**
    * This method will put a key-value pair to map

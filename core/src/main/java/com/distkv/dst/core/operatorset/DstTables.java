@@ -5,11 +5,10 @@ import com.distkv.dst.core.table.Field;
 import com.distkv.dst.core.table.Record;
 import com.distkv.dst.core.table.TableSpecification;
 import com.distkv.dst.core.table.Value;
-
 import java.util.List;
 import java.util.Map;
 
-public interface DstTable {
+public interface DstTables {
 
   /**
    * Create a new table by the given table specification.

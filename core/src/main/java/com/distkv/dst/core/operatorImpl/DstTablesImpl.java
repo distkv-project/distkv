@@ -6,7 +6,7 @@ import com.distkv.dst.common.exception.IncorrectRecordFormatException;
 import com.distkv.dst.common.exception.IncorrectTableFormatException;
 import com.distkv.dst.common.exception.TableAlreadyExistsException;
 import com.distkv.dst.core.operatorset.DstConcepts;
-import com.distkv.dst.core.operatorset.DstTable;
+import com.distkv.dst.core.operatorset.DstTables;
 import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.core.table.TableEntry;
 import com.distkv.dst.core.table.TableSpecification;
@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-public class DstTableImpl extends DstConcepts<TableEntry> implements DstTable {
+public class DstTablesImpl extends DstConcepts<TableEntry> implements DstTables {
 
-  public DstTableImpl() {
+  public DstTablesImpl() {
     dstKeyValueMap = new DstHashMapImpl<>();
   }
 

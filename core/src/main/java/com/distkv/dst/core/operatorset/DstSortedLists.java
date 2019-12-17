@@ -6,7 +6,7 @@ import com.distkv.dst.common.utils.Status;
 import java.util.LinkedList;
 import java.util.List;
 
-public interface DstSortedList {
+public interface DstSortedLists {
 
   /**
    * This method will put a key-value pair to map.

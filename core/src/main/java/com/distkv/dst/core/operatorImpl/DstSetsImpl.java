@@ -1,14 +1,14 @@
 package com.distkv.dst.core.operatorImpl;
 
 import com.distkv.dst.core.operatorset.DstConcepts;
-import com.distkv.dst.core.operatorset.DstSet;
+import com.distkv.dst.core.operatorset.DstSets;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import java.util.Set;
 
-public class DstSetImpl extends DstConcepts<Set<String>> implements DstSet {
+public class DstSetsImpl extends DstConcepts<Set<String>> implements DstSets {
 
-  public DstSetImpl() {
+  public DstSetsImpl() {
   }
 
   @Override

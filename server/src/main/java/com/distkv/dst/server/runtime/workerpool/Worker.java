@@ -76,12 +76,13 @@ public class Worker extends Thread {
           case STR_GET: {
             StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest)
                 internalRequest.getRequest();
-            String value = storeEngine.strs().get(strGetRequest.getKey());
             StringProtocol.GetResponse.Builder builder = StringProtocol.GetResponse.newBuilder();
-            if (value == null) {
-              builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-            } else {
+            String value = null;
+            try {
+              value = storeEngine.strs().get(strGetRequest.getKey());
               builder.setStatus(CommonProtocol.Status.OK).setValue(value);
+            } catch (KeyNotFoundException e) {
+              builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
             }
             CompletableFuture<StringProtocol.GetResponse> future =
                 (CompletableFuture<StringProtocol.GetResponse>)

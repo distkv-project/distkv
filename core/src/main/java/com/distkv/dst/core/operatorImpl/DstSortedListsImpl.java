@@ -3,7 +3,7 @@ package com.distkv.dst.core.operatorImpl;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.core.operatorset.DstConcepts;
-import com.distkv.dst.core.operatorset.DstSortedList;
+import com.distkv.dst.core.operatorset.DstSortedLists;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import java.util.List;
 import java.util.LinkedList;
@@ -11,10 +11,10 @@ import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Arrays;
 
-public class DstSortedListImpl extends DstConcepts<LinkedList<SortedListEntity>>
-    implements DstSortedList {
+public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>>
+    implements DstSortedLists {
 
-  public DstSortedListImpl() {
+  public DstSortedListsImpl() {
   }
 
   @Override

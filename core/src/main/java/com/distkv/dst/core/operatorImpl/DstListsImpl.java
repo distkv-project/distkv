@@ -2,16 +2,16 @@ package com.distkv.dst.core.operatorImpl;
 
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.core.operatorset.DstConcepts;
-import com.distkv.dst.core.operatorset.DstList;
+import com.distkv.dst.core.operatorset.DstLists;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DstListImpl extends DstConcepts<ArrayList<String>> implements DstList {
+public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstLists {
 
-  public DstListImpl() {
+  public DstListsImpl() {
   }
 
   @Override

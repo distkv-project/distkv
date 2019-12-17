@@ -3,7 +3,7 @@ package com.distkv.dst.core.operatorset;
 import com.distkv.dst.common.utils.Status;
 import java.util.Map;
 
-public interface DstDict {
+public interface DstDicts {
 
   /**
    * Put a key-value pair to map.

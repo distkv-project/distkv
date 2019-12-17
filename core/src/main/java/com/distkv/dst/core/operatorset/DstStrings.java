@@ -2,7 +2,7 @@ package com.distkv.dst.core.operatorset;
 
 import com.distkv.dst.common.utils.Status;
 
-public interface DstString {
+public interface DstStrings {
 
   /**
    * This method will put a key-value pair to map
