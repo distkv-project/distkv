@@ -2,7 +2,7 @@ package com.distkv.dst.core.operatorImpl;
 
 import com.distkv.dst.core.operatorset.DstSet;
 import com.distkv.dst.core.DstMapInterface;
-import com.distkv.dst.core.HashMapImpl;
+import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import java.util.Set;
@@ -12,7 +12,7 @@ public class DstSetImpl implements DstSet {
   private DstMapInterface<String, Set<String>> setMap;
 
   public DstSetImpl() {
-    this.setMap = new HashMapImpl<>();
+    this.setMap = new DstHashMapImpl<>();
   }
 
   @Override
