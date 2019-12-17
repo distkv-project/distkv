@@ -1,68 +1,68 @@
 package com.distkv.dst.core;
 
-import com.distkv.dst.core.operatorImpl.DstSortedListImpl;
-import com.distkv.dst.core.operatorImpl.DstDictImpl;
-import com.distkv.dst.core.operatorImpl.DstSetImpl;
-import com.distkv.dst.core.operatorImpl.DstStringImpl;
-import com.distkv.dst.core.operatorImpl.DstTableImpl;
-import com.distkv.dst.core.operatorImpl.DstListImpl;
-import com.distkv.dst.core.operatorset.DstTable;
-import com.distkv.dst.core.operatorset.DstDict;
-import com.distkv.dst.core.operatorset.DstSortedList;
-import com.distkv.dst.core.operatorset.DstSet;
-import com.distkv.dst.core.operatorset.DstList;
-import com.distkv.dst.core.operatorset.DstString;
+import com.distkv.dst.core.operatorImpl.DstSortedListsImpl;
+import com.distkv.dst.core.operatorImpl.DstDictsImpl;
+import com.distkv.dst.core.operatorImpl.DstSetsImpl;
+import com.distkv.dst.core.operatorImpl.DstStringsImpl;
+import com.distkv.dst.core.operatorImpl.DstTablesImpl;
+import com.distkv.dst.core.operatorImpl.DstListsImpl;
+import com.distkv.dst.core.operatorset.DstTables;
+import com.distkv.dst.core.operatorset.DstDicts;
+import com.distkv.dst.core.operatorset.DstSortedLists;
+import com.distkv.dst.core.operatorset.DstSets;
+import com.distkv.dst.core.operatorset.DstLists;
+import com.distkv.dst.core.operatorset.DstStrings;
 
 public class KVStoreImpl implements KVStore {
 
-  private DstStringImpl strs;
+  private DstStringsImpl strs;
 
-  private DstListImpl lists;
+  private DstListsImpl lists;
 
-  private DstSetImpl sets;
+  private DstSetsImpl sets;
 
-  private DstDictImpl dicts;
+  private DstDictsImpl dicts;
 
-  private DstSortedList sortedLists;
+  private DstSortedLists sortedLists;
 
-  private DstTableImpl tables;
+  private DstTablesImpl tables;
 
   public KVStoreImpl() {
-    this.strs = new DstStringImpl();
-    this.lists = new DstListImpl();
-    this.sets = new DstSetImpl();
-    this.dicts = new DstDictImpl();
-    this.tables = new DstTableImpl();
-    this.sortedLists = new DstSortedListImpl();
+    this.strs = new DstStringsImpl();
+    this.lists = new DstListsImpl();
+    this.sets = new DstSetsImpl();
+    this.dicts = new DstDictsImpl();
+    this.tables = new DstTablesImpl();
+    this.sortedLists = new DstSortedListsImpl();
   }
 
   @Override
-  public DstString strs() {
+  public DstStrings strs() {
     return strs;
   }
 
   @Override
-  public DstList lists() {
+  public DstLists lists() {
     return lists;
   }
 
   @Override
-  public DstSet sets() {
+  public DstSets sets() {
     return sets;
   }
 
   @Override
-  public DstDict dicts() {
+  public DstDicts dicts() {
     return dicts;
   }
 
   @Override
-  public DstSortedList sortLists() {
+  public DstSortedLists sortLists() {
     return sortedLists;
   }
 
   @Override
-  public DstTable tables() {
+  public DstTables tables() {
     return tables;
   }
 

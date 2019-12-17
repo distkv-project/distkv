@@ -1,14 +1,14 @@
 package com.distkv.dst.core.operatorset;
 
+import com.distkv.dst.common.utils.Status;
 import com.distkv.dst.core.table.Field;
 import com.distkv.dst.core.table.Record;
 import com.distkv.dst.core.table.TableSpecification;
 import com.distkv.dst.core.table.Value;
-
 import java.util.List;
 import java.util.Map;
 
-public interface DstTable {
+public interface DstTables {
 
   /**
    * Create a new table by the given table specification.
@@ -48,7 +48,7 @@ public interface DstTable {
    * @param tableName The table's name which will be drop.
    * @return True if we succeeded to drop the table, otherwise is false.
    */
-  boolean drop(String tableName);
+  Status drop(String tableName);
 
 
   /**

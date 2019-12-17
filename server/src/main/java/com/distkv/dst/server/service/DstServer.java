@@ -2,8 +2,6 @@ package com.distkv.dst.server.service;
 
 import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
-import com.distkv.dst.core.KVStore;
-import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.rpc.service.DstDictService;
 import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstStringService;
@@ -19,18 +17,11 @@ public class DstServer {
 
   private static final int LISTENING_PORT = 8082;
 
-  // TODO(qwang): This should be a Dst Runtime.
-  private KVStore kvStore;
 
   private DstRuntime runtime;
 
   private DstServer() {
-    kvStore = new KVStoreImpl();
     runtime = new DstRuntime();
-  }
-
-  private KVStore getKvStore() {
-    return kvStore;
   }
 
   private static String WELCOME_WORDS =

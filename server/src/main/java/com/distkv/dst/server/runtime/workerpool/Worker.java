@@ -17,13 +17,14 @@ import com.google.common.base.Preconditions;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -75,12 +76,13 @@ public class Worker extends Thread {
           case STR_GET: {
             StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest)
                 internalRequest.getRequest();
-            String value = storeEngine.strs().get(strGetRequest.getKey());
             StringProtocol.GetResponse.Builder builder = StringProtocol.GetResponse.newBuilder();
-            if (value == null) {
-              builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-            } else {
+            String value = null;
+            try {
+              value = storeEngine.strs().get(strGetRequest.getKey());
               builder.setStatus(CommonProtocol.Status.OK).setValue(value);
+            } catch (KeyNotFoundException e) {
+              builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
             }
             CompletableFuture<StringProtocol.GetResponse> future =
                 (CompletableFuture<StringProtocol.GetResponse>)
@@ -210,11 +212,10 @@ public class Worker extends Thread {
                     ListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
-              Status localStatus =
-                      storeEngine.lists().put(request.getKey(), request.getValuesList());
-              if (localStatus == Status.OK) {
-                status = CommonProtocol.Status.OK;
-              }
+              // TODO(qwang): Avoid this copy. See the discussion
+              // at https://github.com/dst-project/dst/issues/349
+              ArrayList<String> values = new ArrayList<>(request.getValuesList());
+              storeEngine.lists().put(request.getKey(), values);
             } catch (DstException e) {
               LOGGER.error("Failed to put a list to store: {1}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -540,8 +541,11 @@ public class Worker extends Thread {
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
-            if (!storeEngine.dicts().drop(request.getKey())) {
+            Status status = storeEngine.dicts().drop(request.getKey());
+            if (Status.KEY_NOT_FOUND == status) {
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+            } else if (Status.OK != status) {
+              responseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
             CompletableFuture<CommonProtocol.DropResponse> future =
                 (CompletableFuture<CommonProtocol.DropResponse>)

@@ -2,10 +2,9 @@ package com.distkv.dst.core.operatorset;
 
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
-
 import java.util.Set;
 
-public interface DstSet {
+public interface DstSets {
 
   /**
    * This method will put a key-value pair to map

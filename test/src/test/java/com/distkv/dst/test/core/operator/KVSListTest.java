@@ -3,6 +3,7 @@ package com.distkv.dst.test.core.operator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.distkv.dst.common.utils.Status;
 import com.google.common.collect.ImmutableList;
 import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.core.KVStore;
@@ -12,8 +13,8 @@ import org.testng.annotations.Test;
 
 public class KVSListTest {
 
-  private static List<String> listForKVSTest() {
-    List<String> list = new ArrayList<>();
+  private static ArrayList<String> listForKVSTest() {
+    ArrayList<String> list = new ArrayList<>();
     list.add("v1");
     list.add("v2");
     list.add("v3");
@@ -34,7 +35,7 @@ public class KVSListTest {
   public void testDrop() {
     KVStore store = new KVStoreImpl();
     store.lists().put("k1", listForKVSTest());
-    Assert.assertEquals("ok", store.lists().drop("k1").toString());
+    Assert.assertEquals(Status.OK, store.lists().drop("k1"));
     store.lists().get("k1");
   }
 
