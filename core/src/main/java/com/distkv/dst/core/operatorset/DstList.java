@@ -2,6 +2,7 @@ package com.distkv.dst.core.operatorset;
 
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface DstList {
@@ -12,7 +13,7 @@ public interface DstList {
    * @param key   the key to store
    * @param value the list value to store
    */
-  Status put(String key, List<String> value);
+  void put(String key, ArrayList<String> value);
 
   /**
    * This method will query a list value based on the key
@@ -20,7 +21,7 @@ public interface DstList {
    * @param key Obtain a list value based on the key
    * @return the list value.
    */
-  List<String> get(String key) throws KeyNotFoundException;
+  ArrayList<String> get(String key) throws KeyNotFoundException;
 
   /**
    * Get the value of the given index from the list.

@@ -17,13 +17,14 @@ import com.google.common.base.Preconditions;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -210,11 +211,10 @@ public class Worker extends Thread {
                     ListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
-              Status localStatus =
-                      storeEngine.lists().put(request.getKey(), request.getValuesList());
-              if (localStatus == Status.OK) {
-                status = CommonProtocol.Status.OK;
-              }
+              // TODO(qwang): Avoid this copy. See the discussion
+              // at https://github.com/dst-project/dst/issues/349
+              ArrayList<String> values = new ArrayList<>(request.getValuesList());
+              storeEngine.lists().put(request.getKey(), values);
             } catch (DstException e) {
               LOGGER.error("Failed to put a list to store: {1}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;

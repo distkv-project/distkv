@@ -4,7 +4,6 @@ import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.core.operatorset.DstConcepts;
 import com.distkv.dst.core.operatorset.DstSortedList;
-import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import java.util.List;
 import java.util.LinkedList;
@@ -16,11 +15,11 @@ public class DstSortedListImpl extends DstConcepts<LinkedList<SortedListEntity>>
     implements DstSortedList {
 
   public DstSortedListImpl() {
-    dstKeyValueMap = new DstHashMapImpl<>();
   }
 
   @Override
   public void put(String key, LinkedList<SortedListEntity> list) {
+    // Note(qwang): Overwrite for do a sort.
     Collections.sort(list);
     dstKeyValueMap.put(key, list);
   }

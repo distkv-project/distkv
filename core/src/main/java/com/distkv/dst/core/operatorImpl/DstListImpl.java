@@ -3,7 +3,6 @@ package com.distkv.dst.core.operatorImpl;
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.core.operatorset.DstConcepts;
 import com.distkv.dst.core.operatorset.DstList;
-import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import java.util.ArrayList;
@@ -13,22 +12,6 @@ import java.util.List;
 public class DstListImpl extends DstConcepts<ArrayList<String>> implements DstList {
 
   public DstListImpl() {
-    this.dstKeyValueMap = new DstHashMapImpl<>();
-  }
-
-  @Override
-  public Status put(String key, List<String> value) {
-    ArrayList<String> list = new ArrayList<>(value);
-    this.dstKeyValueMap.put(key, list);
-    return Status.OK;
-  }
-
-  @Override
-  public List<String> get(String key) {
-    if (!this.dstKeyValueMap.containsKey(key)) {
-      throw new KeyNotFoundException(key);
-    }
-    return this.dstKeyValueMap.get(key);
   }
 
   @Override
