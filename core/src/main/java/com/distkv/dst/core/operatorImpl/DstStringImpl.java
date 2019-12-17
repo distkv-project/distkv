@@ -1,39 +1,27 @@
 package com.distkv.dst.core.operatorImpl;
 
+import com.distkv.dst.core.operatorset.DstConcepts;
 import com.distkv.dst.core.operatorset.DstString;
-import com.distkv.dst.core.DstMapInterface;
 import com.distkv.dst.core.DstHashMapImpl;
 
-public class DstStringImpl implements DstString {
-
-  private DstMapInterface<String, String> strMap;
+public class DstStringImpl extends DstConcepts<String> implements DstString {
 
   public DstStringImpl() {
-    this.strMap = new DstHashMapImpl<>();
+    this.dstKeyValueMap = new DstHashMapImpl<>();
   }
 
   @Override
-  public void put(String key, String kalue) {
-    strMap.put(key, kalue);
+  public void put(String key, String value) {
+    this.dstKeyValueMap.put(key, value);
   }
 
   @Override
   public String get(String key) {
-    if (!strMap.containsKey(key)) {
+    if (!this.dstKeyValueMap.containsKey(key)) {
       return null;
     }
 
-    return strMap.get(key);
-  }
-
-  @Override
-  public boolean drop(String key) {
-    if (!strMap.containsKey(key)) {
-      return false;
-    }
-
-    strMap.remove(key);
-    return true;
+    return this.dstKeyValueMap.get(key);
   }
 
 }

@@ -19,18 +19,11 @@ public class DstServer {
 
   private static final int LISTENING_PORT = 8082;
 
-  // TODO(qwang): This should be a Dst Runtime.
-  private KVStore kvStore;
 
   private DstRuntime runtime;
 
   private DstServer() {
-    kvStore = new KVStoreImpl();
     runtime = new DstRuntime();
-  }
-
-  private KVStore getKvStore() {
-    return kvStore;
   }
 
   private static String WELCOME_WORDS =
