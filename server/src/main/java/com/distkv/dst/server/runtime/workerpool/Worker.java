@@ -75,6 +75,29 @@ public class Worker extends Thread {
                 .setStatus(CommonProtocol.Status.OK).build());
             break;
           }
+          case STR_DROP: {
+            CommonProtocol.DropRequest request =
+                    (CommonProtocol.DropRequest) internalRequest.getRequest();
+            CommonProtocol.DropResponse.Builder responseBuilder =
+                    CommonProtocol.DropResponse.newBuilder();
+            CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+            try {
+              Status localStatus = storeEngine.strs().drop(request.getKey());
+              if (localStatus == Status.OK) {
+                status = CommonProtocol.Status.OK;
+              } else if (localStatus == Status.KEY_NOT_FOUND) {
+                status = CommonProtocol.Status.KEY_NOT_FOUND;
+              }
+            } catch (DstException e) {
+              status = CommonProtocol.Status.UNKNOWN_ERROR;
+            }
+            responseBuilder.setStatus(status);
+            CompletableFuture<CommonProtocol.DropResponse> future =
+                    (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
+            future.complete(responseBuilder.build());
+            break;
+          }
           case STR_GET: {
             StringProtocol.GetRequest strGetRequest = (StringProtocol.GetRequest)
                 internalRequest.getRequest();

@@ -53,6 +53,12 @@ dst-cli > dict.get "dict1"
 dst-cli > { "k1" : "v1", "k2" : "v2"}
 dst-cli > str.put "k1" "v1"   # the same as `put`
 dst-cli > ok 
+dst-cli > slist.put "k1" "m1" 4 "m2" -4 "m3" 0
+dst-cli > ok
+dst-cli > slist.top "k1" 2
+dst-cli > [("m1", 4), ("m3", 0)]
+dst-cli > slist.getMember "k1" "m2"
+dst-cli > ("m2", -4), 3rd
 ```
 
 #### 3. Java Client SDK

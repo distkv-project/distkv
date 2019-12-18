@@ -7,7 +7,6 @@ import com.distkv.dst.rpc.service.DstStringService;
 import com.distkv.dst.server.runtime.DstRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -37,7 +36,10 @@ public class DstStringServiceImpl implements DstStringService {
 
   @Override
   public CompletableFuture<CommonProtocol.DropResponse> drop(CommonProtocol.DropRequest request) {
-    throw new NotImplementedException();
+    CompletableFuture<CommonProtocol.DropResponse> future = new CompletableFuture<>();
+    runtime.getWorkerPool().postRequest(
+            request.getKey(), RequestTypeEnum.STR_DROP, request, future);
+    return future;
   }
 
 }

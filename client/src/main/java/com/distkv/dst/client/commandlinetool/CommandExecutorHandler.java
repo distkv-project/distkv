@@ -63,15 +63,15 @@ public class CommandExecutorHandler {
   }
 
   public static String listLPut(DstClient dstClient, DstParsedResult parsedResult) {
-    ListProtocol.PutRequest lputRequestList =
-        (ListProtocol.PutRequest) parsedResult.getRequest();
+    ListProtocol.LPutRequest lputRequestList =
+        (ListProtocol.LPutRequest) parsedResult.getRequest();
     dstClient.lists().lput(lputRequestList.getKey(), lputRequestList.getValuesList());
     return STATUS_OK;
   }
 
   public static String listRPut(DstClient dstClient, DstParsedResult parsedResult) {
-    ListProtocol.PutRequest rputRequestList =
-        (ListProtocol.PutRequest) parsedResult.getRequest();
+    ListProtocol.RPutRequest rputRequestList =
+        (ListProtocol.RPutRequest) parsedResult.getRequest();
     dstClient.lists().rput(rputRequestList.getKey(), rputRequestList.getValuesList());
     return STATUS_OK;
   }
@@ -116,7 +116,20 @@ public class CommandExecutorHandler {
   public static String setGet(DstClient dstClient, DstParsedResult parsedResult) {
     SetProtocol.GetRequest getRequestSet =
         (SetProtocol.GetRequest) parsedResult.getRequest();
-    return dstClient.sets().get(getRequestSet.getKey()).toString();
+    final StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("{");
+    Set<String> set = dstClient.sets().get(getRequestSet.getKey());
+    boolean first = true;
+    for (final String element : set) {
+      if (first) {
+        first = false;
+      } else {
+        stringBuilder.append(", ");
+      }
+      stringBuilder.append(element);
+    }
+    stringBuilder.append("}");
+    return stringBuilder.toString();
   }
 
   public static String setDrop(DstClient dstClient, DstParsedResult parsedResult) {
@@ -141,7 +154,7 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static String setExist(DstClient dstClient, DstParsedResult parsedResult) {
+  public static String setExists(DstClient dstClient, DstParsedResult parsedResult) {
     SetProtocol.ExistsRequest existsRequestSet =
         (SetProtocol.ExistsRequest) parsedResult.getRequest();
     return String.valueOf(dstClient.sets().exists(existsRequestSet.getKey(),
@@ -163,7 +176,23 @@ public class CommandExecutorHandler {
   public static String dictGet(DstClient dstClient, DstParsedResult parsedResult) {
     DictProtocol.GetRequest getRequestDict =
         (DictProtocol.GetRequest) parsedResult.getRequest();
-    return dstClient.dicts().get(getRequestDict.getKey()).toString();
+    final StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("{");
+    Map<String, String> map = dstClient.dicts().get(getRequestDict.getKey());
+    boolean first = true;
+    for (Map.Entry<String, String> entry : map.entrySet()) {
+      if (first) {
+        first = false;
+      } else {
+        stringBuilder.append(",");
+      }
+      stringBuilder.append(" ");
+      stringBuilder.append(entry.getKey());
+      stringBuilder.append(" : ");
+      stringBuilder.append(entry.getValue());
+    }
+    stringBuilder.append("}");
+    return stringBuilder.toString();
   }
 
   public static String dictPutItem(DstClient dstClient, DstParsedResult parsedResult) {
@@ -224,8 +253,25 @@ public class CommandExecutorHandler {
   public static String slistTop(DstClient dstClient, DstParsedResult parsedResult) {
     SortedListProtocol.TopRequest topRequestSlist =
         (SortedListProtocol.TopRequest) parsedResult.getRequest();
-    return dstClient.sortedLists().top(topRequestSlist.getKey(),
-        topRequestSlist.getCount()).toString();
+    final StringBuilder stringBuilder = new StringBuilder();
+    LinkedList<SortedListEntity> listEntities = dstClient.sortedLists()
+            .top(topRequestSlist.getKey(), topRequestSlist.getCount());
+    boolean first = true;
+    stringBuilder.append("[");
+    for (final SortedListEntity entity : listEntities) {
+      if (first) {
+        first = false;
+      } else {
+        stringBuilder.append(", ");
+      }
+      stringBuilder.append("(");
+      stringBuilder.append(entity.getMember());
+      stringBuilder.append(", ");
+      stringBuilder.append(entity.getScore());
+      stringBuilder.append(")");
+    }
+    stringBuilder.append("]");
+    return stringBuilder.toString();
   }
 
   public static String slistIncrScore(DstClient dstClient, DstParsedResult parsedResult) {
@@ -268,9 +314,9 @@ public class CommandExecutorHandler {
         getMemberRequest.getKey(), getMemberRequest.getMember());
     // output: (member, score), ranking
     final StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("(\"");
+    stringBuilder.append("(");
     stringBuilder.append(getMemberRequest.getMember());
-    stringBuilder.append("\", ");
+    stringBuilder.append(", ");
     stringBuilder.append(scoreAndRankingValues.get(0));
     stringBuilder.append("), ");
     final int ranking = scoreAndRankingValues.get(1);

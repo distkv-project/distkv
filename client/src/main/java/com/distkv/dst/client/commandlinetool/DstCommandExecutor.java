@@ -45,7 +45,7 @@ public class DstCommandExecutor {
       case SET_REMOVE_ITEM:
         return CommandExecutorHandler.setRemoveItem(dstClient, parsedResult);
       case SET_EXIST:
-        return CommandExecutorHandler.setExist(dstClient, parsedResult);
+        return CommandExecutorHandler.setExists(dstClient, parsedResult);
       case DICT_PUT:
         return CommandExecutorHandler.dictPut(dstClient, parsedResult);
       case DICT_GET:
