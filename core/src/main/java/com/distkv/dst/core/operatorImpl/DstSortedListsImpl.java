@@ -60,7 +60,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
         iterator.remove();
       }
     }
-    if (isFound == false) {
+    if (!isFound) {
       throw new DstException("not find info at SortedList");
     }
   }
@@ -96,7 +96,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
         }
       }
     }
-    if (isFound == false) {
+    if (!isFound) {
       throw new DstException("not find info at SortedList");
     }
   }
