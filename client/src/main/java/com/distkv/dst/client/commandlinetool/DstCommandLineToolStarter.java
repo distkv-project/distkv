@@ -6,6 +6,12 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.distkv.dst.client.DefaultDstClient;
 import com.distkv.dst.client.DstClient;
+import com.distkv.dst.common.exception.DstException;
+import com.distkv.dst.common.exception.KeyNotFoundException;
+import com.distkv.dst.common.exception.DictKeyNotFoundException;
+import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
+import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
+import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
 import com.distkv.dst.parser.DstParser;
 import com.distkv.dst.parser.po.DstParsedResult;
 
@@ -68,8 +74,23 @@ public class DstCommandLineToolStarter {
     while (true) {
       System.out.print("dst-cli> ");
       final String command = sc.nextLine();
-      DstParsedResult parsedResult = dstParser.parse(command);
-      String result = dstCommandExecutor.execute(parsedResult);
+      String result = null;
+      try {
+        DstParsedResult parsedResult = dstParser.parse(command);
+        result = dstCommandExecutor.execute(parsedResult);
+      } catch (DictKeyNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (DstListIndexOutOfBoundsException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (KeyNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (SortedListMemberNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (SortedListTopNumBePositiveException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (DstException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      }
       System.out.println("dst-cli> " + result);
     }
   }
