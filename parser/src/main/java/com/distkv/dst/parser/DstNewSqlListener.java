@@ -252,7 +252,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     SetProtocol.RemoveItemRequest.Builder builder = SetProtocol.RemoveItemRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     builder.setItemValue(ctx.children.get(2).getText());
-    parsedResult = new DstParsedResult(RequestTypeEnum.SET_REMOVE_ITEM, builder.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.SET_REMOVE_ITEM, builder);
   }
 
   @Override
@@ -262,7 +262,7 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
     SetProtocol.ExistsRequest.Builder builder = SetProtocol.ExistsRequest.newBuilder();
     builder.setKey(ctx.children.get(1).getText());
     builder.setEntity(ctx.children.get(2).getText());
-    parsedResult = new DstParsedResult(RequestTypeEnum.SET_EXIST, builder.build());
+    parsedResult = new DstParsedResult(RequestTypeEnum.SET_EXIST, builder);
   }
 
   @Override

@@ -9,8 +9,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class DstStringProxy {
 
-  private String typeCode = "A";
-
   private DstStringService service;
 
   public DstStringProxy(DstStringService service) {
@@ -26,7 +24,7 @@ public class DstStringProxy {
 
     CompletableFuture<StringProtocol.PutResponse> responseFuture = service.put(request);
     StringProtocol.PutResponse response = FutureUtils.get(responseFuture);
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public String get(String key) throws DstException {
@@ -37,7 +35,7 @@ public class DstStringProxy {
 
     CompletableFuture<StringProtocol.GetResponse> responseFuture = service.get(request);
     StringProtocol.GetResponse response = FutureUtils.get(responseFuture);
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getValue();
   }
 
@@ -49,7 +47,7 @@ public class DstStringProxy {
 
     CompletableFuture<CommonProtocol.DropResponse> responseFuture = service.drop(request);
     CommonProtocol.DropResponse response = FutureUtils.get(responseFuture);
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return true;
   }
 }

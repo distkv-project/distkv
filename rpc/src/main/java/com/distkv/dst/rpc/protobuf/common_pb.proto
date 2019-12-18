@@ -14,10 +14,6 @@ enum Status {
 
     // The key of the dict is not found.
     DICT_KEY_NOT_FOUND = 5;
-    // The Member of SortedList is not found.
-    SLIST_MEMBER_NOT_FOUND = 6;
-    // The topNum of SortedList is less than zero.
-    SLIST_TOPNUM_BE_POSITIVE = 7;
 };
 
 // Drop the k-v pair by the given key.

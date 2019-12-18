@@ -10,10 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DstSortedListProxy {
-
-  private String typeCode = "E";
-
-  private DstSortedListService service;
+  DstSortedListService service;
 
   public DstSortedListProxy(DstSortedListService service) {
     this.service = service;
@@ -35,7 +32,7 @@ public class DstSortedListProxy {
     requestBuilder.addAllList(listEntities);
     SortedListProtocol.PutResponse response = FutureUtils.get(
         service.put(requestBuilder.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public void incrScore(String key, String member, int delta) {
@@ -46,7 +43,7 @@ public class DstSortedListProxy {
     requestBuilder.setDelta(delta);
     SortedListProtocol.IncrScoreResponse response = FutureUtils.get(
         service.incrScore(requestBuilder.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public LinkedList<SortedListEntity> top(String key, int topNum) {
@@ -56,7 +53,7 @@ public class DstSortedListProxy {
     topRequestBuilder.setCount(topNum);
     SortedListProtocol.TopResponse response = FutureUtils.get(
         service.top(topRequestBuilder.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
     LinkedList<SortedListEntity> list = new LinkedList<>();
     for (SortedListProtocol.SortedListEntity entity : response.getListList()) {
       list.add(new SortedListEntity(entity.getMember(), entity.getScore()));
@@ -70,7 +67,7 @@ public class DstSortedListProxy {
     requestBuilder.setKey(key);
     CommonProtocol.DropResponse response = FutureUtils.get(
         service.drop(requestBuilder.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public void removeMember(String key, String member) {
@@ -80,7 +77,7 @@ public class DstSortedListProxy {
     requestBuilder.setMember(member);
     SortedListProtocol.RemoveMemberResponse response = FutureUtils.get(
         service.removeMember(requestBuilder.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public void putMember(String key, SortedListEntity entity) {
@@ -91,7 +88,7 @@ public class DstSortedListProxy {
     requestBuilder.setScore(entity.getScore());
     SortedListProtocol.PutMemberResponse response = FutureUtils.get(
         service.putMember(requestBuilder.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key);
   }
 
   public List<Integer> getMember(String key, String member) {
@@ -99,10 +96,10 @@ public class DstSortedListProxy {
             SortedListProtocol.GetMemberRequest.newBuilder();
     getMemberRequest.setKey(key);
     getMemberRequest.setMember(member);
-    SortedListProtocol.GetMemberResponse response = FutureUtils.get(
+    SortedListProtocol.GetMemberResponse getMemberResponse = FutureUtils.get(
             service.getMember(getMemberRequest.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-    SortedListProtocol.SortedListEntity sortedListEntity = response.getEntity();
-    return Arrays.asList(sortedListEntity.getScore(), response.getCount());
+    CheckStatusUtil.checkStatus(getMemberResponse.getStatus(), key);
+    SortedListProtocol.SortedListEntity sortedListEntity = getMemberResponse.getEntity();
+    return Arrays.asList(sortedListEntity.getScore(), getMemberResponse.getCount());
   }
 }

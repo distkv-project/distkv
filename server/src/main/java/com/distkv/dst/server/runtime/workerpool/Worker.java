@@ -3,10 +3,8 @@ package com.distkv.dst.server.runtime.workerpool;
 import com.distkv.dst.common.NodeInfo;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
-import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
@@ -434,12 +432,7 @@ public class Worker extends Thread {
             DictProtocol.GetResponse.Builder responseBuilder =
                 DictProtocol.GetResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
-            Map<String, String> dict = null;
-            try {
-              dict = storeEngine.dicts().get(request.getKey());
-            } catch (KeyNotFoundException e) {
-              dict = null;
-            }
+            final Map<String, String> dict = storeEngine.dicts().get(request.getKey());
             if (dict == null) {
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
             } else {
@@ -607,8 +600,6 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (SortedListTopNumBePositiveException e) {
-              status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
             } catch (DstException e) {
               LOGGER.error("Failed to get a slist top in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -654,8 +645,6 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (SortedListMemberNotFoundException e) {
-              status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
             } catch (DstException e) {
               LOGGER.error("Failed to incr a slist score in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -701,8 +690,6 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (SortedListMemberNotFoundException e) {
-              status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
             } catch (DstException e) {
               LOGGER.error("Failed to remove slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -732,8 +719,6 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (SortedListMemberNotFoundException e) {
-              status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
             } catch (DstException e) {
               LOGGER.error("Failed to get slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;

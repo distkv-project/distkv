@@ -1,6 +1,7 @@
 package com.distkv.dst.client;
 
 import com.distkv.dst.common.exception.DstException;
+import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
@@ -8,8 +9,6 @@ import com.distkv.dst.rpc.service.DstListService;
 import java.util.List;
 
 public class DstListProxy {
-
-  private String typeCode = "B";
 
   private DstListService service;
 
@@ -23,7 +22,7 @@ public class DstListProxy {
           .addAllValues(values)
           .build();
     ListProtocol.PutResponse response = FutureUtils.get(service.put(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public List<String> get(String key) {
@@ -32,7 +31,7 @@ public class DstListProxy {
         .setKey(key)
         .build();
     ListProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getValuesList();
   }
 
@@ -43,7 +42,7 @@ public class DstListProxy {
             .setIndex(index)
             .build();
     ListProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
     return response.getValuesList();
   }
 
@@ -56,7 +55,11 @@ public class DstListProxy {
             .setEnd(end)
             .build();
     ListProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d",response.getStatus().getNumber()));
+    }
     return response.getValuesList();
   }
 
@@ -65,7 +68,7 @@ public class DstListProxy {
           .setKey(key)
           .build();
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public void lput(String key, List<String> values) {
@@ -74,7 +77,11 @@ public class DstListProxy {
           .addAllValues(values)
           .build();
     ListProtocol.LPutResponse response = FutureUtils.get(service.lput(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+    }
   }
 
   public void rput(String key, List<String> values) {
@@ -83,7 +90,11 @@ public class DstListProxy {
           .addAllValues(values)
           .build();
     ListProtocol.RPutResponse response = FutureUtils.get(service.rput(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    if (response.getStatus() == CommonProtocol.Status.KEY_NOT_FOUND) {
+      throw new KeyNotFoundException(key);
+    } else if (response.getStatus() != CommonProtocol.Status.OK) {
+      throw new DstException(String.format("Error code is %d", response.getStatus().getNumber()));
+    }
   }
 
   public void remove(String key, Integer index) {
@@ -93,7 +104,7 @@ public class DstListProxy {
             .setIndex(index)
             .build();
     ListProtocol.RemoveResponse response = FutureUtils.get(service.remove(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public void remove(String key, Integer from, Integer end) {
@@ -104,7 +115,7 @@ public class DstListProxy {
             .setEnd(end)
             .build();
     ListProtocol.RemoveResponse response = FutureUtils.get(service.remove(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 
   public void mremove(String key, List<Integer> indexes) {
@@ -113,6 +124,6 @@ public class DstListProxy {
           .addAllIndexes(indexes)
           .build();
     ListProtocol.MRemoveResponse response = FutureUtils.get(service.mremove(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
   }
 }
