@@ -10,6 +10,8 @@ import com.distkv.dst.rpc.service.DstSetService;
 
 public class DstSetProxy {
 
+  private String typeCode = "C";
+
   private DstSetService service;
 
   public DstSetProxy(DstSetService service) {
@@ -22,7 +24,7 @@ public class DstSetProxy {
     values.forEach(value -> request.addValues(value));
 
     SetProtocol.PutResponse response = FutureUtils.get(service.put(request.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
   public Set<String> get(String key) throws DstException {
@@ -32,7 +34,7 @@ public class DstSetProxy {
                     .build();
 
     SetProtocol.GetResponse response = FutureUtils.get(service.get(request));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
     Set<String> set = new HashSet<>(response.getValuesList());
     return set;
   }
@@ -43,7 +45,7 @@ public class DstSetProxy {
     request.setItemValue(entity);
 
     SetProtocol.PutItemResponse response = FutureUtils.get(service.putItem(request.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
   public void removeItem(String key, String entity) {
@@ -53,7 +55,7 @@ public class DstSetProxy {
 
     SetProtocol.RemoveItemResponse response = FutureUtils.get(
         service.removeItem(request.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
   public boolean drop(String key) {
@@ -61,7 +63,7 @@ public class DstSetProxy {
     request.setKey(key);
 
     CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
     return true;
   }
 
@@ -71,7 +73,7 @@ public class DstSetProxy {
     request.setEntity(entity);
 
     SetProtocol.ExistsResponse response = FutureUtils.get(service.exists(request.build()));
-    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey());
+    CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
     return response.getResult();
   }
 }
