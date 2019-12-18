@@ -5,6 +5,7 @@ import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.core.operatorset.DstConcepts;
 import com.distkv.dst.core.operatorset.DstSortedLists;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;
@@ -51,15 +52,15 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
     }
     LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
-    boolean isFounnd = false;
+    boolean isFound = false;
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
       if (now.getMember().equals(member)) {
-        isFounnd = true;
+        isFound = true;
         iterator.remove();
       }
     }
-    if (isFounnd == false) {
+    if (!isFound) {
       throw new DstException("not find info at SortedList");
     }
   }
@@ -70,35 +71,33 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
       throw new KeyNotFoundException(key);
     }
     LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
-    synchronized (this) {
-      ListIterator<SortedListEntity> iterator = list.listIterator();
-      boolean isFounnd = false;
-      while (iterator.hasNext()) {
-        SortedListEntity now = iterator.next();
-        if (now.getMember().equals(member)) {
-          isFounnd = true;
-          now.setScore(now.getScore() + delta);
-          if (iterator.nextIndex() != 1) {
-            iterator.remove();
-            while (iterator.hasPrevious()) {
-              SortedListEntity entity = iterator.previous();
-              if (now.compareTo(entity) <= 0) {
-                iterator.add(now);
-                break;
-              }
-              if (now.compareTo(entity) > 0) {
-                iterator.next();
-                iterator.add(now);
-                break;
-              }
+    ListIterator<SortedListEntity> iterator = list.listIterator();
+    boolean isFound = false;
+    while (iterator.hasNext()) {
+      SortedListEntity now = iterator.next();
+      if (now.getMember().equals(member)) {
+        isFound = true;
+        now.setScore(now.getScore() + delta);
+        if (iterator.nextIndex() != 1) {
+          iterator.remove();
+          while (iterator.hasPrevious()) {
+            SortedListEntity entity = iterator.previous();
+            if (now.compareTo(entity) <= 0) {
+              iterator.add(now);
+              break;
             }
-            break;
+            if (now.compareTo(entity) > 0) {
+              iterator.next();
+              iterator.add(now);
+              break;
+            }
           }
+          break;
         }
       }
-      if (isFounnd == false) {
-        throw new DstException("not find info at SortedList");
-      }
+    }
+    if (!isFound) {
+      throw new DstException("not find info at SortedList");
     }
   }
 
