@@ -5,6 +5,18 @@ package com.distkv.dst.common.exception;
  */
 public class DstException extends RuntimeException {
 
+  String errorCode = "";
+
+  public DstException(String errorCode, String errorMessage) {
+    super(errorMessage);
+    this.errorCode = errorCode;
+  }
+
+  public DstException(String errorCode, String errorMessage, Exception e) {
+    super(errorMessage, e);
+    this.errorCode = errorCode;
+  }
+
   public DstException(String errorMessage) {
     super(errorMessage);
   }
@@ -13,4 +25,7 @@ public class DstException extends RuntimeException {
     super(errorMessage, e);
   }
 
+  public String getErrorCode() {
+    return errorCode;
+  }
 }

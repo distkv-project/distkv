@@ -20,6 +20,12 @@ public class DstSqlErrorListener extends BaseErrorListener {
       sourceName = String.format("%s:%d:%d: ", sourceName, line, charPositionInLine);
     }
     // TODO(qwang): This exception should be refined.
-    throw new DstException(sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
+    if (recognizer.getState() == 128) {
+      throw new DstException("X010",
+            sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
+    } else {
+      throw new DstException("X020",
+            sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
+    }
   }
 }

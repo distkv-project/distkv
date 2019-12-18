@@ -1,7 +1,8 @@
 package com.distkv.dst.core.operatorImpl;
 
-import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
+import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
+import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
 import com.distkv.dst.core.operatorset.DstConcepts;
 import com.distkv.dst.core.operatorset.DstSortedLists;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
@@ -61,7 +62,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
       }
     }
     if (!isFound) {
-      throw new DstException("not find info at SortedList");
+      throw new SortedListMemberNotFoundException(key);
     }
   }
 
@@ -97,7 +98,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
       }
     }
     if (!isFound) {
-      throw new DstException("not find info at SortedList");
+      throw new SortedListMemberNotFoundException(key);
     }
   }
 
@@ -111,7 +112,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
       topNum = list.size();
     }
     if (topNum < 0) {
-      throw new DstException("topNum must be bigger than 0");
+      throw new SortedListTopNumBePositiveException(key, topNum);
     }
     List<SortedListEntity> topList = list.subList(0, topNum);
     return topList;
@@ -131,7 +132,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
       }
       ranking++;
     }
-    throw new DstException("not find info at SortedList");
+    throw new SortedListMemberNotFoundException(key);
   }
 
 }
