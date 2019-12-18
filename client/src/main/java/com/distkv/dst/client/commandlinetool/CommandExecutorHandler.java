@@ -63,15 +63,15 @@ public class CommandExecutorHandler {
   }
 
   public static String listLPut(DstClient dstClient, DstParsedResult parsedResult) {
-    ListProtocol.PutRequest lputRequestList =
-        (ListProtocol.PutRequest) parsedResult.getRequest();
+    ListProtocol.LPutRequest lputRequestList =
+        (ListProtocol.LPutRequest) parsedResult.getRequest();
     dstClient.lists().lput(lputRequestList.getKey(), lputRequestList.getValuesList());
     return STATUS_OK;
   }
 
   public static String listRPut(DstClient dstClient, DstParsedResult parsedResult) {
-    ListProtocol.PutRequest rputRequestList =
-        (ListProtocol.PutRequest) parsedResult.getRequest();
+    ListProtocol.RPutRequest rputRequestList =
+        (ListProtocol.RPutRequest) parsedResult.getRequest();
     dstClient.lists().rput(rputRequestList.getKey(), rputRequestList.getValuesList());
     return STATUS_OK;
   }

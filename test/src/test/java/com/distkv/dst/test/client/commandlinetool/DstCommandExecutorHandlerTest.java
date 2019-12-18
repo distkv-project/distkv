@@ -211,7 +211,7 @@ public class DstCommandExecutorHandlerTest extends BaseTestSupplier {
     command = "slist.getMember k1 m2";
     dstParsedResult = dstParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
-            .slistGetMember(dstClient, dstParsedResult), "(m2, 22), 1st");
+            .slistGetMember(dstClient, dstParsedResult), "(m2, -1), 3rd");
 
     // Test command 'slist.drop'
     command = "slist.drop k1";
