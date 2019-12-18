@@ -15,8 +15,6 @@ import java.util.Arrays;
 public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>>
     implements DstSortedLists {
 
-  private boolean isFound;
-
   public DstSortedListsImpl() {
   }
 
@@ -54,7 +52,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
     }
     LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
-    isFound = false;
+    boolean isFound = false;
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
       if (now.getMember().equals(member)) {
@@ -74,11 +72,11 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
     }
     LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
-    boolean isFounnd = false;
+    boolean isFound = false;
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
       if (now.getMember().equals(member)) {
-        isFounnd = true;
+        isFound = true;
         now.setScore(now.getScore() + delta);
         if (iterator.nextIndex() != 1) {
           iterator.remove();
@@ -98,7 +96,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
         }
       }
     }
-    if (isFounnd == false) {
+    if (isFound == false) {
       throw new DstException("not find info at SortedList");
     }
   }
