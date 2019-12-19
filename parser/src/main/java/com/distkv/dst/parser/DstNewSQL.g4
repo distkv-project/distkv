@@ -18,17 +18,15 @@ strGet: 'str.get' key ;
 strDrop: 'str.drop' key ;
 
 // list concept
-listStatement: listPut | listLput | listRput | listGet | listRGet | listRemove | listMRemove | listDrop;
+listStatement: listPut | listLput | listRput | listGet | listRemove | listMRemove | listDrop;
 listPut: 'list.put' key valueArray;
 listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
 listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
-listRGet: 'list.rget' listGetArguments;
 listRemove: 'list.remove' (listRemoveOne | listRemoveRange);
 listMRemove: 'list.mremove' key (index)+;
 listDrop: 'list.drop' key;
 
-listGetArguments: listGetAll | listGetOne | listGetRange;
 // Get the all values of this list.
 listGetAll: key;
 // Get the specific value of the given index.

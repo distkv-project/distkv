@@ -139,11 +139,6 @@ public class DstNewSqlListener extends DstNewSQLBaseListener {
   }
 
   @Override
-  public void enterListRGet(DstNewSQLParser.ListRGetContext ctx) {
-    // TODO(qwang): Refine.
-  }
-
-  @Override
   public void enterListRemoveOne(DstNewSQLParser.ListRemoveOneContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
