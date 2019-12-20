@@ -1,11 +1,11 @@
 package com.distkv.dst.core;
 
-import com.distkv.dst.core.operatorset.DstDicts;
-import com.distkv.dst.core.operatorset.DstLists;
-import com.distkv.dst.core.operatorset.DstSets;
-import com.distkv.dst.core.operatorset.DstStrings;
-import com.distkv.dst.core.operatorset.DstSortedLists;
-import com.distkv.dst.core.operatorset.DstTables;
+import com.distkv.dst.core.concepts.DstDicts;
+import com.distkv.dst.core.concepts.DstLists;
+import com.distkv.dst.core.concepts.DstSets;
+import com.distkv.dst.core.concepts.DstStrings;
+import com.distkv.dst.core.concepts.DstSortedLists;
+import com.distkv.dst.core.concepts.DstTables;
 
 /**
  * The api of dst store.

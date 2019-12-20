@@ -1,8 +1,6 @@
-package com.distkv.dst.core.operatorImpl;
+package com.distkv.dst.core.concepts;
 
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
-import com.distkv.dst.core.operatorset.DstConcepts;
-import com.distkv.dst.core.operatorset.DstLists;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import java.util.ArrayList;
