@@ -26,7 +26,7 @@ public class WorkerPool {
 
   public void postRequest(
       String key, RequestTypeEnum requestType, Object request, Object completableFuture) {
-    final int workerIndex = key.hashCode() % shardNum;
+    final int workerIndex = (key.hashCode() < 0 ? -key.hashCode() : key.hashCode()) % shardNum;
     Worker worker = workers.get(workerIndex);
     try {
       worker.post(new InternalRequest(requestType, request, completableFuture));
