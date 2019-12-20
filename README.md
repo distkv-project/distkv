@@ -5,23 +5,23 @@ A distributed key-value in-memory store system with table concept.
 Full [document](https://docs.dst-pro.com) is here.
 
 ## Project Description
-`Dst` project is a memory-based distributed key-value storage system. Besides these features, dst can support table concept which looks like tables in relational databases. We use java to finish this project, which is somewhat different from most databases using c/c++.
+`Dst` project is a memory-based distributed key-value storage system. Besides these features, dst can support table concept which looks like tables in relational databases. We use `Java` to finish this project, which is somewhat different from most databases using `C/C++`.
 
 ## Awesome Features
 1. Redis-like data structure
-2. Table concept based on k-v store
+2. Table concept based on KV Store
 3. High available since this is distributed
 4. Easy to use client
-5. Strong ecosystem for web applications
+5. Strong ecosystem for Web application
 
 ## Quick Started
-#### 1. install dst
+#### 1. Install Dst
 Running the scripts `install_dst.sh` will install the whole dst to your machine.
 ```bash
 ./install_dst.sh
 ```
 
-When we connect to server, we must start server first. At present, we only have two kinds of clients. One is `command line tool`, another is `java client sdk`.
+When we connect to server, we must start server firstly. At present, we only have two kinds of clients. One is `command line tool`, another is `java client sdk`.
 We can use each of them to access dst server.
 #### 1. Start Dst Server
 ```bash
