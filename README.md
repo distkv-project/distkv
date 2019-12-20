@@ -16,7 +16,7 @@ Full [document](https://docs.dst-pro.com) is here.
 
 ## Quick Started
 #### 1. Install Dst
-Running the scripts `scripts/install_dst.sh` will install the whole `dst` to your machine.
+Running the scripts `scripts/install_dst.sh` will install the whole `Dst` to your machine.
 ```bash
 ./scripts/install_dst.sh
 ```
