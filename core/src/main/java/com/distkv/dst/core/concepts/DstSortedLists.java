@@ -1,8 +1,7 @@
-package com.distkv.dst.core.operatorset;
+package com.distkv.dst.core.concepts;
 
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.utils.Status;
-
 import java.util.LinkedList;
 import java.util.List;
 
