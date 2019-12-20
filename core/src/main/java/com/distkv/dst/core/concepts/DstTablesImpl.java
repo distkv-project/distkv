@@ -1,12 +1,10 @@
-package com.distkv.dst.core.operatorImpl;
+package com.distkv.dst.core.concepts;
 
 import com.distkv.dst.common.exception.TableNotFoundException;
 import com.distkv.dst.common.exception.DuplicatedPrimaryKeyException;
 import com.distkv.dst.common.exception.IncorrectRecordFormatException;
 import com.distkv.dst.common.exception.IncorrectTableFormatException;
 import com.distkv.dst.common.exception.TableAlreadyExistsException;
-import com.distkv.dst.core.operatorset.DstConcepts;
-import com.distkv.dst.core.operatorset.DstTables;
 import com.distkv.dst.core.DstHashMapImpl;
 import com.distkv.dst.core.table.TableEntry;
 import com.distkv.dst.core.table.TableSpecification;
