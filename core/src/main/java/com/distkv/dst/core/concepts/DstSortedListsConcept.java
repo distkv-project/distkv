@@ -2,10 +2,9 @@ package com.distkv.dst.core.concepts;
 
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.utils.Status;
-import java.util.LinkedList;
 import java.util.List;
 
-public interface DstSortedLists {
+public interface DstSortedListsConcept {
 
   /**
    * This method will put a key-value pair to map.
@@ -13,7 +12,7 @@ public interface DstSortedLists {
    * @param key The key to store.
    * @param list The SortedList value to store.
    */
-  void put(String key, LinkedList<SortedListEntity> list);
+  void put(String key, DstSortListsCollection<SortedListEntity> list);
 
   /**
    * This method will del a key-value pair to map.
