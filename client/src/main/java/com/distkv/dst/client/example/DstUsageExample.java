@@ -1,7 +1,13 @@
 package com.distkv.dst.client.example;
 
-import java.util.*;
-
+import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 import com.distkv.dst.client.DefaultDstClient;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 
