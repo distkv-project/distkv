@@ -17,6 +17,7 @@
         <module>rpc</module>
         <module>parser</module>
         <module>dmeta</module>
+        <module>fclt</module>
     </modules>
 
     <properties>
