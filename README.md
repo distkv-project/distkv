@@ -39,20 +39,22 @@ dst-cli > str.put "k1" "v1"
 dst-cli > ok
 dst-cli > str.get "k1" 
 dst-cli > "v1"
+
 dst-cli > list.put "k1" "v1" "v2" "v3"
 dst-cli > ok
 dst-cli > list.get "k1"
 dst-cli > ["v1", "v2", "v3"]
+
 dst-cli > set.put "k1" "v1" "v2" "v3"
 dst-cli > ok
 dst-cli > set.get "k1"
 dst-cli > {"v1", "v2", "v3"}
+
 dst-cli > dict.put "dict1" "k1" "v1" "k2" "v2"
 dst-cli > ok
 dst-cli > dict.get "dict1"
 dst-cli > { "k1" : "v1", "k2" : "v2"}
-dst-cli > str.put "k1" "v1"   # the same as `put`
-dst-cli > ok 
+
 dst-cli > slist.put "k1" "m1" 4 "m2" -4 "m3" 0
 dst-cli > ok
 dst-cli > slist.top "k1" 2
