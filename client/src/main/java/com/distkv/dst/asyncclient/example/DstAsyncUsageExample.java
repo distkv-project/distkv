@@ -2,9 +2,16 @@ package com.distkv.dst.asyncclient.example;
 
 import com.distkv.dst.asyncclient.DefaultAsyncClient;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
-import com.distkv.dst.rpc.protobuf.generated.*;
-
-import java.util.*;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
+import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
+import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
