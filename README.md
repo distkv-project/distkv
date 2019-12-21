@@ -40,8 +40,6 @@ dst-cli > str.put "k1" "v1"
 dst-cli > ok
 dst-cli > str.get "k1" 
 dst-cli > "v1"
-dst-cli > put "k1" "v1"   # the same as `str.put`
-dst-cli > ok 
 
 #concept list
 dst-cli > list.put "k1" "v1" "v2" "v3"
