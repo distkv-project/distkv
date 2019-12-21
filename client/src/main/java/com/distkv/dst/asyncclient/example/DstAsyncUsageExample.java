@@ -1,13 +1,16 @@
 package com.distkv.dst.asyncclient.example;
 
 import com.distkv.dst.asyncclient.DefaultAsyncClient;
+import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
-import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -28,6 +31,11 @@ public class DstAsyncUsageExample {
       map.put("k3", "v3");
       CompletableFuture<DictProtocol.PutResponse> dictPutFuture =
               dstClient.dicts().put("dict", map);
+      LinkedList<SortedListEntity> slist = new LinkedList<>();
+      slist.add(new SortedListEntity("a", 10));
+      slist.add(new SortedListEntity("b", 8));
+      slist.add(new SortedListEntity("c", 6));
+      slist.add(new SortedListEntity("d", 4));
 
       strPutFuture.whenComplete((r, t) -> {
         if (t != null) {
@@ -76,39 +84,87 @@ public class DstAsyncUsageExample {
         if (t != null) {
           throw new IllegalStateException(t);
         } else {
-          System.out.println("The result of dstClient.strs().get(\"k1\") is: "
-                  + r.getValue());
+          System.out.println("String get completed.");
         }
       });
       listGetFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
         } else {
-          System.out.println("The result of dstClient.lists().get(\"k1\") is: "
-                  + r.getValuesList());
+          System.out.println("List get completed.");
         }
       });
       setGetFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
         } else {
-          System.out.println("The result of dstClient.sets().get(\"k1\") is: "
-                  + r.getValuesList());
+          System.out.println("Set get completed.");
         }
       });
       dictGetFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
         } else {
-          System.out.println("The result of dstClient.dicts().get(\"dict1\") is: "
-                  + "\n" + r.getDict());
+          System.out.println("Dict get completed.");
         }
       });
 
-      strGetFuture.get();
-      listGetFuture.get();
-      setGetFuture.get();
-      dictGetFuture.get();
+      StringProtocol.GetResponse strGet = strGetFuture.get();
+      ListProtocol.GetResponse listGet = listGetFuture.get();
+      SetProtocol.GetResponse setGet = setGetFuture.get();
+      DictProtocol.GetResponse dictGet = dictGetFuture.get();
+
+      System.out.println("The result of dstClient.strs().get(\"k1\") is: "
+            + strGet.getValue());
+      System.out.println("The result of dstClient.lists().get(\"k1\") is: "
+            + listGet.getValuesList());
+      System.out.println("The result of dstClient.sets().get(\"k1\") is: "
+            + setGet.getValuesList());
+      System.out.println("The result of dstClient.dicts().get(\"dict1\") is: "
+            + "\n" + dictGet.getDict());
+
+      // SortedList example.
+      CompletableFuture<SortedListProtocol.PutResponse> slistPutFuture =
+            dstClient.sortedLists().put("k1", slist);
+      CompletableFuture<SortedListProtocol.PutMemberResponse> slistPutMFuture =
+            dstClient.sortedLists().putMember("k1", new SortedListEntity("s",100));
+
+      slistPutFuture.whenComplete((r, t) -> {
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("SortedList put completed.");
+        }
+      });
+
+      // Make sure the "Put" request is done first.
+      slistPutFuture.get();
+
+      slistPutMFuture.whenComplete((r, t) -> {
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("SortedList putMember completed.");
+        }
+      });
+      slistPutMFuture.get();
+
+      CompletableFuture<SortedListProtocol.TopResponse> slistTopFuture =
+            dstClient.sortedLists().top("k1", 3);
+
+      slistTopFuture.whenComplete((r, t) -> {
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("SortedList top completed.");
+        }
+      });
+
+      SortedListProtocol.TopResponse slistTop = slistTopFuture.get();
+      System.out.println("The result of dstClient.sortedLists().top(\"k1\") is: " +
+            "{ First: " + slistTop.getList(0).getMember() +
+            "; Second: " + slistTop.getList(1).getMember() +
+            "; Third: " + slistTop.getList(2).getMember() + "; }");
 
       dstClient.disconnect();
     }
