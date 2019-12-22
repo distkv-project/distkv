@@ -1,6 +1,5 @@
 package com.distkv.dst.core;
 
-import com.distkv.dst.core.concepts.DstSortedLinkedListsImpl;
 import com.distkv.dst.core.concepts.DstDictsImpl;
 import com.distkv.dst.core.concepts.DstSetsImpl;
 import com.distkv.dst.core.concepts.DstStringsImpl;
@@ -8,10 +7,11 @@ import com.distkv.dst.core.concepts.DstTablesImpl;
 import com.distkv.dst.core.concepts.DstListsImpl;
 import com.distkv.dst.core.concepts.DstTables;
 import com.distkv.dst.core.concepts.DstDicts;
-import com.distkv.dst.core.concepts.DstSortedLinkedLists;
 import com.distkv.dst.core.concepts.DstSets;
 import com.distkv.dst.core.concepts.DstLists;
 import com.distkv.dst.core.concepts.DstStrings;
+import com.distkv.dst.core.concepts.DstSortedLists;
+import com.distkv.dst.core.concepts.DstSortedListsImpl;
 
 public class KVStoreImpl implements KVStore {
 
@@ -23,7 +23,7 @@ public class KVStoreImpl implements KVStore {
 
   private DstDictsImpl dicts;
 
-  private DstSortedLinkedLists sortedLists;
+  private DstSortedLists sortedLists;
 
   private DstTablesImpl tables;
 
@@ -33,7 +33,7 @@ public class KVStoreImpl implements KVStore {
     this.sets = new DstSetsImpl();
     this.dicts = new DstDictsImpl();
     this.tables = new DstTablesImpl();
-    this.sortedLists = new DstSortedLinkedListsImpl();
+    this.sortedLists = new DstSortedListsImpl();
   }
 
   @Override
@@ -57,7 +57,7 @@ public class KVStoreImpl implements KVStore {
   }
 
   @Override
-  public DstSortedLinkedLists sortLists() {
+  public DstSortedLists sortLists() {
     return sortedLists;
   }
 
