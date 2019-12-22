@@ -10,6 +10,7 @@ import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
+import com.distkv.dst.core.concepts.DstLinkedList;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
@@ -22,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -591,7 +591,7 @@ public class Worker extends Thread {
                 SortedListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status;
             try {
-              LinkedList<SortedListEntity> linkedList = new LinkedList<>();
+              DstLinkedList<SortedListEntity> linkedList = new DstLinkedList<>();
               for (int i = 0; i < request.getListCount(); i++) {
                 linkedList.add(new SortedListEntity(request.getList(i).getMember(),
                     request.getList(i).getScore()));

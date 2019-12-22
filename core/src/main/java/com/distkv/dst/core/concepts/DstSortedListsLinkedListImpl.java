@@ -11,17 +11,20 @@ import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Arrays;
 
-public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>>
-    implements DstSortedLists {
+public class DstSortedListsLinkedListImpl
+        extends DstConcepts<DstLinkedList<SortedListEntity>>
+        implements DstSortedListsConcept {
 
-  public DstSortedListsImpl() {
+  public DstSortedListsLinkedListImpl() {
+
   }
 
   @Override
-  public void put(String key, LinkedList<SortedListEntity> list) {
+  public void put(String key,
+                  DstSortListsCollection<SortedListEntity> list) {
     // Note(qwang): Overwrite for do a sort.
     Collections.sort(list);
-    dstKeyValueMap.put(key, list);
+    dstKeyValueMap.put(key, (DstLinkedList<SortedListEntity>) list);
   }
 
   @Override
@@ -29,7 +32,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList list = dstKeyValueMap.get(key);
+    LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
     ListIterator<SortedListEntity> iterator = list.listIterator();
     while (iterator.hasNext()) {
       SortedListEntity now = iterator.next();
@@ -105,7 +108,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList list = dstKeyValueMap.get(key);
+    LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
     if (topNum > list.size()) {
       topNum = list.size();
     }
