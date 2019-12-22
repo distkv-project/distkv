@@ -11,10 +11,11 @@ import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Arrays;
 
-public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>>
-    implements DstSortedLists {
+public class DstSortedLinkedListsImpl
+        extends DstConcepts<LinkedList<SortedListEntity>>
+        implements DstSortedLinkedLists {
 
-  public DstSortedListsImpl() {
+  public DstSortedLinkedListsImpl() {
   }
 
   @Override
