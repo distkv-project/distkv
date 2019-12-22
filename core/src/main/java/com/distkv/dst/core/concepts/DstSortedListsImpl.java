@@ -4,6 +4,7 @@ import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
 import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+import com.distkv.dst.core.struct.slist.SortedList;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Arrays;
 
-public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>>
+public class DstSortedListsImpl extends DstConcepts<SortedList>
     implements DstSortedLists {
 
   public DstSortedListsImpl() {
