@@ -8,6 +8,7 @@ pushd drpc_tmp
 git checkout %DRPC_COMMIT_ID%
 mvn clean install -DskipTests
 popd
+rd /S /Q drpc_tmp
 
 echo Drpc was installed successfully.
 echo All dependencies were installed successfully.
