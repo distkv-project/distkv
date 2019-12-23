@@ -3,9 +3,12 @@ package com.distkv.dst.test.benchmark;
 import com.distkv.dst.asyncclient.DefaultAsyncClient;
 import com.distkv.dst.asyncclient.DstAsyncClient;
 import com.distkv.dst.test.supplier.TestUtil;
-
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.OptionalDouble;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 public class SimpleBenchmark {
