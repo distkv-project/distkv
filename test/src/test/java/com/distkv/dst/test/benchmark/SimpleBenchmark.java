@@ -45,7 +45,7 @@ public class SimpleBenchmark {
     String tps = df.format(LOOP_COUNT / avgTime);
 
     System.out.println(
-        "=========================Execute Result==============================\n" +
+        "=========================Benchmark Result==============================\n" +
             "API                          str.put()\n" +
             "t_count                      " + THREAD_COUNT + "\n" +
             "c_request                    " + LOOP_COUNT + "\n" +
