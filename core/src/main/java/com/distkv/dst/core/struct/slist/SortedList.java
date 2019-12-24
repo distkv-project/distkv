@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface SortedList {
 
-	int getSize();
+  int getSize();
 
-	boolean put(List<SortedListEntity> sortedListEntities);
+  boolean put(List<SortedListEntity> sortedListEntities);
 
-	void putItem(SortedListEntity sortedListEntity);
+  void putItem(SortedListEntity sortedListEntity);
 
-	boolean removeItem(String member);
+  boolean removeItem(String member);
 
-	int incrScore(String member, int delta);
+  int incrScore(String member, int delta);
 
-	List<SortedListEntity> subList(int start, int end);
+  List<SortedListEntity> subList(int start, int end);
 
-	List<Integer> getItem(String member);
+  List<Integer> getItem(String member);
 }
