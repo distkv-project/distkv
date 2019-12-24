@@ -30,5 +30,23 @@ public class SortedListEntity implements Comparable<SortedListEntity> {
   public int compareTo(SortedListEntity o) {
     return o.getScore() - getScore();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    SortedListEntity anotherEntity = (SortedListEntity) o;
+    return score == anotherEntity.score &&
+            member.equals(anotherEntity);
+  }
+
+  @Override
+  public int hashCode() {
+    return member.hashCode() * 31 + score;
+  }
 }
 

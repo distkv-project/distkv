@@ -1,28 +1,32 @@
 package com.distkv.dst.core.concepts;
 
 import com.distkv.dst.common.exception.KeyNotFoundException;
+import com.distkv.dst.common.exception.SortedListDuplicatedMembersException;
+import com.distkv.dst.common.exception.SortedListIncrScoreOutOfRange;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
 import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+import com.distkv.dst.core.struct.slist.SortedList;
+import com.distkv.dst.core.struct.slist.SortedListLinkedListImpl;
 
 import java.util.List;
 import java.util.LinkedList;
-import java.util.Collections;
-import java.util.ListIterator;
-import java.util.Arrays;
 
 public class DstSortedListsImpl
-        extends DstConcepts<LinkedList<SortedListEntity>>
-        implements DstSortedLists {
-
+        extends DstConcepts<SortedList>
+        implements DstSortedLists
+{
   public DstSortedListsImpl() {
+
   }
 
   @Override
   public void put(String key, LinkedList<SortedListEntity> list) {
-    // Note(qwang): Overwrite for do a sort.
-    Collections.sort(list);
-    dstKeyValueMap.put(key, list);
+    SortedList sortedList = new SortedListLinkedListImpl();
+    if (!sortedList.put(list)) {
+      throw new SortedListDuplicatedMembersException(key);
+    }
+    dstKeyValueMap.put(key, sortedList);
   }
 
   @Override
@@ -30,19 +34,8 @@ public class DstSortedListsImpl
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList list = dstKeyValueMap.get(key);
-    ListIterator<SortedListEntity> iterator = list.listIterator();
-    while (iterator.hasNext()) {
-      SortedListEntity now = iterator.next();
-      if (now.compareTo(item) > 0) {
-        iterator.previous();
-        iterator.add(item);
-        break;
-      }
-    }
-    if (!iterator.hasNext()) {
-      iterator.add(item);
-    }
+    final SortedList sortedList = dstKeyValueMap.get(key);
+    sortedList.putItem(item);
   }
 
   @Override
@@ -50,16 +43,8 @@ public class DstSortedListsImpl
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
-    ListIterator<SortedListEntity> iterator = list.listIterator();
-    boolean isFound = false;
-    while (iterator.hasNext()) {
-      SortedListEntity now = iterator.next();
-      if (now.getMember().equals(member)) {
-        isFound = true;
-        iterator.remove();
-      }
-    }
+    final SortedList sortedList = dstKeyValueMap.get(key);
+    final boolean isFound = sortedList.removeItem(member);
     if (!isFound) {
       throw new SortedListMemberNotFoundException(key);
     }
@@ -70,34 +55,12 @@ public class DstSortedListsImpl
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList<SortedListEntity> list = dstKeyValueMap.get(key);
-    ListIterator<SortedListEntity> iterator = list.listIterator();
-    boolean isFound = false;
-    while (iterator.hasNext()) {
-      SortedListEntity now = iterator.next();
-      if (now.getMember().equals(member)) {
-        isFound = true;
-        now.setScore(now.getScore() + delta);
-        if (iterator.nextIndex() != 1) {
-          iterator.remove();
-          while (iterator.hasPrevious()) {
-            SortedListEntity entity = iterator.previous();
-            if (now.compareTo(entity) <= 0) {
-              iterator.add(now);
-              break;
-            }
-            if (now.compareTo(entity) > 0) {
-              iterator.next();
-              iterator.add(now);
-              break;
-            }
-          }
-          break;
-        }
-      }
-    }
-    if (!isFound) {
+    final SortedList sortedList = dstKeyValueMap.get(key);
+    final int isFound = sortedList.incrScore(member, delta);
+    if (0 == isFound) {
       throw new SortedListMemberNotFoundException(key);
+    } else if (-1 == isFound) {
+      throw new SortedListIncrScoreOutOfRange(key);
     }
   }
 
@@ -106,15 +69,14 @@ public class DstSortedListsImpl
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    LinkedList list = dstKeyValueMap.get(key);
-    if (topNum > list.size()) {
-      topNum = list.size();
+    final SortedList sortedList = dstKeyValueMap.get(key);
+    if (topNum > sortedList.getSize()) {
+      topNum = sortedList.getSize();
     }
     if (topNum < 0) {
       throw new SortedListTopNumBePositiveException(key, topNum);
     }
-    List<SortedListEntity> topList = list.subList(0, topNum);
-    return topList;
+    return sortedList.subList(0, topNum);
   }
 
   @Override
@@ -122,16 +84,12 @@ public class DstSortedListsImpl
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    int ranking = 1;
-    final LinkedList<SortedListEntity> sortedListEntities = dstKeyValueMap.get(key);
-
-    for (final SortedListEntity sortedListEntity : sortedListEntities) {
-      if (sortedListEntity.getMember().equals(member)) {
-        return Arrays.asList(sortedListEntity.getScore(), ranking);
-      }
-      ranking++;
+    final SortedList sortedList = dstKeyValueMap.get(key);
+    final List<Integer> resultList = sortedList.getItem(member);
+    if (resultList == null) {
+      throw new SortedListMemberNotFoundException(key);
     }
-    throw new SortedListMemberNotFoundException(key);
+    return resultList;
   }
 
 }
