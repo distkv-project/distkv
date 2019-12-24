@@ -30,7 +30,7 @@
             <maxHistory>120</maxHistory>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>WARN</level>
+            <level>info</level>
         </filter>
 
         <encoder>
