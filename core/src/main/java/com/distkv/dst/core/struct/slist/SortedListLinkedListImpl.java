@@ -206,11 +206,11 @@ public final class SortedListLinkedListImpl
     final Set<SortedListEntity> sortedListEntitySet = new HashSet<>();
     for (final SortedListEntity e : sortedListEntities) {
       if (sortedListEntitySet.contains(e)) {
-        return false;
+        return true;
       }
       sortedListEntitySet.add(e);
     }
-    return true;
+    return false;
   }
 
   private void appendNode(

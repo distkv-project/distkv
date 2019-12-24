@@ -14,8 +14,7 @@ import java.util.LinkedList;
 
 public class DstSortedListsImpl
     extends DstConcepts<SortedList>
-    implements DstSortedLists
-{
+    implements DstSortedLists {
   public DstSortedListsImpl() {
 
   }

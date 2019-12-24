@@ -40,13 +40,12 @@ public class SortedListEntity implements Comparable<SortedListEntity> {
       return false;
     }
     SortedListEntity anotherEntity = (SortedListEntity) o;
-    return score == anotherEntity.score &&
-            member.equals(anotherEntity);
+    return member.equals(anotherEntity.getMember());
   }
 
   @Override
   public int hashCode() {
-    return member.hashCode() * 31 + score;
+    return member.hashCode();
   }
 }
 
