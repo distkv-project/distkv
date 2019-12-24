@@ -14,6 +14,7 @@
     <!--List the dependency versions of the project-->
     <properties>
         <logback.version>1.2.3</logback.version>
+        <typesafe.version>1.4.0</typesafe.version>
     </properties>
 
     <build>
@@ -66,6 +67,10 @@
             <version>2.6</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe.version}</version>
+        </dependency>
     </dependencies>
 </project>

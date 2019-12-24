@@ -12,6 +12,8 @@ import com.distkv.dst.server.service.DstListServiceImpl;
 import com.distkv.dst.server.service.DstSetServiceImpl;
 import com.distkv.dst.server.service.DstSortedListServiceImpl;
 import com.distkv.dst.server.service.DstStringServiceImpl;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,6 +82,11 @@ public class DstServer {
   }
 
   public static void main(String[] args) {
+    Config conf = ConfigFactory.load("dst_server");
+    listeningPort = conf.getInt("DstServer.listeningPort");
+    boolean isMaster = conf.getBoolean("DstServer.isMaster");
+    int shardNum = conf.getInt("DstServer.shardNum");
+
     if (args.length == 1) {
       try {
         listeningPort = Integer.valueOf(args[0]);
@@ -89,9 +96,10 @@ public class DstServer {
         System.exit(0);
       }
     }
+
     DstServerConfig.DstServerConfigBuilder builder = DstServerConfig.builder();
     DstServerConfig config = builder
-        .isMaster(true)
+        .isMaster(isMaster)
         .port(listeningPort)
         .build();
     DstServer dstServer = new DstServer(config);
