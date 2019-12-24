@@ -1,12 +1,8 @@
-
+![dst](docs/res/logo.png)
 # dst [![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-dst-project-dst-master) [![codecov](https://codecov.io/gh/dst-project/dst/branch/master/graph/badge.svg)](https://codecov.io/gh/dst-project/dst)
 A distributed key-value in-memory store system with table concept.
 
 Full [document](https://docs.dst.distkv.com/en/latest/) is here.
-
-<div align=center>
-	<img src="docs/res/logo.png" >
-</div>
 
 ## Project Description
 `Dst` project is a memory-based distributed key-value storage system. Besides these features, dst can support table concept which looks like tables in relational databases. We use `Java` to finish this project, which is somewhat different from most databases using `C/C++`.
