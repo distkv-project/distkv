@@ -1,8 +1,6 @@
-
 <div align=left>
-	<img src="docs/res/logo.png" width="120" height="100"> 
+	<img src="docs/res/logo.png" width="135" height="135"> 
 </div>
-
 # dst [![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-dst-project-dst-master) [![codecov](https://codecov.io/gh/dst-project/dst/branch/master/graph/badge.svg)](https://codecov.io/gh/dst-project/dst)
 A distributed key-value in-memory store system with table concept.
 
