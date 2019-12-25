@@ -101,6 +101,7 @@ public class DstServer {
     DstServerConfig config = builder
         .isMaster(isMaster)
         .port(listeningPort)
+        .shardNum(shardNum)
         .build();
     DstServer dstServer = new DstServer(config);
     System.out.println(WELCOME_WORDS);

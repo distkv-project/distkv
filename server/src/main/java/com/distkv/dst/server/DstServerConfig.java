@@ -6,6 +6,7 @@ public class DstServerConfig {
   private int listeningPort;
   private int workerThreadNum;
   private boolean isMaster;
+  private int shardNum;
 
   public boolean isMaster() {
     return isMaster;
@@ -23,10 +24,18 @@ public class DstServerConfig {
     return  listeningPort;
   }
 
-  DstServerConfig(int listeningPort, int workerThreadNum, boolean isMaster) {
+  public int getShardNum() {
+    return shardNum;
+  }
+
+  DstServerConfig(int listeningPort,
+                  int workerThreadNum,
+                  boolean isMaster,
+                  int shardNum) {
     this.listeningPort = listeningPort;
     this.isMaster = isMaster;
     this.workerThreadNum = workerThreadNum;
+    this.shardNum = shardNum;
   }
 
   public static DstServerConfig.DstServerConfigBuilder builder() {
@@ -37,6 +46,7 @@ public class DstServerConfig {
     private int listeningPort;
     private int workerThreadNum;
     private boolean isMaster;
+    private int shardNum;
 
     public DstServerConfig.DstServerConfigBuilder port(int port) {
       this.listeningPort = port;
@@ -48,13 +58,22 @@ public class DstServerConfig {
       return this;
     }
 
+    public DstServerConfig.DstServerConfigBuilder shardNum(int num) {
+      this.shardNum = num;
+      return this;
+    }
+
     public DstServerConfig.DstServerConfigBuilder isMaster(boolean isMaster) {
       this.isMaster = isMaster;
       return this;
     }
 
     public DstServerConfig build() {
-      return new DstServerConfig(listeningPort, workerThreadNum, isMaster);
+      return new DstServerConfig(
+          listeningPort,
+          workerThreadNum,
+          isMaster,
+          shardNum);
     }
   }
 }
