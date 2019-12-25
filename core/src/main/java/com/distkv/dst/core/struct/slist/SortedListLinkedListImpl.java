@@ -13,6 +13,7 @@ import java.util.Set;
 public final class SortedListLinkedListImpl
     extends LinkedList<SortedListEntity>
     implements SortedList, java.io.Serializable {
+
   private static final long serialVersionUID = -3486672273827013638L;
 
   private transient Node<SortedListEntity> first;
@@ -26,7 +27,7 @@ public final class SortedListLinkedListImpl
   }
 
   public boolean isEmpty() {
-    return (first == null && last == null);
+    return size == 0;
   }
 
   @Override
@@ -47,37 +48,39 @@ public final class SortedListLinkedListImpl
 
   @Override
   public void putItem(SortedListEntity sortedListEntity) {
+    final LeaderboardItem leaderboardItem = null;
+       // this.getItemByMember(sortedListEntity.getMember());
+    final String nowMember = sortedListEntity.getMember();
+    final int nowScore = sortedListEntity.getScore();
     Node<SortedListEntity> node;
-    if ((node = isExistByMember(sortedListEntity.getMember())) != null) {
-      node.item.setScore(sortedListEntity.getScore());
+    if ((node = leaderboardItem.entityNode) != null) {
+      node.item.setScore(nowScore);
     } else {
-      size++;
-      Node<SortedListEntity> now = this.getInsertPosition(sortedListEntity);
-      this.appendNode(now, sortedListEntity);
+      Node<SortedListEntity> now = this.getInsertPosition(nowScore);
+      this.appendNode(now, nowMember, nowScore);
     }
   }
 
   @Override
   public boolean removeItem(String member) {
-    Leaderboard leaderboard = getNodeByMember(member);
-    if (leaderboard == null) {
+    LeaderboardItem leaderboardItem = getItemByMember(member);
+    if (leaderboardItem == null) {
       return false;
     }
-    size--;
-    Node<SortedListEntity> now = leaderboard.entityNode;
+    Node<SortedListEntity> now = leaderboardItem.entityNode;
     this.deleteNode(now);
     return true;
   }
 
   @Override
   public int incrScore(String member, int delta) {
-    Leaderboard leaderboard = getNodeByMember(member);
-    if (leaderboard == null) {
+    LeaderboardItem leaderboardItem = getItemByMember(member);
+    if (leaderboardItem == null) {
       return 0;
     }
 
-    Node<SortedListEntity> now = leaderboard.entityNode;
-    int nowScore = now.item.getScore();
+    Node<SortedListEntity> now = leaderboardItem.entityNode;
+    final int nowScore = now.item.getScore();
     // Check if there is outing of range after increase the score:
     //     Case 1: The score will more than Integer.MAX_VALUE when delta is positive
     //     Case 2: The score will less than Integer.MIN_VALUE when delta is negative
@@ -86,26 +89,26 @@ public final class SortedListLinkedListImpl
       return -1;
     }
 
-    now.item.setScore(nowScore + delta);
+    final int afterIncr = nowScore + delta;
     this.deleteNode(now);
-    Node<SortedListEntity> sortedListEntityNode = this.getInsertPosition(now.item);
-    this.appendNode(sortedListEntityNode, now.item);
+    Node<SortedListEntity> sortedListEntityNode = this.getInsertPosition(afterIncr);
+    this.appendNode(sortedListEntityNode, member, afterIncr);
     return 1;
   }
 
   @Override
   public List<SortedListEntity> subList(int start, int end) {
-    int index = 0;
+    int nowRanking = 1;
     Node<SortedListEntity> cur = first;
     List<SortedListEntity> topList = new ArrayList<>();
     while (cur != null) {
-      if (index >= start && index <= end) {
+      if (nowRanking >= start && nowRanking <= end) {
         topList.add(cur.item);
       }
-      if (index > end) {
+      if (nowRanking > end) {
         break;
       }
-      index++;
+      nowRanking++;
       cur = cur.next;
     }
     return topList;
@@ -113,10 +116,10 @@ public final class SortedListLinkedListImpl
 
   @Override
   public List<Integer> getItem(String member) {
-    Leaderboard leaderboard = this.getNodeByMember(member);
-    return leaderboard == null
+    LeaderboardItem leaderboardItem = this.getItemByMember(member);
+    return leaderboardItem == null
         ? null
-        : Arrays.asList(leaderboard.entityNode.item.getScore(), leaderboard.ranking);
+        : Arrays.asList(leaderboardItem.entityNode.item.getScore(), leaderboardItem.ranking);
   }
 
   private static class Node<E> {
@@ -132,12 +135,12 @@ public final class SortedListLinkedListImpl
     }
   }
 
-  private static class Leaderboard {
+  private static class LeaderboardItem {
     Node<SortedListEntity> entityNode;
     int ranking;
 
-    public Leaderboard(Node<SortedListEntity> sortedListEntity,
-                       int ranking) {
+    public LeaderboardItem(Node<SortedListEntity> sortedListEntity,
+                           int ranking) {
       this.entityNode = sortedListEntity;
       this.ranking = ranking;
     }
@@ -157,27 +160,26 @@ public final class SortedListLinkedListImpl
     }
   }
 
-  private Leaderboard getNodeByMember(String member) {
-    Leaderboard leaderboard = null;
+  private LeaderboardItem getItemByMember(String member) {
+    LeaderboardItem leaderboardItem = null;
     int ranking = 1;
     for (Node<SortedListEntity> cur = first;
          cur != null; cur = cur.next) {
       if (cur.item.getMember().equals(member)) {
-        leaderboard = new Leaderboard(cur, ranking);
+        leaderboardItem = new LeaderboardItem(cur, ranking);
         break;
       }
       ranking++;
     }
-    return leaderboard;
+    return leaderboardItem;
   }
 
   private Node<SortedListEntity> getInsertPosition(
-      SortedListEntity insertElement) {
+      int insertScore) {
     Node<SortedListEntity> cur = null;
     if (!isEmpty()) {
-      final int insertScore = insertElement.getScore();
       if (insertScore < last.item.getScore()) {
-        return last;
+        return null;
       }
       cur = first;
       while (cur != null && cur.next != null) {
@@ -185,17 +187,6 @@ public final class SortedListLinkedListImpl
           break;
         }
         cur = cur.next;
-      }
-    }
-    return cur;
-  }
-
-  private Node<SortedListEntity> isExistByMember(
-      String member) {
-    Node<SortedListEntity> cur;
-    for (cur = first; cur != null; cur = cur.next) {
-      if (cur.item.getMember().equals(member)) {
-        break;
       }
     }
     return cur;
@@ -214,36 +205,47 @@ public final class SortedListLinkedListImpl
   }
 
   private void appendNode(
-      Node<SortedListEntity> insertPos, SortedListEntity appendElement) {
+      Node<SortedListEntity> insertPos, String member, int score) {
+    final SortedListEntity appendElement = new SortedListEntity(member, score);
     Node<SortedListEntity> newNode = null;
     if (isEmpty()) {
       newNode = new Node<>(null, appendElement, null);
       first = newNode;
       last = newNode;
+    } else if (insertPos == null) {
+      Node<SortedListEntity> temp = last;
+      last = new Node<>(temp, appendElement, null);
+      temp.next = last;
     } else {
       newNode = new Node<>(insertPos.prev, appendElement, insertPos);
       if (insertPos.prev == null) {
         first = newNode;
+        newNode.next = insertPos;
       } else {
         insertPos.prev.next = newNode;
       }
       insertPos.prev = newNode;
     }
+    size++;
   }
 
   private void deleteNode(
       Node<SortedListEntity> node) {
     if (!isEmpty()) {
       if (node == first) {
-        first = node;
-        node.prev = null;
+        first = node.next;
+        first.prev = null;
       } else if (node == last) {
-        last = node;
-        node.next = null;
+        last = node.prev;
+        last.next = null;
       } else {
         node.prev.next = node.next;
         node.next.prev = node.prev;
       }
+      node.prev = null;
+      node.next = null;
+      node.item = null;
+      size--;
     }
   }
 }

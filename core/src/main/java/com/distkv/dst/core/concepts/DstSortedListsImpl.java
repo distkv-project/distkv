@@ -9,6 +9,7 @@ import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.core.struct.slist.SortedList;
 import com.distkv.dst.core.struct.slist.SortedListLinkedListImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -75,7 +76,10 @@ public class DstSortedListsImpl
     if (topNum < 0) {
       throw new SortedListTopNumBePositiveException(key, topNum);
     }
-    return sortedList.subList(0, topNum);
+    if (topNum == 0) {
+      return new ArrayList<>();
+    }
+    return sortedList.subList(1, topNum);
   }
 
   @Override
@@ -85,7 +89,7 @@ public class DstSortedListsImpl
     }
     final SortedList sortedList = dstKeyValueMap.get(key);
     final List<Integer> resultList = sortedList.getItem(member);
-    if (resultList == null) {
+    if (null == resultList) {
       throw new SortedListMemberNotFoundException(key);
     }
     return resultList;
