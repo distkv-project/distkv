@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KVSSortedListTest extends BaseTestSupplier {
+public class KVSSortedListTest {
   @Test
   public void testSortedList() throws InterruptedException {
     KVStore store = new KVStoreImpl();
