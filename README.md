@@ -6,8 +6,7 @@
 A distributed key-value in-memory store system with table concept.
 
 ## Project Description
-`Dst` project is a memory-based distributed key-value storage system. Besides these features, dst can support table concept which looks like tables in relational databases. We use `Java` to finish this project, which is somewhat different from most databases using `C/C++`.
-Full [document](https://docs.dst.distkv.com/en/latest/) is here.
+`Dst` project is a memory-based distributed key-value storage system. Besides these features, dst can support table concept which looks like tables in relational databases. We use `Java` to finish this project, which is somewhat different from most databases using `C/C++`. Full [document](https://docs.dst.distkv.com/en/latest/) is here.
 
 ## Awesome Features
 1. Redis-like data structure
