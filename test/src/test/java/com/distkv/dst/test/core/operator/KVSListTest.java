@@ -67,6 +67,8 @@ public class KVSListTest {
     store.lists().put("k1", listForKVSTest());
     store.lists().remove("k1", 0);
     Assert.assertEquals(Arrays.asList("v2", "v3"), store.lists().get("k1"));
+    store.lists().remove("k1", 1, 2);
+    Assert.assertEquals(Arrays.asList("v2"), store.lists().get("k1"));
     //test exceptions
     store.lists().remove("-k", 0).toString();
   }
