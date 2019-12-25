@@ -27,7 +27,7 @@ public final class SortedListLinkedListImpl
   }
 
   public boolean isEmpty() {
-    return size == 0;
+    return (first == null || last == null);
   }
 
   @Override
@@ -48,17 +48,17 @@ public final class SortedListLinkedListImpl
 
   @Override
   public void putItem(SortedListEntity sortedListEntity) {
-    final LeaderboardItem leaderboardItem =
-        this.getItemByMember(sortedListEntity.getMember());
     final String nowMember = sortedListEntity.getMember();
     final int nowScore = sortedListEntity.getScore();
-    Node<SortedListEntity> node;
-    if ((node = leaderboardItem.entityNode) != null) {
-      node.item.setScore(nowScore);
-    } else {
-      Node<SortedListEntity> now = this.getInsertPosition(nowScore);
-      this.appendNode(now, nowMember, nowScore);
-    }
+//    final LeaderboardItem leaderboardItem =
+//        this.getItemByMember(nowMember);
+//    Node<SortedListEntity> node;
+//    if ((node = leaderboardItem.entityNode) != null) {
+//      node.item.setScore(nowScore);
+//    } else {
+      // Node<SortedListEntity> now = this.getInsertPosition(nowScore);
+      // this.appendNode(now, nowMember, nowScore);
+//    }
   }
 
   @Override
@@ -182,8 +182,8 @@ public final class SortedListLinkedListImpl
         return null;
       }
       cur = first;
-      while (cur != null && cur.next != null) {
-        if (cur.next.item.getScore() <= insertScore) {
+      while (cur != null) {
+        if (cur.item.getScore() <= insertScore) {
           break;
         }
         cur = cur.next;
