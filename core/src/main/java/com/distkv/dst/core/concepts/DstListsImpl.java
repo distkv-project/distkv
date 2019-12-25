@@ -74,9 +74,7 @@ public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstL
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     try {
       List<String> list = this.dstKeyValueMap.get(key);
-      for (int i = end; i >= from; i--) {
-        list.remove(i);
-      }
+      list.subList(from, end).clear();
       return Status.OK;
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);

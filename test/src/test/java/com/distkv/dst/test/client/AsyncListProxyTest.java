@@ -130,7 +130,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(removeRangeResponse.getStatus(), status);
     Assert.assertEquals(mremoveResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getStatus(), status);
-    Assert.assertEquals(getResponse.getValuesList(), ImmutableList.of("v3"));
+    Assert.assertEquals(getResponse.getValuesList(), ImmutableList.of("v2", "v4"));
     client.disconnect();
   }
 }
