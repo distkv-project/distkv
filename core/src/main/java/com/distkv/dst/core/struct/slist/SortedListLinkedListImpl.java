@@ -48,8 +48,8 @@ public final class SortedListLinkedListImpl
 
   @Override
   public void putItem(SortedListEntity sortedListEntity) {
-    final LeaderboardItem leaderboardItem = null;
-       // this.getItemByMember(sortedListEntity.getMember());
+    final LeaderboardItem leaderboardItem =
+        this.getItemByMember(sortedListEntity.getMember());
     final String nowMember = sortedListEntity.getMember();
     final int nowScore = sortedListEntity.getScore();
     Node<SortedListEntity> node;
