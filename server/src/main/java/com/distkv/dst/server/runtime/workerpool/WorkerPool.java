@@ -1,7 +1,6 @@
 package com.distkv.dst.server.runtime.workerpool;
 
 import com.distkv.dst.common.RequestTypeEnum;
-import com.distkv.dst.server.DstServerConfig;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +9,17 @@ public class WorkerPool {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WorkerPool.class);
 
-  private DstServerConfig config;
+  private final int shardNum;
+
+  private boolean isMaster;
 
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(DstServerConfig config) {
-    this.config = config;
+  public WorkerPool(int shardNum, boolean isMaster) {
+    this.shardNum = shardNum;
+    this.isMaster = isMaster;
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
-    for (int i = 0; i < config.getShardNum(); ++i) {
+    for (int i = 0; i < shardNum; ++i) {
       Worker worker = new Worker();
       builder.add(worker);
       worker.start();
@@ -27,7 +29,7 @@ public class WorkerPool {
 
   public void postRequest(
       String key, RequestTypeEnum requestType, Object request, Object completableFuture) {
-    final int workerIndex = Math.abs(key.hashCode()) % config.getShardNum();
+    final int workerIndex = Math.abs(key.hashCode()) % shardNum;
     Worker worker = workers.get(workerIndex);
     try {
       worker.post(new InternalRequest(requestType, request, completableFuture));

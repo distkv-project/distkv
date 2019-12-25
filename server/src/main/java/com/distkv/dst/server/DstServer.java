@@ -51,7 +51,7 @@ public class DstServer {
     drpcServer = new DrpcServer(config.genRpcConfig());
     listeningPort = config.getPort();
     isMaster = config.isMaster();
-    runtime = new DstRuntime();
+    runtime = new DstRuntime(config);
     initRpc();
   }
 
