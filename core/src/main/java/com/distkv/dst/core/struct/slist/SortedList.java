@@ -8,12 +8,14 @@ import java.util.List;
  * Basic data structure interface of the Dst SortedList
  */
 public interface SortedList {
+
   /**
    * This method will get SortedList's size.
    *
    * @return the SortedList's size
    */
   int getSize();
+
   /**
    * This method will put a list into the SortedList initially.
    *
@@ -55,7 +57,7 @@ public interface SortedList {
    *
    * @param start the int value which located in the start index
    * @param end the int value which located in the end index
-   * @return
+   * @return some entities which rankings are from start to end
    */
   List<SortedListEntity> subList(int start, int end);
 

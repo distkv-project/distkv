@@ -55,10 +55,12 @@ public final class SortedListLinkedListImpl
     final int nowScore = sortedListEntity.getScore();
     final LeaderboardItem leaderboardItem =
         this.getItemByMember(nowMember);
-    Node<SortedListEntity> node;
-    if ((node = leaderboardItem.entityNode) != null) {
+    if (leaderboardItem != null) {
       // If the member of original SortedList is found, then override the score.
-      node.item.setScore(nowScore);
+      Node<SortedListEntity> now = leaderboardItem.entityNode;
+      this.deleteNode(now);
+      Node<SortedListEntity> sortedListEntityNode = this.getInsertPosition(nowScore);
+      this.appendNode(sortedListEntityNode, nowMember, nowScore);
     } else {
       Node<SortedListEntity> now = this.getInsertPosition(nowScore);
       this.appendNode(now, nowMember, nowScore);
