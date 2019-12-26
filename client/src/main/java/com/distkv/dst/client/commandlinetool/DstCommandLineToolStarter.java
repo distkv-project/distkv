@@ -1,19 +1,20 @@
 package com.distkv.dst.client.commandlinetool;
 
-import java.util.Scanner;
+import java.io.IOException;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.distkv.dst.client.DefaultDstClient;
 import com.distkv.dst.client.DstClient;
-import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
-import com.distkv.dst.common.exception.DictKeyNotFoundException;
-import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
-import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
-import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
-import com.distkv.dst.parser.DstParser;
-import com.distkv.dst.parser.po.DstParsedResult;
+import org.jline.reader.Completer;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.impl.completer.AggregateCompleter;
+import org.jline.reader.impl.completer.ArgumentCompleter;
+import org.jline.reader.impl.completer.NullCompleter;
+import org.jline.reader.impl.completer.StringsCompleter;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 public class DstCommandLineToolStarter {
 
@@ -32,7 +33,7 @@ public class DstCommandLineToolStarter {
   private static boolean VERSION = false;
 
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
 
     DstCommandLineToolStarter dstCommandLineToolStarter = new DstCommandLineToolStarter();
     JCommander jcommander = JCommander.newBuilder().addObject(
@@ -67,32 +68,55 @@ public class DstCommandLineToolStarter {
     new DstCommandLineToolStarter().loop(dstClient);
   }
 
-  private void loop(DstClient dstClient) {
-    DstParser dstParser = new DstParser();
-    DstCommandExecutor dstCommandExecutor = new DstCommandExecutor(dstClient);
-    Scanner sc = new Scanner(System.in);
+  private void loop(DstClient dstClient) throws IOException {
+
+    Completer strPutCompleter = new ArgumentCompleter(
+        new StringsCompleter("str.put"),
+        new StringsCompleter("*"),
+        new StringsCompleter("*"),
+        NullCompleter.INSTANCE );
+    Completer strGetCompleter = new ArgumentCompleter(
+        new StringsCompleter("str.get"),
+        new StringsCompleter("*"),
+        new StringsCompleter("*"),
+        NullCompleter.INSTANCE );
+    Completer allCompleters = new AggregateCompleter(strPutCompleter, strGetCompleter);
+
+    Terminal terminal = TerminalBuilder.builder().system(true).build();
+    LineReader lineReader = LineReaderBuilder.builder().terminal(terminal).completer(allCompleters).build();
+    final String prompt = "dst-cli >";
     while (true) {
-      System.out.print("dst-cli> ");
-      final String command = sc.nextLine();
-      String result = null;
-      try {
-        DstParsedResult parsedResult = dstParser.parse(command);
-        result = dstCommandExecutor.execute(parsedResult);
-      } catch (DictKeyNotFoundException e) {
-        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (DstListIndexOutOfBoundsException e) {
-        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (KeyNotFoundException e) {
-        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (SortedListMemberNotFoundException e) {
-        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (SortedListTopNumBePositiveException e) {
-        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (DstException e) {
-        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      }
-      System.out.println("dst-cli> " + result);
+      String line;
+      line = lineReader.readLine(prompt);
+      System.out.println(line);
+
     }
+
+//    DstParser dstParser = new DstParser();
+//    DstCommandExecutor dstCommandExecutor = new DstCommandExecutor(dstClient);
+//    Scanner sc = new Scanner(System.in);
+//    while (true) {
+//      System.out.print("dst-cli> ");
+//      final String command = sc.nextLine();
+//      String result = null;
+//      try {
+//        DstParsedResult parsedResult = dstParser.parse(command);
+//        result = dstCommandExecutor.execute(parsedResult);
+//      } catch (DictKeyNotFoundException e) {
+//        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+//      } catch (DstListIndexOutOfBoundsException e) {
+//        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+//      } catch (KeyNotFoundException e) {
+//        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+//      } catch (SortedListMemberNotFoundException e) {
+//        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+//      } catch (SortedListTopNumBePositiveException e) {
+//        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+//      } catch (DstException e) {
+//        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+//      }
+//      System.out.println("dst-cli> " + result);
+//    }
   }
 
 }
