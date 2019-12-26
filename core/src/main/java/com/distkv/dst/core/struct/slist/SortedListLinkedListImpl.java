@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The linkedlist implementation of the Dst SortedList.
+ */
 public final class SortedListLinkedListImpl
     extends LinkedList<SortedListEntity>
     implements SortedList, java.io.Serializable {
@@ -40,9 +43,9 @@ public final class SortedListLinkedListImpl
     if (hasDuplicatedMembers(sortedListEntities)) {
       return false;
     }
-    ArrayList<SortedListEntity> entities = new ArrayList<>(sortedListEntities);
-    Collections.sort(entities);
-    this.addAll(entities);
+    // Merging sort for linkedlist, Time Complexity: O(n Log n)
+    Collections.sort(sortedListEntities);
+    this.addAll(sortedListEntities);
     return true;
   }
 
@@ -54,6 +57,7 @@ public final class SortedListLinkedListImpl
         this.getItemByMember(nowMember);
     Node<SortedListEntity> node;
     if ((node = leaderboardItem.entityNode) != null) {
+      // If the member of original SortedList is found, then override the score.
       node.item.setScore(nowScore);
     } else {
       Node<SortedListEntity> now = this.getInsertPosition(nowScore);
@@ -98,9 +102,9 @@ public final class SortedListLinkedListImpl
 
   @Override
   public List<SortedListEntity> subList(int start, int end) {
+    final List<SortedListEntity> topList = new ArrayList<>();
     int nowRanking = 1;
     Node<SortedListEntity> cur = first;
-    List<SortedListEntity> topList = new ArrayList<>();
     while (cur != null) {
       if (nowRanking >= start && nowRanking <= end) {
         topList.add(cur.item);
