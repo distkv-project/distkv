@@ -69,7 +69,6 @@ public class SortedListLinkedListImplTest {
     Assert.assertEquals(listEntities.get(3).getScore(), 116);
     Assert.assertEquals(listEntities.get(4).getMember().equals("114"), true);
     Assert.assertEquals(listEntities.get(4).getScore(), 114);
-
   }
 
 }
