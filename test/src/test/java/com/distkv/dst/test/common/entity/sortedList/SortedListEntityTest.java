@@ -31,5 +31,12 @@ public class SortedListEntityTest {
       Assert.assertEquals(sortedListEntityList.get(i).getScore() <=
           sortedListEntityList.get(i - 1).getScore(), true);
     }
+
+    sortedListEntityList.add(new SortedListEntity("19", 199));
+    sortedListEntityList.add(new SortedListEntity("23", 199));
+    Collections.sort(sortedListEntityList);
+    Assert.assertEquals(sortedListEntityList.get(0).getMember().equals("19"), true);
+    Assert.assertEquals(sortedListEntityList.get(1).getMember().equals("199"), true);
+    Assert.assertEquals(sortedListEntityList.get(2).getMember().equals("23"), true);
   }
 }

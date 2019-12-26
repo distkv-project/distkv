@@ -21,7 +21,6 @@ public class KVSSortedListTest extends BaseTestSupplier {
     list.add(new SortedListEntity("55", 6));
     store.sortLists().put("k1", list);
     store.sortLists().putMember("k1", new SortedListEntity("asd",1000));
-    List<SortedListEntity> k1 = store.sortLists().top("k1", 2);
     new Thread(() -> {
       store.sortLists().incrScore("k1", "xswl",1);
     }).start();

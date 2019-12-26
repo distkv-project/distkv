@@ -28,7 +28,10 @@ public class SortedListEntity implements Comparable<SortedListEntity> {
 
   @Override
   public int compareTo(SortedListEntity o) {
-    return o.getScore() - getScore();
+    if (o.getScore() != getScore()) {
+      return o.getScore() - getScore();
+    }
+    return getMember().compareTo(o.getMember());
   }
 
   @Override

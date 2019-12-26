@@ -57,14 +57,13 @@ public final class SortedListLinkedListImpl
         this.getItemByMember(nowMember);
     if (leaderboardItem != null) {
       // If the member of original SortedList is found, then override the score.
+      // Firstly, delete original node whose name is member.
       Node<SortedListEntity> now = leaderboardItem.entityNode;
       this.deleteNode(now);
-      Node<SortedListEntity> sortedListEntityNode = this.getInsertPosition(nowScore);
-      this.appendNode(sortedListEntityNode, nowMember, nowScore);
-    } else {
-      Node<SortedListEntity> now = this.getInsertPosition(nowScore);
-      this.appendNode(now, nowMember, nowScore);
     }
+    Node<SortedListEntity> sortedListEntityNode =
+        this.getInsertPosition(nowScore, nowMember);
+    this.appendNode(sortedListEntityNode, nowMember, nowScore);
   }
 
   @Override
@@ -97,7 +96,8 @@ public final class SortedListLinkedListImpl
 
     final int afterIncr = nowScore + delta;
     this.deleteNode(now);
-    Node<SortedListEntity> sortedListEntityNode = this.getInsertPosition(afterIncr);
+    Node<SortedListEntity> sortedListEntityNode =
+        this.getInsertPosition(afterIncr, member);
     this.appendNode(sortedListEntityNode, member, afterIncr);
     return 1;
   }
@@ -181,15 +181,19 @@ public final class SortedListLinkedListImpl
   }
 
   private Node<SortedListEntity> getInsertPosition(
-      int insertScore) {
+      int insertScore, String insertMember) {
     Node<SortedListEntity> cur = null;
     if (!isEmpty()) {
-      if (insertScore < last.item.getScore()) {
+      if ((last.item.getScore() > insertScore) ||
+          (insertScore == last.item.getScore() &&
+              insertMember.compareTo(last.item.getMember()) > 0)) {
         return null;
       }
       cur = first;
       while (cur != null) {
-        if (cur.item.getScore() <= insertScore) {
+        if ((cur.item.getScore() < insertScore) ||
+            (cur.item.getScore() == insertScore &&
+                insertMember.compareTo(cur.item.getMember()) < 0)) {
           break;
         }
         cur = cur.next;
