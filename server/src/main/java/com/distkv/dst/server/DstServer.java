@@ -12,8 +12,6 @@ import com.distkv.dst.server.service.DstListServiceImpl;
 import com.distkv.dst.server.service.DstSetServiceImpl;
 import com.distkv.dst.server.service.DstSortedListServiceImpl;
 import com.distkv.dst.server.service.DstStringServiceImpl;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +44,10 @@ public class DstServer {
           "                                   ";
 
   public DstServer(DstServerConfig config) {
+    this.config = config;
     drpcServer = new DrpcServer(config.genRpcConfig());
-    runtime = new DstRuntime(config);
     registerAllRpcServices();
+    runtime = new DstRuntime(config);
   }
 
   public void run() {
@@ -91,7 +90,7 @@ public class DstServer {
     }
 
     DstServerConfig config = DstServerConfig.create();
-    if (listeningPort != -1) {
+    if (listeningPort < 0) {
       config.setPort(listeningPort);
     }
     DstServer dstServer = new DstServer(config);
