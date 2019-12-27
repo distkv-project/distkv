@@ -21,13 +21,11 @@ public class DstServer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstServer.class);
 
-  private boolean isMaster;
-
   private DrpcServer drpcServer;
 
   private DstRuntime runtime;
 
-  public static int listeningPort = 8082;
+  private DstServerConfig config;
 
   private static String WELCOME_WORDS =
       "                                   \n" +
@@ -49,15 +47,13 @@ public class DstServer {
 
   public DstServer(DstServerConfig config) {
     drpcServer = new DrpcServer(config.genRpcConfig());
-    listeningPort = config.getPort();
-    isMaster = config.isMaster();
     runtime = new DstRuntime(config);
-    initRpc();
+    registerAllRpcServices();
   }
 
   public void run() {
     drpcServer.run();
-    LOGGER.error("Succeeded to start dst server on port {}.", listeningPort);
+    LOGGER.error("Succeeded to start dst server on port {}.", config.getPort());
     synchronized (DstServer.class) {
       try {
         DstServer.class.wait();
@@ -68,7 +64,7 @@ public class DstServer {
     }
   }
 
-  private void initRpc() {
+  private void registerAllRpcServices() {
     drpcServer.registerService(
         DstStringService.class, new DstStringServiceImpl(this.runtime));
     drpcServer.registerService(
@@ -82,11 +78,8 @@ public class DstServer {
   }
 
   public static void main(String[] args) {
-    Config conf = ConfigFactory.load("dst_server");
-    listeningPort = conf.getInt("DstServer.listeningPort");
-    boolean isMaster = conf.getBoolean("DstServer.isMaster");
-    int shardNum = conf.getInt("DstServer.shardNum");
 
+    int listeningPort = -1;
     if (args.length == 1) {
       try {
         listeningPort = Integer.valueOf(args[0]);
@@ -97,12 +90,10 @@ public class DstServer {
       }
     }
 
-    DstServerConfig.DstServerConfigBuilder builder = DstServerConfig.builder();
-    DstServerConfig config = builder
-        .isMaster(isMaster)
-        .port(listeningPort)
-        .shardNum(shardNum)
-        .build();
+    DstServerConfig config = DstServerConfig.create();
+    if (listeningPort != -1) {
+      config.setPort(listeningPort);
+    }
     DstServer dstServer = new DstServer(config);
     System.out.println(WELCOME_WORDS);
     dstServer.run();
