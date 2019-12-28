@@ -46,8 +46,8 @@ public class DstServer {
   public DstServer(DstServerConfig config) {
     this.config = config;
     drpcServer = new DrpcServer(config.genRpcConfig());
-    registerAllRpcServices();
     runtime = new DstRuntime(config);
+    registerAllRpcServices();
   }
 
   public void run() {
