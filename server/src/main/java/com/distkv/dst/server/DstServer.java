@@ -90,7 +90,7 @@ public class DstServer {
     }
 
     DstServerConfig config = DstServerConfig.create();
-    if (listeningPort < 0) {
+    if (listeningPort > 0) {
       config.setPort(listeningPort);
     }
     DstServer dstServer = new DstServer(config);
