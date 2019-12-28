@@ -1,6 +1,7 @@
 package com.distkv.dst.server;
 
 import com.distkv.drpc.DrpcServer;
+import com.distkv.drpc.config.ServerConfig;
 import com.distkv.dst.rpc.service.DstDictService;
 import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstSetService;
@@ -45,7 +46,10 @@ public class DstServer {
 
   public DstServer(DstServerConfig config) {
     this.config = config;
-    drpcServer = new DrpcServer(config.genRpcConfig());
+    ServerConfig config1 = ServerConfig.builder()
+        .port(config.getPort())
+        .build();
+    drpcServer = new DrpcServer(config1);
     runtime = new DstRuntime(config);
     registerAllRpcServices();
   }
