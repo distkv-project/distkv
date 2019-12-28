@@ -14,6 +14,7 @@
     <!--List the dependency versions of the project-->
     <properties>
         <logback.version>1.2.3</logback.version>
+        <typesafe.version>1.4.0</typesafe.version>
     </properties>
 
     <build>
@@ -26,7 +27,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.distkv.dst.server.service.DstServer</mainClass>
+                            <mainClass>com.distkv.dst.server.DstServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -66,6 +67,10 @@
             <version>2.6</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe.version}</version>
+        </dependency>
     </dependencies>
 </project>

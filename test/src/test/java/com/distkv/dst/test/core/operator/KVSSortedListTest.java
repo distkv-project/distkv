@@ -3,13 +3,12 @@ package com.distkv.dst.test.core.operator;
 import com.distkv.dst.core.KVStore;
 import com.distkv.dst.core.KVStoreImpl;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
-import com.distkv.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KVSSortedListTest extends BaseTestSupplier {
+public class KVSSortedListTest {
   @Test
   public void testSortedList() throws InterruptedException {
     KVStore store = new KVStoreImpl();

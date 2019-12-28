@@ -11,10 +11,13 @@ public class WorkerPool {
 
   private final int shardNum;
 
+  private boolean isMaster;
+
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(int shardNum) {
+  public WorkerPool(int shardNum, boolean isMaster) {
     this.shardNum = shardNum;
+    this.isMaster = isMaster;
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
       Worker worker = new Worker();

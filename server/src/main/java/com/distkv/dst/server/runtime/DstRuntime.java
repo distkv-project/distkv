@@ -1,15 +1,17 @@
 package com.distkv.dst.server.runtime;
 
+import com.distkv.dst.server.DstServerConfig;
 import com.distkv.dst.server.runtime.workerpool.WorkerPool;
 
 public class DstRuntime {
 
-  private static final int shardNum = 8;
+  private DstServerConfig config;
 
   private WorkerPool workerPool;
 
-  public DstRuntime() {
-    workerPool = new WorkerPool(shardNum);
+  public DstRuntime(DstServerConfig config) {
+    this.config = config;
+    workerPool = new WorkerPool(config.getShardNum(), config.isMaster());
   }
 
   public WorkerPool getWorkerPool() {
