@@ -91,7 +91,7 @@ public class DmetaServer {
     final NodeOptions nodeOptions = new NodeOptions();
     // Set the election timeout to 1 second.
     nodeOptions.setElectionTimeoutMs(1000);
-    // close CLI service。
+    // close CLI service.
     nodeOptions.setDisableCli(false);
     //30s snapshot
     nodeOptions.setSnapshotIntervalSecs(30);
