@@ -5,10 +5,11 @@ public enum ErrorCodeEnum {
   DstErrorCode(""),
   DstListIndexOutOfBoundsErrorCode("202"),
   KeyNotFoundErrorCode("100"),
+  DstKeyDuplicatedErrorCode("200"),
   SortedListMembersDuplicatedErrorCode("008"),
   SortedListIncrScoreOutOfRangeErrorCode("009"),
   SortedListMemberNotFoundErrorCode("006"),
-  SortedListTopNumBeNonNegativeErrorCode("007"),;
+  SortedListTopNumBeNonNegativeErrorCode("007");
 
   private final String errorcode;
 

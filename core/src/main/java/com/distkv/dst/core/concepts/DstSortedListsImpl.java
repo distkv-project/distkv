@@ -1,5 +1,6 @@
 package com.distkv.dst.core.concepts;
 
+import com.distkv.dst.common.exception.DstKeyDuplicatedException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.SortedListMembersDuplicatedException;
 import com.distkv.dst.common.exception.SortedListIncrScoreOutOfRangeException;
@@ -21,8 +22,8 @@ public class DstSortedListsImpl
 
   @Override
   public void put(String key, LinkedList<SortedListEntity> list) {
-    if (!dstKeyValueMap.containsKey(key)) {
-      throw new KeyNotFoundException(key);
+    if (dstKeyValueMap.containsKey(key)) {
+      throw new DstKeyDuplicatedException(key);
     }
     SortedList sortedList = new SortedListLinkedImpl();
     if (!sortedList.put(list)) {
