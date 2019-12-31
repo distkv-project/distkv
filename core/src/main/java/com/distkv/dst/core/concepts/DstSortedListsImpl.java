@@ -1,5 +1,6 @@
 package com.distkv.dst.core.concepts;
 
+import com.distkv.dst.common.entity.sortedList.LeaderboardItem;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
 import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.ListIterator;
-import java.util.Arrays;
 
 public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>>
     implements DstSortedLists {
@@ -117,7 +117,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
   }
 
   @Override
-  public List<Integer> getMember(String key, String member) {
+  public LeaderboardItem getMember(String key, String member) {
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -126,7 +126,7 @@ public class DstSortedListsImpl extends DstConcepts<LinkedList<SortedListEntity>
 
     for (final SortedListEntity sortedListEntity : sortedListEntities) {
       if (sortedListEntity.getMember().equals(member)) {
-        return Arrays.asList(sortedListEntity.getScore(), ranking);
+        return new LeaderboardItem(member, sortedListEntity.getScore(), ranking);
       }
       ranking++;
     }
