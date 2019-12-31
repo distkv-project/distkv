@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * The linkedlist implementation of the Dst SortedList.
  */
-public final class SortedListLinkedListImpl
+public final class SortedListLinkedImpl
     extends LinkedList<SortedListEntity>
     implements SortedList, java.io.Serializable {
 
@@ -25,7 +25,7 @@ public final class SortedListLinkedListImpl
 
   private transient int size = 0;
 
-  public SortedListLinkedListImpl() {
+  public SortedListLinkedImpl() {
 
   }
 
@@ -130,11 +130,11 @@ public final class SortedListLinkedListImpl
 
   private static class Node<E> {
     E item;
-    SortedListLinkedListImpl.Node<E> next;
-    SortedListLinkedListImpl.Node<E> prev;
+    SortedListLinkedImpl.Node<E> next;
+    SortedListLinkedImpl.Node<E> prev;
 
-    Node(SortedListLinkedListImpl.Node<E> prev,
-         E element, SortedListLinkedListImpl.Node<E> next) {
+    Node(SortedListLinkedImpl.Node<E> prev,
+         E element, SortedListLinkedImpl.Node<E> next) {
       this.item = element;
       this.next = next;
       this.prev = prev;

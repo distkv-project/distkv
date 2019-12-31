@@ -1,17 +1,19 @@
 package com.distkv.dst.common.exception;
 
-public class SortedListDuplicatedMembersException extends DstException {
+public class SortedListMembersDuplicatedException extends DstException {
 
-  protected String errorCode = "008";
+  protected String errorCode = ErrorCodeEnum
+      .SortedListMembersDuplicatedErrorCode
+      .getErrorCode();
 
   protected String key;
 
-  public SortedListDuplicatedMembersException(String key) {
+  public SortedListMembersDuplicatedException(String key) {
     super(String.format("The SortedList %s which you putted into has " +
         "duplicated members.",  key));
   }
 
-  public SortedListDuplicatedMembersException(String key, String typeCode) {
+  public SortedListMembersDuplicatedException(String key, String typeCode) {
     super(String.format("The SortedList %s which you putted into has " +
         "duplicated members.",  key));
     this.errorCode = typeCode + this.errorCode;
@@ -24,4 +26,5 @@ public class SortedListDuplicatedMembersException extends DstException {
   public String getErrorCode() {
     return errorCode;
   }
+
 }

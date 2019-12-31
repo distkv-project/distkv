@@ -2,7 +2,9 @@ package com.distkv.dst.common.exception;
 
 public class DstListIndexOutOfBoundsException extends DstException {
 
-  protected String errorCode = "202";
+  protected String errorCode = ErrorCodeEnum
+      .DstListIndexOutOfBoundsErrorCode
+      .getErrorCode();
 
   protected String key;
 

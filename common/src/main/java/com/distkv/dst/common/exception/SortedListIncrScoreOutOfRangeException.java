@@ -1,17 +1,19 @@
 package com.distkv.dst.common.exception;
 
-public class SortedListIncrScoreOutOfRange extends DstException {
+public class SortedListIncrScoreOutOfRangeException extends DstException {
 
-  protected String errorCode = "009";
+  protected String errorCode = ErrorCodeEnum
+      .SortedListIncrScoreOutOfRangeErrorCode
+      .getErrorCode();
 
   protected String key;
 
-  public SortedListIncrScoreOutOfRange(String key) {
+  public SortedListIncrScoreOutOfRangeException(String key) {
     super(String.format("The score of the member in the SortedList %s" +
         " will be outing of range after increasing",  key));
   }
 
-  public SortedListIncrScoreOutOfRange(String key, String typeCode) {
+  public SortedListIncrScoreOutOfRangeException(String key, String typeCode) {
     super(String.format("The score of the member in the SortedList %s" +
         " will be outing of range after increasing",  key));
     this.errorCode = typeCode + this.errorCode;

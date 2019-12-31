@@ -2,7 +2,9 @@ package com.distkv.dst.common.exception;
 
 public class SortedListTopNumBeNonNegativeException extends DstException {
 
-  protected String errorCode = "007";
+  protected String errorCode = ErrorCodeEnum
+      .SortedListTopNumBeNonNegativeErrorCode
+      .getErrorCode();
 
   protected String key;
 

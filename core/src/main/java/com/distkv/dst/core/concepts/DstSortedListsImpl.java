@@ -1,13 +1,13 @@
 package com.distkv.dst.core.concepts;
 
 import com.distkv.dst.common.exception.KeyNotFoundException;
-import com.distkv.dst.common.exception.SortedListDuplicatedMembersException;
-import com.distkv.dst.common.exception.SortedListIncrScoreOutOfRange;
+import com.distkv.dst.common.exception.SortedListMembersDuplicatedException;
+import com.distkv.dst.common.exception.SortedListIncrScoreOutOfRangeException;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
 import com.distkv.dst.common.exception.SortedListTopNumBeNonNegativeException;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.core.struct.slist.SortedList;
-import com.distkv.dst.core.struct.slist.SortedListLinkedListImpl;
+import com.distkv.dst.core.struct.slist.SortedListLinkedImpl;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -21,9 +21,12 @@ public class DstSortedListsImpl
 
   @Override
   public void put(String key, LinkedList<SortedListEntity> list) {
-    SortedList sortedList = new SortedListLinkedListImpl();
+    if (!dstKeyValueMap.containsKey(key)) {
+      throw new KeyNotFoundException(key);
+    }
+    SortedList sortedList = new SortedListLinkedImpl();
     if (!sortedList.put(list)) {
-      throw new SortedListDuplicatedMembersException(key);
+      throw new SortedListMembersDuplicatedException(key);
     }
     dstKeyValueMap.put(key, sortedList);
   }
@@ -55,11 +58,11 @@ public class DstSortedListsImpl
       throw new KeyNotFoundException(key);
     }
     final SortedList sortedList = dstKeyValueMap.get(key);
-    final int isFound = sortedList.incrScore(member, delta);
-    if (0 == isFound) {
+    final int resultByIncrScore = sortedList.incrScore(member, delta);
+    if (0 == resultByIncrScore) {
       throw new SortedListMemberNotFoundException(key);
-    } else if (-1 == isFound) {
-      throw new SortedListIncrScoreOutOfRange(key);
+    } else if (-1 == resultByIncrScore) {
+      throw new SortedListIncrScoreOutOfRangeException(key);
     }
   }
 

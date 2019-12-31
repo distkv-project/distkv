@@ -2,18 +2,18 @@ package com.distkv.dst.test.core.struct.slist;
 
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.core.struct.slist.SortedList;
-import com.distkv.dst.core.struct.slist.SortedListLinkedListImpl;
+import com.distkv.dst.core.struct.slist.SortedListLinkedImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SortedListLinkedListImplTest {
+public class SortedListLinkedImplTest {
 
   @Test
   public void testMain() {
-    SortedList sortedList = new SortedListLinkedListImpl();
+    SortedList sortedList = new SortedListLinkedImpl();
 
     // For init
     List<SortedListEntity> putList = new ArrayList<>();
@@ -25,7 +25,7 @@ public class SortedListLinkedListImplTest {
 
     // Test put
     Assert.assertEquals(sortedList.put(anotherPutList), false);
-    sortedList = new SortedListLinkedListImpl();
+    sortedList = new SortedListLinkedImpl();
     Assert.assertEquals(sortedList.put(putList), true);
 
     // Test removeItem
