@@ -1,7 +1,9 @@
 package com.distkv.dst.common.entity.sortedList;
 
 public class LeaderboardItem {
+
   private SortedListEntity sortedListEntity;
+  
   private int ranking;
 
   public LeaderboardItem() {
