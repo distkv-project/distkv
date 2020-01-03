@@ -170,16 +170,31 @@ public final class SortedListLinkedImpl
     }
   }
 
-  private DstTuple<Node<SortedListEntity>, Integer> getItemByMember(String member) {
+  private DstTuple<Node<SortedListEntity>, Integer> getItemByMember(
+      String member) {
     DstTuple<Node<SortedListEntity>, Integer> tuple = null;
-    int ranking = 1;
-    for (Node<SortedListEntity> cur = first;
-         cur != null; cur = cur.next) {
+    int index = 1;
+    int nowRank = 1;
+    int lastRank = 1;
+    boolean isFirst = true;
+
+    for (Node<SortedListEntity> cur = first; cur != null; cur = cur.next) {
       if (cur.item.getMember().equals(member)) {
-        tuple = new DstTuple<>(cur, ranking);
+        tuple = new DstTuple<>(cur, nowRank);
         break;
       }
-      ranking++;
+      lastRank = nowRank;
+      if (isFirst) {
+        isFirst = false;
+        nowRank = index;
+      } else {
+        if (cur.prev.item.getScore() != cur.item.getScore()) {
+          nowRank = index;
+        } else {
+          nowRank = lastRank;
+        }
+      }
+      index++;
     }
     return tuple;
   }
