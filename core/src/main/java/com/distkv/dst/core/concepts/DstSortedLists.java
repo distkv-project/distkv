@@ -61,7 +61,7 @@ public interface DstSortedLists {
    *
    * @param key the key to store
    * @param member the itemEntity info in sortedList, Find the item by info
-   * @return the LeaderboardItem value which the first element is the score and
+   * @return the DstTuple value which the first element is the score and
    * the second element is the ranking of the given key and member
    */
   DstTuple<Integer, Integer> getMember(String key, String member);
