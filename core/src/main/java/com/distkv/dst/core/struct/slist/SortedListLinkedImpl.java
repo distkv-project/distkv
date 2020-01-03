@@ -39,7 +39,8 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public boolean put(List<SortedListEntity> sortedListEntities) {
+  public boolean put(
+      List<SortedListEntity> sortedListEntities) {
     if (hasDuplicatedMembers(sortedListEntities)) {
       return false;
     }
@@ -50,7 +51,8 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public void putItem(SortedListEntity sortedListEntity) {
+  public void putItem(
+      SortedListEntity sortedListEntity) {
     final String nowMember = sortedListEntity.getMember();
     final int nowScore = sortedListEntity.getScore();
     final DstTuple<Node<SortedListEntity>, Integer> tuple =
@@ -67,7 +69,8 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public boolean removeItem(String member) {
+  public boolean removeItem(
+      String member) {
     final DstTuple<Node<SortedListEntity>, Integer> tuple =
         this.getItemByMember(member);
     if (tuple == null) {
@@ -79,7 +82,8 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public int incrScore(String member, int delta) {
+  public int incrScore(
+      String member, int delta) {
     final DstTuple<Node<SortedListEntity>, Integer> tuple =
         this.getItemByMember(member);
     if (tuple == null) {
@@ -105,7 +109,8 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public List<SortedListEntity> subList(int start, int end) {
+  public List<SortedListEntity> subList(
+      int start, int end) {
     final List<SortedListEntity> topList = new ArrayList<>();
     int index = 1;
     int nowRank = 1;
@@ -136,7 +141,8 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public DstTuple<Integer, Integer> getItem(String member) {
+  public DstTuple<Integer, Integer> getItem(
+      String member) {
     DstTuple<Node<SortedListEntity>, Integer> tuple = this.getItemByMember(member);
     return tuple == null
         ? null
@@ -156,7 +162,8 @@ public final class SortedListLinkedImpl
     }
   }
 
-  private void addAll(List<SortedListEntity> sortedListEntities) {
+  private void addAll(
+      List<SortedListEntity> sortedListEntities) {
     for (final SortedListEntity e : sortedListEntities) {
       Node<SortedListEntity> temp = last;
       Node<SortedListEntity> newNode = new Node<>(last, e, null);
@@ -278,4 +285,5 @@ public final class SortedListLinkedImpl
       size--;
     }
   }
+
 }
