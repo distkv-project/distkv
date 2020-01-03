@@ -108,12 +108,27 @@ public final class SortedListLinkedImpl
   public List<SortedListEntity> subList(int start, int end) {
     final List<SortedListEntity> topList = new ArrayList<>();
     int index = 1;
+    int nowRank = 1;
+    int lastRank = 1;
+    boolean isFirst = true;
+
     for (Node<SortedListEntity> cur = first; cur != null; cur = cur.next) {
-      if (index >= start && index <= end) {
+      if (nowRank >= start && nowRank <= end) {
         topList.add(cur.item);
       }
-      if (index > end) {
+      if (nowRank > end) {
         break;
+      }
+      lastRank = nowRank;
+      if (isFirst) {
+        isFirst = false;
+        nowRank = index;
+      } else {
+        if (cur.prev.item.getScore() != cur.item.getScore()) {
+          nowRank = index;
+        } else {
+          nowRank = lastRank;
+        }
       }
       index++;
     }
@@ -241,6 +256,7 @@ public final class SortedListLinkedImpl
         node.prev.next = node.next;
         node.next.prev = node.prev;
       }
+      // let it gc
       node.prev = null;
       node.next = null;
       node.item = null;
