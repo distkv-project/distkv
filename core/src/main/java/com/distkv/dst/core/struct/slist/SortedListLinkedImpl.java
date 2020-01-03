@@ -107,17 +107,15 @@ public final class SortedListLinkedImpl
   @Override
   public List<SortedListEntity> subList(int start, int end) {
     final List<SortedListEntity> topList = new ArrayList<>();
-    int nowRanking = 1;
-    Node<SortedListEntity> cur = first;
-    while (cur != null) {
-      if (nowRanking >= start && nowRanking <= end) {
+    int index = 1;
+    for (Node<SortedListEntity> cur = first; cur != null; cur = cur.next) {
+      if (index >= start && index <= end) {
         topList.add(cur.item);
       }
-      if (nowRanking > end) {
+      if (index > end) {
         break;
       }
-      nowRanking++;
-      cur = cur.next;
+      index++;
     }
     return topList;
   }
