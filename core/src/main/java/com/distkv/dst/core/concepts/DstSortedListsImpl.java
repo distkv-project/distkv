@@ -1,6 +1,10 @@
 package com.distkv.dst.core.concepts;
 
+<<<<<<< HEAD
 import com.distkv.dst.common.exception.DstKeyDuplicatedException;
+=======
+import com.distkv.dst.common.DstTuple;
+>>>>>>> bbce6db0380aa5560cd89f1d89e3a9f6f0809b19
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.SortedListMembersDuplicatedException;
 import com.distkv.dst.common.exception.SortedListIncrScoreOutOfRangeException;
@@ -12,6 +16,11 @@ import com.distkv.dst.core.struct.slist.SortedListLinkedImpl;
 
 import java.util.List;
 import java.util.LinkedList;
+<<<<<<< HEAD
+=======
+import java.util.Collections;
+import java.util.ListIterator;
+>>>>>>> bbce6db0380aa5560cd89f1d89e3a9f6f0809b19
 
 public class DstSortedListsImpl
     extends DstConcepts<SortedList>
@@ -83,14 +92,25 @@ public class DstSortedListsImpl
   }
 
   @Override
-  public List<Integer> getMember(String key, String member) {
+  public DstTuple<Integer, Integer> getMember(String key, String member) {
     if (!dstKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
+<<<<<<< HEAD
     final SortedList sortedList = dstKeyValueMap.get(key);
     final List<Integer> resultList = sortedList.getItem(member);
     if (null == resultList) {
       throw new SortedListMemberNotFoundException(key);
+=======
+    int ranking = 1;
+    final LinkedList<SortedListEntity> sortedListEntities = dstKeyValueMap.get(key);
+
+    for (final SortedListEntity sortedListEntity : sortedListEntities) {
+      if (sortedListEntity.getMember().equals(member)) {
+        return new DstTuple<>(sortedListEntity.getScore(), ranking);
+      }
+      ranking++;
+>>>>>>> bbce6db0380aa5560cd89f1d89e3a9f6f0809b19
     }
     return resultList;
   }
