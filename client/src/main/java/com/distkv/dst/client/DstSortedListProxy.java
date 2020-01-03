@@ -1,6 +1,6 @@
 package com.distkv.dst.client;
 
-import com.distkv.dst.common.entity.sortedList.LeaderboardItem;
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
@@ -93,7 +93,7 @@ public class DstSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  public LeaderboardItem getMember(String key, String member) {
+  public DstTuple<Integer, Integer> getMember(String key, String member) {
     SortedListProtocol.GetMemberRequest.Builder getMemberRequest =
         SortedListProtocol.GetMemberRequest.newBuilder();
     getMemberRequest.setKey(key);
@@ -102,6 +102,6 @@ public class DstSortedListProxy {
         service.getMember(getMemberRequest.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     SortedListProtocol.SortedListEntity sortedListEntity = response.getEntity();
-    return new LeaderboardItem(member, sortedListEntity.getScore(), response.getCount());
+    return new DstTuple<Integer, Integer>(sortedListEntity.getScore(), response.getCount());
   }
 }

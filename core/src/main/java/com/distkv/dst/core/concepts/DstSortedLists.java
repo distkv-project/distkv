@@ -1,6 +1,6 @@
 package com.distkv.dst.core.concepts;
 
-import com.distkv.dst.common.entity.sortedList.LeaderboardItem;
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.utils.Status;
 import java.util.LinkedList;
@@ -64,5 +64,5 @@ public interface DstSortedLists {
    * @return the LeaderboardItem value which the first element is the score and
    * the second element is the ranking of the given key and member
    */
-  LeaderboardItem getMember(String key, String member);
+  DstTuple<Integer, Integer> getMember(String key, String member);
 }

@@ -2,7 +2,7 @@ package com.distkv.dst.test.client;
 
 import java.util.LinkedList;
 import com.distkv.dst.client.DstClient;
-import com.distkv.dst.common.entity.sortedList.LeaderboardItem;
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.test.supplier.BaseTestSupplier;
 import org.testng.Assert;
@@ -55,9 +55,9 @@ public class SortedListProxyTest extends BaseTestSupplier {
   }
 
   private void testGetItem() {
-    LeaderboardItem leaderboardItem = dstClient.sortedLists().getMember("k1", "fw");
-    Assert.assertEquals(leaderboardItem.getScore(), 10);
-    Assert.assertEquals(leaderboardItem.getRanking(), 2);
+    DstTuple<Integer, Integer> tuple = dstClient.sortedLists().getMember("k1", "fw");
+    Assert.assertEquals(tuple.getFirst().intValue(), 10);
+    Assert.assertEquals(tuple.getSecond().intValue(), 2);
   }
 
 }

@@ -1,7 +1,7 @@
 package com.distkv.dst.server.runtime.workerpool;
 
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.NodeInfo;
-import com.distkv.dst.common.entity.sortedList.LeaderboardItem;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
@@ -745,14 +745,14 @@ public class Worker extends Thread {
                 SortedListProtocol.GetMemberResponse.newBuilder();
             CommonProtocol.Status status;
             try {
-              LeaderboardItem leaderboardItem =
+              DstTuple<Integer, Integer> tuple =
                   storeEngine.sortLists().getMember(request.getKey(), request.getMember());
               SortedListProtocol.SortedListEntity.Builder builder =
                   SortedListProtocol.SortedListEntity.newBuilder();
               builder.setMember(request.getMember());
-              builder.setScore(leaderboardItem.getScore());
+              builder.setScore(tuple.getFirst());
               responseBuilder.setEntity(builder);
-              responseBuilder.setCount(leaderboardItem.getRanking());
+              responseBuilder.setCount(tuple.getSecond());
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
