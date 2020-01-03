@@ -118,12 +118,6 @@ public final class SortedListLinkedImpl
     boolean isFirst = true;
 
     for (Node<SortedListEntity> cur = first; cur != null; cur = cur.next) {
-      if (nowRank >= start && nowRank <= end) {
-        topList.add(cur.item);
-      }
-      if (nowRank > end) {
-        break;
-      }
       lastRank = nowRank;
       if (isFirst) {
         isFirst = false;
@@ -134,6 +128,12 @@ public final class SortedListLinkedImpl
         } else {
           nowRank = lastRank;
         }
+      }
+      if (nowRank >= start && nowRank <= end) {
+        topList.add(cur.item);
+      }
+      if (nowRank > end) {
+        break;
       }
       index++;
     }
