@@ -50,12 +50,12 @@ public class SortedListLinkedImplTest {
     Assert.assertEquals(sortedList.incrScore("109", 1100), 1);
 
     // Test getItem
-    Assert.assertEquals(sortedList.getItem("118").get(0).intValue(), 118);
-    Assert.assertEquals(sortedList.getItem("118").get(1).intValue(), 2);
-    Assert.assertEquals(sortedList.getItem("116").get(0).intValue(), 116);
-    Assert.assertEquals(sortedList.getItem("116").get(1).intValue(), 4);
-    Assert.assertEquals(sortedList.getItem("114").get(0).intValue(), 114);
-    Assert.assertEquals(sortedList.getItem("114").get(1).intValue(), 5);
+    Assert.assertEquals(sortedList.getItem("118").getFirst().intValue(), 118);
+    Assert.assertEquals(sortedList.getItem("118").getSecond().intValue(), 2);
+    Assert.assertEquals(sortedList.getItem("116").getFirst().intValue(), 116);
+    Assert.assertEquals(sortedList.getItem("116").getSecond().intValue(), 4);
+    Assert.assertEquals(sortedList.getItem("114").getFirst().intValue(), 114);
+    Assert.assertEquals(sortedList.getItem("114").getSecond().intValue(), 5);
 
     // Test subList
     List<SortedListEntity> listEntities = sortedList.subList(1, 5);

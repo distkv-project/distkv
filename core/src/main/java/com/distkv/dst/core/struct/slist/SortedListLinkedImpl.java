@@ -1,9 +1,9 @@
 package com.distkv.dst.core.struct.slist;
 
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -53,12 +53,12 @@ public final class SortedListLinkedImpl
   public void putItem(SortedListEntity sortedListEntity) {
     final String nowMember = sortedListEntity.getMember();
     final int nowScore = sortedListEntity.getScore();
-    final LeaderboardItem leaderboardItem =
+    final DstTuple<Node<SortedListEntity>, Integer> tuple =
         this.getItemByMember(nowMember);
-    if (leaderboardItem != null) {
+    if (tuple != null) {
       // If the member of original SortedList is found, then override the score.
       // Firstly, delete original node whose name is member.
-      Node<SortedListEntity> now = leaderboardItem.entityNode;
+      Node<SortedListEntity> now = tuple.getFirst();
       this.deleteNode(now);
     }
     Node<SortedListEntity> sortedListEntityNode =
@@ -68,23 +68,25 @@ public final class SortedListLinkedImpl
 
   @Override
   public boolean removeItem(String member) {
-    LeaderboardItem leaderboardItem = getItemByMember(member);
-    if (leaderboardItem == null) {
+    final DstTuple<Node<SortedListEntity>, Integer> tuple =
+        this.getItemByMember(member);
+    if (tuple == null) {
       return false;
     }
-    Node<SortedListEntity> now = leaderboardItem.entityNode;
+    Node<SortedListEntity> now = tuple.getFirst();
     this.deleteNode(now);
     return true;
   }
 
   @Override
   public int incrScore(String member, int delta) {
-    LeaderboardItem leaderboardItem = getItemByMember(member);
-    if (leaderboardItem == null) {
+    final DstTuple<Node<SortedListEntity>, Integer> tuple =
+        this.getItemByMember(member);
+    if (tuple == null) {
       return 0;
     }
 
-    Node<SortedListEntity> now = leaderboardItem.entityNode;
+    Node<SortedListEntity> now = tuple.getFirst();
     final int nowScore = now.item.getScore();
     // Check if there is outing of range after increase the score:
     //     Case 1: The score will more than Integer.MAX_VALUE when delta is positive
@@ -121,11 +123,11 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public List<Integer> getItem(String member) {
-    LeaderboardItem leaderboardItem = this.getItemByMember(member);
-    return leaderboardItem == null
+  public DstTuple<Integer, Integer> getItem(String member) {
+    DstTuple<Node<SortedListEntity>, Integer> tuple = this.getItemByMember(member);
+    return tuple == null
         ? null
-        : Arrays.asList(leaderboardItem.entityNode.item.getScore(), leaderboardItem.ranking);
+        : new DstTuple<>(tuple.getFirst().item.getScore(), tuple.getSecond());
   }
 
   private static class Node<E> {
@@ -138,17 +140,6 @@ public final class SortedListLinkedImpl
       this.item = element;
       this.next = next;
       this.prev = prev;
-    }
-  }
-
-  private static class LeaderboardItem {
-    Node<SortedListEntity> entityNode;
-    int ranking;
-
-    public LeaderboardItem(Node<SortedListEntity> sortedListEntity,
-                           int ranking) {
-      this.entityNode = sortedListEntity;
-      this.ranking = ranking;
     }
   }
 
@@ -166,18 +157,18 @@ public final class SortedListLinkedImpl
     }
   }
 
-  private LeaderboardItem getItemByMember(String member) {
-    LeaderboardItem leaderboardItem = null;
+  private DstTuple<Node<SortedListEntity>, Integer> getItemByMember(String member) {
+    DstTuple<Node<SortedListEntity>, Integer> tuple = null;
     int ranking = 1;
     for (Node<SortedListEntity> cur = first;
          cur != null; cur = cur.next) {
       if (cur.item.getMember().equals(member)) {
-        leaderboardItem = new LeaderboardItem(cur, ranking);
+        tuple = new DstTuple<>(cur, ranking);
         break;
       }
       ranking++;
     }
-    return leaderboardItem;
+    return tuple;
   }
 
   private Node<SortedListEntity> getInsertPosition(

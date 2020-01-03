@@ -1,5 +1,6 @@
 package com.distkv.dst.core.struct.slist;
 
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 
 import java.util.List;
@@ -65,8 +66,8 @@ public interface SortedList {
    * This method will get its score and its ranking by the member
    *
    * @param member the member name
-   * @return the list value which the first element is the score
+   * @return the DstTuple value which the first element is the score
    *  and the second element is the ranking located in this SortedList
    */
-  List<Integer> getItem(String member);
+  DstTuple<Integer, Integer> getItem(String member);
 }
