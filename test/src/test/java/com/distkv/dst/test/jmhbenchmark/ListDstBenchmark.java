@@ -76,7 +76,7 @@ public class ListDstBenchmark {
 
   @Benchmark
   public void testAsyncLPut() {
-    asyncClient.lists().lput("k-list-sync", dummyData);
+    asyncClient.lists().lput("k-list-async", dummyData);
   }
 
 
