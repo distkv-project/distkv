@@ -210,16 +210,12 @@ public final class SortedListLinkedImpl
       int insertScore, String insertMember) {
     Node<SortedListEntity> cur = null;
     if (!isEmpty()) {
-      if ((last.item.getScore() > insertScore) ||
-          (insertScore == last.item.getScore() &&
-              insertMember.compareTo(last.item.getMember()) > 0)) {
+      if (this.compares(insertMember, insertScore, last.item) > 0) {
         return null;
       }
       cur = first;
       while (cur != null) {
-        if ((cur.item.getScore() < insertScore) ||
-            (cur.item.getScore() == insertScore &&
-                insertMember.compareTo(cur.item.getMember()) < 0)) {
+        if (this.compares(insertMember, insertScore, cur.item) < 0) {
           break;
         }
         cur = cur.next;
@@ -285,5 +281,21 @@ public final class SortedListLinkedImpl
       size--;
     }
   }
+
+  private int compares(
+      String insertMember, int insertScore, SortedListEntity entity) {
+    int compareByScore = insertScore - entity.getScore();
+    int compareByMember = insertMember.compareTo(entity.getMember());
+    if ((compareByScore < 0) ||
+        (compareByScore == 0 && compareByMember > 0)) {
+      return 1;
+    } else if (compareByScore > 0 ||
+        (compareByScore == 0 && compareByMember < 0)) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
 
 }
