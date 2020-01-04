@@ -81,30 +81,6 @@
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.dst-pro/dst-server -->
-        <dependency>
-            <groupId>com.dst-pro</groupId>
-            <artifactId>dst-server</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.dst-pro/dst-common -->
-        <dependency>
-            <groupId>com.dst-pro</groupId>
-            <artifactId>dst-common</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.dst-pro/dst-core -->
-        <dependency>
-            <groupId>com.dst-pro</groupId>
-            <artifactId>dst-core</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.dst-pro/dst-client -->
-        <dependency>
-            <groupId>com.dst-pro</groupId>
-            <artifactId>dst-client</artifactId>
-            <version>0.1.0</version>
-        </dependency>
 
     </dependencies>
 

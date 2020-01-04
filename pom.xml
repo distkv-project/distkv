@@ -18,7 +18,6 @@
         <module>parser</module>
         <module>dmeta</module>
         <module>fclt</module>
-        <module>benchmark</module>
     </modules>
 
     <properties>
