@@ -1,4 +1,4 @@
-## Contributing to DST
+## Contributing to Dst
 If you are interested in helping, by adding new features, fixing bugs, adding tools or simply updating documentation, 
 please read the content below. Then send us a pull request!
 
