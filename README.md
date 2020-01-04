@@ -2,7 +2,7 @@
     <img src="docs/res/dst_logo.png" width="282" height="170"> 
 </div>
 
-#[![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-dst-project-dst-master) [![codecov](https://codecov.io/gh/dst-project/dst/branch/master/graph/badge.svg)](https://codecov.io/gh/dst-project/dst)
+[![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-dst-project-dst-master) [![codecov](https://codecov.io/gh/dst-project/dst/branch/master/graph/badge.svg)](https://codecov.io/gh/dst-project/dst)
 A distributed key-value in-memory store system with table concept.
 
 ## Project Description
@@ -24,17 +24,17 @@ Running the scripts `scripts/install_dst.sh` will install the whole `Dst` to you
 
 When we connect to server, we must start server firstly. At present, we only have two kinds of clients. One is `Command Line Tool`, another is `Java Client SDK`.
 We can use each of them to access dst server.
-#### 1. Start Dst Server
+#### 2. Start Dst Server
 ```bash
 [root@localhost ~]# dst-server
 ```
 
-#### 2.1 Start Dst Cli
+#### 3. Start Dst Cli
 ```bash
 [root@localhost ~]# dst-cli
 ```
 
-#### 2.2 Command Line Tool
+#### 4. Command Line Tool
 ```bash
 dst-cli > str.put "k1" "v1"
 dst-cli > ok
@@ -64,10 +64,10 @@ dst-cli > slist.getMember "k1" "m2"
 dst-cli > ("m2", -4), 3rd
 ```
 
-#### 3. Java Client SDK
+## Java Client SDK
 [Java Client SDK Example](https://github.com/dst-project/dst/blob/master/client/src/main/java/com/distkv/dst/client/example/DstUsageExample.java)
 
-#### 4. Java Async Client SDK
+## Java Async Client SDK
 [Java Async Client SDK Example](https://github.com/dst-project/dst/blob/master/client/src/main/java/com/distkv/dst/asyncclient/example/DstAsyncUsageExample.java)
 
 ## Getting Involved
