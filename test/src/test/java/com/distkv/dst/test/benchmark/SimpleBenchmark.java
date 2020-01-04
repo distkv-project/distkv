@@ -2,8 +2,8 @@ package com.distkv.dst.test.benchmark;
 
 import com.distkv.dst.asyncclient.DefaultAsyncClient;
 import com.distkv.dst.asyncclient.DstAsyncClient;
-import com.distkv.dst.test.supplier.StrUtil;
 import com.distkv.dst.test.supplier.TestUtil;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class SimpleBenchmark {
   private static final String ADDRESS = "list://127.0.0.1:8082";
-  private static final String value = StrUtil.randomString(5);
+  private static final String value = randomString(5);
   private static final Integer THREAD_COUNT = 2;
   private static final Integer LOOP_COUNT = 50000;
 
@@ -57,6 +57,22 @@ public class SimpleBenchmark {
             "=======================================================================");
     //DST stop server
     TestUtil.stopRpcServer();
+  }
+
+  /**
+   * Get a random string pass by a length
+   *
+   * @param x Length of Random String
+   * @return Random String
+   */
+  public static String randomString(int x) {
+    String str = "1234567890abcdefghijklmnopqrstuvwxyz";
+    StringBuilder stringBuilder = new StringBuilder();
+    Random random = new Random();
+    for (int i = 0; i < x; i++) {
+      stringBuilder.append(str.charAt(random.nextInt(str.length())));
+    }
+    return stringBuilder.toString();
   }
 
   /**
