@@ -7,10 +7,15 @@ import com.distkv.dst.client.DstClient;
 import com.distkv.dst.test.supplier.TestUtil;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.RandomStringUtils;
-import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
-
 import java.util.List;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.TearDown;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Mode;
 
 @State(Scope.Thread)
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
@@ -66,13 +71,11 @@ public class ListDstBenchmark {
 
   @Benchmark
   public void testLPut() {
-    String randomStr = RandomStringUtils.random(5);
     client.lists().lput("k-list-sync", dummyData);
   }
 
   @Benchmark
   public void testAsyncLPut() {
-    String randomStr = RandomStringUtils.random(5);
     asyncClient.lists().lput("k-list-sync", dummyData);
   }
 
