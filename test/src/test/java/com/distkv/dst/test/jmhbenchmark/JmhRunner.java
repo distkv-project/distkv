@@ -16,7 +16,7 @@ public class JmhRunner {
         .include(ListDstBenchmark.class.getSimpleName())
         .output(System.getProperty("user.dir") + File.separator
             + "test" + File.separator + "target"
-            + File.separator + "StrDstBenchmark.log")
+            + File.separator + "DstBenchmark.log")
         .warmupIterations(5)
         .measurementIterations(8)
         //.mode(Mode.All)
