@@ -4,7 +4,6 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-
 import java.io.File;
 
 public class JmhRunner {
@@ -20,7 +19,7 @@ public class JmhRunner {
         .warmupIterations(5)
         .measurementIterations(8)
         //.mode(Mode.All)
-        .forks(2)
+        .forks(1)
         .build();
     new Runner(opt).run();
   }

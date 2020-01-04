@@ -42,12 +42,12 @@ public class StrDstBenchmark {
 
   @Benchmark
   public void testSyncGet(Blackhole bh) {
-    bh.consume(client.strs().get("k-sync"));
+    bh.consume(client.strs().get("k-str-sync"));
   }
 
   @Benchmark
   public void testAsyncGet(Blackhole bh) {
-    bh.consume(asyncClient.strs().get("k-async"));
+    bh.consume(asyncClient.strs().get("k-str-async"));
   }
 
   @Benchmark
