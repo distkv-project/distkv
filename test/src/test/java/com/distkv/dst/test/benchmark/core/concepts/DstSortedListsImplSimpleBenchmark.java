@@ -172,18 +172,18 @@ public class DstSortedListsImplSimpleBenchmark {
   }
 
   private static long testSubList(
-      SortedList sortedList, int sIndex, int eIndex) {
+      SortedList sortedList, int startIndex, int endIndex) {
     long start = System.currentTimeMillis();
-    sortedList.subList(sIndex, eIndex);
+    sortedList.subList(startIndex, endIndex);
     long end = System.currentTimeMillis();
     return end - start;
   }
 
   private static DstTuple<Integer, Integer> generateSubListDatas(
       int size) {
-    int sIndex = (int) Math.random() * size + 1;
-    int len = (int) (Math.random() * (size - sIndex + 1));
-    return new DstTuple<>(sIndex, sIndex + len);
+    int startIndex = (int) Math.random() * size + 1;
+    int len = (int) (Math.random() * (size - startIndex + 1));
+    return new DstTuple<>(startIndex, startIndex + len);
   }
 
   private static long testGetItem(
