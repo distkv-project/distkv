@@ -15,7 +15,7 @@ public interface SortedList {
    *
    * @return the SortedList's size
    */
-  int getSize();
+  int size();
 
   /**
    * This method will put a list into the SortedList initially.

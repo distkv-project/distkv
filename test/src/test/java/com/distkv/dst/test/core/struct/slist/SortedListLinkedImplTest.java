@@ -34,7 +34,7 @@ public class SortedListLinkedImplTest {
     Assert.assertEquals(sortedList.removeItem("109"), true);
 
     // Test getSize
-    Assert.assertEquals(sortedList.getSize(), 18);
+    Assert.assertEquals(sortedList.size(), 18);
 
     // Test putItem
     sortedList.putItem(new SortedListEntity("109", 99));
@@ -42,7 +42,7 @@ public class SortedListLinkedImplTest {
     sortedList.putItem(new SortedListEntity("115", -98));
 
     // Test getSize
-    Assert.assertEquals(sortedList.getSize(), 19);
+    Assert.assertEquals(sortedList.size(), 19);
 
     // Test incrScore
     Assert.assertEquals(sortedList.incrScore("109", Integer.MAX_VALUE), -1);

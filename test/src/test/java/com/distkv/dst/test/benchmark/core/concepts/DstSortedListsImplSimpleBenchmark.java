@@ -87,7 +87,7 @@ public class DstSortedListsImplSimpleBenchmark {
     testPut(sortedList, list);
     totalTimes = 0;
     for (int i = 0; i < maxOperationtimes; i++) {
-      DstTuple<Integer, Integer> tuple = generateSubListDatas(sortedList.getSize());
+      DstTuple<Integer, Integer> tuple = generateSubListDatas(sortedList.size());
       totalTimes += testSubList(sortedList, tuple.getFirst(), tuple.getSecond());
     }
     System.out.println("SortedListLinkedImpl.subList    " + maxOperationtimes +

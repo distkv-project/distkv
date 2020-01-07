@@ -74,8 +74,8 @@ public class DstSortedListsImpl
       throw new KeyNotFoundException(key);
     }
     final SortedList sortedList = dstKeyValueMap.get(key);
-    if (topNum > sortedList.getSize()) {
-      topNum = sortedList.getSize();
+    if (topNum > sortedList.size()) {
+      topNum = sortedList.size();
     }
     if (topNum <= 0) {
       throw new SortedListTopNumBeNonNegativeException(key, topNum);
