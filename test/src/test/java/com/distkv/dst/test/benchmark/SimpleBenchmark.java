@@ -3,7 +3,6 @@ package com.distkv.dst.test.benchmark;
 import com.distkv.dst.asyncclient.DefaultAsyncClient;
 import com.distkv.dst.asyncclient.DstAsyncClient;
 import com.distkv.dst.test.supplier.TestUtil;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +65,7 @@ public class SimpleBenchmark {
    * @return Random String
    */
   public static String randomString(int x) {
-    String str = "1234567890abcdefghijklmnopqrstuvwxyz";
+    final String str = "1234567890abcdefghijklmnopqrstuvwxyz";
     StringBuilder stringBuilder = new StringBuilder();
     Random random = new Random();
     for (int i = 0; i < x; i++) {

@@ -19,8 +19,11 @@ import org.openjdk.jmh.annotations.Mode;
 
 @State(Scope.Thread)
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-public class ListDstBenchmark {
+public class DstListBenchmark {
 
+  private static final String PROTOCOL = "list://127.0.0.1:8082";
+  private static final String KEY_LIST_SYNC = "k-list-sync";
+  private static final String KEY_LIST_ASYNC = "k-list-async";
   private DstAsyncClient asyncClient;
   private DstClient client;
   private List<String> dummyData;
@@ -30,14 +33,14 @@ public class ListDstBenchmark {
     TestUtil.startRpcServer(8082);
 
     dummyData = ImmutableList.of(
-        RandomStringUtils.random(5),
-        RandomStringUtils.random(5),
-        RandomStringUtils.random(5));
+            RandomStringUtils.random(5),
+            RandomStringUtils.random(5),
+            RandomStringUtils.random(5));
 
-    asyncClient = new DefaultAsyncClient("list://127.0.0.1:8082");
-    client = new DefaultDstClient("list://127.0.0.1:8082");
-    client.lists().put("k-list-sync", dummyData);
-    asyncClient.lists().put("k-list-async", dummyData);
+    asyncClient = new DefaultAsyncClient(PROTOCOL);
+    client = new DefaultDstClient(PROTOCOL);
+    client.lists().put(KEY_LIST_SYNC, dummyData);
+    asyncClient.lists().put(KEY_LIST_ASYNC, dummyData);
   }
 
   @TearDown
@@ -48,13 +51,13 @@ public class ListDstBenchmark {
   }
 
   @Benchmark
-  public void testSyncGet(Blackhole bh) {
-    bh.consume(client.lists().get("k-list-sync"));
+  public void testSyncGet(Blackhole blackhole) {
+    blackhole.consume(client.lists().get(KEY_LIST_SYNC));
   }
 
   @Benchmark
-  public void testAsyncGet(Blackhole bh) {
-    bh.consume(asyncClient.lists().get("k-list-async"));
+  public void testAsyncGet(Blackhole blackhole) {
+    blackhole.consume(asyncClient.lists().get(KEY_LIST_ASYNC));
   }
 
   @Benchmark
@@ -71,12 +74,12 @@ public class ListDstBenchmark {
 
   @Benchmark
   public void testLPut() {
-    client.lists().lput("k-list-sync", dummyData);
+    client.lists().lput(KEY_LIST_SYNC, dummyData);
   }
 
   @Benchmark
   public void testAsyncLPut() {
-    asyncClient.lists().lput("k-list-async", dummyData);
+    asyncClient.lists().lput(KEY_LIST_ASYNC, dummyData);
   }
 
 

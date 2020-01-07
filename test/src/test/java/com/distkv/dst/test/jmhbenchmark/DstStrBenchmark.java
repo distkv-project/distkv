@@ -17,8 +17,13 @@ import org.openjdk.jmh.infra.Blackhole;
 
 @State(Scope.Thread)
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-public class StrDstBenchmark {
+public class DstStrBenchmark {
 
+  private static final String PROTOCOL = "list://127.0.0.1:8082";
+  private static final String KEY_STR_SYNC = "k-str-sync";
+  private static final String KEY_STR_ASYNC = "k-str-async";
+  private static final String VALUE_STR_SYNC = "v-sync";
+  private static final String VALUE_STR_ASYNC = "v-async";
   private DstAsyncClient asyncClient;
   private DstClient client;
 
@@ -26,11 +31,11 @@ public class StrDstBenchmark {
   public void init() {
     TestUtil.startRpcServer(8082);
 
-    asyncClient = new DefaultAsyncClient("list://127.0.0.1:8082");
-    client = new DefaultDstClient("list://127.0.0.1:8082");
+    asyncClient = new DefaultAsyncClient(PROTOCOL);
+    client = new DefaultDstClient(PROTOCOL);
 
-    client.strs().put("k-str-sync", "v-sync");
-    asyncClient.strs().put("k-str-async", "v-async");
+    client.strs().put(KEY_STR_SYNC, VALUE_STR_SYNC);
+    asyncClient.strs().put(KEY_STR_ASYNC, VALUE_STR_ASYNC);
   }
 
   @TearDown
@@ -41,13 +46,13 @@ public class StrDstBenchmark {
   }
 
   @Benchmark
-  public void testSyncGet(Blackhole bh) {
-    bh.consume(client.strs().get("k-str-sync"));
+  public void testSyncGet(Blackhole blackhole) {
+    blackhole.consume(client.strs().get(KEY_STR_SYNC));
   }
 
   @Benchmark
-  public void testAsyncGet(Blackhole bh) {
-    bh.consume(asyncClient.strs().get("k-str-async"));
+  public void testAsyncGet(Blackhole blackhole) {
+    blackhole.consume(asyncClient.strs().get(KEY_STR_ASYNC));
   }
 
   @Benchmark
