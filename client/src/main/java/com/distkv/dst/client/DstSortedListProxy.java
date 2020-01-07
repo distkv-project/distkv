@@ -1,13 +1,12 @@
 package com.distkv.dst.client;
 
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.utils.FutureUtils;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.dst.rpc.service.DstSortedListService;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class DstSortedListProxy {
 
@@ -94,15 +93,15 @@ public class DstSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  public List<Integer> getMember(String key, String member) {
+  public DstTuple<Integer, Integer> getMember(String key, String member) {
     SortedListProtocol.GetMemberRequest.Builder getMemberRequest =
-            SortedListProtocol.GetMemberRequest.newBuilder();
+        SortedListProtocol.GetMemberRequest.newBuilder();
     getMemberRequest.setKey(key);
     getMemberRequest.setMember(member);
     SortedListProtocol.GetMemberResponse response = FutureUtils.get(
-            service.getMember(getMemberRequest.build()));
+        service.getMember(getMemberRequest.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     SortedListProtocol.SortedListEntity sortedListEntity = response.getEntity();
-    return Arrays.asList(sortedListEntity.getScore(), response.getCount());
+    return new DstTuple<Integer, Integer>(sortedListEntity.getScore(), response.getCount());
   }
 }

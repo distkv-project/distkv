@@ -1,6 +1,7 @@
 package com.distkv.dst.client.commandlinetool;
 
 import com.distkv.dst.client.DstClient;
+import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.parser.po.DstParsedResult;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
@@ -310,16 +311,16 @@ public class CommandExecutorHandler {
   public static String slistGetMember(DstClient dstClient, DstParsedResult parsedResult) {
     SortedListProtocol.GetMemberRequest getMemberRequest =
         (SortedListProtocol.GetMemberRequest) parsedResult.getRequest();
-    final List<Integer> scoreAndRankingValues = dstClient.sortedLists().getMember(
+    final DstTuple<Integer, Integer> tuple = dstClient.sortedLists().getMember(
         getMemberRequest.getKey(), getMemberRequest.getMember());
     // output: (member, score), ranking
     final StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("(");
     stringBuilder.append(getMemberRequest.getMember());
     stringBuilder.append(", ");
-    stringBuilder.append(scoreAndRankingValues.get(0));
+    stringBuilder.append(tuple.getFirst());
     stringBuilder.append("), ");
-    final int ranking = scoreAndRankingValues.get(1);
+    final int ranking = tuple.getSecond();
     stringBuilder.append(ranking);
     switch (ranking) {
       case 1:
