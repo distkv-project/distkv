@@ -6,7 +6,7 @@ import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.SortedListMembersDuplicatedException;
 import com.distkv.dst.common.exception.SortedListIncrScoreOutOfRangeException;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
-import com.distkv.dst.common.exception.SortedListTopNumBeNonNegativeException;
+import com.distkv.dst.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.core.struct.slist.SortedList;
 import com.distkv.dst.core.struct.slist.SortedListLinkedImpl;
@@ -78,7 +78,7 @@ public class DstSortedListsImpl
       topNum = sortedList.size();
     }
     if (topNum <= 0) {
-      throw new SortedListTopNumBeNonNegativeException(key, topNum);
+      throw new SortedListTopNumIsNonNegativeException(key, topNum);
     }
     return sortedList.subList(1, topNum);
   }

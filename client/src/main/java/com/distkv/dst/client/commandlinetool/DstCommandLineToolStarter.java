@@ -11,7 +11,7 @@ import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.DictKeyNotFoundException;
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
-import com.distkv.dst.common.exception.SortedListTopNumBeNonNegativeException;
+import com.distkv.dst.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.dst.parser.DstParser;
 import com.distkv.dst.parser.po.DstParsedResult;
 
@@ -86,7 +86,7 @@ public class DstCommandLineToolStarter {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       } catch (SortedListMemberNotFoundException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (SortedListTopNumBeNonNegativeException e) {
+      } catch (SortedListTopNumIsNonNegativeException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       } catch (DstException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());

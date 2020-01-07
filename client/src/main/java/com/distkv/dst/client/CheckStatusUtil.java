@@ -4,7 +4,7 @@ import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.DictKeyNotFoundException;
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
-import com.distkv.dst.common.exception.SortedListTopNumBeNonNegativeException;
+import com.distkv.dst.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.dst.common.exception.DstException;
 import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
 
@@ -24,7 +24,7 @@ public class CheckStatusUtil {
       case SLIST_MEMBER_NOT_FOUND:
         throw new SortedListMemberNotFoundException(key, typeCode);
       case SLIST_TOPNUM_BE_POSITIVE:
-        throw new SortedListTopNumBeNonNegativeException(key, typeCode);
+        throw new SortedListTopNumIsNonNegativeException(key, typeCode);
       default:
         throw new DstException(typeCode + "000",
               String.format("Error status is %s", status.getClass().toString()));
