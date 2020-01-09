@@ -51,4 +51,3 @@ public class SortedListEntity implements Comparable<SortedListEntity> {
     return member.hashCode();
   }
 }
-

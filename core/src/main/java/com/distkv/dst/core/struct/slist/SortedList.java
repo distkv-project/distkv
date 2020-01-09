@@ -6,68 +6,70 @@ import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import java.util.List;
 
 /**
- * Basic data structure interface of the Dst SortedList
+ * The interface of DstSortedList.
  */
 public interface SortedList {
 
   /**
-   * This method will get SortedList's size.
+   * Get the size of this sorted list.
    *
-   * @return the SortedList's size
+   * @return The size of this sorted list.
    */
   int size();
 
   /**
-   * This method will put a list into the SortedList initially.
+   * Put a list with scores into this sorted list.
    *
-   * @param sortedListEntities the List value
-   * @return whether the put operation succeeds
+   * @param entities The entities of the sorted list to be putted.
+   *
+   * @return True if we put it successfully, otherwise it's false.
    */
-  boolean put(List<SortedListEntity> sortedListEntities);
+  boolean put(List<SortedListEntity> entities);
 
   /**
-   * This method will insert the entity item into the SortedList.
+   * Insert the entity into this sorted list.
    *
-   * @param sortedListEntity the SortedListEntity value
+   * @param entity The entity to be putted.
    */
-  void putItem(SortedListEntity sortedListEntity);
+  void putItem(SortedListEntity entity);
 
   /**
-   * This method will remove the entity item from the SortedList.
+   * Remove the entity from the this sorted list.
    *
-   * @param member the String which value is the removed member name
-   * @return whether the removeItem operation succeeds
+   * @param member The member to be removed.
+   *
+   * @return True if we remove it successfully, otherwise it's false.
    */
   boolean removeItem(String member);
 
   /**
-   * This method will increase the score of the specified delta
-   * for people whose name is member.
+   * Increase `delta` on the score of the given member.
    *
-   * @param member the member which needs to increase the score
-   * @param delta the count which should increase
-   * @return the status of the incrScore operation, if return 1
-   * when the operation succeeds, if return -1 when the original
-   * score that plus delta outs of integer range, if return 0 when
-   * member does not exist in the SortedList
+   * @param member The member's score to be increased.
+   * @param delta The value that we will increase.
+   *
+   * @return 1 if we increase it successfully, -1 means it will
+   * be out of integer after increasing and 0 means the member
+   * doesn't exist in this sorted list.
    */
   int incrScore(String member, int delta);
 
   /**
-   * This method will get items descending from start to end.
+   * Get the list of entities from the given start index and end index.
    *
-   * @param start the int value which located in the start index
-   * @param end the int value which located in the end index
-   * @return some entities which rankings are from start to end
+   * @param start The start ranking.
+   * @param end The end ranking.
+   * @return The list of entities with the given rankings.
    */
+  // TODO(qwang): Refine this.
   List<SortedListEntity> subList(int start, int end);
 
   /**
-   * This method will get its score and its ranking by the member
+   * Get the entity with the given member.
    *
-   * @param member the member name
-   * @return the DstTuple value which the first element is the score
-   *  and the second element is the ranking located in this SortedList
+   * @param member The member to be gotten.
+   * @return A tuple whose first element is the score while
+   * the second element is the ranking.
    */
   DstTuple<Integer, Integer> getItem(String member);
 }
