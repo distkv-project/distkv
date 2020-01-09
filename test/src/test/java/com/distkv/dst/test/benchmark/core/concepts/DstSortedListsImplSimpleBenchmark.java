@@ -30,10 +30,10 @@ public class DstSortedListsImplSimpleBenchmark {
       totalTimes += testPut(sortedList, list);
     }
     System.out.println("Method benchmark                Cnt      Magnitude" +
-        "      Average time      Total time");
+        "      Average time(ns)      Total time(ns)");
     System.out.println("SortedListLinkedImpl.put        " + maxOperationtimes +
         "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
-        "               " + totalTimes);
+        "             " + totalTimes);
 
     // Test SortedListLinkedImpl.putItem
     SortedList sortedList = new SortedListLinkedImpl();
@@ -48,7 +48,7 @@ public class DstSortedListsImplSimpleBenchmark {
     }
     System.out.println("SortedListLinkedImpl.putItem    " + maxOperationtimes +
         "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
-        "               " + totalTimes);
+        "             " + totalTimes);
 
     // Test SortedListLinkedImpl.removeItem
     sortedList = new SortedListLinkedImpl();
@@ -112,9 +112,9 @@ public class DstSortedListsImplSimpleBenchmark {
 
   private static long testPut(
       SortedList sortedList, List<SortedListEntity> sortedListEntities) {
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
     sortedList.put(sortedListEntities);
-    long end = System.currentTimeMillis();
+    long end = System.nanoTime();
     return end - start;
   }
 
@@ -130,9 +130,9 @@ public class DstSortedListsImplSimpleBenchmark {
 
   private static long testPutItem(
       SortedList sortedList, SortedListEntity sortedListEntity) {
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
     sortedList.putItem(sortedListEntity);
-    long end = System.currentTimeMillis();
+    long end = System.nanoTime();
     return end - start;
   }
 
@@ -144,9 +144,9 @@ public class DstSortedListsImplSimpleBenchmark {
 
   private static long testRemoveItem(
       SortedList sortedList, String member) {
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
     sortedList.removeItem(member);
-    long end = System.currentTimeMillis();
+    long end = System.nanoTime();
     return end - start;
   }
 
@@ -158,9 +158,9 @@ public class DstSortedListsImplSimpleBenchmark {
 
   private static long testIncrScore(
       SortedList sortedList, String member, int delta) {
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
     sortedList.incrScore(member, delta);
-    long end = System.currentTimeMillis();
+    long end = System.nanoTime();
     return end - start;
   }
 
@@ -173,9 +173,9 @@ public class DstSortedListsImplSimpleBenchmark {
 
   private static long testSubList(
       SortedList sortedList, int startIndex, int endIndex) {
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
     sortedList.subList(startIndex, endIndex);
-    long end = System.currentTimeMillis();
+    long end = System.nanoTime();
     return end - start;
   }
 
@@ -188,9 +188,9 @@ public class DstSortedListsImplSimpleBenchmark {
 
   private static long testGetItem(
       SortedList sortedList, String member) {
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
     sortedList.getItem(member);
-    long end = System.currentTimeMillis();
+    long end = System.nanoTime();
     return end - start;
   }
 
