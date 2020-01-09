@@ -1,9 +1,9 @@
 package com.distkv.dst.core;
 
-import com.distkv.dst.core.concepts.DstDicts;
+import com.distkv.dst.core.concepts.DstStrings;
 import com.distkv.dst.core.concepts.DstLists;
 import com.distkv.dst.core.concepts.DstSets;
-import com.distkv.dst.core.concepts.DstStrings;
+import com.distkv.dst.core.concepts.DstDicts;
 import com.distkv.dst.core.concepts.DstSortedLists;
 import com.distkv.dst.core.concepts.DstTables;
 

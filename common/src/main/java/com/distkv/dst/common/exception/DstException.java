@@ -5,7 +5,9 @@ package com.distkv.dst.common.exception;
  */
 public class DstException extends RuntimeException {
 
-  String errorCode = "";
+  String errorCode = ErrorCodeEnum
+      .DstErrorCode
+      .getErrorCode();
 
   public DstException(String errorCode, String errorMessage) {
     super(errorMessage);

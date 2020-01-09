@@ -5,7 +5,9 @@ package com.distkv.dst.common.exception;
  */
 public class DictKeyNotFoundException extends DstException {
 
-  protected String errorCode = "001";
+  protected String errorCode = ErrorCodeEnum
+      .DictKeyNotFoundErrorCode
+      .getErrorCode();
 
   protected String key;
 

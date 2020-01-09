@@ -102,6 +102,6 @@ public class DstSortedListProxy {
         service.getMember(getMemberRequest.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     SortedListProtocol.SortedListEntity sortedListEntity = response.getEntity();
-    return new DstTuple<Integer, Integer>(sortedListEntity.getScore(), response.getCount());
+    return new DstTuple<>(sortedListEntity.getScore(), response.getCount());
   }
 }

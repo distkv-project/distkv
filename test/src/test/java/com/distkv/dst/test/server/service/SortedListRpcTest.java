@@ -46,8 +46,8 @@ public class SortedListRpcTest extends BaseTestSupplier {
       topRequestBuilder.setCount(2);
       SortedListProtocol.TopResponse top = FutureUtils.get(
           service.top(topRequestBuilder.build()));
-      Assert.assertEquals(top.getList(0).getMember(), "xswl");
-      Assert.assertEquals(top.getList(1).getMember(), "fw");
+      Assert.assertEquals(top.getList(0).getMember(), "fw");
+      Assert.assertEquals(top.getList(1).getMember(), "xswl");
 
       SortedListProtocol.PutMemberRequest.Builder putRequestBuilder =
           SortedListProtocol.PutMemberRequest.newBuilder();

@@ -5,7 +5,9 @@ package com.distkv.dst.common.exception;
  */
 public class KeyNotFoundException extends DstException {
 
-  protected String errorCode = "100";
+  protected String errorCode = ErrorCodeEnum
+      .KeyNotFoundErrorCode
+      .getErrorCode();
 
   protected String key;
 

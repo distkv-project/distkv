@@ -4,7 +4,7 @@ import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.NodeInfo;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.SortedListTopNumBePositiveException;
+import com.distkv.dst.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
@@ -631,7 +631,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (SortedListTopNumBePositiveException e) {
+            } catch (SortedListTopNumIsNonNegativeException e) {
               status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
             } catch (DstException e) {
               LOGGER.error("Failed to get a slist top in store: {}", e);

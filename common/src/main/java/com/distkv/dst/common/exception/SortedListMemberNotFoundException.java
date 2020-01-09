@@ -2,7 +2,9 @@ package com.distkv.dst.common.exception;
 
 public class SortedListMemberNotFoundException extends DstException {
 
-  protected String errorCode = "006";
+  protected String errorCode = ErrorCodeEnum
+      .SortedListMemberNotFoundErrorCode
+      .getErrorCode();
 
   protected String key;
 

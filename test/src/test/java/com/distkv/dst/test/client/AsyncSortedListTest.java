@@ -106,8 +106,8 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     Assert.assertEquals(incrScoreResponse.getStatus(), status);
     Assert.assertEquals(putMemberResponse.getStatus(), status);
     Assert.assertEquals(removeMemberResponse.getStatus(), status);
-    Assert.assertEquals(topResponse.getList(0).getMember(), "fw");
-    Assert.assertEquals(topResponse.getList(1).getMember(), "aa");
+    Assert.assertEquals(topResponse.getList(0).getMember(), "aa");
+    Assert.assertEquals(topResponse.getList(1).getMember(), "fw");
     Assert.assertEquals(dropResponse.getStatus(), status);
     client.disconnect();
   }
