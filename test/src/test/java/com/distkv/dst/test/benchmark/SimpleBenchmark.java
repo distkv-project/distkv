@@ -65,13 +65,13 @@ public class SimpleBenchmark {
    * @return Random String
    */
   public static String randomString(int x) {
-    String str = "1234567890abcdefghijklmnopqrstuvwxyz";
-    StringBuffer stringBuffer = new StringBuffer();
+    final String str = "1234567890abcdefghijklmnopqrstuvwxyz";
+    StringBuilder stringBuilder = new StringBuilder();
     Random random = new Random();
     for (int i = 0; i < x; i++) {
-      stringBuffer.append(str.charAt(random.nextInt(str.length())));
+      stringBuilder.append(str.charAt(random.nextInt(str.length())));
     }
-    return stringBuffer.toString();
+    return stringBuilder.toString();
   }
 
   /**
