@@ -28,4 +28,3 @@ public class SortedListIncrScoreOutOfRangeException extends DstException {
   }
 
 }
-
