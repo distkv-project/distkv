@@ -3,6 +3,7 @@ package com.distkv.dst.common.entity.DstList;
 import com.distkv.dst.common.utils.Status;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ListEntity {
@@ -13,6 +14,11 @@ public class ListEntity {
 
   public ListEntity () {
     thisList = new ArrayList<>();
+  }
+
+  public ListEntity (Collection<String> value) {
+    thisList = new ArrayList<>();
+    thisList.addAll(value);
   }
 
   public void setNextList (ListEntity next) {

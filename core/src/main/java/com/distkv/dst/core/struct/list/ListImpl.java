@@ -9,7 +9,7 @@ import java.util.List;
 public final class ListImpl implements DstList, java.io.Serializable {
 
 
-  private final int NODE_LIST_MAX_SIZE = 100000;
+  private final int NODE_LIST_Critical_SIZE = 100000;
 
   private final int size = 0;
 
@@ -33,7 +33,7 @@ public final class ListImpl implements DstList, java.io.Serializable {
   public List<String> get() {
     ListEntity thisList = left;
     final List<String> list = thisList.get();
-    while(thisList.hasNext()){
+    while (thisList.hasNext()){
       thisList = thisList.nextList;
       list.addAll(thisList.get());
     }
@@ -43,36 +43,80 @@ public final class ListImpl implements DstList, java.io.Serializable {
   @Override
   public String get(int index) {
     ListEntity thisList = left;
-    int length = 0;
-    while((index - length) > thisList.getSize()) {
-      length = length + thisList.getSize();
+    while (index > thisList.getSize()) {
+      index = index - thisList.getSize();
       thisList = thisList.nextList;
     }
-    return thisList.get(index - length);
+    return thisList.get(index);
   }
 
   @Override
   public List<String> get(int from, int end) {
-    return null;
+    ListEntity thisList = left;
+    while (from > thisList.getSize()) {
+      from = from - thisList.getSize();
+      end = end - thisList.getSize();
+      thisList = thisList.nextList;
+    }
+    List<String> list = thisList.get(from, Math.min(thisList.getSize(), end));
+    end -= thisList.getSize();
+    thisList = thisList.nextList;
+    while (end > thisList.getSize()) {
+      list.addAll(thisList.get());
+      end -= thisList.getSize();
+      thisList = thisList.nextList;
+    }
+    list = thisList.get(0, end);
+    return list;
   }
 
   @Override
   public Status lput(List<String> value) {
-    return null;
+    ListEntity thisList = left;
+    if (thisList.getSize() + value.size() > NODE_LIST_Critical_SIZE) {
+      ListEntity newLeft = new ListEntity(value);
+      newLeft.setNextList(thisList);
+      left = newLeft;
+    } else {
+      thisList.lput(value);
+    }
+    return Status.OK;
   }
 
   @Override
   public Status rput(List<String> value) {
-    return null;
+    ListEntity thisList = right;
+    thisList.rput(value);
+    return Status.OK;
   }
 
   @Override
   public Status remove(int index) {
-    return null;
+    ListEntity thisList = left;
+    while (index > thisList.getSize()) {
+      index = index - thisList.getSize();
+      thisList = thisList.nextList;
+    }
+    thisList.remove(index);
+    return Status.OK;
   }
 
   @Override
   public Status remove(int from, int end) {
+    ListEntity thisList = left;
+    while (from > thisList.getSize()) {
+      from = from - thisList.getSize();
+      end = end - thisList.getSize();
+      thisList = thisList.nextList;
+    }
+    thisList.remove(from, Math.min(thisList.getSize(), end));
+    end -= thisList.getSize();
+    thisList = thisList.nextList;
+    while (end > thisList.getSize()) {
+      end -= thisList.getSize();
+      thisList = thisList.nextList;
+    }
+    thisList.get(0, end);
     return null;
   }
 

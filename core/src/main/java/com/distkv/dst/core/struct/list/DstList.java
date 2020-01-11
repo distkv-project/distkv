@@ -45,13 +45,15 @@ public interface DstList {
    * @return
    */
   Status rput(List<String>value);
+//
+//  /**
+//   * This method will remove an item from the list.
+//   *
+//   * @param index The index that we want remove the item at.
+//   * @return Whether we succeed to remove the item.
+//   */
+//  Status remove(int index);
 
-  /**
-   * This method will remove an item from the list.
-   *
-   * @param index The index that we want remove the item at.
-   * @return Whether we succeed to remove the item.
-   */
   Status remove(int index);
 
   /**
