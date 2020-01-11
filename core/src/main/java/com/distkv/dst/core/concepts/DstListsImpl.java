@@ -112,8 +112,6 @@ public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstL
       return Status.OK;
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
-    } catch (IndexOutOfBoundsException e) {
-      throw new DstListIndexOutOfBoundsException(key, e);
     }
   }
 }
