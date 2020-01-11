@@ -4,8 +4,9 @@ import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
 import com.distkv.dst.common.exception.KeyNotFoundException;
 import com.distkv.dst.common.utils.Status;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstLists {
 
@@ -86,14 +87,28 @@ public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstL
   @Override
   public Status mremove(String key, List<Integer> indexes)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
-    try {
-      List<String> list = this.dstKeyValueMap.get(key);
-      ArrayList<Integer> thisIndex = new ArrayList<>();
-      thisIndex.addAll(indexes);
-      Collections.sort(thisIndex);
-      for (int i = (thisIndex.size() - 1); i >= 0; i--) {
-        list.remove(thisIndex.get(i).intValue());
+    final List<String> list = this.dstKeyValueMap.get(key);
+    final Set<Integer> set = new HashSet<>();
+    boolean isOutOfBounds = false;
+    for (final Integer index : indexes) {
+      if (index >= list.size()) {
+        isOutOfBounds = true;
+        break;
       }
+      set.add(index);
+    }
+
+    if (isOutOfBounds) {
+      throw new DstListIndexOutOfBoundsException(key);
+    }
+    try {
+      final ArrayList<String> tempList = new ArrayList<>();
+      for (int i = 0; i < list.size(); i++) {
+        if (!set.contains(i)) {
+          tempList.add(list.get(i));
+        }
+      }
+      this.dstKeyValueMap.put(key, tempList);
       return Status.OK;
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
