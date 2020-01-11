@@ -1,5 +1,9 @@
 package com.distkv.dst.server.runtime.workerpool;
 
+import com.distkv.drpc.Proxy;
+import com.distkv.drpc.api.Client;
+import com.distkv.drpc.config.ClientConfig;
+import com.distkv.drpc.netty.NettyClient;
 import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.NodeInfo;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
@@ -16,6 +20,7 @@ import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.dst.rpc.service.DstStringService;
 import com.google.common.base.Preconditions;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
@@ -39,10 +44,16 @@ public class Worker extends Thread {
 
   private NodeInstance nodeInstance;
 
+  private boolean isMaster;
+
+  private List<String> salvers;
+
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
 
-  public Worker() {
+  public Worker(boolean isMaster, List<String> salvers) {
     queue = new LinkedBlockingQueue<>();
+    this.salvers = salvers;
+    this.isMaster = isMaster;
   }
 
   private BlockingQueue<InternalRequest> queue;
@@ -65,8 +76,29 @@ public class Worker extends Thread {
         InternalRequest internalRequest = queue.take();
         switch (internalRequest.getRequestType()) {
           case STR_PUT: {
+
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (String salver: salvers) {
+                ClientConfig clientConfig = ClientConfig.builder()
+                    .address(salver)
+                    .build();
+                Client client = new NettyClient(clientConfig);
+                client.open();
+                Proxy<DstStringService> proxy = new Proxy<>();
+                proxy.setInterfaceClass(DstStringService.class);
+                DstStringService service = proxy.getService(client);
+                StringProtocol.PutResponse tempResponse =
+                    service.put(strPutRequest).get();
+                client.close();
+                if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                  continue;
+                } else {
+                  throw new DstException("Write to salver failed");
+                }
+              }
+            }
             // try put.
             storeEngine.strs().put(strPutRequest.getKey(), strPutRequest.getValue());
             CompletableFuture<StringProtocol.PutResponse> future =
@@ -584,7 +616,6 @@ public class Worker extends Thread {
             future.complete(responseBuilder.build());
             break;
           }
-
           case SLIST_PUT: {
             SortedListProtocol.PutRequest request =
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
@@ -771,11 +802,13 @@ public class Worker extends Thread {
           }
           default: {
           }
+
         }
+      } catch (DstException e) {
+        LOGGER.error("Failed to execute event loop:" + e);
       } catch (Exception e) {
         LOGGER.error("Failed to execute event loop:" + e);
       }
     }
   }
-
 }

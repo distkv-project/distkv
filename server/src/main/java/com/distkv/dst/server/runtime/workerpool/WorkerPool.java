@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class WorkerPool {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WorkerPool.class);
@@ -13,14 +15,17 @@ public class WorkerPool {
 
   private boolean isMaster;
 
+  private List<String> slavers;
+
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(int shardNum, boolean isMaster) {
+  public WorkerPool(int shardNum, boolean isMaster, List<String> slavers) {
     this.shardNum = shardNum;
     this.isMaster = isMaster;
+    this.slavers = slavers;
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
-      Worker worker = new Worker();
+      Worker worker = new Worker(isMaster, slavers);
       builder.add(worker);
       worker.start();
     }

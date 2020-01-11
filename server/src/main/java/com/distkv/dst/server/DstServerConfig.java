@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DstServerConfig {
@@ -44,7 +45,11 @@ public class DstServerConfig {
     listeningPort = config.getInt("store.listeningPort");
     isMaster = config.getBoolean("store.isMaster");
     shardNum = config.getInt("store.shardNum");
-    slaves = config.getStringList("store.slaver");
+    if (isMaster) {
+      slaves = config.getStringList("store.slaver");
+    } else {
+      slaves = new ArrayList<>();
+    }
   }
 
   @Override
@@ -68,11 +73,6 @@ public class DstServerConfig {
     }
     config = config.withFallback(ConfigFactory.load(DEFAULT_CONFIG_FILE));
     return new DstServerConfig(config);
-  }
-
-  public static void main(String[] args) {
-    DstServerConfig config = DstServerConfig.create();
-    System.out.println(config.toString());
   }
 }
 

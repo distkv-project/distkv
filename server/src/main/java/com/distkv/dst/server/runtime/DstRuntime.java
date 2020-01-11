@@ -11,7 +11,7 @@ public class DstRuntime {
 
   public DstRuntime(DstServerConfig config) {
     this.config = config;
-    workerPool = new WorkerPool(config.getShardNum(), config.isMaster());
+    workerPool = new WorkerPool(config.getShardNum(), config.isMaster(), config.getSlaves());
   }
 
   public WorkerPool getWorkerPool() {
