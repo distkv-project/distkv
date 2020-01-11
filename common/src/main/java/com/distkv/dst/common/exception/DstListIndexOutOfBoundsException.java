@@ -19,6 +19,11 @@ public class DstListIndexOutOfBoundsException extends DstException {
     this.errorCode = typeCode + this.errorCode;
   }
 
+  public DstListIndexOutOfBoundsException(String key) {
+    super(String.format("The index is out of bounds of the list %s", key));
+    this.key = key;
+  }
+
   public String getKey() {
     return key;
   }

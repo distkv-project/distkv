@@ -83,5 +83,4 @@ public class ListProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
-
 }
