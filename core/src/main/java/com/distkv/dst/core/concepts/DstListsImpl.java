@@ -93,18 +93,13 @@ public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstL
     }
 
     final Set<Integer> set = new HashSet<>();
-    boolean isOutOfBounds = false;
     for (final Integer index : indexes) {
       if (index >= list.size()) {
-        isOutOfBounds = true;
-        break;
+        throw new DstListIndexOutOfBoundsException(key);
       }
       set.add(index);
     }
 
-    if (isOutOfBounds) {
-      throw new DstListIndexOutOfBoundsException(key);
-    }
     final ArrayList<String> tempList = new ArrayList<>();
     for (int i = 0; i < list.size(); i++) {
       if (!set.contains(i)) {
