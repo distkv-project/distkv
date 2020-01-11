@@ -111,7 +111,8 @@ public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstL
         tempList.add(list.get(i));
       }
     }
-    list.addAll(0, tempList);
+    list.clear();
+    list.addAll(tempList);
     return Status.OK;
   }
 }
