@@ -88,6 +88,10 @@ public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstL
   public Status mremove(String key, List<Integer> indexes)
           throws KeyNotFoundException, DstListIndexOutOfBoundsException {
     final List<String> list = this.dstKeyValueMap.get(key);
+    if (list == null) {
+      throw new KeyNotFoundException(key);
+    }
+
     final Set<Integer> set = new HashSet<>();
     boolean isOutOfBounds = false;
     for (final Integer index : indexes) {
@@ -101,17 +105,13 @@ public class DstListsImpl extends DstConcepts<ArrayList<String>> implements DstL
     if (isOutOfBounds) {
       throw new DstListIndexOutOfBoundsException(key);
     }
-    try {
-      final ArrayList<String> tempList = new ArrayList<>();
-      for (int i = 0; i < list.size(); i++) {
-        if (!set.contains(i)) {
-          tempList.add(list.get(i));
-        }
+    final ArrayList<String> tempList = new ArrayList<>();
+    for (int i = 0; i < list.size(); i++) {
+      if (!set.contains(i)) {
+        tempList.add(list.get(i));
       }
-      this.dstKeyValueMap.put(key, tempList);
-      return Status.OK;
-    } catch (NullPointerException e) {
-      throw new KeyNotFoundException(key);
     }
+    list.addAll(0, tempList);
+    return Status.OK;
   }
 }
