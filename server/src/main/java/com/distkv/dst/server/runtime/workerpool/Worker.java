@@ -80,16 +80,17 @@ public class Worker extends Thread {
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
               for (Client client : clients) {
-                Proxy<DstStringService> proxy = new Proxy<>();
-                proxy.setInterfaceClass(DstStringService.class);
-                DstStringService service = proxy.getService(client);
-                StringProtocol.PutResponse tempResponse =
-                    service.put(strPutRequest).get();
-                client.close();
-                if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                  continue;
-                } else {
-                  throw new DstException("Write to salver failed");
+                synchronized (client) {
+                  Proxy<DstStringService> proxy = new Proxy<>();
+                  proxy.setInterfaceClass(DstStringService.class);
+                  DstStringService service = proxy.getService(client);
+                  StringProtocol.PutResponse tempResponse =
+                      service.put(strPutRequest).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    throw new DstException("Write to salver failed");
+                  }
                 }
               }
             }
