@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DstServerConfig {
@@ -19,7 +18,7 @@ public class DstServerConfig {
   private int listeningPort;
   private boolean isMaster;
   private int shardNum;
-  private List<String> slaves;
+  private List<String> slaveAddresses;
 
   public boolean isMaster() {
     return isMaster;
@@ -37,8 +36,8 @@ public class DstServerConfig {
     return shardNum;
   }
 
-  public List<String> getSlaves() {
-    return slaves;
+  public List<String> getSlaveAddresses() {
+    return slaveAddresses;
   }
 
   public DstServerConfig(Config config) {
@@ -46,9 +45,9 @@ public class DstServerConfig {
     isMaster = config.getBoolean("store.isMaster");
     shardNum = config.getInt("store.shardNum");
     if (isMaster) {
-      slaves = config.getStringList("store.slaver");
+      slaveAddresses = config.getStringList("store.slaveAddresses");
     } else {
-      slaves = new ArrayList<>();
+      slaveAddresses = null;
     }
   }
 
@@ -57,7 +56,7 @@ public class DstServerConfig {
     return "listeningPort: " + listeningPort + ";\n"
         + "isMaster: " + isMaster + ";\n"
         + "shardNum: " + shardNum + ";\n"
-        + "slaves" + slaves.toString() + "\n";
+        + "slaves" + slaveAddresses.toString() + "\n";
   }
 
   public static DstServerConfig create() {

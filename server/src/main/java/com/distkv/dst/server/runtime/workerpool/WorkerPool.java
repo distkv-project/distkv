@@ -15,17 +15,17 @@ public class WorkerPool {
 
   private boolean isMaster;
 
-  private List<String> slavers;
+  private List<String> slaveAddresses;
 
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(int shardNum, boolean isMaster, List<String> slavers) {
+  public WorkerPool(int shardNum, boolean isMaster, List<String> slaveAddresses) {
     this.shardNum = shardNum;
     this.isMaster = isMaster;
-    this.slavers = slavers;
+    this.slaveAddresses = slaveAddresses;
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
-      Worker worker = new Worker(isMaster, slavers);
+      Worker worker = new Worker(isMaster, slaveAddresses);
       builder.add(worker);
       worker.start();
     }
