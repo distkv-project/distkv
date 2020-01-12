@@ -46,13 +46,13 @@ public class Worker extends Thread {
 
   private boolean isMaster;
 
-  private List<String> slaveAddresses;
+  private List<Client> clients;
 
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
 
-  public Worker(boolean isMaster, List<String> salvers) {
+  public Worker(boolean isMaster, List<Client> clients) {
     queue = new LinkedBlockingQueue<>();
-    this.slaveAddresses = salvers;
+    this.clients = clients;
     this.isMaster = isMaster;
   }
 
@@ -80,12 +80,7 @@ public class Worker extends Thread {
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (String slaveAddress: slaveAddresses) {
-                ClientConfig clientConfig = ClientConfig.builder()
-                    .address(slaveAddress)
-                    .build();
-                Client client = new NettyClient(clientConfig);
-                client.open();
+              for ( Client client: clients) {
                 Proxy<DstStringService> proxy = new Proxy<>();
                 proxy.setInterfaceClass(DstStringService.class);
                 DstStringService service = proxy.getService(client);
