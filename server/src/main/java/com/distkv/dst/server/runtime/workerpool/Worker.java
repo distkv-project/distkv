@@ -89,7 +89,11 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    throw new DstException("Write to salver failed");
+                    CompletableFuture<StringProtocol.PutResponse> future =
+                        (CompletableFuture<StringProtocol.PutResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(StringProtocol.PutResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
                   }
                 }
               }
