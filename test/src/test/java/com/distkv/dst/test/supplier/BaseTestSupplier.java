@@ -26,7 +26,7 @@ public class BaseTestSupplier {
         method.getDeclaringClass(), method.getName()));
     rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
     TestUtil.startRpcServer(rpcServerPort);
-    TimeUnit.SECONDS.sleep(1);
+    TimeUnit.SECONDS.sleep(2);
   }
 
   @AfterMethod

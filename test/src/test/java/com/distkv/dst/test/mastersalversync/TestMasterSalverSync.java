@@ -6,12 +6,14 @@ import com.distkv.dst.test.supplier.MasterSalverTestUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class TestMasterSalverSync {
 
   @Test
   public void testStrPut() throws InterruptedException {
     MasterSalverTestUtil.startAllProcess();
-    Thread.sleep(5000);
+    TimeUnit.SECONDS.sleep(5);
 
     DstClient client = new DefaultDstClient(String.format("list://127.0.0.1:%d", 8082));
     client.strs().put("k1", "v1");
