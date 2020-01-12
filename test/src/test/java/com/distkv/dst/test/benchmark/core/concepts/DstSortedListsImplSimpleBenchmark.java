@@ -10,30 +10,32 @@ import java.util.List;
 
 public class DstSortedListsImplSimpleBenchmark {
 
-  private static final int maxOperationtimes = 10;
+  private static final int maxOperationTimes = 10000;
 
   private static final int minValueInPutList = -100000;
 
   private static final int maxValueInPutList = 100000;
 
-  private static final int lengthInPutList = 1000000;
+  private static final int lengthInPutList = 10000;
 
   public static void main(String[] args) {
     System.out.println("Start run benchmark...........\n\n\n");
+    long start = System.currentTimeMillis();
 
     // Test SortedListLinkedImpl.put
     double totalTimes = 0;
-    for (int i = 0; i < maxOperationtimes; i++) {
+    for (int i = 0; i < maxOperationTimes; i++) {
       SortedList sortedList = new SortedListLinkedImpl();
       List<SortedListEntity> list = generatePutDatas(minValueInPutList,
           maxValueInPutList, lengthInPutList);
-      totalTimes += testPut(sortedList, list);
+      double consume = testPut(sortedList, list);
+      totalTimes += addWeight(sortedList, consume);
     }
-    System.out.println("Method benchmark                Cnt      Magnitude" +
-        "      Average time(ns)      Total time(ns)");
-    System.out.println("SortedListLinkedImpl.put        " + maxOperationtimes +
-        "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
-        "             " + totalTimes);
+    System.out.println("Method benchmark                 Cnt        Magnitude" +
+        "  Average weighted time(ns)     Total weighted time(ns)");
+    System.out.println("SortedListLinkedImpl.put        " + maxOperationTimes +
+        "        " + lengthInPutList + "          " + totalTimes / maxOperationTimes +
+        "                      " + totalTimes);
 
     // Test SortedListLinkedImpl.putItem
     SortedList sortedList = new SortedListLinkedImpl();
@@ -41,13 +43,14 @@ public class DstSortedListsImplSimpleBenchmark {
         maxValueInPutList, lengthInPutList);
     testPut(sortedList, list);
     totalTimes = 0;
-    for (int i = 0; i < maxOperationtimes; i++) {
+    for (int i = 0; i < maxOperationTimes; i++) {
       SortedListEntity entity = generatePutItemDatas(minValueInPutList - 1000,
           maxValueInPutList + 1000);
-      totalTimes += testPutItem(sortedList, entity);
+      double consume = testPutItem(sortedList, entity);
+      totalTimes += addWeight(sortedList, consume);
     }
-    System.out.println("SortedListLinkedImpl.putItem    " + maxOperationtimes +
-        "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
+    System.out.println("SortedListLinkedImpl.putItem    " + maxOperationTimes +
+        "        " + lengthInPutList + "          " + totalTimes / maxOperationTimes +
         "             " + totalTimes);
 
     // Test SortedListLinkedImpl.removeItem
@@ -56,14 +59,15 @@ public class DstSortedListsImplSimpleBenchmark {
         maxValueInPutList, lengthInPutList);
     testPut(sortedList, list);
     totalTimes = 0;
-    for (int i = 0; i < maxOperationtimes; i++) {
+    for (int i = 0; i < maxOperationTimes; i++) {
       String str = generateRemoveItemDatas(minValueInPutList - 100,
           maxValueInPutList + 100);
-      totalTimes += testRemoveItem(sortedList, str);
+      double consume = testRemoveItem(sortedList, str);
+      totalTimes += addWeight(sortedList, consume);
     }
-    System.out.println("SortedListLinkedImpl.removeItem " + maxOperationtimes +
-        "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
-        "               " + totalTimes);
+    System.out.println("SortedListLinkedImpl.removeItem " + maxOperationTimes +
+        "        " + lengthInPutList + "          " + totalTimes / maxOperationTimes +
+        "                         " + totalTimes);
 
     // Test SortedListLinkedImpl.incrScore
     sortedList = new SortedListLinkedImpl();
@@ -71,14 +75,15 @@ public class DstSortedListsImplSimpleBenchmark {
         maxValueInPutList, lengthInPutList);
     testPut(sortedList, list);
     totalTimes = 0;
-    for (int i = 0; i < maxOperationtimes; i++) {
+    for (int i = 0; i < maxOperationTimes; i++) {
       DstTuple<String, Integer> tuple = generateIncrScoreDatas(minValueInPutList - 100,
           maxValueInPutList + 100);
-      totalTimes += testIncrScore(sortedList, tuple.getFirst(), tuple.getSecond());
+      double consume = testIncrScore(sortedList, tuple.getFirst(), tuple.getSecond());
+      totalTimes += addWeight(sortedList, consume);
     }
-    System.out.println("SortedListLinkedImpl.incrScore  " + maxOperationtimes +
-        "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
-        "               " + totalTimes);
+    System.out.println("SortedListLinkedImpl.incrScore  " + maxOperationTimes +
+        "        " + lengthInPutList + "          " + totalTimes / maxOperationTimes +
+        "                         " + totalTimes);
 
     // Test SortedListLinkedImpl.subList
     sortedList = new SortedListLinkedImpl();
@@ -86,13 +91,14 @@ public class DstSortedListsImplSimpleBenchmark {
         maxValueInPutList, lengthInPutList);
     testPut(sortedList, list);
     totalTimes = 0;
-    for (int i = 0; i < maxOperationtimes; i++) {
+    for (int i = 0; i < maxOperationTimes; i++) {
       DstTuple<Integer, Integer> tuple = generateSubListDatas(sortedList.size());
-      totalTimes += testSubList(sortedList, tuple.getFirst(), tuple.getSecond());
+      double consume = testSubList(sortedList, tuple.getFirst(), tuple.getSecond());;
+      totalTimes += addWeight(sortedList, consume);
     }
-    System.out.println("SortedListLinkedImpl.subList    " + maxOperationtimes +
-        "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
-        "               " + totalTimes);
+    System.out.println("SortedListLinkedImpl.subList    " + maxOperationTimes +
+        "        " + lengthInPutList + "          " + totalTimes / maxOperationTimes +
+        "                         " + totalTimes);
 
     // Test SortedListLinkedImpl.getItem
     sortedList = new SortedListLinkedImpl();
@@ -100,14 +106,18 @@ public class DstSortedListsImplSimpleBenchmark {
         maxValueInPutList, lengthInPutList);
     testPut(sortedList, list);
     totalTimes = 0;
-    for (int i = 0; i < maxOperationtimes; i++) {
+    for (int i = 0; i < maxOperationTimes; i++) {
       String str = generateRemoveItemDatas(minValueInPutList - 100,
           maxValueInPutList + 100);
-      totalTimes += testGetItem(sortedList, str);
+      double consume = testGetItem(sortedList, str);
+      totalTimes += addWeight(sortedList, consume);
     }
-    System.out.println("SortedListLinkedImpl.getItem    " + maxOperationtimes +
-        "        " + lengthInPutList + "          " + totalTimes / maxOperationtimes +
-        "               " + totalTimes);
+    System.out.println("SortedListLinkedImpl.getItem    " + maxOperationTimes +
+        "        " + lengthInPutList + "          " + totalTimes / maxOperationTimes +
+        "                         " + totalTimes);
+
+    long end = System.currentTimeMillis();
+    System.out.println("\n\n\nBenchmarking takes time " + (end - start) + "ms");
   }
 
   private static long testPut(
@@ -194,4 +204,8 @@ public class DstSortedListsImplSimpleBenchmark {
     return end - start;
   }
 
+  private static double addWeight(
+      SortedList sortedList, double consume) {
+    return consume / (sortedList.size() + 1);
+  }
 }
