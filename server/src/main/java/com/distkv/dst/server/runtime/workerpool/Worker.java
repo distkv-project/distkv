@@ -2,8 +2,6 @@ package com.distkv.dst.server.runtime.workerpool;
 
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
-import com.distkv.drpc.config.ClientConfig;
-import com.distkv.drpc.netty.NettyClient;
 import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.NodeInfo;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
@@ -25,6 +23,7 @@ import com.google.common.base.Preconditions;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,7 +79,7 @@ public class Worker extends Thread {
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for ( Client client: clients) {
+              for (Client client : clients) {
                 Proxy<DstStringService> proxy = new Proxy<>();
                 proxy.setInterfaceClass(DstStringService.class);
                 DstStringService service = proxy.getService(client);
@@ -105,9 +104,9 @@ public class Worker extends Thread {
           }
           case STR_DROP: {
             CommonProtocol.DropRequest request =
-                    (CommonProtocol.DropRequest) internalRequest.getRequest();
+                (CommonProtocol.DropRequest) internalRequest.getRequest();
             CommonProtocol.DropResponse.Builder responseBuilder =
-                    CommonProtocol.DropResponse.newBuilder();
+                CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.strs().drop(request.getKey());
@@ -121,8 +120,8 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
-                    (CompletableFuture<CommonProtocol.DropResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
@@ -260,9 +259,9 @@ public class Worker extends Thread {
           }
           case LIST_PUT: {
             ListProtocol.PutRequest request =
-                    (ListProtocol.PutRequest) internalRequest.getRequest();
+                (ListProtocol.PutRequest) internalRequest.getRequest();
             ListProtocol.PutResponse.Builder responseBuilder =
-                    ListProtocol.PutResponse.newBuilder();
+                ListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               // TODO(qwang): Avoid this copy. See the discussion
@@ -275,16 +274,16 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.PutResponse> future =
-                    (CompletableFuture<ListProtocol.PutResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<ListProtocol.PutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_GET: {
             ListProtocol.GetRequest request =
-                    (ListProtocol.GetRequest) internalRequest.getRequest();
+                (ListProtocol.GetRequest) internalRequest.getRequest();
             ListProtocol.GetResponse.Builder responseBuilder =
-                    ListProtocol.GetResponse.newBuilder();
+                ListProtocol.GetResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             final String key = request.getKey();
             final ListProtocol.GetType type = request.getType();
@@ -297,7 +296,7 @@ public class Worker extends Thread {
                 responseBuilder.addValues(storeEngine.lists().get(key, request.getIndex()));
               } else if (type == ListProtocol.GetType.GET_RANGE) {
                 final List<String> values = storeEngine.lists().get(
-                        key, request.getFrom(), request.getEnd());
+                    key, request.getFrom(), request.getEnd());
                 Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValues(values));
               } else {
                 LOGGER.error("Failed to get a list from store.");
@@ -312,20 +311,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.GetResponse> future =
-                    (CompletableFuture<ListProtocol.GetResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<ListProtocol.GetResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_LPUT: {
             ListProtocol.LPutRequest request =
-                    (ListProtocol.LPutRequest) internalRequest.getRequest();
+                (ListProtocol.LPutRequest) internalRequest.getRequest();
             ListProtocol.LPutResponse.Builder responseBuilder =
-                    ListProtocol.LPutResponse.newBuilder();
+                ListProtocol.LPutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus =
-                      storeEngine.lists().lput(request.getKey(), request.getValuesList());
+                  storeEngine.lists().lput(request.getKey(), request.getValuesList());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -337,20 +336,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.LPutResponse> future =
-                    (CompletableFuture<ListProtocol.LPutResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<ListProtocol.LPutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_RPUT: {
             ListProtocol.RPutRequest request =
-                    (ListProtocol.RPutRequest) internalRequest.getRequest();
+                (ListProtocol.RPutRequest) internalRequest.getRequest();
             ListProtocol.RPutResponse.Builder responseBuilder =
-                    ListProtocol.RPutResponse.newBuilder();
+                ListProtocol.RPutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus =
-                      storeEngine.lists().rput(request.getKey(), request.getValuesList());
+                  storeEngine.lists().rput(request.getKey(), request.getValuesList());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -361,16 +360,16 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.RPutResponse> future =
-                    (CompletableFuture<ListProtocol.RPutResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<ListProtocol.RPutResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_DROP: {
             CommonProtocol.DropRequest request =
-                    (CommonProtocol.DropRequest) internalRequest.getRequest();
+                (CommonProtocol.DropRequest) internalRequest.getRequest();
             CommonProtocol.DropResponse.Builder responseBuilder =
-                    CommonProtocol.DropResponse.newBuilder();
+                CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus = storeEngine.lists().drop(request.getKey());
@@ -384,20 +383,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
-                    (CompletableFuture<CommonProtocol.DropResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<CommonProtocol.DropResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_M_REMOVE: {
             ListProtocol.MRemoveRequest request =
-                    (ListProtocol.MRemoveRequest) internalRequest.getRequest();
+                (ListProtocol.MRemoveRequest) internalRequest.getRequest();
             ListProtocol.MRemoveResponse.Builder responseBuilder =
-                    ListProtocol.MRemoveResponse.newBuilder();
+                ListProtocol.MRemoveResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus =
-                      storeEngine.lists().mremove(request.getKey(), request.getIndexesList());
+                  storeEngine.lists().mremove(request.getKey(), request.getIndexesList());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -412,16 +411,16 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.MRemoveResponse> future =
-                    (CompletableFuture<ListProtocol.MRemoveResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<ListProtocol.MRemoveResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_REMOVE: {
             ListProtocol.RemoveRequest request =
-                    (ListProtocol.RemoveRequest) internalRequest.getRequest();
+                (ListProtocol.RemoveRequest) internalRequest.getRequest();
             ListProtocol.RemoveResponse.Builder responseBuilder =
-                    ListProtocol.RemoveResponse.newBuilder();
+                ListProtocol.RemoveResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             final String key = request.getKey();
             final ListProtocol.RemoveType type = request.getType();
@@ -451,8 +450,8 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.RemoveResponse> future =
-                    (CompletableFuture<ListProtocol.RemoveResponse>)
-                            internalRequest.getCompletableFuture();
+                (CompletableFuture<ListProtocol.RemoveResponse>)
+                    internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }

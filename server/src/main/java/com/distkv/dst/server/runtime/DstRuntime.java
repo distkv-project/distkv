@@ -5,7 +5,6 @@ import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.netty.NettyClient;
 import com.distkv.dst.server.DstServerConfig;
 import com.distkv.dst.server.runtime.workerpool.WorkerPool;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class DstRuntime {
 
     if (config.isMaster()) {
       clients = new ArrayList<>();
-      for(String salverAddr : config.getSlaveAddresses()) {
+      for (String salverAddr : config.getSlaveAddresses()) {
         ClientConfig clientConfig = ClientConfig.builder()
             .address(salverAddr)
             .build();
