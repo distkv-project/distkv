@@ -14,28 +14,28 @@ public class DstRuntime {
 
   private WorkerPool workerPool;
 
-  private List<Client> clients;
+  private List<Client> rpcClients;
 
   public DstRuntime(DstServerConfig config) {
     this.config = config;
 
     if (config.isMaster()) {
-      clients = new ArrayList<>();
+      rpcClients = new ArrayList<>();
       for (String salverAddr : config.getSlaveAddresses()) {
         ClientConfig clientConfig = ClientConfig.builder()
             .address(salverAddr)
             .build();
         Client client = new NettyClient(clientConfig);
         client.open();
-        clients.add(client);
+        rpcClients.add(client);
       }
     } else {
-      clients = null;
+      rpcClients = null;
     }
 
     workerPool = new WorkerPool(config.getShardNum(),
         config.isMaster(),
-        clients);
+        rpcClients);
   }
 
   public WorkerPool getWorkerPool() {

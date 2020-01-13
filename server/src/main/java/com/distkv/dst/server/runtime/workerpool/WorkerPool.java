@@ -16,17 +16,17 @@ public class WorkerPool {
 
   private boolean isMaster;
 
-  private List<Client> clients;
+  private List<Client> rpcClients;
 
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(int shardNum, boolean isMaster, List<Client> clients) {
+  public WorkerPool(int shardNum, boolean isMaster, List<Client> rpcClients) {
     this.shardNum = shardNum;
     this.isMaster = isMaster;
-    this.clients = clients;
+    this.rpcClients = rpcClients;
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
-      Worker worker = new Worker(isMaster, clients);
+      Worker worker = new Worker(isMaster, rpcClients);
       builder.add(worker);
       worker.start();
     }

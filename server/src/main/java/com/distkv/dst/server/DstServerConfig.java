@@ -17,7 +17,7 @@ public class DstServerConfig {
 
   private int listeningPort;
   private boolean isMaster;
-  private int shardNum;
+  private int shardsNum;
   private List<String> slaveAddresses;
 
   public boolean isMaster() {
@@ -33,7 +33,7 @@ public class DstServerConfig {
   }
 
   public int getShardNum() {
-    return shardNum;
+    return shardsNum;
   }
 
   public List<String> getSlaveAddresses() {
@@ -43,7 +43,7 @@ public class DstServerConfig {
   public DstServerConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     isMaster = config.getBoolean("store.isMaster");
-    shardNum = config.getInt("store.shardNum");
+    shardsNum = config.getInt("store.shardsNum");
     if (isMaster) {
       slaveAddresses = config.getStringList("store.slaveAddresses");
     } else {
@@ -55,7 +55,7 @@ public class DstServerConfig {
   public String toString() {
     return "listeningPort: " + listeningPort + ";\n"
         + "isMaster: " + isMaster + ";\n"
-        + "shardNum: " + shardNum + ";\n"
+        + "shardNum: " + shardsNum + ";\n"
         + "slaves" + slaveAddresses.toString() + "\n";
   }
 

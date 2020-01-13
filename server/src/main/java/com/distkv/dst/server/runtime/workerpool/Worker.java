@@ -81,6 +81,7 @@ public class Worker extends Thread {
             if (isMaster) {
               for (Client client : clients) {
                 synchronized (client) {
+                  // TODO: It needs to be abstracted as a class, We need to reuse proxy
                   Proxy<DstStringService> proxy = new Proxy<>();
                   proxy.setInterfaceClass(DstStringService.class);
                   DstStringService service = proxy.getService(client);
@@ -803,8 +804,6 @@ public class Worker extends Thread {
           }
 
         }
-      } catch (DstException e) {
-        LOGGER.error("Failed to execute event loop:" + e);
       } catch (Exception e) {
         LOGGER.error("Failed to execute event loop:" + e);
       }
