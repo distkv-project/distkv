@@ -13,56 +13,52 @@ import com.distkv.dst.rpc.service.DstStringService;
 
 public class DefaultDstClient implements DstClient {
 
+  // TODO(qwang): Rename to StringInterface or StringQueryer.
   private DstStringProxy stringProxy;
+
   private DstListProxy listProxy;
+
   private DstSetProxy setProxy;
+
   private DstDictProxy dictProxy;
+
   private DstSortedListProxy sortedListProxy;
-  private Client strRpcClient;
-  private Client listRpcClient;
-  private Client setRpcClient;
-  private Client dictRpcClient;
-  private Client sortedListRpcClient;
+
+  private Client rpcClient;
 
   public DefaultDstClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
           .address(serverAddress)
           .build();
 
-    // Setup string proxy.
-    strRpcClient = new NettyClient(clientConfig);
-    strRpcClient.open();
-    Proxy<DstStringService> strRpcProxy = new Proxy<>();
-    strRpcProxy.setInterfaceClass(DstStringService.class);
-    stringProxy = new DstStringProxy(strRpcProxy.getService(strRpcClient));
+    rpcClient = new NettyClient(clientConfig);
+    rpcClient.open();
 
     // Setup list proxy.
-    listRpcClient = new NettyClient(clientConfig);
-    listRpcClient.open();
+    // TODO(qwang): Refine this to rpcClient.getService<DstStringService>();
+    Proxy<DstStringService> strRpcProxy = new Proxy<>();
+    strRpcProxy.setInterfaceClass(DstStringService.class);
+    stringProxy = new DstStringProxy(strRpcProxy.getService(rpcClient));
+
+    // Setup list proxy.
     Proxy<DstListService> listRpcProxy = new Proxy<>();
     listRpcProxy.setInterfaceClass(DstListService.class);
-    listProxy = new DstListProxy(listRpcProxy.getService(listRpcClient));
+    listProxy = new DstListProxy(listRpcProxy.getService(rpcClient));
 
     // Setup set proxy.
-    setRpcClient = new NettyClient(clientConfig);
-    setRpcClient.open();
     Proxy<DstSetService> setRpcProxy = new Proxy<>();
     setRpcProxy.setInterfaceClass(DstSetService.class);
-    setProxy = new DstSetProxy(setRpcProxy.getService(setRpcClient));
+    setProxy = new DstSetProxy(setRpcProxy.getService(rpcClient));
 
     // Setup dict proxy.
-    dictRpcClient = new NettyClient(clientConfig);
-    dictRpcClient.open();
     Proxy<DstDictService> dictRpcProxy = new Proxy<>();
     dictRpcProxy.setInterfaceClass(DstDictService.class);
-    dictProxy = new DstDictProxy(dictRpcProxy.getService(dictRpcClient));
+    dictProxy = new DstDictProxy(dictRpcProxy.getService(rpcClient));
 
     // Setup sortedList proxy.
-    sortedListRpcClient = new NettyClient(clientConfig);
-    sortedListRpcClient.open();
     Proxy<DstSortedListService> sortedListRpcProxy = new Proxy<>();
     sortedListRpcProxy.setInterfaceClass(DstSortedListService.class);
-    sortedListProxy = new DstSortedListProxy(sortedListRpcProxy.getService(sortedListRpcClient));
+    sortedListProxy = new DstSortedListProxy(sortedListRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -78,11 +74,7 @@ public class DefaultDstClient implements DstClient {
   @Override
   public boolean disconnect() {
     try {
-      strRpcClient.close();
-      listRpcClient.close();
-      setRpcClient.close();
-      dictRpcClient.close();
-      sortedListRpcClient.close();
+      rpcClient.close();
       return true;
     } catch (DstException ex) {
       throw new DstException(String.format("Failed close the clients : %s", ex.getMessage()));
