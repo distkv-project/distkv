@@ -3,6 +3,7 @@ services:
   dst:
     build: ./
     container_name: dst
+    image: dst
     mem_limit: 1073741824 #1G
     ports:
     - "8082:8082"

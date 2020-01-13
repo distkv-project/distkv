@@ -17,7 +17,7 @@ If you want to build dst-docker right away there four options:
 
 * start up: ```docker-compose up -d```
 
-* query: ```docker-compose　ps``` or ```docker stats```
+* query: ```docker-compose　ps``` or ```docker stats``` or ```docker logs```
 
 * stop: ```docker-compose stop```
 
