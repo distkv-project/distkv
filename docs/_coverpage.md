@@ -1,4 +1,4 @@
-![logo](res/dst_logo.png)
+![logo](res/dst_logo_min.png)
 
 # Dst
 
