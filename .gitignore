@@ -37,6 +37,10 @@ parser/src/main/java/com/distkv/dst/parser/generated/*
 # build
 build/
 
-#test_file
+# test_file
 test/tmp/*
 test/tmp
+
+# mac OS
+*/*.DS_Store
+*.DS_Store
