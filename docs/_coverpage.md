@@ -2,12 +2,13 @@
 
 # Dst
 
-> 使用Vue全家桶+Node.js搭建的小型全栈项目.
+> A distributed kv store with table concepts
 
-* 前端框架：vue-cli、vue-router、axios、vuex
-* UI类库：Mint-UI、Vant
-* 后端数据接口：Express、MongoDB
+* Redis-like data structure
+* Table concept based on KV Store
+* High available because it's distributed
+* Easy to use client
+* Strong ecosystem for Web application
 
 [GitHub](https://github.com/dst-project/dst)
 [Get Started](#quick-start)
-
