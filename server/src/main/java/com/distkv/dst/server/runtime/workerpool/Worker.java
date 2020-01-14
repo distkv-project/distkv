@@ -775,7 +775,7 @@ public class Worker extends Thread {
       } catch (Throwable e) {
         LOGGER.error("Failed to execute event loop:" + e);
         // TODO(tuowang): Clean up some resource associated with DstRuntime
-        Runtime.getRuntime().exit(0);
+        Runtime.getRuntime().exit(-1);
       }
     }
   }
