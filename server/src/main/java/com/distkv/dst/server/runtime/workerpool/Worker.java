@@ -74,7 +74,6 @@ public class Worker extends Thread {
         InternalRequest internalRequest = queue.take();
         switch (internalRequest.getRequestType()) {
           case STR_PUT: {
-
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
