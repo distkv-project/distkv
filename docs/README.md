@@ -12,9 +12,9 @@ like very easy to use, good management tool, and table concept based on k-v. So,
 
 ### Awesome features
 
-### How to build
+### [How to build](./build)
 
-### Command line tool
+### [Command line tool](./client_tool)
 
 ### Java API
 
