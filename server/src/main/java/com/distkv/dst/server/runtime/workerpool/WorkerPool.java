@@ -1,7 +1,7 @@
 package com.distkv.dst.server.runtime.workerpool;
 
-import com.distkv.drpc.api.Client;
 import com.distkv.dst.common.RequestTypeEnum;
+import com.distkv.dst.server.runtime.salver.SalverClient;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,17 +16,17 @@ public class WorkerPool {
 
   private boolean isMaster;
 
-  private List<Client> rpcClients;
+  private List<SalverClient> salverClients;
 
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(int shardNum, boolean isMaster, List<Client> rpcClients) {
+  public WorkerPool(int shardNum, boolean isMaster, List<SalverClient> salverClients) {
     this.shardNum = shardNum;
     this.isMaster = isMaster;
-    this.rpcClients = rpcClients;
+    this.salverClients = salverClients;
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
-      Worker worker = new Worker(isMaster, rpcClients);
+      Worker worker = new Worker(isMaster, salverClients);
       builder.add(worker);
       worker.start();
     }

@@ -1,7 +1,5 @@
 package com.distkv.dst.server.runtime.workerpool;
 
-import com.distkv.drpc.Proxy;
-import com.distkv.drpc.api.Client;
 import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.NodeInfo;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
@@ -19,6 +17,7 @@ import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
 import com.distkv.dst.rpc.service.DstStringService;
+import com.distkv.dst.server.runtime.salver.SalverClient;
 import com.google.common.base.Preconditions;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
@@ -45,13 +44,13 @@ public class Worker extends Thread {
 
   private boolean isMaster;
 
-  private List<Client> clients;
+  private List<SalverClient> salverClients;
 
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
 
-  public Worker(boolean isMaster, List<Client> clients) {
+  public Worker(boolean isMaster, List<SalverClient> salverClients) {
     queue = new LinkedBlockingQueue<>();
-    this.clients = clients;
+    this.salverClients = salverClients;
     this.isMaster = isMaster;
   }
 
@@ -79,12 +78,9 @@ public class Worker extends Thread {
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (Client client : clients) {
+              for (SalverClient client : salverClients) {
                 synchronized (client) {
-                  // TODO: It needs to be abstracted as a class, We need to reuse proxy
-                  Proxy<DstStringService> proxy = new Proxy<>();
-                  proxy.setInterfaceClass(DstStringService.class);
-                  DstStringService service = proxy.getService(client);
+                  DstStringService service = client.getStringService();
                   StringProtocol.PutResponse tempResponse =
                       service.put(strPutRequest).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
