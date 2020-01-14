@@ -4,11 +4,10 @@ services:
     build: ./
     container_name: dst
     image: dst
-    mem_limit: 1073741824 #1G
+    mem_limit: 1073741824 # 1G
     ports:
     - "8082:8082"
     environment:
       {
         JAVA_OPTS: -Xms820m -Xmx820m
       }
-
