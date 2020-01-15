@@ -53,7 +53,6 @@ public class TestUtil {
         "com.distkv.dst.server.DstServer",
         String.valueOf(serverPort)
     );
-    System.out.println(startCommand.toString());
     executeCommand(startCommand);
   }
 

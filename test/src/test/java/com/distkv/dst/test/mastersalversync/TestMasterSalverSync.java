@@ -107,13 +107,13 @@ public class TestMasterSalverSync {
     client.sortedLists().put("k1", list);
 
     LinkedList<SortedListEntity> tlist = client.sortedLists().top("k1", 100);
-    Assert.assertEquals(tlist.get(0).getMember(), "xswl");
-    Assert.assertEquals(tlist.get(1).getMember(),"fw");
+    Assert.assertEquals(tlist.get(0).getMember(), "fw");
+    Assert.assertEquals(tlist.get(1).getMember(),"xswl");
 
     DstClient client1 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 8090));
     LinkedList<SortedListEntity> tlist1 = client1.sortedLists().top("k1", 100);
-    Assert.assertEquals(tlist1.get(0).getMember(), "xswl");
-    Assert.assertEquals(tlist1.get(1).getMember(),"fw");
+    Assert.assertEquals(tlist1.get(0).getMember(), "fw");
+    Assert.assertEquals(tlist1.get(1).getMember(),"xswl");
 
     client.disconnect();
     client1.disconnect();
