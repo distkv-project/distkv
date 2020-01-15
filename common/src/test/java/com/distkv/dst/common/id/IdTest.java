@@ -1,4 +1,4 @@
-package com.distkv.dst.test.common.id;
+package com.distkv.dst.common.id;
 
 import com.distkv.dst.common.id.NodeId;
 import com.distkv.dst.common.id.PartitionId;
