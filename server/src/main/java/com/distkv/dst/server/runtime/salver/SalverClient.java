@@ -33,7 +33,6 @@ public class SalverClient {
     rpcClient.open();
 
     // Setup str proxy.
-    // TODO(qwang): Refine this to rpcClient.getService<DstStringService>();
     Proxy<DstStringService> strRpcProxy = new Proxy<>();
     strRpcProxy.setInterfaceClass(DstStringService.class);
     stringService = strRpcProxy.getService(rpcClient);

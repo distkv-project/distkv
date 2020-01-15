@@ -78,6 +78,7 @@ public class Worker extends Thread {
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
               for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstStringService service = client.getStringService();
                   StringProtocol.PutResponse tempResponse =
@@ -85,6 +86,8 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
                     CompletableFuture<StringProtocol.PutResponse> future =
                         (CompletableFuture<StringProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
