@@ -3,33 +3,20 @@ sudo: false # faster builds
 
 jdk:
   - openjdk8
+  - openjdk11
 
 cache:
   directories:
     - $HOME/.m2
 
-# install all dependencies
-# if true, skip all install
-install:
-  - bash ./scripts/install_dependencies.sh
-  - mvn clean install -DskipTests
+install: true
 
-script: "mvn cobertura:cobertura"
+script:
+  - travis_wait 30 mvn clean install -DskipTests=false
 
-# define four parallel jobs
-matrix:
-  include:
-    # for linux : This job is to test project
-    - os: linux
-      dist: xenial
-      script:
-        - travis_wait 20 mvn test
-
-    # for linux: This job to check code format.
-    - os: linux
-      dist: trusty
-      script:
-        - travis_wait 10 mvn checkstyle:check
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t 4360524b-524c-4312-8f45-6a7d7a324ede
+  - bash <(curl -s https://codecov.io/bash)
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
+
+after_failure:
+  - echo "build failed!"
