@@ -72,5 +72,6 @@
             <artifactId>config</artifactId>
             <version>${typesafe.version}</version>
         </dependency>
+
     </dependencies>
 </project>
