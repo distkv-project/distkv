@@ -16,6 +16,10 @@ import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.dst.rpc.service.DstDictService;
+import com.distkv.dst.rpc.service.DstListService;
+import com.distkv.dst.rpc.service.DstSetService;
+import com.distkv.dst.rpc.service.DstSortedListService;
 import com.distkv.dst.rpc.service.DstStringService;
 import com.distkv.dst.server.runtime.salver.SalverClient;
 import com.google.common.base.Preconditions;
@@ -93,6 +97,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(StringProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
                   }
                 }
               }
@@ -109,6 +114,28 @@ public class Worker extends Thread {
           case STR_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstStringService service = client.getStringService();
+                  CommonProtocol.DropResponse tempResponse =
+                      service.drop(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<CommonProtocol.DropResponse> future =
+                        (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(CommonProtocol.DropResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -149,6 +176,28 @@ public class Worker extends Thread {
           case SET_PUT: {
             SetProtocol.PutRequest setPutRequest =
                 (SetProtocol.PutRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSetService service = client.getSetService();
+                  SetProtocol.PutResponse tempResponse =
+                      service.put(setPutRequest).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<SetProtocol.PutResponse> future =
+                        (CompletableFuture<SetProtocol.PutResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(SetProtocol.PutResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             // TODO(qwang): Any thoughts on how to avoid this `new HasSet`.
             storeEngine.sets().put(
                 setPutRequest.getKey(), new HashSet<>(setPutRequest.getValuesList()));
@@ -182,6 +231,28 @@ public class Worker extends Thread {
           case SET_PUT_ITEM: {
             SetProtocol.PutItemRequest request =
                 (SetProtocol.PutItemRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSetService service = client.getSetService();
+                  SetProtocol.PutItemResponse tempResponse =
+                      service.putItem(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<SetProtocol.PutItemResponse> future =
+                        (CompletableFuture<SetProtocol.PutItemResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(SetProtocol.PutItemResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             CommonProtocol.Status status;
             try {
               storeEngine.sets().putItem(request.getKey(), request.getItemValue());
@@ -198,6 +269,28 @@ public class Worker extends Thread {
           case SET_REMOVE_ITEM: {
             SetProtocol.RemoveItemRequest request =
                 (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSetService service = client.getSetService();
+                  SetProtocol.RemoveItemResponse tempResponse =
+                      service.removeItem(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<SetProtocol.RemoveItemResponse> future =
+                        (CompletableFuture<SetProtocol.RemoveItemResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(SetProtocol.RemoveItemResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.sets()
@@ -241,6 +334,28 @@ public class Worker extends Thread {
           case SET_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSetService service = client.getSetService();
+                  CommonProtocol.DropResponse tempResponse =
+                      service.drop(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<CommonProtocol.DropResponse> future =
+                        (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(CommonProtocol.DropResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -264,6 +379,28 @@ public class Worker extends Thread {
           case LIST_PUT: {
             ListProtocol.PutRequest request =
                 (ListProtocol.PutRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstListService service = client.getListService();
+                  ListProtocol.PutResponse tempResponse =
+                      service.put(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<ListProtocol.PutResponse> future =
+                        (CompletableFuture<ListProtocol.PutResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(ListProtocol.PutResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             ListProtocol.PutResponse.Builder responseBuilder =
                 ListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
@@ -323,6 +460,28 @@ public class Worker extends Thread {
           case LIST_LPUT: {
             ListProtocol.LPutRequest request =
                 (ListProtocol.LPutRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstListService service = client.getListService();
+                  ListProtocol.LPutResponse tempResponse =
+                      service.lput(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<ListProtocol.LPutResponse> future =
+                        (CompletableFuture<ListProtocol.LPutResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(ListProtocol.LPutResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             ListProtocol.LPutResponse.Builder responseBuilder =
                 ListProtocol.LPutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
@@ -348,6 +507,28 @@ public class Worker extends Thread {
           case LIST_RPUT: {
             ListProtocol.RPutRequest request =
                 (ListProtocol.RPutRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstListService service = client.getListService();
+                  ListProtocol.RPutResponse tempResponse =
+                      service.rput(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<ListProtocol.RPutResponse> future =
+                        (CompletableFuture<ListProtocol.RPutResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(ListProtocol.RPutResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             ListProtocol.RPutResponse.Builder responseBuilder =
                 ListProtocol.RPutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
@@ -372,6 +553,28 @@ public class Worker extends Thread {
           case LIST_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstListService service = client.getListService();
+                  CommonProtocol.DropResponse tempResponse =
+                      service.drop(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<CommonProtocol.DropResponse> future =
+                        (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(CommonProtocol.DropResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
@@ -395,6 +598,28 @@ public class Worker extends Thread {
           case LIST_M_REMOVE: {
             ListProtocol.MRemoveRequest request =
                 (ListProtocol.MRemoveRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstListService service = client.getListService();
+                  ListProtocol.MRemoveResponse tempResponse =
+                      service.mremove(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<ListProtocol.MRemoveResponse> future =
+                        (CompletableFuture<ListProtocol.MRemoveResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(ListProtocol.MRemoveResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             ListProtocol.MRemoveResponse.Builder responseBuilder =
                 ListProtocol.MRemoveResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
@@ -423,6 +648,28 @@ public class Worker extends Thread {
           case LIST_REMOVE: {
             ListProtocol.RemoveRequest request =
                 (ListProtocol.RemoveRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstListService service = client.getListService();
+                  ListProtocol.RemoveResponse tempResponse =
+                      service.remove(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<ListProtocol.RemoveResponse> future =
+                        (CompletableFuture<ListProtocol.RemoveResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(ListProtocol.RemoveResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             ListProtocol.RemoveResponse.Builder responseBuilder =
                 ListProtocol.RemoveResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
@@ -462,6 +709,28 @@ public class Worker extends Thread {
           case DICT_PUT: {
             DictProtocol.PutRequest request =
                 (DictProtocol.PutRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstDictService service = client.getDictService();
+                  DictProtocol.PutResponse tempResponse =
+                      service.put(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<DictProtocol.PutResponse> future =
+                        (CompletableFuture<DictProtocol.PutResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(DictProtocol.PutResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             DictProtocol.PutResponse.Builder responseBuilder =
                 DictProtocol.PutResponse.newBuilder();
             try {
@@ -536,6 +805,28 @@ public class Worker extends Thread {
           case DICT_POP_ITEM: {
             DictProtocol.PopItemRequest request =
                 (DictProtocol.PopItemRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstDictService service = client.getDictService();
+                  DictProtocol.PopItemResponse tempResponse =
+                      service.popItem(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<DictProtocol.PopItemResponse> future =
+                        (CompletableFuture<DictProtocol.PopItemResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(DictProtocol.PopItemResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             DictProtocol.PopItemResponse.Builder responseBuilder =
                 DictProtocol.PopItemResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -559,6 +850,28 @@ public class Worker extends Thread {
           case DICT_PUT_ITEM: {
             DictProtocol.PutItemRequest request =
                 (DictProtocol.PutItemRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstDictService service = client.getDictService();
+                  DictProtocol.PutItemResponse tempResponse =
+                      service.putItem(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<DictProtocol.PutItemResponse> future =
+                        (CompletableFuture<DictProtocol.PutItemResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(DictProtocol.PutItemResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             DictProtocol.PutItemResponse.Builder responseBuilder =
                 DictProtocol.PutItemResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -577,6 +890,28 @@ public class Worker extends Thread {
           case DICT_REMOVE_ITEM: {
             DictProtocol.RemoveItemRequest request =
                 (DictProtocol.RemoveItemRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstDictService service = client.getDictService();
+                  DictProtocol.RemoveItemResponse tempResponse =
+                      service.removeItem(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<DictProtocol.RemoveItemResponse> future =
+                        (CompletableFuture<DictProtocol.RemoveItemResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(DictProtocol.RemoveItemResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             DictProtocol.RemoveItemResponse.Builder responseBuilder =
                 DictProtocol.RemoveItemResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -599,6 +934,28 @@ public class Worker extends Thread {
           case DICT_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstDictService service = client.getDictService();
+                  CommonProtocol.DropResponse tempResponse =
+                      service.drop(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<CommonProtocol.DropResponse> future =
+                        (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(CommonProtocol.DropResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -617,6 +974,28 @@ public class Worker extends Thread {
           case SLIST_PUT: {
             SortedListProtocol.PutRequest request =
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSortedListService service = client.getSortedListService();
+                  SortedListProtocol.PutResponse tempResponse =
+                      service.put(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<SortedListProtocol.PutResponse> future =
+                        (CompletableFuture<SortedListProtocol.PutResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(SortedListProtocol.PutResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             SortedListProtocol.PutResponse.Builder responseBuilder =
                 SortedListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status;
@@ -676,6 +1055,28 @@ public class Worker extends Thread {
           case SLIST_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSortedListService service = client.getSortedListService();
+                  CommonProtocol.DropResponse tempResponse =
+                      service.drop(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<CommonProtocol.DropResponse> future =
+                        (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(CommonProtocol.DropResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status;
@@ -698,6 +1099,28 @@ public class Worker extends Thread {
           case SLIST_INCR_SCORE: {
             SortedListProtocol.IncrScoreRequest request =
                 (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSortedListService service = client.getSortedListService();
+                  SortedListProtocol.IncrScoreResponse tempResponse =
+                      service.incrScore(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
+                        (CompletableFuture<SortedListProtocol.IncrScoreResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(SortedListProtocol.IncrScoreResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
                 SortedListProtocol.IncrScoreResponse.newBuilder();
             CommonProtocol.Status status;
@@ -723,6 +1146,28 @@ public class Worker extends Thread {
           case SLIST_PUT_MEMBER: {
             SortedListProtocol.PutMemberRequest request =
                 (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSortedListService service = client.getSortedListService();
+                  SortedListProtocol.PutMemberResponse tempResponse =
+                      service.putMember(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<SortedListProtocol.PutMemberResponse> future =
+                        (CompletableFuture<SortedListProtocol.PutMemberResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(SortedListProtocol.PutMemberResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             SortedListProtocol.PutMemberResponse.Builder responseBuilder =
                 SortedListProtocol.PutMemberResponse.newBuilder();
             CommonProtocol.Status status;
@@ -746,6 +1191,28 @@ public class Worker extends Thread {
           case SLIST_REMOVE_MEMBER: {
             SortedListProtocol.RemoveMemberRequest request =
                 (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
+            if (isMaster) {
+              for (SalverClient client : salverClients) {
+                /// This store instance is master, so we should sync this requests to all slaves.
+                synchronized (client) {
+                  DstSortedListService service = client.getSortedListService();
+                  SortedListProtocol.RemoveMemberResponse tempResponse =
+                      service.removeMember(request).get();
+                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
+                    continue;
+                  } else {
+                    // TODO: If sending a salver request fails, the process is terminated.
+                    //  we will fix this in fault_tolerant.
+                    CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
+                        (CompletableFuture<SortedListProtocol.RemoveMemberResponse>)
+                            internalRequest.getCompletableFuture();
+                    future.complete(SortedListProtocol.RemoveMemberResponse.newBuilder()
+                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    Runtime.getRuntime().exit(-1);
+                  }
+                }
+              }
+            }
             SortedListProtocol.RemoveMemberResponse.Builder responseBuilder =
                 SortedListProtocol.RemoveMemberResponse.newBuilder();
             CommonProtocol.Status status;
