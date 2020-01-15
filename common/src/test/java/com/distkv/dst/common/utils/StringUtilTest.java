@@ -7,7 +7,7 @@ public class StringUtilTest {
   @Test
   public void testIsNullOrEmpty() {
     boolean isEmpty = StringUtil.isNullOrEmpty("aaa");
-    Assert.assertTrue(isEmpty);
+    Assert.assertFalse(isEmpty);
   }
 
 }
