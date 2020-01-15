@@ -1,19 +1,19 @@
 
 
-# To start dst-docker 
-If you want to build dst-docker right away there four options:
+# Start dst-docker 
+If you want to build dst-docker, follow this 4 steps:
 
-1. ```docker``` and  ```docker-compose``` environment.
+1. Make sure you have `docker` and  `docker-compose` environment.
 
-2. Put the packaged ```dst.jar``` into the current directory.
+2. Put the package `dst.jar` into the working directory.
 
-3. Modify the variables in ```docker-compose.yaml```.
+3. Reset the variables in `docker-compose.yaml`.
 
-    *  You can set docker container size by　```mem_limit```.
+    *  You can set the size of docker container with `mem_limit`.
 
-    *  You can set JVM options by　```JAVA_OPTS```.
+    *  You can set JVM options with　`JAVA_OPTS`.
 
-4. Execute shell in current directory:
+4. Execute shell in the working directory:
 
     * start up: ```docker-compose up -d```
 
@@ -22,9 +22,3 @@ If you want to build dst-docker right away there four options:
     * stop: ```docker-compose stop```
 
     * enter: ```docker exec -it dst bash```
-
-
-
-
-
-
