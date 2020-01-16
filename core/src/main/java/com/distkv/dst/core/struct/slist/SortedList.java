@@ -76,9 +76,10 @@ public interface SortedList {
   DstTuple<Integer, Integer> getItem(String member);
 
   /**
+   * Check whether the list value has duplicated members when initially put.
    *
-   * @param sortedListEntities
-   * @return
+   * @param sortedListEntities The list value
+   * @return True if the list value has duplicated members, otherwise return false.
    */
   default boolean hasDuplicatedMembers(
       List<SortedListEntity> sortedListEntities) {

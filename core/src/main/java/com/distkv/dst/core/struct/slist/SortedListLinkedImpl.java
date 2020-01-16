@@ -5,10 +5,8 @@ import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The linkedlist implementation of the Dst SortedList.
