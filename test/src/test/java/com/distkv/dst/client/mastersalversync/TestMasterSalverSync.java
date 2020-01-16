@@ -1,4 +1,4 @@
-package com.distkv.dst.mastersalversync;
+package com.distkv.dst.client.mastersalversync;
 
 import com.distkv.dst.client.DefaultDstClient;
 import com.distkv.dst.client.DstClient;

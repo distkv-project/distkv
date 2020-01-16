@@ -1,7 +1,7 @@
 package com.distkv.dst.server.runtime;
 
 import com.distkv.dst.server.DstServerConfig;
-import com.distkv.dst.server.runtime.salver.SalverClient;
+import com.distkv.dst.server.runtime.salve.SalveClient;
 import com.distkv.dst.server.runtime.workerpool.WorkerPool;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +12,24 @@ public class DstRuntime {
 
   private WorkerPool workerPool;
 
-  private List<SalverClient> salverClients;
+  private List<SalveClient> salveClients;
 
   public DstRuntime(DstServerConfig config) {
     this.config = config;
 
     if (config.isMaster()) {
-      salverClients = new ArrayList<>();
+      salveClients = new ArrayList<>();
       for (String salverAddr : config.getSlaveAddresses()) {
-        SalverClient client = new SalverClient(salverAddr);
-        salverClients.add(client);
+        SalveClient client = new SalveClient(salverAddr);
+        salveClients.add(client);
       }
     } else {
-      salverClients = null;
+      salveClients = null;
     }
 
     workerPool = new WorkerPool(config.getShardNum(),
         config.isMaster(),
-        salverClients);
+        salveClients);
   }
 
   public WorkerPool getWorkerPool() {

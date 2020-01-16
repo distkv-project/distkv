@@ -1,4 +1,4 @@
-package com.distkv.dst.server.runtime.salver;
+package com.distkv.dst.server.runtime.salve;
 
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
@@ -10,7 +10,7 @@ import com.distkv.dst.rpc.service.DstSetService;
 import com.distkv.dst.rpc.service.DstSortedListService;
 import com.distkv.dst.rpc.service.DstStringService;
 
-public class SalverClient {
+public class SalveClient {
 
   private DstStringService stringService;
 
@@ -24,7 +24,7 @@ public class SalverClient {
 
   private Client rpcClient;
 
-  public SalverClient(String serverAddress) {
+  public SalveClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
         .address(serverAddress)
         .build();

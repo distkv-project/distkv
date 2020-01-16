@@ -21,7 +21,7 @@ import com.distkv.dst.rpc.service.DstListService;
 import com.distkv.dst.rpc.service.DstSetService;
 import com.distkv.dst.rpc.service.DstSortedListService;
 import com.distkv.dst.rpc.service.DstStringService;
-import com.distkv.dst.server.runtime.salver.SalverClient;
+import com.distkv.dst.server.runtime.salve.SalveClient;
 import com.google.common.base.Preconditions;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
@@ -47,13 +47,13 @@ public class Worker extends Thread {
 
   private boolean isMaster;
 
-  private List<SalverClient> salverClients;
+  private List<SalveClient> salveClients;
 
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
 
-  public Worker(boolean isMaster, List<SalverClient> salverClients) {
+  public Worker(boolean isMaster, List<SalveClient> salveClients) {
     queue = new LinkedBlockingQueue<>();
-    this.salverClients = salverClients;
+    this.salveClients = salveClients;
     this.isMaster = isMaster;
   }
 
@@ -80,7 +80,7 @@ public class Worker extends Thread {
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstStringService service = client.getStringService();
@@ -114,7 +114,7 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstStringService service = client.getStringService();
@@ -176,7 +176,7 @@ public class Worker extends Thread {
             SetProtocol.PutRequest setPutRequest =
                 (SetProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
@@ -231,7 +231,7 @@ public class Worker extends Thread {
             SetProtocol.PutItemRequest request =
                 (SetProtocol.PutItemRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
@@ -269,7 +269,7 @@ public class Worker extends Thread {
             SetProtocol.RemoveItemRequest request =
                 (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
@@ -334,7 +334,7 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
@@ -379,7 +379,7 @@ public class Worker extends Thread {
             ListProtocol.PutRequest request =
                 (ListProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
@@ -460,7 +460,7 @@ public class Worker extends Thread {
             ListProtocol.LPutRequest request =
                 (ListProtocol.LPutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
@@ -507,7 +507,7 @@ public class Worker extends Thread {
             ListProtocol.RPutRequest request =
                 (ListProtocol.RPutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
@@ -553,7 +553,7 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
@@ -598,7 +598,7 @@ public class Worker extends Thread {
             ListProtocol.MRemoveRequest request =
                 (ListProtocol.MRemoveRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
@@ -648,7 +648,7 @@ public class Worker extends Thread {
             ListProtocol.RemoveRequest request =
                 (ListProtocol.RemoveRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
@@ -709,7 +709,7 @@ public class Worker extends Thread {
             DictProtocol.PutRequest request =
                 (DictProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
@@ -805,7 +805,7 @@ public class Worker extends Thread {
             DictProtocol.PopItemRequest request =
                 (DictProtocol.PopItemRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
@@ -850,7 +850,7 @@ public class Worker extends Thread {
             DictProtocol.PutItemRequest request =
                 (DictProtocol.PutItemRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
@@ -890,7 +890,7 @@ public class Worker extends Thread {
             DictProtocol.RemoveItemRequest request =
                 (DictProtocol.RemoveItemRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
@@ -934,7 +934,7 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
@@ -974,7 +974,7 @@ public class Worker extends Thread {
             SortedListProtocol.PutRequest request =
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
@@ -1055,7 +1055,7 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
@@ -1099,7 +1099,7 @@ public class Worker extends Thread {
             SortedListProtocol.IncrScoreRequest request =
                 (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
@@ -1146,7 +1146,7 @@ public class Worker extends Thread {
             SortedListProtocol.PutMemberRequest request =
                 (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
@@ -1191,7 +1191,7 @@ public class Worker extends Thread {
             SortedListProtocol.RemoveMemberRequest request =
                 (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
             if (isMaster) {
-              for (SalverClient client : salverClients) {
+              for (SalveClient client : salveClients) {
                 /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
@@ -1275,4 +1275,5 @@ public class Worker extends Thread {
       }
     }
   }
+
 }
