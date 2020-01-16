@@ -3,7 +3,9 @@ package com.distkv.dst.core.struct.slist;
 import com.distkv.dst.common.DstTuple;
 import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The interface of DstSortedList.
@@ -72,4 +74,21 @@ public interface SortedList {
    * the second element is the ranking.
    */
   DstTuple<Integer, Integer> getItem(String member);
+
+  /**
+   *
+   * @param sortedListEntities
+   * @return
+   */
+  default boolean hasDuplicatedMembers(
+      List<SortedListEntity> sortedListEntities) {
+    final Set<SortedListEntity> sortedListEntitySet = new HashSet<>();
+    for (final SortedListEntity e : sortedListEntities) {
+      if (sortedListEntitySet.contains(e)) {
+        return true;
+      }
+      sortedListEntitySet.add(e);
+    }
+    return false;
+  }
 }

@@ -224,18 +224,6 @@ public final class SortedListLinkedImpl
     return cur;
   }
 
-  private boolean hasDuplicatedMembers(
-      List<SortedListEntity> sortedListEntities) {
-    final Set<SortedListEntity> sortedListEntitySet = new HashSet<>();
-    for (final SortedListEntity e : sortedListEntities) {
-      if (sortedListEntitySet.contains(e)) {
-        return true;
-      }
-      sortedListEntitySet.add(e);
-    }
-    return false;
-  }
-
   private void appendNode(
       Node<SortedListEntity> insertPos, String member, int score) {
     final SortedListEntity appendElement = new SortedListEntity(member, score);
