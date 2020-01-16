@@ -8,5 +8,5 @@
 - Easy to use client
 - Strong ecosystem for Web application
 
-[GitHub](https://github.com/dst-project/dst)
+[GitHub](https://github.com/distkv-project/distkv)
 [Get Started](#quick-start)
