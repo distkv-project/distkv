@@ -12,7 +12,8 @@
         <module>core</module>
         <module>server</module>
         <module>client</module>
-        <module>test</module>
+        <module>test/base-test</module>
+        <module>test/benchmark-test</module>
         <module>common</module>
         <module>rpc</module>
         <module>parser</module>
