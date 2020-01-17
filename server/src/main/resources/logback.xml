@@ -11,7 +11,7 @@
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/tmp/dst/logs/server/dst_server_all_%d{yyyy-MM-dd-HH-mm}.log
+            <fileNamePattern>/tmp/distkv/logs/server/distkv_server_all_%d{yyyy-MM-dd-HH-mm}.log
             </fileNamePattern>
             <maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -25,7 +25,7 @@
     <appender name="FILE-WARN"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/tmp/dst/logs/server/dst_server_warn_%d{yyyy-MM-dd-HH-mm}.log
+            <fileNamePattern>/tmp/distkv/logs/server/distkv_server_warn_%d{yyyy-MM-dd-HH-mm}.log
             </fileNamePattern>
             <maxHistory>120</maxHistory>
         </rollingPolicy>
@@ -39,7 +39,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.dst.server" level = "info">
+    <logger name="com.distkv.server" level = "info">
         <appender-ref ref="CONSOLE"/>
     </logger>
 

@@ -1,11 +1,11 @@
 
 
-# Start dst-docker 
-If you want to build dst-docker, follow this 4 steps:
+# Start distkv-docker 
+If you want to build distkv-docker, follow this 4 steps:
 
 1. Make sure you have `docker` and  `docker-compose` environment.
 
-2. Put the package `dst.jar` into the working directory.
+2. Put the package `distkv.jar` into the working directory.
 
 3. Reset the variables in `docker-compose.yaml`.
 
@@ -21,4 +21,4 @@ If you want to build dst-docker, follow this 4 steps:
 
     * stop: ```docker-compose stop```
 
-    * enter: ```docker exec -it dst bash```
+    * enter: ```docker exec -it distkv bash```

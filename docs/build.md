@@ -17,4 +17,4 @@ If you'd like to run the tests, use this command:
 mvn test
 ```
 
-next: [Run Dst server](https://dst-project.github.io/dst/run_dst_server)
+next: [Run Dst server](https://distkv-project.github.io/distkv/run_distkv_server)

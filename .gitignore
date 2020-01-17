@@ -31,8 +31,9 @@ hs_err_pid*
 target/
 
 # generated files
-rpc/src/main/java/com/distkv/dst/rpc/protobuf/generated/*
-parser/src/main/java/com/distkv/dst/parser/generated/*
+rpc/src/main/java/com/distkv/rpc/protobuf/generated/*
+parser/src/main/java/com/distkv/parser/generated/*
+
 
 # build
 build/
@@ -47,4 +48,4 @@ test/tmp
 
 # python
 python/__pycache__/
-python/dst.egg-info/
+python/distkv.egg-info/

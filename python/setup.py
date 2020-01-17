@@ -22,22 +22,22 @@ class BinaryDistribution(Distribution):
         return True
 
 setup(
-        name='dst',
+        name='distkv',
         version='0.1.3',
         description='A distributed key-value in-memory store system with table concept.',
         author='Qing Wang',
         author_email='kingchin1218@gmail.com',
         license='BSD-3-clause',
-        url='https://github.com/dst-plus/dst',
-        packages=['dst'],
+        url='https://github.com/distkv-project/distkv',
+        packages=['distkv'],
         cmdclass={"build_ext": build_ext},
         # The BinaryDistribution argument triggers build_ext.
         distclass=BinaryDistribution,
         install_requires=[],
         entry_points={
             "console_scripts": [
-                "dst-server=dst_server:main",
-                "dst-cli=dst_cli:main",
+                "distkv-server=distkv_server:main",
+                "distkv-cli=distkv_cli:main",
            ]
        },
 )
