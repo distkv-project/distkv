@@ -97,6 +97,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(StringProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -124,14 +125,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -187,14 +186,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SetProtocol.PutResponse> future =
                         (CompletableFuture<SetProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(SetProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -243,14 +240,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SetProtocol.PutItemResponse> future =
                         (CompletableFuture<SetProtocol.PutItemResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(SetProtocol.PutItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -282,14 +277,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SetProtocol.RemoveItemResponse> future =
                         (CompletableFuture<SetProtocol.RemoveItemResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(SetProtocol.RemoveItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -348,14 +341,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -394,14 +385,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.PutResponse> future =
                         (CompletableFuture<ListProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -476,14 +465,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.LPutResponse> future =
                         (CompletableFuture<ListProtocol.LPutResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.LPutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -524,14 +511,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.RPutResponse> future =
                         (CompletableFuture<ListProtocol.RPutResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.RPutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -571,14 +556,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -617,14 +600,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.MRemoveResponse> future =
                         (CompletableFuture<ListProtocol.MRemoveResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.MRemoveResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -668,14 +649,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.RemoveResponse> future =
                         (CompletableFuture<ListProtocol.RemoveResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.RemoveResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -730,14 +709,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.PutResponse> future =
                         (CompletableFuture<DictProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -827,14 +804,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.PopItemResponse> future =
                         (CompletableFuture<DictProtocol.PopItemResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.PopItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -873,14 +848,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.PutItemResponse> future =
                         (CompletableFuture<DictProtocol.PutItemResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.PutItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -914,14 +887,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.RemoveItemResponse> future =
                         (CompletableFuture<DictProtocol.RemoveItemResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.RemoveItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -959,14 +930,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1000,14 +969,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.PutResponse> future =
                         (CompletableFuture<SortedListProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1082,14 +1049,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1127,14 +1092,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
                         (CompletableFuture<SortedListProtocol.IncrScoreResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.IncrScoreResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1175,14 +1138,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.PutMemberResponse> future =
                         (CompletableFuture<SortedListProtocol.PutMemberResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.PutMemberResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1221,14 +1182,12 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
                         (CompletableFuture<SortedListProtocol.RemoveMemberResponse>)
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.RemoveMemberResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    LOGGER.error("Process terminated because write to salve failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
