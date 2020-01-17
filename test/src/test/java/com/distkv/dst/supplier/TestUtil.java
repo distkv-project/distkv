@@ -14,26 +14,29 @@ public class TestUtil {
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
-          + File.separator + "dst-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
+      + File.separator + "dst-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
 
   private static Process rpcServerProcess = null;
 
   /**
    * @param command The command that will be executed.
    */
-  private static void executeCommand(List<String> command) {
-
+  public static Process executeCommand(List<String> command) {
+    Process process = null;
     try {
-      LOGGER.debug("Executing command: {}", String.join(" ", command));
-
       ProcessBuilder processBuilder = new ProcessBuilder(command)
           .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-          .redirectError(ProcessBuilder.Redirect.INHERIT);
-      rpcServerProcess = processBuilder.start();
-      // TODO(qwang): Refine this wait
-      rpcServerProcess.waitFor(1, TimeUnit.SECONDS);
+          .redirectError(ProcessBuilder.Redirect.INHERIT)
+          .redirectErrorStream(true);
+      LOGGER.debug("Executing command: {}", String.join(" ", command));
+      process = processBuilder.start();
+      process.waitFor(1, TimeUnit.SECONDS);
+      return process;
     } catch (Exception e) {
-      rpcServerProcess.destroyForcibly();
+      if (process != null) {
+        process.destroyForcibly();
+      }
+      System.out.println(e.getMessage());
       throw new RuntimeException("Error executing command " + String.join(" ", command), e);
     }
   }
@@ -53,7 +56,7 @@ public class TestUtil {
         "com.distkv.dst.server.DstServer",
         String.valueOf(serverPort)
     );
-    executeCommand(startCommand);
+    rpcServerProcess = executeCommand(startCommand);
   }
 
   public static void stopRpcServer() {

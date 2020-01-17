@@ -19,25 +19,6 @@ public class MasterSalverTestUtil {
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
-  /**
-   * @param command The command that will be executed.
-   */
-  private static Process executeCommand(List<String> command) {
-    try {
-      ProcessBuilder processBuilder = new ProcessBuilder(command)
-          .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-          .redirectError(ProcessBuilder.Redirect.INHERIT)
-          .redirectErrorStream(true);
-      LOGGER.debug("Executing command: {}", String.join(" ", command));
-      Process process = processBuilder.start();
-      process.waitFor(1, TimeUnit.SECONDS);
-      return process;
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      throw new RuntimeException("Error executing command " + String.join(" ", command), e);
-    }
-  }
-
   public static void startAllProcess() {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
@@ -58,7 +39,7 @@ public class MasterSalverTestUtil {
       );
       System.out.println(startCommand.toString());
       int finalI = i;
-      new Thread(() -> processes[finalI] = executeCommand(startCommand)).start();
+      new Thread(() -> processes[finalI] = TestUtil.executeCommand(startCommand)).start();
     }
   }
 

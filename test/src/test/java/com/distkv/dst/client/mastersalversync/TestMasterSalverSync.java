@@ -19,19 +19,31 @@ public class TestMasterSalverSync {
   @Test
   public void mainTest() throws InterruptedException {
     MasterSalverTestUtil.startAllProcess();
-    TimeUnit.SECONDS.sleep(5);
-    DstClient client0 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18082));
-    DstClient client1 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18090));
-
+    DstClient client0 = null;
+    DstClient client1 = null;
+    int k = 10;
+    while (k > 0) {
+      boolean isTryAgain = false;
+      try {
+        client0 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18082));
+        client1 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18090));
+      } catch (Exception e) {
+        isTryAgain = true;
+      }
+      if (isTryAgain) {
+        TimeUnit.SECONDS.sleep(1);
+        continue;
+      } else {
+        break;
+      }
+    }
     //test
     testStrPut(client0, client1);
     testListPut(client0, client1);
     testSetPut(client0, client1);
     testDictPut(client0, client1);
     testSlistPut(client0, client1);
-
     MasterSalverTestUtil.stopAllProcess();
-    TimeUnit.SECONDS.sleep(1);
   }
 
   public void testStrPut(DstClient client0, DstClient client1) {
