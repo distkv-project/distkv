@@ -1,6 +1,12 @@
 language: java
 sudo: false # faster builds
 
+matrix:
+  include:
+    # for linux : This job is to test project
+    - os: linux
+      dist: xenial
+      
 jdk:
   - openjdk8
   - openjdk11
@@ -13,7 +19,6 @@ install: true
 
 before_script:
   - bash ./scripts/install_dependencies.sh
-
 script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
 
