@@ -5,9 +5,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
-import java.util.List;
 
 public class DstServerConfig {
   private static final Logger LOGGER = LoggerFactory.getLogger(DstServerConfig.class);
@@ -17,8 +15,7 @@ public class DstServerConfig {
 
   private int listeningPort;
   private boolean isMaster;
-  private int shardsNum;
-  private List<String> slaveAddresses;
+  private int shardNum;
 
   public boolean isMaster() {
     return isMaster;
@@ -33,30 +30,20 @@ public class DstServerConfig {
   }
 
   public int getShardNum() {
-    return shardsNum;
-  }
-
-  public List<String> getSlaveAddresses() {
-    return slaveAddresses;
+    return shardNum;
   }
 
   public DstServerConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     isMaster = config.getBoolean("store.isMaster");
-    shardsNum = config.getInt("store.shardsNum");
-    if (isMaster) {
-      slaveAddresses = config.getStringList("store.slaveAddresses");
-    } else {
-      slaveAddresses = null;
-    }
+    shardNum = config.getInt("store.shardNum");
   }
 
   @Override
   public String toString() {
     return "listeningPort: " + listeningPort + ";\n"
         + "isMaster: " + isMaster + ";\n"
-        + "shardNum: " + shardsNum + ";\n"
-        + "slaves" + slaveAddresses.toString() + "\n";
+        + "shardNum: " + shardNum + ";\n";
   }
 
   public static DstServerConfig create() {
