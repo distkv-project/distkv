@@ -17,13 +17,13 @@ public class ProxyOnClient<T> implements AutoCloseable {
         .build();
     int k = 10;
     while (k > 0) {
-      try{
+      try {
         client = new NettyClient(clientConfig);
         client.open();
         proxy = new Proxy<>();
         proxy.setInterfaceClass(clazz);
-      }catch (Exception e) {
-        k-- ;
+      } catch (Exception e) {
+        k--;
         continue;
       }
       break;
