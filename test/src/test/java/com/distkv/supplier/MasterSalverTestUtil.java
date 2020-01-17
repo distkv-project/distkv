@@ -11,8 +11,9 @@ public class MasterSalverTestUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MasterSalverTestUtil.class);
 
-  private static final String SERVER_SUFFIX_JAR_DIR = "server" + File.separator + "target"
-      + File.separator + "dst-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
+  private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
+      + File.separator + "distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
+
   private static final int NODE_NUM = 3;
 
   private static Process[] processes = new Process[NODE_NUM];
@@ -23,19 +24,19 @@ public class MasterSalverTestUtil {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().indexOf("test") != -1) {
-      jarDir = userDir.getParent() + File.separator + SERVER_SUFFIX_JAR_DIR;
+      jarDir = userDir.getParent() + File.separator + SUFFIX_JAR_DIR;
     } else {
-      jarDir = userDir.getPath() + File.separator + SERVER_SUFFIX_JAR_DIR;
+      jarDir = userDir.getPath() + File.separator + SUFFIX_JAR_DIR;
     }
 
     String confPath = userDir.getParent() + File.separator + "conf" + File.separator;
     for (int i = 0; i < NODE_NUM; i++) {
       final List<String> startCommand = ImmutableList.of(
           "java",
-          "-Ddst.config=" + confPath + "dst" + (i + 1) + ".conf",
+          "-Ddistkv.config=" + confPath + "distkv" + (i + 1) + ".conf",
           "-classpath",
           jarDir,
-          "com.distkv.dst.server.DstServer"
+          "com.distkv.server.DstServer"
       );
       int finalI = i;
       new Thread(() -> processes[finalI] = TestUtil.executeCommand(startCommand)).start();

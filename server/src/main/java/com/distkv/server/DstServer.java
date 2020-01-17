@@ -54,7 +54,7 @@ public class DstServer {
 
   public void run() {
     drpcServer.run();
-    LOGGER.error("Succeeded to start dst server on port {}.", config.getPort());
+    LOGGER.info("Succeeded to start dst server on port {}.", config.getPort());
     synchronized (DstServer.class) {
       try {
         DstServer.class.wait();
