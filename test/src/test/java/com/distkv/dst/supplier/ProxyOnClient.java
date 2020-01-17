@@ -8,17 +8,28 @@ import com.distkv.drpc.netty.NettyClient;
 
 public class ProxyOnClient<T> implements AutoCloseable {
 
-  private Client client;
+  private Client client = null;
   private Proxy<T> proxy;
 
   public ProxyOnClient(Class<T> clazz, int serverPort) {
     ClientConfig clientConfig = ClientConfig.builder()
-          .address(String.format("dst://127.0.0.1:%d", serverPort))
-          .build();
-    client = new NettyClient(clientConfig);
-    client.open();
-    proxy = new Proxy<>();
-    proxy.setInterfaceClass(clazz);
+        .address(String.format("dst://127.0.0.1:%d", serverPort))
+        .build();
+    int k = 10;
+    while (k > 0) {
+      try{
+        client = new NettyClient(clientConfig);
+        client.open();
+        proxy = new Proxy<>();
+        proxy.setInterfaceClass(clazz);
+      }catch (Exception e) {
+        k-- ;
+        continue;
+      }
+      break;
+    }
+
+
   }
 
   public T getService() {
