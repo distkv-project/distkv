@@ -12,7 +12,7 @@ public class TestServer {
   @Test
   public void testPutAndGet() throws InterruptedException {
     DmetaTestUtil.startAllDmetaProcess();
-    TimeUnit.SECONDS.sleep(5);
+    TimeUnit.SECONDS.sleep(10);
     DmetaClient client = new DmetaClient();
 
     client.createPath("woooo&kkk");
