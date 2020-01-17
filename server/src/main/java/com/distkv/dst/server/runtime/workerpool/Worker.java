@@ -16,12 +16,6 @@ import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
 import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
 import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
 import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
-import com.distkv.dst.rpc.service.DstDictService;
-import com.distkv.dst.rpc.service.DstListService;
-import com.distkv.dst.rpc.service.DstSetService;
-import com.distkv.dst.rpc.service.DstSortedListService;
-import com.distkv.dst.rpc.service.DstStringService;
-import com.distkv.dst.server.runtime.salve.SalveClient;
 import com.google.common.base.Preconditions;
 import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
@@ -45,16 +39,10 @@ public class Worker extends Thread {
 
   private NodeInstance nodeInstance;
 
-  private boolean isMaster;
-
-  private List<SalveClient> salveClients;
-
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
 
-  public Worker(boolean isMaster, List<SalveClient> salveClients) {
+  public Worker() {
     queue = new LinkedBlockingQueue<>();
-    this.salveClients = salveClients;
-    this.isMaster = isMaster;
   }
 
   private BlockingQueue<InternalRequest> queue;
@@ -79,30 +67,6 @@ public class Worker extends Thread {
           case STR_PUT: {
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
-            /// This store instance is master, so we should sync this requests to all slaves.
-            if (isMaster) {
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstStringService service = client.getStringService();
-                  StringProtocol.PutResponse tempResponse =
-                      service.put(strPutRequest).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    // TODO: Note that this process should get failed
-                    //  if it failed to sync request to slave.
-                    //  This should be fixed in fault tolerant module.
-                    CompletableFuture<StringProtocol.PutResponse> future =
-                        (CompletableFuture<StringProtocol.PutResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(StringProtocol.PutResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             // try put.
             storeEngine.strs().put(strPutRequest.getKey(), strPutRequest.getValue());
             CompletableFuture<StringProtocol.PutResponse> future =
@@ -114,30 +78,9 @@ public class Worker extends Thread {
           }
           case STR_DROP: {
             CommonProtocol.DropRequest request =
-                (CommonProtocol.DropRequest) internalRequest.getRequest();
-            /// This store instance is master, so we should sync this requests to all slaves.
-            if (isMaster) {
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstStringService service = client.getStringService();
-                  CommonProtocol.DropResponse tempResponse =
-                      service.drop(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<CommonProtocol.DropResponse> future =
-                        (CompletableFuture<CommonProtocol.DropResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(CommonProtocol.DropResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
+                    (CommonProtocol.DropRequest) internalRequest.getRequest();
             CommonProtocol.DropResponse.Builder responseBuilder =
-                CommonProtocol.DropResponse.newBuilder();
+                    CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.strs().drop(request.getKey());
@@ -151,8 +94,8 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
-                (CompletableFuture<CommonProtocol.DropResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
@@ -176,27 +119,6 @@ public class Worker extends Thread {
           case SET_PUT: {
             SetProtocol.PutRequest setPutRequest =
                 (SetProtocol.PutRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSetService service = client.getSetService();
-                  SetProtocol.PutResponse tempResponse =
-                      service.put(setPutRequest).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<SetProtocol.PutResponse> future =
-                        (CompletableFuture<SetProtocol.PutResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(SetProtocol.PutResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             // TODO(qwang): Any thoughts on how to avoid this `new HasSet`.
             storeEngine.sets().put(
                 setPutRequest.getKey(), new HashSet<>(setPutRequest.getValuesList()));
@@ -230,27 +152,6 @@ public class Worker extends Thread {
           case SET_PUT_ITEM: {
             SetProtocol.PutItemRequest request =
                 (SetProtocol.PutItemRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSetService service = client.getSetService();
-                  SetProtocol.PutItemResponse tempResponse =
-                      service.putItem(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<SetProtocol.PutItemResponse> future =
-                        (CompletableFuture<SetProtocol.PutItemResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(SetProtocol.PutItemResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             CommonProtocol.Status status;
             try {
               storeEngine.sets().putItem(request.getKey(), request.getItemValue());
@@ -267,27 +168,6 @@ public class Worker extends Thread {
           case SET_REMOVE_ITEM: {
             SetProtocol.RemoveItemRequest request =
                 (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSetService service = client.getSetService();
-                  SetProtocol.RemoveItemResponse tempResponse =
-                      service.removeItem(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<SetProtocol.RemoveItemResponse> future =
-                        (CompletableFuture<SetProtocol.RemoveItemResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(SetProtocol.RemoveItemResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
             try {
               Status localStatus = storeEngine.sets()
@@ -331,27 +211,6 @@ public class Worker extends Thread {
           case SET_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSetService service = client.getSetService();
-                  CommonProtocol.DropResponse tempResponse =
-                      service.drop(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<CommonProtocol.DropResponse> future =
-                        (CompletableFuture<CommonProtocol.DropResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(CommonProtocol.DropResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -374,30 +233,9 @@ public class Worker extends Thread {
           }
           case LIST_PUT: {
             ListProtocol.PutRequest request =
-                (ListProtocol.PutRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstListService service = client.getListService();
-                  ListProtocol.PutResponse tempResponse =
-                      service.put(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<ListProtocol.PutResponse> future =
-                        (CompletableFuture<ListProtocol.PutResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(ListProtocol.PutResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
+                    (ListProtocol.PutRequest) internalRequest.getRequest();
             ListProtocol.PutResponse.Builder responseBuilder =
-                ListProtocol.PutResponse.newBuilder();
+                    ListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               // TODO(qwang): Avoid this copy. See the discussion
@@ -410,16 +248,16 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.PutResponse> future =
-                (CompletableFuture<ListProtocol.PutResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<ListProtocol.PutResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_GET: {
             ListProtocol.GetRequest request =
-                (ListProtocol.GetRequest) internalRequest.getRequest();
+                    (ListProtocol.GetRequest) internalRequest.getRequest();
             ListProtocol.GetResponse.Builder responseBuilder =
-                ListProtocol.GetResponse.newBuilder();
+                    ListProtocol.GetResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             final String key = request.getKey();
             final ListProtocol.GetType type = request.getType();
@@ -432,7 +270,7 @@ public class Worker extends Thread {
                 responseBuilder.addValues(storeEngine.lists().get(key, request.getIndex()));
               } else if (type == ListProtocol.GetType.GET_RANGE) {
                 final List<String> values = storeEngine.lists().get(
-                    key, request.getFrom(), request.getEnd());
+                        key, request.getFrom(), request.getEnd());
                 Optional.ofNullable(values).ifPresent(v -> responseBuilder.addAllValues(values));
               } else {
                 LOGGER.error("Failed to get a list from store.");
@@ -447,41 +285,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.GetResponse> future =
-                (CompletableFuture<ListProtocol.GetResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<ListProtocol.GetResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_LPUT: {
             ListProtocol.LPutRequest request =
-                (ListProtocol.LPutRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstListService service = client.getListService();
-                  ListProtocol.LPutResponse tempResponse =
-                      service.lput(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<ListProtocol.LPutResponse> future =
-                        (CompletableFuture<ListProtocol.LPutResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(ListProtocol.LPutResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
+                    (ListProtocol.LPutRequest) internalRequest.getRequest();
             ListProtocol.LPutResponse.Builder responseBuilder =
-                ListProtocol.LPutResponse.newBuilder();
+                    ListProtocol.LPutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus =
-                  storeEngine.lists().lput(request.getKey(), request.getValuesList());
+                      storeEngine.lists().lput(request.getKey(), request.getValuesList());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -493,41 +310,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.LPutResponse> future =
-                (CompletableFuture<ListProtocol.LPutResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<ListProtocol.LPutResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_RPUT: {
             ListProtocol.RPutRequest request =
-                (ListProtocol.RPutRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstListService service = client.getListService();
-                  ListProtocol.RPutResponse tempResponse =
-                      service.rput(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<ListProtocol.RPutResponse> future =
-                        (CompletableFuture<ListProtocol.RPutResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(ListProtocol.RPutResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
+                    (ListProtocol.RPutRequest) internalRequest.getRequest();
             ListProtocol.RPutResponse.Builder responseBuilder =
-                ListProtocol.RPutResponse.newBuilder();
+                    ListProtocol.RPutResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus =
-                  storeEngine.lists().rput(request.getKey(), request.getValuesList());
+                      storeEngine.lists().rput(request.getKey(), request.getValuesList());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -538,37 +334,16 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.RPutResponse> future =
-                (CompletableFuture<ListProtocol.RPutResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<ListProtocol.RPutResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_DROP: {
             CommonProtocol.DropRequest request =
-                (CommonProtocol.DropRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstListService service = client.getListService();
-                  CommonProtocol.DropResponse tempResponse =
-                      service.drop(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<CommonProtocol.DropResponse> future =
-                        (CompletableFuture<CommonProtocol.DropResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(CommonProtocol.DropResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
+                    (CommonProtocol.DropRequest) internalRequest.getRequest();
             CommonProtocol.DropResponse.Builder responseBuilder =
-                CommonProtocol.DropResponse.newBuilder();
+                    CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus = storeEngine.lists().drop(request.getKey());
@@ -582,41 +357,20 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<CommonProtocol.DropResponse> future =
-                (CompletableFuture<CommonProtocol.DropResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<CommonProtocol.DropResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_M_REMOVE: {
             ListProtocol.MRemoveRequest request =
-                (ListProtocol.MRemoveRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstListService service = client.getListService();
-                  ListProtocol.MRemoveResponse tempResponse =
-                      service.mremove(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<ListProtocol.MRemoveResponse> future =
-                        (CompletableFuture<ListProtocol.MRemoveResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(ListProtocol.MRemoveResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
+                    (ListProtocol.MRemoveRequest) internalRequest.getRequest();
             ListProtocol.MRemoveResponse.Builder responseBuilder =
-                ListProtocol.MRemoveResponse.newBuilder();
+                    ListProtocol.MRemoveResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               Status localStatus =
-                  storeEngine.lists().mremove(request.getKey(), request.getIndexesList());
+                      storeEngine.lists().mremove(request.getKey(), request.getIndexesList());
               if (localStatus == Status.OK) {
                 status = CommonProtocol.Status.OK;
               } else if (localStatus == Status.KEY_NOT_FOUND) {
@@ -631,37 +385,16 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.MRemoveResponse> future =
-                (CompletableFuture<ListProtocol.MRemoveResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<ListProtocol.MRemoveResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case LIST_REMOVE: {
             ListProtocol.RemoveRequest request =
-                (ListProtocol.RemoveRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstListService service = client.getListService();
-                  ListProtocol.RemoveResponse tempResponse =
-                      service.remove(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<ListProtocol.RemoveResponse> future =
-                        (CompletableFuture<ListProtocol.RemoveResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(ListProtocol.RemoveResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
+                    (ListProtocol.RemoveRequest) internalRequest.getRequest();
             ListProtocol.RemoveResponse.Builder responseBuilder =
-                ListProtocol.RemoveResponse.newBuilder();
+                    ListProtocol.RemoveResponse.newBuilder();
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             final String key = request.getKey();
             final ListProtocol.RemoveType type = request.getType();
@@ -691,35 +424,14 @@ public class Worker extends Thread {
             }
             responseBuilder.setStatus(status);
             CompletableFuture<ListProtocol.RemoveResponse> future =
-                (CompletableFuture<ListProtocol.RemoveResponse>)
-                    internalRequest.getCompletableFuture();
+                    (CompletableFuture<ListProtocol.RemoveResponse>)
+                            internalRequest.getCompletableFuture();
             future.complete(responseBuilder.build());
             break;
           }
           case DICT_PUT: {
             DictProtocol.PutRequest request =
                 (DictProtocol.PutRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstDictService service = client.getDictService();
-                  DictProtocol.PutResponse tempResponse =
-                      service.put(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<DictProtocol.PutResponse> future =
-                        (CompletableFuture<DictProtocol.PutResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(DictProtocol.PutResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             DictProtocol.PutResponse.Builder responseBuilder =
                 DictProtocol.PutResponse.newBuilder();
             try {
@@ -794,27 +506,6 @@ public class Worker extends Thread {
           case DICT_POP_ITEM: {
             DictProtocol.PopItemRequest request =
                 (DictProtocol.PopItemRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstDictService service = client.getDictService();
-                  DictProtocol.PopItemResponse tempResponse =
-                      service.popItem(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<DictProtocol.PopItemResponse> future =
-                        (CompletableFuture<DictProtocol.PopItemResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(DictProtocol.PopItemResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             DictProtocol.PopItemResponse.Builder responseBuilder =
                 DictProtocol.PopItemResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -838,27 +529,6 @@ public class Worker extends Thread {
           case DICT_PUT_ITEM: {
             DictProtocol.PutItemRequest request =
                 (DictProtocol.PutItemRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstDictService service = client.getDictService();
-                  DictProtocol.PutItemResponse tempResponse =
-                      service.putItem(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<DictProtocol.PutItemResponse> future =
-                        (CompletableFuture<DictProtocol.PutItemResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(DictProtocol.PutItemResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             DictProtocol.PutItemResponse.Builder responseBuilder =
                 DictProtocol.PutItemResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -877,27 +547,6 @@ public class Worker extends Thread {
           case DICT_REMOVE_ITEM: {
             DictProtocol.RemoveItemRequest request =
                 (DictProtocol.RemoveItemRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstDictService service = client.getDictService();
-                  DictProtocol.RemoveItemResponse tempResponse =
-                      service.removeItem(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<DictProtocol.RemoveItemResponse> future =
-                        (CompletableFuture<DictProtocol.RemoveItemResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(DictProtocol.RemoveItemResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             DictProtocol.RemoveItemResponse.Builder responseBuilder =
                 DictProtocol.RemoveItemResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -920,27 +569,6 @@ public class Worker extends Thread {
           case DICT_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstDictService service = client.getDictService();
-                  CommonProtocol.DropResponse tempResponse =
-                      service.drop(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<CommonProtocol.DropResponse> future =
-                        (CompletableFuture<CommonProtocol.DropResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(CommonProtocol.DropResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             responseBuilder.setStatus(CommonProtocol.Status.OK);
@@ -956,30 +584,10 @@ public class Worker extends Thread {
             future.complete(responseBuilder.build());
             break;
           }
+
           case SLIST_PUT: {
             SortedListProtocol.PutRequest request =
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
-                  SortedListProtocol.PutResponse tempResponse =
-                      service.put(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<SortedListProtocol.PutResponse> future =
-                        (CompletableFuture<SortedListProtocol.PutResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(SortedListProtocol.PutResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             SortedListProtocol.PutResponse.Builder responseBuilder =
                 SortedListProtocol.PutResponse.newBuilder();
             CommonProtocol.Status status;
@@ -1039,27 +647,6 @@ public class Worker extends Thread {
           case SLIST_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
-                  CommonProtocol.DropResponse tempResponse =
-                      service.drop(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<CommonProtocol.DropResponse> future =
-                        (CompletableFuture<CommonProtocol.DropResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(CommonProtocol.DropResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             CommonProtocol.DropResponse.Builder responseBuilder =
                 CommonProtocol.DropResponse.newBuilder();
             CommonProtocol.Status status;
@@ -1082,27 +669,6 @@ public class Worker extends Thread {
           case SLIST_INCR_SCORE: {
             SortedListProtocol.IncrScoreRequest request =
                 (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
-                  SortedListProtocol.IncrScoreResponse tempResponse =
-                      service.incrScore(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
-                        (CompletableFuture<SortedListProtocol.IncrScoreResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(SortedListProtocol.IncrScoreResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             SortedListProtocol.IncrScoreResponse.Builder responseBuilder =
                 SortedListProtocol.IncrScoreResponse.newBuilder();
             CommonProtocol.Status status;
@@ -1128,27 +694,6 @@ public class Worker extends Thread {
           case SLIST_PUT_MEMBER: {
             SortedListProtocol.PutMemberRequest request =
                 (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
-                  SortedListProtocol.PutMemberResponse tempResponse =
-                      service.putMember(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<SortedListProtocol.PutMemberResponse> future =
-                        (CompletableFuture<SortedListProtocol.PutMemberResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(SortedListProtocol.PutMemberResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             SortedListProtocol.PutMemberResponse.Builder responseBuilder =
                 SortedListProtocol.PutMemberResponse.newBuilder();
             CommonProtocol.Status status;
@@ -1172,27 +717,6 @@ public class Worker extends Thread {
           case SLIST_REMOVE_MEMBER: {
             SortedListProtocol.RemoveMemberRequest request =
                 (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
-            if (isMaster) {
-              /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
-                synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
-                  SortedListProtocol.RemoveMemberResponse tempResponse =
-                      service.removeMember(request).get();
-                  if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
-                    continue;
-                  } else {
-                    CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
-                        (CompletableFuture<SortedListProtocol.RemoveMemberResponse>)
-                            internalRequest.getCompletableFuture();
-                    future.complete(SortedListProtocol.RemoveMemberResponse.newBuilder()
-                        .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
-                    Runtime.getRuntime().exit(-1);
-                  }
-                }
-              }
-            }
             SortedListProtocol.RemoveMemberResponse.Builder responseBuilder =
                 SortedListProtocol.RemoveMemberResponse.newBuilder();
             CommonProtocol.Status status;
@@ -1247,7 +771,6 @@ public class Worker extends Thread {
           }
           default: {
           }
-
         }
       } catch (Throwable e) {
         LOGGER.error("Failed to execute event loop:" + e);
