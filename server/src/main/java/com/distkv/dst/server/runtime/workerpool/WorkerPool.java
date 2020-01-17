@@ -5,8 +5,6 @@ import com.distkv.dst.server.runtime.salve.SalveClient;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-
-
 import java.util.List;
 
 public class WorkerPool {
