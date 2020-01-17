@@ -20,8 +20,8 @@ public class TestMasterSalverSync {
   public void mainTest() throws InterruptedException {
     MasterSalverTestUtil.startAllProcess();
     TimeUnit.SECONDS.sleep(5);
-    DstClient client0 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 8082));
-    DstClient client1 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 8090));
+    DstClient client0 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18082));
+    DstClient client1 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18090));
 
     //test
     testStrPut(client0, client1);
