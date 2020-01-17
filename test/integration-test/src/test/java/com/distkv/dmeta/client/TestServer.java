@@ -1,6 +1,6 @@
 package com.distkv.dmeta.client;
 
-import com.distkv.test.base.DmetaTestUtil;
+import com.distkv.supplier.DmetaTestUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

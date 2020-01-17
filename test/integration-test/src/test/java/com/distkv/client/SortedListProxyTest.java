@@ -3,7 +3,7 @@ package com.distkv.client;
 import java.util.LinkedList;
 import com.distkv.common.DstTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.test.base.BaseTestSupplier;
+import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

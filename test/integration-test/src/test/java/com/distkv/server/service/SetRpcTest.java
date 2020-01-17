@@ -2,8 +2,8 @@ package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.service.DstSetService;
-import com.distkv.test.base.BaseTestSupplier;
-import com.distkv.test.base.ProxyOnClient;
+import com.distkv.supplier.BaseTestSupplier;
+import com.distkv.supplier.ProxyOnClient;
 import com.google.common.collect.ImmutableList;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;

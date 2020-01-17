@@ -3,7 +3,7 @@ package com.distkv.client.commandlinetool;
 import com.distkv.client.DstClient;
 import com.distkv.parser.DstParser;
 import com.distkv.parser.po.DstParsedResult;
-import com.distkv.test.base.BaseTestSupplier;
+import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

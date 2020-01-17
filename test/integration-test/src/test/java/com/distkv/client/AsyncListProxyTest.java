@@ -3,7 +3,7 @@ package com.distkv.client;
 import com.distkv.asyncclient.DstAsyncClient;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
-import com.distkv.test.base.BaseTestSupplier;
+import com.distkv.supplier.BaseTestSupplier;
 import com.google.common.collect.ImmutableList;
 import org.testng.Assert;
 import org.testng.annotations.Test;

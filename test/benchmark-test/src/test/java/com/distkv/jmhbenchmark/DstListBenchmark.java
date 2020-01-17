@@ -4,7 +4,7 @@ import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DstAsyncClient;
 import com.distkv.client.DefaultDstClient;
 import com.distkv.client.DstClient;
-import com.distkv.test.base.TestUtil;
+import com.distkv.common.utils.TestUtil;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.RandomStringUtils;
 import org.openjdk.jmh.infra.Blackhole;

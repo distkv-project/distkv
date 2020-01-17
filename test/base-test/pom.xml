@@ -33,6 +33,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.distkv</groupId>
+            <artifactId>distkv-server</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.0.0</version>

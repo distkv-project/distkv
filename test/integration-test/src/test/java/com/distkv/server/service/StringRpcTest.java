@@ -4,8 +4,8 @@ import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.service.DstStringService;
-import com.distkv.test.base.BaseTestSupplier;
-import com.distkv.test.base.ProxyOnClient;
+import com.distkv.supplier.BaseTestSupplier;
+import com.distkv.supplier.ProxyOnClient;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

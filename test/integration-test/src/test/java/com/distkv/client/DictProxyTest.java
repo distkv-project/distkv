@@ -1,7 +1,7 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.test.base.BaseTestSupplier;
+import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.HashMap;

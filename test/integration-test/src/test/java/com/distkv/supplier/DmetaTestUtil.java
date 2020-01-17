@@ -1,4 +1,4 @@
-package com.distkv.test.base;
+package com.distkv.supplier;
 
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;

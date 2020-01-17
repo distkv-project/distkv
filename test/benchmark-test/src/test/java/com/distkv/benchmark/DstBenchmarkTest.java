@@ -1,7 +1,7 @@
 package com.distkv.benchmark;
 
 import com.distkv.client.DstClient;
-import com.distkv.test.base.TestUtil;
+import com.distkv.common.utils.TestUtil;
 
 public class DstBenchmarkTest {
 
