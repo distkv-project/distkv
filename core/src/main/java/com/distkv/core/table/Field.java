@@ -1,4 +1,4 @@
-package com.distkv.dst.core.table;
+package com.distkv.core.table;
 
 
 public class Field {

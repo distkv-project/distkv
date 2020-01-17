@@ -1,4 +1,4 @@
-package com.distkv.dst.common.id;
+package com.distkv.common.id;
 
 import java.io.Serializable;
 

@@ -1,12 +1,12 @@
-package com.distkv.dst.client;
+package com.distkv.client;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.utils.FutureUtils;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
-import com.distkv.dst.rpc.service.DstSetService;
+import com.distkv.common.exception.DstException;
+import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.SetProtocol;
+import com.distkv.rpc.service.DstSetService;
 
 public class DstSetProxy {
 

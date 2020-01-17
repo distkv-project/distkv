@@ -1,11 +1,11 @@
-package com.distkv.dst.server.service;
+package com.distkv.server.service;
 
-import com.distkv.dst.common.RequestTypeEnum;
-import com.distkv.dst.server.runtime.DstRuntime;
+import com.distkv.common.RequestTypeEnum;
+import com.distkv.rpc.service.DstSortedListService;
+import com.distkv.server.runtime.DstRuntime;
 import java.util.concurrent.CompletableFuture;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.dst.rpc.service.DstSortedListService;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 
 public class DstSortedListServiceImpl implements DstSortedListService {
 

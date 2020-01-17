@@ -1,6 +1,7 @@
-package com.distkv.dst.common.utils;
+package com.distkv.common.utils;
 
-import com.distkv.dst.common.exception.DstException;
+import com.distkv.common.exception.DstException;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;

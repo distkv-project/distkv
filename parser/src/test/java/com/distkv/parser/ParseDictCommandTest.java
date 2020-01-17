@@ -1,8 +1,8 @@
-package com.distkv.dst.parser;
+package com.distkv.parser;
 
-import com.distkv.dst.parser.po.DstParsedResult;
+import com.distkv.parser.po.DstParsedResult;
 import com.distkv.common.RequestTypeEnum;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
+import com.distkv.rpc.protobuf.generated.DictProtocol;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

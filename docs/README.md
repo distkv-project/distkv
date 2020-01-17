@@ -1,8 +1,8 @@
 <div align=left>
-    <img src="res/dst_logo_min.png" width="282" height="170"> 
+    <img src="res/distkv_logo_min.png" width="282" height="170"> 
 </div>
 
-[![Build Status](https://travis-ci.com/dst-project/dst.svg?branch=master)](https://travis-ci.com/dst-project/dst) [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-dst-project-dst-master) [![codecov](https://codecov.io/gh/dst-project/dst/branch/master/graph/badge.svg)](https://codecov.io/gh/dst-project/dst)
+[![Build Status](https://travis-ci.com/distkv-project/distkv.svg?branch=master)](https://travis-ci.com/distkv-project/distkv) [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-distkv-project-distkv-master) [![codecov](https://codecov.io/gh/distkv-project/distkv/branch/master/graph/badge.svg)](https://codecov.io/gh/distkv-project/distkv)
 
 A distributed key-value in-memory store system with table concept.
 

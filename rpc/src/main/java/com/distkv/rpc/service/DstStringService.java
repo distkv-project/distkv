@@ -1,7 +1,7 @@
-package com.distkv.dst.rpc.service;
+package com.distkv.rpc.service;
 
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.StringProtocol;
 
 import java.util.concurrent.CompletableFuture;
 

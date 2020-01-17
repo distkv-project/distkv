@@ -1,15 +1,15 @@
-package com.distkv.dst.asyncclient;
+package com.distkv.asyncclient;
 
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.netty.NettyClient;
 import com.distkv.common.exception.DstException;
-import com.distkv.dst.rpc.service.DstSortedListService;
-import com.distkv.dst.rpc.service.DstDictService;
-import com.distkv.dst.rpc.service.DstSetService;
-import com.distkv.dst.rpc.service.DstListService;
-import com.distkv.dst.rpc.service.DstStringService;
+import com.distkv.rpc.service.DstDictService;
+import com.distkv.rpc.service.DstListService;
+import com.distkv.rpc.service.DstSetService;
+import com.distkv.rpc.service.DstSortedListService;
+import com.distkv.rpc.service.DstStringService;
 
 public class DefaultAsyncClient implements DstAsyncClient {
 

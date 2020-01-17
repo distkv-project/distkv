@@ -1,4 +1,4 @@
-package com.distkv.dst.common;
+package com.distkv.common;
 
 public class DstTuple<X, Y> {
 

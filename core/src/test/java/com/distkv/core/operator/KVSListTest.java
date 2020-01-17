@@ -1,12 +1,12 @@
-package com.distkv.dst.core.operator;
+package com.distkv.core.operator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.distkv.common.utils.Status;
+import com.distkv.core.KVStoreImpl;
 import com.google.common.collect.ImmutableList;
-import com.distkv.dst.core.KVStoreImpl;
-import com.distkv.dst.core.KVStore;
+import com.distkv.core.KVStore;
 import com.distkv.common.exception.KeyNotFoundException;
 import org.testng.Assert;
 import org.testng.annotations.Test;

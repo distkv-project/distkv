@@ -1,10 +1,11 @@
-package com.distkv.dst.client;
+package com.distkv.client;
 
-import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.utils.FutureUtils;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
-import com.distkv.dst.rpc.service.DstListService;
+import com.distkv.common.exception.DstException;
+import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.ListProtocol;
+import com.distkv.rpc.service.DstListService;
+
 import java.util.List;
 
 public class DstListProxy {

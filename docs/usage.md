@@ -10,8 +10,8 @@ str.put key value
 ```
 example:
 ```bash
-dst-cli > str.put k1 v1
-dst-cli > ok
+distkv-cli > str.put k1 v1
+distkv-cli > ok
 ```
 Get a string value from Dst store.
 ```bash
@@ -19,8 +19,8 @@ str.get key
 ```
 example:
 ```bash
-dst-cli > str.get k1
-dst-cli > v1
+distkv-cli > str.get k1
+distkv-cli > v1
 ```
 
 Drop a string from the Dst store.
@@ -29,11 +29,11 @@ str.drop key
 ```
 example:
 ```bash
-dst-cli > str.drop k1
-dst-cli > ok
+distkv-cli > str.drop k1
+distkv-cli > ok
 
-dst-cli > str.get k1
-dst-cli > Error(A202): The Key `k1` is not found in the store.
+distkv-cli > str.get k1
+distkv-cli > Error(A202): The Key `k1` is not found in the store.
 ```
 
 #### 2. List concept
@@ -44,8 +44,8 @@ list.put key value1 [value2 [value3 [...]]]
 ```
 example:
 ```bash
-dst-cli > list.put k1 v1 v2 v3
-dst-cli > ok
+distkv-cli > list.put k1 v1 v2 v3
+distkv-cli > ok
 ```
 
 Get a list from Dst store.
@@ -55,8 +55,8 @@ list.get key
 
 example:
 ```bash
-dst-cli > list.get k1
-dst-cli > [v1, v2, v3]
+distkv-cli > list.get k1
+distkv-cli > [v1, v2, v3]
 ```
 
 Get a range of items of the list from Dst store.
@@ -67,8 +67,8 @@ list.get key from_index end_index
 
 example:
 ```bash
-dst-cli > list.get k1 0 2
-dst-cli > [v1, v2]
+distkv-cli > list.get k1 0 2
+distkv-cli > [v1, v2]
 ```
 
 Get one item of the list from Dst store.
@@ -77,75 +77,75 @@ list.get key index
 ```
 example:
 ```bash
-dst-cli > list.get k1 1
-dst-cli > v1
+distkv-cli > list.get k1 1
+distkv-cli > v1
 ```
 
-dst-cli > list.lput "k1" "v4" "v5" "v6"
-dst-cli > ok
+distkv-cli > list.lput "k1" "v4" "v5" "v6"
+distkv-cli > ok
 
-dst-cli > list.rput "k1" "v7"
-dst-cli > ok
+distkv-cli > list.rput "k1" "v7"
+distkv-cli > ok
 
-dst-cli > list.ldel "k1" 2
-dst-cli > ok
+distkv-cli > list.ldel "k1" 2
+distkv-cli > ok
 
-dst-cli > list.rdel "k1" 2
-dst-cli > ok
+distkv-cli > list.rdel "k1" 2
+distkv-cli > ok
 
-dst-cli > list.get "k1"
-dst-cli > ["v6", "v1", "v2"]
+distkv-cli > list.get "k1"
+distkv-cli > ["v6", "v1", "v2"]
 ```
 
 #### 3. Set concept
 ```bash
-dst-cli > set.put "k1" "v1" "v2" "v3"
-dst-cli > ok
+distkv-cli > set.put "k1" "v1" "v2" "v3"
+distkv-cli > ok
 
-dst-cli > set.get "k1"
-dst-cli > {"v1", "v2", "v3"}
+distkv-cli > set.get "k1"
+distkv-cli > {"v1", "v2", "v3"}
 
-dst-cli > set.del "k1" "v1"
-dst-cli > ok
+distkv-cli > set.del "k1" "v1"
+distkv-cli > ok
 
-dst-cli > set.get "k1"
-dst-cli > {"v2", "v3"}
+distkv-cli > set.get "k1"
+distkv-cli > {"v2", "v3"}
 
-dst-cli > set.exists "k1" "v2"
-dst-cli > true
+distkv-cli > set.exists "k1" "v2"
+distkv-cli > true
 
-dst-cli > set.exists "k1" "v4"
-dst-cli > false
+distkv-cli > set.exists "k1" "v4"
+distkv-cli > false
 
-dst-cli > set.drop "k1"
-dst-cli > ok
+distkv-cli > set.drop "k1"
+distkv-cli > ok
 ```
 
 #### 4. Dict concept
 ```bash
-dst-cli > dict.put "dict1" "k1" "v1" "k2" "v2"
-dst-cli > ok
+distkv-cli > dict.put "dict1" "k1" "v1" "k2" "v2"
+distkv-cli > ok
 
-dst-cli > dict.get "dict1"
-dst-cli > { "k1" : "v1", "k2" : "v2"}
+distkv-cli > dict.get "dict1"
+distkv-cli > { "k1" : "v1", "k2" : "v2"}
 
-dst-cli > dict.get "dict1" "k1"
-dst-cli > "v1"
+distkv-cli > dict.get "dict1" "k1"
+distkv-cli > "v1"
 
-dst-cli > dict.get "dict1" "k1"
-dst-cli > "v1"
+distkv-cli > dict.get "dict1" "k1"
+distkv-cli > "v1"
 
-dst-cli > dict.del "dict1" "k1"
-dst-cli > ok
+distkv-cli > dict.del "dict1" "k1"
+distkv-cli > ok
 
-dst-cli > dict.pop "dict1" "k2"
-dst-cli > "v2"
+distkv-cli > dict.pop "dict1" "k2"
+distkv-cli > "v2"
 
-dst-cli > dict.get "dict1"
-dst-cli > []
+distkv-cli > dict.get "dict1"
+distkv-cli > []
 
-dst-cli > dict.drop "dict1"
-dst-cli > ok
+distkv-cli > dict.drop "dict1"
+distkv-cli > ok
 ```
 
 #### 5. Table concept
@@ -166,9 +166,9 @@ table DriverTable {
  actor_num: int;
 };
 ```
-2. Start an dst server and execute this command to create table:
+2. Start an distkv server and execute this command to create table:
 ```shell
-> dst-cli -p 12344 # connect to dst server
+> distkv-cli -p 12344 # connect to distkv server
 > create TaskTable, DriverTable from mytables.sc
 ```
 3. Add data to the table:

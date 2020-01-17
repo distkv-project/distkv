@@ -1,6 +1,5 @@
-package com.distkv.dst.common.queue;
+package com.distkv.common.queue;
 
-import com.distkv.dst.common.queue.DefaultConcurrentQueue;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.concurrent.CountDownLatch;

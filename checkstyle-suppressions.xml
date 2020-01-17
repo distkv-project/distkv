@@ -8,13 +8,13 @@
     <suppress checks="SummaryJavadoc" files=".*" />
     <!-- suppress check for protobuf-generated files. -->
     <!-- for windows separator-->
-    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]com[\\\\]distkv[\\\\]dst[\\\\]rpc[\\\\]protobuf[\\\\]generated" />
+    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]com[\\\\]distkv[\\\\]rpc[\\\\]protobuf[\\\\]generated" />
     <!-- for linux separator-->
-    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]com[\\/]distkv[\\/]dst[\\/]rpc[\\/]protobuf[\\/]generated" />
+    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]com[\\/]distkv[\\/]rpc[\\/]protobuf[\\/]generated" />
 
     <!-- suppress check for antlr4 files. -->
     <!-- for windows separator-->
-    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]com[\\/]distkv[\\/]dst[\\/]parser[\\/]generated" />
+    <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]com[\\/]distkv[\\/]parser[\\/]generated" />
     <!-- for linux separator-->
-    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]com[\\\\]distkv[\\\\]dst[\\\\]parser[\\\\]generated" />
+    <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]com[\\\\]distkv[\\\\]parser[\\\\]generated" />
 </suppressions>

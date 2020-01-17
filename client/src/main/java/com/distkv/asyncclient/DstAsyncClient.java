@@ -1,4 +1,4 @@
-package com.distkv.dst.asyncclient;
+package com.distkv.asyncclient;
 
 /**
  * The DstAsyncClient class is used to connect to the Dst server and do operations asynchronously.

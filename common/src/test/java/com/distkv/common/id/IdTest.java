@@ -1,8 +1,5 @@
-package com.distkv.dst.common.id;
+package com.distkv.common.id;
 
-import com.distkv.dst.common.id.NodeId;
-import com.distkv.dst.common.id.PartitionId;
-import com.distkv.dst.common.id.ShardId;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

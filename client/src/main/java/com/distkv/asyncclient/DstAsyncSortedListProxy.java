@@ -1,9 +1,9 @@
-package com.distkv.dst.asyncclient;
+package com.distkv.asyncclient;
 
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.dst.rpc.service.DstSortedListService;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.service.DstSortedListService;
 
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;

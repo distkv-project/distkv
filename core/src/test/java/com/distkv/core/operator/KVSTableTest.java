@@ -1,16 +1,16 @@
-package com.distkv.dst.core.operator;
+package com.distkv.core.operator;
 
+import com.distkv.core.KVStore;
+import com.distkv.core.KVStoreImpl;
+import com.distkv.core.table.Field;
+import com.distkv.core.table.IntValue;
+import com.distkv.core.table.Record;
+import com.distkv.core.table.StrListValue;
+import com.distkv.core.table.StrValue;
+import com.distkv.core.table.TableSpecification;
+import com.distkv.core.table.Value;
+import com.distkv.core.table.ValueType;
 import com.google.common.collect.ImmutableList;
-import com.distkv.dst.core.KVStore;
-import com.distkv.dst.core.KVStoreImpl;
-import com.distkv.dst.core.table.Field;
-import com.distkv.dst.core.table.TableSpecification;
-import com.distkv.dst.core.table.Value;
-import com.distkv.dst.core.table.ValueType;
-import com.distkv.dst.core.table.StrListValue;
-import com.distkv.dst.core.table.StrValue;
-import com.distkv.dst.core.table.Record;
-import com.distkv.dst.core.table.IntValue;
 import com.distkv.common.exception.TableNotFoundException;
 import org.testng.Assert;
 import org.testng.annotations.Test;

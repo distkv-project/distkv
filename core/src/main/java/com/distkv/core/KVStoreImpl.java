@@ -1,17 +1,17 @@
-package com.distkv.dst.core;
+package com.distkv.core;
 
-import com.distkv.dst.core.concepts.DstDictsImpl;
-import com.distkv.dst.core.concepts.DstSetsImpl;
-import com.distkv.dst.core.concepts.DstStringsImpl;
-import com.distkv.dst.core.concepts.DstTablesImpl;
-import com.distkv.dst.core.concepts.DstListsImpl;
-import com.distkv.dst.core.concepts.DstTables;
-import com.distkv.dst.core.concepts.DstDicts;
-import com.distkv.dst.core.concepts.DstSets;
-import com.distkv.dst.core.concepts.DstLists;
-import com.distkv.dst.core.concepts.DstStrings;
-import com.distkv.dst.core.concepts.DstSortedLists;
-import com.distkv.dst.core.concepts.DstSortedListsImpl;
+import com.distkv.core.concepts.DstListsImpl;
+import com.distkv.core.concepts.DstSetsImpl;
+import com.distkv.core.concepts.DstSortedLists;
+import com.distkv.core.concepts.DstStrings;
+import com.distkv.core.concepts.DstDictsImpl;
+import com.distkv.core.concepts.DstStringsImpl;
+import com.distkv.core.concepts.DstTablesImpl;
+import com.distkv.core.concepts.DstTables;
+import com.distkv.core.concepts.DstDicts;
+import com.distkv.core.concepts.DstSets;
+import com.distkv.core.concepts.DstLists;
+import com.distkv.core.concepts.DstSortedListsImpl;
 
 public class KVStoreImpl implements KVStore {
 

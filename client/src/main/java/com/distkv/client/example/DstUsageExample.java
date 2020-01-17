@@ -1,4 +1,4 @@
-package com.distkv.dst.client.example;
+package com.distkv.client.example;
 
 import java.util.LinkedList;
 import java.util.HashSet;
@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.distkv.client.DefaultDstClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 
 public class DstUsageExample {

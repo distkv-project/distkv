@@ -111,7 +111,7 @@ public class CounterServer {
 
     // start
     final CounterServer counterServer = new CounterServer(dataPath, groupId, serverId, nodeOptions);
-    System.out.println("Started org.dst.dmeta.example.counter server at port:"
+    System.out.println("Started com.distkv.dmeta.example.counter server at port:"
         + counterServer.getNode().getNodeId().getPeerId().getPort());
   }
 }

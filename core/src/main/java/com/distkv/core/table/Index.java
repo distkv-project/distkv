@@ -1,4 +1,4 @@
-package com.distkv.dst.core.table;
+package com.distkv.core.table;
 
 import java.util.HashMap;
 import java.util.List;

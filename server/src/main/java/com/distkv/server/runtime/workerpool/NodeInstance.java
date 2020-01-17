@@ -1,4 +1,4 @@
-package com.distkv.dst.server.runtime.workerpool;
+package com.distkv.server.runtime.workerpool;
 
 public class NodeInstance {
 }

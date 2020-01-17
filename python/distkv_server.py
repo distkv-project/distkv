@@ -11,8 +11,8 @@ def main():
     command = [
         "java",
          "-classpath",
-         os.path.join(get_current_dir(), "dst/jars/dst-server.jar"),
-         "com.distkv.dst.server.DstServer"]
+         os.path.join(get_current_dir(), "distkv/jars/distkv-server.jar"),
+         "com.distkv.server.DstServer"]
     subprocess.check_call(command)
 
 if __name__ == "__main__":

@@ -11,8 +11,8 @@ def main():
     command = [
         "java",
          "-classpath",
-         os.path.join(get_current_dir(), "dst/jars/dst-cli.jar"),
-         "com.distkv.dst.client.commandlinetool.DstCommandLineToolStarter"]
+         os.path.join(get_current_dir(), "distkv/jars/distkv-cli.jar"),
+         "com.distkv.client.commandlinetool.DstCommandLineToolStarter"]
     subprocess.check_call(command)
 
 if __name__ == "__main__":

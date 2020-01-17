@@ -1,4 +1,4 @@
-package com.distkv.dst.common.queue;
+package com.distkv.common.queue;
 
 public interface DstConcurrentQueue<E> {
 

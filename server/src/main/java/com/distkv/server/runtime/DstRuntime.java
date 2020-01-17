@@ -1,7 +1,7 @@
-package com.distkv.dst.server.runtime;
+package com.distkv.server.runtime;
 
-import com.distkv.dst.server.DstServerConfig;
-import com.distkv.dst.server.runtime.workerpool.WorkerPool;
+import com.distkv.server.DstServerConfig;
+import com.distkv.server.runtime.workerpool.WorkerPool;
 
 public class DstRuntime {
 

@@ -1,18 +1,18 @@
-package com.distkv.dst.server;
+package com.distkv.server;
 
 import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
-import com.distkv.dst.rpc.service.DstDictService;
-import com.distkv.dst.rpc.service.DstListService;
-import com.distkv.dst.rpc.service.DstSetService;
-import com.distkv.dst.rpc.service.DstSortedListService;
-import com.distkv.dst.rpc.service.DstStringService;
-import com.distkv.dst.server.runtime.DstRuntime;
-import com.distkv.dst.server.service.DstDictServiceImpl;
-import com.distkv.dst.server.service.DstListServiceImpl;
-import com.distkv.dst.server.service.DstSetServiceImpl;
-import com.distkv.dst.server.service.DstSortedListServiceImpl;
-import com.distkv.dst.server.service.DstStringServiceImpl;
+import com.distkv.rpc.service.DstDictService;
+import com.distkv.rpc.service.DstListService;
+import com.distkv.rpc.service.DstSetService;
+import com.distkv.rpc.service.DstSortedListService;
+import com.distkv.rpc.service.DstStringService;
+import com.distkv.server.runtime.DstRuntime;
+import com.distkv.server.service.DstDictServiceImpl;
+import com.distkv.server.service.DstListServiceImpl;
+import com.distkv.server.service.DstSetServiceImpl;
+import com.distkv.server.service.DstSortedListServiceImpl;
+import com.distkv.server.service.DstStringServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

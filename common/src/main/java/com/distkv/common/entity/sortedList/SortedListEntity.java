@@ -1,4 +1,4 @@
-package com.distkv.dst.common.entity.sortedList;
+package com.distkv.common.entity.sortedList;
 
 public class SortedListEntity implements Comparable<SortedListEntity> {
   private int score;

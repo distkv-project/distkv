@@ -1,4 +1,4 @@
-package com.distkv.dst.common;
+package com.distkv.common;
 
 public enum RequestTypeEnum {
   STR_PUT,

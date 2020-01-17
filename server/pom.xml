@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>dst-superpom</artifactId>
+        <artifactId>distkv-superpom</artifactId>
         <groupId>com.distkv</groupId>
         <version>0.1.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dst-server</artifactId>
+    <artifactId>distkv-server</artifactId>
 
     <!--List the dependency versions of the project-->
     <properties>
@@ -27,7 +27,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.distkv.dst.server.DstServer</mainClass>
+                            <mainClass>com.distkv.server.DstServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -47,12 +47,12 @@
     <dependencies>
         <dependency>
             <groupId>com.distkv</groupId>
-            <artifactId>dst-core</artifactId>
+            <artifactId>distkv-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.distkv</groupId>
-            <artifactId>dst-rpc</artifactId>
+            <artifactId>distkv-rpc</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->

@@ -1,10 +1,10 @@
-package com.distkv.dst.server.service;
+package com.distkv.server.service;
 
-import com.distkv.dst.common.RequestTypeEnum;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
-import com.distkv.dst.rpc.service.DstDictService;
-import com.distkv.dst.server.runtime.DstRuntime;
+import com.distkv.common.RequestTypeEnum;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DictProtocol;
+import com.distkv.rpc.service.DstDictService;
+import com.distkv.server.runtime.DstRuntime;
 import java.util.concurrent.CompletableFuture;
 
 public class DstDictServiceImpl implements DstDictService {

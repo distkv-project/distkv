@@ -1,4 +1,4 @@
-package com.distkv.dst.parser;
+package com.distkv.parser;
 
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;

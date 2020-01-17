@@ -1,10 +1,11 @@
-package com.distkv.dst.core.concepts;
+package com.distkv.core.concepts;
 
 import com.distkv.common.utils.Status;
-import com.distkv.dst.core.table.Field;
-import com.distkv.dst.core.table.Record;
-import com.distkv.dst.core.table.TableSpecification;
-import com.distkv.dst.core.table.Value;
+import com.distkv.core.table.Field;
+import com.distkv.core.table.Record;
+import com.distkv.core.table.TableSpecification;
+import com.distkv.core.table.Value;
+
 import java.util.List;
 import java.util.Map;
 

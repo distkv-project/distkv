@@ -1,6 +1,6 @@
-package com.distkv.dst.server.runtime.workerpool;
+package com.distkv.server.runtime.workerpool;
 
-import com.distkv.dst.common.RequestTypeEnum;
+import com.distkv.common.RequestTypeEnum;
 
 public class InternalRequest {
 

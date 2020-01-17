@@ -4,6 +4,8 @@ import java.util.Scanner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.distkv.client.DefaultDstClient;
+import com.distkv.client.DstClient;
 import com.distkv.common.exception.DstException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.DictKeyNotFoundException;
@@ -35,7 +37,7 @@ public class DstCommandLineToolStarter {
     DstCommandLineToolStarter dstCommandLineToolStarter = new DstCommandLineToolStarter();
     JCommander jcommander = JCommander.newBuilder().addObject(
         dstCommandLineToolStarter).build();
-    jcommander.setProgramName("dst");
+    jcommander.setProgramName("distkv");
 
     try {
       jcommander.parse(args);
@@ -56,7 +58,7 @@ public class DstCommandLineToolStarter {
 
     DstClient dstClient = null;
     try {
-      dstClient = new DefaultDstClient(String.format("dst://%s", ADDRESS));
+      dstClient = new DefaultDstClient(String.format("distkv://%s", ADDRESS));
     } catch (Exception e) {
       System.out.println(String.format("Failed to connect to dst server, %s, "
               + "please check your input.", ADDRESS));
@@ -70,7 +72,7 @@ public class DstCommandLineToolStarter {
     DstCommandExecutor dstCommandExecutor = new DstCommandExecutor(dstClient);
     Scanner sc = new Scanner(System.in);
     while (true) {
-      System.out.print("dst-cli> ");
+      System.out.print("distkv-cli> ");
       final String command = sc.nextLine();
       String result = null;
       try {
@@ -89,7 +91,7 @@ public class DstCommandLineToolStarter {
       } catch (DstException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       }
-      System.out.println("dst-cli> " + result);
+      System.out.println("distkv-cli> " + result);
     }
   }
 

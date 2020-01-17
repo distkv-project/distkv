@@ -13,7 +13,7 @@ public class DmetaTestUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(DmetaTestUtil.class);
 
   private static final String SERVER_SUFFIX_JAR_DIR = "dmeta" + File.separator + "target"
-      + File.separator + "dst-dmeta-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
+      + File.separator + "distkv-dmeta-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
   private static final int NODE_NUM = 3;
 
   private static Process[] processes = new Process[NODE_NUM];

@@ -1,5 +1,5 @@
-package com.distkv.dst.fclt;
+package com.distkv.fclt;
 
 public class DstRepl {
-  
+
 }

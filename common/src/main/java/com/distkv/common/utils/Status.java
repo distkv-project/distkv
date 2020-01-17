@@ -1,4 +1,4 @@
-package com.distkv.dst.common.utils;
+package com.distkv.common.utils;
 
 /**
  * The status is used to describe the result of server.

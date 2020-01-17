@@ -1,6 +1,6 @@
-package com.distkv.dst.server.base;
+package com.distkv.server.base;
 
-import com.distkv.dst.core.KVStore;
+import com.distkv.core.KVStore;
 
 public class DstBaseService {
   private KVStore store;

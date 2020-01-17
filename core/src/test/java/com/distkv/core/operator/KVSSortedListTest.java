@@ -1,7 +1,7 @@
-package com.distkv.dst.core.operator;
+package com.distkv.core.operator;
 
-import com.distkv.dst.core.KVStore;
-import com.distkv.dst.core.KVStoreImpl;
+import com.distkv.core.KVStore;
+import com.distkv.core.KVStoreImpl;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import org.testng.Assert;
 import org.testng.annotations.Test;

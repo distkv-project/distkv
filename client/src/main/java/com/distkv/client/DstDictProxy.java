@@ -1,9 +1,10 @@
-package com.distkv.dst.client;
+package com.distkv.client;
 
-import com.distkv.dst.common.utils.FutureUtils;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
-import com.distkv.dst.rpc.service.DstDictService;
+import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DictProtocol;
+import com.distkv.rpc.service.DstDictService;
+
 import java.util.HashMap;
 import java.util.Map;
 

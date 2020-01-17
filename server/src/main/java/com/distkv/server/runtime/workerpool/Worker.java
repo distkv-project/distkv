@@ -1,23 +1,23 @@
-package com.distkv.dst.server.runtime.workerpool;
+package com.distkv.server.runtime.workerpool;
 
-import com.distkv.dst.common.DstTuple;
-import com.distkv.dst.common.NodeInfo;
-import com.distkv.dst.common.entity.sortedList.SortedListEntity;
-import com.distkv.dst.common.exception.DstException;
-import com.distkv.dst.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.dst.common.exception.DstListIndexOutOfBoundsException;
-import com.distkv.dst.common.exception.KeyNotFoundException;
-import com.distkv.dst.common.exception.SortedListMemberNotFoundException;
-import com.distkv.dst.common.utils.Status;
-import com.distkv.dst.core.KVStore;
-import com.distkv.dst.core.KVStoreImpl;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.ListProtocol;
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
-import com.distkv.dst.rpc.protobuf.generated.StringProtocol;
+import com.distkv.common.DstTuple;
+import com.distkv.common.NodeInfo;
+import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
+import com.distkv.common.exception.DstListIndexOutOfBoundsException;
+import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.SortedListMemberNotFoundException;
+import com.distkv.common.utils.Status;
+import com.distkv.core.KVStore;
+import com.distkv.core.KVStoreImpl;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.ListProtocol;
+import com.distkv.rpc.protobuf.generated.DictProtocol;
+import com.distkv.rpc.protobuf.generated.SetProtocol;
+import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.google.common.base.Preconditions;
-import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -239,7 +239,7 @@ public class Worker extends Thread {
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               // TODO(qwang): Avoid this copy. See the discussion
-              // at https://github.com/dst-project/dst/issues/349
+              // at https://github.com/distkv-project/dst/issues/349
               ArrayList<String> values = new ArrayList<>(request.getValuesList());
               storeEngine.lists().put(request.getKey(), values);
             } catch (DstException e) {

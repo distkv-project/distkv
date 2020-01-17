@@ -13,7 +13,7 @@ public class ProxyOnClient<T> implements AutoCloseable {
 
   public ProxyOnClient(Class<T> clazz, int serverPort) {
     ClientConfig clientConfig = ClientConfig.builder()
-          .address(String.format("dst://127.0.0.1:%d", serverPort))
+          .address(String.format("distkv://127.0.0.1:%d", serverPort))
           .build();
     client = new NettyClient(clientConfig);
     client.open();

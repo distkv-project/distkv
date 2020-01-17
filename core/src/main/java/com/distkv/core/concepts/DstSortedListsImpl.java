@@ -1,4 +1,4 @@
-package com.distkv.dst.core.concepts;
+package com.distkv.core.concepts;
 
 import com.distkv.common.exception.DstKeyDuplicatedException;
 import com.distkv.common.DstTuple;
@@ -8,8 +8,8 @@ import com.distkv.common.exception.SortedListIncrScoreOutOfRangeException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.dst.core.struct.slist.SortedList;
-import com.distkv.dst.core.struct.slist.SortedListLinkedImpl;
+import com.distkv.core.struct.slist.SortedList;
+import com.distkv.core.struct.slist.SortedListLinkedImpl;
 
 import java.util.List;
 import java.util.LinkedList;

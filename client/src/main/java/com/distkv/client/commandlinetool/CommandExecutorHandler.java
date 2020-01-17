@@ -1,5 +1,6 @@
 package com.distkv.client.commandlinetool;
 
+import com.distkv.client.DstClient;
 import com.distkv.common.DstTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.parser.po.DstParsedResult;

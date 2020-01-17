@@ -1,4 +1,4 @@
-package com.distkv.dst.core.concepts;
+package com.distkv.core.concepts;
 
 import java.util.Map;
 

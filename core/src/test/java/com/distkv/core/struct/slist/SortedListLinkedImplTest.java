@@ -1,4 +1,4 @@
-package com.distkv.dst.core.struct.slist;
+package com.distkv.core.struct.slist;
 
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import org.testng.Assert;

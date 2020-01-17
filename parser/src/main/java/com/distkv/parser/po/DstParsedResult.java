@@ -1,4 +1,4 @@
-package com.distkv.dst.parser.po;
+package com.distkv.parser.po;
 
 import com.distkv.common.RequestTypeEnum;
 

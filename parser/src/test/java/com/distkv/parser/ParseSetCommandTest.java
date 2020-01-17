@@ -1,8 +1,8 @@
-package com.distkv.dst.parser;
+package com.distkv.parser;
 
 import com.distkv.common.exception.DstException;
-import com.distkv.dst.parser.po.DstParsedResult;
-import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
+import com.distkv.parser.po.DstParsedResult;
+import com.distkv.rpc.protobuf.generated.SetProtocol;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

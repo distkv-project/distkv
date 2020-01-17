@@ -1,4 +1,4 @@
-package com.distkv.dst.common.utils;
+package com.distkv.common.utils;
 
 public class StringUtil {
 

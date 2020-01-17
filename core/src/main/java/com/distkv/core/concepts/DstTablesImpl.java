@@ -1,18 +1,19 @@
-package com.distkv.dst.core.concepts;
+package com.distkv.core.concepts;
 
 import com.distkv.common.exception.TableNotFoundException;
 import com.distkv.common.exception.DuplicatedPrimaryKeyException;
 import com.distkv.common.exception.IncorrectRecordFormatException;
 import com.distkv.common.exception.IncorrectTableFormatException;
 import com.distkv.common.exception.TableAlreadyExistsException;
-import com.distkv.dst.core.DstHashMapImpl;
-import com.distkv.dst.core.table.TableEntry;
-import com.distkv.dst.core.table.TableSpecification;
-import com.distkv.dst.core.table.Record;
-import com.distkv.dst.core.table.Value;
-import com.distkv.dst.core.table.Field;
-import com.distkv.dst.core.table.Index;
-import com.distkv.dst.core.table.ValueType;
+import com.distkv.core.DstHashMapImpl;
+import com.distkv.core.table.Field;
+import com.distkv.core.table.Index;
+import com.distkv.core.table.Record;
+import com.distkv.core.table.TableEntry;
+import com.distkv.core.table.TableSpecification;
+import com.distkv.core.table.Value;
+import com.distkv.core.table.ValueType;
+
 import java.util.Map;
 import java.util.List;
 import java.util.Arrays;

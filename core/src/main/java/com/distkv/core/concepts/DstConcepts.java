@@ -1,9 +1,9 @@
-package com.distkv.dst.core.concepts;
+package com.distkv.core.concepts;
 
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.Status;
-import com.distkv.dst.core.DstHashMapImpl;
-import com.distkv.dst.core.DstMapInterface;
+import com.distkv.core.DstHashMapImpl;
+import com.distkv.core.DstMapInterface;
 
 public abstract class DstConcepts<T> {
 

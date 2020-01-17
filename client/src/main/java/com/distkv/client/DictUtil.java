@@ -1,6 +1,6 @@
-package com.distkv.dst.client;
+package com.distkv.client;
 
-import com.distkv.dst.rpc.protobuf.generated.DictProtocol;
+import com.distkv.rpc.protobuf.generated.DictProtocol;
 import java.util.Map;
 
 public class DictUtil {

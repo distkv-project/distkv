@@ -1,4 +1,4 @@
-package com.distkv.dst.client;
+package com.distkv.client;
 
 /**
  * The DstClient class is used to connect to the dst server.

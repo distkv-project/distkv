@@ -1,8 +1,9 @@
-package com.distkv.dst.asyncclient;
+package com.distkv.asyncclient;
 
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SetProtocol;
-import com.distkv.dst.rpc.service.DstSetService;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.SetProtocol;
+import com.distkv.rpc.service.DstSetService;
+
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 

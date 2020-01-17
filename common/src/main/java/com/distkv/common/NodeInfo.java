@@ -1,4 +1,4 @@
-package com.distkv.dst.common;
+package com.distkv.common;
 
 public class NodeInfo {
   // NodeId nodeId;

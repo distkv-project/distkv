@@ -1,11 +1,11 @@
-package com.distkv.dst.parser;
+package com.distkv.parser;
 
+import com.distkv.parser.generated.DstNewSQLLexer;
+import com.distkv.parser.generated.DstNewSQLParser;
+import com.distkv.parser.po.DstParsedResult;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import com.distkv.dst.parser.generated.DstNewSQLLexer;
-import com.distkv.dst.parser.generated.DstNewSQLParser;
-import com.distkv.dst.parser.po.DstParsedResult;
 
 public class DstParser {
 

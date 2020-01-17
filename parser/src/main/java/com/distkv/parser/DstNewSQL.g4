@@ -1,7 +1,7 @@
 grammar DstNewSQL;
 
 @header {
-package com.distkv.dst.parser.generated;
+package com.distkv.parser.generated;
 }
 
 /**

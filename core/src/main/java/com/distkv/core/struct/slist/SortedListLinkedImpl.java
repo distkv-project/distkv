@@ -1,4 +1,4 @@
-package com.distkv.dst.core.struct.slist;
+package com.distkv.core.struct.slist;
 
 import com.distkv.common.DstTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
@@ -29,6 +29,7 @@ public final class SortedListLinkedImpl
 
   }
 
+  @Override
   public boolean isEmpty() {
     return (first == null || last == null);
   }

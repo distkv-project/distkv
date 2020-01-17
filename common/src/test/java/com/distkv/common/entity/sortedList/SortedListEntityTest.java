@@ -1,6 +1,5 @@
-package com.distkv.dst.common.entity.sortedList;
+package com.distkv.common.entity.sortedList;
 
-import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

@@ -1,4 +1,4 @@
-package com.distkv.dst.client.commandlinetool;
+package com.distkv.client.commandlinetool;
 
 public class ClientResult {
   public String result;

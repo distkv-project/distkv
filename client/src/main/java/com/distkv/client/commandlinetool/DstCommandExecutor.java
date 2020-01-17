@@ -1,5 +1,6 @@
-package com.distkv.dst.client.commandlinetool;
+package com.distkv.client.commandlinetool;
 
+import com.distkv.client.DstClient;
 import com.distkv.parser.po.DstParsedResult;
 
 

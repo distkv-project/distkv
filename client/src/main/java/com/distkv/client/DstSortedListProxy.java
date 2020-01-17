@@ -1,11 +1,12 @@
-package com.distkv.dst.client;
+package com.distkv.client;
 
-import com.distkv.dst.common.DstTuple;
-import com.distkv.dst.common.entity.sortedList.SortedListEntity;
-import com.distkv.dst.common.utils.FutureUtils;
-import com.distkv.dst.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.dst.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.dst.rpc.service.DstSortedListService;
+import com.distkv.common.DstTuple;
+import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.service.DstSortedListService;
+
 import java.util.LinkedList;
 
 public class DstSortedListProxy {

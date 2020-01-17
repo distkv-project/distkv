@@ -1,4 +1,4 @@
-package com.distkv.dst.common.exception;
+package com.distkv.common.exception;
 
 /**
  * The base exception of Dst.

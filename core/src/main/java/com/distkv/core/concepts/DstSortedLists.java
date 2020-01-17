@@ -1,4 +1,4 @@
-package com.distkv.dst.core.concepts;
+package com.distkv.core.concepts;
 
 import com.distkv.common.DstTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;

@@ -1,4 +1,4 @@
-package com.distkv.dst.common.exception;
+package com.distkv.common.exception;
 
 /**
  * The exception class to indicates that we have not implemented this.

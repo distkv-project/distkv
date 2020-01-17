@@ -1,8 +1,8 @@
 syntax="proto2";
 
-package com.distkv.dst.rpc.protobuf;
+package com.distkv.rpc.protobuf;
 
-option java_package="com.distkv.dst.rpc.protobuf.generated";
+option java_package="com.distkv.rpc.protobuf.generated";
 option java_outer_classname="CommonProtocol";
 
 enum Status {

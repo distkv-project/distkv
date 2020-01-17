@@ -1,4 +1,4 @@
-package com.distkv.dst.common.exception;
+package com.distkv.common.exception;
 
 public enum ErrorCodeEnum {
   DictKeyNotFoundErrorCode("001"),

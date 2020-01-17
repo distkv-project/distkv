@@ -1,4 +1,4 @@
-package com.distkv.dst.common.exception;
+package com.distkv.common.exception;
 
 public class DuplicatedPrimaryKeyException extends DstException {
   public DuplicatedPrimaryKeyException(String key) {
