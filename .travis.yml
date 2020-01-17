@@ -1,6 +1,9 @@
 language: java
 sudo: false # faster builds
 
+os:
+  - linux
+
 jdk:
   - openjdk8
   - openjdk11
@@ -11,8 +14,10 @@ cache:
 
 install: true
 
-script:
+before_script:
   - bash ./scripts/install_dependencies.sh
+
+script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
 
 after_success:
