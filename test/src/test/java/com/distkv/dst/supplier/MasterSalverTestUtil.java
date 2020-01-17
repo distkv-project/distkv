@@ -37,7 +37,6 @@ public class MasterSalverTestUtil {
           jarDir,
           "com.distkv.dst.server.DstServer"
       );
-      System.out.println(startCommand.toString());
       int finalI = i;
       new Thread(() -> processes[finalI] = TestUtil.executeCommand(startCommand)).start();
     }

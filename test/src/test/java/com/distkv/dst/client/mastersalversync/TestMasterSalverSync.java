@@ -18,7 +18,10 @@ public class TestMasterSalverSync {
 
   @Test
   public void mainTest() throws InterruptedException {
+    System.out.println(String.format("\n==================== Running the test method: %s.%s",
+        "TestMasterSalverSync", "mainTest"));
     MasterSalverTestUtil.startAllProcess();
+    TimeUnit.SECONDS.sleep(1);
     DstClient client0 = null;
     DstClient client1 = null;
     int k = 10;
@@ -44,6 +47,7 @@ public class TestMasterSalverSync {
     testDictPut(client0, client1);
     testSlistPut(client0, client1);
     MasterSalverTestUtil.stopAllProcess();
+    System.out.println("m-s sync test over");
   }
 
   public void testStrPut(DstClient client0, DstClient client1) {
