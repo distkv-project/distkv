@@ -6,7 +6,7 @@ matrix:
     # for linux : This job is to test project
     - os: linux
       dist: xenial
-      
+
 jdk:
   - openjdk8
   - openjdk11
