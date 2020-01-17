@@ -79,9 +79,9 @@ public class Worker extends Thread {
           case STR_PUT: {
             StringProtocol.PutRequest strPutRequest =
                 (StringProtocol.PutRequest) internalRequest.getRequest();
+            /// This store instance is master, so we should sync this requests to all slaves.
             if (isMaster) {
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstStringService service = client.getStringService();
                   StringProtocol.PutResponse tempResponse =
@@ -89,8 +89,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<StringProtocol.PutResponse> future =
                         (CompletableFuture<StringProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
@@ -113,9 +114,9 @@ public class Worker extends Thread {
           case STR_DROP: {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
+            /// This store instance is master, so we should sync this requests to all slaves.
             if (isMaster) {
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstStringService service = client.getStringService();
                   CommonProtocol.DropResponse tempResponse =
@@ -123,8 +124,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
@@ -176,8 +178,8 @@ public class Worker extends Thread {
             SetProtocol.PutRequest setPutRequest =
                 (SetProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
                   SetProtocol.PutResponse tempResponse =
@@ -185,8 +187,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SetProtocol.PutResponse> future =
                         (CompletableFuture<SetProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
@@ -231,8 +234,8 @@ public class Worker extends Thread {
             SetProtocol.PutItemRequest request =
                 (SetProtocol.PutItemRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
                   SetProtocol.PutItemResponse tempResponse =
@@ -240,8 +243,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SetProtocol.PutItemResponse> future =
                         (CompletableFuture<SetProtocol.PutItemResponse>)
                             internalRequest.getCompletableFuture();
@@ -269,8 +273,8 @@ public class Worker extends Thread {
             SetProtocol.RemoveItemRequest request =
                 (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
                   SetProtocol.RemoveItemResponse tempResponse =
@@ -278,8 +282,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SetProtocol.RemoveItemResponse> future =
                         (CompletableFuture<SetProtocol.RemoveItemResponse>)
                             internalRequest.getCompletableFuture();
@@ -334,8 +339,8 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSetService service = client.getSetService();
                   CommonProtocol.DropResponse tempResponse =
@@ -343,8 +348,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
@@ -379,8 +385,8 @@ public class Worker extends Thread {
             ListProtocol.PutRequest request =
                 (ListProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
                   ListProtocol.PutResponse tempResponse =
@@ -388,8 +394,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.PutResponse> future =
                         (CompletableFuture<ListProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
@@ -460,8 +467,8 @@ public class Worker extends Thread {
             ListProtocol.LPutRequest request =
                 (ListProtocol.LPutRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
                   ListProtocol.LPutResponse tempResponse =
@@ -469,8 +476,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.LPutResponse> future =
                         (CompletableFuture<ListProtocol.LPutResponse>)
                             internalRequest.getCompletableFuture();
@@ -507,8 +515,8 @@ public class Worker extends Thread {
             ListProtocol.RPutRequest request =
                 (ListProtocol.RPutRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
                   ListProtocol.RPutResponse tempResponse =
@@ -516,8 +524,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.RPutResponse> future =
                         (CompletableFuture<ListProtocol.RPutResponse>)
                             internalRequest.getCompletableFuture();
@@ -553,8 +562,8 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
                   CommonProtocol.DropResponse tempResponse =
@@ -562,8 +571,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
@@ -598,8 +608,8 @@ public class Worker extends Thread {
             ListProtocol.MRemoveRequest request =
                 (ListProtocol.MRemoveRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
                   ListProtocol.MRemoveResponse tempResponse =
@@ -607,8 +617,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.MRemoveResponse> future =
                         (CompletableFuture<ListProtocol.MRemoveResponse>)
                             internalRequest.getCompletableFuture();
@@ -648,8 +659,8 @@ public class Worker extends Thread {
             ListProtocol.RemoveRequest request =
                 (ListProtocol.RemoveRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstListService service = client.getListService();
                   ListProtocol.RemoveResponse tempResponse =
@@ -657,8 +668,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<ListProtocol.RemoveResponse> future =
                         (CompletableFuture<ListProtocol.RemoveResponse>)
                             internalRequest.getCompletableFuture();
@@ -709,8 +721,8 @@ public class Worker extends Thread {
             DictProtocol.PutRequest request =
                 (DictProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
                   DictProtocol.PutResponse tempResponse =
@@ -718,8 +730,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.PutResponse> future =
                         (CompletableFuture<DictProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
@@ -805,8 +818,8 @@ public class Worker extends Thread {
             DictProtocol.PopItemRequest request =
                 (DictProtocol.PopItemRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
                   DictProtocol.PopItemResponse tempResponse =
@@ -814,8 +827,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.PopItemResponse> future =
                         (CompletableFuture<DictProtocol.PopItemResponse>)
                             internalRequest.getCompletableFuture();
@@ -850,8 +864,8 @@ public class Worker extends Thread {
             DictProtocol.PutItemRequest request =
                 (DictProtocol.PutItemRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
                   DictProtocol.PutItemResponse tempResponse =
@@ -859,8 +873,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.PutItemResponse> future =
                         (CompletableFuture<DictProtocol.PutItemResponse>)
                             internalRequest.getCompletableFuture();
@@ -890,8 +905,8 @@ public class Worker extends Thread {
             DictProtocol.RemoveItemRequest request =
                 (DictProtocol.RemoveItemRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
                   DictProtocol.RemoveItemResponse tempResponse =
@@ -899,8 +914,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<DictProtocol.RemoveItemResponse> future =
                         (CompletableFuture<DictProtocol.RemoveItemResponse>)
                             internalRequest.getCompletableFuture();
@@ -934,8 +950,8 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstDictService service = client.getDictService();
                   CommonProtocol.DropResponse tempResponse =
@@ -943,8 +959,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
@@ -974,8 +991,8 @@ public class Worker extends Thread {
             SortedListProtocol.PutRequest request =
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutResponse tempResponse =
@@ -983,8 +1000,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.PutResponse> future =
                         (CompletableFuture<SortedListProtocol.PutResponse>)
                             internalRequest.getCompletableFuture();
@@ -1055,8 +1073,8 @@ public class Worker extends Thread {
             CommonProtocol.DropRequest request =
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
                   CommonProtocol.DropResponse tempResponse =
@@ -1064,8 +1082,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<CommonProtocol.DropResponse> future =
                         (CompletableFuture<CommonProtocol.DropResponse>)
                             internalRequest.getCompletableFuture();
@@ -1099,8 +1118,8 @@ public class Worker extends Thread {
             SortedListProtocol.IncrScoreRequest request =
                 (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
                   SortedListProtocol.IncrScoreResponse tempResponse =
@@ -1108,8 +1127,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
                         (CompletableFuture<SortedListProtocol.IncrScoreResponse>)
                             internalRequest.getCompletableFuture();
@@ -1146,8 +1166,8 @@ public class Worker extends Thread {
             SortedListProtocol.PutMemberRequest request =
                 (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutMemberResponse tempResponse =
@@ -1155,8 +1175,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.PutMemberResponse> future =
                         (CompletableFuture<SortedListProtocol.PutMemberResponse>)
                             internalRequest.getCompletableFuture();
@@ -1191,8 +1212,8 @@ public class Worker extends Thread {
             SortedListProtocol.RemoveMemberRequest request =
                 (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
             if (isMaster) {
+              /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
-                /// This store instance is master, so we should sync this requests to all slaves.
                 synchronized (client) {
                   DstSortedListService service = client.getSortedListService();
                   SortedListProtocol.RemoveMemberResponse tempResponse =
@@ -1200,8 +1221,9 @@ public class Worker extends Thread {
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
                     continue;
                   } else {
-                    // TODO: If sending a salver request fails, the process is terminated.
-                    //  we will fix this in fault_tolerant.
+                    // TODO: Note that this process should get failed
+                    //  if it failed to sync request to slave.
+                    //  This should be fixed in fault tolerant module.
                     CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
                         (CompletableFuture<SortedListProtocol.RemoveMemberResponse>)
                             internalRequest.getCompletableFuture();
