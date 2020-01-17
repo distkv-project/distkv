@@ -44,3 +44,7 @@ test/tmp
 # mac OS
 */*.DS_Store
 *.DS_Store
+
+# python
+python/__pycache__/
+python/dst.egg-info/
