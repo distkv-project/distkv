@@ -5,12 +5,14 @@ import com.distkv.dst.supplier.DmetaTestUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class TestServer {
 
   @Test
   public void testPutAndGet() throws InterruptedException {
     DmetaTestUtil.startAllDmetaProcess();
-    Thread.sleep(10000);
+    TimeUnit.SECONDS.sleep(10);
     DmetaClient client = new DmetaClient();
 
     client.createPath("woooo&kkk");
@@ -19,6 +21,6 @@ public class TestServer {
 
     DmetaTestUtil.stopAllDmetaProcess();
     Assert.assertEquals(result, "result");
-    Thread.sleep(3000);
+    TimeUnit.SECONDS.sleep(3);
   }
 }

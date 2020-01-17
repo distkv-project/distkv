@@ -1,9 +1,11 @@
 package com.distkv.dst.server.runtime.workerpool;
 
 import com.distkv.dst.common.RequestTypeEnum;
+import com.distkv.dst.server.runtime.salve.SalveClient;
 import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import java.util.List;
 
 public class WorkerPool {
 
@@ -13,14 +15,17 @@ public class WorkerPool {
 
   private boolean isMaster;
 
+  private List<SalveClient> salveClients;
+
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(int shardNum, boolean isMaster) {
+  public WorkerPool(int shardNum, boolean isMaster, List<SalveClient> salverClients) {
     this.shardNum = shardNum;
     this.isMaster = isMaster;
+    this.salveClients = salverClients;
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
-      Worker worker = new Worker();
+      Worker worker = new Worker(isMaster, salveClients);
       builder.add(worker);
       worker.start();
     }
