@@ -2,7 +2,7 @@ package com.distkv.client;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DstAsyncClient;
-import com.distkv.common.utils.TestUtil;
+import com.distkv.test.base.TestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;

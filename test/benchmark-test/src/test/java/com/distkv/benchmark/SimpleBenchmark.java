@@ -2,7 +2,7 @@ package com.distkv.benchmark;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DstAsyncClient;
-import com.distkv.common.utils.TestUtil;
+import com.distkv.test.base.TestUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

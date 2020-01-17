@@ -4,7 +4,6 @@ import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DstAsyncClient;
 import com.distkv.client.DefaultDstClient;
 import com.distkv.client.DstClient;
-import com.distkv.common.utils.TestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
