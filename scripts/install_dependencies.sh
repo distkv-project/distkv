@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-
+#!/bin/sh
 # This script installs the unresolved dependencies.
 
 set -e

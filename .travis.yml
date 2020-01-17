@@ -1,11 +1,5 @@
 language: java
-sudo: false
-
-matrix:
-  include:
-    # for linux
-    - os: linux
-      dist: xenial
+sudo: false # faster builds
 
 jdk:
   - openjdk8
