@@ -5,8 +5,10 @@ import com.distkv.dst.common.entity.sortedList.SortedListEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The linkedlist implementation of the Dst SortedList.
@@ -281,6 +283,24 @@ public final class SortedListLinkedImpl
     } else {
       return 0;
     }
+  }
+
+  /**
+   * Check whether the list value has duplicated members when initially put.
+   *
+   * @param sortedListEntities The list value
+   * @return True if the list value has duplicated members, otherwise return false.
+   */
+  private boolean hasDuplicatedMembers(
+      List<SortedListEntity> sortedListEntities) {
+    final Set<SortedListEntity> sortedListEntitySet = new HashSet<>();
+    for (final SortedListEntity e : sortedListEntities) {
+      if (sortedListEntitySet.contains(e)) {
+        return true;
+      }
+      sortedListEntitySet.add(e);
+    }
+    return false;
   }
 
 }
