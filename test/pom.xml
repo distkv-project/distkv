@@ -12,7 +12,6 @@
     <artifactId>distkv-test</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>base-test</module>
         <module>benchmark-test</module>
         <module>integration-test</module>
     </modules>
