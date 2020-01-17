@@ -16,6 +16,7 @@ import com.distkv.server.service.DstStringServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 // http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
+
 public class DstServer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DstServer.class);
