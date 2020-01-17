@@ -1,5 +1,6 @@
 package com.distkv.client;
 
+import com.distkv.test.base.BaseTestSupplier;
 import com.google.common.collect.ImmutableList;
 import com.distkv.common.exception.KeyNotFoundException;
 import org.testng.Assert;

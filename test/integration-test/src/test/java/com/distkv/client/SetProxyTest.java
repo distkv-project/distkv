@@ -2,6 +2,7 @@ package com.distkv.client;
 
 import java.util.Set;
 
+import com.distkv.test.base.BaseTestSupplier;
 import com.google.common.collect.ImmutableSet;
 import com.distkv.common.exception.DstException;
 import org.testng.Assert;

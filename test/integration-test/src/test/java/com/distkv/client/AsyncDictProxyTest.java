@@ -3,6 +3,7 @@ package com.distkv.client;
 import com.distkv.asyncclient.DstAsyncClient;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
+import com.distkv.test.base.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.HashMap;
