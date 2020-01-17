@@ -1,4 +1,4 @@
-![logo](res/dst_logo_min.png)
+![logo](res/distkv_logo_min.png)
 
 > A distributed key-value store with table concepts.
 

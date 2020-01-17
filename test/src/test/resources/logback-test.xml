@@ -39,7 +39,7 @@
         </encoder>
     </appender>
 
-    <logger name="org.dst.test">
+    <logger name="com.distkv.test">
         <level value="info"/>
     </logger>
 

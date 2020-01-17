@@ -3,12 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>dst-superpom</artifactId>
+        <artifactId>distkv-superpom</artifactId>
         <groupId>com.distkv</groupId>
         <version>0.1.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>dst-common</artifactId>
+    <artifactId>distkv-common</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>

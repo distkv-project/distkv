@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.distkv</groupId>
-    <artifactId>dst-superpom</artifactId>
+    <artifactId>distkv-superpom</artifactId>
     <packaging>pom</packaging>
     <version>0.1.3-SNAPSHOT</version>
     <modules>
@@ -75,7 +75,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                                <include>org/dst/**</include>
+                                <include>org/distkv/**</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -141,12 +141,12 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${project.basedir}/parser/src/main/java/com/distkv/dst/parser/generated
+                            <directory>${project.basedir}/parser/src/main/java/com/distkv/parser/generated
                             </directory>
                             <includes>**</includes>
                         </fileset>
                         <fileset>
-                            <directory>${project.basedir}/rpc/src/main/java/com/distkv/dst/rpc/protobuf/generated
+                            <directory>${project.basedir}/rpc/src/main/java/com/distkv/rpc/protobuf/generated
                             </directory>
                             <includes>**</includes>
                         </fileset>

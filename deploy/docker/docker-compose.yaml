@@ -1,9 +1,9 @@
 version: "2"
 services:
-  dst:
+  distkv:
     build: ./
-    container_name: dst
-    image: dst
+    container_name: distkv
+    image: distkv
     mem_limit: 1073741824 # 1G
     ports:
     - "8082:8082"

@@ -1,5 +1,5 @@
 <div align=left>
-    <img src="docs/res/dst_logo.png" width="282" height="170"> 
+    <img src="docs/res/distkv_logo.png" width="282" height="170"> 
 </div>
 
 [![Build Status](https://travis-ci.com/distkv-project/distkv.svg?branch=master)](https://travis-ci.com/distkv-project/distkv) 
