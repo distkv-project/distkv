@@ -13,6 +13,7 @@ install: true
 
 before_script:
   - bash ./scripts/install_dependencies.sh
+
 script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
 
