@@ -39,7 +39,6 @@ public class DmetaTestUtil {
           "127.0.0.1:808" + (i + 1),
           "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083"
       );
-      System.out.println(startCommand.toString());
       int finalI = i;
       new Thread(() -> processes[finalI] = TestUtil.executeCommand(startCommand)).start();
     }

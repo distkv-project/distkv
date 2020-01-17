@@ -10,6 +10,8 @@ public class TestServer {
 
   @Test
   public void testPutAndGet() throws InterruptedException {
+    System.out.println(String.format("\n==================== Running the test method: %s.%s",
+        "DmetaTest", "testPutAndGet"));
     DmetaTestUtil.startAllDmetaProcess();
     TimeUnit.SECONDS.sleep(10);
     DmetaClient client = new DmetaClient();
