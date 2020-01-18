@@ -28,7 +28,7 @@ public class DstRuntime {
             return true;
             //TODO : Drpc need to add a Exception to cover
             // io.netty.channel.AbstractChannel$AnnotatedConnectException
-          } catch (RuntimeException e) {
+          } catch (Exception e) {
             return false;
           }
         }, 5 * 60 * 1000);
