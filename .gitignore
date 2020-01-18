@@ -48,4 +48,4 @@ test/tmp
 
 # python
 deploy/python/__pycache__/
-deploy/python/distkv.egg-info/
+deploy/python/*.egg-info/
