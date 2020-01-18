@@ -26,7 +26,7 @@ message GetResponse {
     optional string value =2;
 };
 
-service DstStringService {
+service DistKVStringService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
     rpc drop(DropRequest) returns (DropResponse);

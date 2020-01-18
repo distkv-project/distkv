@@ -1,3 +1,4 @@
+// TODO(qwang): Upgrade to proto3.
 syntax="proto2";
 
 package com.distkv.rpc.protobuf;

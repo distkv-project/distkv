@@ -1,10 +1,10 @@
 package com.distkv.client;
 
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
-import com.distkv.rpc.service.DstListService;
+import com.distkv.rpc.service.DistKVListService;
 
 import java.util.List;
 
@@ -12,13 +12,13 @@ public class DstListProxy {
 
   private String typeCode = "B";
 
-  private DstListService service;
+  private DistKVListService service;
 
-  public DstListProxy(DstListService service) {
+  public DstListProxy(DistKVListService service) {
     this.service = service;
   }
 
-  public void put(String key, List<String> values) throws DstException {
+  public void put(String key, List<String> values) throws DistKVException {
     ListProtocol.PutRequest request = ListProtocol.PutRequest.newBuilder()
           .setKey(key)
           .addAllValues(values)

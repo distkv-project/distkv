@@ -1,58 +1,58 @@
 package com.distkv.core;
 
-import com.distkv.core.concepts.DstListsImpl;
-import com.distkv.core.concepts.DstSetsImpl;
+import com.distkv.core.concepts.DistKVListsImpl;
+import com.distkv.core.concepts.DistKVSetsImpl;
 import com.distkv.core.concepts.DstSortedLists;
-import com.distkv.core.concepts.DstStrings;
-import com.distkv.core.concepts.DstDictsImpl;
-import com.distkv.core.concepts.DstStringsImpl;
-import com.distkv.core.concepts.DstTablesImpl;
-import com.distkv.core.concepts.DstTables;
-import com.distkv.core.concepts.DstDicts;
-import com.distkv.core.concepts.DstSets;
-import com.distkv.core.concepts.DstLists;
-import com.distkv.core.concepts.DstSortedListsImpl;
+import com.distkv.core.concepts.DistKVStrings;
+import com.distkv.core.concepts.DistKVDictsImpl;
+import com.distkv.core.concepts.DistKVStringsImpl;
+import com.distkv.core.concepts.DistKVTablesImpl;
+import com.distkv.core.concepts.DistKVTables;
+import com.distkv.core.concepts.DistKVDicts;
+import com.distkv.core.concepts.DistKVSets;
+import com.distkv.core.concepts.DistKVLists;
+import com.distkv.core.concepts.DistKVSortedListsImpl;
 
 public class KVStoreImpl implements KVStore {
 
-  private DstStringsImpl strs;
+  private DistKVStringsImpl strs;
 
-  private DstListsImpl lists;
+  private DistKVListsImpl lists;
 
-  private DstSetsImpl sets;
+  private DistKVSetsImpl sets;
 
-  private DstDictsImpl dicts;
+  private DistKVDictsImpl dicts;
 
   private DstSortedLists sortedLists;
 
-  private DstTablesImpl tables;
+  private DistKVTablesImpl tables;
 
   public KVStoreImpl() {
-    this.strs = new DstStringsImpl();
-    this.lists = new DstListsImpl();
-    this.sets = new DstSetsImpl();
-    this.dicts = new DstDictsImpl();
-    this.tables = new DstTablesImpl();
-    this.sortedLists = new DstSortedListsImpl();
+    this.strs = new DistKVStringsImpl();
+    this.lists = new DistKVListsImpl();
+    this.sets = new DistKVSetsImpl();
+    this.dicts = new DistKVDictsImpl();
+    this.tables = new DistKVTablesImpl();
+    this.sortedLists = new DistKVSortedListsImpl();
   }
 
   @Override
-  public DstStrings strs() {
+  public DistKVStrings strs() {
     return strs;
   }
 
   @Override
-  public DstLists lists() {
+  public DistKVLists lists() {
     return lists;
   }
 
   @Override
-  public DstSets sets() {
+  public DistKVSets sets() {
     return sets;
   }
 
   @Override
-  public DstDicts dicts() {
+  public DistKVDicts dicts() {
     return dicts;
   }
 
@@ -62,7 +62,7 @@ public class KVStoreImpl implements KVStore {
   }
 
   @Override
-  public DstTables tables() {
+  public DistKVTables tables() {
     return tables;
   }
 

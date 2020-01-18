@@ -3,16 +3,16 @@ package com.distkv.asyncclient;
 import com.distkv.client.DictUtil;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
-import com.distkv.rpc.service.DstDictService;
+import com.distkv.rpc.service.DistKVDictService;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncDictProxy {
 
-  private DstDictService service;
+  private DistKVDictService service;
 
-  public DstAsyncDictProxy(DstDictService service) {
+  public DstAsyncDictProxy(DistKVDictService service) {
     this.service = service;
   }
 
@@ -20,8 +20,8 @@ public class DstAsyncDictProxy {
           String key, Map<String, String> dict) {
     DictProtocol.PutRequest.Builder request = DictProtocol.PutRequest.newBuilder();
     request.setKey(key);
-    DictProtocol.DstDict dstDict = DictUtil.buildDstDict(dict);
-    request.setDict(dstDict);
+    DictProtocol.DistKVDict distKVDict = DictUtil.buildDistKVDict(dict);
+    request.setDict(distKVDict);
     CompletableFuture<DictProtocol.PutResponse> future = service.put(request.build());
     return future;
   }

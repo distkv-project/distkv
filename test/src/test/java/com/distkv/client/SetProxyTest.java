@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.common.collect.ImmutableSet;
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -33,7 +33,7 @@ public class SetProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
-  @Test(expectedExceptions = DstException.class)
+  @Test(expectedExceptions = DistKVException.class)
   public void testDropByKey() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
@@ -46,7 +46,7 @@ public class SetProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
-  @Test(expectedExceptions = DstException.class)
+  @Test(expectedExceptions = DistKVException.class)
   public void testExists() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 

@@ -1,27 +1,27 @@
 package com.distkv.core;
 
-import com.distkv.core.concepts.DstSets;
+import com.distkv.core.concepts.DistKVSets;
 import com.distkv.core.concepts.DstSortedLists;
-import com.distkv.core.concepts.DstStrings;
-import com.distkv.core.concepts.DstLists;
-import com.distkv.core.concepts.DstDicts;
-import com.distkv.core.concepts.DstTables;
+import com.distkv.core.concepts.DistKVStrings;
+import com.distkv.core.concepts.DistKVLists;
+import com.distkv.core.concepts.DistKVDicts;
+import com.distkv.core.concepts.DistKVTables;
 
 /**
  * The api of dst store.
  */
 public interface KVStore {
 
-  DstStrings strs();
+  DistKVStrings strs();
 
-  DstLists lists();
+  DistKVLists lists();
 
-  DstSets sets();
+  DistKVSets sets();
 
-  DstDicts dicts();
+  DistKVDicts dicts();
 
   DstSortedLists sortLists();
 
-  DstTables tables();
+  DistKVTables tables();
 
 }
