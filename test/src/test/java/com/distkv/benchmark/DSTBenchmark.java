@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class DSTBenchmark {
-  public static final String serverAddress = "list://127.0.0.1:8082";
+  public static final String serverAddress = "distkv://127.0.0.1:8082";
 
   private int threadNum = 1;
 

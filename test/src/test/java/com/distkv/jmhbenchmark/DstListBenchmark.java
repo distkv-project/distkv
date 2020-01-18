@@ -21,7 +21,7 @@ import org.openjdk.jmh.annotations.Mode;
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 public class DstListBenchmark {
 
-  private static final String PROTOCOL = "list://127.0.0.1:8082";
+  private static final String PROTOCOL = "distkv://127.0.0.1:8082";
   private static final String KEY_LIST_SYNC = "k-list-sync";
   private static final String KEY_LIST_ASYNC = "k-list-async";
   private DstAsyncClient asyncClient;
