@@ -37,7 +37,11 @@ jobs:
 
     # This job is used to test `pip install dkv`.
     - os: linux
-      python: 3.7
+      language: python
+      python:
+        - "3.7"
+      virtualenv:
+        system_site_packages: true
       script:
         - export PATH="/opt/python/cp37-cp37m/bin":$PATH  # For using pip of py37
         - pushd deploy/python
