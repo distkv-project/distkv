@@ -1,7 +1,7 @@
-package com.distkv.dst.core.struct.slist;
+package com.distkv.core.struct.slist;
 
-import com.distkv.dst.common.DstTuple;
-import com.distkv.dst.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.DstTuple;
+import com.distkv.common.entity.sortedList.SortedListEntity;
 
 import com.google.common.collect.TreeMultimap;
 import java.util.ArrayList;

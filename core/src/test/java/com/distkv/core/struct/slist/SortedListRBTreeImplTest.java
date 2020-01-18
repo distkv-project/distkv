@@ -1,7 +1,6 @@
-package com.distkv.dst.core.struct.slist;
+package com.distkv.core.struct.slist;
 
-import com.distkv.dst.common.entity.sortedList.SortedListEntity;
-
+import com.distkv.common.entity.sortedList.SortedListEntity;
 import java.util.ArrayList;
 import java.util.List;
 import org.testng.Assert;
