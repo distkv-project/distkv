@@ -40,7 +40,7 @@ public class DmetaTestUtil {
           "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083"
       );
       int finalI = i;
-      new Thread(() -> processes[finalI] = TestUtil.executeCommand(startCommand)).start();
+      processes[finalI] = TestUtil.executeCommand(startCommand);
     }
   }
 

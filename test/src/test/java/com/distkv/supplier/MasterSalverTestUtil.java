@@ -39,7 +39,7 @@ public class MasterSalverTestUtil {
           "com.distkv.server.DstServer"
       );
       int finalI = i;
-      new Thread(() -> processes[finalI] = TestUtil.executeCommand(startCommand)).start();
+      processes[finalI] = TestUtil.executeCommand(startCommand);
     }
   }
 
