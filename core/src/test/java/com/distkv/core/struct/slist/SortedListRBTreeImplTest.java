@@ -22,7 +22,7 @@ public class SortedListRBTreeImplTest {
 
     // Test put
     Assert.assertEquals(sortedList.put(anotherPutList), false);
-    sortedList = new SortedListLinkedImpl();
+    sortedList = new SortedListRBTreeImpl();
     Assert.assertEquals(sortedList.put(putList), true);
 
     // Test removeItem
