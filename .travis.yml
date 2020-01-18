@@ -26,6 +26,8 @@ matrix:
     # This job is used to test `pip install dkv`.
     - os: linux
       dist: trusty
+      python:
+        python3
       script:
         - pushd deploy/python
         - sh test_pip_install.sh
