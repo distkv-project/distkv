@@ -171,10 +171,10 @@ public class SortedListRBTreeImpl
   }
 
   /**
-   * Check whether the list value has duplicated members when initially put.
+   * Check whether the given list has duplicated members.
    *
    * @param sortedListEntities The list value
-   * @return True if the list value has duplicated members, otherwise return false.
+   * @return True if the list has duplicated members, otherwise return false.
    */
   private boolean hasDuplicatedMembers(
       List<SortedListEntity> sortedListEntities) {
