@@ -17,11 +17,11 @@ import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
-import com.distkv.rpc.service.DstDictService;
-import com.distkv.rpc.service.DstListService;
-import com.distkv.rpc.service.DstSetService;
-import com.distkv.rpc.service.DstSortedListService;
-import com.distkv.rpc.service.DstStringService;
+import com.distkv.rpc.service.DistKVDictService;
+import com.distkv.rpc.service.DistKVListService;
+import com.distkv.rpc.service.DistKVSetService;
+import com.distkv.rpc.service.DistKVSortedListService;
+import com.distkv.rpc.service.DistKVStringService;
 import com.distkv.server.runtime.salve.SalveClient;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
@@ -83,7 +83,7 @@ public class Worker extends Thread {
             if (isMaster) {
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstStringService service = client.getStringService();
+                  DistKVStringService service = client.getStringService();
                   StringProtocol.PutResponse tempResponse =
                       service.put(strPutRequest).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -119,7 +119,7 @@ public class Worker extends Thread {
             if (isMaster) {
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstStringService service = client.getStringService();
+                  DistKVStringService service = client.getStringService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -180,7 +180,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSetService service = client.getSetService();
+                  DistKVSetService service = client.getSetService();
                   SetProtocol.PutResponse tempResponse =
                       service.put(setPutRequest).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -234,7 +234,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSetService service = client.getSetService();
+                  DistKVSetService service = client.getSetService();
                   SetProtocol.PutItemResponse tempResponse =
                       service.putItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -271,7 +271,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSetService service = client.getSetService();
+                  DistKVSetService service = client.getSetService();
                   SetProtocol.RemoveItemResponse tempResponse =
                       service.removeItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -335,7 +335,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSetService service = client.getSetService();
+                  DistKVSetService service = client.getSetService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -379,7 +379,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstListService service = client.getListService();
+                  DistKVListService service = client.getListService();
                   ListProtocol.PutResponse tempResponse =
                       service.put(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -459,7 +459,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstListService service = client.getListService();
+                  DistKVListService service = client.getListService();
                   ListProtocol.LPutResponse tempResponse =
                       service.lput(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -505,7 +505,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstListService service = client.getListService();
+                  DistKVListService service = client.getListService();
                   ListProtocol.RPutResponse tempResponse =
                       service.rput(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -550,7 +550,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstListService service = client.getListService();
+                  DistKVListService service = client.getListService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -594,7 +594,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstListService service = client.getListService();
+                  DistKVListService service = client.getListService();
                   ListProtocol.MRemoveResponse tempResponse =
                       service.mremove(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -643,7 +643,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstListService service = client.getListService();
+                  DistKVListService service = client.getListService();
                   ListProtocol.RemoveResponse tempResponse =
                       service.remove(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -703,7 +703,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstDictService service = client.getDictService();
+                  DistKVDictService service = client.getDictService();
                   DictProtocol.PutResponse tempResponse =
                       service.put(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -798,7 +798,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstDictService service = client.getDictService();
+                  DistKVDictService service = client.getDictService();
                   DictProtocol.PopItemResponse tempResponse =
                       service.popItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -842,7 +842,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstDictService service = client.getDictService();
+                  DistKVDictService service = client.getDictService();
                   DictProtocol.PutItemResponse tempResponse =
                       service.putItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -881,7 +881,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstDictService service = client.getDictService();
+                  DistKVDictService service = client.getDictService();
                   DictProtocol.RemoveItemResponse tempResponse =
                       service.removeItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -924,7 +924,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstDictService service = client.getDictService();
+                  DistKVDictService service = client.getDictService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -963,7 +963,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
+                  DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutResponse tempResponse =
                       service.put(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1043,7 +1043,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
+                  DistKVSortedListService service = client.getSortedListService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1086,7 +1086,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
+                  DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.IncrScoreResponse tempResponse =
                       service.incrScore(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1132,7 +1132,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
+                  DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutMemberResponse tempResponse =
                       service.putMember(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1176,7 +1176,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SalveClient client : salveClients) {
                 synchronized (client) {
-                  DstSortedListService service = client.getSortedListService();
+                  DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.RemoveMemberResponse tempResponse =
                       service.removeMember(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {

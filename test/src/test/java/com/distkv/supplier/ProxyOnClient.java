@@ -1,6 +1,6 @@
 package com.distkv.supplier;
 
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVException;
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
@@ -34,7 +34,7 @@ public class ProxyOnClient<T> implements AutoCloseable {
       break;
     }
     if (k <= 0) {
-      throw new DstException("connect error");
+      throw new DistKVException("connect error");
     }
   }
 
