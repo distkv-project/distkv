@@ -1,5 +1,6 @@
 language: java
-sudo: false # faster builds
+sudo: true  # Recommended by travis: The key `sudo` has no effect anymore.
+os: linux
 
 cache:
   directories:
@@ -10,15 +11,26 @@ install: true
 before_script:
   - bash ./scripts/install_dependencies.sh
 
-# Define four parallel jobs
-matrix:
+# Define some parallel jobs.
+jobs:
   include:
-    # for linux : This job is used to test project.
+    # Test for jdk8
     - os: linux
-      jdk:
-        - openjdk8
-        - openjdk11
-        - openjdk14
+      jdk: openjdk8
+      dist: xenial
+      script:
+        - travis_wait 30 ./mvnw clean install -DskipTests=false
+
+    # Test for jdk11
+    - os: linux
+      jdk: openjdk11
+      dist: xenial
+      script:
+        - travis_wait 30 ./mvnw clean install -DskipTests=false
+
+    # Test for jdk14
+    - os: linux
+      jdk: openjdk14
       dist: xenial
       script:
         - travis_wait 30 ./mvnw clean install -DskipTests=false
