@@ -2,17 +2,17 @@ package com.distkv.server;
 
 import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
-import com.distkv.rpc.service.DstDictService;
-import com.distkv.rpc.service.DstListService;
-import com.distkv.rpc.service.DstSetService;
-import com.distkv.rpc.service.DstSortedListService;
-import com.distkv.rpc.service.DstStringService;
-import com.distkv.server.runtime.DstRuntime;
-import com.distkv.server.service.DstDictServiceImpl;
-import com.distkv.server.service.DstListServiceImpl;
-import com.distkv.server.service.DstSetServiceImpl;
-import com.distkv.server.service.DstSortedListServiceImpl;
-import com.distkv.server.service.DstStringServiceImpl;
+import com.distkv.rpc.service.DistKVDictService;
+import com.distkv.rpc.service.DistKVListService;
+import com.distkv.rpc.service.DistKVSetService;
+import com.distkv.rpc.service.DistKVSortedListService;
+import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.server.runtime.DistKVRuntime;
+import com.distkv.server.service.DistKVDictServiceImpl;
+import com.distkv.server.service.DistKVListServiceImpl;
+import com.distkv.server.service.DistKVSetServiceImpl;
+import com.distkv.server.service.DistKVSortedListServiceImpl;
+import com.distkv.server.service.DistKVStringServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 // http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
@@ -23,9 +23,9 @@ public class DstServer {
 
   private DrpcServer drpcServer;
 
-  private DstRuntime runtime;
+  private DistKVRuntime runtime;
 
-  private DstServerConfig config;
+  private DistKVServerConfig config;
 
   private static String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
@@ -42,13 +42,13 @@ public class DstServer {
       "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
       "'---'         ---`-'                                           ";
 
-  public DstServer(DstServerConfig config) {
+  public DstServer(DistKVServerConfig config) {
     this.config = config;
     ServerConfig config1 = ServerConfig.builder()
         .port(config.getPort())
         .build();
     drpcServer = new DrpcServer(config1);
-    runtime = new DstRuntime(config);
+    runtime = new DistKVRuntime(config);
     registerAllRpcServices();
   }
 
@@ -67,15 +67,15 @@ public class DstServer {
 
   private void registerAllRpcServices() {
     drpcServer.registerService(
-        DstStringService.class, new DstStringServiceImpl(this.runtime));
+        DistKVStringService.class, new DistKVStringServiceImpl(this.runtime));
     drpcServer.registerService(
-        DstListService.class, new DstListServiceImpl(this.runtime));
+        DistKVListService.class, new DistKVListServiceImpl(this.runtime));
     drpcServer.registerService(
-        DstSetService.class, new DstSetServiceImpl(this.runtime));
+        DistKVSetService.class, new DistKVSetServiceImpl(this.runtime));
     drpcServer.registerService(
-        DstDictService.class, new DstDictServiceImpl(this.runtime));
+        DistKVDictService.class, new DistKVDictServiceImpl(this.runtime));
     drpcServer.registerService(
-        DstSortedListService.class, new DstSortedListServiceImpl(this.runtime));
+        DistKVSortedListService.class, new DistKVSortedListServiceImpl(this.runtime));
   }
 
   public static void main(String[] args) {
@@ -91,7 +91,7 @@ public class DstServer {
       }
     }
 
-    DstServerConfig config = DstServerConfig.create();
+    DistKVServerConfig config = DistKVServerConfig.create();
     if (listeningPort > 0) {
       config.setPort(listeningPort);
     }

@@ -1,8 +1,8 @@
 package com.distkv.parser;
 
 import com.distkv.common.RequestTypeEnum;
-import com.distkv.common.exception.DstException;
-import com.distkv.parser.po.DstParsedResult;
+import com.distkv.common.exception.DistKVException;
+import com.distkv.parser.po.DistKVParsedResult;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import org.testng.Assert;
@@ -10,12 +10,12 @@ import org.testng.annotations.Test;
 
 public class ParseSortedListCommandTest {
 
-  private static final DstParser dstParser = new DstParser();
+  private static final DistKVParser dstParser = new DistKVParser();
 
   @Test
   public void testSlistPut() {
     final String command = "slist.put k1 m1 12 m2 -2 m3 0";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final SortedListProtocol.PutRequest putRequest =
             (SortedListProtocol.PutRequest) result.getRequest();
 
@@ -33,7 +33,7 @@ public class ParseSortedListCommandTest {
   @Test
   public void testSlistTop() {
     final String command = "slist.top k1 2";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final SortedListProtocol.TopRequest topRequest =
             (SortedListProtocol.TopRequest) result.getRequest();
 
@@ -45,7 +45,7 @@ public class ParseSortedListCommandTest {
   @Test
   public void testSlistIncrScoreDefault() {
     final String command = "slist.incrScore k1 m1";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final SortedListProtocol.IncrScoreRequest incrScoreRequest =
             (SortedListProtocol.IncrScoreRequest) result.getRequest();
 
@@ -58,7 +58,7 @@ public class ParseSortedListCommandTest {
   @Test
   public void testSlistIncrScoreDelta() {
     final String command = "slist.incrScore k1 m1 20";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final SortedListProtocol.IncrScoreRequest incrScoreRequest =
             (SortedListProtocol.IncrScoreRequest) result.getRequest();
 
@@ -71,7 +71,7 @@ public class ParseSortedListCommandTest {
   @Test
   public void testSlistPutMember() {
     final String command = "slist.putMember k1 m4 4";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final SortedListProtocol.PutMemberRequest putMemberRequest =
             (SortedListProtocol.PutMemberRequest) result.getRequest();
 
@@ -84,7 +84,7 @@ public class ParseSortedListCommandTest {
   @Test
   public void testSlistRemoveMember() {
     final String command = "slist.removeMember k1 m4";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final SortedListProtocol.RemoveMemberRequest removeMemberRequest =
             (SortedListProtocol.RemoveMemberRequest) result.getRequest();
 
@@ -96,7 +96,7 @@ public class ParseSortedListCommandTest {
   @Test
   public void testSlistDrop() {
     final String command = "slist.drop k1";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final CommonProtocol.DropRequest dropRequest =
             (CommonProtocol.DropRequest) result.getRequest();
 
@@ -107,7 +107,7 @@ public class ParseSortedListCommandTest {
   @Test
   public void testSlistGetMember() {
     final String command = "slist.getMember k1 m1";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     final SortedListProtocol.GetMemberRequest getMemberRequest =
             (SortedListProtocol.GetMemberRequest) result.getRequest();
 
@@ -116,13 +116,13 @@ public class ParseSortedListCommandTest {
     Assert.assertEquals(getMemberRequest.getMember(), "m1");
   }
 
-  @Test(expectedExceptions = DstException.class)
+  @Test(expectedExceptions = DistKVException.class)
   public void testInvalidPutCommand() {
     final String command = "slist.put k1 m1 012";
     dstParser.parse(command);
   }
 
-  @Test(expectedExceptions = DstException.class)
+  @Test(expectedExceptions = DistKVException.class)
   public void testInvalidTopCommand() {
     final String command = "slist.top k1 0";
     dstParser.parse(command);

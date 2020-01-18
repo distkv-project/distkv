@@ -1,11 +1,11 @@
 package com.distkv.client;
 
-import com.distkv.common.DstTuple;
+import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.service.DstSortedListService;
+import com.distkv.rpc.service.DistKVSortedListService;
 
 import java.util.LinkedList;
 
@@ -13,9 +13,9 @@ public class DstSortedListProxy {
 
   private String typeCode = "E";
 
-  private DstSortedListService service;
+  private DistKVSortedListService service;
 
-  public DstSortedListProxy(DstSortedListService service) {
+  public DstSortedListProxy(DistKVSortedListService service) {
     this.service = service;
   }
 
@@ -94,7 +94,7 @@ public class DstSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  public DstTuple<Integer, Integer> getMember(String key, String member) {
+  public DistKVTuple<Integer, Integer> getMember(String key, String member) {
     SortedListProtocol.GetMemberRequest.Builder getMemberRequest =
         SortedListProtocol.GetMemberRequest.newBuilder();
     getMemberRequest.setKey(key);
@@ -103,6 +103,6 @@ public class DstSortedListProxy {
         service.getMember(getMemberRequest.build()));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     SortedListProtocol.SortedListEntity sortedListEntity = response.getEntity();
-    return new DstTuple<>(sortedListEntity.getScore(), response.getCount());
+    return new DistKVTuple<>(sortedListEntity.getScore(), response.getCount());
   }
 }

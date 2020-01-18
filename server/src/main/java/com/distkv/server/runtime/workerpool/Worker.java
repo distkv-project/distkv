@@ -1,11 +1,11 @@
 package com.distkv.server.runtime.workerpool;
 
-import com.distkv.common.DstTuple;
+import com.distkv.common.DistKVTuple;
 import com.distkv.common.NodeInfo;
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.common.exception.DstListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistKVListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.utils.Status;
@@ -146,7 +146,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -218,7 +218,7 @@ public class Worker extends Thread {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
             } catch (KeyNotFoundException e) {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
             CompletableFuture<SetProtocol.GetResponse> future =
@@ -297,7 +297,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             CompletableFuture<SetProtocol.RemoveItemResponse> future =
@@ -318,7 +318,7 @@ public class Worker extends Thread {
               responseBuilder.setStatus(CommonProtocol.Status.OK);
             } catch (KeyNotFoundException e) {
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               responseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
 
@@ -362,7 +362,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -401,10 +401,10 @@ public class Worker extends Thread {
             CommonProtocol.Status status = CommonProtocol.Status.OK;
             try {
               // TODO(qwang): Avoid this copy. See the discussion
-              // at https://github.com/distkv-project/dst/issues/349
+              // at https://github.com/distkv-project/distkv/issues/349
               ArrayList<String> values = new ArrayList<>(request.getValuesList());
               storeEngine.lists().put(request.getKey(), values);
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to put a list to store: {1}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -441,7 +441,7 @@ public class Worker extends Thread {
             } catch (KeyNotFoundException e) {
               LOGGER.info("Failed to get a list from store: {1}", e);
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DstListIndexOutOfBoundsException e) {
+            } catch (DistKVListIndexOutOfBoundsException e) {
               LOGGER.info("Failed to get a list from store: {1}", e);
               status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
             }
@@ -487,7 +487,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to rput a list to store: {1}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -533,7 +533,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -577,7 +577,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -625,7 +625,7 @@ public class Worker extends Thread {
             } catch (KeyNotFoundException e) {
               LOGGER.info("Failed to mRemove item from store: {1}", e);
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DstListIndexOutOfBoundsException e) {
+            } catch (DistKVListIndexOutOfBoundsException e) {
               LOGGER.info("Failed to mRemove item from store: {1}", e);
               status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
             }
@@ -685,7 +685,7 @@ public class Worker extends Thread {
             } catch (KeyNotFoundException e) {
               LOGGER.info("Failed to remove item from store: {1}", e);
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DstListIndexOutOfBoundsException e) {
+            } catch (DistKVListIndexOutOfBoundsException e) {
               LOGGER.info("Failed to remove item from store: {1}", e);
               status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
             }
@@ -724,14 +724,14 @@ public class Worker extends Thread {
                 DictProtocol.PutResponse.newBuilder();
             try {
               final Map<String, String> map = new HashMap<>();
-              DictProtocol.DstDict dstDict = request.getDict();
-              for (int i = 0; i < dstDict.getKeysCount(); i++) {
-                map.put(dstDict.getKeys(i), dstDict.getValues(i));
+              DictProtocol.DistKVDict distKVDict = request.getDict();
+              for (int i = 0; i < distKVDict.getKeysCount(); i++) {
+                map.put(distKVDict.getKeys(i), distKVDict.getValues(i));
               }
               storeEngine.dicts().put(request.getKey(), map);
               responseBuilder.setStatus(CommonProtocol.Status.OK);
             } catch (Exception e) {
-              // TODO(qwang): Use DstException instead of Exception here.
+              // TODO(qwang): Use DistKVException instead of Exception here.
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
             }
             CompletableFuture<DictProtocol.PutResponse> future =
@@ -755,7 +755,7 @@ public class Worker extends Thread {
             if (dict == null) {
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
             } else {
-              DictProtocol.DstDict.Builder builder = DictProtocol.DstDict.newBuilder();
+              DictProtocol.DistKVDict.Builder builder = DictProtocol.DistKVDict.newBuilder();
               for (Map.Entry<String, String> entry : dict.entrySet()) {
                 builder.addKeys(entry.getKey());
                 builder.addValues(entry.getValue());
@@ -991,7 +991,7 @@ public class Worker extends Thread {
               }
               storeEngine.sortLists().put(request.getKey(), linkedList);
               status = CommonProtocol.Status.OK;
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to put a slist to store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1025,7 +1025,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListTopNumIsNonNegativeException e) {
               status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to get a slist top in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1068,7 +1068,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to drop a slist in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1114,7 +1114,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListMemberNotFoundException e) {
               status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to incr a slist score in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1158,7 +1158,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to put a slist number in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1203,7 +1203,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListMemberNotFoundException e) {
               status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to remove slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1221,7 +1221,7 @@ public class Worker extends Thread {
                 SortedListProtocol.GetMemberResponse.newBuilder();
             CommonProtocol.Status status;
             try {
-              DstTuple<Integer, Integer> tuple =
+              DistKVTuple<Integer, Integer> tuple =
                   storeEngine.sortLists().getMember(request.getKey(), request.getMember());
               SortedListProtocol.SortedListEntity.Builder builder =
                   SortedListProtocol.SortedListEntity.newBuilder();
@@ -1234,7 +1234,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListMemberNotFoundException e) {
               status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-            } catch (DstException e) {
+            } catch (DistKVException e) {
               LOGGER.error("Failed to get slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1251,7 +1251,7 @@ public class Worker extends Thread {
         }
       } catch (Throwable e) {
         LOGGER.error("Failed to execute event loop:" + e);
-        // TODO(tuowang): Clean up some resource associated with DstRuntime
+        // TODO(tuowang): Clean up some resource associated with DistKVRuntime
         Runtime.getRuntime().exit(-1);
       }
     }

@@ -2,16 +2,16 @@ package com.distkv.asyncclient;
 
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
-import com.distkv.rpc.service.DstSetService;
+import com.distkv.rpc.service.DistKVSetService;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncSetProxy {
 
-  private DstSetService service;
+  private DistKVSetService service;
 
-  public DstAsyncSetProxy(DstSetService service) {
+  public DstAsyncSetProxy(DistKVSetService service) {
     this.service = service;
   }
 

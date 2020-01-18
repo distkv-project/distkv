@@ -3,7 +3,7 @@ package com.distkv.common.exception;
 /**
  * The exception class to indicates that the key of a dict not found.
  */
-public class DictKeyNotFoundException extends DstException {
+public class DictKeyNotFoundException extends DistKVException {
 
   protected String errorCode = ErrorCodeEnum
       .DictKeyNotFoundErrorCode

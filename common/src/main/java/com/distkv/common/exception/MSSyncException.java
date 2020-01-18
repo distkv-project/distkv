@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class MSSyncException extends DstException {
+public class MSSyncException extends DistKVException {
   protected String errorCode = ErrorCodeEnum
       .KeyNotFoundErrorCode
       .getErrorCode();

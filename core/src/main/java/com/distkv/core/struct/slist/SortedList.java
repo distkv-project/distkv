@@ -1,12 +1,12 @@
 package com.distkv.core.struct.slist;
 
-import com.distkv.common.DstTuple;
+import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 
 import java.util.List;
 
 /**
- * The interface of DstSortedList.
+ * The interface of DistKVSortedList.
  */
 public interface SortedList {
 
@@ -71,5 +71,5 @@ public interface SortedList {
    * @return A tuple whose first element is the score while
    * the second element is the ranking.
    */
-  DstTuple<Integer, Integer> getItem(String member);
+  DistKVTuple<Integer, Integer> getItem(String member);
 }

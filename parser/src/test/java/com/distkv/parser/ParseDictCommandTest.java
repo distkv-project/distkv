@@ -1,6 +1,6 @@
 package com.distkv.parser;
 
-import com.distkv.parser.po.DstParsedResult;
+import com.distkv.parser.po.DistKVParsedResult;
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import org.testng.Assert;
@@ -8,31 +8,31 @@ import org.testng.annotations.Test;
 
 public class ParseDictCommandTest {
 
-  private static final DstParser dstParser = new DstParser();
+  private static final DistKVParser distKVParser = new DistKVParser();
 
   @Test
   public void testPut() {
     final String putDictCommand = "dict.put dict1 k1 v1 k2 v2 k3 v3";
-    DstParsedResult result = dstParser.parse(putDictCommand);
+    DistKVParsedResult result = distKVParser.parse(putDictCommand);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_PUT);
     DictProtocol.PutRequest request = (DictProtocol.PutRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "dict1");
-    final DictProtocol.DstDict dstDict = request.getDict();
-    Assert.assertEquals(dstDict.getKeysCount(), 3);
-    Assert.assertEquals(dstDict.getKeys(0), "k1");
-    Assert.assertEquals(dstDict.getKeys(1), "k2");
-    Assert.assertEquals(dstDict.getKeys(2), "k3");
+    final DictProtocol.DistKVDict DistKVDict = request.getDict();
+    Assert.assertEquals(DistKVDict.getKeysCount(), 3);
+    Assert.assertEquals(DistKVDict.getKeys(0), "k1");
+    Assert.assertEquals(DistKVDict.getKeys(1), "k2");
+    Assert.assertEquals(DistKVDict.getKeys(2), "k3");
 
-    Assert.assertEquals(dstDict.getValuesCount(), 3);
-    Assert.assertEquals(dstDict.getValues(0), "v1");
-    Assert.assertEquals(dstDict.getValues(1), "v2");
-    Assert.assertEquals(dstDict.getValues(2), "v3");
+    Assert.assertEquals(DistKVDict.getValuesCount(), 3);
+    Assert.assertEquals(DistKVDict.getValues(0), "v1");
+    Assert.assertEquals(DistKVDict.getValues(1), "v2");
+    Assert.assertEquals(DistKVDict.getValues(2), "v3");
   }
 
   @Test
   public void testGet() {
     final String getDictCommand = "dict.get dict1";
-    DstParsedResult result = dstParser.parse(getDictCommand);
+    DistKVParsedResult result = distKVParser.parse(getDictCommand);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_GET);
     DictProtocol.GetRequest request = (DictProtocol.GetRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "dict1");
