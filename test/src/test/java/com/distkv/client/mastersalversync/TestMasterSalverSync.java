@@ -44,7 +44,7 @@ public class TestMasterSalverSync {
     }
 
     if (k <= 0) {
-      throw new RuntimeException("feiled start to server");
+      throw new AssertionError();
     }
 
     //test
