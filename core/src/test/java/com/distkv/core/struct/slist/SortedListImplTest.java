@@ -138,9 +138,11 @@ public class SortedListImplTest {
     Assert.assertEquals(sortedList.getItem("888").getSecond().intValue(), 4);
     Assert.assertEquals(sortedList.getItem("444").getFirst().intValue(), 4);
     Assert.assertEquals(sortedList.getItem("444").getSecond().intValue(), 8);
+
+    testPrintSortedList(sortedList);
   }
 
-  public static void printSortedList(SortedList sortedList) {
+  public static void testPrintSortedList(SortedList sortedList) {
     System.out.println("********************");
     System.out.println(sortedList.size());
     List<SortedListEntity> topList = sortedList.subList(1, sortedList.size());
