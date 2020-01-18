@@ -22,7 +22,7 @@ class BinaryDistribution(Distribution):
         return True
 
 setup(
-        name='distkv',
+        name='dkv',
         version='0.1.3',
         description='A distributed key-value in-memory store system with table concept.',
         author='Qing Wang',
@@ -36,8 +36,8 @@ setup(
         install_requires=[],
         entry_points={
             "console_scripts": [
-                "distkv-server=distkv_server:main",
-                "distkv-cli=distkv_cli:main",
+                "dkv-server=distkv_server:main",
+                "dkv-cli=distkv_cli:main",
            ]
        },
 )
