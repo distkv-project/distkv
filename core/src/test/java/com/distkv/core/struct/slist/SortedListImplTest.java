@@ -11,6 +11,8 @@ public class SortedListImplTest {
 
   @Test
   public static void testMain() {
+    testSortedListImpl(new SortedListLinkedImpl());
+
     testSortedListImpl(new SortedListRBTreeImpl());
   }
 
