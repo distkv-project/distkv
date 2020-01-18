@@ -1,7 +1,7 @@
 package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DstClient;
-import com.distkv.parser.po.DstParsedResult;
+import com.distkv.parser.po.DistKVParsedResult;
 
 
 public class DstCommandExecutor {
@@ -12,7 +12,7 @@ public class DstCommandExecutor {
     this.dstClient = dstClient;
   }
 
-  public String execute(DstParsedResult parsedResult) {
+  public String execute(DistKVParsedResult parsedResult) {
     switch (parsedResult.getRequestType()) {
       case STR_PUT:
         return CommandExecutorHandler.strPut(dstClient, parsedResult);

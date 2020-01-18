@@ -58,7 +58,7 @@ message ExistsResponse {
     optional bool result = 2;
 }
 
-service DstSetService {
+service DistKVSetService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
     rpc putItem(PutItemRequest) returns (PutItemResponse);

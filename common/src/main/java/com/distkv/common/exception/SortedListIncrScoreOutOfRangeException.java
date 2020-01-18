@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class SortedListIncrScoreOutOfRangeException extends DstException {
+public class SortedListIncrScoreOutOfRangeException extends DistKVException {
 
   protected String errorCode = ErrorCodeEnum
       .SortedListIncrScoreOutOfRangeErrorCode

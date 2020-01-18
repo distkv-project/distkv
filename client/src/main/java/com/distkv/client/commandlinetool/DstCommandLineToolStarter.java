@@ -6,14 +6,14 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.distkv.client.DefaultDstClient;
 import com.distkv.client.DstClient;
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.DictKeyNotFoundException;
-import com.distkv.common.exception.DstListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistKVListIndexOutOfBoundsException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.parser.DstParser;
-import com.distkv.parser.po.DstParsedResult;
+import com.distkv.parser.DistKVParser;
+import com.distkv.parser.po.DistKVParsedResult;
 
 public class DstCommandLineToolStarter {
 
@@ -68,7 +68,7 @@ public class DstCommandLineToolStarter {
   }
 
   private void loop(DstClient dstClient) {
-    DstParser dstParser = new DstParser();
+    DistKVParser dstParser = new DistKVParser();
     DstCommandExecutor dstCommandExecutor = new DstCommandExecutor(dstClient);
     Scanner sc = new Scanner(System.in);
     while (true) {
@@ -76,11 +76,11 @@ public class DstCommandLineToolStarter {
       final String command = sc.nextLine();
       String result = null;
       try {
-        DstParsedResult parsedResult = dstParser.parse(command);
+        DistKVParsedResult parsedResult = dstParser.parse(command);
         result = dstCommandExecutor.execute(parsedResult);
       } catch (DictKeyNotFoundException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (DstListIndexOutOfBoundsException e) {
+      } catch (DistKVListIndexOutOfBoundsException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       } catch (KeyNotFoundException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
@@ -88,7 +88,7 @@ public class DstCommandLineToolStarter {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       } catch (SortedListTopNumIsNonNegativeException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (DstException e) {
+      } catch (DistKVException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       }
       System.out.println("distkv-cli> " + result);

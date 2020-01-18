@@ -1,9 +1,8 @@
 package com.distkv.core.concepts;
 
-import com.distkv.common.DstTuple;
+import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.Status;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,8 +61,8 @@ public interface DstSortedLists {
    *
    * @param key the key to store
    * @param member the itemEntity info in sortedList, Find the item by info
-   * @return the DstTuple value which the first element is the score and
+   * @return the DistKVTuple value which the first element is the score and
    * the second element is the ranking of the given key and member
    */
-  DstTuple<Integer, Integer> getMember(String key, String member);
+  DistKVTuple<Integer, Integer> getMember(String key, String member);
 }

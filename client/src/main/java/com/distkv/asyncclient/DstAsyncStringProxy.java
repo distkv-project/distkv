@@ -2,14 +2,14 @@ package com.distkv.asyncclient;
 
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
-import com.distkv.rpc.service.DstStringService;
+import com.distkv.rpc.service.DistKVStringService;
 
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncStringProxy {
-  private DstStringService service;
+  private DistKVStringService service;
 
-  public DstAsyncStringProxy(DstStringService service) {
+  public DstAsyncStringProxy(DistKVStringService service) {
     this.service = service;
   }
 

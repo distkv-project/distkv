@@ -3,7 +3,7 @@ package com.distkv.server.service;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
-import com.distkv.rpc.service.DstDictService;
+import com.distkv.rpc.service.DistKVDictService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import org.testng.Assert;
@@ -17,8 +17,8 @@ import java.util.Map;
  * Map<String,String> localDict = new HashMap<>();
  * and add the kv to the request Builder
  * for (Map.Entry<String,String> entry : localDict.entrySet()) {
- *     dstDictBuilder.addKeys(entry.getKey());
- *     dstDictBuilder.addDict(entry.getValue());
+ *     DistKVDictBuilder.addKeys(entry.getKey());
+ *     DistKVDictBuilder.addDict(entry.getValue());
  * }
  * and build the Builder
  *
@@ -27,9 +27,9 @@ import java.util.Map;
 public class DictRpcTest extends BaseTestSupplier {
   @Test
   public void testDictRpcCall() {
-    try (ProxyOnClient<DstDictService> setProxy = new ProxyOnClient<>(
-        DstDictService.class, rpcServerPort)) {
-      DstDictService dictService = setProxy.getService();
+    try (ProxyOnClient<DistKVDictService> setProxy = new ProxyOnClient<>(
+        DistKVDictService.class, rpcServerPort)) {
+      DistKVDictService dictService = setProxy.getService();
       // Test dict put.
       DictProtocol.PutRequest.Builder dictPutRequestBuilder =
               DictProtocol.PutRequest.newBuilder();
@@ -38,12 +38,12 @@ public class DictRpcTest extends BaseTestSupplier {
       localDict.put("k1", "v1");
       localDict.put("k2", "v2");
       localDict.put("k3", "v3");
-      DictProtocol.DstDict.Builder dstDictBuilder = DictProtocol.DstDict.newBuilder();
+      DictProtocol.DistKVDict.Builder distKVDictBuilder = DictProtocol.DistKVDict.newBuilder();
       for (Map.Entry<String, String> entry : localDict.entrySet()) {
-        dstDictBuilder.addKeys(entry.getKey());
-        dstDictBuilder.addValues(entry.getValue());
+        distKVDictBuilder.addKeys(entry.getKey());
+        distKVDictBuilder.addValues(entry.getValue());
       }
-      dictPutRequestBuilder.setDict(dstDictBuilder.build());
+      dictPutRequestBuilder.setDict(distKVDictBuilder.build());
       DictProtocol.PutResponse setPutResponse = FutureUtils.get(
           dictService.put(dictPutRequestBuilder.build()));
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
@@ -93,7 +93,7 @@ public class DictRpcTest extends BaseTestSupplier {
       final Map<String, String> judgeDict = new HashMap<>();
       judgeDict.put("k1", "v1");
       judgeDict.put("k4", "v4");
-      DictProtocol.DstDict values = dictGetResponse.getDict();
+      DictProtocol.DistKVDict values = dictGetResponse.getDict();
       Map<String, String> results = new HashMap<>();
       for (int i = 0; i < values.getKeysCount(); i++) {
         results.put(values.getKeys(i), values.getValues(i));

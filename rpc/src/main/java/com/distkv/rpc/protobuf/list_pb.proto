@@ -91,7 +91,7 @@ message MRemoveResponse {
     required Status status = 1;
 }
 
-service DstListService {
+service DistKVListService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
     rpc lput(LPutRequest) returns (LPutResponse);
