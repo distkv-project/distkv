@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -41,6 +42,11 @@ public class TestMasterSalverSync {
         break;
       }
     }
+
+    if (k <= 0) {
+      throw new RuntimeException("feiled start to server");
+    }
+
     //test
     testStrPut(client0, client1);
     testListPut(client0, client1);
