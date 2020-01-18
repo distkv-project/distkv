@@ -39,11 +39,10 @@ jobs:
     - os: linux
       language: python
       python:
-        - "3.7"
+        - "3.6"
       virtualenv:
         system_site_packages: true
       script:
-        - export PATH="/opt/python/cp37-cp37m/bin":$PATH  # For using pip of py37
         - pushd deploy/python
         - sh test_pip_install.sh
         - popd
