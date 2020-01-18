@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class SortedListMemberNotFoundException extends DstException {
+public class SortedListMemberNotFoundException extends DistKVException {
 
   protected String errorCode = ErrorCodeEnum
       .SortedListMemberNotFoundErrorCode

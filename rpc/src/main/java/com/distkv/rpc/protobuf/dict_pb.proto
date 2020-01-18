@@ -8,14 +8,14 @@ option java_package="com.distkv.rpc.protobuf.generated";
 option java_outer_classname="DictProtocol";
 option cc_generic_services = true;
 
-message DstDict {
+message DistKVDict {
     repeated string keys = 1;
     repeated string values = 2;
 }
 
 message PutRequest {
     required string key = 1;
-    required DstDict dict = 2;
+    required DistKVDict dict = 2;
 }
 
 message PutResponse {
@@ -28,7 +28,7 @@ message GetRequest {
 
 message GetResponse {
     required Status status = 1;
-    optional DstDict dict = 2;
+    optional DistKVDict dict = 2;
 }
 
 message GetItemRequest {
@@ -70,7 +70,7 @@ message RemoveItemResponse {
     required Status status = 1;
 }
 
-service DstDictService {
+service DistKVDictService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
     rpc putItem(PutItemRequest) returns (PutItemResponse);
