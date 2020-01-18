@@ -14,12 +14,27 @@ install: true
 
 before_script:
   - bash ./scripts/install_dependencies.sh
-script:
-  - travis_wait 30 ./mvnw clean install -DskipTests=false
+
+# Define four parallel jobs
+matrix:
+  include:
+    # for linux : This job is used to test project.
+    - os: linux
+      dist: xenial
+      script:
+        - travis_wait 30 ./mvnw clean install -DskipTests=false
+
+    # This job is used to test `pip install dkv`.
+    - os: linux
+      dist: trusty
+      script:
+        - pushd deploy/python
+        - sh test_pip_install.sh
+        - popd
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
 
 after_failure:
-  - echo "build failed!"
+  - echo "Failed to build!"
