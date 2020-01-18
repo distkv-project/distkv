@@ -5,7 +5,7 @@ set -x
 set -e
 
 # Build dkv-server and `dkv-cli` binary.
-pip install -e . -v
+pip3 install -e . -v
 
 # Start `dkv server`
 nohup dkv-server >> /dev/null 2>&1 &
