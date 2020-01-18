@@ -9,11 +9,4 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>distkv-common</artifactId>
-    <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>20.0</version>
-        </dependency>
-    </dependencies>
 </project>
