@@ -38,13 +38,13 @@ jobs:
     # This job is used to test `pip install dkv`.
     - os: linux
       language: python
-      python:
-        - "3.6"
-      virtualenv:
-        system_site_packages: true
+#      python:
+#        - "3.6"
+#      virtualenv:
+#        system_site_packages: true
       script:
         - pushd deploy/python
-        - sh test_pip_install.sh
+        - sudo sh test_pip_install.sh
         - popd
 
 after_success:
