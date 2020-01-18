@@ -72,7 +72,7 @@ message GetMemberResponse {
     required uint32 count = 3;
 }
 
-service DstListService {
+service DistKVListService {
     rpc put (PutRequest) returns (PutResponse);
     rpc top (TopRequest) returns (TopResponse);
     rpc incrScore (IncrScoreRequest) returns (IncrScoreResponse);

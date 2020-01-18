@@ -1,7 +1,7 @@
 package com.distkv.client;
 
 import java.util.LinkedList;
-import com.distkv.common.DstTuple;
+import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
@@ -54,7 +54,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
   }
 
   private void testGetItem() {
-    DstTuple<Integer, Integer> tuple = dstClient.sortedLists().getMember("k1", "fw");
+    DistKVTuple<Integer, Integer> tuple = dstClient.sortedLists().getMember("k1", "fw");
     Assert.assertEquals(tuple.getFirst().intValue(), 10);
     Assert.assertEquals(tuple.getSecond().intValue(), 2);
   }

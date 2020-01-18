@@ -1,6 +1,6 @@
 package com.distkv.core.struct.slist;
 
-import com.distkv.common.DstTuple;
+import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The linkedlist implementation of the Dst SortedList.
+ * The linkedlist implementation of the DistKV SortedList.
  */
 public final class SortedListLinkedImpl
     extends LinkedList<SortedListEntity>
@@ -56,7 +56,7 @@ public final class SortedListLinkedImpl
       SortedListEntity sortedListEntity) {
     final String nowMember = sortedListEntity.getMember();
     final int nowScore = sortedListEntity.getScore();
-    final DstTuple<Node<SortedListEntity>, Integer> tuple =
+    final DistKVTuple<Node<SortedListEntity>, Integer> tuple =
         this.getItemByMember(nowMember);
     if (tuple != null) {
       // If the member of original SortedList is found, then override the score.
@@ -72,7 +72,7 @@ public final class SortedListLinkedImpl
   @Override
   public boolean removeItem(
       String member) {
-    final DstTuple<Node<SortedListEntity>, Integer> tuple =
+    final DistKVTuple<Node<SortedListEntity>, Integer> tuple =
         this.getItemByMember(member);
     if (tuple == null) {
       return false;
@@ -85,7 +85,7 @@ public final class SortedListLinkedImpl
   @Override
   public int incrScore(
       String member, int delta) {
-    final DstTuple<Node<SortedListEntity>, Integer> tuple =
+    final DistKVTuple<Node<SortedListEntity>, Integer> tuple =
         this.getItemByMember(member);
     if (tuple == null) {
       return 0;
@@ -142,12 +142,12 @@ public final class SortedListLinkedImpl
   }
 
   @Override
-  public DstTuple<Integer, Integer> getItem(
+  public DistKVTuple<Integer, Integer> getItem(
       String member) {
-    DstTuple<Node<SortedListEntity>, Integer> tuple = this.getItemByMember(member);
+    DistKVTuple<Node<SortedListEntity>, Integer> tuple = this.getItemByMember(member);
     return tuple == null
         ? null
-        : new DstTuple<>(tuple.getFirst().item.getScore(), tuple.getSecond());
+        : new DistKVTuple<>(tuple.getFirst().item.getScore(), tuple.getSecond());
   }
 
   private static class Node<E> {
@@ -178,9 +178,9 @@ public final class SortedListLinkedImpl
     }
   }
 
-  private DstTuple<Node<SortedListEntity>, Integer> getItemByMember(
+  private DistKVTuple<Node<SortedListEntity>, Integer> getItemByMember(
       String member) {
-    DstTuple<Node<SortedListEntity>, Integer> tuple = null;
+    DistKVTuple<Node<SortedListEntity>, Integer> tuple = null;
     int index = 1;
     int nowRank = 1;
     int lastRank = 1;
@@ -199,7 +199,7 @@ public final class SortedListLinkedImpl
         }
       }
       if (cur.item.getMember().equals(member)) {
-        tuple = new DstTuple<>(cur, nowRank);
+        tuple = new DistKVTuple<>(cur, nowRank);
         break;
       }
       index++;
