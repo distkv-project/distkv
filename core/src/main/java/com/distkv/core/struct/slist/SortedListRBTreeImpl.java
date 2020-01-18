@@ -1,6 +1,6 @@
 package com.distkv.core.struct.slist;
 
-import com.distkv.common.DstTuple;
+import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 
 import com.google.common.collect.TreeMultimap;
@@ -130,8 +130,8 @@ public class SortedListRBTreeImpl
   }
 
   @Override
-  public DstTuple<Integer, Integer> getItem(String member) {
-    DstTuple<Integer, Integer> dstTuple = null;
+  public DistKVTuple<Integer, Integer> getItem(String member) {
+    DistKVTuple<Integer, Integer> dstTuple = null;
     if (containsMember(member)) {
       int index = 1;
       int nowRank = 1;
@@ -157,7 +157,7 @@ public class SortedListRBTreeImpl
         lastScore = nowScore;
 
         if (nowMember.equals(member)) {
-          dstTuple = new DstTuple<>(nowScore, nowRank);
+          dstTuple = new DistKVTuple<>(nowScore, nowRank);
           break;
         }
         index++;
