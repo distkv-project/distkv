@@ -29,7 +29,8 @@ public class MasterSalverTestUtil {
       jarDir = userDir.getPath() + File.separator + SUFFIX_JAR_DIR;
     }
 
-    String confPath = userDir.getParent() + File.separator + "conf" + File.separator;
+    String confPath = userDir.getParent() + File.separator + "test" +
+        File.separator + "conf" + File.separator;
     for (int i = 0; i < NODE_NUM; i++) {
       final List<String> startCommand = ImmutableList.of(
           "java",
@@ -70,6 +71,5 @@ public class MasterSalverTestUtil {
         System.exit(-1);
       }
     }
-
   }
 }
