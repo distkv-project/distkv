@@ -4,9 +4,6 @@ set -x
 # Cause the script to exit if a single command fails.
 set -e
 
-# Uninstall dkv.
-pip uninstall dkv -y
-
 # Build dkv-server and `dkv-cli` binary.
 pip install -e . -v
 
