@@ -131,7 +131,7 @@ public class SortedListRBTreeImpl
 
   @Override
   public DistKVTuple<Integer, Integer> getItem(String member) {
-    DistKVTuple<Integer, Integer> dstTuple = null;
+    DistKVTuple<Integer, Integer> distKVTuple = null;
     if (containsMember(member)) {
       int index = 1;
       int nowRank = 1;
@@ -157,13 +157,13 @@ public class SortedListRBTreeImpl
         lastScore = nowScore;
 
         if (nowMember.equals(member)) {
-          dstTuple = new DistKVTuple<>(nowScore, nowRank);
+          distKVTuple = new DistKVTuple<>(nowScore, nowRank);
           break;
         }
         index++;
       }
     }
-    return dstTuple;
+    return distKVTuple;
   }
 
   private boolean containsMember(String member) {
