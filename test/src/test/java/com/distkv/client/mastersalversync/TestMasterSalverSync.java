@@ -31,6 +31,7 @@ public class TestMasterSalverSync {
         client0 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18082));
         client1 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18090));
       } catch (Exception e) {
+        k--;
         isTryAgain = true;
       }
       if (isTryAgain) {

@@ -1,6 +1,6 @@
 package com.distkv.supplier;
 
-
+import com.distkv.common.exception.DstException;
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
@@ -23,12 +23,19 @@ public class ProxyOnClient<T> implements AutoCloseable {
         proxy = new Proxy<>();
         proxy.setInterfaceClass(clazz);
       } catch (Exception e) {
+        try {
+          Thread.sleep(200);
+        } catch (InterruptedException ex) {
+          ex.printStackTrace();
+        }
         k--;
         continue;
       }
       break;
     }
-
+    if (k <= 0) {
+      throw new DstException("connect error");
+    }
   }
 
   public T getService() {
