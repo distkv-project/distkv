@@ -19,7 +19,7 @@ import org.openjdk.jmh.infra.Blackhole;
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
 public class DstStrBenchmark {
 
-  private static final String PROTOCOL = "list://127.0.0.1:8082";
+  private static final String PROTOCOL = "distkv://127.0.0.1:8082";
   private static final String KEY_STR_SYNC = "k-str-sync";
   private static final String KEY_STR_ASYNC = "k-str-async";
   private static final String VALUE_STR_SYNC = "v-sync";

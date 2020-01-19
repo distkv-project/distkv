@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+
 import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +40,7 @@ public class BaseTestSupplier {
     final DefaultDstClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client[0] = new DefaultDstClient(String.format("list://127.0.0.1:%d", rpcServerPort));
+        client[0] = new DefaultDstClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
         client[0].strs().put("ping", "ping");
         return true;
       } catch (Exception e) {
@@ -53,7 +54,7 @@ public class BaseTestSupplier {
     final DefaultAsyncClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client[0] = new DefaultAsyncClient(String.format("list://127.0.0.1:%d", rpcServerPort));
+        client[0] = new DefaultAsyncClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
         client[0].strs().put("ping", "ping");
         return true;
       } catch (Exception e) {
