@@ -12,11 +12,10 @@ addons:
     sources:
       - deadsnakes # source required so it finds the package definition below
     packages:
-      - python3.4
-      - python3.4-dev
+      - python3.6
 before_install:
   - sudo pip install virtualenv
-  - virtualenv -p `which python3.4` .venv
+  - virtualenv -p `which python3.6` .venv
   - source .venv/bin/activate
   - python -V
   - pip -V
@@ -54,6 +53,10 @@ jobs:
     # This job is used to test `pip install dkv`.
     - os: osx
       language: python
+        python:
+          - "3.6"
+        virtualenv:
+          system_site_packages: true
       script:
         - pushd deploy/python
         - sudo sh test_pip_install.sh
