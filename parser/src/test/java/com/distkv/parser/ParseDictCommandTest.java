@@ -52,7 +52,6 @@ public class ParseDictCommandTest {
 
   @Test
   public void testGetItem() {
-    // TODO(qwang): Should be finished.
     final String command = "dict.getItem dict1 v1";
     DistKVParsedResult result = distKVParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_GET_ITEM);
@@ -63,7 +62,6 @@ public class ParseDictCommandTest {
 
   @Test
   public void testPopItem() {
-    // TODO(qwang): Should be finished.
     final String command = "dict.popItem k1 v1";
     DistKVParsedResult result = distKVParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_POP_ITEM);
@@ -83,7 +81,6 @@ public class ParseDictCommandTest {
 
   @Test
   public void testDrop() {
-    // TODO(qwang): Should be finished.
     final String command = "dict.drop dict1";
     DistKVParsedResult result = distKVParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_DROP);
