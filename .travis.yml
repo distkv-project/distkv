@@ -37,7 +37,7 @@ jobs:
 
     # This job is used to test `pip install dkv`.
     - os: linux
-      language: python
+      language: python3
       python:
         - 3.6
 #      virtualenv:
