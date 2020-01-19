@@ -54,8 +54,7 @@ public class MasterSalverTestUtil {
 
   public static void stopAllProcess() {
     for (int i = 0; i < NODE_NUM; i++) {
-      int finalI = i;
-      new Thread(() -> TestUtil.stopProcess(processes[finalI])).start();
+      TestUtil.stopProcess(processes[i]);
     }
   }
 }
