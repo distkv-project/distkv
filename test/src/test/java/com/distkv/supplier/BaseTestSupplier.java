@@ -35,10 +35,10 @@ public class BaseTestSupplier {
   }
 
   protected DstClient newDstClient() {
-    return new DefaultDstClient(String.format("list://127.0.0.1:%d", rpcServerPort));
+    return new DefaultDstClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
   }
 
   protected DstAsyncClient newAsyncDstClient() {
-    return new DefaultAsyncClient(String.format("list://127.0.0.1:%d", rpcServerPort));
+    return new DefaultAsyncClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
   }
 }
