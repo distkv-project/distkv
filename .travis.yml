@@ -7,6 +7,22 @@ install: true
 cache:
   directories:
     - $HOME/.m2
+addons:
+  apt:
+    sources:
+      - deadsnakes # source required so it finds the package definition below
+    packages:
+      - python3.4
+      - python3.4-dev
+before_install:
+  - sudo pip install virtualenv
+  - virtualenv -p `which python3.4` .venv
+  - source .venv/bin/activate
+  - python -V
+  - pip -V
+  - pip install six
+  - pip install -r cmd/refframes/reqs.txt
+  - wget -O cmd/refframes/spicekernels/de430.bsp https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de430.bsp
 
 before_script:
   - bash ./scripts/install_dependencies.sh
@@ -38,10 +54,6 @@ jobs:
     # This job is used to test `pip install dkv`.
     - os: osx
       language: python
-      python:
-        - 3.6
-#      virtualenv:
-#        system_site_packages: true
       script:
         - pushd deploy/python
         - sudo sh test_pip_install.sh
