@@ -44,8 +44,7 @@ public class DmetaTestUtil {
 
   public static void stopAllDmetaProcess() {
     for (int i = 0; i < NODE_NUM; i++) {
-      int finalI = i;
-      TestUtil.stopProcess(processes[finalI]);
+      TestUtil.stopProcess(processes[i]);
     }
   }
 }
