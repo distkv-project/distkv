@@ -16,7 +16,7 @@ before_script:
   - bash ./scripts/install_dependencies.sh
 script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
-  - bash test_pip_install.sh
+  - sh sudo ./delpoy/python/test_pip_install.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
