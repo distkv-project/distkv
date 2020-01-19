@@ -19,6 +19,8 @@ enum Status {
     SLIST_MEMBER_NOT_FOUND = 6;
     // The topNum of SortedList is less than zero.
     SLIST_TOPNUM_BE_POSITIVE = 7;
+    // Return when master-slave synchronization error occurs
+    SYNC_ERROR = 8;
 };
 
 // Drop the k-v pair by the given key.

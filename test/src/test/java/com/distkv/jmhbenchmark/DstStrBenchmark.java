@@ -42,7 +42,7 @@ public class DstStrBenchmark {
   public void close() {
     asyncClient.disconnect();
     client.disconnect();
-    TestUtil.stopRpcServer();
+    TestUtil.stopProcess(TestUtil.getProcess());
   }
 
   @Benchmark
