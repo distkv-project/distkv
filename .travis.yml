@@ -36,8 +36,8 @@ jobs:
         - travis_wait 30 ./mvnw clean install -DskipTests=false
 
     # This job is used to test `pip install dkv`.
-    - os: linux
-      language: python3
+    - os: osx
+      language: python
       python:
         - 3.6
 #      virtualenv:
