@@ -1,5 +1,6 @@
 package com.distkv.parser;
 
+import com.distkv.common.exception.DistKVException;
 import com.distkv.parser.po.DistKVParsedResult;
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
@@ -41,7 +42,6 @@ public class ParseDictCommandTest {
 
   @Test
   public void testPutItem() {
-    // TODO(qwang): Should be finished.
     final String command = "dict.putItem dict1 k1 v1";
     DistKVParsedResult result = distKVParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_PUT_ITEM);
@@ -74,7 +74,6 @@ public class ParseDictCommandTest {
 
   @Test
   public void testRemoveItem() {
-    // TODO(qwang): Should be finished.
     final String command = "dict.removeItem dict1 v1";
     DistKVParsedResult result = distKVParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.DICT_REMOVE_ITEM);
@@ -92,9 +91,8 @@ public class ParseDictCommandTest {
     Assert.assertEquals(request.getKey(), "dict1");
   }
 
-  @Test
+  @Test(expectedExceptions = DistKVException.class)
   public void testInvalidCommand() {
-    // TODO(qwang): Should be finished.
     final String command = "dict.ldel k1";
     distKVParser.parse(command);
   }
