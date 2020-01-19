@@ -56,7 +56,7 @@ public class SimpleBenchmark {
             "tps                          " + tps + " k/s\n" +
             "=======================================================================");
     //DST stop server
-    TestUtil.stopRpcServer();
+    TestUtil.stopProcess(TestUtil.getProcess());
   }
 
   /**

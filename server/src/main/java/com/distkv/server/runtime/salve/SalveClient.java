@@ -24,6 +24,8 @@ public class SalveClient {
 
   private Client rpcClient;
 
+  private boolean isOpen;
+
   public SalveClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
         .address(serverAddress)
@@ -31,7 +33,7 @@ public class SalveClient {
 
     rpcClient = new NettyClient(clientConfig);
     rpcClient.open();
-
+    isOpen = true;
     // Setup str proxy.
     Proxy<DistKVStringService> strRpcProxy = new Proxy<>();
     strRpcProxy.setInterfaceClass(DistKVStringService.class);
@@ -56,14 +58,32 @@ public class SalveClient {
     Proxy<DistKVSortedListService> sortedListRpcProxy = new Proxy<>();
     sortedListRpcProxy.setInterfaceClass(DistKVSortedListService.class);
     sortedListService = sortedListRpcProxy.getService(rpcClient);
+
+  }
+
+  public void closeClient() {
+    isOpen = false;
+    rpcClient.close();
+  }
+
+  public boolean isOpen() {
+    return isOpen;
   }
 
   public DistKVStringService getStringService() {
-    return stringService;
+    if (isOpen) {
+      return stringService;
+    } else {
+      return null;
+    }
   }
 
   public DistKVListService getListService() {
-    return listService;
+    if (isOpen) {
+      return listService;
+    } else {
+      return null;
+    }
   }
 
   public DistKVSetService getSetService() {
@@ -71,10 +91,19 @@ public class SalveClient {
   }
 
   public DistKVDictService getDictService() {
-    return dictService;
+    if (isOpen) {
+      return dictService;
+    } else {
+      return null;
+    }
+
   }
 
   public DistKVSortedListService getSortedListService() {
-    return sortedListService;
+    if (isOpen) {
+      return sortedListService;
+    } else {
+      return null;
+    }
   }
 }

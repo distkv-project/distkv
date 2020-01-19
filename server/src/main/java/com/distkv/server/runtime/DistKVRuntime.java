@@ -4,10 +4,15 @@ import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.server.runtime.salve.SalveClient;
 import com.distkv.server.DistKVServerConfig;
 import com.distkv.server.runtime.workerpool.WorkerPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DistKVRuntime {
+
+  private static Logger LOGGER = LoggerFactory.getLogger(DistKVRuntime.class);
 
   private DistKVServerConfig config;
 
@@ -33,6 +38,7 @@ public class DistKVRuntime {
           }
         }, 5 * 60 * 1000);
         salveClients.add(client[0]);
+        LOGGER.info("Connecting to salver(" + salverAddr + ") success");
       }
     } else {
       salveClients = null;

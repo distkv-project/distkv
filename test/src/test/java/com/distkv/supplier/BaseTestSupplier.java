@@ -4,6 +4,7 @@ import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DstAsyncClient;
 import com.distkv.client.DefaultDstClient;
 import com.distkv.client.DstClient;
+import com.distkv.common.utils.RuntimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
@@ -31,48 +32,34 @@ public class BaseTestSupplier {
 
   @AfterMethod
   public void teardownBase() {
-    TestUtil.stopRpcServer();
+    TestUtil.stopProcess(TestUtil.getProcess());
   }
 
   protected DstClient newDstClient() {
-    DefaultDstClient client = null;
-    int reTryTime = 10;
-    while (reTryTime > 0) {
+    final DefaultDstClient[] client = {null};
+    RuntimeUtil.waitForCondition(() -> {
       try {
-        client = new DefaultDstClient(String.format("list://127.0.0.1:%d", rpcServerPort));
-        client.strs().put("ping", "ping");
+        client[0] = new DefaultDstClient(String.format("list://127.0.0.1:%d", rpcServerPort));
+        client[0].strs().put("ping", "ping");
+        return true;
       } catch (Exception e) {
-        reTryTime--;
-        try {
-          TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException ex) {
-          ex.printStackTrace();
-        }
-        continue;
+        return false;
       }
-      break;
-    }
-    return client;
+    }, 2 * 60 * 1000);
+    return client[0];
   }
 
   protected DstAsyncClient newAsyncDstClient() {
-    DefaultAsyncClient client = null;
-    int reTryTime = 10;
-    while (reTryTime > 0) {
+    final DefaultAsyncClient[] client = {null};
+    RuntimeUtil.waitForCondition(() -> {
       try {
-        client = new DefaultAsyncClient(String.format("list://127.0.0.1:%d", rpcServerPort));
-        client.strs().put("ping", "ping").get();
+        client[0] = new DefaultAsyncClient(String.format("list://127.0.0.1:%d", rpcServerPort));
+        client[0].strs().put("ping", "ping");
+        return true;
       } catch (Exception e) {
-        reTryTime--;
-        try {
-          TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException ex) {
-          ex.printStackTrace();
-        }
-        continue;
+        return false;
       }
-      break;
-    }
-    return client;
+    }, 2 * 60 * 1000);
+    return client[0];
   }
 }

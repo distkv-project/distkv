@@ -36,7 +36,7 @@ public class TestUtil {
       if (process != null) {
         process.destroyForcibly();
       }
-      System.out.println(e.getMessage());
+      LOGGER.error(e.getMessage());
       throw new RuntimeException("Error executing command " + String.join(" ", command), e);
     }
   }
@@ -59,26 +59,30 @@ public class TestUtil {
     rpcServerProcess = executeCommand(startCommand);
   }
 
-  public static void stopRpcServer() {
+  public static void stopProcess(Process process) {
     int numAttempts = 0;
-    while (rpcServerProcess.isAlive()) {
+    while (process.isAlive()) {
       if (numAttempts > 0) {
         LOGGER.warn("Attempting to kill rpc server, numAttempts={}.", numAttempts);
       }
       if (numAttempts == 0) {
-        rpcServerProcess.destroy();
+        process.destroy();
       } else {
-        rpcServerProcess.destroyForcibly();
+        process.destroyForcibly();
       }
       ++numAttempts;
       try {
-        rpcServerProcess.waitFor(KILL_PROCESS_WAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        process.waitFor(KILL_PROCESS_WAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
       } catch (InterruptedException e) {
         LOGGER.error("Failed to stop rpc server. This process is exiting.");
         System.exit(-1);
       }
     }
 
+  }
+
+  public static Process getProcess() {
+    return rpcServerProcess;
   }
 
 }

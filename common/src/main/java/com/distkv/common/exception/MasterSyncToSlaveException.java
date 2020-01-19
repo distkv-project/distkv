@@ -1,18 +1,18 @@
 package com.distkv.common.exception;
 
-public class MSSyncException extends DistKVException {
+public class MasterSyncToSlaveException extends DistKVException {
   protected String errorCode = ErrorCodeEnum
-      .KeyNotFoundErrorCode
+      .DistKVErrorCode
       .getErrorCode();
 
   protected String key;
 
-  public MSSyncException(String key) {
+  public MasterSyncToSlaveException(String key) {
     super(String.format("Master slave synchronization failed", key));
     this.key = key;
   }
 
-  public MSSyncException(String key, String typeCode) {
+  public MasterSyncToSlaveException(String key, String typeCode) {
     super(String.format("Master slave synchronization failed. key: %s", key));
     this.key = key;
     this.errorCode = typeCode + this.errorCode;

@@ -3,6 +3,7 @@ package com.distkv.client.mastersalversync;
 import com.distkv.client.DefaultDstClient;
 import com.distkv.client.DstClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.MasterSalverTestUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class TestMasterSalverSync {
+public class TestMasterSyncToSlaves {
 
   @Test
   public void mainTest() throws InterruptedException {
@@ -23,36 +24,24 @@ public class TestMasterSalverSync {
         "TestMasterSalverSync", "mainTest"));
     MasterSalverTestUtil.startAllProcess();
     TimeUnit.SECONDS.sleep(1);
-    DstClient client0 = null;
-    DstClient client1 = null;
-    int k = 10;
-    while (k > 0) {
-      boolean isTryAgain = false;
+    final DstClient[] client0 = {null};
+    final DstClient[] client1 = {null};
+    RuntimeUtil.waitForCondition(() -> {
       try {
-        client0 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18082));
-        client1 = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18090));
+        client0[0] = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18082));
+        client1[0] = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18090));
+        return true;
       } catch (Exception e) {
-        k--;
-        isTryAgain = true;
+        return false;
       }
-      if (isTryAgain) {
-        TimeUnit.SECONDS.sleep(1);
-        continue;
-      } else {
-        break;
-      }
-    }
-
-    if (k <= 0) {
-      throw new AssertionError();
-    }
+    }, 2 * 60 * 1000);
 
     //test
-    testStrPut(client0, client1);
-    testListPut(client0, client1);
-    testSetPut(client0, client1);
-    testDictPut(client0, client1);
-    testSlistPut(client0, client1);
+    testStrPut(client0[0], client1[0]);
+    testListPut(client0[0], client1[0]);
+    testSetPut(client0[0], client1[0]);
+    testDictPut(client0[0], client1[0]);
+    testSlistPut(client0[0], client1[0]);
     MasterSalverTestUtil.stopAllProcess();
     System.out.println("m-s sync test over");
   }

@@ -3,7 +3,7 @@ package com.distkv.common.utils;
 import java.util.function.Supplier;
 
 public class RuntimeUtil {
-  private static final int WAIT_INTERVAL_MS = 1000;
+  private static final int WAIT_INTERVAL_MS = 200;
 
   public static boolean waitForCondition(Supplier<Boolean> condition, int timeoutMs) {
     int waitTime = 0;

@@ -2,7 +2,7 @@ package com.distkv.client;
 
 import com.distkv.common.exception.DictKeyNotFoundException;
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.exception.MSSyncException;
+import com.distkv.common.exception.MasterSyncToSlaveException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.exception.DistKVListIndexOutOfBoundsException;
@@ -27,7 +27,7 @@ public class CheckStatusUtil {
       case SLIST_TOPNUM_BE_POSITIVE:
         throw new SortedListTopNumIsNonNegativeException(key, typeCode);
       case SYNC_ERROR:
-        throw new MSSyncException(key, typeCode);
+        throw new MasterSyncToSlaveException(key, typeCode);
       default:
         throw new DistKVException(typeCode + "000",
               String.format("Error status is %s", status.getClass().toString()));

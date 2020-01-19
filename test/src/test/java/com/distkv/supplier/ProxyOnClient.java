@@ -1,6 +1,6 @@
 package com.distkv.supplier;
 
-import com.distkv.common.exception.DistKVException;
+import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
@@ -15,27 +15,17 @@ public class ProxyOnClient<T> implements AutoCloseable {
     ClientConfig clientConfig = ClientConfig.builder()
         .address(String.format("dst://127.0.0.1:%d", serverPort))
         .build();
-    int k = 10;
-    while (k > 0) {
+    RuntimeUtil.waitForCondition(() -> {
       try {
         client = new NettyClient(clientConfig);
         client.open();
         proxy = new Proxy<>();
         proxy.setInterfaceClass(clazz);
+        return true;
       } catch (Exception e) {
-        try {
-          Thread.sleep(200);
-        } catch (InterruptedException ex) {
-          ex.printStackTrace();
-        }
-        k--;
-        continue;
+        return false;
       }
-      break;
-    }
-    if (k <= 0) {
-      throw new DistKVException("connect error");
-    }
+    }, 60 * 1000 * 2);
   }
 
   public T getService() {
