@@ -16,7 +16,8 @@ before_script:
   - bash ./scripts/install_dependencies.sh
 script:
   - travis_wait 30 ./mvnw clean install -DskipTests=false
-
+  - sudo sh test_pip_install.sh
+  
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - bash <(curl -s https://oapi.dingtalk.com/robot/send?access_token=4751a9833880fef766481c835b9f156deaaf77594d77b7b2c7a79bef3de924dc)
