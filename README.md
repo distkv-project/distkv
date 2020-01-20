@@ -70,10 +70,10 @@ distkv-cli > ("m2", -4), 3rd
 ```
 
 ## Java Client SDK
-[Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv-project/distkv/client/example/DstUsageExample.java)
+[Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/client/example/DstUsageExample.java)
 
 ## Java Async Client SDK
-[Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv-project/distkv/asyncclient/example/DstAsyncUsageExample.java)
+[Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/asyncclient/example/DstAsyncUsageExample.java)
 
 ## Getting Involved
 Thank you for your attention to the `DistKV` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/distkv-project/distkv/issues) list.
