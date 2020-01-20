@@ -1,5 +1,5 @@
 // TODO(qwang): Upgrade to proto3.
-syntax="proto2";
+syntax="proto3";
 
 package com.distkv.rpc.protobuf;
 
@@ -25,9 +25,9 @@ enum Status {
 
 // Drop the k-v pair by the given key.
 message DropRequest {
-    required string key = 1;
+    string key = 1;
 }
 
 message DropResponse {
-    required Status status = 1;
+    Status status = 1;
 }
