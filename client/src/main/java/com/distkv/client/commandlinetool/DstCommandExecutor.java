@@ -74,6 +74,11 @@ public class DstCommandExecutor {
         return CommandExecutorHandler.slistDrop(dstClient, parsedResult);
       case SLIST_GET_MEMBER:
         return CommandExecutorHandler.slistGetMember(dstClient, parsedResult);
+      case EXIT:
+        // User inputs `exit`, let's exit client immediately.
+        System.out.println("bye bye ~");
+        System.exit(0);
+        return null;
       default:
         return null;
     }

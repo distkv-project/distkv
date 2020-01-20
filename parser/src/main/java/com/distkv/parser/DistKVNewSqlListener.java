@@ -29,6 +29,13 @@ public class DistKVNewSqlListener extends DistKVNewSQLBaseListener {
   }
 
   @Override
+  public void enterExit(DistKVNewSQLParser.ExitContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 1);
+    parsedResult = new DistKVParsedResult(RequestTypeEnum.EXIT, null);
+  }
+
+  @Override
   public void enterStrPut(DistKVNewSQLParser.StrPutContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
