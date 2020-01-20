@@ -18,10 +18,15 @@ public class DistKVServerConfig {
   private int listeningPort;
   private boolean isMaster;
   private int shardsNum;
+  private boolean enableIOThreadOnly;
   private List<String> slaveAddresses;
 
   public boolean isMaster() {
     return isMaster;
+  }
+
+  public boolean enableIOThreadOnly() {
+    return enableIOThreadOnly;
   }
 
   public int getPort() {
@@ -44,6 +49,7 @@ public class DistKVServerConfig {
     listeningPort = config.getInt("store.listeningPort");
     isMaster = config.getBoolean("store.isMaster");
     shardsNum = config.getInt("store.shardsNum");
+    enableIOThreadOnly = config.getBoolean("store.enableIOThreadOnly");
     if (isMaster) {
       slaveAddresses = config.getStringList("store.slaveAddresses");
     } else {
@@ -56,6 +62,7 @@ public class DistKVServerConfig {
     return "listeningPort: " + listeningPort + ";\n"
         + "isMaster: " + isMaster + ";\n"
         + "shardNum: " + shardsNum + ";\n"
+        + "enableIOThreadOnly: " + enableIOThreadOnly + ";\n"
         + "slaves" + slaveAddresses.toString() + "\n";
   }
 
