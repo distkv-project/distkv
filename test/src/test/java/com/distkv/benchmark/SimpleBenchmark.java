@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 public class SimpleBenchmark {
-  private static final String ADDRESS = "list://127.0.0.1:8082";
+  private static final String ADDRESS = "distkv://127.0.0.1:8082";
   private static final String value = randomString(5);
   private static final Integer THREAD_COUNT = 2;
   private static final Integer LOOP_COUNT = 50000;
@@ -56,7 +56,7 @@ public class SimpleBenchmark {
             "tps                          " + tps + " k/s\n" +
             "=======================================================================");
     //DST stop server
-    TestUtil.stopRpcServer();
+    TestUtil.stopProcess(TestUtil.getProcess());
   }
 
   /**

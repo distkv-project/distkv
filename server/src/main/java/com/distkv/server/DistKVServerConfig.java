@@ -5,7 +5,9 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.File;
+import java.util.List;
 
 public class DistKVServerConfig {
   private static final Logger LOGGER = LoggerFactory.getLogger(DistKVServerConfig.class);
@@ -15,7 +17,8 @@ public class DistKVServerConfig {
 
   private int listeningPort;
   private boolean isMaster;
-  private int shardNum;
+  private int shardsNum;
+  private List<String> slaveAddresses;
 
   public boolean isMaster() {
     return isMaster;
@@ -30,20 +33,30 @@ public class DistKVServerConfig {
   }
 
   public int getShardNum() {
-    return shardNum;
+    return shardsNum;
+  }
+
+  public List<String> getSlaveAddresses() {
+    return slaveAddresses;
   }
 
   public DistKVServerConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     isMaster = config.getBoolean("store.isMaster");
-    shardNum = config.getInt("store.shardNum");
+    shardsNum = config.getInt("store.shardsNum");
+    if (isMaster) {
+      slaveAddresses = config.getStringList("store.slaveAddresses");
+    } else {
+      slaveAddresses = null;
+    }
   }
 
   @Override
   public String toString() {
     return "listeningPort: " + listeningPort + ";\n"
         + "isMaster: " + isMaster + ";\n"
-        + "shardNum: " + shardNum + ";\n";
+        + "shardNum: " + shardsNum + ";\n"
+        + "slaves" + slaveAddresses.toString() + "\n";
   }
 
   public static DistKVServerConfig create() {

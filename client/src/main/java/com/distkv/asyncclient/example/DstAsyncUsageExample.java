@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 
 public class DstAsyncUsageExample {
   public static void main(String[] args) throws ExecutionException, InterruptedException {
-    DefaultAsyncClient dstClient = new DefaultAsyncClient("list://127.0.0.1:8082");
+    DefaultAsyncClient dstClient = new DefaultAsyncClient("distkv://127.0.0.1:8082");
     if (dstClient.isConnected()) {
       CompletableFuture<StringProtocol.PutResponse> strPutFuture =
               dstClient.strs().put("k1","asd");

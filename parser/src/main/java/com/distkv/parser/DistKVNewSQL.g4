@@ -9,7 +9,11 @@ package com.distkv.parser.generated;
 */
 
 statement: (conceptStatement) EOF;
-conceptStatement: strStatement | listStatement | setStatement | dictStatement | slistStatement;
+conceptStatement: basicOperationsStatement | strStatement | listStatement | setStatement | dictStatement | slistStatement;
+
+// basic operations
+basicOperationsStatement: exit;
+exit: 'exit';
 
 // str concept
 strStatement: strPut | strGet | strDrop;
