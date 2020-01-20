@@ -1,4 +1,4 @@
-syntax="proto2";
+syntax="proto3";
 
 package com.distkv.rpc.protobuf;
 
@@ -9,12 +9,12 @@ option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
 
 message PutRequest {
-    required string key = 1;
+    string key = 1;
     repeated string values = 2;
 }
 
 message PutResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
 // The type of a `get` request.
@@ -30,34 +30,34 @@ enum GetType {
 
 // TODO(qwang): comment on this.
 message GetRequest {
-    required GetType type = 1;
-    required string key = 2;
-    optional int32 index = 3;
-    optional int32 from = 4;
-    optional int32 end = 5;
+    GetType type = 1;
+    string key = 2;
+    int32 index = 3;
+    int32 from = 4;
+    int32 end = 5;
 }
 
 message GetResponse {
-    required Status status = 1;
+    Status status = 1;
     repeated string values = 2;
 }
 
 message LPutRequest {
-    required string key = 1;
+    string key = 1;
     repeated string values = 2;
 }
 
 message LPutResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
 message RPutRequest {
-    required string key = 1;
+    string key = 1;
     repeated string values = 2;
 }
 
 message RPutResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
 //The type of a 'remove' request
@@ -65,30 +65,30 @@ message RPutResponse {
 // RemoveOne indicates we should remove a element of the specific index.
 // RemoveRange indicates we should remove the elements of a range index.
 enum RemoveType {
-    RemoveOne = 1;
-    RemoveRange = 2;
+    RemoveOne = 0;
+    RemoveRange = 1;
 }
 
 message RemoveRequest {
-    required RemoveType type = 1;
-    required string key = 2;
-    optional int32 index = 3;
-    optional int32 from = 4;
-    optional int32 end = 5;
+    RemoveType type = 1;
+    string key = 2;
+    int32 index = 3;
+    int32 from = 4;
+    int32 end = 5;
 }
 
 message RemoveResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
 
 message MRemoveRequest {
-    required string key = 1;
+    string key = 1;
     repeated int32 indexes = 2;
 }
 
 message MRemoveResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
 service DistKVListService {

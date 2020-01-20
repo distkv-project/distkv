@@ -44,7 +44,7 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <protocVersion>2.5.0</protocVersion>
+                            <protocVersion>3.5.1</protocVersion>
                             <addSources>none</addSources>
                             <includeStdTypes>true</includeStdTypes>
                             <outputDirectory>src/main/java</outputDirectory>

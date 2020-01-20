@@ -17,6 +17,10 @@ import com.distkv.parser.po.DistKVParsedResult;
 
 public class DstCommandLineToolStarter {
 
+  private static final String PROGRAM_NAME = "DistKV";
+
+  private static final String PROMPT_STRING = "dkv-cli> ";
+
   private static final String DEFAULT_VERSION = "0.1.0";
 
   @Parameter(names = {"--help", "-help"}, description = "Show help messages.",
@@ -37,7 +41,7 @@ public class DstCommandLineToolStarter {
     DstCommandLineToolStarter dstCommandLineToolStarter = new DstCommandLineToolStarter();
     JCommander jcommander = JCommander.newBuilder().addObject(
         dstCommandLineToolStarter).build();
-    jcommander.setProgramName("distkv");
+    jcommander.setProgramName(PROGRAM_NAME);
 
     try {
       jcommander.parse(args);
@@ -72,7 +76,7 @@ public class DstCommandLineToolStarter {
     DstCommandExecutor dstCommandExecutor = new DstCommandExecutor(dstClient);
     Scanner sc = new Scanner(System.in);
     while (true) {
-      System.out.print("distkv-cli> ");
+      System.out.print(PROMPT_STRING);
       final String command = sc.nextLine();
       String result = null;
       try {
@@ -91,7 +95,7 @@ public class DstCommandLineToolStarter {
       } catch (DistKVException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       }
-      System.out.println("distkv-cli> " + result);
+      System.out.println(PROMPT_STRING + result);
     }
   }
 

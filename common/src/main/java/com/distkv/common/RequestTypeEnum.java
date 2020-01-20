@@ -1,6 +1,9 @@
 package com.distkv.common;
 
 public enum RequestTypeEnum {
+  // basic operations
+  EXIT,
+
   STR_PUT,
   STR_GET,
   STR_DROP,
