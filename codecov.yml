@@ -12,7 +12,7 @@ coverage:
   precision: 2
   range: "50...100"
 ignore:
- - "rpc/src/main/java/com/distkv/dst/rpc/protobuf/generated"
+ - "rpc/src/main/java/com/distkv/rpc/protobuf/generated"
  - "test/.*"
  - ".github/.*"
  - "*.xml"

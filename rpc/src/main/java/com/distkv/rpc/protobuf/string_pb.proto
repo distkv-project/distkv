@@ -1,0 +1,33 @@
+syntax="proto2";
+
+package com.distkv.rpc.protobuf;
+
+import "common_pb.proto";
+
+option java_package="com.distkv.rpc.protobuf.generated";
+option java_outer_classname="StringProtocol";
+option cc_generic_services = true;
+
+message PutRequest {
+    required string key = 1;
+    required string value = 2;
+};
+
+message PutResponse {
+    required Status status = 1;
+};
+
+message GetRequest {
+    required string key = 1;
+}
+
+message GetResponse {
+    required Status status = 1;
+    optional string value =2;
+};
+
+service DistKVStringService {
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
+    rpc drop(DropRequest) returns (DropResponse);
+}

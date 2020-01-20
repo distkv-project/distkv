@@ -1,0 +1,81 @@
+syntax="proto2";
+
+package com.distkv.rpc.protobuf;
+
+import "common_pb.proto";
+
+option java_package="com.distkv.rpc.protobuf.generated";
+option java_outer_classname="DictProtocol";
+option cc_generic_services = true;
+
+message DistKVDict {
+    repeated string keys = 1;
+    repeated string values = 2;
+}
+
+message PutRequest {
+    required string key = 1;
+    required DistKVDict dict = 2;
+}
+
+message PutResponse {
+    required Status status = 1;
+}
+
+message GetRequest {
+    required string key = 1;
+}
+
+message GetResponse {
+    required Status status = 1;
+    optional DistKVDict dict = 2;
+}
+
+message GetItemRequest {
+    required string key = 1;
+    required string itemKey = 2;
+}
+
+message GetItemResponse {
+    optional string itemValue = 1;
+    required Status status = 2;
+}
+
+message PopItemRequest {
+    required string key = 1;
+    required string itemKey = 2;
+}
+
+message PopItemResponse {
+    optional string itemValue = 1;
+    required Status status = 2;
+}
+
+message PutItemRequest {
+    required string key = 1;
+    required string itemKey = 2;
+    required string itemValue = 3;
+}
+
+message PutItemResponse {
+    required Status status = 1;
+}
+
+message RemoveItemRequest {
+    required string key = 1;
+    required string itemKey = 2;
+}
+
+message RemoveItemResponse {
+    required Status status = 1;
+}
+
+service DistKVDictService {
+    rpc put(PutRequest) returns (PutResponse);
+    rpc get(GetRequest) returns (GetResponse);
+    rpc putItem(PutItemRequest) returns (PutItemResponse);
+    rpc getItem(GetItemRequest) returns (GetItemResponse);
+    rpc popItem(PopItemRequest) returns (PopItemResponse);
+    rpc RemoveItem(RemoveItemRequest) returns (RemoveItemResponse);
+    rpc drop(DropRequest) returns (DropResponse);
+}

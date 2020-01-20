@@ -3,13 +3,13 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>dst-superpom</artifactId>
+        <artifactId>distkv-superpom</artifactId>
         <groupId>com.distkv</groupId>
         <version>0.1.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dst-client</artifactId>
+    <artifactId>distkv-client</artifactId>
 
     <build>
         <plugins>
@@ -21,7 +21,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.distkv.dst.client.commandlinetool.DstCommandLineToolStarter</mainClass>
+                            <mainClass>com.distkv.client.commandlinetool.DstCommandLineToolStarter</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -41,17 +41,17 @@
     <dependencies>
         <dependency>
             <groupId>com.distkv</groupId>
-            <artifactId>dst-common</artifactId>
+            <artifactId>distkv-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.distkv</groupId>
-            <artifactId>dst-rpc</artifactId>
+            <artifactId>distkv-rpc</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.distkv</groupId>
-            <artifactId>dst-parser</artifactId>
+            <artifactId>distkv-parser</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
