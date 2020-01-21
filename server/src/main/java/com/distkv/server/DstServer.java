@@ -45,6 +45,7 @@ public class DstServer {
   public DstServer(DistKVServerConfig config) {
     this.config = config;
     ServerConfig config1 = ServerConfig.builder()
+        .enableIOThreadOnly(true)
         .port(config.getPort())
         .build();
     drpcServer = new DrpcServer(config1);
