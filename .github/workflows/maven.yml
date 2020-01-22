@@ -17,5 +17,7 @@ jobs:
       run: echo Hello, world!
     - name: Set up drpc env
       run: ./scripts/install_dependencies.sh
-    - name: Distkv Test Case
+    - name: Distkv package
       run: mvn clean install -DskipTests
+    - name: Distkv Test Case Run
+      run: mvn test
