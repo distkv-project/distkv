@@ -2,9 +2,11 @@
     <img src="docs/res/distkv_logo.png" width="282" height="170"> 
 </div>
 
+![](https://github.com/distkv-project/distkv/workflows/distkv%20build/badge.svg)
 [![Build Status](https://travis-ci.com/distkv-project/distkv.svg?branch=master)](https://travis-ci.com/distkv-project/distkv) 
 [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-distkv-project-distkv-master) 
 [![codecov](https://codecov.io/gh/distkv-project/distkv/branch/master/graph/badge.svg)](https://codecov.io/gh/distkv-project/distkv)
+
 
 A distributed key-value in-memory store system with table concept.
 
