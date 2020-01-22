@@ -1,4 +1,4 @@
-## Contributing to Dst
+## Contributing to Distkv
 If you are interested in helping. Whether it's to add new features, fix bugs, add tools or simply update documentations,
 please read the content below and send us a pull request!
 
