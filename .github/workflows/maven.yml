@@ -1,4 +1,4 @@
-name: distkv build
+name: distkv_build
 on:
   pull_request:
     branches:
