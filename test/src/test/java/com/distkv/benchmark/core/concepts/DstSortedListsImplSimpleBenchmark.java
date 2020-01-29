@@ -234,7 +234,7 @@ public class DstSortedListsImplSimpleBenchmark {
       int minValue, int maxValue, int len) {
     List<SortedListEntity> list = new LinkedList<>();
     for (int i = 0; i < len; i++) {
-      // Generated the entity which score is [minValue, maxValue].
+      // Generate the entity whose score is [minValue, maxValue].
       int randomValue = (int) (Math.random() * (maxValue - minValue + 1)) + minValue;
       list.add(new SortedListEntity(strings[randomValue], randomValue));
     }
