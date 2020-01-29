@@ -24,7 +24,7 @@ public class DstSortedListsImplSimpleBenchmark {
 
   static {
     strings = new String[maxValueInPutList + 1];
-    for (int i = 0; i <= maxValueInPutList; i++) {
+    for (int i = minValueInPutList; i <= maxValueInPutList; i++) {
       strings[i] = String.valueOf(i);
     }
   }
@@ -36,15 +36,15 @@ public class DstSortedListsImplSimpleBenchmark {
     // To test put
     double totalLinkedImplTimes = 0;
     double totalRBTreeImplTimes = 0;
+    List<SortedListEntity> putList = generatePutDatas(minValueInPutList,
+        maxValueInPutList, maxLengthInPutList);
+    List<SortedListEntity> copyList = new ArrayList<>(putList);
     for (int i = 0; i < maxOperationTimes; i++) {
       SortedList sortedListLinkedImpl = new SortedListLinkedImpl();
       SortedList sortedListRBTreeImpl = new SortedListRBTreeImpl();
-      List<SortedListEntity> list = generatePutDatas(minValueInPutList,
-          maxValueInPutList, maxLengthInPutList);
-      List<SortedListEntity> copy = new ArrayList<>(list);
-      double consume = testPut(sortedListLinkedImpl, list);
+      double consume = testPut(sortedListLinkedImpl, putList);
       totalLinkedImplTimes += addWeight(sortedListLinkedImpl, consume);
-      consume = testPut(sortedListRBTreeImpl, copy);
+      consume = testPut(sortedListRBTreeImpl, copyList);
       totalRBTreeImplTimes += addWeight(sortedListRBTreeImpl, consume);
 
     }

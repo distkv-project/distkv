@@ -57,11 +57,11 @@ public class SortedListRBTreeImpl
 
   @Override
   public boolean removeItem(String member) {
-    if (!this.containsMember(member)) {
+    final Integer score = memberScoreMap.get(member);
+    if (score == null) {
       return false;
     }
 
-    final Integer score = memberScoreMap.get(member);
     scoreMemberMap.remove(score, member);
     memberScoreMap.remove(member);
     size--;
