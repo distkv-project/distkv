@@ -57,7 +57,7 @@ public class SortedListRBTreeImpl
 
   @Override
   public boolean removeItem(String member) {
-    final Integer score = memberScoreMap.get(member);
+    final Integer score = memberScoreMap.getOrDefault(member, null);
     if (score == null) {
       return false;
     }
@@ -70,11 +70,11 @@ public class SortedListRBTreeImpl
 
   @Override
   public int incrScore(String member, int delta) {
-    if (!this.containsMember(member)) {
+    final Integer nowScore = memberScoreMap.getOrDefault(member, null);
+    if (nowScore == null) {
       return 0;
     }
 
-    final int nowScore = memberScoreMap.get(member);
     // Check if there is outing of range after increase the score:
     //     Case 1: The score will more than Integer.MAX_VALUE when delta is positive
     //     Case 2: The score will less than Integer.MIN_VALUE when delta is negative
@@ -132,7 +132,7 @@ public class SortedListRBTreeImpl
   @Override
   public DistKVTuple<Integer, Integer> getItem(String member) {
     DistKVTuple<Integer, Integer> distKVTuple = null;
-    if (containsMember(member)) {
+    if (this.memberScoreMap.containsKey(member)) {
       int index = 1;
       int nowRank = 1;
       int lastRank = 1;
@@ -164,10 +164,6 @@ public class SortedListRBTreeImpl
       }
     }
     return distKVTuple;
-  }
-
-  private boolean containsMember(String member) {
-    return memberScoreMap.containsKey(member);
   }
 
   /**
