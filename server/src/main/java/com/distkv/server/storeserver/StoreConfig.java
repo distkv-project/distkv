@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.List;
 
-public class StoreServerConfig {
-  private static final Logger LOGGER = LoggerFactory.getLogger(StoreServerConfig.class);
+public class StoreConfig {
+  private static final Logger LOGGER = LoggerFactory.getLogger(StoreConfig.class);
 
   public static final String CUSTOM_CONFIG_FILE = "store.conf";
   public static final String DEFAULT_CONFIG_FILE = "store.default.conf";
@@ -39,7 +39,7 @@ public class StoreServerConfig {
     return slaveAddresses;
   }
 
-  public StoreServerConfig(Config config) {
+  public StoreConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     isMaster = config.getBoolean("store.isMaster");
     shardsNum = config.getInt("store.shardsNum");
@@ -58,7 +58,7 @@ public class StoreServerConfig {
         + "slaves" + slaveAddresses.toString() + "\n";
   }
 
-  public static StoreServerConfig create() {
+  public static StoreConfig create() {
     ConfigFactory.invalidateCaches();
     Config config = ConfigFactory.systemProperties();
     String configPath = System.getProperty("distkv.store.config");
@@ -70,7 +70,7 @@ public class StoreServerConfig {
       config = config.withFallback(ConfigFactory.parseFile(new File(configPath)));
     }
     config = config.withFallback(ConfigFactory.load(DEFAULT_CONFIG_FILE));
-    return new StoreServerConfig(config);
+    return new StoreConfig(config);
   }
 }
 
