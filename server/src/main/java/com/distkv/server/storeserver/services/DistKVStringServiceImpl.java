@@ -23,14 +23,16 @@ public class DistKVStringServiceImpl implements DistKVStringService {
   @Override
   public CompletableFuture<StringProtocol.PutResponse> put(StringProtocol.PutRequest request) {
     CompletableFuture<StringProtocol.PutResponse> future = new CompletableFuture<>();
-    storeRuntime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.STR_PUT, request, future);
+    storeRuntime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.STR_PUT, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<StringProtocol.GetResponse> get(StringProtocol.GetRequest request) {
     CompletableFuture<StringProtocol.GetResponse> future = new CompletableFuture<>();
-    storeRuntime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.STR_GET, request, future);
+    storeRuntime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.STR_GET, request, future);
     return future;
   }
 

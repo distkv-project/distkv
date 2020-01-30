@@ -22,14 +22,16 @@ public class DistKVSetServiceImpl implements DistKVSetService {
   @Override
   public CompletableFuture<SetProtocol.PutResponse> put(SetProtocol.PutRequest request) {
     CompletableFuture<SetProtocol.PutResponse> future = new CompletableFuture<>();
-    storeRuntime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SET_PUT, request, future);
+    storeRuntime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.SET_PUT, request, future);
     return future;
   }
 
   @Override
   public CompletableFuture<SetProtocol.GetResponse> get(SetProtocol.GetRequest request) {
     CompletableFuture<SetProtocol.GetResponse> future = new CompletableFuture<>();
-    storeRuntime.getWorkerPool().postRequest(request.getKey(), RequestTypeEnum.SET_GET, request, future);
+    storeRuntime.getWorkerPool().postRequest(
+        request.getKey(), RequestTypeEnum.SET_GET, request, future);
     return future;
   }
 
