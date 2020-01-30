@@ -1,4 +1,4 @@
-package com.distkv.server;
+package com.distkv.server.storeserver;
 
 import com.google.common.base.Strings;
 import com.typesafe.config.Config;

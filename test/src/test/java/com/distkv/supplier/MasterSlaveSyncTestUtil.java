@@ -37,7 +37,7 @@ public class MasterSlaveSyncTestUtil {
           "-Ddistkv.config=" + confPath + "distkv_slave_" + (i + 1) + ".conf",
           "-classpath",
           jarDir,
-          "com.distkv.server.DstServer"
+          "com.distkv.server.storeserver.DstServer"
       );
       processes[i] = TestUtil.executeCommand(startCommand);
     }
@@ -47,7 +47,7 @@ public class MasterSlaveSyncTestUtil {
         "-Ddistkv.config=" + confPath + "distkv_master.conf",
         "-classpath",
         jarDir,
-        "com.distkv.server.DstServer"
+        "com.distkv.server.storeserver.DstServer"
     );
     processes[i] = TestUtil.executeCommand(startCommand);
   }

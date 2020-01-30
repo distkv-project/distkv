@@ -53,7 +53,7 @@ public class TestUtil {
         "java",
         "-classpath",
         jarDir,
-        "com.distkv.server.DstServer",
+        "com.distkv.server.storeserver.DstServer",
         String.valueOf(serverPort)
     );
     rpcServerProcess = executeCommand(startCommand);

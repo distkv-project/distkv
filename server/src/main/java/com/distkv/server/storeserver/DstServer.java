@@ -1,4 +1,4 @@
-package com.distkv.server;
+package com.distkv.server.storeserver;
 
 import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
