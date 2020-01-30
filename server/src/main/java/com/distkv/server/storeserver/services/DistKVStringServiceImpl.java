@@ -1,10 +1,10 @@
-package com.distkv.server.service;
+package com.distkv.server.storeserver.services;
 
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.service.DistKVStringService;
-import com.distkv.server.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.DistKVRuntime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

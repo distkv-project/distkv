@@ -1,4 +1,4 @@
-package com.distkv.server.runtime.slave;
+package com.distkv.server.storeserver.runtime.slave;
 
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;

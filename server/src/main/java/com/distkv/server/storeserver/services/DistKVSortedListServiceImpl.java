@@ -1,8 +1,8 @@
-package com.distkv.server.service;
+package com.distkv.server.storeserver.services;
 
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.service.DistKVSortedListService;
-import com.distkv.server.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.DistKVRuntime;
 import java.util.concurrent.CompletableFuture;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;

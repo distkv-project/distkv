@@ -1,4 +1,4 @@
-package com.distkv.server.runtime.workerpool;
+package com.distkv.server.storeserver.runtime.workerpool;
 
 import com.distkv.common.DistKVTuple;
 import com.distkv.common.NodeInfo;
@@ -22,8 +22,8 @@ import com.distkv.rpc.service.DistKVListService;
 import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
-import com.distkv.server.runtime.DistKVRuntime;
-import com.distkv.server.runtime.slave.SlaveClient;
+import com.distkv.server.storeserver.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
