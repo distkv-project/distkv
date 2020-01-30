@@ -6,7 +6,6 @@ import com.distkv.server.DistKVServerConfig;
 import com.distkv.server.runtime.workerpool.WorkerPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,13 +43,22 @@ public class DistKVRuntime {
       salveClients = null;
     }
 
-    workerPool = new WorkerPool(config.getShardNum(),
-        config.isMaster(),
-        salveClients);
+    workerPool = new WorkerPool(this);
   }
 
   public WorkerPool getWorkerPool() {
     return workerPool;
+  }
+
+  public DistKVServerConfig getConfig() {
+    return config;
+  }
+
+  public List<SalveClient> getAllSalveClients() {
+    return salveClients;
+  }
+  public void shutdown() {
+    workerPool.shutdown();
   }
 
 }

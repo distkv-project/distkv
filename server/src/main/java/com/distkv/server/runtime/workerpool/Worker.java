@@ -22,6 +22,7 @@ import com.distkv.rpc.service.DistKVListService;
 import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.server.runtime.DistKVRuntime;
 import com.distkv.server.runtime.salve.SalveClient;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
@@ -45,21 +46,18 @@ public class Worker extends Thread {
 
   private NodeInstance nodeInstance;
 
-  private boolean isMaster;
-
-  private List<SalveClient> salveClients;
+  private DistKVRuntime storeServerRuntime;
 
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
 
-  public Worker(boolean isMaster, List<SalveClient> salveClients) {
+  public Worker(DistKVRuntime storeServerRuntime) {
+    this.storeServerRuntime = storeServerRuntime;
     queue = new LinkedBlockingQueue<>();
-    this.salveClients = salveClients;
-    this.isMaster = isMaster;
   }
 
   private BlockingQueue<InternalRequest> queue;
 
-  // Note that this method is threading-safe.
+  // Note that this method is threading-safe because of the threading-safe blocking queue.
   public void post(InternalRequest internalRequest) throws InterruptedException {
     queue.put(internalRequest);
   }
@@ -72,6 +70,9 @@ public class Worker extends Thread {
   @SuppressWarnings({"unchecked"})
   @Override
   public void run() {
+    // Whether this store instance is a master instance.
+    final boolean isMaster = storeServerRuntime.getConfig().isMaster();
+    final List<SalveClient> salveClients = storeServerRuntime.getAllSalveClients();
     while (true) {
       try {
         InternalRequest internalRequest = queue.take();
@@ -1252,6 +1253,7 @@ public class Worker extends Thread {
       } catch (Throwable e) {
         LOGGER.error("Failed to execute event loop:" + e);
         // TODO(tuowang): Clean up some resource associated with DistKVRuntime
+        storeServerRuntime.shutdown();
         Runtime.getRuntime().exit(-1);
       }
     }

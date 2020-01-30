@@ -1,11 +1,10 @@
 package com.distkv.server.runtime.workerpool;
 
 import com.distkv.common.RequestTypeEnum;
-import com.distkv.server.runtime.salve.SalveClient;
+import com.distkv.server.runtime.DistKVRuntime;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import java.util.List;
 
 public class WorkerPool {
 
@@ -13,19 +12,13 @@ public class WorkerPool {
 
   private final int shardNum;
 
-  private boolean isMaster;
-
-  private List<SalveClient> salveClients;
-
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(int shardNum, boolean isMaster, List<SalveClient> salverClients) {
-    this.shardNum = shardNum;
-    this.isMaster = isMaster;
-    this.salveClients = salverClients;
+  public WorkerPool(DistKVRuntime storeServerRuntime) {
+    shardNum = storeServerRuntime.getConfig().getShardNum();
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
-      Worker worker = new Worker(isMaster, salveClients);
+      Worker worker = new Worker(storeServerRuntime);
       builder.add(worker);
       worker.start();
     }
@@ -42,6 +35,10 @@ public class WorkerPool {
       // TODO(qwang): Should be an assert here.
       LOGGER.error("Failed to post request to worker pool, key is {}", key);
     }
+  }
+
+  public void shutdown() {
+    // TODO(qwang): finish this.
   }
 
 }
