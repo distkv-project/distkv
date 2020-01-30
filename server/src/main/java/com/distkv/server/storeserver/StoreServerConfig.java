@@ -5,15 +5,14 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.util.List;
 
-public class DistKVServerConfig {
-  private static final Logger LOGGER = LoggerFactory.getLogger(DistKVServerConfig.class);
+public class StoreServerConfig {
+  private static final Logger LOGGER = LoggerFactory.getLogger(StoreServerConfig.class);
 
-  public static final String CUSTOM_CONFIG_FILE = "distkv.conf";
-  public static final String DEFAULT_CONFIG_FILE = "distkv.default.conf";
+  public static final String CUSTOM_CONFIG_FILE = "store.conf";
+  public static final String DEFAULT_CONFIG_FILE = "store.default.conf";
 
   private int listeningPort;
   private boolean isMaster;
@@ -40,7 +39,7 @@ public class DistKVServerConfig {
     return slaveAddresses;
   }
 
-  public DistKVServerConfig(Config config) {
+  public StoreServerConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     isMaster = config.getBoolean("store.isMaster");
     shardsNum = config.getInt("store.shardsNum");
@@ -59,19 +58,19 @@ public class DistKVServerConfig {
         + "slaves" + slaveAddresses.toString() + "\n";
   }
 
-  public static DistKVServerConfig create() {
+  public static StoreServerConfig create() {
     ConfigFactory.invalidateCaches();
     Config config = ConfigFactory.systemProperties();
-    String configPath = System.getProperty("distkv.config");
+    String configPath = System.getProperty("distkv.store.config");
     if (Strings.isNullOrEmpty(configPath)) {
-      LOGGER.info("Loading config from \"distkv.conf\" file in classpath.");
+      LOGGER.info("Loading config from \"store.conf\" file in classpath.");
       config = config.withFallback(ConfigFactory.load(CUSTOM_CONFIG_FILE));
     } else {
       LOGGER.info("Loading config from " + configPath + ".");
       config = config.withFallback(ConfigFactory.parseFile(new File(configPath)));
     }
     config = config.withFallback(ConfigFactory.load(DEFAULT_CONFIG_FILE));
-    return new DistKVServerConfig(config);
+    return new StoreServerConfig(config);
   }
 }
 

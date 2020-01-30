@@ -15,18 +15,18 @@ import com.distkv.server.storeserver.services.DistKVSortedListServiceImpl;
 import com.distkv.server.storeserver.services.DistKVStringServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
 
-public class DstServer {
+public class StoreServer {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DstServer.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(StoreServer.class);
 
   private DrpcServer drpcServer;
 
   private DistKVRuntime runtime;
 
-  private DistKVServerConfig config;
+  private StoreServerConfig config;
 
+  /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
       "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
@@ -42,7 +42,7 @@ public class DstServer {
       "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
       "'---'         ---`-'                                           ";
 
-  public DstServer(DistKVServerConfig config) {
+  public StoreServer(StoreServerConfig config) {
     this.config = config;
     ServerConfig config1 = ServerConfig.builder()
         .enableIOThreadOnly(true)
@@ -56,9 +56,9 @@ public class DstServer {
   public void run() {
     drpcServer.run();
     LOGGER.info("Succeeded to start dst server on port {}.", config.getPort());
-    synchronized (DstServer.class) {
+    synchronized (StoreServer.class) {
       try {
-        DstServer.class.wait();
+        StoreServer.class.wait();
       } catch (Throwable e) {
         LOGGER.error("Failed with the exception: {}", e.toString());
         System.exit(-1);
@@ -92,12 +92,12 @@ public class DstServer {
       }
     }
 
-    DistKVServerConfig config = DistKVServerConfig.create();
+    StoreServerConfig config = StoreServerConfig.create();
     if (listeningPort > 0) {
       config.setPort(listeningPort);
     }
-    DstServer dstServer = new DstServer(config);
+    StoreServer storeServer = new StoreServer(config);
     System.out.println(WELCOME_WORDS);
-    dstServer.run();
+    storeServer.run();
   }
 }

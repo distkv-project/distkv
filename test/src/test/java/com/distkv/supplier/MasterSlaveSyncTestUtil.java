@@ -34,20 +34,20 @@ public class MasterSlaveSyncTestUtil {
     for (i = 0; i < NODE_NUM - 1; i++) {
       final List<String> startCommand = ImmutableList.of(
           "java",
-          "-Ddistkv.config=" + confPath + "distkv_slave_" + (i + 1) + ".conf",
+          "-Ddistkv.store.config=" + confPath + "slave_store_" + (i + 1) + ".conf",
           "-classpath",
           jarDir,
-          "com.distkv.server.storeserver.DstServer"
+          "com.distkv.server.storeserver.StoreServer"
       );
       processes[i] = TestUtil.executeCommand(startCommand);
     }
 
     final List<String> startCommand = ImmutableList.of(
         "java",
-        "-Ddistkv.config=" + confPath + "distkv_master.conf",
+        "-Ddistkv.store.config=" + confPath + "master_store.conf",
         "-classpath",
         jarDir,
-        "com.distkv.server.storeserver.DstServer"
+        "com.distkv.server.storeserver.StoreServer"
     );
     processes[i] = TestUtil.executeCommand(startCommand);
   }
