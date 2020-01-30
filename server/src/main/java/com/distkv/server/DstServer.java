@@ -8,11 +8,11 @@ import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
 import com.distkv.server.runtime.DistKVRuntime;
-import com.distkv.server.service.DistKVDictServiceImpl;
-import com.distkv.server.service.DistKVListServiceImpl;
-import com.distkv.server.service.DistKVSetServiceImpl;
-import com.distkv.server.service.DistKVSortedListServiceImpl;
-import com.distkv.server.service.DistKVStringServiceImpl;
+import com.distkv.server.storeserver.services.DistKVDictServiceImpl;
+import com.distkv.server.storeserver.services.DistKVListServiceImpl;
+import com.distkv.server.storeserver.services.DistKVSetServiceImpl;
+import com.distkv.server.storeserver.services.DistKVSortedListServiceImpl;
+import com.distkv.server.storeserver.services.DistKVStringServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 // http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv

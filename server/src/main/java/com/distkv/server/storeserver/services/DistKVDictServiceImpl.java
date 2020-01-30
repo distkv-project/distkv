@@ -1,4 +1,4 @@
-package com.distkv.server.service;
+package com.distkv.server.storeserver.services;
 
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
