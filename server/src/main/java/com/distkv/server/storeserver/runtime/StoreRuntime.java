@@ -2,7 +2,7 @@ package com.distkv.server.storeserver.runtime;
 
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
-import com.distkv.server.storeserver.StoreServerConfig;
+import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.workerpool.WorkerPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +13,13 @@ public class StoreRuntime {
 
   private static Logger LOGGER = LoggerFactory.getLogger(StoreRuntime.class);
 
-  private StoreServerConfig config;
+  private StoreConfig config;
 
   private WorkerPool workerPool;
 
   private List<SlaveClient> slaveClients;
 
-  public StoreRuntime(StoreServerConfig config) {
+  public StoreRuntime(StoreConfig config) {
     this.config = config;
 
     if (config.isMaster()) {
@@ -50,7 +50,7 @@ public class StoreRuntime {
     return workerPool;
   }
 
-  public StoreServerConfig getConfig() {
+  public StoreConfig getConfig() {
     return config;
   }
 

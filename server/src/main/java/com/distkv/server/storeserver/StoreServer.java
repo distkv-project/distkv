@@ -24,7 +24,7 @@ public class StoreServer {
 
   private StoreRuntime storeRuntime;
 
-  private StoreServerConfig config;
+  private StoreConfig config;
 
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static String WELCOME_WORDS =
@@ -42,7 +42,7 @@ public class StoreServer {
       "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
       "'---'         ---`-'                                           ";
 
-  public StoreServer(StoreServerConfig config) {
+  public StoreServer(StoreConfig config) {
     this.config = config;
     ServerConfig config1 = ServerConfig.builder()
         .enableIOThreadOnly(true)
@@ -92,7 +92,7 @@ public class StoreServer {
       }
     }
 
-    StoreServerConfig config = StoreServerConfig.create();
+    StoreConfig config = StoreConfig.create();
     if (listeningPort > 0) {
       config.setPort(listeningPort);
     }
