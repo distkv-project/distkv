@@ -1,7 +1,7 @@
 package com.distkv.server.runtime;
 
 import com.distkv.common.utils.RuntimeUtil;
-import com.distkv.server.runtime.salve.SalveClient;
+import com.distkv.server.runtime.slave.SlaveClient;
 import com.distkv.server.DistKVServerConfig;
 import com.distkv.server.runtime.workerpool.WorkerPool;
 import org.slf4j.Logger;
@@ -17,18 +17,18 @@ public class DistKVRuntime {
 
   private WorkerPool workerPool;
 
-  private List<SalveClient> salveClients;
+  private List<SlaveClient> slaveClients;
 
   public DistKVRuntime(DistKVServerConfig config) {
     this.config = config;
 
     if (config.isMaster()) {
-      salveClients = new ArrayList<>();
-      for (String salverAddr : config.getSlaveAddresses()) {
-        final SalveClient[] client = {null};
+      slaveClients = new ArrayList<>();
+      for (String slaveAddr : config.getSlaveAddresses()) {
+        final SlaveClient[] client = {null};
         RuntimeUtil.waitForCondition(() -> {
           try {
-            client[0] = new SalveClient(salverAddr);
+            client[0] = new SlaveClient(slaveAddr);
             return true;
             //TODO : Drpc need to add a Exception to cover
             // io.netty.channel.AbstractChannel$AnnotatedConnectException
@@ -36,11 +36,11 @@ public class DistKVRuntime {
             return false;
           }
         }, 5 * 60 * 1000);
-        salveClients.add(client[0]);
-        LOGGER.info("Connecting to salver(" + salverAddr + ") success");
+        slaveClients.add(client[0]);
+        LOGGER.info("Connecting to slave(" + slaveAddr + ") success");
       }
     } else {
-      salveClients = null;
+      slaveClients = null;
     }
 
     workerPool = new WorkerPool(this);
@@ -54,8 +54,8 @@ public class DistKVRuntime {
     return config;
   }
 
-  public List<SalveClient> getAllSalveClients() {
-    return salveClients;
+  public List<SlaveClient> getAllSlaveClients() {
+    return slaveClients;
   }
 
   public void shutdown() {

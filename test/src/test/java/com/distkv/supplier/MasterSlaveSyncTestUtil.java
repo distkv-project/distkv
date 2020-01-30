@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.List;
 
-public class MasterSalverTestUtil {
+public class MasterSlaveSyncTestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MasterSalverTestUtil.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
       + File.separator + "distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
