@@ -7,7 +7,7 @@ import com.distkv.rpc.service.DistKVListService;
 import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
-import com.distkv.server.storeserver.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.services.DistKVDictServiceImpl;
 import com.distkv.server.storeserver.services.DistKVListServiceImpl;
 import com.distkv.server.storeserver.services.DistKVSetServiceImpl;
@@ -22,7 +22,7 @@ public class StoreServer {
 
   private DrpcServer drpcServer;
 
-  private DistKVRuntime runtime;
+  private StoreRuntime storeRuntime;
 
   private StoreServerConfig config;
 
@@ -49,7 +49,7 @@ public class StoreServer {
         .port(config.getPort())
         .build();
     drpcServer = new DrpcServer(config1);
-    runtime = new DistKVRuntime(config);
+    storeRuntime = new StoreRuntime(config);
     registerAllRpcServices();
   }
 
@@ -68,15 +68,15 @@ public class StoreServer {
 
   private void registerAllRpcServices() {
     drpcServer.registerService(
-        DistKVStringService.class, new DistKVStringServiceImpl(this.runtime));
+        DistKVStringService.class, new DistKVStringServiceImpl(this.storeRuntime));
     drpcServer.registerService(
-        DistKVListService.class, new DistKVListServiceImpl(this.runtime));
+        DistKVListService.class, new DistKVListServiceImpl(this.storeRuntime));
     drpcServer.registerService(
-        DistKVSetService.class, new DistKVSetServiceImpl(this.runtime));
+        DistKVSetService.class, new DistKVSetServiceImpl(this.storeRuntime));
     drpcServer.registerService(
-        DistKVDictService.class, new DistKVDictServiceImpl(this.runtime));
+        DistKVDictService.class, new DistKVDictServiceImpl(this.storeRuntime));
     drpcServer.registerService(
-        DistKVSortedListService.class, new DistKVSortedListServiceImpl(this.runtime));
+        DistKVSortedListService.class, new DistKVSortedListServiceImpl(this.storeRuntime));
   }
 
   public static void main(String[] args) {
