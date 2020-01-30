@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistKVRuntime {
+public class StoreRuntime {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(DistKVRuntime.class);
+  private static Logger LOGGER = LoggerFactory.getLogger(StoreRuntime.class);
 
   private StoreServerConfig config;
 
@@ -19,7 +19,7 @@ public class DistKVRuntime {
 
   private List<SlaveClient> slaveClients;
 
-  public DistKVRuntime(StoreServerConfig config) {
+  public StoreRuntime(StoreServerConfig config) {
     this.config = config;
 
     if (config.isMaster()) {

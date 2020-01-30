@@ -22,7 +22,7 @@ import com.distkv.rpc.service.DistKVListService;
 import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
-import com.distkv.server.storeserver.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
@@ -46,12 +46,12 @@ public class Worker extends Thread {
 
   private NodeInstance nodeInstance;
 
-  private DistKVRuntime storeServerRuntime;
+  private StoreRuntime storeRuntime;
 
   private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
 
-  public Worker(DistKVRuntime storeServerRuntime) {
-    this.storeServerRuntime = storeServerRuntime;
+  public Worker(StoreRuntime storeRuntime) {
+    this.storeRuntime = storeRuntime;
     queue = new LinkedBlockingQueue<>();
   }
 
@@ -71,8 +71,8 @@ public class Worker extends Thread {
   @Override
   public void run() {
     // Whether this store instance is a master instance.
-    final boolean isMaster = storeServerRuntime.getConfig().isMaster();
-    final List<SlaveClient> slaveClients = storeServerRuntime.getAllSlaveClients();
+    final boolean isMaster = storeRuntime.getConfig().isMaster();
+    final List<SlaveClient> slaveClients = storeRuntime.getAllSlaveClients();
     while (true) {
       try {
         InternalRequest internalRequest = queue.take();
@@ -1252,8 +1252,8 @@ public class Worker extends Thread {
         }
       } catch (Throwable e) {
         LOGGER.error("Failed to execute event loop:" + e);
-        // TODO(tuowang): Clean up some resource associated with DistKVRuntime
-        storeServerRuntime.shutdown();
+        // TODO(tuowang): Clean up some resource associated with StoreRuntime
+        storeRuntime.shutdown();
         Runtime.getRuntime().exit(-1);
       }
     }

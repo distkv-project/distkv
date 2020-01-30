@@ -1,7 +1,7 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
 import com.distkv.common.RequestTypeEnum;
-import com.distkv.server.storeserver.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -14,11 +14,11 @@ public class WorkerPool {
 
   private final ImmutableList<Worker> workers;
 
-  public WorkerPool(DistKVRuntime storeServerRuntime) {
-    shardNum = storeServerRuntime.getConfig().getShardNum();
+  public WorkerPool(StoreRuntime storeRuntime) {
+    shardNum = storeRuntime.getConfig().getShardNum();
     ImmutableList.Builder<Worker> builder = new ImmutableList.Builder<>();
     for (int i = 0; i < shardNum; ++i) {
-      Worker worker = new Worker(storeServerRuntime);
+      Worker worker = new Worker(storeRuntime);
       builder.add(worker);
       worker.start();
     }
