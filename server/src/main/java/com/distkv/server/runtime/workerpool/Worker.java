@@ -23,7 +23,7 @@ import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
 import com.distkv.server.runtime.DistKVRuntime;
-import com.distkv.server.runtime.salve.SalveClient;
+import com.distkv.server.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +72,7 @@ public class Worker extends Thread {
   public void run() {
     // Whether this store instance is a master instance.
     final boolean isMaster = storeServerRuntime.getConfig().isMaster();
-    final List<SalveClient> salveClients = storeServerRuntime.getAllSalveClients();
+    final List<SlaveClient> slaveClients = storeServerRuntime.getAllSlaveClients();
     while (true) {
       try {
         InternalRequest internalRequest = queue.take();
@@ -82,7 +82,7 @@ public class Worker extends Thread {
                 (StringProtocol.PutRequest) internalRequest.getRequest();
             /// This store instance is master, so we should sync this requests to all slaves.
             if (isMaster) {
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVStringService service = client.getStringService();
                   StringProtocol.PutResponse tempResponse =
@@ -98,7 +98,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(StringProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -118,7 +118,7 @@ public class Worker extends Thread {
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             /// This store instance is master, so we should sync this requests to all slaves.
             if (isMaster) {
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVStringService service = client.getStringService();
                   CommonProtocol.DropResponse tempResponse =
@@ -131,7 +131,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -179,7 +179,7 @@ public class Worker extends Thread {
                 (SetProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSetService service = client.getSetService();
                   SetProtocol.PutResponse tempResponse =
@@ -192,7 +192,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(SetProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -233,7 +233,7 @@ public class Worker extends Thread {
                 (SetProtocol.PutItemRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSetService service = client.getSetService();
                   SetProtocol.PutItemResponse tempResponse =
@@ -246,7 +246,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(SetProtocol.PutItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -270,7 +270,7 @@ public class Worker extends Thread {
                 (SetProtocol.RemoveItemRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSetService service = client.getSetService();
                   SetProtocol.RemoveItemResponse tempResponse =
@@ -283,7 +283,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(SetProtocol.RemoveItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -334,7 +334,7 @@ public class Worker extends Thread {
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSetService service = client.getSetService();
                   CommonProtocol.DropResponse tempResponse =
@@ -347,7 +347,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -378,7 +378,7 @@ public class Worker extends Thread {
                 (ListProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVListService service = client.getListService();
                   ListProtocol.PutResponse tempResponse =
@@ -391,7 +391,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -458,7 +458,7 @@ public class Worker extends Thread {
                 (ListProtocol.LPutRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVListService service = client.getListService();
                   ListProtocol.LPutResponse tempResponse =
@@ -471,7 +471,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.LPutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -504,7 +504,7 @@ public class Worker extends Thread {
                 (ListProtocol.RPutRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVListService service = client.getListService();
                   ListProtocol.RPutResponse tempResponse =
@@ -517,7 +517,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.RPutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -549,7 +549,7 @@ public class Worker extends Thread {
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVListService service = client.getListService();
                   CommonProtocol.DropResponse tempResponse =
@@ -562,7 +562,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -593,7 +593,7 @@ public class Worker extends Thread {
                 (ListProtocol.MRemoveRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVListService service = client.getListService();
                   ListProtocol.MRemoveResponse tempResponse =
@@ -606,7 +606,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.MRemoveResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -642,7 +642,7 @@ public class Worker extends Thread {
                 (ListProtocol.RemoveRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVListService service = client.getListService();
                   ListProtocol.RemoveResponse tempResponse =
@@ -655,7 +655,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(ListProtocol.RemoveResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -702,7 +702,7 @@ public class Worker extends Thread {
                 (DictProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVDictService service = client.getDictService();
                   DictProtocol.PutResponse tempResponse =
@@ -715,7 +715,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -797,7 +797,7 @@ public class Worker extends Thread {
                 (DictProtocol.PopItemRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVDictService service = client.getDictService();
                   DictProtocol.PopItemResponse tempResponse =
@@ -810,7 +810,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.PopItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -841,7 +841,7 @@ public class Worker extends Thread {
                 (DictProtocol.PutItemRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVDictService service = client.getDictService();
                   DictProtocol.PutItemResponse tempResponse =
@@ -854,7 +854,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.PutItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -880,7 +880,7 @@ public class Worker extends Thread {
                 (DictProtocol.RemoveItemRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVDictService service = client.getDictService();
                   DictProtocol.RemoveItemResponse tempResponse =
@@ -893,7 +893,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(DictProtocol.RemoveItemResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -923,7 +923,7 @@ public class Worker extends Thread {
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVDictService service = client.getDictService();
                   CommonProtocol.DropResponse tempResponse =
@@ -936,7 +936,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -962,7 +962,7 @@ public class Worker extends Thread {
                 (SortedListProtocol.PutRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutResponse tempResponse =
@@ -975,7 +975,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.PutResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1042,7 +1042,7 @@ public class Worker extends Thread {
                 (CommonProtocol.DropRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSortedListService service = client.getSortedListService();
                   CommonProtocol.DropResponse tempResponse =
@@ -1055,7 +1055,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(CommonProtocol.DropResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1085,7 +1085,7 @@ public class Worker extends Thread {
                 (SortedListProtocol.IncrScoreRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.IncrScoreResponse tempResponse =
@@ -1098,7 +1098,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.IncrScoreResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1131,7 +1131,7 @@ public class Worker extends Thread {
                 (SortedListProtocol.PutMemberRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutMemberResponse tempResponse =
@@ -1144,7 +1144,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.PutMemberResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
@@ -1175,7 +1175,7 @@ public class Worker extends Thread {
                 (SortedListProtocol.RemoveMemberRequest) internalRequest.getRequest();
             if (isMaster) {
               /// This store instance is master, so we should sync this requests to all slaves.
-              for (SalveClient client : salveClients) {
+              for (SlaveClient client : slaveClients) {
                 synchronized (client) {
                   DistKVSortedListService service = client.getSortedListService();
                   SortedListProtocol.RemoveMemberResponse tempResponse =
@@ -1188,7 +1188,7 @@ public class Worker extends Thread {
                             internalRequest.getCompletableFuture();
                     future.complete(SortedListProtocol.RemoveMemberResponse.newBuilder()
                         .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
-                    LOGGER.error("Process terminated because write to salve failed");
+                    LOGGER.error("Process terminated because write to slave failed");
                     Runtime.getRuntime().exit(-1);
                   }
                 }
