@@ -24,7 +24,7 @@ public class StoreServer {
 
   private DistKVRuntime runtime;
 
-  private DistKVServerConfig config;
+  private StoreServerConfig config;
 
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static String WELCOME_WORDS =
@@ -42,7 +42,7 @@ public class StoreServer {
       "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
       "'---'         ---`-'                                           ";
 
-  public StoreServer(DistKVServerConfig config) {
+  public StoreServer(StoreServerConfig config) {
     this.config = config;
     ServerConfig config1 = ServerConfig.builder()
         .enableIOThreadOnly(true)
@@ -92,7 +92,7 @@ public class StoreServer {
       }
     }
 
-    DistKVServerConfig config = DistKVServerConfig.create();
+    StoreServerConfig config = StoreServerConfig.create();
     if (listeningPort > 0) {
       config.setPort(listeningPort);
     }
