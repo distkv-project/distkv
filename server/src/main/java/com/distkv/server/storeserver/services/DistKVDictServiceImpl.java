@@ -4,7 +4,7 @@ import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.service.DistKVDictService;
-import com.distkv.server.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.DistKVRuntime;
 import java.util.concurrent.CompletableFuture;
 
 public class DistKVDictServiceImpl implements DistKVDictService {

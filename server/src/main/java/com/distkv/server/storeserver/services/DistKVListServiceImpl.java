@@ -3,7 +3,7 @@ package com.distkv.server.storeserver.services;
 import java.util.concurrent.CompletableFuture;
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.service.DistKVListService;
-import com.distkv.server.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.DistKVRuntime;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 

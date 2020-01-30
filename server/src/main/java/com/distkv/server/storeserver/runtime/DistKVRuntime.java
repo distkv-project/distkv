@@ -1,9 +1,9 @@
-package com.distkv.server.runtime;
+package com.distkv.server.storeserver.runtime;
 
 import com.distkv.common.utils.RuntimeUtil;
-import com.distkv.server.runtime.slave.SlaveClient;
+import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.distkv.server.storeserver.DistKVServerConfig;
-import com.distkv.server.runtime.workerpool.WorkerPool;
+import com.distkv.server.storeserver.runtime.workerpool.WorkerPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import com.distkv.rpc.service.DistKVListService;
 import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
-import com.distkv.server.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.DistKVRuntime;
 import com.distkv.server.storeserver.services.DistKVDictServiceImpl;
 import com.distkv.server.storeserver.services.DistKVListServiceImpl;
 import com.distkv.server.storeserver.services.DistKVSetServiceImpl;

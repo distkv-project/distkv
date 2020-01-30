@@ -1,7 +1,7 @@
-package com.distkv.server.runtime.workerpool;
+package com.distkv.server.storeserver.runtime.workerpool;
 
 import com.distkv.common.RequestTypeEnum;
-import com.distkv.server.runtime.DistKVRuntime;
+import com.distkv.server.storeserver.runtime.DistKVRuntime;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
