@@ -1,4 +1,4 @@
-package com.distkv.server.runtime.salve;
+package com.distkv.server.storeserver.runtime.slave;
 
 import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
@@ -10,7 +10,7 @@ import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
 
-public class SalveClient {
+public class SlaveClient {
 
   private DistKVStringService stringService;
 
@@ -26,7 +26,7 @@ public class SalveClient {
 
   private boolean isOpen;
 
-  public SalveClient(String serverAddress) {
+  public SlaveClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
         .address(serverAddress)
         .build();

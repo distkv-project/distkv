@@ -1,15 +1,14 @@
-package com.distkv.client.mastersalversync;
+package com.distkv.client.masterslavesync;
 
 import com.distkv.client.DefaultDstClient;
 import com.distkv.client.DstClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.RuntimeUtil;
-import com.distkv.supplier.MasterSalverTestUtil;
+import com.distkv.supplier.MasterSlaveSyncTestUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -21,8 +20,8 @@ public class TestMasterSyncToSlaves {
   @Test
   public void mainTest() throws InterruptedException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
-        "TestMasterSalverSync", "mainTest"));
-    MasterSalverTestUtil.startAllProcess();
+        "TestMasterSlaveSync", "mainTest"));
+    MasterSlaveSyncTestUtil.startAllProcess();
     TimeUnit.SECONDS.sleep(1);
     final DstClient[] client0 = {null};
     final DstClient[] client1 = {null};
@@ -42,7 +41,7 @@ public class TestMasterSyncToSlaves {
     testSetPut(client0[0], client1[0]);
     testDictPut(client0[0], client1[0]);
     testSlistPut(client0[0], client1[0]);
-    MasterSalverTestUtil.stopAllProcess();
+    MasterSlaveSyncTestUtil.stopAllProcess();
     System.out.println("m-s sync test over");
   }
 

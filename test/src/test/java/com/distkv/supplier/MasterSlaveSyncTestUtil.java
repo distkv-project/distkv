@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.List;
 
-public class MasterSalverTestUtil {
+public class MasterSlaveSyncTestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MasterSalverTestUtil.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
       + File.separator + "distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
@@ -34,20 +34,20 @@ public class MasterSalverTestUtil {
     for (i = 0; i < NODE_NUM - 1; i++) {
       final List<String> startCommand = ImmutableList.of(
           "java",
-          "-Ddistkv.config=" + confPath + "distkv_slave_" + (i + 1) + ".conf",
+          "-Ddistkv.store.config=" + confPath + "slave_store_" + (i + 1) + ".conf",
           "-classpath",
           jarDir,
-          "com.distkv.server.DstServer"
+          "com.distkv.server.storeserver.StoreServer"
       );
       processes[i] = TestUtil.executeCommand(startCommand);
     }
 
     final List<String> startCommand = ImmutableList.of(
         "java",
-        "-Ddistkv.config=" + confPath + "distkv_master.conf",
+        "-Ddistkv.store.config=" + confPath + "master_store.conf",
         "-classpath",
         jarDir,
-        "com.distkv.server.DstServer"
+        "com.distkv.server.storeserver.StoreServer"
     );
     processes[i] = TestUtil.executeCommand(startCommand);
   }

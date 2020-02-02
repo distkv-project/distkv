@@ -12,7 +12,7 @@ def main():
         "java",
          "-classpath",
          os.path.join(get_current_dir(), "distkv/jars/distkv-server.jar"),
-         "com.distkv.server.DstServer"]
+         "com.distkv.server.storeserver.StoreServer"]
     subprocess.check_call(command)
 
 if __name__ == "__main__":
