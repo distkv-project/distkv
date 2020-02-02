@@ -2,6 +2,8 @@ package com.distkv.common;
 
 public enum RequestTypeEnum {
   // basic operations
+
+  // TODO(qwang): Remove this and use the enum in `common_pb`.
   EXIT,
 
   STR_PUT,

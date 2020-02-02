@@ -57,12 +57,3 @@ message ExistsResponse {
     // If status is not OK, the result is undefined.
     bool result = 2;
 }
-
-service DistKVSetService {
-    rpc put(PutRequest) returns (PutResponse);
-    rpc get(GetRequest) returns (GetResponse);
-    rpc putItem(PutItemRequest) returns (PutItemResponse);
-    rpc removeItem(RemoveItemRequest) returns (RemoveItemResponse);
-    rpc exists(ExistsRequest) returns (ExistsResponse);
-    rpc drop(DropRequest) returns (DropResponse);
-}

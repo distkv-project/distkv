@@ -25,6 +25,10 @@ public class WorkerPool {
     workers = builder.build();
   }
 
+  public void postRequest(Object request, Object completableFuture) {
+    // TODO(qwang)
+  }
+
   public void postRequest(
       String key, RequestTypeEnum requestType, Object request, Object completableFuture) {
     final int workerIndex = Math.abs(key.hashCode()) % shardNum;

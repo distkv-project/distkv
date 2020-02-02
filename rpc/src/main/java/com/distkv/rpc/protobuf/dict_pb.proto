@@ -69,13 +69,3 @@ message RemoveItemRequest {
 message RemoveItemResponse {
     Status status = 1;
 }
-
-service DistKVDictService {
-    rpc put(PutRequest) returns (PutResponse);
-    rpc get(GetRequest) returns (GetResponse);
-    rpc putItem(PutItemRequest) returns (PutItemResponse);
-    rpc getItem(GetItemRequest) returns (GetItemResponse);
-    rpc popItem(PopItemRequest) returns (PopItemResponse);
-    rpc RemoveItem(RemoveItemRequest) returns (RemoveItemResponse);
-    rpc drop(DropRequest) returns (DropResponse);
-}

@@ -72,12 +72,3 @@ message GetMemberResponse {
     uint32 count = 3;
 }
 
-service DistKVListService {
-    rpc put (PutRequest) returns (PutResponse);
-    rpc top (TopRequest) returns (TopResponse);
-    rpc incrScore (IncrScoreRequest) returns (IncrScoreResponse);
-    rpc putMember (PutMemberRequest) returns (PutMemberResponse);
-    rpc removeMember (RemoveMemberRequest) returns (RemoveMemberResponse);
-    rpc getMember (GetMemberRequest) returns (GetMemberResponse);
-    rpc drop(DropRequest) returns (DropResponse);
-}

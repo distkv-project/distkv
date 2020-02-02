@@ -25,9 +25,3 @@ message GetResponse {
     Status status = 1;
     string value =2;
 };
-
-service DistKVStringService {
-    rpc put(PutRequest) returns (PutResponse);
-    rpc get(GetRequest) returns (GetResponse);
-    rpc drop(DropRequest) returns (DropResponse);
-}
