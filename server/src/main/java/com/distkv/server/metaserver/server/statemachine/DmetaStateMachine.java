@@ -9,9 +9,9 @@ import com.alipay.sofa.jraft.core.StateMachineAdapter;
 import com.alipay.sofa.jraft.error.RaftException;
 import com.alipay.sofa.jraft.storage.snapshot.SnapshotReader;
 import com.alipay.sofa.jraft.storage.snapshot.SnapshotWriter;
-import com.distkv.dmeta.server.DmetaStoreClosure;
-import com.distkv.dmeta.server.bean.PutKVRequest;
-import com.distkv.dmeta.server.bean.PutKVType;
+import com.distkv.server.metaserver.server.DmetaStoreClosure;
+import com.distkv.server.metaserver.server.bean.PutKVRequest;
+import com.distkv.server.metaserver.server.bean.PutKVType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
