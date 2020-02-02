@@ -1,9 +1,9 @@
-package com.distkv.dmeta.example.counter;
+package com.distkv.server.metaserver.example.counter;
 
 import com.alipay.sofa.jraft.Closure;
 import com.alipay.sofa.jraft.Status;
-import com.distkv.dmeta.example.counter.rpc.IncrementAndGetRequest;
-import com.distkv.dmeta.example.counter.rpc.ValueResponse;
+import com.distkv.server.metaserver.example.counter.rpc.IncrementAndGetRequest;
+import com.distkv.server.metaserver.example.counter.rpc.ValueResponse;
 
 public class IncrementAndAddClosure implements Closure {
   private CounterServer counterServer;

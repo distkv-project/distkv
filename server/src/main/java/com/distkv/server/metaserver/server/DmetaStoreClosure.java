@@ -1,9 +1,9 @@
-package com.distkv.dmeta.server;
+package com.distkv.server.metaserver.server;
 
 import com.alipay.sofa.jraft.Closure;
 import com.alipay.sofa.jraft.Status;
-import com.distkv.dmeta.server.bean.PutKVRequest;
-import com.distkv.dmeta.server.bean.PutKVResponse;
+import com.distkv.server.metaserver.server.bean.PutKVRequest;
+import com.distkv.server.metaserver.server.bean.PutKVResponse;
 
 public class DmetaStoreClosure implements Closure {
   private DmetaServer dmetaServer;

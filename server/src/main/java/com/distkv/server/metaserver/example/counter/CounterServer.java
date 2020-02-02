@@ -1,4 +1,4 @@
-package com.distkv.dmeta.example.counter;
+package com.distkv.server.metaserver.example.counter;
 
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.sofa.jraft.Node;
@@ -8,9 +8,9 @@ import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.NodeOptions;
 import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
 import org.apache.commons.io.FileUtils;
-import com.distkv.dmeta.example.counter.rpc.GetValueRequestProcessor;
-import com.distkv.dmeta.example.counter.rpc.IncrementAndGetRequestProcessor;
-import com.distkv.dmeta.example.counter.rpc.ValueResponse;
+import com.distkv.server.metaserver.example.counter.rpc.GetValueRequestProcessor;
+import com.distkv.server.metaserver.example.counter.rpc.IncrementAndGetRequestProcessor;
+import com.distkv.server.metaserver.example.counter.rpc.ValueResponse;
 
 import java.io.File;
 import java.io.IOException;

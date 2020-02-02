@@ -1,4 +1,4 @@
-package com.distkv.dmeta.example.counter.rpc;
+package com.distkv.server.metaserver.example.counter.rpc;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
@@ -6,8 +6,8 @@ import com.alipay.remoting.exception.CodecException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.alipay.remoting.serialization.SerializerManager;
 import com.alipay.sofa.jraft.entity.Task;
-import com.distkv.dmeta.example.counter.CounterServer;
-import com.distkv.dmeta.example.counter.IncrementAndAddClosure;
+import com.distkv.server.metaserver.example.counter.CounterServer;
+import com.distkv.server.metaserver.example.counter.IncrementAndAddClosure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package com.distkv.dmeta.server.processor;
+package com.distkv.server.metaserver.server.processor;
 
 import com.alipay.remoting.AsyncContext;
 import com.alipay.remoting.BizContext;
@@ -6,10 +6,10 @@ import com.alipay.remoting.exception.CodecException;
 import com.alipay.remoting.rpc.protocol.AsyncUserProcessor;
 import com.alipay.remoting.serialization.SerializerManager;
 import com.alipay.sofa.jraft.entity.Task;
-import com.distkv.dmeta.server.DmetaServer;
-import com.distkv.dmeta.server.DmetaStoreClosure;
-import com.distkv.dmeta.server.bean.PutKVRequest;
-import com.distkv.dmeta.server.bean.PutKVResponse;
+import com.distkv.server.metaserver.server.DmetaServer;
+import com.distkv.server.metaserver.server.DmetaStoreClosure;
+import com.distkv.server.metaserver.server.bean.PutKVRequest;
+import com.distkv.server.metaserver.server.bean.PutKVResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

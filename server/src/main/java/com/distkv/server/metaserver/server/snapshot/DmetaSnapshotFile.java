@@ -1,4 +1,4 @@
-package com.distkv.dmeta.server.snapshot;
+package com.distkv.server.metaserver.server.snapshot;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

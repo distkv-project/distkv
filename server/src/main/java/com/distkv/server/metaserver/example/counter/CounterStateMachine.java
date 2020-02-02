@@ -1,4 +1,4 @@
-package com.distkv.dmeta.example.counter;
+package com.distkv.server.metaserver.example.counter;
 
 import com.alipay.remoting.exception.CodecException;
 import com.alipay.remoting.serialization.SerializerManager;
@@ -13,8 +13,8 @@ import com.alipay.sofa.jraft.storage.snapshot.SnapshotWriter;
 import com.alipay.sofa.jraft.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.distkv.dmeta.example.counter.rpc.IncrementAndGetRequest;
-import com.distkv.dmeta.example.counter.snapshot.CounterSnapshotFile;
+import com.distkv.server.metaserver.example.counter.rpc.IncrementAndGetRequest;
+import com.distkv.server.metaserver.example.counter.snapshot.CounterSnapshotFile;
 
 import java.io.File;
 import java.io.IOException;

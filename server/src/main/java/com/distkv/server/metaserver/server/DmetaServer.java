@@ -8,9 +8,9 @@ import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.NodeOptions;
 import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
 import org.apache.commons.io.FileUtils;
-import com.distkv.dmeta.server.statemachine.DmetaStateMachine;
-import com.distkv.dmeta.server.processor.GetValueRequestProcessor;
-import com.distkv.dmeta.server.processor.PutKVRequestProcessor;
+import com.distkv.server.metaserver.server.statemachine.DmetaStateMachine;
+import com.distkv.server.metaserver.server.processor.GetValueRequestProcessor;
+import com.distkv.server.metaserver.server.processor.PutKVRequestProcessor;
 
 import java.io.File;
 import java.io.IOException;

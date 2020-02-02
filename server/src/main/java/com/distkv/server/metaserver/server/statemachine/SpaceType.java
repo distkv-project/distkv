@@ -1,4 +1,4 @@
-package com.distkv.dmeta.server.statemachine;
+package com.distkv.server.metaserver.server.statemachine;
 
 public enum  SpaceType {
   NAME_SPACE,

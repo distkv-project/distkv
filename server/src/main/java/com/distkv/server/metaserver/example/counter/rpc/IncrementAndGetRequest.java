@@ -1,4 +1,4 @@
-package com.distkv.dmeta.example.counter.rpc;
+package com.distkv.server.metaserver.example.counter.rpc;
 
 import java.io.Serializable;
 

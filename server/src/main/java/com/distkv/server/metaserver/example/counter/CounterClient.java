@@ -1,4 +1,4 @@
-package com.distkv.dmeta.example.counter;
+package com.distkv.server.metaserver.example.counter;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
@@ -11,8 +11,8 @@ import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
-import com.distkv.dmeta.example.counter.rpc.IncrementAndGetRequest;
-import com.distkv.dmeta.example.counter.rpc.ValueResponse;
+import com.distkv.server.metaserver.example.counter.rpc.IncrementAndGetRequest;
+import com.distkv.server.metaserver.example.counter.rpc.ValueResponse;
 
 public class CounterClient {
 

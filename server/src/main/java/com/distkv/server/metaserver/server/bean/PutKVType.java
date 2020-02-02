@@ -1,4 +1,4 @@
-package com.distkv.dmeta.server.bean;
+package com.distkv.server.metaserver.server.bean;
 
 public class PutKVType {
 

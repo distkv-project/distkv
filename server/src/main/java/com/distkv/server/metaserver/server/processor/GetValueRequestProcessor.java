@@ -2,9 +2,9 @@ package com.distkv.server.metaserver.server.processor;
 
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.SyncUserProcessor;
-import com.distkv.dmeta.server.DmetaServer;
-import com.distkv.dmeta.server.bean.GetValueRequest;
-import com.distkv.dmeta.server.bean.GetValueResponse;
+import com.distkv.server.metaserver.server.DmetaServer;
+import com.distkv.server.metaserver.server.bean.GetValueRequest;
+import com.distkv.server.metaserver.server.bean.GetValueResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

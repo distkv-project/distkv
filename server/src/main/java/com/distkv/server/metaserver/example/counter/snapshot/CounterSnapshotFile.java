@@ -1,10 +1,9 @@
-package com.distkv.dmeta.example.counter.snapshot;
+package com.distkv.server.metaserver.example.counter.snapshot;
 
 import com.alipay.remoting.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 

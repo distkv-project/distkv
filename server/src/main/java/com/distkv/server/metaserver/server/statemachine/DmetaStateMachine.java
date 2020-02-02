@@ -1,4 +1,4 @@
-package com.distkv.dmeta.server.statemachine;
+package com.distkv.server.metaserver.server.statemachine;
 
 import com.alipay.remoting.exception.CodecException;
 import com.alipay.remoting.serialization.SerializerManager;

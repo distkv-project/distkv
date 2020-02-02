@@ -1,8 +1,8 @@
-package com.distkv.dmeta.example.counter.rpc;
+package com.distkv.server.metaserver.example.counter.rpc;
 
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.SyncUserProcessor;
-import com.distkv.dmeta.example.counter.CounterServer;
+import com.distkv.server.metaserver.example.counter.CounterServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

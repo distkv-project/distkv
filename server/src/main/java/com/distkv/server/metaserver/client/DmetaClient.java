@@ -1,4 +1,4 @@
-package com.distkv.dmeta.client;
+package com.distkv.server.metaserver.client;
 
 import com.alipay.remoting.exception.RemotingException;
 import com.alipay.sofa.jraft.RouteTable;
@@ -6,11 +6,11 @@ import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
-import com.distkv.dmeta.server.bean.GetValueRequest;
-import com.distkv.dmeta.server.bean.GetValueResponse;
-import com.distkv.dmeta.server.bean.PutKVRequest;
-import com.distkv.dmeta.server.bean.PutKVResponse;
-import com.distkv.dmeta.server.bean.PutKVType;
+import com.distkv.server.metaserver.server.bean.GetValueRequest;
+import com.distkv.server.metaserver.server.bean.GetValueResponse;
+import com.distkv.server.metaserver.server.bean.PutKVRequest;
+import com.distkv.server.metaserver.server.bean.PutKVResponse;
+import com.distkv.server.metaserver.server.bean.PutKVType;
 import java.util.concurrent.TimeoutException;
 
 public class DmetaClient {
