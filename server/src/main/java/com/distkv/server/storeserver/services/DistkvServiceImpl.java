@@ -1,6 +1,6 @@
 package com.distkv.server.storeserver.services;
 
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 
@@ -15,8 +15,9 @@ public class DistkvServiceImpl implements DistkvService {
   }
 
   @Override
-  public CompletableFuture<CommonProtocol.DistkvResponse> call(CommonProtocol.DistkvRequest request) {
-    CompletableFuture<CommonProtocol.DistkvResponse> future = new CompletableFuture<>();
+  public CompletableFuture<DistkvProtocol.DistkvResponse> call(
+      DistkvProtocol.DistkvRequest request) {
+    CompletableFuture<DistkvProtocol.DistkvResponse> future = new CompletableFuture<>();
     storeRuntime.getWorkerPool().postRequest(request, future);
     return future;
   }

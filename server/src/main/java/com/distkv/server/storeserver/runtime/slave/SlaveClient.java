@@ -4,23 +4,21 @@ import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.netty.NettyClient;
-import com.distkv.rpc.service.DistKVDictService;
-import com.distkv.rpc.service.DistKVListService;
-import com.distkv.rpc.service.DistKVSetService;
-import com.distkv.rpc.service.DistKVSortedListService;
-import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.rpc.service.DistkvService;
 
 public class SlaveClient {
 
-  private DistKVStringService stringService;
+//  private DistKVStringService stringService;
+//
+//  private DistKVListService listService;
+//
+//  private DistKVSetService setService;
+//
+//  private DistKVDictService dictService;
+//
+//  private DistKVSortedListService sortedListService;
 
-  private DistKVListService listService;
-
-  private DistKVSetService setService;
-
-  private DistKVDictService dictService;
-
-  private DistKVSortedListService sortedListService;
+  private DistkvService distkvService;
 
   private Client rpcClient;
 

@@ -1,9 +1,11 @@
 package com.distkv.rpc.service;
 
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 
 import java.util.concurrent.CompletableFuture;
 
 public interface DistkvService {
-  CompletableFuture<CommonProtocol.DistkvResponse> call(CommonProtocol.DistkvRequest request);
+
+  CompletableFuture<DistkvProtocol.DistkvResponse> call(DistkvProtocol.DistkvRequest request);
+
 }

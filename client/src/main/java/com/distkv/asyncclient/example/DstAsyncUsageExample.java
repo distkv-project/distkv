@@ -19,7 +19,7 @@ public class DstAsyncUsageExample {
   public static void main(String[] args) throws ExecutionException, InterruptedException {
     DefaultAsyncClient dstClient = new DefaultAsyncClient("distkv://127.0.0.1:8082");
     if (dstClient.isConnected()) {
-      CompletableFuture<StringProtocol.PutResponse> strPutFuture =
+      CompletableFuture<StringProtocol.StrPutResponse> strPutFuture =
               dstClient.strs().put("k1","asd");
       CompletableFuture<ListProtocol.PutResponse> listPutFuture =
               dstClient.lists().put("k1", Arrays.asList("v1","v2","v3"));
