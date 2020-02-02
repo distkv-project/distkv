@@ -1,4 +1,4 @@
-package com.distkv.dmeta.client;
+package com.distkv.metaserver.client;
 
 import com.distkv.server.metaserver.client.DmetaClient;
 import com.distkv.supplier.DmetaTestUtil;

@@ -1,4 +1,4 @@
-package com.distkv.dmeta.store;
+package com.distkv.metaserver.store;
 
 import com.distkv.server.metaserver.server.statemachine.DataSpace;
 import com.distkv.server.metaserver.server.statemachine.NameSpace;
