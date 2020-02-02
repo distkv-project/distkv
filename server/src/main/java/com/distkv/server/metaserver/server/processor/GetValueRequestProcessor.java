@@ -1,4 +1,4 @@
-package com.distkv.dmeta.server.processor;
+package com.distkv.server.metaserver.server.processor;
 
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.SyncUserProcessor;

@@ -1,4 +1,4 @@
-package com.distkv.dmeta.server;
+package com.distkv.server.metaserver.server;
 
 import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.sofa.jraft.Node;
