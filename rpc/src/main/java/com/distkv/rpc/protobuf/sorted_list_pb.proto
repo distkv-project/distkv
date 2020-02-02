@@ -13,60 +13,60 @@ message SortedListEntity {
     string member = 2;
 }
 
-message PutRequest {
+message SlistPutRequest {
     string key = 1;
     repeated SortedListEntity list = 2;
 }
 
-message PutResponse {
+message SlistPutResponse {
     Status status = 1;
 }
 
-message TopRequest {
+message SlistTopRequest {
     string key = 1;
     uint32 count = 2;
 }
 
-message TopResponse {
+message SlistTopResponse {
     Status status = 1;
     repeated SortedListEntity list = 2;
 }
 
-message IncrScoreRequest {
+message SlistIncrScoreRequest {
     string key = 1;
     string member = 2;
     int32 delta = 3;
 }
 
-message IncrScoreResponse {
+message SlistIncrScoreResponse {
     Status status = 1;
 }
 
-message PutMemberRequest {
+message SlistPutMemberRequest {
     string key = 1;
     int32 score = 2;
     string member = 3;
 }
 
-message PutMemberResponse {
+message SlistPutMemberResponse {
     Status status = 1;
 }
 
-message RemoveMemberRequest {
+message SlistRemoveMemberRequest {
     string key = 1;
     string member = 2;
 }
 
-message RemoveMemberResponse {
+message SlistRemoveMemberResponse {
     Status status = 1;
 }
 
-message GetMemberRequest {
+message SlistGetMemberRequest {
     string key = 1;
     string member = 2;
 }
 
-message GetMemberResponse {
+message SlistGetMemberResponse {
     Status status = 1;
     SortedListEntity entity = 2;
     uint32 count = 3;

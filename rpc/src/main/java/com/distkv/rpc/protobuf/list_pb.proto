@@ -8,12 +8,12 @@ option java_package="com.distkv.rpc.protobuf.generated";
 option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
 
-message PutRequest {
+message ListPutRequest {
     string key = 1;
     repeated string values = 2;
 }
 
-message PutResponse {
+message ListPutResponse {
     Status status = 1;
 }
 
@@ -29,7 +29,7 @@ enum GetType {
 };
 
 // TODO(qwang): comment on this.
-message GetRequest {
+message ListGetRequest {
     GetType type = 1;
     string key = 2;
     int32 index = 3;
@@ -37,26 +37,26 @@ message GetRequest {
     int32 end = 5;
 }
 
-message GetResponse {
+message ListGetResponse {
     Status status = 1;
     repeated string values = 2;
 }
 
-message LPutRequest {
+message ListLPutRequest {
     string key = 1;
     repeated string values = 2;
 }
 
-message LPutResponse {
+message ListLPutResponse {
     Status status = 1;
 }
 
-message RPutRequest {
+message ListRPutRequest {
     string key = 1;
     repeated string values = 2;
 }
 
-message RPutResponse {
+message ListRPutResponse {
     Status status = 1;
 }
 
@@ -69,7 +69,7 @@ enum RemoveType {
     RemoveRange = 1;
 }
 
-message RemoveRequest {
+message ListRemoveRequest {
     RemoveType type = 1;
     string key = 2;
     int32 index = 3;
@@ -77,17 +77,17 @@ message RemoveRequest {
     int32 end = 5;
 }
 
-message RemoveResponse {
+message ListRemoveResponse {
     Status status = 1;
 }
 
 
-message MRemoveRequest {
+message ListMRemoveRequest {
     string key = 1;
     repeated int32 indexes = 2;
 }
 
-message MRemoveResponse {
+message ListMRemoveResponse {
     Status status = 1;
 }
 

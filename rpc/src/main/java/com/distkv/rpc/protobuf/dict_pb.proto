@@ -13,59 +13,59 @@ message DistKVDict {
     repeated string values = 2;
 }
 
-message PutRequest {
+message DictPutRequest {
     string key = 1;
     DistKVDict dict = 2;
 }
 
-message PutResponse {
+message DictPutResponse {
     Status status = 1;
 }
 
-message GetRequest {
+message DictGetRequest {
     string key = 1;
 }
 
-message GetResponse {
+message DictGetResponse {
     Status status = 1;
     DistKVDict dict = 2;
 }
 
-message GetItemRequest {
+message DictGetItemRequest {
     string key = 1;
     string itemKey = 2;
 }
 
-message GetItemResponse {
+message DictGetItemResponse {
     string itemValue = 1;
     Status status = 2;
 }
 
-message PopItemRequest {
+message DictPopItemRequest {
     string key = 1;
     string itemKey = 2;
 }
 
-message PopItemResponse {
+message DictPopItemResponse {
     string itemValue = 1;
     Status status = 2;
 }
 
-message PutItemRequest {
+message DictPutItemRequest {
     string key = 1;
     string itemKey = 2;
     string itemValue = 3;
 }
 
-message PutItemResponse {
+message DictPutItemResponse {
     Status status = 1;
 }
 
-message RemoveItemRequest {
+message DictRemoveItemRequest {
     string key = 1;
     string itemKey = 2;
 }
 
-message RemoveItemResponse {
+message DictRemoveItemResponse {
     Status status = 1;
 }
