@@ -13,9 +13,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Set up drpc env
+      - name: install the dependencies
         run: ./scripts/install_dependencies.sh
-      - name: distkv package
+      - name: package Distkv
         run: mvn clean install -DskipTests
       - name: distkv test case result
         run: mvn test
+      - name: report the result of code coverage
+        run: bash <(curl -s https://codecov.io/bash)
