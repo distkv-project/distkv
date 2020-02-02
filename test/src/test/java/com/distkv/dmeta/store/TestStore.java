@@ -1,8 +1,8 @@
 package com.distkv.dmeta.store;
 
-import com.distkv.dmeta.server.statemachine.DataSpace;
-import com.distkv.dmeta.server.statemachine.NameSpace;
-import com.distkv.dmeta.server.statemachine.SpaceInterface;
+import com.distkv.server.metaserver.server.statemachine.DataSpace;
+import com.distkv.server.metaserver.server.statemachine.NameSpace;
+import com.distkv.server.metaserver.server.statemachine.SpaceInterface;
 import org.testng.annotations.Test;
 
 public class TestStore {

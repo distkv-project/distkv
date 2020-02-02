@@ -1,5 +1,6 @@
 package com.distkv.dmeta.client;
 
+import com.distkv.server.metaserver.client.DmetaClient;
 import com.distkv.supplier.DmetaTestUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -7,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestServer {
 
-  @Test 
+  @Test
   public void testPutAndGet() throws InterruptedException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "DmetaTest", "testPutAndGet"));

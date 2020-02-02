@@ -54,12 +54,6 @@
             <version>${drpc.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.distkv</groupId>
-            <artifactId>distkv-dmeta</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
