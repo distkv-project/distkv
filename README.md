@@ -1,5 +1,5 @@
 <div align=left>
-    <img src="docs/res/distkv_logo.png" width="282" height="170"> 
+    <img src="docs/res/distkv_logo.png" width="400" height="400"> 
 </div>
 
 [![distkv build](https://github.com/distkv-project/distkv/workflows/distkv_build/badge.svg)](https://github.com/distkv-project/distkv/actions)
