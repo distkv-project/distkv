@@ -2,19 +2,19 @@ package com.distkv.client;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
-import com.distkv.rpc.service.DstSetService;
+import com.distkv.rpc.service.DistKVSetService;
 
 public class DstSetProxy {
 
   private String typeCode = "C";
 
-  private DstSetService service;
+  private DistKVSetService service;
 
-  public DstSetProxy(DstSetService service) {
+  public DstSetProxy(DistKVSetService service) {
     this.service = service;
   }
 
@@ -27,7 +27,7 @@ public class DstSetProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
-  public Set<String> get(String key) throws DstException {
+  public Set<String> get(String key) throws DistKVException {
     SetProtocol.GetRequest request =
             SetProtocol.GetRequest.newBuilder()
                     .setKey(key)

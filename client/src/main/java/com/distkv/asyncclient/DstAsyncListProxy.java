@@ -2,16 +2,16 @@ package com.distkv.asyncclient;
 
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
-import com.distkv.rpc.service.DstListService;
+import com.distkv.rpc.service.DistKVListService;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncListProxy {
 
-  private DstListService service;
+  private DistKVListService service;
 
-  public DstAsyncListProxy(DstListService service) {
+  public DstAsyncListProxy(DistKVListService service) {
     this.service = service;
   }
 

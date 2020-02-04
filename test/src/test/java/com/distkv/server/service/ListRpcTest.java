@@ -1,7 +1,7 @@
 package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
-import com.distkv.rpc.service.DstListService;
+import com.distkv.rpc.service.DistKVListService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import com.google.common.collect.ImmutableList;
@@ -21,9 +21,9 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testPutAndGet() {
-    try (ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(
-        DstListService.class, rpcServerPort)) {
-      final DstListService listService = listProxy.getService();
+    try (ProxyOnClient<DistKVListService> listProxy = new ProxyOnClient<>(
+        DistKVListService.class, rpcServerPort)) {
+      final DistKVListService listService = listProxy.getService();
 
       // Put.
       ListProtocol.PutRequest.Builder putRequestBuilder = ListProtocol.PutRequest.newBuilder();
@@ -54,9 +54,9 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testDrop() {
-    try (ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(
-        DstListService.class, rpcServerPort)) {
-      final DstListService listService = listProxy.getService();
+    try (ProxyOnClient<DistKVListService> listProxy = new ProxyOnClient<>(
+        DistKVListService.class, rpcServerPort)) {
+      final DistKVListService listService = listProxy.getService();
 
       // Put.
       ListProtocol.PutRequest.Builder putRequestBuilder = ListProtocol.PutRequest.newBuilder();
@@ -86,9 +86,9 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testLPut() {
-    try (ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(
-        DstListService.class, rpcServerPort)) {
-      final DstListService listService = listProxy.getService();
+    try (ProxyOnClient<DistKVListService> listProxy = new ProxyOnClient<>(
+        DistKVListService.class, rpcServerPort)) {
+      final DistKVListService listService = listProxy.getService();
 
       // Put.
       ListProtocol.PutRequest.Builder putRequestBuilder
@@ -138,9 +138,9 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testRPut() {
-    try (ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(
-        DstListService.class, rpcServerPort)) {
-      final DstListService listService = listProxy.getService();
+    try (ProxyOnClient<DistKVListService> listProxy = new ProxyOnClient<>(
+        DistKVListService.class, rpcServerPort)) {
+      final DistKVListService listService = listProxy.getService();
 
       // Put.
       ListProtocol.PutRequest.Builder putRequestBuilder
@@ -191,9 +191,9 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testRemove() {
-    try (ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(
-        DstListService.class, rpcServerPort)) {
-      final DstListService listService = listProxy.getService();
+    try (ProxyOnClient<DistKVListService> listProxy = new ProxyOnClient<>(
+        DistKVListService.class, rpcServerPort)) {
+      final DistKVListService listService = listProxy.getService();
 
       // Put.
       ListProtocol.PutRequest.Builder putRequestBuilder
@@ -249,9 +249,9 @@ public class ListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testMRemove() {
-    try (ProxyOnClient<DstListService> listProxy = new ProxyOnClient<>(
-        DstListService.class, rpcServerPort)) {
-      final DstListService listService = listProxy.getService();
+    try (ProxyOnClient<DistKVListService> listProxy = new ProxyOnClient<>(
+        DistKVListService.class, rpcServerPort)) {
+      final DistKVListService listService = listProxy.getService();
 
       // Put.
       ListProtocol.PutRequest.Builder putRequestBuilder

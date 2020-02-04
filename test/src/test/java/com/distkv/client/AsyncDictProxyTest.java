@@ -105,7 +105,7 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(putItemResponse.getStatus(), CommonProtocol.Status.OK);
     final Map<String, String> judgeDict = new HashMap<>();
-    DictProtocol.DstDict result = getResponse.getDict();
+    DictProtocol.DistKVDict result = getResponse.getDict();
     for (int i = 0; i < result.getKeysCount(); i++) {
       judgeDict.put(result.getKeys(i), result.getValues(i));
     }

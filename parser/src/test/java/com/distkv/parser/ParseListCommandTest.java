@@ -1,7 +1,7 @@
 package com.distkv.parser;
 
-import com.distkv.common.exception.DstException;
-import com.distkv.parser.po.DstParsedResult;
+import com.distkv.common.exception.DistKVException;
+import com.distkv.parser.po.DistKVParsedResult;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.common.RequestTypeEnum;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
@@ -10,12 +10,12 @@ import org.testng.annotations.Test;
 
 public class ParseListCommandTest {
 
-  private static final DstParser dstParser = new DstParser();
+  private static final DistKVParser dstParser = new DistKVParser();
 
   @Test
   public void testPut() {
     final String command = "list.put k1 v1 v2";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_PUT);
     ListProtocol.PutRequest request = (ListProtocol.PutRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
@@ -27,7 +27,7 @@ public class ParseListCommandTest {
   @Test
   public void testGetAll() {
     final String command = "list.get k1";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
     ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
     Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_ALL);
@@ -37,7 +37,7 @@ public class ParseListCommandTest {
   @Test
   public void testGetOne() {
     final String command = "list.get k1 3";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
     ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
     Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_ONE);
@@ -48,7 +48,7 @@ public class ParseListCommandTest {
   @Test
   public void testGetRange() {
     final String command = "list.get k1 4 9";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
     ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
     Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_RANGE);
@@ -60,7 +60,7 @@ public class ParseListCommandTest {
   @Test
   public void testLput() {
     final String command = "list.lput k1 v1 v2";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_LPUT);
     ListProtocol.LPutRequest request = (ListProtocol.LPutRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
@@ -72,7 +72,7 @@ public class ParseListCommandTest {
   @Test
   public void testDrop() {
     final String command = "list.drop k1";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_DROP);
     CommonProtocol.DropRequest request = (CommonProtocol.DropRequest) result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
@@ -86,7 +86,7 @@ public class ParseListCommandTest {
   @Test
   public void testRemoveOne() {
     final String command = "list.remove k1 3";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_REMOVE);
     ListProtocol.RemoveRequest request = (ListProtocol.RemoveRequest) result.getRequest();
 
@@ -98,7 +98,7 @@ public class ParseListCommandTest {
   @Test
   public void testRemoveRange() {
     final String command = "list.remove k1 3 5";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_REMOVE);
     ListProtocol.RemoveRequest request = (ListProtocol.RemoveRequest) result.getRequest();
 
@@ -111,7 +111,7 @@ public class ParseListCommandTest {
   @Test
   public void testMRemove() {
     final String command = "list.mremove k1 2 4 5 7";
-    DstParsedResult result = dstParser.parse(command);
+    DistKVParsedResult result = dstParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_M_REMOVE);
     ListProtocol.MRemoveRequest request = (ListProtocol.MRemoveRequest) result.getRequest();
 
@@ -127,7 +127,7 @@ public class ParseListCommandTest {
     // TODO(qwang): Should be finished.
   }
 
-  @Test(expectedExceptions = DstException.class)
+  @Test(expectedExceptions = DistKVException.class)
   public void testInvalidPutCommand() {
     final String command = "list.ldel k1";
     dstParser.parse(command);

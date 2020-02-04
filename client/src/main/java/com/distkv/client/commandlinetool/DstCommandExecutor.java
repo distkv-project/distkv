@@ -1,7 +1,7 @@
 package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DstClient;
-import com.distkv.parser.po.DstParsedResult;
+import com.distkv.parser.po.DistKVParsedResult;
 
 
 public class DstCommandExecutor {
@@ -12,7 +12,7 @@ public class DstCommandExecutor {
     this.dstClient = dstClient;
   }
 
-  public String execute(DstParsedResult parsedResult) {
+  public String execute(DistKVParsedResult parsedResult) {
     switch (parsedResult.getRequestType()) {
       case STR_PUT:
         return CommandExecutorHandler.strPut(dstClient, parsedResult);
@@ -74,6 +74,11 @@ public class DstCommandExecutor {
         return CommandExecutorHandler.slistDrop(dstClient, parsedResult);
       case SLIST_GET_MEMBER:
         return CommandExecutorHandler.slistGetMember(dstClient, parsedResult);
+      case EXIT:
+        // User inputs `exit`, let's exit client immediately.
+        System.out.println("bye bye ~");
+        System.exit(0);
+        return null;
       default:
         return null;
     }

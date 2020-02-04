@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class SortedListTopNumIsNonNegativeException extends DstException {
+public class SortedListTopNumIsNonNegativeException extends DistKVException {
 
   protected String errorCode = ErrorCodeEnum
       .SortedListTopNumBeNonNegativeErrorCode

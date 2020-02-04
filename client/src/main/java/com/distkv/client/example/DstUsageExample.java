@@ -14,7 +14,7 @@ import com.distkv.common.entity.sortedList.SortedListEntity;
 
 public class DstUsageExample {
   public static void main(String[] args) {
-    DefaultDstClient dstClient = new DefaultDstClient("list://127.0.0.1:8082");
+    DefaultDstClient dstClient = new DefaultDstClient("distkv://127.0.0.1:8082");
     if (dstClient.isConnected()) {
       dstClient.strs().put("k1", "v1");
       dstClient.sets().put("k1", new HashSet<>(Arrays.asList("v1", "v2", "v3", "v3")));

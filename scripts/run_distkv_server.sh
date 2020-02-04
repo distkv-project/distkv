@@ -12,4 +12,4 @@ fi
 
 SCRIPT_DIR=$(dirname $SCRIPT_ABS)
 
-java -classpath $SCRIPT_DIR/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar DstServer
+java -classpath $SCRIPT_DIR/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar StoreServer

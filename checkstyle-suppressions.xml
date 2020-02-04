@@ -17,4 +17,6 @@
     <suppress checks=".*" files="src[\\/]main[\\/]java[\\/]com[\\/]distkv[\\/]parser[\\/]generated" />
     <!-- for linux separator-->
     <suppress checks=".*" files="src[\\\\]main[\\\\]java[\\\\]com[\\\\]distkv[\\\\]parser[\\\\]generated" />
+
+    <suppress checks=".*" files="target" />
 </suppressions>

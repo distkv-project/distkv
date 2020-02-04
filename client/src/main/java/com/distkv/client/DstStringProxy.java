@@ -1,10 +1,10 @@
 package com.distkv.client;
 
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
-import com.distkv.rpc.service.DstStringService;
+import com.distkv.rpc.service.DistKVStringService;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -12,9 +12,9 @@ public class DstStringProxy {
 
   private String typeCode = "A";
 
-  private DstStringService service;
+  private DistKVStringService service;
 
-  public DstStringProxy(DstStringService service) {
+  public DstStringProxy(DistKVStringService service) {
     this.service = service;
   }
 
@@ -30,7 +30,7 @@ public class DstStringProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
-  public String get(String key) throws DstException {
+  public String get(String key) throws DistKVException {
     StringProtocol.GetRequest request =
         StringProtocol.GetRequest.newBuilder()
             .setKey(key)

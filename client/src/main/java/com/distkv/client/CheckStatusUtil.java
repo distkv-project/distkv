@@ -1,11 +1,12 @@
 package com.distkv.client;
 
-import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.DictKeyNotFoundException;
-import com.distkv.common.exception.DstListIndexOutOfBoundsException;
+import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.MasterSyncToSlaveException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.common.exception.DstException;
+import com.distkv.common.exception.DistKVListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistKVException;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 
 public class CheckStatusUtil {
@@ -20,13 +21,15 @@ public class CheckStatusUtil {
       case DICT_KEY_NOT_FOUND:
         throw new DictKeyNotFoundException(key, typeCode);
       case LIST_INDEX_OUT_OF_BOUNDS:
-        throw new DstListIndexOutOfBoundsException(key, typeCode);
+        throw new DistKVListIndexOutOfBoundsException(key, typeCode);
       case SLIST_MEMBER_NOT_FOUND:
         throw new SortedListMemberNotFoundException(key, typeCode);
       case SLIST_TOPNUM_BE_POSITIVE:
         throw new SortedListTopNumIsNonNegativeException(key, typeCode);
+      case SYNC_ERROR:
+        throw new MasterSyncToSlaveException(key, typeCode);
       default:
-        throw new DstException(typeCode + "000",
+        throw new DistKVException(typeCode + "000",
               String.format("Error status is %s", status.getClass().toString()));
     }
   }

@@ -1,4 +1,4 @@
-syntax="proto2";
+syntax="proto3";
 
 package com.distkv.rpc.protobuf;
 
@@ -8,69 +8,69 @@ option java_package="com.distkv.rpc.protobuf.generated";
 option java_outer_classname="DictProtocol";
 option cc_generic_services = true;
 
-message DstDict {
+message DistKVDict {
     repeated string keys = 1;
     repeated string values = 2;
 }
 
 message PutRequest {
-    required string key = 1;
-    required DstDict dict = 2;
+    string key = 1;
+    DistKVDict dict = 2;
 }
 
 message PutResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
 message GetRequest {
-    required string key = 1;
+    string key = 1;
 }
 
 message GetResponse {
-    required Status status = 1;
-    optional DstDict dict = 2;
+    Status status = 1;
+    DistKVDict dict = 2;
 }
 
 message GetItemRequest {
-    required string key = 1;
-    required string itemKey = 2;
+    string key = 1;
+    string itemKey = 2;
 }
 
 message GetItemResponse {
-    optional string itemValue = 1;
-    required Status status = 2;
+    string itemValue = 1;
+    Status status = 2;
 }
 
 message PopItemRequest {
-    required string key = 1;
-    required string itemKey = 2;
+    string key = 1;
+    string itemKey = 2;
 }
 
 message PopItemResponse {
-    optional string itemValue = 1;
-    required Status status = 2;
+    string itemValue = 1;
+    Status status = 2;
 }
 
 message PutItemRequest {
-    required string key = 1;
-    required string itemKey = 2;
-    required string itemValue = 3;
+    string key = 1;
+    string itemKey = 2;
+    string itemValue = 3;
 }
 
 message PutItemResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
 message RemoveItemRequest {
-    required string key = 1;
-    required string itemKey = 2;
+    string key = 1;
+    string itemKey = 2;
 }
 
 message RemoveItemResponse {
-    required Status status = 1;
+    Status status = 1;
 }
 
-service DstDictService {
+service DistKVDictService {
     rpc put(PutRequest) returns (PutResponse);
     rpc get(GetRequest) returns (GetResponse);
     rpc putItem(PutItemRequest) returns (PutItemResponse);
