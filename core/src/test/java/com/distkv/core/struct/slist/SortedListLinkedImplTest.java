@@ -11,6 +11,13 @@ public class SortedListLinkedImplTest {
 
   @Test
   public void testMain() {
+    SortedList slist = new SortedListLinkedImpl();
+    slist.putItem(new SortedListEntity(String.valueOf(123), 123));
+    slist.putItem(new SortedListEntity(String.valueOf(123), 122));
+    slist = new SortedListLinkedImpl();
+    slist.putItem(new SortedListEntity(String.valueOf(123), 123));
+    slist.putItem(new SortedListEntity(String.valueOf(123), 124));
+
     SortedList sortedList = new SortedListLinkedImpl();
 
     // For init
