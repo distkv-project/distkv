@@ -6,8 +6,6 @@ import com.distkv.core.concepts.DstSortedLists;
 import com.distkv.core.concepts.DistKVStrings;
 import com.distkv.core.concepts.DistKVDictsImpl;
 import com.distkv.core.concepts.DistKVStringsImpl;
-import com.distkv.core.concepts.DistKVTablesImpl;
-import com.distkv.core.concepts.DistKVTables;
 import com.distkv.core.concepts.DistKVDicts;
 import com.distkv.core.concepts.DistKVSets;
 import com.distkv.core.concepts.DistKVLists;
@@ -25,14 +23,11 @@ public class KVStoreImpl implements KVStore {
 
   private DstSortedLists sortedLists;
 
-  private DistKVTablesImpl tables;
-
   public KVStoreImpl() {
     this.strs = new DistKVStringsImpl();
     this.lists = new DistKVListsImpl();
     this.sets = new DistKVSetsImpl();
     this.dicts = new DistKVDictsImpl();
-    this.tables = new DistKVTablesImpl();
     this.sortedLists = new DistKVSortedListsImpl();
   }
 
@@ -59,11 +54,6 @@ public class KVStoreImpl implements KVStore {
   @Override
   public DstSortedLists sortLists() {
     return sortedLists;
-  }
-
-  @Override
-  public DistKVTables tables() {
-    return tables;
   }
 
 }
