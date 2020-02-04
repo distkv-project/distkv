@@ -10,8 +10,9 @@ public class DmetaTestUtil {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DmetaTestUtil.class);
 
-  private static final String SERVER_SUFFIX_JAR_DIR = "dmeta" + File.separator + "target"
-      + File.separator + "distkv-dmeta-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
+  private static final String SERVER_SUFFIX_JAR_DIR = "server" + File.separator + "target"
+      + File.separator + "distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar";
+
   private static final int NODE_NUM = 3;
 
   private static Process[] processes = new Process[NODE_NUM];
@@ -31,7 +32,7 @@ public class DmetaTestUtil {
           "java",
           "-classpath",
           jarDir,
-          "com.distkv.dmeta.server.DmetaServer",
+          "com.distkv.server.metaserver.server.DmetaServer",
           userDir.getPath() + File.separator + "tmp" + File.separator + "server" + (i + 1),
           "KV",
           "127.0.0.1:808" + (i + 1),
