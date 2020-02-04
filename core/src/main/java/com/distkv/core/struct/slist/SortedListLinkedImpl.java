@@ -267,11 +267,16 @@ public final class SortedListLinkedImpl
     if (!isEmpty()) {
       if (node == first) {
         first = node.next;
-        first.prev = null;
+        if (first != null) {
+          first.prev = null;
+        }
       } else if (node == last) {
         last = node.prev;
-        last.next = null;
+        if (last != null) {
+          last.next = null;
+        }
       } else {
+        // In this branch, node.prev must be non empty, node.next must be non empty
         node.prev.next = node.next;
         node.next.prev = node.prev;
       }
