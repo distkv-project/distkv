@@ -1,7 +1,7 @@
 :: Install drpc.
 
 SET DRPC_REPOSITORY_URL="https://github.com/distkv-project/drpc.git"
-SET DRPC_COMMIT_ID="4db43a029d4c2cfb9750f87a17754f76435648e0"
+SET DRPC_COMMIT_ID="91118d370ff86a7be05d5ecb61236d5202f7d837"
 
 git clone %DRPC_REPOSITORY_URL% drpc_tmp
 pushd drpc_tmp
