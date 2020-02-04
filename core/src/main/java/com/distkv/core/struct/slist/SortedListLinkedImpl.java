@@ -264,28 +264,29 @@ public final class SortedListLinkedImpl
 
   private void deleteNode(
       Node<SortedListEntity> node) {
-    if (!isEmpty()) {
-      if (node == first) {
-        first = node.next;
-        if (first != null) {
-          first.prev = null;
-        }
-      } else if (node == last) {
-        last = node.prev;
-        if (last != null) {
-          last.next = null;
-        }
-      } else {
-        // In this branch, node.prev must be non empty, node.next must be non empty
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-      }
-      // let it gc
-      node.prev = null;
-      node.next = null;
-      node.item = null;
-      size--;
+    if (isEmpty()) {
+      return ;
     }
+    if (node == first) {
+      first = node.next;
+      if (first != null) {
+        first.prev = null;
+      }
+    } else if (node == last) {
+      last = node.prev;
+      if (last != null) {
+        last.next = null;
+      }
+    } else {
+      // In this branch, node.prev must be non empty, node.next must be non empty
+      node.prev.next = node.next;
+      node.next.prev = node.prev;
+    }
+    // let it gc
+    node.prev = null;
+    node.next = null;
+    node.item = null;
+    size--;
   }
 
   private int compares(
