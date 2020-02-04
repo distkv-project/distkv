@@ -1,4 +1,4 @@
-package com.distkv.benchmark.core;
+package com.distkv.benchmark;
 
 import java.util.ArrayList;
 import java.util.List;

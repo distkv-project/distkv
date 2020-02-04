@@ -1,6 +1,5 @@
 package com.distkv.benchmark;
 
-import com.distkv.benchmark.core.Benchmark;
 import redis.clients.jedis.Jedis;
 
 public class RdsBenchmarkTest {
