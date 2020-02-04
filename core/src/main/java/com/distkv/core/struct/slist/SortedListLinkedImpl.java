@@ -265,7 +265,7 @@ public final class SortedListLinkedImpl
   private void deleteNode(
       Node<SortedListEntity> node) {
     if (isEmpty()) {
-      return ;
+      return;
     }
     if (node == first) {
       first = node.next;
