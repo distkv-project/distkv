@@ -35,9 +35,11 @@ public class SortedListLinkedImplTest {
     Assert.assertEquals(sortedList.size(), 18);
 
     // Test putItem
+    sortedList.putItem(new SortedListEntity("119", 120));
     sortedList.putItem(new SortedListEntity("109", 99));
     sortedList.putItem(new SortedListEntity("119", 20));
     sortedList.putItem(new SortedListEntity("115", -98));
+    sortedList.putItem(new SortedListEntity("100", 99));
 
     // Test getSize
     Assert.assertEquals(sortedList.size(), 19);
