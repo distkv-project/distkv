@@ -1,4 +1,5 @@
 package com.distkv.jmhbenchmark;
+
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DstAsyncClient;
 import com.distkv.client.DefaultDstClient;
@@ -20,53 +21,53 @@ import org.openjdk.jmh.infra.Blackhole;
 @BenchmarkMode({Mode.Throughput,Mode.AverageTime})
 public class DstSetBenchmark {
 
-  private static final String PROTOCOL="distkv://127.0.0.1:8082";
-  private static final String KEY_SET_SYNC="k-set-sync";
-  private static final String KEY_SET_ASYNC="k-set-async";
+  private static final String PROTOCOL = "distkv://127.0.0.1:8082";
+  private static final String KEY_SET_SYNC = "k-set-sync";
+  private static final String KEY_SET_ASYNC = "k-set-async";
   private DstAsyncClient asyncClient;
   private DstClient client;
   private Set<String> dummyData;
 
   @Setup
-  public void init(){
+  public void init() {
     TestUtil.startRpcServer(8082);
-    dummyData=ImmutableSet.of(
+    dummyData = ImmutableSet.of(
         RandomStringUtils.random(5),
         RandomStringUtils.random(5),
         RandomStringUtils.random(5));
 
-    asyncClient=new DefaultAsyncClient(PROTOCOL);
-    client=new DefaultDstClient(PROTOCOL);
+    asyncClient = new DefaultAsyncClient(PROTOCOL);
+    client = new DefaultDstClient(PROTOCOL);
     client.sets().put(KEY_SET_SYNC,dummyData);
     asyncClient.sets().put(KEY_SET_ASYNC,dummyData);
   }
 
   @TearDown
-  public void close(){
+  public void close() {
     client.disconnect();
     asyncClient.disconnect();
     TestUtil.stopProcess(TestUtil.getProcess());
   }
 
   @Benchmark
-  public void testAsyncGet(Blackhole blackhole){
+  public void testAsyncGet(Blackhole blackhole) {
     blackhole.consume(asyncClient.sets().get(KEY_SET_ASYNC));
   }
 
   @Benchmark
-  public void testSyncGet(Blackhole blackhole){
+  public void testSyncGet(Blackhole blackhole) {
     blackhole.consume(client.sets().get(KEY_SET_SYNC));
   }
 
   @Benchmark
-  public void testSyncPut(Blackhole blackhole){
-    String randomStr=RandomStringUtils.random(5);
+  public void testSyncPut(Blackhole blackhole) {
+    String randomStr = RandomStringUtils.random(5);
     client.sets().put(randomStr,dummyData);
   }
 
   @Benchmark
-  public void testAsyncPut(){
-    String randomStr=RandomStringUtils.random(5);
+  public void testAsyncPut() {
+    String randomStr = RandomStringUtils.random(5);
     asyncClient.sets().put(randomStr,dummyData);
   }
 
