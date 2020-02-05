@@ -11,13 +11,6 @@ public class SortedListLinkedImplTest {
 
   @Test
   public void testMain() {
-    SortedList slist = new SortedListLinkedImpl();
-    slist.putItem(new SortedListEntity(String.valueOf(123), 123));
-    slist.putItem(new SortedListEntity(String.valueOf(123), 122));
-    slist = new SortedListLinkedImpl();
-    slist.putItem(new SortedListEntity(String.valueOf(123), 123));
-    slist.putItem(new SortedListEntity(String.valueOf(123), 124));
-
     SortedList sortedList = new SortedListLinkedImpl();
 
     // For init
@@ -42,11 +35,9 @@ public class SortedListLinkedImplTest {
     Assert.assertEquals(sortedList.size(), 18);
 
     // Test putItem
-    sortedList.putItem(new SortedListEntity("119", 120));
     sortedList.putItem(new SortedListEntity("109", 99));
     sortedList.putItem(new SortedListEntity("119", 20));
     sortedList.putItem(new SortedListEntity("115", -98));
-    sortedList.putItem(new SortedListEntity("100", 99));
 
     // Test getSize
     Assert.assertEquals(sortedList.size(), 19);
@@ -76,6 +67,21 @@ public class SortedListLinkedImplTest {
     Assert.assertEquals(listEntities.get(3).getScore(), 116);
     Assert.assertEquals(listEntities.get(4).getMember().equals("114"), true);
     Assert.assertEquals(listEntities.get(4).getScore(), 114);
+  }
+
+  @Test
+  public void testPutItem() {
+    SortedList slist = new SortedListLinkedImpl();
+    slist.putItem(new SortedListEntity(String.valueOf(123), 123));
+    slist.putItem(new SortedListEntity(String.valueOf(123), 122));
+
+    Assert.assertEquals(slist.getItem("123").getFirst().intValue(), 122);
+    Assert.assertEquals(slist.getItem("123").getSecond().intValue(), 1);
+
+    slist.putItem(new SortedListEntity(String.valueOf(123), 124));
+
+    Assert.assertEquals(slist.getItem("123").getFirst().intValue(), 124);
+    Assert.assertEquals(slist.getItem("123").getSecond().intValue(), 1);
   }
 
 }
