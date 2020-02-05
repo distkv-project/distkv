@@ -70,6 +70,4 @@ public class DstSetBenchmark {
     String randomStr = RandomStringUtils.random(5);
     asyncClient.sets().put(randomStr,dummyData);
   }
-
-
 }
