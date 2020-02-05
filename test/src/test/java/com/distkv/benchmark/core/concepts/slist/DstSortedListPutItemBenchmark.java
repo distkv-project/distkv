@@ -5,11 +5,9 @@ import com.distkv.core.struct.slist.SortedList;
 import com.distkv.core.struct.slist.SortedListLinkedImpl;
 import com.distkv.core.struct.slist.SortedListRBTreeImpl;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -23,7 +21,6 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.testng.Assert;
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
@@ -33,8 +30,8 @@ public class DstSortedListPutItemBenchmark {
   public static void main(String[] args) throws RunnerException {
     Options option = new OptionsBuilder()
         .include(DstSortedListPutItemBenchmark.class.getSimpleName())
-        .warmupIterations(5)
-        .measurementIterations(8)
+        .warmupIterations(3)
+        .measurementIterations(5)
         .forks(1)
         .build();
     new Runner(option).run();
@@ -48,9 +45,9 @@ public class DstSortedListPutItemBenchmark {
 
   @Setup
   public void init() {
-    final int maxLengthInList = 10000000;
-    final int minValueInList = -10000000;
-    final int maxValueInList = 10000000;
+    final int maxLengthInList = 1000000;
+    final int minValueInList = -1000000;
+    final int maxValueInList = 1000000;
 
     sortedListLinkedImpl = new SortedListLinkedImpl();
     sortedListRBTreeImpl = new SortedListRBTreeImpl();
@@ -76,7 +73,7 @@ public class DstSortedListPutItemBenchmark {
   }
 
   private static SortedListEntity generatePutItemData(
-      int minValue, int maxValue, int len) {
+      int minValue, int maxValue) {
     int randomValue = (int) (Math.random() * (maxValue - minValue + 1)) + minValue;
     // Generate the entity whose score is [minValue, maxValue].
     SortedListEntity entity = new SortedListEntity(
@@ -88,7 +85,7 @@ public class DstSortedListPutItemBenchmark {
       int minValue, int maxValue, int len) {
     List<SortedListEntity> list = new LinkedList<>();
     for (int i = 0; i < len; i++) {
-      list.add(generatePutItemData(minValue, maxValue, len));
+      list.add(generatePutItemData(minValue, maxValue));
     }
     return list;
   }
