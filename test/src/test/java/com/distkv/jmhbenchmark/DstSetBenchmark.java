@@ -76,4 +76,10 @@ public class DstSetBenchmark {
     String randomStr = RandomStringUtils.random(5);
     client.sets().putItem(KEY_SET_SYNC,randomStr);
   }
+
+  @Benchmark
+  public void testAsyncPutItem(Blackhole blackhole) {
+    String randomStr = RandomStringUtils.random(5);
+    blackhole.consume(asyncClient.sets().putItem(KEY_SET_SYNC,randomStr));
+  }
 }
