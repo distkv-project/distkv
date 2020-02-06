@@ -69,4 +69,22 @@ public class SortedListLinkedImplTest {
     Assert.assertEquals(listEntities.get(4).getScore(), 114);
   }
 
+  /**
+   * See the Test Case Issue on https://github.com/distkv-project/distkv/pull/487
+   */
+  @Test
+  public void testPutItemByDeleteNode() {
+    SortedList slist = new SortedListLinkedImpl();
+    slist.putItem(new SortedListEntity(String.valueOf(123), 123));
+    slist.putItem(new SortedListEntity(String.valueOf(123), 122));
+
+    Assert.assertEquals(slist.getItem("123").getFirst().intValue(), 122);
+    Assert.assertEquals(slist.getItem("123").getSecond().intValue(), 1);
+
+    slist.putItem(new SortedListEntity(String.valueOf(123), 124));
+
+    Assert.assertEquals(slist.getItem("123").getFirst().intValue(), 124);
+    Assert.assertEquals(slist.getItem("123").getSecond().intValue(), 1);
+  }
+
 }
