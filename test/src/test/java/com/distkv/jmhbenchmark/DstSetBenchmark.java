@@ -72,10 +72,8 @@ public class DstSetBenchmark {
   }
 
   @Benchmark
-  public void testPutItem(){
+  public void testPutItem() {
     String randomStr = RandomStringUtils.random(5);
     client.sets().putItem(KEY_SET_SYNC,randomStr);
   }
-
-
 }
