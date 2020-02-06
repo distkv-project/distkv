@@ -65,11 +65,11 @@ public class DstSetBenchmark {
     client.sets().put(randomStr,dummyData);
   }
 
-/*  @Benchmark
+  @Benchmark
   public void testAsyncPut() {
     String randomStr = RandomStringUtils.random(5);
     asyncClient.sets().put(randomStr,dummyData);
-  }*/
+  }
 
   @Benchmark
   public void testDrop(Blackhole blackhole) {
