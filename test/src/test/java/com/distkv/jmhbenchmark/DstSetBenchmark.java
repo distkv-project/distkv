@@ -72,19 +72,10 @@ public class DstSetBenchmark {
   }
 
   @Benchmark
-  public void testDrop(Blackhole blackhole) {
-    blackhole.consume(client.sets().drop(KEY_SET_SYNC));
-  }
-
-  @Benchmark
   public void testPutItem(){
     String randomStr = RandomStringUtils.random(5);
-    client.sets().putItem("KEY_SET_SYNC",randomStr);
+    client.sets().putItem(KEY_SET_SYNC,randomStr);
   }
 
-  @Benchmark
-  public void test(){
-    String randomStr = RandomStringUtils.random(5);
-    client.sets().removeItem("KEY_SET_SYNC",randomStr);
-  }
+
 }
