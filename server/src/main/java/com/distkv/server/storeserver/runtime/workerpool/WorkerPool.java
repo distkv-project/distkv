@@ -60,7 +60,7 @@ public class WorkerPool {
       }
     }
 
-    String key =request.getKey();
+    String key = request.getKey();
     final int workerIndex = Math.abs(key.hashCode()) % shardNum;
     Worker worker = workers.get(workerIndex);
     try {

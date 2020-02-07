@@ -1,6 +1,6 @@
 package com.distkv.client.commandlinetool;
 
-public enum DstOperationType {
+public enum DistkvOperationType {
   STRING,
   LIST,
   SET,

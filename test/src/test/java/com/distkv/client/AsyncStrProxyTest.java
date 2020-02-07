@@ -1,6 +1,6 @@
 package com.distkv.client;
 
-import com.distkv.asyncclient.DstAsyncClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.supplier.BaseTestSupplier;
@@ -16,7 +16,7 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
 
   @Test
   public void testPutGet() throws ExecutionException, InterruptedException, TimeoutException {
-    DstAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDstClient();
 
     CompletableFuture<StringProtocol.PutResponse> putFuture =
             client.strs().put("k1", "v1");

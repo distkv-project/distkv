@@ -9,8 +9,7 @@ option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
 
 message ListPutRequest {
-    string key = 1;
-    repeated string values = 2;
+    repeated string values = 1;
 }
 
 message ListPutResponse {

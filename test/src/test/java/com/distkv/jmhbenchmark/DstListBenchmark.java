@@ -1,9 +1,9 @@
 package com.distkv.jmhbenchmark;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
-import com.distkv.asyncclient.DstAsyncClient;
-import com.distkv.client.DefaultDstClient;
-import com.distkv.client.DstClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
+import com.distkv.client.DefaultDistkvClient;
+import com.distkv.client.DistkvClient;
 import com.distkv.supplier.TestUtil;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.RandomStringUtils;
@@ -24,8 +24,8 @@ public class DstListBenchmark {
   private static final String PROTOCOL = "distkv://127.0.0.1:8082";
   private static final String KEY_LIST_SYNC = "k-list-sync";
   private static final String KEY_LIST_ASYNC = "k-list-async";
-  private DstAsyncClient asyncClient;
-  private DstClient client;
+  private DistkvAsyncClient asyncClient;
+  private DistkvClient client;
   private List<String> dummyData;
 
   @Setup
@@ -38,7 +38,7 @@ public class DstListBenchmark {
             RandomStringUtils.random(5));
 
     asyncClient = new DefaultAsyncClient(PROTOCOL);
-    client = new DefaultDstClient(PROTOCOL);
+    client = new DefaultDistkvClient(PROTOCOL);
     client.lists().put(KEY_LIST_SYNC, dummyData);
     asyncClient.lists().put(KEY_LIST_ASYNC, dummyData);
   }

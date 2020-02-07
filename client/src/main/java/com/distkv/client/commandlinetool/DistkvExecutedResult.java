@@ -1,6 +1,6 @@
 package com.distkv.client.commandlinetool;
 
-public class DstExecutedResult {
+public class DistkvExecutedResult {
 
   String getResultMessage() {
     return null;

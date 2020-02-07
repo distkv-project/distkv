@@ -1,9 +1,9 @@
-package com.distkv.client;
+package com.distkv.asyncclient;
 
 /**
- * The DstClient class is used to connect to the dst server.
+ * The DstAsyncClient class is used to connect to the Dst server and do operations asynchronously.
  */
-public interface DstClient {
+public interface DistkvAsyncClient {
 
   /**
    * Connect to dst server.
@@ -24,40 +24,38 @@ public interface DstClient {
    */
   boolean disconnect();
 
-
   /**
    * Get the dst string proxy.
    *
    * @return The dst string proxy.
    */
-  DstStringProxy strs();
-
-
-  /**
-   * Get the dst dict proxy.
-   *
-   * @return The dst string proxy.
-   */
-  DistKVDictProxy dicts();
+  DistkvAsyncStringProxy strs();
 
   /**
    * Get the dst list proxy.
    *
    * @return The dst list proxy.
    */
-  DstListProxy lists();
+  DistkvAsyncListProxy lists();
 
   /**
    * Get the dst set proxy.
    *
    * @return The dst set proxy.
    */
-  DstSetProxy sets();
+  DistkvAsyncSetProxy sets();
+
+  /**
+   * Get the dst dict proxy.
+   *
+   * @return The dst string proxy.
+   */
+  DistkvAsyncDictProxy dicts();
 
   /**
    * Get the dst sortedList proxy.
    *
    * @return The dst sortedList proxy.
    */
-  DstSortedListProxy sortedLists();
+  DistkvAsyncSortedListProxy sortedLists();
 }

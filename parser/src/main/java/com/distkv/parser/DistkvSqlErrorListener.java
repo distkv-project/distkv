@@ -3,13 +3,13 @@ package com.distkv.parser;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import com.distkv.common.exception.DistKVException;
+import com.distkv.common.exception.DistkvException;
 
-public class DistKVSqlErrorListener extends BaseErrorListener {
-  private DistKVSqlErrorListener() {
+public class DistkvSqlErrorListener extends BaseErrorListener {
+  private DistkvSqlErrorListener() {
   }
 
-  public static DistKVSqlErrorListener INSTANCE = new DistKVSqlErrorListener();
+  public static DistkvSqlErrorListener INSTANCE = new DistkvSqlErrorListener();
 
   @Override
   public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
@@ -21,10 +21,10 @@ public class DistKVSqlErrorListener extends BaseErrorListener {
     }
     // TODO(qwang): This exception should be refined.
     if (recognizer.getState() == 128) {
-      throw new DistKVException("X010",
+      throw new DistkvException("X010",
             sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
     } else {
-      throw new DistKVException("X020",
+      throw new DistkvException("X020",
             sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
     }
   }

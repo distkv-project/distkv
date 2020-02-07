@@ -1,11 +1,11 @@
-grammar DistKVNewSQL;
+grammar DistkvNewSQL;
 
 @header {
 package com.distkv.parser.generated;
 }
 
 /**
-* This is the DistKV new SQL grammar definition.
+* This is the Distkv new SQL grammar definition.
 */
 
 statement: (conceptStatement) EOF;

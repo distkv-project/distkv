@@ -2,8 +2,8 @@ package com.distkv.server.storeserver.runtime.workerpool;
 
 import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.common.exception.DistKVException;
-import com.distkv.common.exception.DistKVListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
@@ -105,7 +105,7 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to drop a string to store :{1}", e);
         }
         builder.setStatus(status);
@@ -139,7 +139,7 @@ public class Worker extends Thread {
           builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(setBuilder.build()));
         } catch (KeyNotFoundException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
         }
         break;
@@ -169,7 +169,7 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
         builder.setStatus(status);
@@ -186,7 +186,7 @@ public class Worker extends Thread {
           builder.setResponse(Any.pack(setBuilder.build())).setStatus(CommonProtocol.Status.OK);
         } catch (KeyNotFoundException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
         }
         break;
@@ -200,7 +200,7 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
         builder.setStatus(status);
@@ -215,7 +215,7 @@ public class Worker extends Thread {
           // at https://github.com/distkv-project/distkv/issues/349
           ArrayList<String> values = new ArrayList<>(listPutRequest.getValuesList());
           storeEngine.lists().put(key, values);
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to put a list to store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -250,7 +250,7 @@ public class Worker extends Thread {
         } catch (KeyNotFoundException e) {
           LOGGER.info("Failed to get a list from store: {1}", e);
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (DistKVListIndexOutOfBoundsException e) {
+        } catch (DistkvListIndexOutOfBoundsException e) {
           LOGGER.info("Failed to get a list from store: {1}", e);
           status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
         }
@@ -269,7 +269,7 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
           LOGGER.error("Failed to lput a list to store: {1}", e);
         }
@@ -288,7 +288,7 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
           LOGGER.error("Failed to rput a list to store: {1}", e);
         }
@@ -304,7 +304,7 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
           LOGGER.error("Failed to drop a list from store: {1}", e);
         }
@@ -326,7 +326,7 @@ public class Worker extends Thread {
         } catch (KeyNotFoundException e) {
           LOGGER.info("Failed to mRemove item from store: {1}", e);
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (DistKVListIndexOutOfBoundsException e) {
+        } catch (DistkvListIndexOutOfBoundsException e) {
           LOGGER.info("Failed to mRemove item from store: {1}", e);
           status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
         }
@@ -359,7 +359,7 @@ public class Worker extends Thread {
         } catch (KeyNotFoundException e) {
           LOGGER.info("Failed to remove item from store: {1}", e);
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (DistKVListIndexOutOfBoundsException e) {
+        } catch (DistkvListIndexOutOfBoundsException e) {
           LOGGER.info("Failed to remove item from store: {1}", e);
           status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
         }
@@ -492,7 +492,7 @@ public class Worker extends Thread {
           }
           storeEngine.sortLists().put(key, linkedList);
           status = CommonProtocol.Status.OK;
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to put a slist to store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -523,7 +523,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
         } catch (SortedListTopNumIsNonNegativeException e) {
           status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to get a slist top in store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -537,7 +537,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to drop a slist in store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -557,7 +557,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
         } catch (SortedListMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to incr a slist score in store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -575,7 +575,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to put a slist number in store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -594,7 +594,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
         } catch (SortedListMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to remove slist member in store :{1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -623,7 +623,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
         } catch (SortedListMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-        } catch (DistKVException e) {
+        } catch (DistkvException e) {
           LOGGER.error("Failed to get slist member in store :{}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }

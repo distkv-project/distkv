@@ -1,12 +1,12 @@
 package com.distkv.benchmark;
 
-import com.distkv.client.DstClient;
+import com.distkv.client.DistkvClient;
 import com.distkv.supplier.TestUtil;
 
 public class DstBenchmarkTest {
 
 
-  public static void strPutStressTest(DstClient client) {
+  public static void strPutStressTest(DistkvClient client) {
     Thread thread = Thread.currentThread();
     long id = thread.getId();
     String name = Thread.currentThread().getName();
@@ -25,7 +25,7 @@ public class DstBenchmarkTest {
     System.out.println(str);
   }
 
-  public static void benchmarkTest(DstClient client) {
+  public static void benchmarkTest(DistkvClient client) {
     strPutStressTest(client);
     client.disconnect();
   }

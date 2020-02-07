@@ -1,18 +1,18 @@
 package com.distkv.common.exception;
 
-public class DistKVKeyDuplicatedException extends DistKVException {
+public class DistkvKeyDuplicatedException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
-      .DistKVKeyDuplicatedErrorCode
+      .DistkvKeyDuplicatedErrorCode
       .getErrorCode();
 
   protected String key;
 
-  public DistKVKeyDuplicatedException(String key) {
+  public DistkvKeyDuplicatedException(String key) {
     super(String.format("The store has multiple duplicate keys %s", key));
   }
 
-  public DistKVKeyDuplicatedException(String key, String typeCode) {
+  public DistkvKeyDuplicatedException(String key, String typeCode) {
     super(String.format("The store has multiple duplicate keys %s", key));
     this.errorCode = typeCode + this.errorCode;
   }

@@ -3,27 +3,27 @@ package com.distkv.common.exception;
 /**
  * The base exception of DistKV.
  */
-public class DistKVException extends RuntimeException {
+public class DistkvException extends RuntimeException {
 
   String errorCode = ErrorCodeEnum
-      .DistKVErrorCode
+      .DistkvErrorCode
       .getErrorCode();
 
-  public DistKVException(String errorCode, String errorMessage) {
+  public DistkvException(String errorCode, String errorMessage) {
     super(errorMessage);
     this.errorCode = errorCode;
   }
 
-  public DistKVException(String errorCode, String errorMessage, Exception e) {
+  public DistkvException(String errorCode, String errorMessage, Exception e) {
     super(errorMessage, e);
     this.errorCode = errorCode;
   }
 
-  public DistKVException(String errorMessage) {
+  public DistkvException(String errorMessage) {
     super(errorMessage);
   }
 
-  public DistKVException(String errorMessage, Exception e) {
+  public DistkvException(String errorMessage, Exception e) {
     super(errorMessage, e);
   }
 

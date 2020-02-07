@@ -1,7 +1,7 @@
 package com.distkv.client.masterslavesync;
 
-import com.distkv.client.DefaultDstClient;
-import com.distkv.client.DstClient;
+import com.distkv.client.DefaultDistkvClient;
+import com.distkv.client.DistkvClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
@@ -23,12 +23,12 @@ public class TestMasterSyncToSlaves {
         "TestMasterSlaveSync", "mainTest"));
     MasterSlaveSyncTestUtil.startAllProcess();
     TimeUnit.SECONDS.sleep(1);
-    final DstClient[] client0 = {null};
-    final DstClient[] client1 = {null};
+    final DistkvClient[] client0 = {null};
+    final DistkvClient[] client1 = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client0[0] = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18082));
-        client1[0] = new DefaultDstClient(String.format("list://127.0.0.1:%d", 18090));
+        client0[0] = new DefaultDistkvClient(String.format("list://127.0.0.1:%d", 18082));
+        client1[0] = new DefaultDistkvClient(String.format("list://127.0.0.1:%d", 18090));
         return true;
       } catch (Exception e) {
         return false;
@@ -45,14 +45,14 @@ public class TestMasterSyncToSlaves {
     System.out.println("m-s sync test over");
   }
 
-  public void testStrPut(DstClient client0, DstClient client1) {
+  public void testStrPut(DistkvClient client0, DistkvClient client1) {
     client0.strs().put("k1", "v1");
     Assert.assertEquals("v1", client0.strs().get("k1"));
     Assert.assertEquals("v1", client1.strs().get("k1"));
   }
 
 
-  public void testListPut(DstClient client0, DstClient client1) {
+  public void testListPut(DistkvClient client0, DistkvClient client1) {
 
     client0.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client0.lists().get("k1"));
@@ -63,7 +63,7 @@ public class TestMasterSyncToSlaves {
   }
 
 
-  public void testSetPut(DstClient client0, DstClient client1) {
+  public void testSetPut(DistkvClient client0, DistkvClient client1) {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
     client0.sets().put("k1", set);
     Assert.assertEquals(set, client0.sets().get("k1"));
@@ -71,7 +71,7 @@ public class TestMasterSyncToSlaves {
   }
 
 
-  public void testDictPut(DstClient client0, DstClient client1) {
+  public void testDictPut(DistkvClient client0, DistkvClient client1) {
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client0.dicts().put("m1", dict);
@@ -83,7 +83,7 @@ public class TestMasterSyncToSlaves {
   }
 
 
-  public void testSlistPut(DstClient client0, DstClient client1) {
+  public void testSlistPut(DistkvClient client0, DistkvClient client1) {
     LinkedList<SortedListEntity> list = new LinkedList<>();
     list.add(new SortedListEntity("xswl", 9));
     list.add(new SortedListEntity("wlll", 8));

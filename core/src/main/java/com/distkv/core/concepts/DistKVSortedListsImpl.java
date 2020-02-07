@@ -1,6 +1,6 @@
 package com.distkv.core.concepts;
 
-import com.distkv.common.exception.DistKVKeyDuplicatedException;
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.DistKVTuple;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SortedListMembersDuplicatedException;
@@ -21,7 +21,7 @@ public class DistKVSortedListsImpl
   @Override
   public void put(String key, LinkedList<SortedListEntity> list) {
     if (distKVKeyValueMap.containsKey(key)) {
-      throw new DistKVKeyDuplicatedException(key);
+      throw new DistkvKeyDuplicatedException(key);
     }
     SortedList sortedList = new SortedListLinkedImpl();
     if (!sortedList.put(list)) {

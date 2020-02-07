@@ -1,9 +1,9 @@
 package com.distkv.jmhbenchmark;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
-import com.distkv.asyncclient.DstAsyncClient;
-import com.distkv.client.DefaultDstClient;
-import com.distkv.client.DstClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
+import com.distkv.client.DefaultDistkvClient;
+import com.distkv.client.DistkvClient;
 import com.distkv.supplier.TestUtil;
 import org.apache.commons.lang.RandomStringUtils;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -24,15 +24,15 @@ public class DstStrBenchmark {
   private static final String KEY_STR_ASYNC = "k-str-async";
   private static final String VALUE_STR_SYNC = "v-sync";
   private static final String VALUE_STR_ASYNC = "v-async";
-  private DstAsyncClient asyncClient;
-  private DstClient client;
+  private DistkvAsyncClient asyncClient;
+  private DistkvClient client;
 
   @Setup
   public void init() {
     TestUtil.startRpcServer(8082);
 
     asyncClient = new DefaultAsyncClient(PROTOCOL);
-    client = new DefaultDstClient(PROTOCOL);
+    client = new DefaultDistkvClient(PROTOCOL);
 
     client.strs().put(KEY_STR_SYNC, VALUE_STR_SYNC);
     asyncClient.strs().put(KEY_STR_ASYNC, VALUE_STR_ASYNC);

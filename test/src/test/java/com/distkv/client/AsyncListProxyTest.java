@@ -1,6 +1,6 @@
 package com.distkv.client;
 
-import com.distkv.asyncclient.DstAsyncClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.supplier.BaseTestSupplier;
@@ -17,7 +17,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
   @Test
   public void testList() throws ExecutionException, InterruptedException, TimeoutException {
-    DstAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDstClient();
 
     // testPut
     CompletableFuture<ListProtocol.PutResponse> putFuture =

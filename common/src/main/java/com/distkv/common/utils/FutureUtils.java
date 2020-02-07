@@ -1,6 +1,6 @@
 package com.distkv.common.utils;
 
-import com.distkv.common.exception.DistKVException;
+import com.distkv.common.exception.DistkvException;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -11,13 +11,11 @@ public class FutureUtils {
   /**
    * Get the object from the given future. This will throw DstException.
    */
-  public static <T> T get(Future<T> future) throws DistKVException {
+  public static <T> T get(Future<T> future) throws DistkvException {
     try {
       return future.get();
-    } catch (InterruptedException e) {
-      throw new DistKVException("Failed to get object from future.", e);
-    } catch (ExecutionException e) {
-      throw new DistKVException("Failed to get object from future.", e);
+    } catch (ExecutionException | InterruptedException e) {
+      throw new DistkvException("Failed to get object from future.", e);
     }
   }
 

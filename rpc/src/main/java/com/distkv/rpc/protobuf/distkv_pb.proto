@@ -16,8 +16,12 @@ option java_outer_classname="DistkvProtocol";
 // TODO(qwang): Use ReadOnlyRequestType and WriteRequestType to
 // avoid writing some specific handler in code.
 enum RequestType {
+
+
     // basic operations: as keep
     None = 0;
+
+    EXIT = 1;
 
     // string concept
     STR_PUT = 101;

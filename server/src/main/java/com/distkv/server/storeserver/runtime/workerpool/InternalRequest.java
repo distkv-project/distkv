@@ -10,7 +10,8 @@ public class InternalRequest {
 
   private CompletableFuture<DistkvResponse> completableFuture;
 
-  public InternalRequest(DistkvProtocol.DistkvRequest request, CompletableFuture<DistkvProtocol.DistkvResponse> completableFuture) {
+  public InternalRequest(DistkvProtocol.DistkvRequest request,
+      CompletableFuture<DistkvProtocol.DistkvResponse> completableFuture) {
     this.request = request;
     this.completableFuture = completableFuture;
   }

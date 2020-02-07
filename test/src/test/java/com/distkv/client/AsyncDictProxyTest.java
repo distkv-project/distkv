@@ -1,6 +1,6 @@
 package com.distkv.client;
 
-import com.distkv.asyncclient.DstAsyncClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.supplier.BaseTestSupplier;
@@ -18,7 +18,7 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDict() throws ExecutionException, InterruptedException, TimeoutException {
-    DstAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDstClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     dict.put("k2", "v2");

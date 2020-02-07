@@ -4,20 +4,20 @@ import java.util.Scanner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import com.distkv.client.DefaultDstClient;
-import com.distkv.client.DstClient;
-import com.distkv.common.exception.DistKVException;
+import com.distkv.client.DefaultDistkvClient;
+import com.distkv.client.DistkvClient;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.DictKeyNotFoundException;
-import com.distkv.common.exception.DistKVListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.parser.DistKVParser;
-import com.distkv.parser.po.DistKVParsedResult;
+import com.distkv.parser.DistkvParser;
+import com.distkv.parser.po.DistkvParsedResult;
 
-public class DstCommandLineToolStarter {
+public class DistkvCommandLineToolStarter {
 
-  private static final String PROGRAM_NAME = "DistKV";
+  private static final String PROGRAM_NAME = "Distkv";
 
   private static final String PROMPT_STRING = "dkv-cli> ";
 
@@ -38,9 +38,9 @@ public class DstCommandLineToolStarter {
 
   public static void main(String[] args) {
 
-    DstCommandLineToolStarter dstCommandLineToolStarter = new DstCommandLineToolStarter();
+    DistkvCommandLineToolStarter distkvCommandLineToolStarter = new DistkvCommandLineToolStarter();
     JCommander jcommander = JCommander.newBuilder().addObject(
-        dstCommandLineToolStarter).build();
+        distkvCommandLineToolStarter).build();
     jcommander.setProgramName(PROGRAM_NAME);
 
     try {
@@ -60,31 +60,31 @@ public class DstCommandLineToolStarter {
       return;
     }
 
-    DstClient dstClient = null;
+    DistkvClient distkvClient = null;
     try {
-      dstClient = new DefaultDstClient(String.format("distkv://%s", ADDRESS));
+      distkvClient = new DefaultDistkvClient(String.format("distkv://%s", ADDRESS));
     } catch (Exception e) {
       System.out.println(String.format("Failed to connect to dst server, %s, "
               + "please check your input.", ADDRESS));
       return;
     }
-    new DstCommandLineToolStarter().loop(dstClient);
+    new DistkvCommandLineToolStarter().loop(distkvClient);
   }
 
-  private void loop(DstClient dstClient) {
-    DistKVParser dstParser = new DistKVParser();
-    DstCommandExecutor dstCommandExecutor = new DstCommandExecutor(dstClient);
+  private void loop(DistkvClient distkvClient) {
+    DistkvParser dstParser = new DistkvParser();
+    DistkvCommandExecutor distkvCommandExecutor = new DistkvCommandExecutor(distkvClient);
     Scanner sc = new Scanner(System.in);
     while (true) {
       System.out.print(PROMPT_STRING);
       final String command = sc.nextLine();
       String result = null;
       try {
-        DistKVParsedResult parsedResult = dstParser.parse(command);
-        result = dstCommandExecutor.execute(parsedResult);
+        DistkvParsedResult parsedResult = dstParser.parse(command);
+        result = distkvCommandExecutor.execute(parsedResult);
       } catch (DictKeyNotFoundException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (DistKVListIndexOutOfBoundsException e) {
+      } catch (DistkvListIndexOutOfBoundsException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       } catch (KeyNotFoundException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
@@ -92,7 +92,7 @@ public class DstCommandLineToolStarter {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       } catch (SortedListTopNumIsNonNegativeException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
-      } catch (DistKVException e) {
+      } catch (DistkvException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
       }
       System.out.println(PROMPT_STRING + result);

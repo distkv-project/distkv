@@ -1,25 +1,25 @@
 package com.distkv.common.exception;
 
-public class DistKVListIndexOutOfBoundsException extends DistKVException {
+public class DistkvListIndexOutOfBoundsException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
-      .DistKVListIndexOutOfBoundsErrorCode
+      .DistkvListIndexOutOfBoundsErrorCode
       .getErrorCode();
 
   protected String key;
 
-  public DistKVListIndexOutOfBoundsException(String key, Exception t) {
+  public DistkvListIndexOutOfBoundsException(String key, Exception t) {
     super(String.format("The index is out of bounds of the list %s", key), t);
     this.key = key;
   }
 
-  public DistKVListIndexOutOfBoundsException(String key, String typeCode) {
+  public DistkvListIndexOutOfBoundsException(String key, String typeCode) {
     super(String.format("The index is out of bounds of the list %s", key));
     this.key = key;
     this.errorCode = typeCode + this.errorCode;
   }
 
-  public DistKVListIndexOutOfBoundsException(String key) {
+  public DistkvListIndexOutOfBoundsException(String key) {
     super(String.format("The index is out of bounds of the list %s", key));
     this.key = key;
   }

@@ -4,16 +4,16 @@ import com.distkv.drpc.Proxy;
 import com.distkv.drpc.api.Client;
 import com.distkv.drpc.config.ClientConfig;
 import com.distkv.drpc.netty.NettyClient;
-import com.distkv.common.exception.DistKVException;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.service.DistkvService;
 
-public class DefaultAsyncClient implements DstAsyncClient {
+public class DefaultAsyncClient implements DistkvAsyncClient {
 
-  private DstAsyncStringProxy stringProxy;
-  private DstAsyncListProxy listProxy;
-  private DstAsyncSetProxy setProxy;
-  private DstAsyncDictProxy dictProxy;
-  private DstAsyncSortedListProxy sortedListProxy;
+  private DistkvAsyncStringProxy stringProxy;
+  private DistkvAsyncListProxy listProxy;
+  private DistkvAsyncSetProxy setProxy;
+  private DistkvAsyncDictProxy dictProxy;
+  private DistkvAsyncSortedListProxy sortedListProxy;
   private Client rpcClient;
 
   public DefaultAsyncClient(String serverAddress) {
@@ -26,11 +26,11 @@ public class DefaultAsyncClient implements DstAsyncClient {
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-    stringProxy = new DstAsyncStringProxy(distkvRpcProxy.getService(rpcClient));
-    listProxy = new DstAsyncListProxy(distkvRpcProxy.getService(rpcClient));
-    setProxy = new DstAsyncSetProxy(distkvRpcProxy.getService(rpcClient));
-    dictProxy = new DstAsyncDictProxy(distkvRpcProxy.getService(rpcClient));
-    sortedListProxy = new DstAsyncSortedListProxy(distkvRpcProxy.getService(rpcClient));
+    stringProxy = new DistkvAsyncStringProxy(distkvRpcProxy.getService(rpcClient));
+    listProxy = new DistkvAsyncListProxy(distkvRpcProxy.getService(rpcClient));
+    setProxy = new DistkvAsyncSetProxy(distkvRpcProxy.getService(rpcClient));
+    dictProxy = new DistkvAsyncDictProxy(distkvRpcProxy.getService(rpcClient));
+    sortedListProxy = new DistkvAsyncSortedListProxy(distkvRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -48,33 +48,33 @@ public class DefaultAsyncClient implements DstAsyncClient {
     try {
       rpcClient.close();
       return true;
-    } catch (DistKVException ex) {
-      throw new DistKVException(String.format("Failed close the clients : %s", ex.getMessage()));
+    } catch (DistkvException ex) {
+      throw new DistkvException(String.format("Failed close the clients : %s", ex.getMessage()));
     }
   }
 
   @Override
-  public DstAsyncStringProxy strs() {
+  public DistkvAsyncStringProxy strs() {
     return stringProxy;
   }
 
   @Override
-  public DstAsyncListProxy lists() {
+  public DistkvAsyncListProxy lists() {
     return listProxy;
   }
 
   @Override
-  public DstAsyncSetProxy sets() {
+  public DistkvAsyncSetProxy sets() {
     return setProxy;
   }
 
   @Override
-  public DstAsyncDictProxy dicts() {
+  public DistkvAsyncDictProxy dicts() {
     return dictProxy;
   }
 
   @Override
-  public DstAsyncSortedListProxy sortedLists() {
+  public DistkvAsyncSortedListProxy sortedLists() {
     return sortedListProxy;
   }
 
