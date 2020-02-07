@@ -16,8 +16,9 @@ fi
 SCRIPT_DIR=$(dirname $SCRIPT_ABS)
 
 pushd ..
-mvn clean install -DskipTests
 popd
+mvn clean install -DskipTests
+
 
 SERVER_JAR=$SCRIPT_DIR/../server/target/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar
 CLIENT_JAR=$SCRIPT_DIR/../client/target/distkv-client-0.1.3-SNAPSHOT-jar-with-dependencies.jar
