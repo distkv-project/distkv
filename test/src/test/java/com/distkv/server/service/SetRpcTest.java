@@ -1,12 +1,18 @@
 package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
-import com.distkv.rpc.service.DistKVSetService;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetGetResponse;
+import com.distkv.rpc.service.DistkvService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import com.google.common.collect.ImmutableList;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
+import com.google.protobuf.Any;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,7 +21,7 @@ import java.util.List;
 public class SetRpcTest extends BaseTestSupplier {
 
   @Test
-  public void testSet() {
+  public void testSet() throws InvalidProtocolBufferException {
     // The following methods should be called as ordered
     // because some methods depend on other methods.
     testPut(rpcServerPort);
@@ -26,80 +32,87 @@ public class SetRpcTest extends BaseTestSupplier {
   }
 
   private static void testPut(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
-      SetProtocol.PutRequest.Builder setPutRequestBuilder =
-              SetProtocol.PutRequest.newBuilder();
-      setPutRequestBuilder.setKey("k1");
+    try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      DistkvService setService = setProxy.getService();
+      SetProtocol.SetPutRequest.Builder setPutRequestBuilder =
+          SetProtocol.SetPutRequest.newBuilder();
       final List<String> values = ImmutableList.of("v1", "v2", "v3", "v1");
       values.forEach(value -> setPutRequestBuilder.addValues(value));
 
-      SetProtocol.PutResponse setPutResponse = FutureUtils.get(
-          setService.put(setPutRequestBuilder.build()));
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.SET_PUT)
+          .setRequest(Any.pack(setPutRequestBuilder.build()))
+          .build();
+      DistkvResponse setPutResponse = FutureUtils.get(
+          setService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
     }
   }
 
-  private static void testGet(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
-      SetProtocol.GetRequest.Builder setGetRequestBuilder =
-              SetProtocol.GetRequest.newBuilder();
-      setGetRequestBuilder.setKey("k1");
-
-      SetProtocol.GetResponse setGetResponse = FutureUtils.get(
-          setService.get(setGetRequestBuilder.build()));
+  private static void testGet(int rpcServerPort) throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      DistkvService setService = setProxy.getService();
+      DistkvRequest request = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.SET_GET)
+          .build();
+      DistkvResponse setGetResponse = FutureUtils.get(
+          setService.call(request));
       final List<String> results = ImmutableList.of("v1", "v2", "v3");
       Assert.assertEquals(CommonProtocol.Status.OK, setGetResponse.getStatus());
-      Assert.assertEquals(results, setGetResponse.getValuesList());
+      Assert.assertEquals(results, setGetResponse.getResponse()
+          .unpack(SetGetResponse.class).getValuesList());
     }
 
   }
 
   private static void testRemoveItem(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
-      SetProtocol.RemoveItemRequest.Builder setRemoveRequestBuilder =
-              SetProtocol.RemoveItemRequest.newBuilder();
-      setRemoveRequestBuilder.setKey("k1");
+    try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      DistkvService setService = setProxy.getService();
+      SetProtocol.SetRemoveItemRequest.Builder setRemoveRequestBuilder =
+          SetProtocol.SetRemoveItemRequest.newBuilder();
       setRemoveRequestBuilder.setItemValue("v1");
-
-      SetProtocol.RemoveItemResponse setDeleteResponse = FutureUtils.get(
-          setService.removeItem(setRemoveRequestBuilder.build()));
+      DistkvRequest request = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.SET_REMOVE_ITEM)
+          .setRequest(Any.pack(setRemoveRequestBuilder.build()))
+          .build();
+      DistkvResponse setDeleteResponse = FutureUtils.get(
+          setService.call(request));
       Assert.assertEquals(CommonProtocol.Status.OK, setDeleteResponse.getStatus());
     }
   }
 
   private static void testDropByKey(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
+    try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      DistkvService setService = setProxy.getService();
 
-      CommonProtocol.DropRequest.Builder setDropByKeyRequestBuilder =
-              CommonProtocol.DropRequest.newBuilder();
-      setDropByKeyRequestBuilder.setKey("k1");
-
-      CommonProtocol.DropResponse setDropByKeyResponse = FutureUtils.get(
-          setService.drop(setDropByKeyRequestBuilder.build()));
+      DistkvRequest request = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.SET_DROP)
+          .build();
+      DistkvResponse setDropByKeyResponse = FutureUtils.get(
+          setService.call(request));
 
       Assert.assertEquals(CommonProtocol.Status.OK, setDropByKeyResponse.getStatus());
     }
   }
 
   private static void testExists(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
-      SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
-              SetProtocol.ExistsRequest.newBuilder();
-      setExistRequestBuilder.setKey("k1");
-      setExistRequestBuilder.setEntity("v1");
-
-      SetProtocol.ExistsResponse setExistResponse = FutureUtils.get(
-          setService.exists(setExistRequestBuilder.build()));
+    try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      DistkvService setService = setProxy.getService();
+      DistkvRequest request = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.SET_EXISTS)
+          .build();
+      DistkvResponse setExistResponse = FutureUtils.get(
+          setService.call(request));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, setExistResponse.getStatus());
     }
   }
