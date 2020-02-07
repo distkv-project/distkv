@@ -19,5 +19,11 @@ jobs:
         run: mvn clean install -DskipTests
       - name: distkv test case result
         run: mvn test
+      - name: install the distkv
+        run: ./scripts/install_distkv.sh
+      - name: start the dkv server
+        run: dkv-server
+      - name: start the dkv client
+        run: dkv-cli
       - name: report the result of code coverage
         run: bash <(curl -s https://codecov.io/bash)
