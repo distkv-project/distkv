@@ -5,7 +5,7 @@ set -x
 
 sudo rm -rf /usr/local/distkv-all
 
-sudo rm /usr/local/bin/distkv-server
-sudo rm /usr/local/bin/distkv-cli
+sudo rm /usr/local/bin/dkv-server
+sudo rm /usr/local/bin/dkv-cli
 
 echo "Dst was uninstalled successfully."
