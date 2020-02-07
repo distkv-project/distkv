@@ -15,7 +15,7 @@ import java.util.Map;
 /*
  * If you want to put a dict,you need new a map. Like this:
  * Map<String,String> localDict = new HashMap<>();
- * and add the kv to the request Builder
+ * and the kv to the request Builder
  * for (Map.Entry<String,String> entry : localDict.entrySet()) {
  *     DistKVDictBuilder.addKeys(entry.getKey());
  *     DistKVDictBuilder.addDict(entry.getValue());

@@ -6,6 +6,7 @@ import "list_pb.proto";
 import "set_pb.proto";
 import "dict_pb.proto";
 import "sorted_list_pb.proto";
+import "common_pb.proto";
 
 package com.distkv.rpc.protobuf;
 option java_package="com.distkv.rpc.protobuf.generated";
@@ -60,13 +61,15 @@ enum RequestType {
 }
 
 message DistkvRequest {
-    RequestType requestType = 1;
-    google.protobuf.Any request = 2;
+    string key = 1;
+    RequestType requestType = 2;
+    google.protobuf.Any request = 3;
 }
 
 message DistkvResponse {
-    RequestType requestType = 1;
-    google.protobuf.Any response = 2;
+    Status status = 1;
+    RequestType requestType = 2;
+    google.protobuf.Any response = 3;
 }
 
 service DistkvService {

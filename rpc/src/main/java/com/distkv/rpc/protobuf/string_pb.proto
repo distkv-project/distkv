@@ -9,19 +9,15 @@ option java_outer_classname="StringProtocol";
 option cc_generic_services = true;
 
 message StrPutRequest {
-    string key = 1;
-    string value = 2;
+    string value = 1;
 };
 
 message StrPutResponse {
-    Status status = 1;
 };
 
 message StrGetRequest {
-    string key = 1;
 }
 
 message StrGetResponse {
-    Status status = 1;
-    string value =2;
+    string value =1;
 };

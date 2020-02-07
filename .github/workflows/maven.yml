@@ -19,5 +19,7 @@ jobs:
         run: mvn clean install -DskipTests
       - name: distkv test case result
         run: mvn test
+      - name: distkv jmh benchmark result
+        run: java -jar test/target/microbenchmarks.jar
       - name: report the result of code coverage
         run: bash <(curl -s https://codecov.io/bash)

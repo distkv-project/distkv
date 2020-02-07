@@ -1,31 +1,26 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
-import com.distkv.common.RequestTypeEnum;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import java.util.concurrent.CompletableFuture;
 
 public class InternalRequest {
 
-  private RequestTypeEnum requestType;
+  private DistkvProtocol.DistkvRequest request;
 
-  private Object request;
+  private CompletableFuture<DistkvResponse> completableFuture;
 
-  private Object completableFuture;
-
-  public InternalRequest(RequestTypeEnum requestType, Object request, Object completableFuture) {
-    this.requestType = requestType;
+  public InternalRequest(DistkvProtocol.DistkvRequest request, CompletableFuture<DistkvProtocol.DistkvResponse> completableFuture) {
     this.request = request;
     this.completableFuture = completableFuture;
   }
 
-  public Object getRequest() {
+  public DistkvProtocol.DistkvRequest getRequest() {
     return request;
   }
 
-  public Object getCompletableFuture() {
+  public CompletableFuture<DistkvProtocol.DistkvResponse> getCompletableFuture() {
     return completableFuture;
-  }
-
-  public RequestTypeEnum getRequestType() {
-    return requestType;
   }
 
 }

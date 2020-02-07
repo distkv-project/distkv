@@ -10,6 +10,7 @@ import com.distkv.rpc.service.DistKVListService;
 import com.distkv.rpc.service.DistKVSetService;
 import com.distkv.rpc.service.DistKVSortedListService;
 import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.rpc.service.DistkvService;
 
 public class DefaultDstClient implements DstClient {
 
@@ -36,29 +37,14 @@ public class DefaultDstClient implements DstClient {
 
     // Setup list proxy.
     // TODO(qwang): Refine this to rpcClient.getService<DstStringService>();
-    Proxy<DistKVStringService> strRpcProxy = new Proxy<>();
-    strRpcProxy.setInterfaceClass(DistKVStringService.class);
-    stringProxy = new DstStringProxy(strRpcProxy.getService(rpcClient));
+    Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
+    distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-    // Setup list proxy.
-    Proxy<DistKVListService> listRpcProxy = new Proxy<>();
-    listRpcProxy.setInterfaceClass(DistKVListService.class);
-    listProxy = new DstListProxy(listRpcProxy.getService(rpcClient));
-
-    // Setup set proxy.
-    Proxy<DistKVSetService> setRpcProxy = new Proxy<>();
-    setRpcProxy.setInterfaceClass(DistKVSetService.class);
-    setProxy = new DstSetProxy(setRpcProxy.getService(rpcClient));
-
-    // Setup dict proxy.
-    Proxy<DistKVDictService> dictRpcProxy = new Proxy<>();
-    dictRpcProxy.setInterfaceClass(DistKVDictService.class);
-    dictProxy = new DistKVDictProxy(dictRpcProxy.getService(rpcClient));
-
-    // Setup sortedList proxy.
-    Proxy<DistKVSortedListService> sortedListRpcProxy = new Proxy<>();
-    sortedListRpcProxy.setInterfaceClass(DistKVSortedListService.class);
-    sortedListProxy = new DstSortedListProxy(sortedListRpcProxy.getService(rpcClient));
+    stringProxy = new DstStringProxy(distkvRpcProxy.getService(rpcClient));
+    listProxy = new DstListProxy(distkvRpcProxy.getService(rpcClient));
+    setProxy = new DstSetProxy(distkvRpcProxy.getService(rpcClient));
+    dictProxy = new DistKVDictProxy(distkvRpcProxy.getService(rpcClient));
+    sortedListProxy = new DstSortedListProxy(distkvRpcProxy.getService(rpcClient));
   }
 
   @Override

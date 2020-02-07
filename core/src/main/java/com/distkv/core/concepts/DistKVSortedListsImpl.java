@@ -16,10 +16,7 @@ import java.util.LinkedList;
 
 public class DistKVSortedListsImpl
     extends DistKVConcepts<SortedList>
-    implements DstSortedLists {
-  public DistKVSortedListsImpl() {
-
-  }
+    implements DistKVSortedLists {
 
   @Override
   public void put(String key, LinkedList<SortedListEntity> list) {

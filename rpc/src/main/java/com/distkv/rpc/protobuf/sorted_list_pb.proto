@@ -14,61 +14,49 @@ message SortedListEntity {
 }
 
 message SlistPutRequest {
-    string key = 1;
-    repeated SortedListEntity list = 2;
+    repeated SortedListEntity list = 1;
 }
 
 message SlistPutResponse {
-    Status status = 1;
 }
 
 message SlistTopRequest {
-    string key = 1;
-    uint32 count = 2;
+    uint32 count = 1;
 }
 
 message SlistTopResponse {
-    Status status = 1;
-    repeated SortedListEntity list = 2;
+    repeated SortedListEntity list = 1;
 }
 
 message SlistIncrScoreRequest {
-    string key = 1;
-    string member = 2;
-    int32 delta = 3;
+    string member = 1;
+    int32 delta = 2;
 }
 
 message SlistIncrScoreResponse {
-    Status status = 1;
 }
 
 message SlistPutMemberRequest {
-    string key = 1;
-    int32 score = 2;
-    string member = 3;
+    int32 score = 1;
+    string member = 2;
 }
 
 message SlistPutMemberResponse {
-    Status status = 1;
 }
 
 message SlistRemoveMemberRequest {
-    string key = 1;
-    string member = 2;
+    string member = 1;
 }
 
 message SlistRemoveMemberResponse {
-    Status status = 1;
 }
 
 message SlistGetMemberRequest {
-    string key = 1;
-    string member = 2;
+    string member = 1;
 }
 
 message SlistGetMemberResponse {
-    Status status = 1;
-    SortedListEntity entity = 2;
-    uint32 count = 3;
+    SortedListEntity entity = 1;
+    uint32 count = 2;
 }
 

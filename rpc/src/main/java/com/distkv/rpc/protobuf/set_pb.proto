@@ -9,51 +9,41 @@ option java_outer_classname="SetProtocol";
 option cc_generic_services = true;
 
 message SetPutRequest {
-    string key = 1;
-    repeated string values = 2;
+    repeated string values = 1;
 }
 
 message SetPutResponse {
-    Status status = 1;
 }
 
 message SetGetRequest {
-    string key = 1;
 }
 
 message SetGetResponse {
-    Status Status = 1;
-    repeated string values = 2;
+    repeated string values = 1;
 }
 
 message SetPutItemRequest {
-    string key = 1;
-    string itemValue = 2;
+    string itemValue = 1;
 }
 
 message SetPutItemResponse {
-    Status status = 1;
 }
 
 message SetRemoveItemRequest {
-    string key = 1;
     // The entity that will be deleted from the set.
-    string itemValue = 2;
+    string itemValue = 1;
 }
 
 message SetRemoveItemResponse {
-    Status status = 1;
 }
 
 //drop the whole set
 //
 message SetExistsRequest {
-    string key = 1;
-    string entity = 2;
+    string entity = 1;
 }
 
 message SetExistsResponse {
-    Status status = 1;
     // If status is not OK, the result is undefined.
-    bool result = 2;
+    bool result = 1;
 }

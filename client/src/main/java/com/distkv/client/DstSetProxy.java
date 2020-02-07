@@ -1,20 +1,20 @@
 package com.distkv.client;
 
+import com.distkv.rpc.service.DistkvService;
 import java.util.HashSet;
 import java.util.Set;
 import com.distkv.common.exception.DistKVException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
-import com.distkv.rpc.service.DistKVSetService;
 
 public class DstSetProxy {
 
   private String typeCode = "C";
 
-  private DistKVSetService service;
+  private DistkvService service;
 
-  public DstSetProxy(DistKVSetService service) {
+  public DstSetProxy(DistkvService service) {
     this.service = service;
   }
 

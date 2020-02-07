@@ -14,7 +14,6 @@ message ListPutRequest {
 }
 
 message ListPutResponse {
-    Status status = 1;
 }
 
 // The type of a `get` request.
@@ -31,33 +30,27 @@ enum GetType {
 // TODO(qwang): comment on this.
 message ListGetRequest {
     GetType type = 1;
-    string key = 2;
-    int32 index = 3;
-    int32 from = 4;
-    int32 end = 5;
+    int32 index = 2;
+    int32 from = 3;
+    int32 end = 4;
 }
 
 message ListGetResponse {
-    Status status = 1;
-    repeated string values = 2;
+    repeated string values = 1;
 }
 
 message ListLPutRequest {
-    string key = 1;
-    repeated string values = 2;
+    repeated string values = 1;
 }
 
 message ListLPutResponse {
-    Status status = 1;
 }
 
 message ListRPutRequest {
-    string key = 1;
-    repeated string values = 2;
+    repeated string values = 1;
 }
 
 message ListRPutResponse {
-    Status status = 1;
 }
 
 //The type of a 'remove' request
@@ -71,23 +64,19 @@ enum RemoveType {
 
 message ListRemoveRequest {
     RemoveType type = 1;
-    string key = 2;
-    int32 index = 3;
-    int32 from = 4;
-    int32 end = 5;
+    int32 index = 2;
+    int32 from = 3;
+    int32 end = 4;
 }
 
 message ListRemoveResponse {
-    Status status = 1;
 }
 
 
 message ListMRemoveRequest {
-    string key = 1;
-    repeated int32 indexes = 2;
+    repeated int32 indexes = 1;
 }
 
 message ListMRemoveResponse {
-    Status status = 1;
 }
 

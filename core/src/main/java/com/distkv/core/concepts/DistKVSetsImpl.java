@@ -6,8 +6,6 @@ import java.util.Set;
 
 public class DistKVSetsImpl extends DistKVConcepts<Set<String>> implements DistKVSets {
 
-  public DistKVSetsImpl() {
-  }
 
   @Override
   public void putItem(String key, String itemValue) {

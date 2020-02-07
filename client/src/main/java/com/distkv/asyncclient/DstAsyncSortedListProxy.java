@@ -5,14 +5,15 @@ import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.service.DistKVSortedListService;
 
+import com.distkv.rpc.service.DistkvService;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncSortedListProxy {
 
-  DistKVSortedListService service;
+  private DistkvService service;
 
-  public DstAsyncSortedListProxy(DistKVSortedListService service) {
+  public DstAsyncSortedListProxy(DistkvService service) {
     this.service = service;
   }
 

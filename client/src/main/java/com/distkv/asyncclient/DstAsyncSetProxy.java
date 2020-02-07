@@ -4,14 +4,15 @@ import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.service.DistKVSetService;
 
+import com.distkv.rpc.service.DistkvService;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncSetProxy {
 
-  private DistKVSetService service;
+  private DistkvService service;
 
-  public DstAsyncSetProxy(DistKVSetService service) {
+  public DstAsyncSetProxy(DistkvService service) {
     this.service = service;
   }
 

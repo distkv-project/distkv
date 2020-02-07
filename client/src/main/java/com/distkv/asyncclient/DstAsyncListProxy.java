@@ -4,14 +4,15 @@ import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.service.DistKVListService;
 
+import com.distkv.rpc.service.DistkvService;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class DstAsyncListProxy {
 
-  private DistKVListService service;
+  private DistkvService service;
 
-  public DstAsyncListProxy(DistKVListService service) {
+  public DstAsyncListProxy(DistkvService service) {
     this.service = service;
   }
 

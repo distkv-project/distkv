@@ -4,7 +4,4 @@ import java.util.Map;
 
 public class DistKVDictsImpl extends DistKVConcepts<Map<String, String>> implements DistKVDicts {
 
-  public DistKVDictsImpl() {
-  }
-
 }

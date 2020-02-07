@@ -10,8 +10,6 @@ import java.util.Set;
 
 public class DistKVListsImpl extends DistKVConcepts<ArrayList<String>> implements DistKVLists {
 
-  public DistKVListsImpl() {
-  }
 
   @Override
   public String get(String key, int index) throws KeyNotFoundException, IndexOutOfBoundsException {

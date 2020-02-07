@@ -5,17 +5,16 @@ import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.service.DistKVSortedListService;
-
+import com.distkv.rpc.service.DistkvService;
 import java.util.LinkedList;
 
 public class DstSortedListProxy {
 
   private String typeCode = "E";
 
-  private DistKVSortedListService service;
+  private DistkvService service;
 
-  public DstSortedListProxy(DistKVSortedListService service) {
+  public DstSortedListProxy(DistkvService service) {
     this.service = service;
   }
 

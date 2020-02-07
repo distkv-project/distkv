@@ -4,17 +4,16 @@ import com.distkv.common.exception.DistKVException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
-import com.distkv.rpc.service.DistKVListService;
-
+import com.distkv.rpc.service.DistkvService;
 import java.util.List;
 
 public class DstListProxy {
 
   private String typeCode = "B";
 
-  private DistKVListService service;
+  private DistkvService service;
 
-  public DstListProxy(DistKVListService service) {
+  public DstListProxy(DistkvService service) {
     this.service = service;
   }
 

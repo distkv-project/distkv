@@ -2,7 +2,7 @@ package com.distkv.core;
 
 import com.distkv.core.concepts.DistKVListsImpl;
 import com.distkv.core.concepts.DistKVSetsImpl;
-import com.distkv.core.concepts.DstSortedLists;
+import com.distkv.core.concepts.DistKVSortedLists;
 import com.distkv.core.concepts.DistKVStrings;
 import com.distkv.core.concepts.DistKVDictsImpl;
 import com.distkv.core.concepts.DistKVStringsImpl;
@@ -21,7 +21,7 @@ public class KVStoreImpl implements KVStore {
 
   private DistKVDictsImpl dicts;
 
-  private DstSortedLists sortedLists;
+  private DistKVSortedLists sortedLists;
 
   public KVStoreImpl() {
     this.strs = new DistKVStringsImpl();
@@ -52,7 +52,7 @@ public class KVStoreImpl implements KVStore {
   }
 
   @Override
-  public DstSortedLists sortLists() {
+  public DistKVSortedLists sortLists() {
     return sortedLists;
   }
 

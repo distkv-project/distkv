@@ -3,18 +3,17 @@ package com.distkv.client;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
-import com.distkv.rpc.service.DistKVDictService;
-
+import com.distkv.rpc.service.DistkvService;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DistKVDictProxy {
 
-  private DistKVDictService service;
+  private DistkvService service;
 
   private String typeCode = "D";
 
-  public DistKVDictProxy(DistKVDictService service) {
+  public DistKVDictProxy(DistkvService service) {
     this.service = service;
   }
 

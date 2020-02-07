@@ -2,17 +2,9 @@ package com.distkv.server.storeserver;
 
 import com.distkv.drpc.DrpcServer;
 import com.distkv.drpc.config.ServerConfig;
-import com.distkv.rpc.service.DistKVDictService;
-import com.distkv.rpc.service.DistKVListService;
-import com.distkv.rpc.service.DistKVSetService;
-import com.distkv.rpc.service.DistKVSortedListService;
-import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
-import com.distkv.server.storeserver.services.DistKVDictServiceImpl;
-import com.distkv.server.storeserver.services.DistKVListServiceImpl;
-import com.distkv.server.storeserver.services.DistKVSetServiceImpl;
-import com.distkv.server.storeserver.services.DistKVSortedListServiceImpl;
-import com.distkv.server.storeserver.services.DistKVStringServiceImpl;
+import com.distkv.server.storeserver.services.DistkvServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,15 +60,7 @@ public class StoreServer {
 
   private void registerAllRpcServices() {
     drpcServer.registerService(
-        DistKVStringService.class, new DistKVStringServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
-        DistKVListService.class, new DistKVListServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
-        DistKVSetService.class, new DistKVSetServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
-        DistKVDictService.class, new DistKVDictServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
-        DistKVSortedListService.class, new DistKVSortedListServiceImpl(this.storeRuntime));
+        DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
   }
 
   public static void main(String[] args) {

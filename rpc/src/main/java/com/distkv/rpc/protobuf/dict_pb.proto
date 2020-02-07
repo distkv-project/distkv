@@ -14,58 +14,46 @@ message DistKVDict {
 }
 
 message DictPutRequest {
-    string key = 1;
-    DistKVDict dict = 2;
+    DistKVDict dict = 1;
 }
 
 message DictPutResponse {
-    Status status = 1;
 }
 
 message DictGetRequest {
-    string key = 1;
 }
 
 message DictGetResponse {
-    Status status = 1;
-    DistKVDict dict = 2;
+    DistKVDict dict = 1;
 }
 
 message DictGetItemRequest {
-    string key = 1;
-    string itemKey = 2;
+    string itemKey = 1;
 }
 
 message DictGetItemResponse {
     string itemValue = 1;
-    Status status = 2;
 }
 
 message DictPopItemRequest {
-    string key = 1;
-    string itemKey = 2;
+    string itemKey = 1;
 }
 
 message DictPopItemResponse {
     string itemValue = 1;
-    Status status = 2;
 }
 
 message DictPutItemRequest {
-    string key = 1;
-    string itemKey = 2;
-    string itemValue = 3;
+    string itemKey = 1;
+    string itemValue = 2;
 }
 
 message DictPutItemResponse {
-    Status status = 1;
 }
 
 message DictRemoveItemRequest {
-    string key = 1;
-    string itemKey = 2;
+    string itemKey = 1;
 }
 
 message DictRemoveItemResponse {
-    Status status = 1;
 }
