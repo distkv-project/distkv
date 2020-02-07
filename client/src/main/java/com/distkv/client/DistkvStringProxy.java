@@ -4,6 +4,7 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.service.DistkvService;
@@ -21,36 +22,26 @@ public class DistkvStringProxy {
     this.service = service;
   }
 
-  public void put(String key, String value) {
-    StringProtocol.StrPutRequest strPutRequest = StringProtocol.StrPutRequest.newBuilder()
-            .setValue(value)
-            .build();
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequest(Any.pack(strPutRequest))
-        .setRequestType(RequestType.STR_PUT)
-        .build();
+  public void put(DistkvRequest request) {
     CompletableFuture<DistkvProtocol.DistkvResponse> responseFuture = service.call(request);
     DistkvProtocol.DistkvResponse response = FutureUtils.get(responseFuture);
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
-  public String get(String key) throws DistkvException, InvalidProtocolBufferException {
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.STR_GET)
-        .build();
+  public String get(DistkvRequest request) throws DistkvException {
+    String value;
     CompletableFuture<DistkvProtocol.DistkvResponse> responseFuture = service.call(request);
     DistkvProtocol.DistkvResponse response = FutureUtils.get(responseFuture);
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
-    return response.getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
+    try {
+      value = response.getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return value;
   }
 
-  public boolean drop(String key) {
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.STR_DROP)
-        .build();
+  public boolean drop(DistkvRequest request) {
     CompletableFuture<DistkvProtocol.DistkvResponse> responseFuture = service.call(request);
     DistkvProtocol.DistkvResponse response = FutureUtils.get(responseFuture);
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);

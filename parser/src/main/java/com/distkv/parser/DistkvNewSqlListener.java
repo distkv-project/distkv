@@ -2,6 +2,7 @@ package com.distkv.parser;
 
 import com.distkv.parser.generated.DistkvNewSQLBaseListener;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
@@ -9,18 +10,15 @@ import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.google.common.base.Preconditions;
+import com.google.protobuf.Any;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.distkv.parser.generated.DistkvNewSQLParser;
 import com.distkv.parser.po.DistkvParsedResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(DistkvNewSqlListener.class);
 
   private DistkvParsedResult parsedResult = null;
 
@@ -41,9 +39,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
 
     StringProtocol.StrPutRequest.Builder builder = StringProtocol.StrPutRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     builder.setValue(ctx.children.get(2).getText());
-    parsedResult = new DistkvParsedResult(RequestType.STR_PUT, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.STR_PUT)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.STR_PUT, request);
   }
 
   @Override
@@ -51,9 +53,11 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    StringProtocol.StrGetRequest.Builder builder = StringProtocol.StrGetRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DistkvParsedResult(RequestType.STR_GET, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.STR_GET)
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.STR_GET, request);
   }
 
   @Override
@@ -61,9 +65,11 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DistkvParsedResult(RequestType.STR_DROP, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.STR_DROP)
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.STR_DROP, request);
   }
 
   @Override
@@ -72,12 +78,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
 
     ListProtocol.ListPutRequest.Builder builder = ListProtocol.ListPutRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     final int valueSize = ctx.children.get(2).getChildCount();
     for (int i = 0; i < valueSize; ++i) {
       builder.addValues(ctx.children.get(2).getChild(i).getText());
     }
-    parsedResult = new DistkvParsedResult(RequestType.LIST_PUT, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.LIST_PUT)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_PUT, request);
   }
 
   @Override
@@ -85,12 +95,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
     ListProtocol.ListLPutRequest.Builder builder = ListProtocol.ListLPutRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     final int valueSize = ctx.children.get(2).getChildCount();
     for (int i = 0; i < valueSize; ++i) {
       builder.addValues(ctx.children.get(2).getChild(i).getText());
     }
-    parsedResult = new DistkvParsedResult(RequestType.LIST_LPUT, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.LIST_LPUT)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_LPUT, request);
   }
 
   @Override
@@ -98,12 +112,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
     ListProtocol.ListRPutRequest.Builder builder = ListProtocol.ListRPutRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     final int valueSize = ctx.children.get(2).getChildCount();
     for (int i = 0; i < valueSize; ++i) {
       builder.addValues(ctx.children.get(2).getChild(i).getText());
     }
-    parsedResult = new DistkvParsedResult(RequestType.LIST_RPUT, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.LIST_RPUT)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_RPUT, request);
   }
 
   @Override
@@ -111,12 +129,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 1);
 
-    ListProtocol.ListGetRequest.Builder getRequestBuilder =
+    ListProtocol.ListGetRequest.Builder builder =
         ListProtocol.ListGetRequest.newBuilder();
-    getRequestBuilder.setKey(ctx.getChild(0).getText());
-    getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-
-    parsedResult = new DistkvParsedResult(RequestType.LIST_GET, getRequestBuilder.build());
+    builder.setType(ListProtocol.GetType.GET_ALL);
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(0).getText())
+        .setRequestType(RequestType.LIST_GET)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_GET, request);
   }
 
   @Override
@@ -124,13 +145,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    ListProtocol.ListGetRequest.Builder getRequestBuilder = ListProtocol.ListGetRequest
+    ListProtocol.ListGetRequest.Builder builder = ListProtocol.ListGetRequest
         .newBuilder();
-    getRequestBuilder.setKey(ctx.getChild(0).getText());
-    getRequestBuilder.setIndex(Integer.valueOf(ctx.getChild(1).getText()));
-    getRequestBuilder.setType(ListProtocol.GetType.GET_ONE);
-
-    parsedResult = new DistkvParsedResult(RequestType.LIST_GET, getRequestBuilder.build());
+    builder.setIndex(Integer.parseInt(ctx.getChild(1).getText()));
+    builder.setType(ListProtocol.GetType.GET_ONE);
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(0).getText())
+        .setRequestType(RequestType.LIST_GET)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_GET, request);
   }
 
   @Override
@@ -138,29 +162,34 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
 
-    ListProtocol.ListGetRequest.Builder getRequestBuilder = ListProtocol.ListGetRequest
+    ListProtocol.ListGetRequest.Builder builder = ListProtocol.ListGetRequest
         .newBuilder();
-    getRequestBuilder.setKey(ctx.getChild(0).getText());
-    getRequestBuilder.setFrom(Integer.valueOf(ctx.getChild(1).getText()));
-    getRequestBuilder.setEnd(Integer.valueOf(ctx.getChild(2).getText()));
-    getRequestBuilder.setType(ListProtocol.GetType.GET_RANGE);
-
-    parsedResult = new DistkvParsedResult(RequestType.LIST_GET, getRequestBuilder.build());
+    builder.setFrom(Integer.parseInt(ctx.getChild(1).getText()));
+    builder.setEnd(Integer.parseInt(ctx.getChild(2).getText()));
+    builder.setType(ListProtocol.GetType.GET_RANGE);
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(0).getText())
+        .setRequestType(RequestType.LIST_GET)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_GET, request);
   }
 
   @Override
   public void enterListRemoveOne(DistkvNewSQLParser.ListRemoveOneContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
-
     ListProtocol.ListRemoveRequest.Builder removeRequestBuilder =
         ListProtocol.ListRemoveRequest.newBuilder();
-
     removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveOne);
-    removeRequestBuilder.setKey(ctx.children.get(0).getText());
-    removeRequestBuilder.setIndex(Integer.valueOf(ctx.children.get(1).getText()));
+    removeRequestBuilder.setIndex(Integer.parseInt(ctx.children.get(1).getText()));
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(0).getText())
+        .setRequestType(RequestType.LIST_REMOVE)
+        .setRequest(Any.pack(removeRequestBuilder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(
-        RequestType.LIST_REMOVE, removeRequestBuilder.build());
+        RequestType.LIST_REMOVE, request);
   }
 
   @Override
@@ -172,11 +201,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
         ListProtocol.ListRemoveRequest.newBuilder();
 
     removeRequestBuilder.setType(ListProtocol.RemoveType.RemoveRange);
-    removeRequestBuilder.setKey(ctx.children.get(0).getText());
-    removeRequestBuilder.setFrom(Integer.valueOf(ctx.children.get(1).getText()));
-    removeRequestBuilder.setEnd(Integer.valueOf(ctx.children.get(2).getText()));
+    removeRequestBuilder.setFrom(Integer.parseInt(ctx.children.get(1).getText()));
+    removeRequestBuilder.setEnd(Integer.parseInt(ctx.children.get(2).getText()));
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(0).getText())
+        .setRequestType(RequestType.LIST_REMOVE)
+        .setRequest(Any.pack(removeRequestBuilder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(
-        RequestType.LIST_REMOVE, removeRequestBuilder.build());
+        RequestType.LIST_REMOVE, request);
   }
 
   @Override
@@ -186,15 +219,17 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     ListProtocol.ListMRemoveRequest.Builder mremoveRequest = ListProtocol.ListMRemoveRequest
         .newBuilder();
-    mremoveRequest.setKey(ctx.children.get(1).getText());
-
     List<Integer> indexesList = new ArrayList<>();
     for (int i = 2; i < ctx.children.size(); i++) {
       indexesList.add(Integer.valueOf(ctx.children.get(i).getText()));
     }
     mremoveRequest.addAllIndexes(indexesList);
-
-    parsedResult = new DistkvParsedResult(RequestType.LIST_MREMOVE, mremoveRequest.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.LIST_MREMOVE)
+        .setRequest(Any.pack(mremoveRequest.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_MREMOVE, request);
   }
 
   @Override
@@ -203,8 +238,12 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 2);
 
     CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DistkvParsedResult(RequestType.LIST_DROP, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.LIST_DROP)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.LIST_DROP, request);
   }
 
   @Override
@@ -215,13 +254,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
 
     SetProtocol.SetPutRequest.Builder builder = SetProtocol.SetPutRequest.newBuilder();
-    final String key = ctx.children.get(1).getText();
-    builder.setKey(key);
     final int valueSize = ctx.children.get(2).getChildCount();
     for (int i = 0; i < valueSize; ++i) {
       builder.addValues(ctx.children.get(2).getChild(i).getText());
     }
-    SetProtocol.SetPutRequest request = builder.build();
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SET_PUT)
+        .setRequest(Any.pack(builder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(RequestType.SET_PUT, request);
   }
 
@@ -229,18 +270,22 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   public void enterSetGet(DistkvNewSQLParser.SetGetContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
-    SetProtocol.SetGetRequest.Builder builder = SetProtocol.SetGetRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DistkvParsedResult(RequestType.SET_GET, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SET_GET)
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.SET_GET, request);
   }
 
   @Override
   public void enterSetDrop(DistkvNewSQLParser.SetDropContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
-    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DistkvParsedResult(RequestType.SET_DROP, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SET_DROP)
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.SET_DROP, request);
   }
 
   @Override
@@ -248,9 +293,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
     SetProtocol.SetPutItemRequest.Builder builder = SetProtocol.SetPutItemRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     builder.setItemValue(ctx.children.get(2).getText());
-    parsedResult = new DistkvParsedResult(RequestType.SET_PUT_ITEM, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SET_PUT_ITEM)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.SET_PUT_ITEM, request);
   }
 
   @Override
@@ -259,9 +308,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(ctx.getChildCount() == 3);
     SetProtocol.SetRemoveItemRequest.Builder builder = SetProtocol.SetRemoveItemRequest
         .newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     builder.setItemValue(ctx.children.get(2).getText());
-    parsedResult = new DistkvParsedResult(RequestType.SET_REMOVE_ITEM, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SET_REMOVE_ITEM)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.SET_REMOVE_ITEM, request);
   }
 
   @Override
@@ -269,9 +322,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
     SetProtocol.SetExistsRequest.Builder builder = SetProtocol.SetExistsRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     builder.setEntity(ctx.children.get(2).getText());
-    parsedResult = new DistkvParsedResult(RequestType.SET_EXISTS, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SET_EXISTS)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.SET_EXISTS, request);
   }
 
   @Override
@@ -279,7 +336,6 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
     DictProtocol.DictPutRequest.Builder builder = DictProtocol.DictPutRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     final ParseTree keyValuePairsParseTree = ctx.children.get(2);
     final int numKeyValuePairs = keyValuePairsParseTree.getChildCount();
     DictProtocol.DistKVDict.Builder distKVDictBuilder = DictProtocol.DistKVDict.newBuilder();
@@ -290,7 +346,12 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
       distKVDictBuilder.addValues(keyValuePairParseTree.getChild(1).getText());
     }
     builder.setDict(distKVDictBuilder.build());
-    parsedResult = new DistkvParsedResult(RequestType.DICT_PUT, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DICT_PUT)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DICT_PUT, request);
   }
 
   @Override
@@ -298,8 +359,12 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
     DictProtocol.DictGetRequest.Builder builder = DictProtocol.DictGetRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DistkvParsedResult(RequestType.DICT_GET, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DICT_GET)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DICT_GET, request);
   }
 
   @Override
@@ -307,21 +372,28 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 4);
     DictProtocol.DictPutItemRequest.Builder builder = DictProtocol.DictPutItemRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     builder.setItemKey(ctx.children.get(2).getText());
     builder.setItemValue(ctx.children.get(3).getText());
-    parsedResult = new DistkvParsedResult(RequestType.DICT_PUT_ITEM, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DICT_PUT_ITEM)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DICT_PUT_ITEM, request);
   }
 
   @Override
   public void enterDictGetItem(DistkvNewSQLParser.DictGetItemContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
-    DictProtocol.DictGetItemRequest.Builder builder
-        = DictProtocol.DictGetItemRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
+    DictProtocol.DictGetItemRequest.Builder builder = DictProtocol.DictGetItemRequest.newBuilder();
     builder.setItemKey(ctx.children.get(2).getText());
-    parsedResult = new DistkvParsedResult(RequestType.DICT_GET_ITEM, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DICT_GET_ITEM)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DICT_GET_ITEM, request);
   }
 
   @Override
@@ -329,9 +401,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
     DictProtocol.DictPopItemRequest.Builder builder = DictProtocol.DictPopItemRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     builder.setItemKey(ctx.children.get(2).getText());
-    parsedResult = new DistkvParsedResult(RequestType.DICT_POP_ITEM, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DICT_POP_ITEM)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DICT_POP_ITEM, request);
   }
 
   @Override
@@ -340,9 +416,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(ctx.children.size() == 3);
     DictProtocol.DictRemoveItemRequest.Builder builder = DictProtocol.DictRemoveItemRequest
         .newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
     builder.setItemKey(ctx.children.get(2).getText());
-    parsedResult = new DistkvParsedResult(RequestType.DICT_REMOVE_ITEM, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DICT_REMOVE_ITEM)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DICT_REMOVE_ITEM, request);
   }
 
   @Override
@@ -350,8 +430,12 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
     CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
-    builder.setKey(ctx.children.get(1).getText());
-    parsedResult = new DistkvParsedResult(RequestType.DICT_DROP, builder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DICT_DROP)
+        .setRequest(Any.pack(builder.build()))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DICT_DROP, request);
   }
 
   @Override
@@ -363,21 +447,23 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
         SortedListProtocol.SlistPutRequest.newBuilder();
     final ParseTree sortedListEntityPairsParseTree = ctx.children.get(2);
     final int sortedListEntityPairs = sortedListEntityPairsParseTree.getChildCount();
-
-    slistPutRequestBuilder.setKey(ctx.children.get(1).getText());
     for (int i = 0; i < sortedListEntityPairs; i++) {
       final SortedListProtocol.SortedListEntity.Builder slistBuilder =
           SortedListProtocol.SortedListEntity.newBuilder();
       final ParseTree sortedListEntityParseTree =
           sortedListEntityPairsParseTree.getChild(i);
       Preconditions.checkState(sortedListEntityParseTree.getChildCount() == 2);
-      slistBuilder.setScore(Integer.valueOf(sortedListEntityParseTree.getChild(1).getText()));
+      slistBuilder.setScore(Integer.parseInt(sortedListEntityParseTree.getChild(1).getText()));
       slistBuilder.setMember(sortedListEntityParseTree.getChild(0).getText());
       slistPutRequestBuilder.addList(slistBuilder);
     }
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SORTED_LIST_PUT)
+        .setRequest(Any.pack(slistPutRequestBuilder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(
-        RequestType.SORTED_LIST_PUT, slistPutRequestBuilder.build());
+        RequestType.SORTED_LIST_PUT, request);
   }
 
   @Override
@@ -387,11 +473,14 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     SortedListProtocol.SlistTopRequest.Builder slistTopRequestBuilder =
         SortedListProtocol.SlistTopRequest.newBuilder();
-    slistTopRequestBuilder.setKey(ctx.children.get(1).getText());
     slistTopRequestBuilder.setCount(Integer.parseInt(ctx.children.get(2).getText()));
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SORTED_LIST_TOP)
+        .setRequest(Any.pack(slistTopRequestBuilder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(
-        RequestType.SORTED_LIST_TOP, slistTopRequestBuilder.build());
+        RequestType.SORTED_LIST_TOP, request);
   }
 
   @Override
@@ -401,12 +490,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     SortedListProtocol.SlistIncrScoreRequest.Builder slistIncrScoreRequest =
         SortedListProtocol.SlistIncrScoreRequest.newBuilder();
-    slistIncrScoreRequest.setKey(ctx.children.get(0).getText());
     slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
     slistIncrScoreRequest.setDelta(1);
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(0).getText())
+        .setRequestType(RequestType.SORTED_LIST_INCR_SCORE)
+        .setRequest(Any.pack(slistIncrScoreRequest.build()))
+        .build();
     parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_INCR_SCORE,
-        slistIncrScoreRequest.build());
+        request);
   }
 
   @Override
@@ -416,12 +508,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     SortedListProtocol.SlistIncrScoreRequest.Builder slistIncrScoreRequest =
         SortedListProtocol.SlistIncrScoreRequest.newBuilder();
-    slistIncrScoreRequest.setKey(ctx.children.get(0).getText());
     slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
     slistIncrScoreRequest.setDelta(Integer.parseInt(ctx.children.get(2).getText()));
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(0).getText())
+        .setRequestType(RequestType.SORTED_LIST_INCR_SCORE)
+        .setRequest(Any.pack(slistIncrScoreRequest.build()))
+        .build();
     parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_INCR_SCORE,
-        slistIncrScoreRequest.build());
+        request);
   }
 
   @Override
@@ -431,12 +526,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     SortedListProtocol.SlistPutMemberRequest.Builder slistPutMemberRequestBuilder =
         SortedListProtocol.SlistPutMemberRequest.newBuilder();
-    slistPutMemberRequestBuilder.setKey(ctx.children.get(1).getText());
-    slistPutMemberRequestBuilder.setScore(Integer.valueOf(ctx.children.get(3).getText()));
+    slistPutMemberRequestBuilder.setScore(Integer.parseInt(ctx.children.get(3).getText()));
     slistPutMemberRequestBuilder.setMember(ctx.children.get(2).getText());
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SORTED_LIST_PUT_MEMBER)
+        .setRequest(Any.pack(slistPutMemberRequestBuilder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_PUT_MEMBER,
-        slistPutMemberRequestBuilder.build());
+        request);
   }
 
   @Override
@@ -446,11 +544,14 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     SortedListProtocol.SlistRemoveMemberRequest.Builder removeMemberRequestBuilder =
         SortedListProtocol.SlistRemoveMemberRequest.newBuilder();
-    removeMemberRequestBuilder.setKey(ctx.children.get(1).getText());
     removeMemberRequestBuilder.setMember(ctx.children.get(2).getText());
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SORTED_LIST_REMOVE_MEMBER)
+        .setRequest(Any.pack(removeMemberRequestBuilder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_REMOVE_MEMBER,
-        removeMemberRequestBuilder.build());
+        request);
   }
 
   @Override
@@ -458,11 +559,11 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    CommonProtocol.DropRequest.Builder dropRequestBuilder =
-        CommonProtocol.DropRequest.newBuilder();
-    dropRequestBuilder.setKey(ctx.children.get(1).getText());
-
-    parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_DROP, dropRequestBuilder.build());
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SORTED_LIST_DROP)
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_DROP, request);
   }
 
   @Override
@@ -472,10 +573,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     SortedListProtocol.SlistGetMemberRequest.Builder getMemberRequestBuilder =
         SortedListProtocol.SlistGetMemberRequest.newBuilder();
-    getMemberRequestBuilder.setKey(ctx.children.get(1).getText());
     getMemberRequestBuilder.setMember(ctx.children.get(2).getText());
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.SORTED_LIST_GET_MEMBER)
+        .setRequest(Any.pack(getMemberRequestBuilder.build()))
+        .build();
     parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_GET_MEMBER,
-        getMemberRequestBuilder.build());
+        request);
   }
 }

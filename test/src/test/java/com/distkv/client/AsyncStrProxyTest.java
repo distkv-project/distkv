@@ -2,8 +2,10 @@ package com.distkv.client;
 
 import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.rpc.protobuf.generated.StringProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.StringProtocol.StrGetResponse;
 import com.distkv.supplier.BaseTestSupplier;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.concurrent.CompletableFuture;
@@ -15,10 +17,11 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
-  public void testPutGet() throws ExecutionException, InterruptedException, TimeoutException {
+  public void testPutGet()
+      throws ExecutionException, InterruptedException, TimeoutException, InvalidProtocolBufferException {
     DistkvAsyncClient client = newAsyncDstClient();
 
-    CompletableFuture<StringProtocol.PutResponse> putFuture =
+    CompletableFuture<DistkvResponse> putFuture =
             client.strs().put("k1", "v1");
     putFuture.whenComplete((r, t) -> {
       if (t != null) {
@@ -26,7 +29,7 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
       }
     });
 
-    CompletableFuture<StringProtocol.GetResponse> getFuture =
+    CompletableFuture<DistkvResponse> getFuture =
             client.strs().get("k1");
     getFuture.whenComplete((r, t) -> {
       if (t != null) {
@@ -34,14 +37,15 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
       }
     });
 
-    StringProtocol.PutResponse putResponse =
+    DistkvResponse putResponse =
             putFuture.get(1, TimeUnit.SECONDS);
-    StringProtocol.GetResponse getResponse =
+    DistkvResponse getResponse =
             getFuture.get(1, TimeUnit.SECONDS);
 
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getStatus(), CommonProtocol.Status.OK);
-    Assert.assertEquals(getResponse.getValue(), "v1");
+    Assert.assertEquals(getResponse.getResponse()
+        .unpack(StrGetResponse.class).getValue(), "v1");
     client.disconnect();
   }
 }

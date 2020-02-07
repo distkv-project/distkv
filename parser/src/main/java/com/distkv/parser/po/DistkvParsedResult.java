@@ -1,15 +1,16 @@
 package com.distkv.parser.po;
 
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 
 public class DistkvParsedResult {
   public RequestType requestType;
-  public Object request;
+  public DistkvRequest request;
 
   public DistkvParsedResult() {
   }
 
-  public DistkvParsedResult(RequestType requestType, Object request) {
+  public DistkvParsedResult(RequestType requestType, DistkvRequest request) {
     this.requestType = requestType;
     this.request = request;
   }
@@ -22,11 +23,11 @@ public class DistkvParsedResult {
     this.requestType = requestType;
   }
 
-  public Object getRequest() {
+  public DistkvRequest getRequest() {
     return request;
   }
 
-  public void setRequest(Object request) {
+  public void setRequest(DistkvRequest request) {
     this.request = request;
   }
 }

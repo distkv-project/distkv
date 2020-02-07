@@ -1,5 +1,6 @@
 package com.distkv.client.example;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import com.distkv.client.DefaultDistkvClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 
 public class DstUsageExample {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InvalidProtocolBufferException {
     DefaultDistkvClient dstClient = new DefaultDistkvClient("distkv://127.0.0.1:8082");
     if (dstClient.isConnected()) {
       dstClient.strs().put("k1", "v1");
