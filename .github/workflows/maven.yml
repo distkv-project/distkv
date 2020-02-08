@@ -24,6 +24,12 @@ jobs:
       - name: start the dkv server
         run: dkv-server
       - name: start the dkv client
-        run: dkv-cli
+        run: nohup dkv-cli 1>/dev/null 2>&1 &
+      - name: stop the dkv client
+        run: ps -ef | grep "dkv-cli" | grep -v "grep" | awk '{print $2}' | xargs kill
+      - name: stop the dkv server
+        run: kill $(cat /var/lib/dkv/dkv-server.currentpid)
+      - name: uninstall the distkv
+        run: ./scripts/uninstall_distkv.sh
       - name: report the result of code coverage
         run: bash <(curl -s https://codecov.io/bash)
