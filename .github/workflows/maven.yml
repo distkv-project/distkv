@@ -28,7 +28,7 @@ jobs:
       - name: stop the dkv client
         run: ps -ef | grep "dkv-cli" | grep -v "grep" | awk '{print $2}' | xargs kill
       - name: stop the dkv server
-        run: kill -9 $(cat /var/lib/dkv/dkv-server.currentpid)
+        run: sudo kill -9 $(cat /var/lib/dkv/dkv-server.currentpid)
       - name: uninstall the distkv
         run: ./scripts/uninstall_distkv.sh
       - name: report the result of code coverage
