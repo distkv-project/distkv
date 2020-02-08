@@ -51,7 +51,8 @@ public class StoreServer {
         /// for the performance requirements. `Dousi` RPC has its own threading
         /// model with multiple worker threads, and `StoreServer` should have
         /// its own threading model with multiple threads as well. Therefore, it's
-        /// hard to manage so many threads to meet our performance requirements.
+        /// hard to manage so many threads to meet our performance requirements if
+        /// we don't enable this flag `enableIOThreadOnly`.
         .enableIOThreadOnly(true)
         .port(config.getPort())
         .build();
