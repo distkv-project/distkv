@@ -80,7 +80,7 @@ public class DistkvDictProxy {
   }
 
   // Pop the item in the dict corresponding to the key.
-  public String popItem(String key, String itemKey){
+  public String popItem(String key, String itemKey) {
     DictProtocol.DictPopItemRequest.Builder dictPopItemRequest = DictProtocol.DictPopItemRequest
         .newBuilder()
         .setItemKey(itemKey);
@@ -129,9 +129,10 @@ public class DistkvDictProxy {
 
   // Remove the item in the dict corresponding to the key.
   public void removeItem(String key, String itemKey) {
-    DictProtocol.DictRemoveItemRequest.Builder dictRemoveItemRequest = DictProtocol.DictRemoveItemRequest
-        .newBuilder()
-        .setItemKey(itemKey);
+    DictProtocol.DictRemoveItemRequest.Builder dictRemoveItemRequest =
+        DictProtocol.DictRemoveItemRequest
+            .newBuilder()
+            .setItemKey(itemKey);
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(key)
         .setRequestType(RequestType.DICT_REMOVE_ITEM)

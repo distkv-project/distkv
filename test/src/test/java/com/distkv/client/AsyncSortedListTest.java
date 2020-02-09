@@ -17,11 +17,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class AsyncSortedListTest extends BaseTestSupplier {
+
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
   public void testAsync()
-      throws InterruptedException, ExecutionException, TimeoutException, InvalidProtocolBufferException {
+      throws InterruptedException, ExecutionException, TimeoutException,
+      InvalidProtocolBufferException {
     DistkvAsyncClient client = newAsyncDstClient();
 
     // TestPut
@@ -31,7 +33,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
     CompletableFuture<DistkvResponse> putFuture =
-            client.sortedLists().put("k1", list);
+        client.sortedLists().put("k1", list);
     putFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -40,7 +42,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestIncScore
     CompletableFuture<DistkvResponse> incFuture =
-            client.sortedLists().incrScore("k1", "fw", 1);
+        client.sortedLists().incrScore("k1", "fw", 1);
     incFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -49,7 +51,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestPutMember
     CompletableFuture<DistkvResponse> putMemberFuture =
-            client.sortedLists().putMember("k1", new SortedListEntity("aa", 10));
+        client.sortedLists().putMember("k1", new SortedListEntity("aa", 10));
     putMemberFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -58,7 +60,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestRemoveMember
     CompletableFuture<DistkvResponse> removeFuture =
-            client.sortedLists().removeMember("k1", "xswl");
+        client.sortedLists().removeMember("k1", "xswl");
     removeFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -67,7 +69,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestTop
     CompletableFuture<DistkvResponse> topFuture =
-            client.sortedLists().top("k1", 3);
+        client.sortedLists().top("k1", 3);
     topFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -76,7 +78,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestGetMember
     CompletableFuture<DistkvResponse> getMemberFuture =
-            client.sortedLists().getMember("k1", "55");
+        client.sortedLists().getMember("k1", "55");
     getMemberFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -85,7 +87,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     //TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-            client.sortedLists().drop("k1");
+        client.sortedLists().drop("k1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -93,17 +95,17 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     });
 
     DistkvResponse putResponse =
-            putFuture.get(1, TimeUnit.SECONDS);
+        putFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse incrScoreResponse =
-            incFuture.get(1, TimeUnit.SECONDS);
+        incFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse putMemberResponse =
-            putMemberFuture.get(1, TimeUnit.SECONDS);
+        putMemberFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse removeMemberResponse =
-            removeFuture.get(1, TimeUnit.SECONDS);
+        removeFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse topResponse =
-            topFuture.get(1, TimeUnit.SECONDS);
+        topFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse dropResponse =
-            dropFuture.get(1, TimeUnit.SECONDS);
+        dropFuture.get(1, TimeUnit.SECONDS);
 
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(incrScoreResponse.getStatus(), status);
@@ -112,8 +114,10 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     CompletableFuture<DistkvResponse> getMember =
         client.sortedLists().getMember("k1", "fw");
     DistkvResponse distkvResponse = getMember.get();
-    System.out.println(distkvResponse.getResponse().unpack(SlistGetMemberResponse.class).getCount());
-    System.out.println(distkvResponse.getResponse().unpack(SlistGetMemberResponse.class).getEntity().toString());
+    System.out
+        .println(distkvResponse.getResponse().unpack(SlistGetMemberResponse.class).getCount());
+    System.out.println(
+        distkvResponse.getResponse().unpack(SlistGetMemberResponse.class).getEntity().toString());
     Assert.assertEquals(topResponse.getResponse()
         .unpack(SlistTopResponse.class).getList(0).getMember(), "aa");
     Assert.assertEquals(topResponse.getResponse()

@@ -43,7 +43,7 @@ public class StringProxyTest extends BaseTestSupplier {
 
     // list
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"),client.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client.lists().get("k1"));
     Assert.assertEquals(ImmutableList.of("v2", "v3"),
         client.lists().get("k1", 1, 3));
 

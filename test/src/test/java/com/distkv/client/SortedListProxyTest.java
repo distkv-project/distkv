@@ -30,19 +30,19 @@ public class SortedListProxyTest extends BaseTestSupplier {
   private void testTop() throws InvalidProtocolBufferException {
     LinkedList<SortedListEntity> list = distkvClient.sortedLists().top("k1", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
-    Assert.assertEquals(list.get(1).getMember(),"fw");
+    Assert.assertEquals(list.get(1).getMember(), "fw");
   }
 
   private void testRemoveItem() {
-    distkvClient.sortedLists().removeMember("k1","55");
+    distkvClient.sortedLists().removeMember("k1", "55");
   }
 
   private void testPutItem() {
-    distkvClient.sortedLists().putMember("k1", new SortedListEntity("whhh",100));
+    distkvClient.sortedLists().putMember("k1", new SortedListEntity("whhh", 100));
   }
 
   private void testIncItem() {
-    distkvClient.sortedLists().incrScore("k1", "fw",1);
+    distkvClient.sortedLists().incrScore("k1", "fw", 1);
   }
 
   private void testPut() {

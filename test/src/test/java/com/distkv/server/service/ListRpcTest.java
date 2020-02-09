@@ -141,13 +141,13 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesLput.add("v3");
       valuesLput.add("v4");
       lputRequestBuilder.addAllValues(valuesLput);
-      DistkvRequest lPutRequest = DistkvRequest.newBuilder()
+      DistkvRequest lputRequest = DistkvRequest.newBuilder()
           .setKey("k1")
           .setRequestType(RequestType.LIST_LPUT)
           .setRequest(Any.pack(lputRequestBuilder.build()))
           .build();
       DistkvResponse lputResponse = FutureUtils.get(
-          listService.call(lPutRequest));
+          listService.call(lputRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, lputResponse.getStatus());
 
       // Get.
@@ -208,13 +208,13 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesRput.add("v3");
       valuesRput.add("v4");
       valuesRput.forEach(rputRequestBuilder::addValues);
-      DistkvRequest rPutRequest = DistkvRequest.newBuilder()
+      DistkvRequest rputRequest = DistkvRequest.newBuilder()
           .setKey("k1")
           .setRequestType(RequestType.LIST_RPUT)
           .setRequest(Any.pack(rputRequestBuilder.build()))
           .build();
       DistkvResponse rputResponse = FutureUtils.get(
-          listService.call(rPutRequest));
+          listService.call(rputRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, rputResponse.getStatus());
 
       // Get.
@@ -348,13 +348,13 @@ public class ListRpcTest extends BaseTestSupplier {
           ListProtocol.ListMRemoveRequest.newBuilder();
       multipleRemoveRequestBuilder.addIndexes(1);
       multipleRemoveRequestBuilder.addIndexes(0);
-      DistkvRequest mRemoveRequest = DistkvRequest.newBuilder()
+      DistkvRequest mremoveRequest = DistkvRequest.newBuilder()
           .setKey("k1")
           .setRequestType(RequestType.LIST_MREMOVE)
           .setRequest(Any.pack(multipleRemoveRequestBuilder.build()))
           .build();
       DistkvResponse multipleRemoveResponse = FutureUtils.get(
-          listService.call(mRemoveRequest));
+          listService.call(mremoveRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, multipleRemoveResponse.getStatus());
 
       // Get.
@@ -373,13 +373,13 @@ public class ListRpcTest extends BaseTestSupplier {
 
       // Test multi-remove a non-exist key.
       multipleRemoveRequestBuilder.addIndexes(1);
-      DistkvRequest mRemoveRequest2 = DistkvRequest.newBuilder()
+      DistkvRequest mremoveRequest2 = DistkvRequest.newBuilder()
           .setKey("k2")
           .setRequestType(RequestType.LIST_MREMOVE)
           .setRequest(Any.pack(multipleRemoveRequestBuilder.build()))
           .build();
       DistkvResponse multipleRemoveResponse2 = FutureUtils.get(
-          listService.call(mRemoveRequest2));
+          listService.call(mremoveRequest2));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND,
           multipleRemoveResponse2.getStatus());
     }

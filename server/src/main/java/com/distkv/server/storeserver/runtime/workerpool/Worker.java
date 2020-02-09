@@ -192,7 +192,7 @@ public class Worker extends Thread {
         break;
       }
       case SET_DROP: {
-        CommonProtocol.Status status =null;
+        CommonProtocol.Status status = null;
         try {
           Status localStatus = storeEngine.sets().drop(key);
           if (localStatus == Status.OK) {

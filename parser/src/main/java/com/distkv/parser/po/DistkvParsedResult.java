@@ -4,6 +4,7 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 
 public class DistkvParsedResult {
+
   public RequestType requestType;
   public DistkvRequest request;
 

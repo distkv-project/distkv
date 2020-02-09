@@ -22,7 +22,8 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDict()
-      throws ExecutionException, InterruptedException, TimeoutException, InvalidProtocolBufferException {
+      throws ExecutionException, InterruptedException, TimeoutException,
+      InvalidProtocolBufferException {
     DistkvAsyncClient client = newAsyncDstClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");

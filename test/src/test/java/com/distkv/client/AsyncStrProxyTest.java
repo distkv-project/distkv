@@ -14,15 +14,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class AsyncStrProxyTest extends BaseTestSupplier {
+
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
   @Test
   public void testPutGet()
-      throws ExecutionException, InterruptedException, TimeoutException, InvalidProtocolBufferException {
+      throws ExecutionException, InterruptedException, TimeoutException,
+      InvalidProtocolBufferException {
     DistkvAsyncClient client = newAsyncDstClient();
 
     CompletableFuture<DistkvResponse> putFuture =
-            client.strs().put("k1", "v1");
+        client.strs().put("k1", "v1");
     putFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -30,7 +32,7 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
     });
 
     CompletableFuture<DistkvResponse> getFuture =
-            client.strs().get("k1");
+        client.strs().get("k1");
     getFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -38,9 +40,9 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
     });
 
     DistkvResponse putResponse =
-            putFuture.get(1, TimeUnit.SECONDS);
+        putFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse getResponse =
-            getFuture.get(1, TimeUnit.SECONDS);
+        getFuture.get(1, TimeUnit.SECONDS);
 
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getStatus(), CommonProtocol.Status.OK);

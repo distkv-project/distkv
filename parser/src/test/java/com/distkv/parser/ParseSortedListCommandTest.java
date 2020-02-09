@@ -26,13 +26,20 @@ public class ParseSortedListCommandTest {
 
     Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_PUT);
     Assert.assertEquals(putRequest.getKey(), "k1");
-    Assert.assertEquals(putRequest.getRequest().unpack(SlistPutRequest.class).getListCount(), 3);
-    Assert.assertEquals(putRequest.getRequest().unpack(SlistPutRequest.class).getList(0).getScore(), 12);
-    Assert.assertEquals(putRequest.getRequest().unpack(SlistPutRequest.class).getList(0).getMember(), "m1");
-    Assert.assertEquals(putRequest.getRequest().unpack(SlistPutRequest.class).getList(1).getScore(), -2);
-    Assert.assertEquals(putRequest.getRequest().unpack(SlistPutRequest.class).getList(1).getMember(), "m2");
-    Assert.assertEquals(putRequest.getRequest().unpack(SlistPutRequest.class).getList(2).getScore(), 0);
-    Assert.assertEquals(putRequest.getRequest().unpack(SlistPutRequest.class).getList(2).getMember(), "m3");
+    Assert.assertEquals(putRequest.getRequest()
+        .unpack(SlistPutRequest.class).getListCount(), 3);
+    Assert.assertEquals(putRequest.getRequest()
+        .unpack(SlistPutRequest.class).getList(0).getScore(), 12);
+    Assert.assertEquals(putRequest.getRequest()
+        .unpack(SlistPutRequest.class).getList(0).getMember(), "m1");
+    Assert.assertEquals(putRequest.getRequest()
+        .unpack(SlistPutRequest.class).getList(1).getScore(), -2);
+    Assert.assertEquals(putRequest.getRequest()
+        .unpack(SlistPutRequest.class).getList(1).getMember(), "m2");
+    Assert.assertEquals(putRequest.getRequest()
+        .unpack(SlistPutRequest.class).getList(2).getScore(), 0);
+    Assert.assertEquals(putRequest.getRequest()
+        .unpack(SlistPutRequest.class).getList(2).getMember(), "m3");
   }
 
   @Test

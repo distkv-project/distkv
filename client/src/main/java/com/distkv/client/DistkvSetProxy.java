@@ -64,7 +64,8 @@ public class DistkvSetProxy {
   }
 
   public void removeItem(String key, String entity) {
-    SetProtocol.SetRemoveItemRequest.Builder setRemoveItemRequest = SetProtocol.SetRemoveItemRequest
+    SetProtocol.SetRemoveItemRequest.Builder setRemoveItemRequest =
+        SetProtocol.SetRemoveItemRequest
         .newBuilder();
     setRemoveItemRequest.setItemValue(entity);
     DistkvRequest request = DistkvRequest.newBuilder()
@@ -87,7 +88,8 @@ public class DistkvSetProxy {
   }
 
   public boolean exists(String key, String entity) {
-    SetProtocol.SetExistsRequest.Builder setExistsRequest = SetProtocol.SetExistsRequest.newBuilder();
+    SetProtocol.SetExistsRequest.Builder setExistsRequest =
+        SetProtocol.SetExistsRequest.newBuilder();
     setExistsRequest.setEntity(entity);
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(key)

@@ -3,7 +3,6 @@ package com.distkv.client;
 import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
-import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetExistsResponse;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetGetResponse;
 import com.distkv.supplier.BaseTestSupplier;
@@ -22,7 +21,8 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
 
   @Test
   public void testAsyncSet()
-      throws ExecutionException, InterruptedException, TimeoutException, InvalidProtocolBufferException {
+      throws ExecutionException, InterruptedException, TimeoutException,
+      InvalidProtocolBufferException {
     DistkvAsyncClient client = newAsyncDstClient();
 
     // TestPut

@@ -15,9 +15,9 @@ public class ListProxyTest extends BaseTestSupplier {
   public void testPutAndGet() {
     DistkvClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"),client.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client.lists().get("k1"));
     Assert.assertEquals(ImmutableList.of("v2", "v3"),
-            client.lists().get("k1", 1, 3));
+        client.lists().get("k1", 1, 3));
     //exception test
     client.lists().get("k2");
     client.disconnect();
@@ -38,7 +38,7 @@ public class ListProxyTest extends BaseTestSupplier {
     DistkvClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().lput("k1", ImmutableList.of("v4", "v5"));
-    Assert.assertEquals(ImmutableList.of("v4", "v5","v1", "v2", "v3"),client.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v4", "v5", "v1", "v2", "v3"), client.lists().get("k1"));
     //exception test
     client.lists().lput("k2", ImmutableList.of("v4", "v5"));
   }
@@ -48,7 +48,7 @@ public class ListProxyTest extends BaseTestSupplier {
     DistkvClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().rput("k1", ImmutableList.of("v4", "v5"));
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3","v4", "v5"),client.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"), client.lists().get("k1"));
     //exception test
     client.lists().rput("k2", ImmutableList.of("v4", "v5"));
     client.disconnect();
@@ -58,7 +58,7 @@ public class ListProxyTest extends BaseTestSupplier {
   public void testRemove() {
     DistkvClient client = newDstClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4", "v5"));
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"),client.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"), client.lists().get("k1"));
     client.lists().remove("k1", 4);
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"), client.lists().get("k1"));
     client.lists().remove("k1", 1, 2);
@@ -75,10 +75,10 @@ public class ListProxyTest extends BaseTestSupplier {
     List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(3);
-    client.lists().mremove("k1",list);
-    Assert.assertEquals(ImmutableList.of("v1", "v3"),client.lists().get("k1"));
+    client.lists().mremove("k1", list);
+    Assert.assertEquals(ImmutableList.of("v1", "v3"), client.lists().get("k1"));
     //exception test
-    client.lists().mremove("k2",list);
+    client.lists().mremove("k2", list);
     client.disconnect();
   }
 
