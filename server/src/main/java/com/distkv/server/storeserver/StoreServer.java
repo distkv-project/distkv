@@ -27,7 +27,7 @@ public class StoreServer {
   private StoreConfig config;
 
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
-  private static String WELCOME_WORDS =
+  private static final String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
       "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
       ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
@@ -45,6 +45,14 @@ public class StoreServer {
   public StoreServer(StoreConfig config) {
     this.config = config;
     ServerConfig config1 = ServerConfig.builder()
+        /// Note: This is a very important flag for `StoreServer` because it
+        /// affects the threading model of `StoreServer`.
+        /// For a `StoreServer`, it should have the rigorous threading model
+        /// for the performance requirements. `Dousi` RPC has its own threading
+        /// model with multiple worker threads, and `StoreServer` should have
+        /// its own threading model with multiple threads as well. Therefore, it's
+        /// hard to manage so many threads to meet our performance requirements if
+        /// we don't enable this flag `enableIOThreadOnly`.
         .enableIOThreadOnly(true)
         .port(config.getPort())
         .build();
