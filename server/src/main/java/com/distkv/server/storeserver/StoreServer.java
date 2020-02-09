@@ -1,7 +1,5 @@
 package com.distkv.server.storeserver;
 
-import com.distkv.drpc.DrpcServer;
-import com.distkv.drpc.config.ServerConfig;
 import com.distkv.rpc.service.DistKVDictService;
 import com.distkv.rpc.service.DistKVListService;
 import com.distkv.rpc.service.DistKVSetService;
@@ -13,6 +11,8 @@ import com.distkv.server.storeserver.services.DistKVListServiceImpl;
 import com.distkv.server.storeserver.services.DistKVSetServiceImpl;
 import com.distkv.server.storeserver.services.DistKVSortedListServiceImpl;
 import com.distkv.server.storeserver.services.DistKVStringServiceImpl;
+import org.dousi.DousiServer;
+import org.dousi.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public class StoreServer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(StoreServer.class);
 
-  private DrpcServer drpcServer;
+  private DousiServer dousiServer;
 
   private StoreRuntime storeRuntime;
 
@@ -56,34 +56,31 @@ public class StoreServer {
         .enableIOThreadOnly(true)
         .port(config.getPort())
         .build();
-    drpcServer = new DrpcServer(config1);
+    dousiServer = new DousiServer(config1);
     storeRuntime = new StoreRuntime(config);
     registerAllRpcServices();
   }
 
   public void run() {
-    drpcServer.run();
-    LOGGER.info("Succeeded to start dst server on port {}.", config.getPort());
-    synchronized (StoreServer.class) {
-      try {
-        StoreServer.class.wait();
-      } catch (Throwable e) {
-        LOGGER.error("Failed with the exception: {}", e.toString());
-        System.exit(-1);
-      }
+    try {
+      dousiServer.run();
+    } catch (Throwable e) {
+      LOGGER.error("Failed with the exception: {}", e.toString());
+      System.exit(-1);
     }
+    LOGGER.info("Succeeded to start dst server on port {}.", config.getPort());
   }
 
   private void registerAllRpcServices() {
-    drpcServer.registerService(
+    dousiServer.registerService(
         DistKVStringService.class, new DistKVStringServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
+    dousiServer.registerService(
         DistKVListService.class, new DistKVListServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
+    dousiServer.registerService(
         DistKVSetService.class, new DistKVSetServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
+    dousiServer.registerService(
         DistKVDictService.class, new DistKVDictServiceImpl(this.storeRuntime));
-    drpcServer.registerService(
+    dousiServer.registerService(
         DistKVSortedListService.class, new DistKVSortedListServiceImpl(this.storeRuntime));
   }
 

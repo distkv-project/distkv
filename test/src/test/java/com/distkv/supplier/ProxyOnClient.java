@@ -1,10 +1,10 @@
 package com.distkv.supplier;
 
 import com.distkv.common.utils.RuntimeUtil;
-import com.distkv.drpc.Proxy;
-import com.distkv.drpc.api.Client;
-import com.distkv.drpc.config.ClientConfig;
-import com.distkv.drpc.netty.NettyClient;
+import org.dousi.Proxy;
+import org.dousi.api.Client;
+import org.dousi.config.ClientConfig;
+import org.dousi.netty.NettyClient;
 
 public class ProxyOnClient<T> implements AutoCloseable {
 
