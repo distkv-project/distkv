@@ -1,9 +1,9 @@
 package com.distkv.jmhbenchmark;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
-import com.distkv.asyncclient.DstAsyncClient;
-import com.distkv.client.DefaultDstClient;
-import com.distkv.client.DstClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
+import com.distkv.client.DefaultDistkvClient;
+import com.distkv.client.DistkvClient;
 import com.distkv.supplier.TestUtil;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
@@ -24,8 +24,8 @@ public class DstSetBenchmark {
   private static final String PROTOCOL = "distkv://127.0.0.1:8082";
   private static final String KEY_SET_SYNC = "k-set-sync";
   private static final String KEY_SET_ASYNC = "k-set-async";
-  private DstAsyncClient asyncClient;
-  private DstClient client;
+  private DistkvAsyncClient asyncClient;
+  private DistkvClient client;
   private Set<String> dummyData;
 
   @Setup
@@ -37,7 +37,7 @@ public class DstSetBenchmark {
         RandomStringUtils.random(5));
 
     asyncClient = new DefaultAsyncClient(PROTOCOL);
-    client = new DefaultDstClient(PROTOCOL);
+    client = new DefaultDistkvClient(PROTOCOL);
     client.sets().put(KEY_SET_SYNC,dummyData);
     asyncClient.sets().put(KEY_SET_ASYNC,dummyData);
   }
