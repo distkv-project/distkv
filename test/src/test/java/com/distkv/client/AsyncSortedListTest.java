@@ -4,7 +4,6 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistGetMemberResponse;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopResponse;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -114,10 +113,6 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     CompletableFuture<DistkvResponse> getMember =
         client.sortedLists().getMember("k1", "fw");
     DistkvResponse distkvResponse = getMember.get();
-    System.out
-        .println(distkvResponse.getResponse().unpack(SlistGetMemberResponse.class).getCount());
-    System.out.println(
-        distkvResponse.getResponse().unpack(SlistGetMemberResponse.class).getEntity().toString());
     Assert.assertEquals(topResponse.getResponse()
         .unpack(SlistTopResponse.class).getList(0).getMember(), "aa");
     Assert.assertEquals(topResponse.getResponse()

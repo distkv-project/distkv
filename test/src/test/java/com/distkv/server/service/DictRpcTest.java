@@ -109,7 +109,7 @@ public class DictRpcTest extends BaseTestSupplier {
       delItemBuilder.setItemKey("k2");
       DistkvRequest delItemRequest = DistkvRequest.newBuilder()
           .setKey("m1")
-          .setRequestType(RequestType.DICT_DROP)
+          .setRequestType(RequestType.DICT_REMOVE_ITEM)
           .setRequest(Any.pack(delItemBuilder.build()))
           .build();
       DistkvResponse delItemResponse = FutureUtils.get(

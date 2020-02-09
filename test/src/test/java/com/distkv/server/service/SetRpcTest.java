@@ -38,7 +38,7 @@ public class SetRpcTest extends BaseTestSupplier {
       SetProtocol.SetPutRequest.Builder setPutRequestBuilder =
           SetProtocol.SetPutRequest.newBuilder();
       final List<String> values = ImmutableList.of("v1", "v2", "v3", "v1");
-      values.forEach(value -> setPutRequestBuilder.addValues(value));
+      values.forEach(setPutRequestBuilder::addValues);
 
       DistkvRequest putRequest = DistkvRequest.newBuilder()
           .setKey("k1")
@@ -107,9 +107,14 @@ public class SetRpcTest extends BaseTestSupplier {
     try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
         DistkvService.class, rpcServerPort)) {
       DistkvService setService = setProxy.getService();
+      SetProtocol.SetExistsRequest.Builder setExistRequestBuilder =
+          SetProtocol.SetExistsRequest.newBuilder();
+      setExistRequestBuilder.setEntity("v1");
+
       DistkvRequest request = DistkvRequest.newBuilder()
           .setKey("k1")
           .setRequestType(RequestType.SET_EXISTS)
+          .setRequest(Any.pack(setExistRequestBuilder.build()))
           .build();
       DistkvResponse setExistResponse = FutureUtils.get(
           setService.call(request));

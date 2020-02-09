@@ -40,7 +40,7 @@ public class StringRpcTest extends BaseTestSupplier {
           .setKey("k1")
           .setRequestType(RequestType.STR_GET)
           .build();
-      DistkvResponse getResponse = FutureUtils.get(stringService.call(putRequest));
+      DistkvResponse getResponse = FutureUtils.get(stringService.call(getRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, getResponse.getStatus());
       Assert.assertEquals("v1", getResponse.getResponse()
           .unpack(StrGetResponse.class).getValue());

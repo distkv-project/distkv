@@ -28,7 +28,7 @@ public class SortedListRpcTest extends BaseTestSupplier {
       LinkedList<SortedListEntity> list = new LinkedList<>();
       list.add(new SortedListEntity("xswl", 9));
       list.add(new SortedListEntity("wlll", 8));
-      list.add(new SortedListEntity("fw", 9));
+      list.add(new SortedListEntity("fw", 10));
       list.add(new SortedListEntity("55", 6));
 
       SortedListProtocol.SlistPutRequest.Builder requestBuilder =
@@ -48,7 +48,7 @@ public class SortedListRpcTest extends BaseTestSupplier {
           .setRequestType(RequestType.SORTED_LIST_PUT)
           .setRequest(Any.pack(requestBuilder.build()))
           .build();
-      DistkvResponse put = FutureUtils.get(
+      FutureUtils.get(
           service.call(putRequest));
 
       SortedListProtocol.SlistTopRequest.Builder topRequestBuilder =

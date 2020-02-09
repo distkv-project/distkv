@@ -510,17 +510,17 @@ public class Worker extends Thread {
           List<SortedListEntity> topList =
               storeEngine.sortLists().top(key, slistTopRequest.getCount());
           ListIterator<SortedListEntity> listIterator = topList.listIterator();
+          SortedListProtocol.SlistTopResponse.Builder slistBuilder =
+              SortedListProtocol.SlistTopResponse.newBuilder();
           while (listIterator.hasNext()) {
             SortedListEntity entity = listIterator.next();
             SortedListProtocol.SortedListEntity.Builder slistEntity =
                 SortedListProtocol.SortedListEntity.newBuilder();
             slistEntity.setScore(entity.getScore());
             slistEntity.setMember(entity.getMember());
-            SortedListProtocol.SlistTopResponse.Builder slistBuilder =
-                SortedListProtocol.SlistTopResponse.newBuilder();
             slistBuilder.addList(slistEntity.build());
-            builder.setResponse(Any.pack(slistBuilder.build()));
           }
+          builder.setResponse(Any.pack(slistBuilder.build()));
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
