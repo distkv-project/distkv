@@ -27,7 +27,7 @@ public class StoreServer {
   private StoreConfig config;
 
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
-  private final static String WELCOME_WORDS =
+  private static final String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
       "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
       ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
