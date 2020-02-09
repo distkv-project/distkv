@@ -1,15 +1,12 @@
 package com.distkv.asyncclient;
 
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
-import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.concurrent.CompletableFuture;
 
-// TODO(qwang): Rename to Distkv
 public class DistkvAsyncStringProxy {
 
   private DistkvService service;

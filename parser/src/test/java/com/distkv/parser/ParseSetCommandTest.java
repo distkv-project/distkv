@@ -2,7 +2,9 @@ package com.distkv.parser;
 
 import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.po.DistkvParsedResult;
-import com.distkv.rpc.protobuf.generated.SetProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetPutRequest;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -11,25 +13,30 @@ public class ParseSetCommandTest {
   private static final DistkvParser dstParser = new DistkvParser();
 
   @Test
-  public void testSetPut() {
+  public void testSetPut() throws InvalidProtocolBufferException {
     final String command = "set.put k1 v1 v2 v3 v4";
     DistkvParsedResult result = dstParser.parse(command);
-    final SetProtocol.PutRequest request = (SetProtocol.PutRequest) result.getRequest();
-    Assert.assertEquals(SetProtocol.PutRequest.class, request.getClass());
+    final DistkvRequest request = result.getRequest();
+    Assert.assertEquals(DistkvRequest.class, request.getClass());
     Assert.assertEquals("k1", request.getKey());
-    Assert.assertEquals(4, request.getValuesCount());
-    Assert.assertEquals("v1", request.getValues(0));
-    Assert.assertEquals("v2", request.getValues(1));
-    Assert.assertEquals("v3", request.getValues(2));
-    Assert.assertEquals("v4", request.getValues(3));
+    Assert.assertEquals(4, request.getRequest()
+        .unpack(SetPutRequest.class).getValuesCount());
+    Assert.assertEquals("v1", request.getRequest()
+        .unpack(SetPutRequest.class).getValues(0));
+    Assert.assertEquals("v2", request.getRequest()
+        .unpack(SetPutRequest.class).getValues(1));
+    Assert.assertEquals("v3", request.getRequest()
+        .unpack(SetPutRequest.class).getValues(2));
+    Assert.assertEquals("v4", request.getRequest()
+        .unpack(SetPutRequest.class).getValues(3));
   }
 
   @Test
   public void testSetGet() {
     final String command = "set.get k1";
     DistkvParsedResult result = dstParser.parse(command);
-    final SetProtocol.GetRequest request = (SetProtocol.GetRequest) result.getRequest();
-    Assert.assertEquals(SetProtocol.GetRequest.class, request.getClass());
+    final DistkvRequest request = result.getRequest();
+    Assert.assertEquals(DistkvRequest.class, request.getClass());
     Assert.assertEquals("k1", request.getKey());
   }
 

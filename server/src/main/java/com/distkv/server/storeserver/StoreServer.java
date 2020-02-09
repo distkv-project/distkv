@@ -68,7 +68,7 @@ public class StoreServer {
     int listeningPort = -1;
     if (args.length == 1) {
       try {
-        listeningPort = Integer.valueOf(args[0]);
+        listeningPort = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
         LOGGER.error("Failed to start dst server, because the port is incorrect format: {}",
             args[0]);

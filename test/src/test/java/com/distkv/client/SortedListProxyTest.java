@@ -1,5 +1,6 @@
 package com.distkv.client;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 import com.distkv.common.DistKVTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
@@ -14,7 +15,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
   private DistkvClient distkvClient = null;
 
   @Test
-  public void testMain() {
+  public void testMain() throws InvalidProtocolBufferException {
     distkvClient = newDstClient();
     testPut();
     testIncItem();
@@ -26,7 +27,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     distkvClient.disconnect();
   }
 
-  private void testTop() {
+  private void testTop() throws InvalidProtocolBufferException {
     LinkedList<SortedListEntity> list = distkvClient.sortedLists().top("k1", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
     Assert.assertEquals(list.get(1).getMember(),"fw");
@@ -53,7 +54,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     distkvClient.sortedLists().put("k1", list);
   }
 
-  private void testGetItem() {
+  private void testGetItem() throws InvalidProtocolBufferException {
     DistKVTuple<Integer, Integer> tuple = distkvClient.sortedLists().getMember("k1", "fw");
     Assert.assertEquals(tuple.getFirst().intValue(), 10);
     Assert.assertEquals(tuple.getSecond().intValue(), 2);

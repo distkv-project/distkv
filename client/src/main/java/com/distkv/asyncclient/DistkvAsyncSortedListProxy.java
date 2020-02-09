@@ -1,7 +1,6 @@
 package com.distkv.asyncclient;
 
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;

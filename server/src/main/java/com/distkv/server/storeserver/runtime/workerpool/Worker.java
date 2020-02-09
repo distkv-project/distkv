@@ -192,7 +192,7 @@ public class Worker extends Thread {
         break;
       }
       case SET_DROP: {
-        CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+        CommonProtocol.Status status =null;
         try {
           Status localStatus = storeEngine.sets().drop(key);
           if (localStatus == Status.OK) {
@@ -393,12 +393,15 @@ public class Worker extends Thread {
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } else {
+          DictProtocol.DictGetResponse.Builder responseBuilder =
+              DictProtocol.DictGetResponse.newBuilder();
           DictProtocol.DistKVDict.Builder dictBuilder = DictProtocol.DistKVDict.newBuilder();
           for (Map.Entry<String, String> entry : dict.entrySet()) {
             dictBuilder.addKeys(entry.getKey());
             dictBuilder.addValues(entry.getValue());
           }
-          builder.setResponse(Any.pack(dictBuilder.build()));
+          responseBuilder.setDict(dictBuilder);
+          builder.setResponse(Any.pack(responseBuilder.build()));
         }
         break;
       }
@@ -624,7 +627,7 @@ public class Worker extends Thread {
         } catch (SortedListMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
-          LOGGER.error("Failed to get slist member in store :{}", e);
+          LOGGER.error("Failed to get slist member in store :{1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
         builder.setStatus(status);

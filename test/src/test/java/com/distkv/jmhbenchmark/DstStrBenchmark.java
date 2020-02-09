@@ -5,6 +5,7 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.supplier.TestUtil;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang.RandomStringUtils;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.TearDown;
@@ -46,7 +47,7 @@ public class DstStrBenchmark {
   }
 
   @Benchmark
-  public void testSyncGet(Blackhole blackhole) {
+  public void testSyncGet(Blackhole blackhole) throws InvalidProtocolBufferException {
     blackhole.consume(client.strs().get(KEY_STR_SYNC));
   }
 

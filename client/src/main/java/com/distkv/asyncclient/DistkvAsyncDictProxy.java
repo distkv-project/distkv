@@ -1,9 +1,7 @@
 package com.distkv.asyncclient;
 
 import com.distkv.client.DictUtil;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
-
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.service.DistkvService;

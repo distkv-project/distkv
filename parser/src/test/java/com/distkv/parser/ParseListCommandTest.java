@@ -2,8 +2,15 @@ package com.distkv.parser;
 
 import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.po.DistkvParsedResult;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListGetRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListLPutRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListMRemoveRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListPutRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListRemoveRequest;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,68 +19,79 @@ public class ParseListCommandTest {
   private static final DistkvParser dstParser = new DistkvParser();
 
   @Test
-  public void testPut() {
+  public void testPut() throws InvalidProtocolBufferException {
     final String command = "list.put k1 v1 v2";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_PUT);
-    ListProtocol.PutRequest request = (ListProtocol.PutRequest) result.getRequest();
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_PUT);
+    DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getValuesCount(), 2);
-    Assert.assertEquals(request.getValues(0), "v1");
-    Assert.assertEquals(request.getValues(1), "v2");
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListPutRequest.class).getValuesCount(), 2);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListPutRequest.class).getValues(0), "v1");
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListPutRequest.class).getValues(1), "v2");
   }
 
   @Test
-  public void testGetAll() {
+  public void testGetAll() throws InvalidProtocolBufferException {
     final String command = "list.get k1";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
-    ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
-    Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_ALL);
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_GET);
+    DistkvRequest request = result.getRequest();
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListGetRequest.class).getType(), ListProtocol.GetType.GET_ALL);
     Assert.assertEquals(request.getKey(), "k1");
   }
 
   @Test
-  public void testGetOne() {
+  public void testGetOne() throws InvalidProtocolBufferException {
     final String command = "list.get k1 3";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
-    ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
-    Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_ONE);
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_GET);
+    DistkvRequest request = result.getRequest();
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListGetRequest.class).getType(), ListProtocol.GetType.GET_ONE);
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getIndex(), 3);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListGetRequest.class).getIndex(), 3);
   }
 
   @Test
-  public void testGetRange() {
+  public void testGetRange() throws InvalidProtocolBufferException {
     final String command = "list.get k1 4 9";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_GET);
-    ListProtocol.GetRequest request = (ListProtocol.GetRequest) result.getRequest();
-    Assert.assertEquals(request.getType(), ListProtocol.GetType.GET_RANGE);
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_GET);
+    DistkvRequest request = result.getRequest();
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListGetRequest.class).getType(), ListProtocol.GetType.GET_RANGE);
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getFrom(), 4);
-    Assert.assertEquals(request.getEnd(), 9);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListGetRequest.class).getFrom(), 4);
+    Assert.assertEquals(request.getRequest().unpack(ListGetRequest.class).getEnd(), 9);
   }
 
   @Test
-  public void testLput() {
+  public void testLput() throws InvalidProtocolBufferException {
     final String command = "list.lput k1 v1 v2";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_LPUT);
-    ListProtocol.LPutRequest request = (ListProtocol.LPutRequest) result.getRequest();
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_LPUT);
+    DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getValuesCount(), 2);
-    Assert.assertEquals(request.getValues(0), "v1");
-    Assert.assertEquals(request.getValues(1), "v2");
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListLPutRequest.class).getValuesCount(), 2);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListLPutRequest.class).getValues(0), "v1");
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListLPutRequest.class).getValues(1), "v2");
   }
 
   @Test
   public void testDrop() {
     final String command = "list.drop k1";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_DROP);
-    CommonProtocol.DropRequest request = (CommonProtocol.DropRequest) result.getRequest();
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_DROP);
+    DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
   }
 
@@ -83,42 +101,49 @@ public class ParseListCommandTest {
   }
 
   @Test
-  public void testRemoveOne() {
+  public void testRemoveOne() throws InvalidProtocolBufferException {
     final String command = "list.remove k1 3";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_REMOVE);
-    ListProtocol.RemoveRequest request = (ListProtocol.RemoveRequest) result.getRequest();
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_REMOVE);
+    DistkvRequest request = result.getRequest();
 
-    Assert.assertEquals(request.getType(), ListProtocol.RemoveType.RemoveOne);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListRemoveRequest.class).getType(), ListProtocol.RemoveType.RemoveOne);
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getIndex(), 3);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListRemoveRequest.class).getIndex(), 3);
   }
 
   @Test
-  public void testRemoveRange() {
+  public void testRemoveRange() throws InvalidProtocolBufferException {
     final String command = "list.remove k1 3 5";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_REMOVE);
-    ListProtocol.RemoveRequest request = (ListProtocol.RemoveRequest) result.getRequest();
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_REMOVE);
+    DistkvRequest request = result.getRequest();
 
-    Assert.assertEquals(request.getType(), ListProtocol.RemoveType.RemoveRange);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListRemoveRequest.class).getType(), ListProtocol.RemoveType.RemoveRange);
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getFrom(), 3);
-    Assert.assertEquals(request.getEnd(), 5);
+    Assert.assertEquals(request.getRequest().unpack(ListRemoveRequest.class).getFrom(), 3);
+    Assert.assertEquals(request.getRequest().unpack(ListRemoveRequest.class).getEnd(), 5);
   }
 
   @Test
-  public void testMRemove() {
+  public void testMRemove() throws InvalidProtocolBufferException {
     final String command = "list.mremove k1 2 4 5 7";
     DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestTypeEnum.LIST_M_REMOVE);
-    ListProtocol.MRemoveRequest request = (ListProtocol.MRemoveRequest) result.getRequest();
+    Assert.assertEquals(result.getRequestType(), RequestType.LIST_MREMOVE);
+    DistkvRequest request = result.getRequest();
 
     Assert.assertEquals(request.getKey(), "k1");
-    Assert.assertEquals(request.getIndexes(0), 2);
-    Assert.assertEquals(request.getIndexes(1), 4);
-    Assert.assertEquals(request.getIndexes(2), 5);
-    Assert.assertEquals(request.getIndexes(3), 7);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListMRemoveRequest.class).getIndexes(0), 2);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListMRemoveRequest.class).getIndexes(1), 4);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListMRemoveRequest.class).getIndexes(2), 5);
+    Assert.assertEquals(request.getRequest()
+        .unpack(ListMRemoveRequest.class).getIndexes(3), 7);
   }
 
   @Test

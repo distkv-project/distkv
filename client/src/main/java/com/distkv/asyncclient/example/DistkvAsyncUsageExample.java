@@ -167,6 +167,9 @@ public class DistkvAsyncUsageExample {
       DistkvProtocol.DistkvResponse slistTop = slistTopFuture.get();
       SortedListProtocol.SlistTopResponse slistTopResponse = slistTop.getResponse()
           .unpack(SortedListProtocol.SlistTopResponse.class);
+      System.out.println(slistTopResponse.getListCount());
+      System.out.println(slistTopResponse.getListList());
+      System.out.println(slistTopResponse.getList(0));
       System.out.println("The result of dstClient.sortedLists().top(\"k1\") is: " +
           "{ First: " + slistTopResponse.getList(0).getMember() +
           "; Second: " + slistTopResponse.getList(1).getMember() +
