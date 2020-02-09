@@ -16,8 +16,9 @@ fi
 SCRIPT_DIR=$(dirname $SCRIPT_ABS)
 
 pushd ..
-mvn clean install -DskipTests
 popd
+mvn clean install -DskipTests
+
 
 SERVER_JAR=$SCRIPT_DIR/../server/target/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar
 CLIENT_JAR=$SCRIPT_DIR/../client/target/distkv-client-0.1.3-SNAPSHOT-jar-with-dependencies.jar
@@ -31,13 +32,30 @@ sudo mkdir -p $SERVER_INSTALLING_DEST
 sudo mkdir -p $CLIENT_INSTALLING_DEST
 
 sudo cp $SCRIPT_DIR/run_distkv_server.sh $SERVER_INSTALLING_DEST/distkv-server
+sudo chmod +755 $SERVER_INSTALLING_DEST/distkv-server
+
 sudo cp $SCRIPT_DIR/run_distkv_cli.sh $CLIENT_INSTALLING_DEST/distkv-cli
+sudo chmod +755 $CLIENT_INSTALLING_DEST/distkv-cli
+
+# create dkv user
+sudo useradd -M dkv
 
 sudo cp $SERVER_JAR $SERVER_INSTALLING_DEST/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar
+sudo chown dkv:dkv $SERVER_INSTALLING_DEST/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar
+
 sudo cp $CLIENT_JAR $CLIENT_INSTALLING_DEST/distkv-client-0.1.3-SNAPSHOT-jar-with-dependencies.jar
+sudo chown dkv:dkv $CLIENT_INSTALLING_DEST/distkv-client-0.1.3-SNAPSHOT-jar-with-dependencies.jar
 
 # create soft link to binaries.
-ln -s $SERVER_INSTALLING_DEST/distkv-server /usr/local/bin/distkv-server
-ln -s $CLIENT_INSTALLING_DEST/distkv-cli /usr/local/bin/distkv-cli
+sudo ln -s $SERVER_INSTALLING_DEST/distkv-server /usr/local/bin/dkv-server
+sudo ln -s $CLIENT_INSTALLING_DEST/distkv-cli /usr/local/bin/dkv-cli
+
+# create dkv folder to store log
+sudo mkdir /var/log/dkv
+sudo chown dkv:dkv /var/log/dkv
+
+# create dkv folder to store dkv runtime data
+sudo mkdir /var/lib/dkv
+sudo chown dkv:dkv /var/lib/dkv
 
 echo "Wow~ Dst was installed successfully."
