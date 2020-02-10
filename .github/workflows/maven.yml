@@ -19,17 +19,31 @@ jobs:
         run: mvn clean install -DskipTests
       - name: distkv test case result
         run: mvn test
-      - name: install the distkv
-        run: ./scripts/install_distkv.sh
-      - name: start the dkv server
-        run: dkv-server
-      - name: start the dkv client
-        run: nohup dkv-cli 1>/dev/null 2>&1 &
-      - name: stop the dkv client
-        run: ps -ef | grep "dkv-cli" | grep -v "grep" | awk '{print $2}' | xargs kill
-      - name: stop the dkv server
-        run: sudo kill -9 $(cat /var/lib/dkv/dkv-server.currentpid) & sleep 2
-      - name: uninstall the distkv
-        run: ./scripts/uninstall_distkv.sh
       - name: report the result of code coverage
         run: bash <(curl -s https://codecov.io/bash)
+
+  install_dkv:
+    runs-on: ubuntu-latest
+      steps:
+          - name: use checkout@v2 action
+            uses: actions/checkout@v2
+              - name: Set up JDK 1.8
+                uses: actions/setup-java@v1
+                with:
+                  java-version: 1.8
+              - name: install the dependencies
+                run: ./scripts/install_dependencies.sh
+              - name: package Distkv
+                run: mvn clean install -DskipTests
+              - name: install the distkv
+                run: ./scripts/install_distkv.sh
+              - name: start the dkv server
+                run: dkv-server
+              - name: start the dkv client
+                run: nohup dkv-cli 1>/dev/null 2>&1 &
+              - name: stop the dkv client
+                run: ps -ef | grep "dkv-cli" | grep -v "grep" | awk '{print $2}' | xargs kill
+              - name: stop the dkv server
+                run: sudo kill -9 $(cat /var/lib/dkv/dkv-server.currentpid) & sleep 2
+              - name: uninstall the distkv
+                run: ./scripts/uninstall_distkv.sh
