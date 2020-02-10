@@ -18,7 +18,6 @@ public class TestConf {
   @Test
   public void testOverwriteConf() {
     final File userDir = new File(System.getProperty("user.dir"));
-    final String testConfPath = "";
     String confPath = userDir.getParent() + File.separator + "test" +
         File.separator + "conf" + File.separator + "master_store.conf";
     System.setProperty("distkv.store.config",confPath);
