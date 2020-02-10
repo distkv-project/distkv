@@ -10,8 +10,8 @@ public class TestConf {
   public void testDefaultConf() {
     StoreConfig config = StoreConfig.create();
     Assert.assertEquals(config.getPort(), 8082);
-    Assert.assertEquals(config.isMaster(), false);
-    Assert.assertEquals(config.getSlaveAddresses(), null);
+    Assert.assertFalse(config.isMaster());
+    Assert.assertNull(config.getSlaveAddresses());
     Assert.assertEquals(config.getShardNum(), 8);
   }
 
@@ -19,13 +19,12 @@ public class TestConf {
   public void testOverwriteConf() {
     final File userDir = new File(System.getProperty("user.dir"));
     String confPath = userDir.getParent() + File.separator + "test" +
-        File.separator + "conf" + File.separator + "master_store.conf";
-    System.setProperty("distkv.store.config",confPath);
+        File.separator + "conf" + File.separator + "test.store.conf";
+    System.setProperty("distkv.store.config", confPath);
     StoreConfig config = StoreConfig.create();
     Assert.assertEquals(config.getPort(), 18082);
-    Assert.assertEquals(config.isMaster(), true);
+    Assert.assertTrue(config.isMaster());
     Assert.assertEquals(config.getSlaveAddresses().size(), 2);
     Assert.assertEquals(config.getShardNum(), 8);
-
   }
 }
