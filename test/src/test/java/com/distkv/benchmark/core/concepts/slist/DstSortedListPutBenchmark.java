@@ -65,17 +65,6 @@ public class DstSortedListPutBenchmark {
     blackhole.consume(sortedListRBTreeImpl.put(putList));
   }
 
-//  private static List<DistKVTuple<Integer, Integer>> generateSubListDatas(
-//      int lengthInPutList, int len) {
-//    List<DistKVTuple<Integer, Integer>> tuples = new LinkedList<>();
-//    for (int i = 0; i < len; i++) {
-//      int randomStart = (int) (Math.random() * lengthInPutList) + 1;
-//      int randomLength = (int) Math.random() * (lengthInPutList - randomStart + 1);
-//      tuples.add(new DistKVTuple<>(randomStart, randomStart + randomLength));
-//    }
-//    return tuples;
-//  }
-
   private static List<SortedListEntity> generatePutDatas(
       int minValue, int maxValue, int len) {
     List<SortedListEntity> list = new LinkedList<>();
