@@ -1,6 +1,6 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
-import com.distkv.common.DistKVTuple;
+import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
@@ -610,7 +610,7 @@ public class Worker extends Thread {
                 .unpack(SortedListProtocol.SlistGetMemberRequest.class);
         CommonProtocol.Status status;
         try {
-          DistKVTuple<Integer, Integer> tuple =
+          DistkvTuple<Integer, Integer> tuple =
               storeEngine.sortLists().getMember(key, slistGetMemberRequest.getMember());
           SortedListProtocol.SortedListEntity.Builder slistEntity =
               SortedListProtocol.SortedListEntity.newBuilder();

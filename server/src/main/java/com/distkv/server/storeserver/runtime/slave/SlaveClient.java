@@ -1,9 +1,9 @@
 package com.distkv.server.storeserver.runtime.slave;
 
-import com.distkv.drpc.Proxy;
-import com.distkv.drpc.api.Client;
-import com.distkv.drpc.config.ClientConfig;
-import com.distkv.drpc.netty.NettyClient;
+import org.dousi.Proxy;
+import org.dousi.api.Client;
+import org.dousi.config.ClientConfig;
+import org.dousi.netty.NettyClient;
 import com.distkv.rpc.service.DistkvService;
 
 public class SlaveClient {

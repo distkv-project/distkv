@@ -36,7 +36,7 @@ public class BaseTestSupplier {
     TestUtil.stopProcess(TestUtil.getProcess());
   }
 
-  protected DistkvClient newDstClient() {
+  protected DistkvClient newDistkvClient() {
     final DefaultDistkvClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
@@ -50,7 +50,7 @@ public class BaseTestSupplier {
     return client[0];
   }
 
-  protected DistkvAsyncClient newAsyncDstClient() {
+  protected DistkvAsyncClient newAsyncDistkvClient() {
     final DefaultAsyncClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {

@@ -22,7 +22,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
   public void testList()
       throws ExecutionException, InterruptedException, TimeoutException,
       InvalidProtocolBufferException {
-    DistkvAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDistkvClient();
 
     // testPut
     CompletableFuture<DistkvResponse> putFuture =

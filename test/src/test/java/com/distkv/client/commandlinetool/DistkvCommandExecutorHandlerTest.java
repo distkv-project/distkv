@@ -14,7 +14,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
 
   @Test
   public void testMain() {
-    distkvClient = newDstClient();
+    distkvClient = newDistkvClient();
     final DistkvParser dstParser = new DistkvParser();
 
     DistkvParsedResult distKVParsedResult = null;

@@ -21,7 +21,7 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
   public void testPutGet()
       throws ExecutionException, InterruptedException, TimeoutException,
       InvalidProtocolBufferException {
-    DistkvAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDistkvClient();
 
     CompletableFuture<DistkvResponse> putFuture =
         client.strs().put("k1", "v1");

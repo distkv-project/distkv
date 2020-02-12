@@ -1,7 +1,7 @@
 package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DistkvClient;
-import com.distkv.common.DistKVTuple;
+import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.po.DistkvParsedResult;
@@ -415,7 +415,7 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistGetMemberRequest slistGetMemberRequest =
           request.getRequest().unpack(SlistGetMemberRequest.class);
-      final DistKVTuple<Integer, Integer> tuple =
+      final DistkvTuple<Integer, Integer> tuple =
           distkvClient.sortedLists().getMember(request.getKey(), slistGetMemberRequest.getMember());
       // output: (member, score), ranking
       final StringBuilder stringBuilder = new StringBuilder();

@@ -14,7 +14,7 @@ public class StringProxyTest extends BaseTestSupplier {
 
   @Test
   public void testPutAndGet() throws InvalidProtocolBufferException {
-    DistkvClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.strs().put("k1", "v1");
     Assert.assertEquals("v1", client.strs().get("k1"));
     client.disconnect();
@@ -22,7 +22,7 @@ public class StringProxyTest extends BaseTestSupplier {
 
   @Test
   public void testKeyNotFoundWhenGetting() throws InvalidProtocolBufferException {
-    DistkvClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     try {
       client.strs().get("k1");
       Assert.fail("It shouldn't reach here.");
@@ -35,7 +35,7 @@ public class StringProxyTest extends BaseTestSupplier {
 
   @Test
   public void testAllTypeProxiesTogether() throws InvalidProtocolBufferException {
-    DistkvClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
 
     // string
     client.strs().put("k1", "v1");

@@ -23,7 +23,7 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
   public void testAsyncSet()
       throws ExecutionException, InterruptedException, TimeoutException,
       InvalidProtocolBufferException {
-    DistkvAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDistkvClient();
 
     // TestPut
     CompletableFuture<DistkvResponse> putFuture =

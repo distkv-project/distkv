@@ -23,7 +23,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
   public void testAsync()
       throws InterruptedException, ExecutionException, TimeoutException,
       InvalidProtocolBufferException {
-    DistkvAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDistkvClient();
 
     // TestPut
     LinkedList<SortedListEntity> list = new LinkedList<>();

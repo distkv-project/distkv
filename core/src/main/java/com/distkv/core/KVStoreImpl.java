@@ -2,6 +2,7 @@ package com.distkv.core;
 
 import com.distkv.core.concepts.DistkvListsImpl;
 import com.distkv.core.concepts.DistkvSetsImpl;
+import com.distkv.core.concepts.DistkvSortedLists;
 import com.distkv.core.concepts.DistkvStrings;
 import com.distkv.core.concepts.DistkvDictsImpl;
 import com.distkv.core.concepts.DistkvStringsImpl;
