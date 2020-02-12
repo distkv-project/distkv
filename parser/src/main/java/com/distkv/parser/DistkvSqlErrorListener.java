@@ -6,7 +6,6 @@ import org.antlr.v4.runtime.Recognizer;
 import com.distkv.common.exception.DistkvException;
 
 public class DistkvSqlErrorListener extends BaseErrorListener {
-
   private DistkvSqlErrorListener() {
   }
 
@@ -14,7 +13,7 @@ public class DistkvSqlErrorListener extends BaseErrorListener {
 
   @Override
   public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
-      int line, int charPositionInLine, String msg, RecognitionException e) {
+                          int line, int charPositionInLine, String msg, RecognitionException e) {
 
     String sourceName = recognizer.getInputStream().getSourceName();
     if (!sourceName.isEmpty()) {
@@ -23,10 +22,10 @@ public class DistkvSqlErrorListener extends BaseErrorListener {
     // TODO(qwang): This exception should be refined.
     if (recognizer.getState() == 128) {
       throw new DistkvException("X010",
-          sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
+            sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
     } else {
       throw new DistkvException("X020",
-          sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
+            sourceName + "line " + line + ":" + charPositionInLine + " " + msg);
     }
   }
 }
