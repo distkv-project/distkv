@@ -44,7 +44,7 @@ public class TestUtil {
   public static void startRpcServer(int serverPort) {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
-    if (userDir.getPath().indexOf("test") != -1) {
+    if (userDir.getPath().contains("test")) {
       jarDir = userDir.getParent() + File.separator + SUFFIX_JAR_DIR;
     } else {
       jarDir = userDir.getPath() + File.separator + SUFFIX_JAR_DIR;

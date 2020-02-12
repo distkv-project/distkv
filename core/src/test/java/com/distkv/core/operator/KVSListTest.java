@@ -2,6 +2,7 @@ package com.distkv.core.operator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStoreImpl;
@@ -68,9 +69,9 @@ public class KVSListTest {
     store.lists().remove("k1", 0);
     Assert.assertEquals(Arrays.asList("v2", "v3"), store.lists().get("k1"));
     store.lists().remove("k1", 1, 2);
-    Assert.assertEquals(Arrays.asList("v2"), store.lists().get("k1"));
+    Assert.assertEquals(Collections.singletonList("v2"), store.lists().get("k1"));
     //test exceptions
-    store.lists().remove("-k", 0).toString();
+    store.lists().remove("-k", 0);
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -85,7 +86,7 @@ public class KVSListTest {
     //test exceptions
     list.clear();
     list.add(0);
-    store.lists().mremove("-k", list).toString();
+    store.lists().mremove("-k", list);
   }
 
 }

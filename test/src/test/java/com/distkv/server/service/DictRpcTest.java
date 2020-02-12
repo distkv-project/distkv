@@ -3,7 +3,7 @@ package com.distkv.server.service;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
-import com.distkv.rpc.service.DistKVDictService;
+import com.distkv.rpc.service.DistkvDictService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import org.testng.Assert;
@@ -27,9 +27,9 @@ import java.util.Map;
 public class DictRpcTest extends BaseTestSupplier {
   @Test
   public void testDictRpcCall() {
-    try (ProxyOnClient<DistKVDictService> setProxy = new ProxyOnClient<>(
-        DistKVDictService.class, rpcServerPort)) {
-      DistKVDictService dictService = setProxy.getService();
+    try (ProxyOnClient<DistkvDictService> setProxy = new ProxyOnClient<>(
+        DistkvDictService.class, rpcServerPort)) {
+      DistkvDictService dictService = setProxy.getService();
       // Test dict put.
       DictProtocol.PutRequest.Builder dictPutRequestBuilder =
               DictProtocol.PutRequest.newBuilder();

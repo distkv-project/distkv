@@ -1,6 +1,6 @@
 package com.distkv.client;
 
-import com.distkv.asyncclient.DstAsyncClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
@@ -19,7 +19,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
   @Test
   public void testAsync()
           throws InterruptedException, ExecutionException, TimeoutException {
-    DstAsyncClient client = newAsyncDstClient();
+    DistkvAsyncClient client = newAsyncDistkvClient();
 
     // TestPut
     LinkedList<SortedListEntity> list = new LinkedList<>();

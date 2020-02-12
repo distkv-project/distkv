@@ -11,7 +11,7 @@ public class DictProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDictPutGet() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
@@ -22,7 +22,7 @@ public class DictProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDictPutItem() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
@@ -35,7 +35,7 @@ public class DictProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDictGetItemValue() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
@@ -46,7 +46,7 @@ public class DictProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDictPopItem() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     dict.put("k2", "v2");
@@ -60,7 +60,7 @@ public class DictProxyTest extends BaseTestSupplier {
 
   @Test
   public void testDictDrop() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     dict.put("k2", "v2");
@@ -71,7 +71,7 @@ public class DictProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testKeyNotFoundException() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.dicts().drop("m1");
     // TODO(qwang): Might cause resources leak. Fix it ASAP.
     client.disconnect();

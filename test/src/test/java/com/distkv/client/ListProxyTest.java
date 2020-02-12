@@ -13,7 +13,7 @@ public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testPutAndGet() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"),client.lists().get("k1"));
     Assert.assertEquals(ImmutableList.of("v2", "v3"),
@@ -25,7 +25,7 @@ public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testDrop() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().drop("k1");
     //exception test
@@ -35,7 +35,7 @@ public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testLPut() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().lput("k1", ImmutableList.of("v4", "v5"));
     Assert.assertEquals(ImmutableList.of("v4", "v5","v1", "v2", "v3"),client.lists().get("k1"));
@@ -45,7 +45,7 @@ public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testRPut() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().rput("k1", ImmutableList.of("v4", "v5"));
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3","v4", "v5"),client.lists().get("k1"));
@@ -56,7 +56,7 @@ public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testRemove() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4", "v5"));
     Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4", "v5"),client.lists().get("k1"));
     client.lists().remove("k1", 4);
@@ -70,7 +70,7 @@ public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testMRemove() {
-    DstClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
     List<Integer> list = new ArrayList<>();
     list.add(1);
