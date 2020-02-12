@@ -19,7 +19,7 @@ import org.openjdk.jmh.infra.Blackhole;
 
 @State(Scope.Thread)
 @BenchmarkMode({Mode.Throughput,Mode.AverageTime})
-public class DstSetBenchmark {
+public class DistkvSetBenchmark {
 
   private static final String PROTOCOL = "distkv://127.0.0.1:8082";
   private static final String KEY_SET_SYNC = "k-set-sync";

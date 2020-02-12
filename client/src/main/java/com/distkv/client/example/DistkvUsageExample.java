@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 
-public class DstUsageExample {
+public class DistkvUsageExample {
   public static void main(String[] args) throws InvalidProtocolBufferException {
     DefaultDistkvClient dstClient = new DefaultDistkvClient("distkv://127.0.0.1:8082");
     if (dstClient.isConnected()) {
@@ -54,9 +54,9 @@ public class DstUsageExample {
 
       //print sortedList result
       System.out.println("The result of dstClient.sortedLists().top(\"k1\") is: " +
-            "{ First: " + slistResult.get(0).getMember() +
-            "; Second: " + slistResult.get(1).getMember() +
-            "; Third: " + slistResult.get(2).getMember() + "; }");
+          "{ First: " + slistResult.get(0).getMember() +
+          "; Second: " + slistResult.get(1).getMember() +
+          "; Third: " + slistResult.get(2).getMember() + "; }");
 
       dstClient.disconnect();
     }

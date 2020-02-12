@@ -4,7 +4,7 @@ import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.Status;
 import java.util.Set;
 
-public interface DistKVSets {
+public interface DistkvSets {
 
   /**
    * This method will put a key-value pair to map

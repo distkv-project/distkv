@@ -1,10 +1,10 @@
 package com.distkv.server.storeserver;
 
-import com.distkv.drpc.DrpcServer;
-import com.distkv.drpc.config.ServerConfig;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.services.DistkvServiceImpl;
+import org.dousi.DousiServer;
+import org.dousi.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ public class StoreServer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(StoreServer.class);
 
-  private DrpcServer drpcServer;
+  private DousiServer dousiServer;
 
   private StoreRuntime storeRuntime;
 
@@ -48,26 +48,23 @@ public class StoreServer {
         .enableIOThreadOnly(true)
         .port(config.getPort())
         .build();
-    drpcServer = new DrpcServer(config1);
+    dousiServer = new DousiServer(config1);
     storeRuntime = new StoreRuntime(config);
     registerAllRpcServices();
   }
 
   public void run() {
-    drpcServer.run();
-    LOGGER.info("Succeeded to start dst server on port {}.", config.getPort());
-    synchronized (StoreServer.class) {
-      try {
-        StoreServer.class.wait();
-      } catch (Throwable e) {
-        LOGGER.error("Failed with the exception: {}", e.toString());
-        System.exit(-1);
-      }
+    try {
+      dousiServer.run();
+    } catch (Throwable e) {
+      LOGGER.error("Failed with the exception: {}", e.toString());
+      System.exit(-1);
     }
+    LOGGER.info("Succeeded to start dst server on port {}.", config.getPort());
   }
 
   private void registerAllRpcServices() {
-    drpcServer.registerService(
+    dousiServer.registerService(
         DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
   }
 

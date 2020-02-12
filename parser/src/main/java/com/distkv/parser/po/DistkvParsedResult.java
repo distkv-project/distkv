@@ -1,34 +1,32 @@
 package com.distkv.parser.po;
 
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.common.RequestTypeEnum;
 
 public class DistkvParsedResult {
-
-  public RequestType requestType;
-  public DistkvRequest request;
+  public RequestTypeEnum requestType;
+  public Object request;
 
   public DistkvParsedResult() {
   }
 
-  public DistkvParsedResult(RequestType requestType, DistkvRequest request) {
+  public DistkvParsedResult(RequestTypeEnum requestType, Object request) {
     this.requestType = requestType;
     this.request = request;
   }
 
-  public RequestType getRequestType() {
+  public RequestTypeEnum getRequestType() {
     return requestType;
   }
 
-  public void setRequestType(RequestType requestType) {
+  public void setRequestType(RequestTypeEnum requestType) {
     this.requestType = requestType;
   }
 
-  public DistkvRequest getRequest() {
+  public Object getRequest() {
     return request;
   }
 
-  public void setRequest(DistkvRequest request) {
+  public void setRequest(Object request) {
     this.request = request;
   }
 }

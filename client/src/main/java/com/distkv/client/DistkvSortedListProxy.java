@@ -1,6 +1,6 @@
 package com.distkv.client;
 
-import com.distkv.common.DistKVTuple;
+import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
@@ -126,7 +126,7 @@ public class DistkvSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  public DistKVTuple<Integer, Integer> getMember(String key, String member)
+  public DistkvTuple<Integer, Integer> getMember(String key, String member)
       throws InvalidProtocolBufferException {
     SortedListProtocol.SlistGetMemberRequest slistGetMemberRequest =
         SortedListProtocol.SlistGetMemberRequest.newBuilder()
@@ -143,6 +143,6 @@ public class DistkvSortedListProxy {
     SlistGetMemberResponse slistGetMemberResponse = response.getResponse()
         .unpack(SlistGetMemberResponse.class);
     SortedListProtocol.SortedListEntity sortedListEntity = slistGetMemberResponse.getEntity();
-    return new DistKVTuple<>(sortedListEntity.getScore(), slistGetMemberResponse.getCount());
+    return new DistkvTuple<>(sortedListEntity.getScore(), slistGetMemberResponse.getCount());
   }
 }

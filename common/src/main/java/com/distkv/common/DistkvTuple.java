@@ -1,12 +1,12 @@
 package com.distkv.common;
 
-public class DistKVTuple<X, Y> {
+public class DistkvTuple<X, Y> {
 
   private X firstElement;
 
   private Y secondElement;
 
-  public DistKVTuple(X firstElement, Y secondElement) {
+  public DistkvTuple(X firstElement, Y secondElement) {
     this.firstElement = firstElement;
     this.secondElement = secondElement;
   }

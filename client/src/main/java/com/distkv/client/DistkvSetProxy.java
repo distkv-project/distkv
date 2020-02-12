@@ -66,7 +66,7 @@ public class DistkvSetProxy {
   public void removeItem(String key, String entity) {
     SetProtocol.SetRemoveItemRequest.Builder setRemoveItemRequest =
         SetProtocol.SetRemoveItemRequest
-        .newBuilder();
+            .newBuilder();
     setRemoveItemRequest.setItemValue(entity);
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(key)

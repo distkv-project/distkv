@@ -2,11 +2,11 @@ package com.distkv.core;
 
 import java.util.HashMap;
 
-public class DstHashMapImpl<K, V> implements DstMapInterface<K, V> {
+public class DistkvHashMapImpl<K, V> implements DistkvMapInterface<K, V> {
 
   private HashMap<K, V> hashMap;
 
-  public DstHashMapImpl() {
+  public DistkvHashMapImpl() {
     this.hashMap = new HashMap<>();
   }
 

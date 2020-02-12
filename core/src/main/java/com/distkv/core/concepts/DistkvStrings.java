@@ -2,7 +2,7 @@ package com.distkv.core.concepts;
 
 import com.distkv.common.utils.Status;
 
-public interface DistKVStrings {
+public interface DistkvStrings {
 
   /**
    * This method will put a key-value pair to map

@@ -1,6 +1,6 @@
 package com.distkv.core;
 
-public interface DstMapInterface<K, V> {
+public interface DistkvMapInterface<K, V> {
 
   /**
    * @param key   key with which the specified value is to be associated.

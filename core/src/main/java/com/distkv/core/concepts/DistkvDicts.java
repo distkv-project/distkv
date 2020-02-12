@@ -3,7 +3,7 @@ package com.distkv.core.concepts;
 import com.distkv.common.utils.Status;
 import java.util.Map;
 
-public interface DistKVDicts {
+public interface DistkvDicts {
 
   /**
    * Put a key-value pair to map.

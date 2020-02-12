@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class DSTBenchmark {
+public class DistkvBenchmark {
   public static final String serverAddress = "distkv://127.0.0.1:8082";
 
   private int threadNum = 1;
 
   private Consumer<DistkvClient> testModule;
 
-  public DSTBenchmark(int threadNum) {
+  public DistkvBenchmark(int threadNum) {
     this.threadNum = threadNum;
   }
 
-  public DSTBenchmark() {
+  public DistkvBenchmark() {
   }
 
   public void setThreadNum(int threadNum) {

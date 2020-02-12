@@ -22,8 +22,8 @@ public class DistkvStringProxy {
 
   public void put(String key, String value) {
     StringProtocol.StrPutRequest strPutRequest = StringProtocol.StrPutRequest.newBuilder()
-            .setValue(value)
-            .build();
+        .setValue(value)
+        .build();
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
         .setRequest(Any.pack(strPutRequest))

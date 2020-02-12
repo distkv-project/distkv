@@ -1,6 +1,6 @@
 package com.distkv.benchmark.core.concepts;
 
-import com.distkv.common.DistKVTuple;
+import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.core.struct.slist.SortedList;
 import com.distkv.core.struct.slist.SortedListLinkedImpl;
@@ -8,7 +8,7 @@ import com.distkv.core.struct.slist.SortedListLinkedImpl;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DstSortedListsImplSimpleBenchmark {
+public class DistkvSortedListsImplSimpleBenchmark {
 
   private static final int maxOperationTimes = 10000;
 
@@ -76,7 +76,7 @@ public class DstSortedListsImplSimpleBenchmark {
     testPut(sortedList, list);
     totalTimes = 0;
     for (int i = 0; i < maxOperationTimes; i++) {
-      DistKVTuple<String, Integer> tuple = generateIncrScoreDatas(minValueInPutList - 100,
+      DistkvTuple<String, Integer> tuple = generateIncrScoreDatas(minValueInPutList - 100,
           maxValueInPutList + 100);
       double consume = testIncrScore(sortedList, tuple.getFirst(), tuple.getSecond());
       totalTimes += addWeight(sortedList, consume);
@@ -92,7 +92,7 @@ public class DstSortedListsImplSimpleBenchmark {
     testPut(sortedList, list);
     totalTimes = 0;
     for (int i = 0; i < maxOperationTimes; i++) {
-      DistKVTuple<Integer, Integer> tuple = generateSubListDatas(sortedList.size());
+      DistkvTuple<Integer, Integer> tuple = generateSubListDatas(sortedList.size());
       double consume = testSubList(sortedList, tuple.getFirst(), tuple.getSecond());;
       totalTimes += addWeight(sortedList, consume);
     }
@@ -174,11 +174,11 @@ public class DstSortedListsImplSimpleBenchmark {
     return end - start;
   }
 
-  private static DistKVTuple<String, Integer> generateIncrScoreDatas(
+  private static DistkvTuple<String, Integer> generateIncrScoreDatas(
       int minValue, int maxValue) {
     int randomValue = (int) (Math.random() * (maxValue - minValue + 1)) + minValue;
     int randomDelta = (int) (Math.random() * (maxValue - minValue + 1)) + minValue;
-    return new DistKVTuple<>(String.valueOf(randomValue), randomDelta);
+    return new DistkvTuple<>(String.valueOf(randomValue), randomDelta);
   }
 
   private static long testSubList(
@@ -189,11 +189,11 @@ public class DstSortedListsImplSimpleBenchmark {
     return end - start;
   }
 
-  private static DistKVTuple<Integer, Integer> generateSubListDatas(
+  private static DistkvTuple<Integer, Integer> generateSubListDatas(
       int size) {
     int startIndex = (int) Math.random() * size + 1;
     int len = (int) (Math.random() * (size - startIndex + 1));
-    return new DistKVTuple<>(startIndex, startIndex + len);
+    return new DistkvTuple<>(startIndex, startIndex + len);
   }
 
   private static long testGetItem(

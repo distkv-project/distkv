@@ -5,10 +5,8 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.supplier.TestUtil;
-import com.google.common.collect.ImmutableList;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang.RandomStringUtils;
-import org.openjdk.jmh.infra.Blackhole;
-import java.util.List;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Setup;
@@ -16,31 +14,29 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.infra.Blackhole;
 
 @State(Scope.Thread)
 @BenchmarkMode({Mode.Throughput, Mode.AverageTime})
-public class DstListBenchmark {
+public class DistkvStrBenchmark {
 
   private static final String PROTOCOL = "distkv://127.0.0.1:8082";
-  private static final String KEY_LIST_SYNC = "k-list-sync";
-  private static final String KEY_LIST_ASYNC = "k-list-async";
+  private static final String KEY_STR_SYNC = "k-str-sync";
+  private static final String KEY_STR_ASYNC = "k-str-async";
+  private static final String VALUE_STR_SYNC = "v-sync";
+  private static final String VALUE_STR_ASYNC = "v-async";
   private DistkvAsyncClient asyncClient;
   private DistkvClient client;
-  private List<String> dummyData;
 
   @Setup
   public void init() {
     TestUtil.startRpcServer(8082);
 
-    dummyData = ImmutableList.of(
-            RandomStringUtils.random(5),
-            RandomStringUtils.random(5),
-            RandomStringUtils.random(5));
-
     asyncClient = new DefaultAsyncClient(PROTOCOL);
     client = new DefaultDistkvClient(PROTOCOL);
-    client.lists().put(KEY_LIST_SYNC, dummyData);
-    asyncClient.lists().put(KEY_LIST_ASYNC, dummyData);
+
+    client.strs().put(KEY_STR_SYNC, VALUE_STR_SYNC);
+    asyncClient.strs().put(KEY_STR_ASYNC, VALUE_STR_ASYNC);
   }
 
   @TearDown
@@ -51,36 +47,25 @@ public class DstListBenchmark {
   }
 
   @Benchmark
-  public void testSyncGet(Blackhole blackhole) {
-    blackhole.consume(client.lists().get(KEY_LIST_SYNC));
+  public void testSyncGet(Blackhole blackhole) throws InvalidProtocolBufferException {
+    blackhole.consume(client.strs().get(KEY_STR_SYNC));
   }
 
   @Benchmark
   public void testAsyncGet(Blackhole blackhole) {
-    blackhole.consume(asyncClient.lists().get(KEY_LIST_ASYNC));
+    blackhole.consume(asyncClient.strs().get(KEY_STR_ASYNC));
   }
 
   @Benchmark
   public void testPut() {
     String randomStr = RandomStringUtils.random(5);
-    client.lists().put(randomStr, dummyData);
+    client.strs().put(randomStr, randomStr);
   }
 
   @Benchmark
   public void testAsyncPut() {
     String randomStr = RandomStringUtils.random(5);
-    asyncClient.lists().put(randomStr, dummyData);
+    asyncClient.strs().put(randomStr, randomStr);
   }
-
-  @Benchmark
-  public void testLPut() {
-    client.lists().lput(KEY_LIST_SYNC, dummyData);
-  }
-
-  @Benchmark
-  public void testAsyncLPut() {
-    asyncClient.lists().lput(KEY_LIST_ASYNC, dummyData);
-  }
-
 
 }

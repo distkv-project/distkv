@@ -14,7 +14,7 @@ public class SetProxyTest extends BaseTestSupplier {
   public void testPutAndGet() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
-    DistkvClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.sets().put("k1", set);
     Assert.assertEquals(set, client.sets().get("k1"));
     client.disconnect();
@@ -24,7 +24,7 @@ public class SetProxyTest extends BaseTestSupplier {
   public void testRemoveItem() {
     Set<String> set1 = ImmutableSet.of("v1", "v2", "v3");
 
-    DistkvClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.sets().put("k1", set1);
     client.sets().removeItem("k1", "v3");
 
@@ -37,7 +37,7 @@ public class SetProxyTest extends BaseTestSupplier {
   public void testDropByKey() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
-    DistkvClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.sets().put("k1", set);
     Assert.assertTrue(client.sets().drop("k1"));
 
@@ -50,7 +50,7 @@ public class SetProxyTest extends BaseTestSupplier {
   public void testExists() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
-    DistkvClient client = newDstClient();
+    DistkvClient client = newDistkvClient();
     client.sets().put("k1", set);
     Assert.assertTrue(client.sets().exists("k1", "v1"));
 

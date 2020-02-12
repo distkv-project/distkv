@@ -2,12 +2,11 @@ package com.distkv.benchmark;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.supplier.TestUtil;
-import com.google.protobuf.InvalidProtocolBufferException;
 
-public class DstBenchmarkTest {
+public class DistkvBenchmarkTest {
 
 
-  public static void strPutStressTest(DistkvClient client) throws InvalidProtocolBufferException {
+  public static void strPutStressTest(DistkvClient client) {
     Thread thread = Thread.currentThread();
     long id = thread.getId();
     String name = Thread.currentThread().getName();
@@ -26,7 +25,7 @@ public class DstBenchmarkTest {
     System.out.println(str);
   }
 
-  public static void benchmarkTest(DistkvClient client) throws InvalidProtocolBufferException {
+  public static void benchmarkTest(DistkvClient client) {
     strPutStressTest(client);
     client.disconnect();
   }
@@ -34,14 +33,8 @@ public class DstBenchmarkTest {
   public static void main(String[] args) {
     // DST benchmark test
     TestUtil.startRpcServer(8082);
-    DSTBenchmark benchmark = new DSTBenchmark(10);
-    benchmark.setTestModule(dstClient -> {
-      try {
-        benchmarkTest(dstClient);
-      } catch (InvalidProtocolBufferException e) {
-        e.printStackTrace();
-      }
-    });
+    DistkvBenchmark benchmark = new DistkvBenchmark(10);
+    benchmark.setTestModule(dstClient -> benchmarkTest(dstClient));
     benchmark.run();
     TestUtil.stopProcess(TestUtil.getProcess());
   }
