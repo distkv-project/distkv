@@ -1,7 +1,7 @@
 package com.distkv.client;
 
 import java.util.LinkedList;
-import com.distkv.common.DistKVTuple;
+import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
@@ -11,11 +11,11 @@ import org.testng.annotations.Test;
 // TODO(qwang): Do not use so much clients. Use a final static client instead.
 public class SortedListProxyTest extends BaseTestSupplier {
 
-  private DstClient dstClient = null;
+  private DistkvClient distkvClient = null;
 
   @Test
   public void testMain() {
-    dstClient = newDstClient();
+    distkvClient = newDistkvClient();
     testPut();
     testIncItem();
     testPutItem();
@@ -23,25 +23,25 @@ public class SortedListProxyTest extends BaseTestSupplier {
     testRemoveItem();
     testTop();
     testGetItem();
-    dstClient.disconnect();
+    distkvClient.disconnect();
   }
 
   private void testTop() {
-    LinkedList<SortedListEntity> list = dstClient.sortedLists().top("k1", 100);
+    LinkedList<SortedListEntity> list = distkvClient.sortedLists().top("k1", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
     Assert.assertEquals(list.get(1).getMember(),"fw");
   }
 
   private void testRemoveItem() {
-    dstClient.sortedLists().removeMember("k1","55");
+    distkvClient.sortedLists().removeMember("k1","55");
   }
 
   private void testPutItem() {
-    dstClient.sortedLists().putMember("k1", new SortedListEntity("whhh",100));
+    distkvClient.sortedLists().putMember("k1", new SortedListEntity("whhh",100));
   }
 
   private void testIncItem() {
-    dstClient.sortedLists().incrScore("k1", "fw",1);
+    distkvClient.sortedLists().incrScore("k1", "fw",1);
   }
 
   private void testPut() {
@@ -50,11 +50,11 @@ public class SortedListProxyTest extends BaseTestSupplier {
     list.add(new SortedListEntity("wlll", 8));
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
-    dstClient.sortedLists().put("k1", list);
+    distkvClient.sortedLists().put("k1", list);
   }
 
   private void testGetItem() {
-    DistKVTuple<Integer, Integer> tuple = dstClient.sortedLists().getMember("k1", "fw");
+    DistkvTuple<Integer, Integer> tuple = distkvClient.sortedLists().getMember("k1", "fw");
     Assert.assertEquals(tuple.getFirst().intValue(), 10);
     Assert.assertEquals(tuple.getSecond().intValue(), 2);
   }

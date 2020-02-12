@@ -1,7 +1,7 @@
 package com.distkv.benchmark;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
-import com.distkv.asyncclient.DstAsyncClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.supplier.TestUtil;
 
 import java.text.DecimalFormat;
@@ -25,7 +25,7 @@ public class SimpleBenchmark {
     final CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
     List<Long> costTimes = new ArrayList<>();
     for (int i = 0; i < THREAD_COUNT; i++) {
-      DstAsyncClient client = new DefaultAsyncClient(ADDRESS);
+      DistkvAsyncClient client = new DefaultAsyncClient(ADDRESS);
       new Thread(() -> {
         long begin = System.currentTimeMillis();
         for (int j = 0; j < LOOP_COUNT; j++) {

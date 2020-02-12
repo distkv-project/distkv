@@ -1,8 +1,8 @@
 package com.distkv.common.exception;
 
-public class MasterSyncToSlaveException extends DistKVException {
+public class MasterSyncToSlaveException extends DistkvException {
   protected String errorCode = ErrorCodeEnum
-      .DistKVErrorCode
+      .DistkvErrorCode
       .getErrorCode();
 
   protected String key;

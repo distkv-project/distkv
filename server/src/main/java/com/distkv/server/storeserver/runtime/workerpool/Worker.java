@@ -1,11 +1,11 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
-import com.distkv.common.DistKVTuple;
+import com.distkv.common.DistkvTuple;
 import com.distkv.common.NodeInfo;
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.common.exception.DistKVException;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.common.exception.DistKVListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.utils.Status;
@@ -17,11 +17,11 @@ import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
-import com.distkv.rpc.service.DistKVDictService;
-import com.distkv.rpc.service.DistKVListService;
-import com.distkv.rpc.service.DistKVSetService;
-import com.distkv.rpc.service.DistKVSortedListService;
-import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.rpc.service.DistkvDictService;
+import com.distkv.rpc.service.DistkvListService;
+import com.distkv.rpc.service.DistkvSetService;
+import com.distkv.rpc.service.DistkvSortedListService;
+import com.distkv.rpc.service.DistkvStringService;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
@@ -84,7 +84,7 @@ public class Worker extends Thread {
             if (isMaster) {
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVStringService service = client.getStringService();
+                  DistkvStringService service = client.getStringService();
                   StringProtocol.PutResponse tempResponse =
                       service.put(strPutRequest).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -120,7 +120,7 @@ public class Worker extends Thread {
             if (isMaster) {
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVStringService service = client.getStringService();
+                  DistkvStringService service = client.getStringService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -147,7 +147,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -181,7 +181,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSetService service = client.getSetService();
+                  DistkvSetService service = client.getSetService();
                   SetProtocol.PutResponse tempResponse =
                       service.put(setPutRequest).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -219,7 +219,7 @@ public class Worker extends Thread {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.OK);
             } catch (KeyNotFoundException e) {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               setGetResponseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
             CompletableFuture<SetProtocol.GetResponse> future =
@@ -235,7 +235,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSetService service = client.getSetService();
+                  DistkvSetService service = client.getSetService();
                   SetProtocol.PutItemResponse tempResponse =
                       service.putItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -272,7 +272,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSetService service = client.getSetService();
+                  DistkvSetService service = client.getSetService();
                   SetProtocol.RemoveItemResponse tempResponse =
                       service.removeItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -298,7 +298,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             CompletableFuture<SetProtocol.RemoveItemResponse> future =
@@ -319,7 +319,7 @@ public class Worker extends Thread {
               responseBuilder.setStatus(CommonProtocol.Status.OK);
             } catch (KeyNotFoundException e) {
               responseBuilder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               responseBuilder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
             }
 
@@ -336,7 +336,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSetService service = client.getSetService();
+                  DistkvSetService service = client.getSetService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -363,7 +363,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -380,7 +380,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVListService service = client.getListService();
+                  DistkvListService service = client.getListService();
                   ListProtocol.PutResponse tempResponse =
                       service.put(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -405,7 +405,7 @@ public class Worker extends Thread {
               // at https://github.com/distkv-project/distkv/issues/349
               ArrayList<String> values = new ArrayList<>(request.getValuesList());
               storeEngine.lists().put(request.getKey(), values);
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to put a list to store: {1}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -442,7 +442,7 @@ public class Worker extends Thread {
             } catch (KeyNotFoundException e) {
               LOGGER.info("Failed to get a list from store: {1}", e);
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DistKVListIndexOutOfBoundsException e) {
+            } catch (DistkvListIndexOutOfBoundsException e) {
               LOGGER.info("Failed to get a list from store: {1}", e);
               status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
             }
@@ -460,7 +460,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVListService service = client.getListService();
+                  DistkvListService service = client.getListService();
                   ListProtocol.LPutResponse tempResponse =
                       service.lput(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -488,7 +488,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to rput a list to store: {1}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -506,7 +506,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVListService service = client.getListService();
+                  DistkvListService service = client.getListService();
                   ListProtocol.RPutResponse tempResponse =
                       service.rput(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -534,7 +534,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -551,7 +551,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVListService service = client.getListService();
+                  DistkvListService service = client.getListService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -578,7 +578,7 @@ public class Worker extends Thread {
               } else if (localStatus == Status.KEY_NOT_FOUND) {
                 status = CommonProtocol.Status.KEY_NOT_FOUND;
               }
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
             responseBuilder.setStatus(status);
@@ -595,7 +595,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVListService service = client.getListService();
+                  DistkvListService service = client.getListService();
                   ListProtocol.MRemoveResponse tempResponse =
                       service.mremove(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -626,7 +626,7 @@ public class Worker extends Thread {
             } catch (KeyNotFoundException e) {
               LOGGER.info("Failed to mRemove item from store: {1}", e);
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DistKVListIndexOutOfBoundsException e) {
+            } catch (DistkvListIndexOutOfBoundsException e) {
               LOGGER.info("Failed to mRemove item from store: {1}", e);
               status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
             }
@@ -644,7 +644,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVListService service = client.getListService();
+                  DistkvListService service = client.getListService();
                   ListProtocol.RemoveResponse tempResponse =
                       service.remove(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -686,7 +686,7 @@ public class Worker extends Thread {
             } catch (KeyNotFoundException e) {
               LOGGER.info("Failed to remove item from store: {1}", e);
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DistKVListIndexOutOfBoundsException e) {
+            } catch (DistkvListIndexOutOfBoundsException e) {
               LOGGER.info("Failed to remove item from store: {1}", e);
               status = CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
             }
@@ -704,7 +704,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVDictService service = client.getDictService();
+                  DistkvDictService service = client.getDictService();
                   DictProtocol.PutResponse tempResponse =
                       service.put(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -799,7 +799,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVDictService service = client.getDictService();
+                  DistkvDictService service = client.getDictService();
                   DictProtocol.PopItemResponse tempResponse =
                       service.popItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -843,7 +843,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVDictService service = client.getDictService();
+                  DistkvDictService service = client.getDictService();
                   DictProtocol.PutItemResponse tempResponse =
                       service.putItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -882,7 +882,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVDictService service = client.getDictService();
+                  DistkvDictService service = client.getDictService();
                   DictProtocol.RemoveItemResponse tempResponse =
                       service.removeItem(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -925,7 +925,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVDictService service = client.getDictService();
+                  DistkvDictService service = client.getDictService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -964,7 +964,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSortedListService service = client.getSortedListService();
+                  DistkvSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutResponse tempResponse =
                       service.put(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -992,7 +992,7 @@ public class Worker extends Thread {
               }
               storeEngine.sortLists().put(request.getKey(), linkedList);
               status = CommonProtocol.Status.OK;
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to put a slist to store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1026,7 +1026,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListTopNumIsNonNegativeException e) {
               status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to get a slist top in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1044,7 +1044,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSortedListService service = client.getSortedListService();
+                  DistkvSortedListService service = client.getSortedListService();
                   CommonProtocol.DropResponse tempResponse =
                       service.drop(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1069,7 +1069,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to drop a slist in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1087,7 +1087,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSortedListService service = client.getSortedListService();
+                  DistkvSortedListService service = client.getSortedListService();
                   SortedListProtocol.IncrScoreResponse tempResponse =
                       service.incrScore(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1115,7 +1115,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListMemberNotFoundException e) {
               status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to incr a slist score in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1133,7 +1133,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSortedListService service = client.getSortedListService();
+                  DistkvSortedListService service = client.getSortedListService();
                   SortedListProtocol.PutMemberResponse tempResponse =
                       service.putMember(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1159,7 +1159,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.OK;
             } catch (KeyNotFoundException e) {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to put a slist number in store: {}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1177,7 +1177,7 @@ public class Worker extends Thread {
               /// This store instance is master, so we should sync this requests to all slaves.
               for (SlaveClient client : slaveClients) {
                 synchronized (client) {
-                  DistKVSortedListService service = client.getSortedListService();
+                  DistkvSortedListService service = client.getSortedListService();
                   SortedListProtocol.RemoveMemberResponse tempResponse =
                       service.removeMember(request).get();
                   if (tempResponse.getStatus() == CommonProtocol.Status.OK) {
@@ -1204,7 +1204,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListMemberNotFoundException e) {
               status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to remove slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }
@@ -1222,7 +1222,7 @@ public class Worker extends Thread {
                 SortedListProtocol.GetMemberResponse.newBuilder();
             CommonProtocol.Status status;
             try {
-              DistKVTuple<Integer, Integer> tuple =
+              DistkvTuple<Integer, Integer> tuple =
                   storeEngine.sortLists().getMember(request.getKey(), request.getMember());
               SortedListProtocol.SortedListEntity.Builder builder =
                   SortedListProtocol.SortedListEntity.newBuilder();
@@ -1235,7 +1235,7 @@ public class Worker extends Thread {
               status = CommonProtocol.Status.KEY_NOT_FOUND;
             } catch (SortedListMemberNotFoundException e) {
               status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
-            } catch (DistKVException e) {
+            } catch (DistkvException e) {
               LOGGER.error("Failed to get slist member in store :{}", e);
               status = CommonProtocol.Status.UNKNOWN_ERROR;
             }

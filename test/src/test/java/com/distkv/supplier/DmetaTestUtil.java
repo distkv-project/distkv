@@ -22,7 +22,7 @@ public class DmetaTestUtil {
   public static void startAllDmetaProcess() {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
-    if (userDir.getPath().indexOf("test") != -1) {
+    if (userDir.getPath().contains("test")) {
       jarDir = userDir.getParent() + File.separator + SERVER_SUFFIX_JAR_DIR;
     } else {
       jarDir = userDir.getPath() + File.separator + SERVER_SUFFIX_JAR_DIR;

@@ -3,7 +3,7 @@ package com.distkv.server.service;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.service.DistKVSortedListService;
+import com.distkv.rpc.service.DistkvSortedListService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import org.testng.Assert;
@@ -15,9 +15,9 @@ public class SortedListRpcTest extends BaseTestSupplier {
 
   @Test
   public void testPut() {
-    try (ProxyOnClient<DistKVSortedListService> sortedListProxy =
-             new ProxyOnClient<>(DistKVSortedListService.class, rpcServerPort)) {
-      DistKVSortedListService service = sortedListProxy.getService();
+    try (ProxyOnClient<DistkvSortedListService> sortedListProxy =
+             new ProxyOnClient<>(DistkvSortedListService.class, rpcServerPort)) {
+      DistkvSortedListService service = sortedListProxy.getService();
       LinkedList<SortedListEntity> list = new LinkedList<>();
       list.add(new SortedListEntity("xswl", 9));
       list.add(new SortedListEntity("wlll", 8));

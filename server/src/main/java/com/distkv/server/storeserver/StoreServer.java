@@ -1,16 +1,16 @@
 package com.distkv.server.storeserver;
 
-import com.distkv.rpc.service.DistKVDictService;
-import com.distkv.rpc.service.DistKVListService;
-import com.distkv.rpc.service.DistKVSetService;
-import com.distkv.rpc.service.DistKVSortedListService;
-import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.rpc.service.DistkvDictService;
+import com.distkv.rpc.service.DistkvListService;
+import com.distkv.rpc.service.DistkvSetService;
+import com.distkv.rpc.service.DistkvSortedListService;
+import com.distkv.rpc.service.DistkvStringService;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
-import com.distkv.server.storeserver.services.DistKVDictServiceImpl;
-import com.distkv.server.storeserver.services.DistKVListServiceImpl;
-import com.distkv.server.storeserver.services.DistKVSetServiceImpl;
-import com.distkv.server.storeserver.services.DistKVSortedListServiceImpl;
-import com.distkv.server.storeserver.services.DistKVStringServiceImpl;
+import com.distkv.server.storeserver.services.DistkvDictServiceImpl;
+import com.distkv.server.storeserver.services.DistkvListServiceImpl;
+import com.distkv.server.storeserver.services.DistkvSetServiceImpl;
+import com.distkv.server.storeserver.services.DistkvSortedListServiceImpl;
+import com.distkv.server.storeserver.services.DistkvStringServiceImpl;
 import org.dousi.DousiServer;
 import org.dousi.config.ServerConfig;
 import org.slf4j.Logger;
@@ -73,15 +73,15 @@ public class StoreServer {
 
   private void registerAllRpcServices() {
     dousiServer.registerService(
-        DistKVStringService.class, new DistKVStringServiceImpl(this.storeRuntime));
+        DistkvStringService.class, new DistkvStringServiceImpl(this.storeRuntime));
     dousiServer.registerService(
-        DistKVListService.class, new DistKVListServiceImpl(this.storeRuntime));
+        DistkvListService.class, new DistkvListServiceImpl(this.storeRuntime));
     dousiServer.registerService(
-        DistKVSetService.class, new DistKVSetServiceImpl(this.storeRuntime));
+        DistkvSetService.class, new DistkvSetServiceImpl(this.storeRuntime));
     dousiServer.registerService(
-        DistKVDictService.class, new DistKVDictServiceImpl(this.storeRuntime));
+        DistkvDictService.class, new DistkvDictServiceImpl(this.storeRuntime));
     dousiServer.registerService(
-        DistKVSortedListService.class, new DistKVSortedListServiceImpl(this.storeRuntime));
+        DistkvSortedListService.class, new DistkvSortedListServiceImpl(this.storeRuntime));
   }
 
   public static void main(String[] args) {

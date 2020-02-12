@@ -22,14 +22,14 @@ public class SortedListLinkedImplTest {
     anotherPutList.add(new SortedListEntity("101", 101));
 
     // Test put
-    Assert.assertEquals(sortedList.put(anotherPutList), false);
+    Assert.assertFalse(sortedList.put(anotherPutList));
     sortedList = new SortedListLinkedImpl();
-    Assert.assertEquals(sortedList.put(putList), true);
+    Assert.assertTrue(sortedList.put(putList));
 
     // Test removeItem
-    Assert.assertEquals(sortedList.removeItem("101"), true);
-    Assert.assertEquals(sortedList.removeItem("123"), false);
-    Assert.assertEquals(sortedList.removeItem("109"), true);
+    Assert.assertTrue(sortedList.removeItem("101"));
+    Assert.assertFalse(sortedList.removeItem("123"));
+    Assert.assertTrue(sortedList.removeItem("109"));
 
     // Test getSize
     Assert.assertEquals(sortedList.size(), 18);
@@ -57,15 +57,15 @@ public class SortedListLinkedImplTest {
 
     // Test subList
     List<SortedListEntity> listEntities = sortedList.subList(1, 5);
-    Assert.assertEquals(listEntities.get(0).getMember().equals("109"), true);
+    Assert.assertEquals(listEntities.get(0).getMember(), "109");
     Assert.assertEquals(listEntities.get(0).getScore(), 1199);
-    Assert.assertEquals(listEntities.get(1).getMember().equals("118"), true);
+    Assert.assertEquals(listEntities.get(1).getMember(), "118");
     Assert.assertEquals(listEntities.get(1).getScore(), 118);
-    Assert.assertEquals(listEntities.get(2).getMember().equals("117"), true);
+    Assert.assertEquals(listEntities.get(2).getMember(), "117");
     Assert.assertEquals(listEntities.get(2).getScore(), 117);
-    Assert.assertEquals(listEntities.get(3).getMember().equals("116"), true);
+    Assert.assertEquals(listEntities.get(3).getMember(), "116");
     Assert.assertEquals(listEntities.get(3).getScore(), 116);
-    Assert.assertEquals(listEntities.get(4).getMember().equals("114"), true);
+    Assert.assertEquals(listEntities.get(4).getMember(), "114");
     Assert.assertEquals(listEntities.get(4).getScore(), 114);
   }
 

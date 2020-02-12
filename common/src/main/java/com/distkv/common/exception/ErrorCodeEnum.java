@@ -2,10 +2,10 @@ package com.distkv.common.exception;
 
 public enum ErrorCodeEnum {
   DictKeyNotFoundErrorCode("001"),
-  DistKVErrorCode(""),
-  DistKVListIndexOutOfBoundsErrorCode("202"),
+  DistkvErrorCode(""),
+  DistkvListIndexOutOfBoundsErrorCode("202"),
   KeyNotFoundErrorCode("100"),
-  DistKVKeyDuplicatedErrorCode("200"),
+  DistkvKeyDuplicatedErrorCode("200"),
   SortedListMembersDuplicatedErrorCode("008"),
   SortedListIncrScoreOutOfRangeErrorCode("009"),
   SortedListMemberNotFoundErrorCode("006"),

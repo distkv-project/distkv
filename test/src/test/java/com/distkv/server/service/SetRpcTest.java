@@ -1,7 +1,7 @@
 package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
-import com.distkv.rpc.service.DistKVSetService;
+import com.distkv.rpc.service.DistkvSetService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import com.google.common.collect.ImmutableList;
@@ -26,9 +26,9 @@ public class SetRpcTest extends BaseTestSupplier {
   }
 
   private static void testPut(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
+    try (ProxyOnClient<DistkvSetService> setProxy = new ProxyOnClient<>(
+        DistkvSetService.class, rpcServerPort)) {
+      DistkvSetService setService = setProxy.getService();
       SetProtocol.PutRequest.Builder setPutRequestBuilder =
               SetProtocol.PutRequest.newBuilder();
       setPutRequestBuilder.setKey("k1");
@@ -42,9 +42,9 @@ public class SetRpcTest extends BaseTestSupplier {
   }
 
   private static void testGet(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
+    try (ProxyOnClient<DistkvSetService> setProxy = new ProxyOnClient<>(
+        DistkvSetService.class, rpcServerPort)) {
+      DistkvSetService setService = setProxy.getService();
       SetProtocol.GetRequest.Builder setGetRequestBuilder =
               SetProtocol.GetRequest.newBuilder();
       setGetRequestBuilder.setKey("k1");
@@ -59,9 +59,9 @@ public class SetRpcTest extends BaseTestSupplier {
   }
 
   private static void testRemoveItem(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
+    try (ProxyOnClient<DistkvSetService> setProxy = new ProxyOnClient<>(
+        DistkvSetService.class, rpcServerPort)) {
+      DistkvSetService setService = setProxy.getService();
       SetProtocol.RemoveItemRequest.Builder setRemoveRequestBuilder =
               SetProtocol.RemoveItemRequest.newBuilder();
       setRemoveRequestBuilder.setKey("k1");
@@ -74,9 +74,9 @@ public class SetRpcTest extends BaseTestSupplier {
   }
 
   private static void testDropByKey(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
+    try (ProxyOnClient<DistkvSetService> setProxy = new ProxyOnClient<>(
+        DistkvSetService.class, rpcServerPort)) {
+      DistkvSetService setService = setProxy.getService();
 
       CommonProtocol.DropRequest.Builder setDropByKeyRequestBuilder =
               CommonProtocol.DropRequest.newBuilder();
@@ -90,9 +90,9 @@ public class SetRpcTest extends BaseTestSupplier {
   }
 
   private static void testExists(int rpcServerPort) {
-    try (ProxyOnClient<DistKVSetService> setProxy = new ProxyOnClient<>(
-        DistKVSetService.class, rpcServerPort)) {
-      DistKVSetService setService = setProxy.getService();
+    try (ProxyOnClient<DistkvSetService> setProxy = new ProxyOnClient<>(
+        DistkvSetService.class, rpcServerPort)) {
+      DistkvSetService setService = setProxy.getService();
       SetProtocol.ExistsRequest.Builder setExistRequestBuilder =
               SetProtocol.ExistsRequest.newBuilder();
       setExistRequestBuilder.setKey("k1");

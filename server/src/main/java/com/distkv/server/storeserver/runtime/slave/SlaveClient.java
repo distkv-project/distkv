@@ -4,23 +4,23 @@ import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.netty.NettyClient;
-import com.distkv.rpc.service.DistKVDictService;
-import com.distkv.rpc.service.DistKVListService;
-import com.distkv.rpc.service.DistKVSetService;
-import com.distkv.rpc.service.DistKVSortedListService;
-import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.rpc.service.DistkvDictService;
+import com.distkv.rpc.service.DistkvListService;
+import com.distkv.rpc.service.DistkvSetService;
+import com.distkv.rpc.service.DistkvSortedListService;
+import com.distkv.rpc.service.DistkvStringService;
 
 public class SlaveClient {
 
-  private DistKVStringService stringService;
+  private DistkvStringService stringService;
 
-  private DistKVListService listService;
+  private DistkvListService listService;
 
-  private DistKVSetService setService;
+  private DistkvSetService setService;
 
-  private DistKVDictService dictService;
+  private DistkvDictService dictService;
 
-  private DistKVSortedListService sortedListService;
+  private DistkvSortedListService sortedListService;
 
   private Client rpcClient;
 
@@ -35,28 +35,28 @@ public class SlaveClient {
     rpcClient.open();
     isOpen = true;
     // Setup str proxy.
-    Proxy<DistKVStringService> strRpcProxy = new Proxy<>();
-    strRpcProxy.setInterfaceClass(DistKVStringService.class);
+    Proxy<DistkvStringService> strRpcProxy = new Proxy<>();
+    strRpcProxy.setInterfaceClass(DistkvStringService.class);
     stringService = strRpcProxy.getService(rpcClient);
 
     // Setup list proxy.
-    Proxy<DistKVListService> listRpcProxy = new Proxy<>();
-    listRpcProxy.setInterfaceClass(DistKVListService.class);
+    Proxy<DistkvListService> listRpcProxy = new Proxy<>();
+    listRpcProxy.setInterfaceClass(DistkvListService.class);
     listService = listRpcProxy.getService(rpcClient);
 
     // Setup set proxy.
-    Proxy<DistKVSetService> setRpcProxy = new Proxy<>();
-    setRpcProxy.setInterfaceClass(DistKVSetService.class);
+    Proxy<DistkvSetService> setRpcProxy = new Proxy<>();
+    setRpcProxy.setInterfaceClass(DistkvSetService.class);
     setService = setRpcProxy.getService(rpcClient);
 
     // Setup dict proxy.
-    Proxy<DistKVDictService> dictRpcProxy = new Proxy<>();
-    dictRpcProxy.setInterfaceClass(DistKVDictService.class);
+    Proxy<DistkvDictService> dictRpcProxy = new Proxy<>();
+    dictRpcProxy.setInterfaceClass(DistkvDictService.class);
     dictService = dictRpcProxy.getService(rpcClient);
 
     // Setup sortedList proxy.
-    Proxy<DistKVSortedListService> sortedListRpcProxy = new Proxy<>();
-    sortedListRpcProxy.setInterfaceClass(DistKVSortedListService.class);
+    Proxy<DistkvSortedListService> sortedListRpcProxy = new Proxy<>();
+    sortedListRpcProxy.setInterfaceClass(DistkvSortedListService.class);
     sortedListService = sortedListRpcProxy.getService(rpcClient);
 
   }
@@ -70,7 +70,7 @@ public class SlaveClient {
     return isOpen;
   }
 
-  public DistKVStringService getStringService() {
+  public DistkvStringService getStringService() {
     if (isOpen) {
       return stringService;
     } else {
@@ -78,7 +78,7 @@ public class SlaveClient {
     }
   }
 
-  public DistKVListService getListService() {
+  public DistkvListService getListService() {
     if (isOpen) {
       return listService;
     } else {
@@ -86,11 +86,11 @@ public class SlaveClient {
     }
   }
 
-  public DistKVSetService getSetService() {
+  public DistkvSetService getSetService() {
     return setService;
   }
 
-  public DistKVDictService getDictService() {
+  public DistkvDictService getDictService() {
     if (isOpen) {
       return dictService;
     } else {
@@ -99,7 +99,7 @@ public class SlaveClient {
 
   }
 
-  public DistKVSortedListService getSortedListService() {
+  public DistkvSortedListService getSortedListService() {
     if (isOpen) {
       return sortedListService;
     } else {

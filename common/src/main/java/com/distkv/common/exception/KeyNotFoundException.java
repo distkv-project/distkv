@@ -3,7 +3,7 @@ package com.distkv.common.exception;
 /**
  * The exception class to indicates that the key not found.
  */
-public class KeyNotFoundException extends DistKVException {
+public class KeyNotFoundException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
       .KeyNotFoundErrorCode

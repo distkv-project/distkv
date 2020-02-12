@@ -12,7 +12,7 @@ def main():
         "java",
          "-classpath",
          os.path.join(get_current_dir(), "distkv/jars/distkv-cli.jar"),
-         "com.distkv.client.commandlinetool.DstCommandLineToolStarter"]
+         "com.distkv.client.commandlinetool.DistkvCommandLineToolStarter"]
     subprocess.check_call(command)
 
 if __name__ == "__main__":
