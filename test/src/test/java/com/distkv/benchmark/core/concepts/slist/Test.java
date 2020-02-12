@@ -69,7 +69,7 @@ public class Test {
     ListIterator<Integer> iterator = linkedImpl.listIterator();
     while (iterator.hasNext()) {
       if (iterator.next().compareTo(score) < 0) {
-        iterator.set(score);
+        iterator.add(score);
         break;
       }
     }
