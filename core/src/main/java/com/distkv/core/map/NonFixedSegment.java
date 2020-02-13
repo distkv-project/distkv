@@ -22,12 +22,15 @@ public class NonFixedSegment extends ValueSegment {
       size++;
       blockValueCntArray[blockIndex] = size;
     } else {
-      resize(blockIndex + 2);
+      blockIndex++;
+      resize(blockIndex + 1);
       addValue(value);
     }
   }
 
   public void addKeyValue(byte[] key, byte[] value) {
+    checkArgument(key.length + value.length <= pool.getBlockSize());
+    Block block = blockArray[blockIndex];
 
   }
 

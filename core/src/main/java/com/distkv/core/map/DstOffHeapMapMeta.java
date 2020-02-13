@@ -1,9 +1,10 @@
 package com.distkv.core.map;
 
 /**
- * DstOffHeapMapMeta store one byte metadata for every key value pair.
- * which make 16 key value as a group and use sse2 instructions to
- * quick lookup. more information reference to
+ * DstOffHeapMapMeta store one byte metadata for every key value pair to support quicker lookup.
+ * which makes 16 key value as a group and use sse2 instructions to determine the group is full or
+ * the group is deleted or empty. a group metadata contains 16 * 8 = 124 bit, which can be fully
+ * put at L1 cache. So it's cache friendly. more information reference to
  * https://abseil.io/about/design/swisstables
  */
 public class DstOffHeapMapMeta {

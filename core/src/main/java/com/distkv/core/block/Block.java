@@ -27,15 +27,15 @@ public class Block {
     ((DirectBuffer) buffer).cleaner().clean();
   }
 
-  public byte[] readNonFixedValue(int offset) {
-    checkArgument(offset <= size);
+  public byte[] readNonFixedValue(int pointer) {
+    checkArgument(pointer <= size);
     // read the value start offset.
-    int pointerOffset = offset << 2;
+    int pointerOffset = pointer << 2;
     buffer.position(pointerOffset);
     int valueStartOffset = buffer.getInt();
     // read the value end offset.
     int valueEndOffset = capacity - 1;
-    if (offset > 0) {
+    if (pointer > 0) {
       buffer.position(pointerOffset - ByteUtil.SIZE_OF_INT);
       valueEndOffset = buffer.getInt() - 1;
     }
@@ -46,14 +46,14 @@ public class Block {
     return result;
   }
 
-  public int addNonFixedValue(byte[] b) {
+  public int addNonFixedValue(byte[] value) {
     int pointerOffset = size << 2;
     int valueEndOffset = capacity - 1;
     if (size > 0) {
       buffer.position(pointerOffset - ByteUtil.SIZE_OF_INT);
       valueEndOffset = buffer.getInt() - 1;
     }
-    int valueStartOffset = valueEndOffset - b.length + 1;
+    int valueStartOffset = valueEndOffset - value.length + 1;
 
     if (valueStartOffset > (size + 1) * ByteUtil.SIZE_OF_INT) {
       // write the pointer information
@@ -61,7 +61,7 @@ public class Block {
       buffer.putInt(valueStartOffset);
       // write the value.
       buffer.position(valueStartOffset);
-      buffer.put(b);
+      buffer.put(value);
       // adjust the size
       size++;
       // return available size for write.
@@ -69,6 +69,15 @@ public class Block {
     } else {
       return -1;
     }
+  }
+
+  public int addTwoNonFixedValue(byte[] firstValue, byte[] secondValue) {
+    int pointerOffset = size << 2;
+    return 0;
+  }
+
+  public byte[][] getTwoNonFixedValue(int pointer) {
+    return null;
   }
 
   public byte[] read(int offset, int length) {
