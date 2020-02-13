@@ -69,11 +69,16 @@ public class DictProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void testKeyNotFoundException() {
     DistkvClient client = newDistkvClient();
-    client.dicts().drop("m1");
-    // TODO(qwang): Might cause resources leak. Fix it ASAP.
+    try {
+      client.dicts().drop("m1");
+    } catch (KeyNotFoundException e) {
+      client.disconnect();
+      return;
+    }
     client.disconnect();
+    Assert.fail();
   }
 }
