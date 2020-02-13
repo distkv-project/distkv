@@ -3,7 +3,7 @@ package com.distkv.core.map;
 
 import com.distkv.common.utils.ByteUtil;
 
-public class LongSegment extends ValueSegment {
+public class LongSegment extends FixedValueSegment {
 
   public LongSegment(int initSize) {
     super(initSize, ByteUtil.SIZE_OF_LONG);

@@ -2,18 +2,13 @@ package com.distkv.core.block;
 
 import sun.misc.Unsafe;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.Closeable;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BlockPool implements Closeable {
-
-  private static BlockPool instance;
-  private final ConcurrentLinkedQueue<Block> blocks = new ConcurrentLinkedQueue<>();
 
   private static Unsafe getUnsafe() {
     try {
@@ -32,7 +27,10 @@ public class BlockPool implements Closeable {
   private static final int LOW_WATER_MARK = INIT_BLOCK_NUMBER >> 1; // 8
   private static final int HIGH_WATER_MARK = INIT_BLOCK_NUMBER << 1; // 32
 
+  private static BlockPool instance;
   private final int blockSize;
+  private final ConcurrentLinkedQueue<Block> blocks = new ConcurrentLinkedQueue<>();
+
   private AtomicBoolean isAllocating = new AtomicBoolean(false);
   private AtomicBoolean isRecycling = new AtomicBoolean(false);
 
