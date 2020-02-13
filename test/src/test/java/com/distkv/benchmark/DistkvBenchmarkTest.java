@@ -13,16 +13,16 @@ public class DistkvBenchmarkTest {
     String name = Thread.currentThread().getName();
     long start = System.currentTimeMillis();
     for (int i = 0; i < 100000; i++) {
-      client.strs().put(name + i, "com/distkv/dst" + i);
+      client.strs().put(name + i, "com/distkv/" + i);
     }
     String as = client.strs().get(name + 59999);
     long end = System.currentTimeMillis();
-    String str = "This is DST Str put test. I'm thread-" +
+    String str = "This is Dsitkv Str put test. I'm thread-" +
         id +
         " and waste time =" +
         (end - start) +
         "; the result is " +
-        "org/dst/test59999".equals(as);
+        "com/dsitkv/test59999".equals(as);
     System.out.println(str);
   }
 
@@ -32,12 +32,12 @@ public class DistkvBenchmarkTest {
   }
 
   public static void main(String[] args) {
-    // DST benchmark test
+    // Distkv benchmark test
     TestUtil.startRpcServer(8082);
     DistkvBenchmark benchmark = new DistkvBenchmark(10);
-    benchmark.setTestModule(dstClient -> {
+    benchmark.setTestModule(distkvClient -> {
       try {
-        benchmarkTest(dstClient);
+        benchmarkTest(distkvClient);
       } catch (InvalidProtocolBufferException e) {
         e.printStackTrace();
       }

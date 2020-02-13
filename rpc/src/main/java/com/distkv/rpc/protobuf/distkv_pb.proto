@@ -17,8 +17,7 @@ option java_outer_classname="DistkvProtocol";
 // avoid writing some specific handler in code.
 enum RequestType {
 
-
-    // basic operations: as keep
+    // basic operations
     None = 0;
 
     EXIT = 1;

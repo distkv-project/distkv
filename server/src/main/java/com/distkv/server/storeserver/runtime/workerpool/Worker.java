@@ -12,12 +12,15 @@ import com.distkv.core.KVStore;
 import com.distkv.core.KVStoreImpl;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
+import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -31,6 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.concurrent.BlockingQueue;
@@ -60,19 +64,18 @@ public class Worker extends Thread {
    */
   private KVStore storeEngine = new KVStoreImpl();
 
-  @SuppressWarnings({"unchecked"})
   @Override
   public void run() {
     while (true) {
       try {
         InternalRequest internalRequest = queue.take();
+        DistkvRequest distkvRequest = internalRequest.getRequest();
+        CompletableFuture<DistkvResponse> future = internalRequest.getCompletableFuture();
+        DistkvResponse.Builder builder = DistkvResponse.newBuilder();
 
-        DistkvProtocol.DistkvRequest distkvRequest = internalRequest.getRequest();
-        CompletableFuture<DistkvProtocol.DistkvResponse> future = internalRequest
-            .getCompletableFuture();
-        DistkvProtocol.DistkvResponse.Builder builder = DistkvProtocol.DistkvResponse
-            .newBuilder();
-        handleCenter(distkvRequest, builder);
+        syncToSlaves(distkvRequest, future);
+        storeHandler(distkvRequest, builder);
+
         future.complete(builder.setRequestType(distkvRequest.getRequestType()).build());
       } catch (Throwable e) {
         LOGGER.error("Failed to execute event loop:" + e);
@@ -83,10 +86,69 @@ public class Worker extends Thread {
     }
   }
 
-  private void handleCenter(
-      DistkvProtocol.DistkvRequest distkvRequest, DistkvProtocol.DistkvResponse.Builder builder)
+  private void syncToSlaves(DistkvRequest request, CompletableFuture<DistkvResponse> future) {
+    if (needToSync(request)) {
+      boolean isMaster = storeRuntime.getConfig().isMaster();
+      List<SlaveClient> slaveClients = storeRuntime.getAllSlaveClients();
+      if (isMaster) {
+        for (SlaveClient client : slaveClients) {
+          synchronized (client) {
+            try {
+              DistkvResponse response =
+                  client.getDistkvService().call(request).get();
+              if (response.getStatus() != CommonProtocol.Status.OK) {
+                future.complete(DistkvResponse.newBuilder()
+                    .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+              }
+            } catch (ExecutionException | InterruptedException e) {
+              future.complete(DistkvResponse.newBuilder()
+                  .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+              LOGGER.error("Process terminated because write to salve failed");
+              Runtime.getRuntime().exit(-1);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private boolean needToSync(DistkvRequest distkvRequest) {
+    RequestType requestType = distkvRequest.getRequestType();
+    switch (requestType) {
+      case STR_PUT:
+      case STR_DROP:
+      case LIST_PUT:
+      case LIST_DROP:
+      case LIST_LPUT:
+      case LIST_RPUT:
+      case LIST_REMOVE:
+      case LIST_MREMOVE:
+      case SET_PUT:
+      case SET_DROP:
+      case SET_PUT_ITEM:
+      case SET_REMOVE_ITEM:
+      case DICT_PUT:
+      case DICT_DROP:
+      case DICT_PUT_ITEM:
+      case DICT_REMOVE_ITEM:
+      case SORTED_LIST_PUT:
+      case SORTED_LIST_DROP:
+      case SORTED_LIST_PUT_MEMBER:
+      case SORTED_LIST_INCR_SCORE:
+      case SORTED_LIST_REMOVE_MEMBER: {
+        return true;
+      }
+      default: {
+        break;
+      }
+    }
+    return false;
+  }
+
+  private void storeHandler(
+      DistkvRequest distkvRequest, DistkvResponse.Builder builder)
       throws InvalidProtocolBufferException {
-    DistkvProtocol.RequestType requestType = distkvRequest.getRequestType();
+    RequestType requestType = distkvRequest.getRequestType();
     String key = distkvRequest.getKey();
     switch (requestType) {
       case STR_PUT: {
@@ -486,7 +548,7 @@ public class Worker extends Thread {
       case SORTED_LIST_PUT: {
         SortedListProtocol.SlistPutRequest slistPutRequest = distkvRequest.getRequest()
             .unpack(SortedListProtocol.SlistPutRequest.class);
-        CommonProtocol.Status status = null;
+        CommonProtocol.Status status;
         try {
           LinkedList<SortedListEntity> linkedList = new LinkedList<>();
           for (int i = 0; i < slistPutRequest.getListCount(); i++) {
@@ -505,7 +567,7 @@ public class Worker extends Thread {
       case SORTED_LIST_TOP: {
         SortedListProtocol.SlistTopRequest slistTopRequest = distkvRequest.getRequest()
             .unpack(SortedListProtocol.SlistTopRequest.class);
-        CommonProtocol.Status status = null;
+        CommonProtocol.Status status;
         try {
           List<SortedListEntity> topList =
               storeEngine.sortLists().top(key, slistTopRequest.getCount());

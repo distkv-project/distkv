@@ -30,7 +30,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   public void enterExit(DistkvNewSQLParser.ExitContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 1);
-    parsedResult = new DistkvParsedResult(RequestType.SET_EXISTS, null);
+    parsedResult = new DistkvParsedResult(RequestType.EXIT, null);
   }
 
   @Override
