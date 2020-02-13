@@ -23,6 +23,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: use checkout@v2 action
+        uses: actions/checkout@v2
       - name: distkv test case result
         run: mvn test
       - name: report the result of code coverage
@@ -32,6 +34,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: use checkout@v2 action
+        uses: actions/checkout@v2
       - name: install the distkv
         run: ./scripts/install_distkv.sh
       - name: start the dkv server
