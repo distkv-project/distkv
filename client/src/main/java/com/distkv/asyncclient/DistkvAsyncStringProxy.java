@@ -1,41 +1,46 @@
 package com.distkv.asyncclient;
 
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
-import com.distkv.rpc.service.DistkvStringService;
-
+import com.distkv.rpc.service.DistkvService;
+import com.google.protobuf.Any;
 import java.util.concurrent.CompletableFuture;
 
 public class DistkvAsyncStringProxy {
-  private DistkvStringService service;
 
-  public DistkvAsyncStringProxy(DistkvStringService service) {
+  private DistkvService service;
+
+  public DistkvAsyncStringProxy(DistkvService service) {
     this.service = service;
   }
 
-  public CompletableFuture<StringProtocol.PutResponse> put(
-          String key, String value) {
-    StringProtocol.PutRequest request = StringProtocol.PutRequest.newBuilder()
-            .setKey(key)
-            .setValue(value)
-            .build();
-    CompletableFuture<StringProtocol.PutResponse> future = service.put(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> put(
+      String key, String value) {
+    StringProtocol.StrPutRequest strPutRequest = StringProtocol.StrPutRequest.newBuilder()
+        .setValue(value)
+        .build();
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.STR_PUT)
+        .setRequest(Any.pack(strPutRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<StringProtocol.GetResponse> get(String key) {
-    StringProtocol.GetRequest request = StringProtocol.GetRequest.newBuilder()
-            .setKey(key)
-            .build();
-    CompletableFuture<StringProtocol.GetResponse> future = service.get(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.STR_GET)
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
-    CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
-            .setKey(key)
-            .build();
-    CompletableFuture<CommonProtocol.DropResponse> future = service.drop(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.STR_DROP)
+        .build();
+    return service.call(request);
   }
 }

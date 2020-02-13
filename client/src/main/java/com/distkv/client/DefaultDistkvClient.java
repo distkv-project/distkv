@@ -5,11 +5,7 @@ import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.netty.NettyClient;
 import com.distkv.common.exception.DistkvException;
-import com.distkv.rpc.service.DistkvDictService;
-import com.distkv.rpc.service.DistkvListService;
-import com.distkv.rpc.service.DistkvSetService;
-import com.distkv.rpc.service.DistkvSortedListService;
-import com.distkv.rpc.service.DistkvStringService;
+import com.distkv.rpc.service.DistkvService;
 
 public class DefaultDistkvClient implements DistkvClient {
 
@@ -36,29 +32,14 @@ public class DefaultDistkvClient implements DistkvClient {
 
     // Setup list proxy.
     // TODO(qwang): Refine this to rpcClient.getService<DstStringService>();
-    Proxy<DistkvStringService> strRpcProxy = new Proxy<>();
-    strRpcProxy.setInterfaceClass(DistkvStringService.class);
-    stringProxy = new DistkvStringProxy(strRpcProxy.getService(rpcClient));
+    Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
+    distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-    // Setup list proxy.
-    Proxy<DistkvListService> listRpcProxy = new Proxy<>();
-    listRpcProxy.setInterfaceClass(DistkvListService.class);
-    listProxy = new DistkvListProxy(listRpcProxy.getService(rpcClient));
-
-    // Setup set proxy.
-    Proxy<DistkvSetService> setRpcProxy = new Proxy<>();
-    setRpcProxy.setInterfaceClass(DistkvSetService.class);
-    setProxy = new DistkvSetProxy(setRpcProxy.getService(rpcClient));
-
-    // Setup dict proxy.
-    Proxy<DistkvDictService> dictRpcProxy = new Proxy<>();
-    dictRpcProxy.setInterfaceClass(DistkvDictService.class);
-    dictProxy = new DistkvDictProxy(dictRpcProxy.getService(rpcClient));
-
-    // Setup sortedList proxy.
-    Proxy<DistkvSortedListService> sortedListRpcProxy = new Proxy<>();
-    sortedListRpcProxy.setInterfaceClass(DistkvSortedListService.class);
-    sortedListProxy = new DistkvSortedListProxy(sortedListRpcProxy.getService(rpcClient));
+    stringProxy = new DistkvStringProxy(distkvRpcProxy.getService(rpcClient));
+    listProxy = new DistkvListProxy(distkvRpcProxy.getService(rpcClient));
+    setProxy = new DistkvSetProxy(distkvRpcProxy.getService(rpcClient));
+    dictProxy = new DistkvDictProxy(distkvRpcProxy.getService(rpcClient));
+    sortedListProxy = new DistkvSortedListProxy(distkvRpcProxy.getService(rpcClient));
   }
 
   @Override

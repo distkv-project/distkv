@@ -1,79 +1,107 @@
 package com.distkv.client;
 
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetExistsResponse;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetGetResponse;
+import com.distkv.rpc.service.DistkvService;
+import com.google.protobuf.Any;
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.HashSet;
 import java.util.Set;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.utils.FutureUtils;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
-import com.distkv.rpc.service.DistkvSetService;
 
 public class DistkvSetProxy {
 
   private String typeCode = "C";
 
-  private DistkvSetService service;
+  private DistkvService service;
 
-  public DistkvSetProxy(DistkvSetService service) {
+  public DistkvSetProxy(DistkvService service) {
     this.service = service;
   }
 
   public void put(String key, Set<String> values) {
-    SetProtocol.PutRequest.Builder request = SetProtocol.PutRequest.newBuilder();
-    request.setKey(key);
-    values.forEach(value -> request.addValues(value));
-
-    SetProtocol.PutResponse response = FutureUtils.get(service.put(request.build()));
+    SetProtocol.SetPutRequest.Builder setPutRequest = SetProtocol.SetPutRequest.newBuilder();
+    values.forEach(setPutRequest::addValues);
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SET_PUT)
+        .setRequest(Any.pack(setPutRequest.build()))
+        .build();
+    DistkvResponse response = FutureUtils.get(service.call(request));
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
   public Set<String> get(String key) throws DistkvException {
-    SetProtocol.GetRequest request =
-            SetProtocol.GetRequest.newBuilder()
-                    .setKey(key)
-                    .build();
-
-    SetProtocol.GetResponse response = FutureUtils.get(service.get(request));
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SET_GET)
+        .build();
+    DistkvResponse response = FutureUtils.get(service.call(request));
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
-    Set<String> set = new HashSet<>(response.getValuesList());
-    return set;
+    try {
+      return new HashSet<>(response.getResponse().unpack(SetGetResponse.class).getValuesList());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
   }
 
   public void putItem(String key, String entity) {
-    SetProtocol.PutItemRequest.Builder request = SetProtocol.PutItemRequest.newBuilder();
-    request.setKey(key);
-    request.setItemValue(entity);
-
-    SetProtocol.PutItemResponse response = FutureUtils.get(service.putItem(request.build()));
+    SetProtocol.SetPutItemRequest.Builder setPutItemRequest = SetProtocol.SetPutItemRequest
+        .newBuilder();
+    setPutItemRequest.setItemValue(entity);
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SET_PUT_ITEM)
+        .setRequest(Any.pack(setPutItemRequest.build()))
+        .build();
+    DistkvResponse response = FutureUtils.get(service.call(request));
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
   public void removeItem(String key, String entity) {
-    SetProtocol.RemoveItemRequest.Builder request = SetProtocol.RemoveItemRequest.newBuilder();
-    request.setKey(key);
-    request.setItemValue(entity);
-
-    SetProtocol.RemoveItemResponse response = FutureUtils.get(
-        service.removeItem(request.build()));
+    SetProtocol.SetRemoveItemRequest.Builder setRemoveItemRequest =
+        SetProtocol.SetRemoveItemRequest
+            .newBuilder();
+    setRemoveItemRequest.setItemValue(entity);
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SET_REMOVE_ITEM)
+        .setRequest(Any.pack(setRemoveItemRequest.build()))
+        .build();
+    DistkvResponse response = FutureUtils.get(service.call(request));
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
   }
 
   public boolean drop(String key) {
-    CommonProtocol.DropRequest.Builder request = CommonProtocol.DropRequest.newBuilder();
-    request.setKey(key);
-
-    CommonProtocol.DropResponse response = FutureUtils.get(service.drop(request.build()));
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SET_DROP)
+        .build();
+    DistkvResponse response = FutureUtils.get(service.call(request));
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
     return true;
   }
 
   public boolean exists(String key, String entity) {
-    SetProtocol.ExistsRequest.Builder request = SetProtocol.ExistsRequest.newBuilder();
-    request.setKey(key);
-    request.setEntity(entity);
-
-    SetProtocol.ExistsResponse response = FutureUtils.get(service.exists(request.build()));
+    SetProtocol.SetExistsRequest.Builder setExistsRequest =
+        SetProtocol.SetExistsRequest.newBuilder();
+    setExistsRequest.setEntity(entity);
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SET_EXISTS)
+        .setRequest(Any.pack(setExistsRequest.build()))
+        .build();
+    DistkvResponse response = FutureUtils.get(service.call(request));
     CheckStatusUtil.checkStatus(response.getStatus(), request.getKey(), typeCode);
-    return response.getResult();
+    try {
+      return response.getResponse().unpack(SetExistsResponse.class).getResult();
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
   }
 }

@@ -1,103 +1,126 @@
 package com.distkv.asyncclient;
 
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.service.DistkvSortedListService;
-
+import com.distkv.rpc.service.DistkvService;
+import com.google.protobuf.Any;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
 public class DistkvAsyncSortedListProxy {
 
-  DistkvSortedListService service;
+  private DistkvService service;
 
-  public DistkvAsyncSortedListProxy(DistkvSortedListService service) {
+  public DistkvAsyncSortedListProxy(DistkvService service) {
     this.service = service;
   }
 
-  public CompletableFuture<SortedListProtocol.PutResponse> put(
-          String key, LinkedList<SortedListEntity> list) {
-    SortedListProtocol.PutRequest.Builder requestBuilder =
-            SortedListProtocol.PutRequest.newBuilder();
-    requestBuilder.setKey(key);
-    LinkedList<SortedListProtocol.SortedListEntity> listEntities =
-            new LinkedList<>();
-    for (SortedListEntity entity : list) {
-      SortedListProtocol.SortedListEntity.Builder builder =
-              SortedListProtocol.SortedListEntity.newBuilder();
-      builder.setMember(entity.getMember());
-      builder.setScore(entity.getScore());
-      listEntities.add(builder.build());
-    }
-    requestBuilder.addAllList(listEntities);
-    CompletableFuture<SortedListProtocol.PutResponse> future = service.put(requestBuilder.build());
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> put(
+      String key, LinkedList<SortedListEntity> list) {
+
+    LinkedList<SortedListProtocol.SortedListEntity> listEntities = new LinkedList<>();
+    list.forEach((v) -> {
+      SortedListProtocol.SortedListEntity.Builder sortedListEntity =
+          SortedListProtocol.SortedListEntity.newBuilder();
+      sortedListEntity.setMember(v.getMember());
+      sortedListEntity.setScore(v.getScore());
+      listEntities.add(sortedListEntity.build());
+    });
+
+    SortedListProtocol.SlistPutRequest slistPutRequest =
+        SortedListProtocol.SlistPutRequest.newBuilder().addAllList(listEntities).build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SORTED_LIST_PUT)
+        .setRequest(Any.pack(slistPutRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<SortedListProtocol.IncrScoreResponse> incrScore(
-          String key, String member, int delta) {
-    SortedListProtocol.IncrScoreRequest.Builder requestBuilder =
-            SortedListProtocol.IncrScoreRequest.newBuilder();
-    requestBuilder.setKey(key);
-    requestBuilder.setMember(member);
-    requestBuilder.setDelta(delta);
-    CompletableFuture<SortedListProtocol.IncrScoreResponse> future =
-            service.incrScore(requestBuilder.build());
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> incrScore(
+      String key, String member, int delta) {
+    SortedListProtocol.SlistIncrScoreRequest slistInceScoreRequest =
+        SortedListProtocol.SlistIncrScoreRequest.newBuilder()
+            .setDelta(delta)
+            .setMember(member)
+            .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SORTED_LIST_INCR_SCORE)
+        .setRequest(Any.pack(slistInceScoreRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<SortedListProtocol.TopResponse> top(
-          String key, int topNum) {
-    SortedListProtocol.TopRequest.Builder topRequestBuilder =
-            SortedListProtocol.TopRequest.newBuilder();
-    topRequestBuilder.setKey(key);
-    topRequestBuilder.setCount(topNum);
-    CompletableFuture<SortedListProtocol.TopResponse> future =
-            service.top(topRequestBuilder.build());
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> top(String key, int topNum) {
+
+    SortedListProtocol.SlistTopRequest slistTopRequest =
+        SortedListProtocol.SlistTopRequest.newBuilder()
+            .setCount(topNum)
+            .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SORTED_LIST_TOP)
+        .setRequest(Any.pack(slistTopRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
-    CommonProtocol.DropRequest.Builder requestBuilder =
-            CommonProtocol.DropRequest.newBuilder();
-    requestBuilder.setKey(key);
-    CompletableFuture<CommonProtocol.DropResponse> future =
-            service.drop(requestBuilder.build());
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SORTED_LIST_DROP)
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<SortedListProtocol.RemoveMemberResponse> removeMember(
-          String key, String member) {
-    SortedListProtocol.RemoveMemberRequest.Builder requestBuilder =
-            SortedListProtocol.RemoveMemberRequest.newBuilder();
-    requestBuilder.setKey(key);
-    requestBuilder.setMember(member);
-    CompletableFuture<SortedListProtocol.RemoveMemberResponse> future =
-            service.removeMember(requestBuilder.build());
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> removeMember(String key, String member) {
+    SortedListProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
+        SortedListProtocol.SlistRemoveMemberRequest.newBuilder()
+            .setMember(member)
+            .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SORTED_LIST_REMOVE_MEMBER)
+        .setRequest(Any.pack(slistRemoveMemberRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<SortedListProtocol.PutMemberResponse> putMember(
-          String key, SortedListEntity entity) {
-    SortedListProtocol.PutMemberRequest.Builder requestBuilder =
-            SortedListProtocol.PutMemberRequest.newBuilder();
-    requestBuilder.setKey(key);
-    requestBuilder.setMember(entity.getMember());
-    requestBuilder.setScore(entity.getScore());
-    CompletableFuture<SortedListProtocol.PutMemberResponse> future =
-            service.putMember(requestBuilder.build());
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> putMember(
+      String key, SortedListEntity entity) {
+    SortedListProtocol.SlistPutMemberRequest slistPutMemberRequest =
+        SortedListProtocol.SlistPutMemberRequest.newBuilder()
+            .setMember(entity.getMember())
+            .setScore(entity.getScore())
+            .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SORTED_LIST_PUT_MEMBER)
+        .setRequest(Any.pack(slistPutMemberRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<SortedListProtocol.GetMemberResponse> getMember(
-          String key, String member) {
-    SortedListProtocol.GetMemberRequest.Builder requestBuilder =
-            SortedListProtocol.GetMemberRequest.newBuilder();
-    requestBuilder.setKey(key);
-    requestBuilder.setMember(member);
-    CompletableFuture<SortedListProtocol.GetMemberResponse> future =
-            service.getMember(requestBuilder.build());
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> getMember(
+      String key, String member) {
+    SortedListProtocol.SlistGetMemberRequest slistGetMemberRequest =
+        SortedListProtocol.SlistGetMemberRequest.newBuilder()
+            .setMember(member)
+            .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.SORTED_LIST_GET_MEMBER)
+        .setRequest(Any.pack(slistGetMemberRequest))
+        .build();
+    return service.call(request);
   }
 }

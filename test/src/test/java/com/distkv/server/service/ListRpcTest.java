@@ -1,12 +1,18 @@
 package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
-import com.distkv.rpc.service.DistkvListService;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListGetResponse;
+import com.distkv.rpc.service.DistkvService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import com.google.common.collect.ImmutableList;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
+import com.google.protobuf.Any;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -20,273 +26,360 @@ public class ListRpcTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testPutAndGet() {
-    try (ProxyOnClient<DistkvListService> listProxy = new ProxyOnClient<>(
-        DistkvListService.class, rpcServerPort)) {
-      final DistkvListService listService = listProxy.getService();
+  public void testPutAndGet() throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      final DistkvService listService = listProxy.getService();
 
       // Put.
-      ListProtocol.PutRequest.Builder putRequestBuilder = ListProtocol.PutRequest.newBuilder();
+      ListProtocol.ListPutRequest.Builder putRequestBuilder = ListProtocol.ListPutRequest
+          .newBuilder();
       List<String> values = dummyListTestData();
-      putRequestBuilder.setKey("k1");
-      values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse response = FutureUtils.get(
-          listService.put(putRequestBuilder.build()));
+      values.forEach(putRequestBuilder::addValues);
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_PUT)
+          .setRequest(Any.pack(putRequestBuilder.build()))
+          .build();
+      DistkvResponse response = FutureUtils.get(
+          listService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, response.getStatus());
 
       // Get.
-      ListProtocol.GetRequest.Builder getRequestBuilder = ListProtocol.GetRequest.newBuilder();
+      ListProtocol.ListGetRequest.Builder getRequestBuilder = ListProtocol.ListGetRequest
+          .newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-      getRequestBuilder.setKey("k1");
-      ListProtocol.GetResponse getResponse = FutureUtils.get(
-          listService.get(getRequestBuilder.build()));
-      Assert.assertEquals(dummyListTestData(), getResponse.getValuesList());
+      DistkvRequest getRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_GET)
+          .setRequest(Any.pack(getRequestBuilder.build()))
+          .build();
+      DistkvResponse getResponse = FutureUtils.get(
+          listService.call(getRequest));
+      Assert.assertEquals(dummyListTestData(), getResponse.getResponse()
+          .unpack(ListGetResponse.class).getValuesList());
 
       // Get a non-exist key.
-      ListProtocol.GetRequest.Builder getRequest2Builder = ListProtocol.GetRequest.newBuilder();
-      getRequest2Builder.setKey("k2");
+      ListProtocol.ListGetRequest.Builder getRequest2Builder = ListProtocol.ListGetRequest
+          .newBuilder();
       getRequest2Builder.setType(ListProtocol.GetType.GET_ALL);
-      ListProtocol.GetResponse getResponse2 = FutureUtils.get(
-          listService.get(getRequest2Builder.build()));
+      DistkvRequest getRequest2 = DistkvRequest.newBuilder()
+          .setKey("k2")
+          .setRequestType(RequestType.LIST_GET)
+          .setRequest(Any.pack(getRequest2Builder.build()))
+          .build();
+      DistkvResponse getResponse2 = FutureUtils.get(
+          listService.call(getRequest2));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, getResponse2.getStatus());
     }
   }
 
   @Test
   public void testDrop() {
-    try (ProxyOnClient<DistkvListService> listProxy = new ProxyOnClient<>(
-        DistkvListService.class, rpcServerPort)) {
-      final DistkvListService listService = listProxy.getService();
+    try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      final DistkvService listService = listProxy.getService();
 
       // Put.
-      ListProtocol.PutRequest.Builder putRequestBuilder = ListProtocol.PutRequest.newBuilder();
+      ListProtocol.ListPutRequest.Builder putRequestBuilder = ListProtocol.ListPutRequest
+          .newBuilder();
       List<String> values = dummyListTestData();
-      putRequestBuilder.setKey("k1");
-      values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse putResponse = FutureUtils.get(
-          listService.put(putRequestBuilder.build()));
+      values.forEach(putRequestBuilder::addValues);
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_PUT)
+          .setRequest(Any.pack(putRequestBuilder.build()))
+          .build();
+      DistkvResponse putResponse = FutureUtils.get(
+          listService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
       // Drop.
-      CommonProtocol.DropRequest.Builder dropRequestBuilder
-          = CommonProtocol.DropRequest.newBuilder();
-      dropRequestBuilder.setKey("k1");
-
-      CommonProtocol.DropResponse dropResponse = FutureUtils.get(
-          listService.drop(dropRequestBuilder.build()));
+      DistkvRequest dropRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_DROP)
+          .build();
+      DistkvResponse dropResponse = FutureUtils.get(
+          listService.call(dropRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, dropResponse.getStatus());
 
       // Test drop a non-exist key.
-      dropRequestBuilder.setKey("k2");
-      CommonProtocol.DropResponse dropResponse2 = FutureUtils.get(
-          listService.drop(dropRequestBuilder.build()));
+      DistkvRequest dropRequest2 = DistkvRequest.newBuilder()
+          .setKey("k2")
+          .setRequestType(RequestType.LIST_DROP)
+          .build();
+      DistkvResponse dropResponse2 = FutureUtils.get(
+          listService.call(dropRequest2));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, dropResponse2.getStatus());
     }
   }
 
   @Test
-  public void testLPut() {
-    try (ProxyOnClient<DistkvListService> listProxy = new ProxyOnClient<>(
-        DistkvListService.class, rpcServerPort)) {
-      final DistkvListService listService = listProxy.getService();
+  public void testLPut() throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      final DistkvService listService = listProxy.getService();
 
       // Put.
-      ListProtocol.PutRequest.Builder putRequestBuilder
-          = ListProtocol.PutRequest.newBuilder();
+      ListProtocol.ListPutRequest.Builder putRequestBuilder
+          = ListProtocol.ListPutRequest.newBuilder();
       List<String> values = dummyListTestData();
-      putRequestBuilder.setKey("k1");
-      values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse putResponse = FutureUtils.get(
-          listService.put(putRequestBuilder.build()));
+      values.forEach(putRequestBuilder::addValues);
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_PUT)
+          .setRequest(Any.pack(putRequestBuilder.build()))
+          .build();
+      DistkvResponse putResponse = FutureUtils.get(
+          listService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
       // LPut.
-      ListProtocol.LPutRequest.Builder lputRequestBuilder
-          = ListProtocol.LPutRequest.newBuilder();
-      lputRequestBuilder.setKey("k1");
+      ListProtocol.ListLPutRequest.Builder lputRequestBuilder
+          = ListProtocol.ListLPutRequest.newBuilder();
       List<String> valuesLput = new ArrayList<>();
       valuesLput.add("v3");
       valuesLput.add("v4");
       lputRequestBuilder.addAllValues(valuesLput);
-      ListProtocol.LPutResponse lputResponse = FutureUtils.get(
-          listService.lput(lputRequestBuilder.build()));
+      DistkvRequest lputRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_LPUT)
+          .setRequest(Any.pack(lputRequestBuilder.build()))
+          .build();
+      DistkvResponse lputResponse = FutureUtils.get(
+          listService.call(lputRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, lputResponse.getStatus());
 
       // Get.
-      ListProtocol.GetRequest.Builder getRequestBuilder
-          = ListProtocol.GetRequest.newBuilder();
-      getRequestBuilder.setKey("k1");
+      ListProtocol.ListGetRequest.Builder getRequestBuilder
+          = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-      ListProtocol.GetResponse getResponse = FutureUtils.get(
-          listService.get(getRequestBuilder.build()));
+      DistkvRequest getRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_GET)
+          .setRequest(Any.pack(getRequestBuilder.build()))
+          .build();
+      DistkvResponse getResponse = FutureUtils.get(
+          listService.call(getRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, getResponse.getStatus());
       Assert.assertEquals(ImmutableList.of("v3", "v4", "v0", "v1", "v2"),
-          getResponse.getValuesList());
+          getResponse.getResponse().unpack(ListGetResponse.class).getValuesList());
 
       // Test lput a non-exist key.
-      lputRequestBuilder.setKey("k2");
       List<String> valuesLput2 = new ArrayList<>();
       valuesLput2.add("v3");
       valuesLput2.add("v4");
-      valuesLput2.forEach(value -> lputRequestBuilder.addValues(value));
-
-      ListProtocol.LPutResponse lputResponse2 = FutureUtils.get(
-          listService.lput(lputRequestBuilder.build()));
+      valuesLput2.forEach(lputRequestBuilder::addValues);
+      DistkvRequest getRequest2 = DistkvRequest.newBuilder()
+          .setKey("k2")
+          .setRequestType(RequestType.LIST_LPUT)
+          .setRequest(Any.pack(lputRequestBuilder.build()))
+          .build();
+      DistkvResponse lputResponse2 = FutureUtils.get(
+          listService.call(getRequest2));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, lputResponse2.getStatus());
     }
   }
 
   @Test
-  public void testRPut() {
-    try (ProxyOnClient<DistkvListService> listProxy = new ProxyOnClient<>(
-        DistkvListService.class, rpcServerPort)) {
-      final DistkvListService listService = listProxy.getService();
+  public void testRPut() throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      final DistkvService listService = listProxy.getService();
 
       // Put.
-      ListProtocol.PutRequest.Builder putRequestBuilder
-          = ListProtocol.PutRequest.newBuilder();
+      ListProtocol.ListPutRequest.Builder putRequestBuilder
+          = ListProtocol.ListPutRequest.newBuilder();
       List<String> values = dummyListTestData();
-      putRequestBuilder.setKey("k1");
-      values.forEach(value -> putRequestBuilder.addValues(value));
-
-      ListProtocol.PutResponse putResponse = FutureUtils.get(
-          listService.put(putRequestBuilder.build()));
+      values.forEach(putRequestBuilder::addValues);
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_PUT)
+          .setRequest(Any.pack(putRequestBuilder.build()))
+          .build();
+      DistkvResponse putResponse = FutureUtils.get(
+          listService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
       // RPut.
-      ListProtocol.RPutRequest.Builder rputRequestBuilder
-          = ListProtocol.RPutRequest.newBuilder();
-      rputRequestBuilder.setKey("k1");
+      ListProtocol.ListRPutRequest.Builder rputRequestBuilder
+          = ListProtocol.ListRPutRequest.newBuilder();
       List<String> valuesRput = new ArrayList<>();
       valuesRput.add("v3");
       valuesRput.add("v4");
-      valuesRput.forEach(value -> rputRequestBuilder.addValues(value));
-
-      ListProtocol.RPutResponse rputResponse = FutureUtils.get(
-          listService.rput(rputRequestBuilder.build()));
+      valuesRput.forEach(rputRequestBuilder::addValues);
+      DistkvRequest rputRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_RPUT)
+          .setRequest(Any.pack(rputRequestBuilder.build()))
+          .build();
+      DistkvResponse rputResponse = FutureUtils.get(
+          listService.call(rputRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, rputResponse.getStatus());
 
       // Get.
-      ListProtocol.GetRequest.Builder getRequestBuilder
-          = ListProtocol.GetRequest.newBuilder();
-      getRequestBuilder.setKey("k1");
+      ListProtocol.ListGetRequest.Builder getRequestBuilder
+          = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-
-      ListProtocol.GetResponse getResponse = FutureUtils.get(
-          listService.get(getRequestBuilder.build()));
+      DistkvRequest getRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_GET)
+          .setRequest(Any.pack(getRequestBuilder.build()))
+          .build();
+      DistkvResponse getResponse = FutureUtils.get(
+          listService.call(getRequest));
       Assert.assertEquals(ImmutableList.of("v0", "v1", "v2", "v3", "v4"),
-          getResponse.getValuesList());
+          getResponse.getResponse().unpack(ListGetResponse.class).getValuesList());
 
       // Test rput a non-exist key.
-      rputRequestBuilder.setKey("k2");
       List<String> valuesRput2 = new ArrayList<>();
       valuesRput2.add("v3");
       valuesRput2.add("v4");
-      valuesRput2.forEach(value -> rputRequestBuilder.addValues(value));
-      ListProtocol.RPutResponse rputResponse2 = FutureUtils.get(
-          listService.rput(rputRequestBuilder.build()));
+      valuesRput2.forEach(rputRequestBuilder::addValues);
+      DistkvRequest getRequest2 = DistkvRequest.newBuilder()
+          .setKey("k2")
+          .setRequestType(RequestType.LIST_RPUT)
+          .setRequest(Any.pack(rputRequestBuilder.build()))
+          .build();
+      DistkvResponse rputResponse2 = FutureUtils.get(
+          listService.call(getRequest2));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, rputResponse2.getStatus());
     }
   }
 
   @Test
-  public void testRemove() {
-    try (ProxyOnClient<DistkvListService> listProxy = new ProxyOnClient<>(
-        DistkvListService.class, rpcServerPort)) {
-      final DistkvListService listService = listProxy.getService();
+  public void testRemove() throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      final DistkvService listService = listProxy.getService();
 
       // Put.
-      ListProtocol.PutRequest.Builder putRequestBuilder
-          = ListProtocol.PutRequest.newBuilder();
+      ListProtocol.ListPutRequest.Builder putRequestBuilder
+          = ListProtocol.ListPutRequest.newBuilder();
       List<String> values = dummyListTestData();
-      putRequestBuilder.setKey("k1");
-      values.forEach(value -> putRequestBuilder.addValues(value));
-
-      ListProtocol.PutResponse putResponse = FutureUtils.get(
-          listService.put(putRequestBuilder.build()));
+      values.forEach(putRequestBuilder::addValues);
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_PUT)
+          .setRequest(Any.pack(putRequestBuilder.build()))
+          .build();
+      DistkvResponse putResponse = FutureUtils.get(
+          listService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
       // Test removeOne.
-      ListProtocol.RemoveRequest.Builder removeOneRequestBuilder =
-          ListProtocol.RemoveRequest.newBuilder();
+      ListProtocol.ListRemoveRequest.Builder removeOneRequestBuilder =
+          ListProtocol.ListRemoveRequest.newBuilder();
       removeOneRequestBuilder.setType(ListProtocol.RemoveType.RemoveOne);
-      removeOneRequestBuilder.setKey("k1");
       removeOneRequestBuilder.setIndex(1);
-
-      ListProtocol.RemoveResponse removeOneResponse = FutureUtils.get(
-          listService.remove(removeOneRequestBuilder.build()));
+      DistkvRequest removeRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_REMOVE)
+          .setRequest(Any.pack(removeOneRequestBuilder.build()))
+          .build();
+      DistkvResponse removeOneResponse = FutureUtils.get(
+          listService.call(removeRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, removeOneResponse.getStatus());
 
       // Get.
-      ListProtocol.GetRequest.Builder getRequestBuilder
-          = ListProtocol.GetRequest.newBuilder();
-      getRequestBuilder.setKey("k1");
+      ListProtocol.ListGetRequest.Builder getRequestBuilder
+          = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-
-      ListProtocol.GetResponse getResponse = FutureUtils.get(
-          listService.get(getRequestBuilder.build()));
-      Assert.assertEquals(ImmutableList.of("v0", "v2"), getResponse.getValuesList());
+      DistkvRequest getRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_GET)
+          .setRequest(Any.pack(getRequestBuilder.build()))
+          .build();
+      DistkvResponse getResponse = FutureUtils.get(
+          listService.call(getRequest));
+      Assert.assertEquals(ImmutableList.of("v0", "v2"), getResponse.getResponse()
+          .unpack(ListGetResponse.class).getValuesList());
 
       // RemoveRange.
-      ListProtocol.RemoveRequest.Builder removeRangeRequestBuilder =
-          ListProtocol.RemoveRequest.newBuilder();
+      ListProtocol.ListRemoveRequest.Builder removeRangeRequestBuilder =
+          ListProtocol.ListRemoveRequest.newBuilder();
       removeRangeRequestBuilder.setType(ListProtocol.RemoveType.RemoveRange);
-      removeRangeRequestBuilder.setKey("k1");
       removeRangeRequestBuilder.setFrom(0);
       removeRangeRequestBuilder.setEnd(1);
-      ListProtocol.RemoveResponse removeRangeResponse = FutureUtils.get(
-          listService.remove(removeRangeRequestBuilder.build()));
+      DistkvRequest removeRangeRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_REMOVE)
+          .setRequest(Any.pack(removeRangeRequestBuilder.build()))
+          .build();
+      DistkvResponse removeRangeResponse = FutureUtils.get(
+          listService.call(removeRangeRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, removeRangeResponse.getStatus());
 
       // Test remove range with a non-exist key.
-      removeRangeRequestBuilder.setKey("k2");
       removeRangeRequestBuilder.setIndex(1);
-      ListProtocol.RemoveResponse removeResponse2 = FutureUtils.get(
-          listService.remove(removeRangeRequestBuilder.build()));
+      DistkvRequest removeRangeRequest2 = DistkvRequest.newBuilder()
+          .setKey("k2")
+          .setRequestType(RequestType.LIST_REMOVE)
+          .setRequest(Any.pack(removeRangeRequestBuilder.build()))
+          .build();
+      DistkvResponse removeResponse2 = FutureUtils.get(
+          listService.call(removeRangeRequest2));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND, removeResponse2.getStatus());
     }
   }
 
   @Test
-  public void testMRemove() {
-    try (ProxyOnClient<DistkvListService> listProxy = new ProxyOnClient<>(
-        DistkvListService.class, rpcServerPort)) {
-      final DistkvListService listService = listProxy.getService();
+  public void testMRemove() throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      final DistkvService listService = listProxy.getService();
 
       // Put.
-      ListProtocol.PutRequest.Builder putRequestBuilder
-          = ListProtocol.PutRequest.newBuilder();
+      ListProtocol.ListPutRequest.Builder putRequestBuilder
+          = ListProtocol.ListPutRequest.newBuilder();
       List<String> values = dummyListTestData();
-      putRequestBuilder.setKey("k1");
-      values.forEach(value -> putRequestBuilder.addValues(value));
-      ListProtocol.PutResponse putResponse = FutureUtils.get(
-          listService.put(putRequestBuilder.build()));
+      values.forEach(putRequestBuilder::addValues);
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_PUT)
+          .setRequest(Any.pack(putRequestBuilder.build()))
+          .build();
+      DistkvResponse putResponse = FutureUtils.get(
+          listService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
       // Multiple remove.
-      ListProtocol.MRemoveRequest.Builder multipleRemoveRequestBuilder =
-          ListProtocol.MRemoveRequest.newBuilder();
-      multipleRemoveRequestBuilder.setKey("k1");
+      ListProtocol.ListMRemoveRequest.Builder multipleRemoveRequestBuilder =
+          ListProtocol.ListMRemoveRequest.newBuilder();
       multipleRemoveRequestBuilder.addIndexes(1);
       multipleRemoveRequestBuilder.addIndexes(0);
-      ListProtocol.MRemoveResponse multipleRemoveResponse = FutureUtils.get(
-          listService.mremove(multipleRemoveRequestBuilder.build()));
+      DistkvRequest mremoveRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_MREMOVE)
+          .setRequest(Any.pack(multipleRemoveRequestBuilder.build()))
+          .build();
+      DistkvResponse multipleRemoveResponse = FutureUtils.get(
+          listService.call(mremoveRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, multipleRemoveResponse.getStatus());
 
       // Get.
-      ListProtocol.GetRequest.Builder getRequestBuilder
-          = ListProtocol.GetRequest.newBuilder();
-      getRequestBuilder.setKey("k1");
+      ListProtocol.ListGetRequest.Builder getRequestBuilder
+          = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
-      ListProtocol.GetResponse getResponse = FutureUtils.get(
-          listService.get(getRequestBuilder.build()));
-      Assert.assertEquals(ImmutableList.of("v2"), getResponse.getValuesList());
+      DistkvRequest getRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.LIST_GET)
+          .setRequest(Any.pack(getRequestBuilder.build()))
+          .build();
+      DistkvResponse getResponse = FutureUtils.get(
+          listService.call(getRequest));
+      Assert.assertEquals(ImmutableList.of("v2"), getResponse.getResponse()
+          .unpack(ListGetResponse.class).getValuesList());
 
       // Test multi-remove a non-exist key.
-      multipleRemoveRequestBuilder.setKey("k2");
       multipleRemoveRequestBuilder.addIndexes(1);
-      ListProtocol.MRemoveResponse multipleRemoveResponse2 = FutureUtils.get(
-          listService.mremove(multipleRemoveRequestBuilder.build()));
+      DistkvRequest mremoveRequest2 = DistkvRequest.newBuilder()
+          .setKey("k2")
+          .setRequestType(RequestType.LIST_MREMOVE)
+          .setRequest(Any.pack(multipleRemoveRequestBuilder.build()))
+          .build();
+      DistkvResponse multipleRemoveResponse2 = FutureUtils.get(
+          listService.call(mremoveRequest2));
       Assert.assertEquals(CommonProtocol.Status.KEY_NOT_FOUND,
           multipleRemoveResponse2.getStatus());
     }

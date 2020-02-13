@@ -1,16 +1,8 @@
 package com.distkv.server.storeserver;
 
-import com.distkv.rpc.service.DistkvDictService;
-import com.distkv.rpc.service.DistkvListService;
-import com.distkv.rpc.service.DistkvSetService;
-import com.distkv.rpc.service.DistkvSortedListService;
-import com.distkv.rpc.service.DistkvStringService;
+import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
-import com.distkv.server.storeserver.services.DistkvDictServiceImpl;
-import com.distkv.server.storeserver.services.DistkvListServiceImpl;
-import com.distkv.server.storeserver.services.DistkvSetServiceImpl;
-import com.distkv.server.storeserver.services.DistkvSortedListServiceImpl;
-import com.distkv.server.storeserver.services.DistkvStringServiceImpl;
+import com.distkv.server.storeserver.services.DistkvServiceImpl;
 import org.dousi.DousiServer;
 import org.dousi.config.ServerConfig;
 import org.slf4j.Logger;
@@ -73,15 +65,7 @@ public class StoreServer {
 
   private void registerAllRpcServices() {
     dousiServer.registerService(
-        DistkvStringService.class, new DistkvStringServiceImpl(this.storeRuntime));
-    dousiServer.registerService(
-        DistkvListService.class, new DistkvListServiceImpl(this.storeRuntime));
-    dousiServer.registerService(
-        DistkvSetService.class, new DistkvSetServiceImpl(this.storeRuntime));
-    dousiServer.registerService(
-        DistkvDictService.class, new DistkvDictServiceImpl(this.storeRuntime));
-    dousiServer.registerService(
-        DistkvSortedListService.class, new DistkvSortedListServiceImpl(this.storeRuntime));
+        DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
   }
 
   public static void main(String[] args) {
@@ -89,7 +73,7 @@ public class StoreServer {
     int listeningPort = -1;
     if (args.length == 1) {
       try {
-        listeningPort = Integer.valueOf(args[0]);
+        listeningPort = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
         LOGGER.error("Failed to start dst server, because the port is incorrect format: {}",
             args[0]);

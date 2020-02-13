@@ -1,0 +1,80 @@
+syntax="proto3";
+import "google/protobuf/any.proto";
+
+import "string_pb.proto";
+import "list_pb.proto";
+import "set_pb.proto";
+import "dict_pb.proto";
+import "sorted_list_pb.proto";
+import "common_pb.proto";
+
+package com.distkv.rpc.protobuf;
+option java_package="com.distkv.rpc.protobuf.generated";
+option java_outer_classname="DistkvProtocol";
+
+
+// TODO(qwang): Use ReadOnlyRequestType and WriteRequestType to
+// avoid writing some specific handler in code.
+enum RequestType {
+
+    // basic operations
+    None = 0;
+
+    EXIT = 1;
+
+    // string concept
+    STR_PUT = 101;
+    STR_GET = 102;
+    STR_DROP = 103;
+
+    // list concept
+    LIST_PUT = 201;
+    LIST_GET = 202;
+    LIST_DROP = 203;
+    LIST_LPUT = 204;
+    LIST_RPUT = 205;
+    LIST_REMOVE = 206;
+    LIST_MREMOVE = 207;
+
+    // set concept
+    SET_PUT = 301;
+    SET_GET = 302;
+    SET_DROP = 303;
+    SET_PUT_ITEM = 304;
+    SET_REMOVE_ITEM = 305;
+    SET_EXISTS = 306;
+
+    // dict concept
+    DICT_PUT = 401;
+    DICT_GET = 402;
+    DICT_DROP = 403;
+    DICT_PUT_ITEM = 404;
+    DICT_GET_ITEM = 405;
+    DICT_POP_ITEM = 406;
+    DICT_REMOVE_ITEM = 407;
+
+    // sorted list concept
+    SORTED_LIST_PUT = 501;
+    SORTED_LIST_TOP = 502;
+    SORTED_LIST_DROP = 503;
+    SORTED_LIST_INCR_SCORE = 504;
+    SORTED_LIST_PUT_MEMBER = 505;
+    SORTED_LIST_REMOVE_MEMBER = 506;
+    SORTED_LIST_GET_MEMBER = 507;
+}
+
+message DistkvRequest {
+    string key = 1;
+    RequestType requestType = 2;
+    google.protobuf.Any request = 3;
+}
+
+message DistkvResponse {
+    Status status = 1;
+    RequestType requestType = 2;
+    google.protobuf.Any response = 3;
+}
+
+service DistkvService {
+    rpc call(DistkvRequest) returns (DistkvResponse);
+}

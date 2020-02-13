@@ -3,7 +3,6 @@ package com.distkv.client.commandlinetool;
 import com.distkv.client.DistkvClient;
 import com.distkv.parser.po.DistkvParsedResult;
 
-
 public class DistkvCommandExecutor {
 
   DistkvClient distkvClient;
@@ -30,7 +29,7 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.listRPut(distkvClient, parsedResult);
       case LIST_REMOVE:
         return CommandExecutorHandler.listRemove(distkvClient, parsedResult);
-      case LIST_M_REMOVE:
+      case LIST_MREMOVE:
         return CommandExecutorHandler.listMRemove(distkvClient, parsedResult);
       case LIST_DROP:
         return CommandExecutorHandler.listDrop(distkvClient, parsedResult);
@@ -44,7 +43,7 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.setPutItem(distkvClient, parsedResult);
       case SET_REMOVE_ITEM:
         return CommandExecutorHandler.setRemoveItem(distkvClient, parsedResult);
-      case SET_EXIST:
+      case SET_EXISTS:
         return CommandExecutorHandler.setExists(distkvClient, parsedResult);
       case DICT_PUT:
         return CommandExecutorHandler.dictPut(distkvClient, parsedResult);
@@ -60,19 +59,19 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.dictRemoveItem(distkvClient, parsedResult);
       case DICT_DROP:
         return CommandExecutorHandler.dictDrop(distkvClient, parsedResult);
-      case SLIST_PUT:
+      case SORTED_LIST_PUT:
         return CommandExecutorHandler.slistPut(distkvClient, parsedResult);
-      case SLIST_TOP:
+      case SORTED_LIST_TOP:
         return CommandExecutorHandler.slistTop(distkvClient, parsedResult);
-      case SLIST_INCR_SCORE:
+      case SORTED_LIST_INCR_SCORE:
         return CommandExecutorHandler.slistIncrScore(distkvClient, parsedResult);
-      case SLIST_PUT_MEMBER:
+      case SORTED_LIST_PUT_MEMBER:
         return CommandExecutorHandler.slistPutMember(distkvClient, parsedResult);
-      case SLIST_REMOVE_MEMBER:
+      case SORTED_LIST_REMOVE_MEMBER:
         return CommandExecutorHandler.slistRemoveMember(distkvClient, parsedResult);
-      case SLIST_DROP:
+      case SORTED_LIST_DROP:
         return CommandExecutorHandler.slistDrop(distkvClient, parsedResult);
-      case SLIST_GET_MEMBER:
+      case SORTED_LIST_GET_MEMBER:
         return CommandExecutorHandler.slistGetMember(distkvClient, parsedResult);
       case EXIT:
         // User inputs `exit`, let's exit client immediately.

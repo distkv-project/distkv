@@ -3,13 +3,35 @@ package com.distkv.client.commandlinetool;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.po.DistkvParsedResult;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.rpc.protobuf.generated.DictProtocol;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictGetItemRequest;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictPopItemRequest;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictPutItemRequest;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictPutRequest;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictRemoveItemRequest;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DistKVDict;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
-import com.distkv.rpc.protobuf.generated.SetProtocol;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListGetRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListLPutRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListMRemoveRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListPutRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListRPutRequest;
+import com.distkv.rpc.protobuf.generated.ListProtocol.ListRemoveRequest;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetExistsRequest;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetPutItemRequest;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetPutRequest;
+import com.distkv.rpc.protobuf.generated.SetProtocol.SetRemoveItemRequest;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.protobuf.generated.StringProtocol;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistGetMemberRequest;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistIncrScoreRequest;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutMemberRequest;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutRequest;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistRemoveMemberRequest;
+import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopRequest;
+import com.distkv.rpc.protobuf.generated.StringProtocol.StrPutRequest;
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,104 +44,134 @@ public class CommandExecutorHandler {
   private static final String STATUS_OK = "ok";
 
   public static String strPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    StringProtocol.PutRequest putRequestStr =
-        (StringProtocol.PutRequest) parsedResult.getRequest();
-    distkvClient.strs().put(putRequestStr.getKey(), putRequestStr.getValue());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      StrPutRequest strPutRequest = request.getRequest().unpack(StrPutRequest.class);
+      distkvClient.strs().put(request.getKey(), strPutRequest.getValue());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String strGet(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    StringProtocol.GetRequest getRequestStr =
-        (StringProtocol.GetRequest) parsedResult.getRequest();
-    return distkvClient.strs().get(getRequestStr.getKey());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      return distkvClient.strs().get(request.getKey());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
   }
 
   public static String strDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    CommonProtocol.DropRequest dropRequestStr =
-        (CommonProtocol.DropRequest) parsedResult.getRequest();
-    distkvClient.strs().drop(dropRequestStr.getKey());
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.strs().drop(request.getKey());
     return STATUS_OK;
   }
 
   public static String listPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    ListProtocol.PutRequest putRequestList =
-        (ListProtocol.PutRequest) parsedResult.getRequest();
-    distkvClient.lists().put(putRequestList.getKey(), putRequestList.getValuesList());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ListPutRequest listPutRequest = request.getRequest().unpack(ListPutRequest.class);
+      distkvClient.lists().put(request.getKey(), listPutRequest.getValuesList());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String listGet(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    ListProtocol.GetRequest getRequestList =
-        (ListProtocol.GetRequest) parsedResult.getRequest();
-    List<String> list = null;
-    if (getRequestList.getType() == ListProtocol.GetType.GET_ALL) {
-      list = distkvClient.lists().get(getRequestList.getKey());
-    } else if (getRequestList.getType() == ListProtocol.GetType.GET_ONE) {
-      list = distkvClient.lists().get(getRequestList.getKey(), getRequestList.getIndex());
-    } else if (getRequestList.getType() == ListProtocol.GetType.GET_RANGE) {
-      list = distkvClient.lists().get(getRequestList.getKey(),
-          getRequestList.getFrom(), getRequestList.getEnd());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ListGetRequest listGetRequest = request.getRequest().unpack(ListGetRequest.class);
+      List<String> list = null;
+      if (listGetRequest.getType() == ListProtocol.GetType.GET_ALL) {
+        list = distkvClient.lists().get(request.getKey());
+      } else if (listGetRequest.getType() == ListProtocol.GetType.GET_ONE) {
+        list = distkvClient.lists().get(request.getKey(), listGetRequest.getIndex());
+      } else if (listGetRequest.getType() == ListProtocol.GetType.GET_RANGE) {
+        list = distkvClient.lists().get(request.getKey(),
+            listGetRequest.getFrom(), listGetRequest.getEnd());
+      }
+      return list == null ? null : list.toString();
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
     }
-    return list.toString();
   }
 
   public static String listLPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    ListProtocol.LPutRequest lputRequestList =
-        (ListProtocol.LPutRequest) parsedResult.getRequest();
-    distkvClient.lists().lput(lputRequestList.getKey(), lputRequestList.getValuesList());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ListLPutRequest listLPutRequest = request.getRequest().unpack(ListLPutRequest.class);
+      distkvClient.lists().lput(request.getKey(), listLPutRequest.getValuesList());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String listRPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    ListProtocol.RPutRequest rputRequestList =
-        (ListProtocol.RPutRequest) parsedResult.getRequest();
-    distkvClient.lists().rput(rputRequestList.getKey(), rputRequestList.getValuesList());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ListRPutRequest listRPutRequest = request.getRequest().unpack(ListRPutRequest.class);
+      distkvClient.lists().rput(request.getKey(), listRPutRequest.getValuesList());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+
     return STATUS_OK;
   }
 
   public static String listRemove(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    ListProtocol.RemoveRequest removeRequestList =
-        (ListProtocol.RemoveRequest) parsedResult.getRequest();
-    if (removeRequestList.getType() == ListProtocol.RemoveType.RemoveOne) {
-      distkvClient.lists().remove(removeRequestList.getKey(), removeRequestList.getIndex());
-      return STATUS_OK;
-    } else if (removeRequestList.getType() == ListProtocol.RemoveType.RemoveRange) {
-      distkvClient.lists().remove(removeRequestList.getKey(),
-          removeRequestList.getFrom(), removeRequestList.getEnd());
-      return STATUS_OK;
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ListRemoveRequest listRemoveRequest = request.getRequest().unpack(ListRemoveRequest.class);
+      if (listRemoveRequest.getType() == ListProtocol.RemoveType.RemoveOne) {
+        distkvClient.lists().remove(request.getKey(), listRemoveRequest.getIndex());
+      } else if (listRemoveRequest.getType() == ListProtocol.RemoveType.RemoveRange) {
+        distkvClient.lists().remove(request.getKey(),
+            listRemoveRequest.getFrom(), listRemoveRequest.getEnd());
+      }
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
     }
-    return null;
+    return STATUS_OK;
   }
 
   public static String listMRemove(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    ListProtocol.MRemoveRequest multipleRemoveRequestList =
-        (ListProtocol.MRemoveRequest) parsedResult.getRequest();
-    distkvClient.lists().mremove(multipleRemoveRequestList.getKey(),
-        multipleRemoveRequestList.getIndexesList());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ListMRemoveRequest listMRemoveRequest = request.getRequest().unpack(ListMRemoveRequest.class);
+      distkvClient.lists().mremove(request.getKey(), listMRemoveRequest.getIndexesList());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String listDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    CommonProtocol.DropRequest dropReqeustList =
-        (CommonProtocol.DropRequest) parsedResult.getRequest();
-    distkvClient.lists().drop(dropReqeustList.getKey());
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.lists().drop(request.getKey());
     return STATUS_OK;
   }
 
   public static String setPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SetProtocol.PutRequest putRequestSet =
-        (SetProtocol.PutRequest) parsedResult.getRequest();
-    Set<String> values = new HashSet(putRequestSet.getValuesList());
-    distkvClient.sets().put(putRequestSet.getKey(), values);
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SetPutRequest setPutRequest = request.getRequest().unpack(SetPutRequest.class);
+      distkvClient.sets().put(request.getKey(), new HashSet<>(setPutRequest.getValuesList()));
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+
     return STATUS_OK;
   }
 
   public static String setGet(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SetProtocol.GetRequest getRequestSet =
-        (SetProtocol.GetRequest) parsedResult.getRequest();
+    DistkvRequest request = parsedResult.getRequest();
     final StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("{");
-    Set<String> set = distkvClient.sets().get(getRequestSet.getKey());
+    Set<String> set = distkvClient.sets().get(request.getKey());
     boolean first = true;
     for (final String element : set) {
       if (first) {
@@ -134,52 +186,66 @@ public class CommandExecutorHandler {
   }
 
   public static String setDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    CommonProtocol.DropRequest dropRequestSet =
-        (CommonProtocol.DropRequest) parsedResult.getRequest();
-    distkvClient.sets().drop(dropRequestSet.getKey());
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.sets().drop(request.getKey());
     return STATUS_OK;
   }
 
   public static String setPutItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SetProtocol.PutItemRequest putItemRequestSet =
-        (SetProtocol.PutItemRequest) parsedResult.getRequest();
-    distkvClient.sets().putItem(putItemRequestSet.getKey(), putItemRequestSet.getItemValue());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SetPutItemRequest setPutItemRequest = request.getRequest().unpack(SetPutItemRequest.class);
+      distkvClient.sets().putItem(request.getKey(), setPutItemRequest.getItemValue());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String setRemoveItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SetProtocol.RemoveItemRequest removeItemRequestSet =
-        (SetProtocol.RemoveItemRequest) parsedResult.getRequest();
-    distkvClient.sets().removeItem(removeItemRequestSet.getKey(),
-        removeItemRequestSet.getItemValue());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SetRemoveItemRequest setRemoveItemRequest = request.getRequest()
+          .unpack(SetRemoveItemRequest.class);
+      distkvClient.sets().removeItem(request.getKey(), setRemoveItemRequest.getItemValue());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String setExists(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SetProtocol.ExistsRequest existsRequestSet =
-        (SetProtocol.ExistsRequest) parsedResult.getRequest();
-    return String.valueOf(distkvClient.sets().exists(existsRequestSet.getKey(),
-        existsRequestSet.getEntity()));
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SetExistsRequest setExistsRequest = request.getRequest().unpack(SetExistsRequest.class);
+      return String
+          .valueOf(distkvClient.sets().exists(request.getKey(), setExistsRequest.getEntity()));
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
   }
 
   public static String dictPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DictProtocol.PutRequest putRequestDict =
-        (DictProtocol.PutRequest) parsedResult.getRequest();
-    DictProtocol.DistKVDict dict = putRequestDict.getDict();
-    Map<String, String> map = new HashMap<>();
-    for (int i = 0; i < dict.getKeysCount(); i++) {
-      map.put(dict.getKeys(i), dict.getValues(i));
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      DictPutRequest dictPutRequest = request.getRequest().unpack(DictPutRequest.class);
+      DistKVDict dict = dictPutRequest.getDict();
+      Map<String, String> map = new HashMap<>();
+      for (int i = 0; i < dict.getKeysCount(); i++) {
+        map.put(dict.getKeys(i), dict.getValues(i));
+      }
+      distkvClient.dicts().put(request.getKey(), map);
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
     }
-    distkvClient.dicts().put(putRequestDict.getKey(), map);
     return STATUS_OK;
   }
 
   public static String dictGet(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DictProtocol.GetRequest getRequestDict =
-        (DictProtocol.GetRequest) parsedResult.getRequest();
+    DistkvRequest request = parsedResult.getRequest();
     final StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("{");
-    Map<String, String> map = distkvClient.dicts().get(getRequestDict.getKey());
+    Map<String, String> map = distkvClient.dicts().get(request.getKey());
     boolean first = true;
     for (Map.Entry<String, String> entry : map.entrySet()) {
       if (first) {
@@ -197,145 +263,186 @@ public class CommandExecutorHandler {
   }
 
   public static String dictPutItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DictProtocol.PutItemRequest putItemRequestDict =
-        (DictProtocol.PutItemRequest) parsedResult.getRequest();
-    distkvClient.dicts().putItem(putItemRequestDict.getKey(),
-        putItemRequestDict.getItemKey(), putItemRequestDict.getItemValue());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      DictPutItemRequest dictPutItemRequest = request.getRequest().unpack(DictPutItemRequest.class);
+      distkvClient.dicts().putItem(
+          request.getKey(), dictPutItemRequest.getItemKey(), dictPutItemRequest.getItemValue());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String dictGetItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DictProtocol.GetItemRequest getItemRequestDict =
-        (DictProtocol.GetItemRequest) parsedResult.getRequest();
-    return distkvClient.dicts().getItem(getItemRequestDict.getKey(),
-        getItemRequestDict.getItemKey());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      DictGetItemRequest dictGetItemRequest = request.getRequest().unpack(DictGetItemRequest.class);
+      return distkvClient.dicts().getItem(request.getKey(), dictGetItemRequest.getItemKey());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
   }
 
   public static String dictPopItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DictProtocol.PopItemRequest popItemRequestDict =
-        (DictProtocol.PopItemRequest) parsedResult.getRequest();
-    return distkvClient.dicts().popItem(popItemRequestDict.getKey(),
-        popItemRequestDict.getItemKey());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      DictPopItemRequest dictPopItemRequest = request.getRequest().unpack(DictPopItemRequest.class);
+      return distkvClient.dicts().popItem(request.getKey(), dictPopItemRequest.getItemKey());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
   }
 
   public static String dictRemoveItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DictProtocol.RemoveItemRequest removeItemRequestDict =
-        (DictProtocol.RemoveItemRequest) parsedResult.getRequest();
-    distkvClient.dicts().removeItem(removeItemRequestDict.getKey(),
-        removeItemRequestDict.getItemKey());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      DictRemoveItemRequest dictRemoveItemRequest =
+          request.getRequest().unpack(DictRemoveItemRequest.class);
+      distkvClient.dicts().removeItem(request.getKey(), dictRemoveItemRequest.getItemKey());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String dictDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    CommonProtocol.DropRequest dropRequestDict =
-        (CommonProtocol.DropRequest) parsedResult.getRequest();
-    distkvClient.dicts().drop(dropRequestDict.getKey());
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.dicts().drop(request.getKey());
     return STATUS_OK;
   }
 
   public static String slistPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SortedListProtocol.PutRequest putRequestSlist =
-        (SortedListProtocol.PutRequest) parsedResult.getRequest();
-    final LinkedList<SortedListEntity> sortedListEntitiesResult = new LinkedList<>();
-
-    final List<SortedListProtocol.SortedListEntity> sortedListEntities
-        = putRequestSlist.getListList();
-    for (SortedListProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
-      final String sortedListEntityMember = sortedListEntity.getMember();
-      final int sortedListEntityScore = sortedListEntity.getScore();
-      sortedListEntitiesResult.add(new SortedListEntity(sortedListEntityMember,
-          sortedListEntityScore));
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SlistPutRequest slistPutRequest = request.getRequest().unpack(SlistPutRequest.class);
+      final LinkedList<SortedListEntity> sortedListEntitiesResult = new LinkedList<>();
+      final List<SortedListProtocol.SortedListEntity> sortedListEntities
+          = slistPutRequest.getListList();
+      for (SortedListProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
+        final String sortedListEntityMember = sortedListEntity.getMember();
+        final int sortedListEntityScore = sortedListEntity.getScore();
+        sortedListEntitiesResult.add(new SortedListEntity(sortedListEntityMember,
+            sortedListEntityScore));
+      }
+      distkvClient.sortedLists().put(request.getKey(), sortedListEntitiesResult);
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
     }
-    distkvClient.sortedLists().put(putRequestSlist.getKey(),
-        sortedListEntitiesResult);
     return STATUS_OK;
   }
 
   public static String slistTop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SortedListProtocol.TopRequest topRequestSlist =
-        (SortedListProtocol.TopRequest) parsedResult.getRequest();
-    final StringBuilder stringBuilder = new StringBuilder();
-    LinkedList<SortedListEntity> listEntities = distkvClient.sortedLists()
-        .top(topRequestSlist.getKey(), topRequestSlist.getCount());
-    boolean first = true;
-    stringBuilder.append("[");
-    for (final SortedListEntity entity : listEntities) {
-      if (first) {
-        first = false;
-      } else {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SlistTopRequest slistTopRequest = request.getRequest().unpack(SlistTopRequest.class);
+      final StringBuilder stringBuilder = new StringBuilder();
+      LinkedList<SortedListEntity> listEntities = distkvClient.sortedLists()
+          .top(request.getKey(), slistTopRequest.getCount());
+      boolean first = true;
+      stringBuilder.append("[");
+      for (final SortedListEntity entity : listEntities) {
+        if (first) {
+          first = false;
+        } else {
+          stringBuilder.append(", ");
+        }
+        stringBuilder.append("(");
+        stringBuilder.append(entity.getMember());
         stringBuilder.append(", ");
+        stringBuilder.append(entity.getScore());
+        stringBuilder.append(")");
       }
-      stringBuilder.append("(");
-      stringBuilder.append(entity.getMember());
-      stringBuilder.append(", ");
-      stringBuilder.append(entity.getScore());
-      stringBuilder.append(")");
+      stringBuilder.append("]");
+      return stringBuilder.toString();
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
     }
-    stringBuilder.append("]");
-    return stringBuilder.toString();
+
   }
 
   public static String slistIncrScore(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SortedListProtocol.IncrScoreRequest incrScoreRequest =
-        (SortedListProtocol.IncrScoreRequest) parsedResult.getRequest();
-    distkvClient.sortedLists().incrScore(incrScoreRequest.getKey(),
-        incrScoreRequest.getMember(), incrScoreRequest.getDelta());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SlistIncrScoreRequest slistIncrScoreRequest = request.getRequest()
+          .unpack(SlistIncrScoreRequest.class);
+      distkvClient.sortedLists().incrScore(
+          request.getKey(), slistIncrScoreRequest.getMember(), slistIncrScoreRequest.getDelta());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
     return STATUS_OK;
   }
 
   public static String slistPutMember(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SortedListProtocol.PutMemberRequest putMemberRequest =
-        (SortedListProtocol.PutMemberRequest) parsedResult.getRequest();
-    final String member = putMemberRequest.getMember();
-    final int score = putMemberRequest.getScore();
-    distkvClient.sortedLists().putMember(putMemberRequest.getKey(),
-        new SortedListEntity(member, score));
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SlistPutMemberRequest slistPutMemberRequest =
+          request.getRequest().unpack(SlistPutMemberRequest.class);
+      final String member = slistPutMemberRequest.getMember();
+      final int score = slistPutMemberRequest.getScore();
+      distkvClient.sortedLists().putMember(request.getKey(), new SortedListEntity(member, score));
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+
     return STATUS_OK;
   }
 
   public static String slistRemoveMember(DistkvClient distkvClient,
       DistkvParsedResult parsedResult) {
-    SortedListProtocol.RemoveMemberRequest removeMemberRequest =
-        (SortedListProtocol.RemoveMemberRequest) parsedResult.getRequest();
-    distkvClient.sortedLists().removeMember(removeMemberRequest.getKey(),
-        removeMemberRequest.getMember());
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SlistRemoveMemberRequest slistRemoveMemberRequest =
+          request.getRequest().unpack(SlistRemoveMemberRequest.class);
+      distkvClient.sortedLists().removeMember(
+          request.getKey(), slistRemoveMemberRequest.getMember());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+
     return STATUS_OK;
   }
 
   public static String slistDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    CommonProtocol.DropRequest dropRequest =
-        (CommonProtocol.DropRequest) parsedResult.getRequest();
-    distkvClient.sortedLists().drop(dropRequest.getKey());
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.sortedLists().drop(request.getKey());
     return STATUS_OK;
   }
 
   public static String slistGetMember(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    SortedListProtocol.GetMemberRequest getMemberRequest =
-        (SortedListProtocol.GetMemberRequest) parsedResult.getRequest();
-    final DistkvTuple<Integer, Integer> tuple = distkvClient.sortedLists().getMember(
-        getMemberRequest.getKey(), getMemberRequest.getMember());
-    // output: (member, score), ranking
-    final StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("(");
-    stringBuilder.append(getMemberRequest.getMember());
-    stringBuilder.append(", ");
-    stringBuilder.append(tuple.getFirst());
-    stringBuilder.append("), ");
-    final int ranking = tuple.getSecond();
-    stringBuilder.append(ranking);
-    switch (ranking) {
-      case 1:
-        stringBuilder.append("st");
-        break;
-      case 2:
-        stringBuilder.append("nd");
-        break;
-      case 3:
-        stringBuilder.append("rd");
-        break;
-      default:
-        stringBuilder.append("th");
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      SlistGetMemberRequest slistGetMemberRequest =
+          request.getRequest().unpack(SlistGetMemberRequest.class);
+      final DistkvTuple<Integer, Integer> tuple =
+          distkvClient.sortedLists().getMember(request.getKey(), slistGetMemberRequest.getMember());
+      // output: (member, score), ranking
+      final StringBuilder stringBuilder = new StringBuilder();
+      stringBuilder.append("(");
+      stringBuilder.append(slistGetMemberRequest.getMember());
+      stringBuilder.append(", ");
+      stringBuilder.append(tuple.getFirst());
+      stringBuilder.append("), ");
+      final int ranking = tuple.getSecond();
+      stringBuilder.append(ranking);
+      switch (ranking) {
+        case 1:
+          stringBuilder.append("st");
+          break;
+        case 2:
+          stringBuilder.append("nd");
+          break;
+        case 3:
+          stringBuilder.append("rd");
+          break;
+        default:
+          stringBuilder.append("th");
+      }
+      return stringBuilder.toString();
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
     }
-    return stringBuilder.toString();
+
   }
 }

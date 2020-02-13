@@ -4,6 +4,7 @@ import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,7 +13,7 @@ import java.util.Set;
 public class StringProxyTest extends BaseTestSupplier {
 
   @Test
-  public void testPutAndGet() {
+  public void testPutAndGet() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     client.strs().put("k1", "v1");
     Assert.assertEquals("v1", client.strs().get("k1"));
@@ -20,7 +21,7 @@ public class StringProxyTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testKeyNotFoundWhenGetting() {
+  public void testKeyNotFoundWhenGetting() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     try {
       client.strs().get("k1");
@@ -33,7 +34,7 @@ public class StringProxyTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testAllTypeProxiesTogether() {
+  public void testAllTypeProxiesTogether() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
 
     // string
@@ -42,7 +43,7 @@ public class StringProxyTest extends BaseTestSupplier {
 
     // list
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"),client.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client.lists().get("k1"));
     Assert.assertEquals(ImmutableList.of("v2", "v3"),
         client.lists().get("k1", 1, 3));
 

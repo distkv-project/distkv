@@ -14,9 +14,7 @@ public class FutureUtils {
   public static <T> T get(Future<T> future) throws DistkvException {
     try {
       return future.get();
-    } catch (InterruptedException e) {
-      throw new DistkvException("Failed to get object from future.", e);
-    } catch (ExecutionException e) {
+    } catch (ExecutionException | InterruptedException e) {
       throw new DistkvException("Failed to get object from future.", e);
     }
   }

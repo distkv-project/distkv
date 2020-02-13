@@ -7,6 +7,7 @@ import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class TestMasterSyncToSlaves {
 
   @Test
-  public void mainTest() throws InterruptedException {
+  public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
     MasterSlaveSyncTestUtil.startAllProcess();
@@ -45,7 +46,8 @@ public class TestMasterSyncToSlaves {
     System.out.println("m-s sync test over");
   }
 
-  public void testStrPut(DistkvClient client0, DistkvClient client1) {
+  public void testStrPut(DistkvClient client0, DistkvClient client1)
+      throws InvalidProtocolBufferException {
     client0.strs().put("k1", "v1");
     Assert.assertEquals("v1", client0.strs().get("k1"));
     Assert.assertEquals("v1", client1.strs().get("k1"));
@@ -83,7 +85,8 @@ public class TestMasterSyncToSlaves {
   }
 
 
-  public void testSlistPut(DistkvClient client0, DistkvClient client1) {
+  public void testSlistPut(DistkvClient client0, DistkvClient client1)
+      throws InvalidProtocolBufferException {
     LinkedList<SortedListEntity> list = new LinkedList<>();
     list.add(new SortedListEntity("xswl", 9));
     list.add(new SortedListEntity("wlll", 8));

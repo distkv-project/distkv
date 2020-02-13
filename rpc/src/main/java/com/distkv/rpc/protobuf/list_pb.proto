@@ -8,13 +8,11 @@ option java_package="com.distkv.rpc.protobuf.generated";
 option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
 
-message PutRequest {
-    string key = 1;
-    repeated string values = 2;
+message ListPutRequest {
+    repeated string values = 1;
 }
 
-message PutResponse {
-    Status status = 1;
+message ListPutResponse {
 }
 
 // The type of a `get` request.
@@ -29,35 +27,29 @@ enum GetType {
 };
 
 // TODO(qwang): comment on this.
-message GetRequest {
+message ListGetRequest {
     GetType type = 1;
-    string key = 2;
-    int32 index = 3;
-    int32 from = 4;
-    int32 end = 5;
+    int32 index = 2;
+    int32 from = 3;
+    int32 end = 4;
 }
 
-message GetResponse {
-    Status status = 1;
-    repeated string values = 2;
+message ListGetResponse {
+    repeated string values = 1;
 }
 
-message LPutRequest {
-    string key = 1;
-    repeated string values = 2;
+message ListLPutRequest {
+    repeated string values = 1;
 }
 
-message LPutResponse {
-    Status status = 1;
+message ListLPutResponse {
 }
 
-message RPutRequest {
-    string key = 1;
-    repeated string values = 2;
+message ListRPutRequest {
+    repeated string values = 1;
 }
 
-message RPutResponse {
-    Status status = 1;
+message ListRPutResponse {
 }
 
 //The type of a 'remove' request
@@ -69,34 +61,21 @@ enum RemoveType {
     RemoveRange = 1;
 }
 
-message RemoveRequest {
+message ListRemoveRequest {
     RemoveType type = 1;
-    string key = 2;
-    int32 index = 3;
-    int32 from = 4;
-    int32 end = 5;
+    int32 index = 2;
+    int32 from = 3;
+    int32 end = 4;
 }
 
-message RemoveResponse {
-    Status status = 1;
+message ListRemoveResponse {
 }
 
 
-message MRemoveRequest {
-    string key = 1;
-    repeated int32 indexes = 2;
+message ListMRemoveRequest {
+    repeated int32 indexes = 1;
 }
 
-message MRemoveResponse {
-    Status status = 1;
+message ListMRemoveResponse {
 }
 
-service DistKVListService {
-    rpc put(PutRequest) returns (PutResponse);
-    rpc get(GetRequest) returns (GetResponse);
-    rpc lput(LPutRequest) returns (LPutResponse);
-    rpc rput(RPutRequest) returns (RPutResponse);
-    rpc remove(RemoveRequest) returns (RemoveResponse);
-    rpc mremove(MRemoveRequest) returns (MRemoveResponse);
-    rpc drop(DropRequest) returns (DropResponse);
-}

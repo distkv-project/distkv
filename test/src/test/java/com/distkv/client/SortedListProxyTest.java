@@ -1,5 +1,6 @@
 package com.distkv.client;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
@@ -14,7 +15,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
   private DistkvClient distkvClient = null;
 
   @Test
-  public void testMain() {
+  public void testMain() throws InvalidProtocolBufferException {
     distkvClient = newDistkvClient();
     testPut();
     testIncItem();
@@ -26,22 +27,22 @@ public class SortedListProxyTest extends BaseTestSupplier {
     distkvClient.disconnect();
   }
 
-  private void testTop() {
+  private void testTop() throws InvalidProtocolBufferException {
     LinkedList<SortedListEntity> list = distkvClient.sortedLists().top("k1", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
-    Assert.assertEquals(list.get(1).getMember(),"fw");
+    Assert.assertEquals(list.get(1).getMember(), "fw");
   }
 
   private void testRemoveItem() {
-    distkvClient.sortedLists().removeMember("k1","55");
+    distkvClient.sortedLists().removeMember("k1", "55");
   }
 
   private void testPutItem() {
-    distkvClient.sortedLists().putMember("k1", new SortedListEntity("whhh",100));
+    distkvClient.sortedLists().putMember("k1", new SortedListEntity("whhh", 100));
   }
 
   private void testIncItem() {
-    distkvClient.sortedLists().incrScore("k1", "fw",1);
+    distkvClient.sortedLists().incrScore("k1", "fw", 1);
   }
 
   private void testPut() {
@@ -53,7 +54,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     distkvClient.sortedLists().put("k1", list);
   }
 
-  private void testGetItem() {
+  private void testGetItem() throws InvalidProtocolBufferException {
     DistkvTuple<Integer, Integer> tuple = distkvClient.sortedLists().getMember("k1", "fw");
     Assert.assertEquals(tuple.getFirst().intValue(), 10);
     Assert.assertEquals(tuple.getSecond().intValue(), 2);

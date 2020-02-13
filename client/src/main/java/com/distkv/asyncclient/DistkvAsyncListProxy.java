@@ -1,120 +1,153 @@
 package com.distkv.asyncclient;
 
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
-import com.distkv.rpc.service.DistkvListService;
-
+import com.distkv.rpc.service.DistkvService;
+import com.google.protobuf.Any;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class DistkvAsyncListProxy {
 
-  private DistkvListService service;
+  private DistkvService service;
 
-  public DistkvAsyncListProxy(DistkvListService service) {
+  public DistkvAsyncListProxy(DistkvService service) {
     this.service = service;
   }
 
-  public CompletableFuture<ListProtocol.PutResponse> put(
-          String key, List<String> values) {
-    ListProtocol.PutRequest request = ListProtocol.PutRequest.newBuilder()
-            .setKey(key)
-            .addAllValues(values)
-            .build();
-    CompletableFuture<ListProtocol.PutResponse> future = service.put(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> put(String key, List<String> values) {
+    ListProtocol.ListPutRequest listPutRequest = ListProtocol.ListPutRequest.newBuilder()
+        .addAllValues(values)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_PUT)
+        .setRequest(Any.pack(listPutRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.GetResponse> get(String key) {
-    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
-            .setType(ListProtocol.GetType.GET_ALL)
-            .setKey(key)
-            .build();
-    CompletableFuture<ListProtocol.GetResponse> future = service.get(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
+    ListProtocol.ListGetRequest listGetRequest = ListProtocol.ListGetRequest.newBuilder()
+        .setType(ListProtocol.GetType.GET_ALL)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_GET)
+        .setRequest(Any.pack(listGetRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.GetResponse> get(
-          String key, Integer index) {
-    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
-            .setType(ListProtocol.GetType.GET_ONE)
-            .setKey(key)
-            .setIndex(index)
-            .build();
-    CompletableFuture<ListProtocol.GetResponse> future = service.get(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key, Integer index) {
+    ListProtocol.ListGetRequest listGetRequest = ListProtocol.ListGetRequest.newBuilder()
+        .setType(ListProtocol.GetType.GET_ONE)
+        .setIndex(index)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_GET)
+        .setRequest(Any.pack(listGetRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.GetResponse> get(
-          String key, Integer from, Integer end) {
-    ListProtocol.GetRequest request = ListProtocol.GetRequest.newBuilder()
-            .setType(ListProtocol.GetType.GET_RANGE)
-            .setKey(key)
-            .setFrom(from)
-            .setEnd(end)
-            .build();
-    CompletableFuture<ListProtocol.GetResponse> future = service.get(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> get(
+      String key, Integer from, Integer end) {
+    ListProtocol.ListGetRequest listGetRequest = ListProtocol.ListGetRequest.newBuilder()
+        .setType(ListProtocol.GetType.GET_RANGE)
+        .setFrom(from)
+        .setEnd(end)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_GET)
+        .setRequest(Any.pack(listGetRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<CommonProtocol.DropResponse> drop(String key) {
-    CommonProtocol.DropRequest request = CommonProtocol.DropRequest.newBuilder()
-            .setKey(key)
-            .build();
-    CompletableFuture<CommonProtocol.DropResponse> future = service.drop(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_DROP)
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.LPutResponse> lput(
-          String key, List<String> values) {
-    ListProtocol.LPutRequest request = ListProtocol.LPutRequest.newBuilder()
-            .setKey(key)
-            .addAllValues(values)
-            .build();
-    CompletableFuture<ListProtocol.LPutResponse> future = service.lput(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> lput(String key, List<String> values) {
+    ListProtocol.ListLPutRequest listLPutRequest = ListProtocol.ListLPutRequest.newBuilder()
+        .addAllValues(values)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_LPUT)
+        .setRequest(Any.pack(listLPutRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.RPutResponse> rput(
-          String key, List<String> values) {
-    ListProtocol.RPutRequest request = ListProtocol.RPutRequest.newBuilder()
-            .setKey(key)
-            .addAllValues(values)
-            .build();
-    CompletableFuture<ListProtocol.RPutResponse> future = service.rput(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> rput(String key, List<String> values) {
+    ListProtocol.ListRPutRequest listRPutRequest = ListProtocol.ListRPutRequest.newBuilder()
+        .addAllValues(values)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_RPUT)
+        .setRequest(Any.pack(listRPutRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.RemoveResponse> remove(
-          String key, Integer index) {
-    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
-            .setType(ListProtocol.RemoveType.RemoveOne)
-            .setKey(key)
-            .setIndex(index)
-            .build();
-    CompletableFuture<ListProtocol.RemoveResponse> future = service.remove(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> remove(String key, Integer index) {
+    ListProtocol.ListRemoveRequest listRemoveRequest = ListProtocol.ListRemoveRequest.newBuilder()
+        .setType(ListProtocol.RemoveType.RemoveOne)
+        .setIndex(index)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_REMOVE)
+        .setRequest(Any.pack(listRemoveRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.RemoveResponse> remove(
-          String key, Integer from, Integer end) {
-    ListProtocol.RemoveRequest request = ListProtocol.RemoveRequest.newBuilder()
-            .setType(ListProtocol.RemoveType.RemoveRange)
-            .setKey(key)
-            .setFrom(from)
-            .setEnd(end)
-            .build();
-    CompletableFuture<ListProtocol.RemoveResponse> future = service.remove(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> remove(
+      String key, Integer from, Integer end) {
+    ListProtocol.ListRemoveRequest listRemoveRequest = ListProtocol.ListRemoveRequest.newBuilder()
+        .setType(ListProtocol.RemoveType.RemoveRange)
+        .setFrom(from)
+        .setEnd(end)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_REMOVE)
+        .setRequest(Any.pack(listRemoveRequest))
+        .build();
+    return service.call(request);
   }
 
-  public CompletableFuture<ListProtocol.MRemoveResponse> mremove(
-          String key, List<Integer> indexes) {
-    ListProtocol.MRemoveRequest request = ListProtocol.MRemoveRequest.newBuilder()
-            .setKey(key)
-            .addAllIndexes(indexes)
-            .build();
-    CompletableFuture<ListProtocol.MRemoveResponse> future = service.mremove(request);
-    return future;
+  public CompletableFuture<DistkvProtocol.DistkvResponse> mremove(
+      String key, List<Integer> indexes) {
+    ListProtocol.ListMRemoveRequest listMRemoveRequest = ListProtocol.ListMRemoveRequest
+        .newBuilder()
+        .addAllIndexes(indexes)
+        .build();
+
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.LIST_MREMOVE)
+        .setRequest(Any.pack(listMRemoveRequest))
+        .build();
+    return service.call(request);
   }
 }

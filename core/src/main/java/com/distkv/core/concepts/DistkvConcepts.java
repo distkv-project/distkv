@@ -7,26 +7,26 @@ import com.distkv.core.DistkvMapInterface;
 
 public abstract class DistkvConcepts<T> {
 
-  protected DistkvMapInterface<String, T> distKVKeyValueMap = new DistkvHashMapImpl<>();
+  protected DistkvMapInterface<String, T> distkvKeyValueMap = new DistkvHashMapImpl<>();
 
   public void put(String key, T value) {
-    distKVKeyValueMap.put(key, value);
+    distkvKeyValueMap.put(key, value);
   }
 
   public T get(String key) {
-    if (!distKVKeyValueMap.containsKey(key)) {
+    if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
 
-    return distKVKeyValueMap.get(key);
+    return distkvKeyValueMap.get(key);
   }
 
   public Status drop(String key) {
-    if (!distKVKeyValueMap.containsKey(key)) {
+    if (!distkvKeyValueMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
     }
 
-    distKVKeyValueMap.remove(key);
+    distkvKeyValueMap.remove(key);
     return Status.OK;
   }
 

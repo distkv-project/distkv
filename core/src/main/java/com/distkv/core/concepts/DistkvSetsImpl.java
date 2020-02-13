@@ -11,30 +11,30 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
 
   @Override
   public void putItem(String key, String itemValue) {
-    if (!distKVKeyValueMap.containsKey(key)) {
+    if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
 
-    distKVKeyValueMap.get(key).add(itemValue);
+    distkvKeyValueMap.get(key).add(itemValue);
   }
 
   @Override
   public Status removeItem(String key, String itemValue) {
-    if (!distKVKeyValueMap.containsKey(key)) {
+    if (!distkvKeyValueMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;
     }
 
-    distKVKeyValueMap.get(key).remove(itemValue);
+    distkvKeyValueMap.get(key).remove(itemValue);
     return Status.OK;
   }
 
   @Override
   public boolean exists(String key, String value) throws KeyNotFoundException {
-    if (!distKVKeyValueMap.containsKey(key)) {
+    if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
 
-    return distKVKeyValueMap.get(key).contains(value);
+    return distkvKeyValueMap.get(key).contains(value);
   }
 
 }

@@ -17,7 +17,7 @@ import com.distkv.parser.po.DistkvParsedResult;
 
 public class DistkvCommandLineToolStarter {
 
-  private static final String PROGRAM_NAME = "DistKV";
+  private static final String PROGRAM_NAME = "Distkv";
 
   private static final String PROMPT_STRING = "dkv-cli> ";
 

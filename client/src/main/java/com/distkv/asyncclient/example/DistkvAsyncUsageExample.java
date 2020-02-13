@@ -2,11 +2,13 @@ package com.distkv.asyncclient.example;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.HashMap;
@@ -16,21 +18,23 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class DistkvAsyncUsageExample {
-  public static void main(String[] args) throws ExecutionException, InterruptedException {
-    DefaultAsyncClient dstClient = new DefaultAsyncClient("distkv://127.0.0.1:8082");
-    if (dstClient.isConnected()) {
-      CompletableFuture<StringProtocol.PutResponse> strPutFuture =
-              dstClient.strs().put("k1","asd");
-      CompletableFuture<ListProtocol.PutResponse> listPutFuture =
-              dstClient.lists().put("k1", Arrays.asList("v1","v2","v3"));
-      CompletableFuture<SetProtocol.PutResponse> setPutFuture =
-              dstClient.sets().put("k1", new HashSet<>(Arrays.asList("v1", "v2","v3")));
+
+  public static void main(String[] args)
+      throws ExecutionException, InterruptedException, InvalidProtocolBufferException {
+    DefaultAsyncClient distkvClient = new DefaultAsyncClient("distkv://127.0.0.1:8082");
+    if (distkvClient.isConnected()) {
+      CompletableFuture<DistkvProtocol.DistkvResponse> strPutFuture =
+          distkvClient.strs().put("k1", "asd");
+      CompletableFuture<DistkvProtocol.DistkvResponse> listPutFuture =
+          distkvClient.lists().put("k1", Arrays.asList("v1", "v2", "v3"));
+      CompletableFuture<DistkvProtocol.DistkvResponse> setPutFuture =
+          distkvClient.sets().put("k1", new HashSet<>(Arrays.asList("v1", "v2", "v3")));
       Map<String, String> map = new HashMap<>();
       map.put("k1", "v1");
       map.put("k2", "v2");
       map.put("k3", "v3");
-      CompletableFuture<DictProtocol.PutResponse> dictPutFuture =
-              dstClient.dicts().put("dict", map);
+      CompletableFuture<DistkvProtocol.DistkvResponse> dictPutFuture =
+          distkvClient.dicts().put("dict", map);
       LinkedList<SortedListEntity> slist = new LinkedList<>();
       slist.add(new SortedListEntity("a", 10));
       slist.add(new SortedListEntity("b", 8));
@@ -71,14 +75,14 @@ public class DistkvAsyncUsageExample {
       setPutFuture.get();
       dictPutFuture.get();
 
-      CompletableFuture<StringProtocol.GetResponse> strGetFuture =
-              dstClient.strs().get("k1");
-      CompletableFuture<ListProtocol.GetResponse> listGetFuture =
-              dstClient.lists().get("k1");
-      CompletableFuture<SetProtocol.GetResponse> setGetFuture =
-              dstClient.sets().get("k1");
-      CompletableFuture<DictProtocol.GetResponse> dictGetFuture =
-              dstClient.dicts().get("dict");
+      CompletableFuture<DistkvProtocol.DistkvResponse> strGetFuture =
+          distkvClient.strs().get("k1");
+      CompletableFuture<DistkvProtocol.DistkvResponse> listGetFuture =
+          distkvClient.lists().get("k1");
+      CompletableFuture<DistkvProtocol.DistkvResponse> setGetFuture =
+          distkvClient.sets().get("k1");
+      CompletableFuture<DistkvProtocol.DistkvResponse> dictGetFuture =
+          distkvClient.dicts().get("dict");
 
       strGetFuture.whenComplete((r, t) -> {
         if (t != null) {
@@ -109,25 +113,25 @@ public class DistkvAsyncUsageExample {
         }
       });
 
-      StringProtocol.GetResponse strGet = strGetFuture.get();
-      ListProtocol.GetResponse listGet = listGetFuture.get();
-      SetProtocol.GetResponse setGet = setGetFuture.get();
-      DictProtocol.GetResponse dictGet = dictGetFuture.get();
+      DistkvProtocol.DistkvResponse strGet = strGetFuture.get();
+      DistkvProtocol.DistkvResponse listGet = listGetFuture.get();
+      DistkvProtocol.DistkvResponse setGet = setGetFuture.get();
+      DistkvProtocol.DistkvResponse dictGet = dictGetFuture.get();
 
-      System.out.println("The result of dstClient.strs().get(\"k1\") is: "
-            + strGet.getValue());
-      System.out.println("The result of dstClient.lists().get(\"k1\") is: "
-            + listGet.getValuesList());
-      System.out.println("The result of dstClient.sets().get(\"k1\") is: "
-            + setGet.getValuesList());
-      System.out.println("The result of dstClient.dicts().get(\"dict1\") is: "
-            + "\n" + dictGet.getDict());
+      System.out.println("The result of distkvClient.strs().get(\"k1\") is: "
+          + strGet.getResponse().unpack(StringProtocol.StrGetResponse.class).getValue());
+      System.out.println("The result of distkvClient.lists().get(\"k1\") is: "
+          + listGet.getResponse().unpack(ListProtocol.ListGetResponse.class).getValuesList());
+      System.out.println("The result of distkvClient.sets().get(\"k1\") is: "
+          + setGet.getResponse().unpack(SetProtocol.SetGetResponse.class).getValuesList());
+      System.out.println("The result of distkvClient.dicts().get(\"dict1\") is: "
+          + "\n" + dictGet.getResponse().unpack(DictProtocol.DictGetResponse.class).getDict());
 
       // SortedList example.
-      CompletableFuture<SortedListProtocol.PutResponse> slistPutFuture =
-            dstClient.sortedLists().put("k1", slist);
-      CompletableFuture<SortedListProtocol.PutMemberResponse> slistPutMFuture =
-            dstClient.sortedLists().putMember("k1", new SortedListEntity("s",100));
+      CompletableFuture<DistkvProtocol.DistkvResponse> slistPutFuture =
+          distkvClient.sortedLists().put("k1", slist);
+      CompletableFuture<DistkvProtocol.DistkvResponse> slistPutMFuture =
+          distkvClient.sortedLists().putMember("k1", new SortedListEntity("s", 100));
 
       slistPutFuture.whenComplete((r, t) -> {
         if (t != null) {
@@ -149,8 +153,8 @@ public class DistkvAsyncUsageExample {
       });
       slistPutMFuture.get();
 
-      CompletableFuture<SortedListProtocol.TopResponse> slistTopFuture =
-            dstClient.sortedLists().top("k1", 3);
+      CompletableFuture<DistkvProtocol.DistkvResponse> slistTopFuture =
+          distkvClient.sortedLists().top("k1", 3);
 
       slistTopFuture.whenComplete((r, t) -> {
         if (t != null) {
@@ -160,13 +164,18 @@ public class DistkvAsyncUsageExample {
         }
       });
 
-      SortedListProtocol.TopResponse slistTop = slistTopFuture.get();
+      DistkvProtocol.DistkvResponse slistTop = slistTopFuture.get();
+      SortedListProtocol.SlistTopResponse slistTopResponse = slistTop.getResponse()
+          .unpack(SortedListProtocol.SlistTopResponse.class);
+      System.out.println(slistTopResponse.getListCount());
+      System.out.println(slistTopResponse.getListList());
+      System.out.println(slistTopResponse.getList(0));
       System.out.println("The result of dstClient.sortedLists().top(\"k1\") is: " +
-            "{ First: " + slistTop.getList(0).getMember() +
-            "; Second: " + slistTop.getList(1).getMember() +
-            "; Third: " + slistTop.getList(2).getMember() + "; }");
+          "{ First: " + slistTopResponse.getList(0).getMember() +
+          "; Second: " + slistTopResponse.getList(1).getMember() +
+          "; Third: " + slistTopResponse.getList(2).getMember() + "; }");
 
-      dstClient.disconnect();
+      distkvClient.disconnect();
     }
   }
 }

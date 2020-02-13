@@ -24,9 +24,7 @@ enum Status {
 
 // Drop the k-v pair by the given key.
 message DropRequest {
-    string key = 1;
 }
 
 message DropResponse {
-    Status status = 1;
 }
