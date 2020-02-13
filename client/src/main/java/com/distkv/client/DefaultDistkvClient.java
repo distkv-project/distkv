@@ -9,7 +9,6 @@ import com.distkv.rpc.service.DistkvService;
 
 public class DefaultDistkvClient implements DistkvClient {
 
-  // TODO(qwang): Rename to StringInterface or StringQueryer.
   private DistkvStringProxy stringProxy;
 
   private DistkvListProxy listProxy;

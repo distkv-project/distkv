@@ -8,8 +8,6 @@ import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
-// TODO(qwang): Do not use so much clients. Use a final static client instead.
 public class SortedListProxyTest extends BaseTestSupplier {
 
   private DistkvClient distkvClient = null;
