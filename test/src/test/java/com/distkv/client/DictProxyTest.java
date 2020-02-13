@@ -75,10 +75,10 @@ public class DictProxyTest extends BaseTestSupplier {
     try {
       client.dicts().drop("m1");
     } catch (KeyNotFoundException e) {
-      client.disconnect();
       return;
+    } finally {
+      client.disconnect();
     }
-    client.disconnect();
     Assert.fail();
   }
 }
