@@ -1,7 +1,7 @@
 package com.distkv.namespace;
 
 /**
- * This is a interceptor to intercept requests and resolve namespace
+ * This is an interceptor to intercept requests and resolve namespace
  * on the client side.
  */
 public class NamespaceInterceptor {

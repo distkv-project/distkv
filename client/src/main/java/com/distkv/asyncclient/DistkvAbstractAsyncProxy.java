@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 public abstract class DistkvAbstractAsyncProxy implements DistkvService {
 
-  private final static String DKV_NAMESPACE_PREFIX = "DKV_NSP";
+  private static final String DKV_NAMESPACE_PREFIX = "DKV_NSP";
 
   private List<Function<DistkvProtocol.DistkvRequest,
       DistkvProtocol.DistkvRequest>> filters = new ArrayList<>();
