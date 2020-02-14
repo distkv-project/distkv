@@ -439,9 +439,10 @@ public class Worker extends Thread {
           }
           storeEngine.dicts().put(key, map);
           builder.setStatus(CommonProtocol.Status.OK);
-        } catch (Exception e) {
-          // TODO(qwang): Use DistKVException instead of Exception here.
+        } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+        } catch (Exception e) {
+          builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
         }
         break;
       }
