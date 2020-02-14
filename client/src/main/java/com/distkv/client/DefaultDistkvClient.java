@@ -1,11 +1,7 @@
 package com.distkv.client;
 
-import org.dousi.Proxy;
-import org.dousi.api.Client;
-import org.dousi.config.ClientConfig;
-import org.dousi.netty.NettyClient;
-import com.distkv.common.exception.DistkvException;
-import com.distkv.rpc.service.DistkvService;
+import com.distkv.asyncclient.DefaultAsyncClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
 
 public class DefaultDistkvClient implements DistkvClient {
 
@@ -19,26 +15,17 @@ public class DefaultDistkvClient implements DistkvClient {
 
   private DistkvSortedListProxy sortedListProxy;
 
-  private Client rpcClient;
+  /// The `DistkvSyncClient` is wrapped with a `DistkvAsyncClient`.
+  private DistkvAsyncClient asyncClient;
 
   public DefaultDistkvClient(String serverAddress) {
-    ClientConfig clientConfig = ClientConfig.builder()
-          .address(serverAddress)
-          .build();
+    asyncClient = new DefaultAsyncClient(serverAddress);
 
-    rpcClient = new NettyClient(clientConfig);
-    rpcClient.open();
-
-    // Setup list proxy.
-    // TODO(qwang): Refine this to rpcClient.getService<DstStringService>();
-    Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
-    distkvRpcProxy.setInterfaceClass(DistkvService.class);
-
-    stringProxy = new DistkvStringProxy(distkvRpcProxy.getService(rpcClient));
-    listProxy = new DistkvListProxy(distkvRpcProxy.getService(rpcClient));
-    setProxy = new DistkvSetProxy(distkvRpcProxy.getService(rpcClient));
-    dictProxy = new DistkvDictProxy(distkvRpcProxy.getService(rpcClient));
-    sortedListProxy = new DistkvSortedListProxy(distkvRpcProxy.getService(rpcClient));
+    stringProxy = new DistkvStringProxy(asyncClient.strs());
+    listProxy = new DistkvListProxy(asyncClient.lists());
+    setProxy = new DistkvSetProxy(asyncClient.sets());
+    dictProxy = new DistkvDictProxy(asyncClient.dicts());
+    sortedListProxy = new DistkvSortedListProxy(asyncClient.sortedLists());
   }
 
   @Override
@@ -53,12 +40,8 @@ public class DefaultDistkvClient implements DistkvClient {
 
   @Override
   public boolean disconnect() {
-    try {
-      rpcClient.close();
-      return true;
-    } catch (DistkvException ex) {
-      throw new DistkvException(String.format("Failed close the clients : %s", ex.getMessage()));
-    }
+    asyncClient.disconnect();
+    return true;
   }
 
   @Override
