@@ -8,12 +8,10 @@ import com.google.protobuf.Any;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class DistkvAsyncListProxy {
+public class DistkvAsyncListProxy extends DistkvAbstractAsyncProxy {
 
-  private DistkvService service;
-
-  public DistkvAsyncListProxy(DistkvService service) {
-    this.service = service;
+  public DistkvAsyncListProxy(DistkvAsyncClient client, DistkvService service) {
+    super(client, service);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(String key, List<String> values) {
@@ -26,7 +24,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_PUT)
         .setRequest(Any.pack(listPutRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
@@ -39,7 +37,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_GET)
         .setRequest(Any.pack(listGetRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key, Integer index) {
@@ -53,7 +51,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_GET)
         .setRequest(Any.pack(listGetRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(
@@ -69,7 +67,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_GET)
         .setRequest(Any.pack(listGetRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
@@ -77,7 +75,7 @@ public class DistkvAsyncListProxy {
         .setKey(key)
         .setRequestType(RequestType.LIST_DROP)
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> lput(String key, List<String> values) {
@@ -90,7 +88,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_LPUT)
         .setRequest(Any.pack(listLPutRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> rput(String key, List<String> values) {
@@ -103,7 +101,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_RPUT)
         .setRequest(Any.pack(listRPutRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> remove(String key, Integer index) {
@@ -117,7 +115,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_REMOVE)
         .setRequest(Any.pack(listRemoveRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> remove(
@@ -133,7 +131,7 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_REMOVE)
         .setRequest(Any.pack(listRemoveRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> mremove(
@@ -148,6 +146,6 @@ public class DistkvAsyncListProxy {
         .setRequestType(RequestType.LIST_MREMOVE)
         .setRequest(Any.pack(listMRemoveRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 }

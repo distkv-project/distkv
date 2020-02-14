@@ -9,12 +9,10 @@ import com.google.protobuf.Any;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
-public class DistkvAsyncSortedListProxy {
+public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
-  private DistkvService service;
-
-  public DistkvAsyncSortedListProxy(DistkvService service) {
-    this.service = service;
+  public DistkvAsyncSortedListProxy(DistkvAsyncClient client, DistkvService service) {
+    super(client, service);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
@@ -37,7 +35,7 @@ public class DistkvAsyncSortedListProxy {
         .setRequestType(RequestType.SORTED_LIST_PUT)
         .setRequest(Any.pack(slistPutRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> incrScore(
@@ -53,7 +51,7 @@ public class DistkvAsyncSortedListProxy {
         .setRequestType(RequestType.SORTED_LIST_INCR_SCORE)
         .setRequest(Any.pack(slistInceScoreRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> top(String key, int topNum) {
@@ -68,7 +66,7 @@ public class DistkvAsyncSortedListProxy {
         .setRequestType(RequestType.SORTED_LIST_TOP)
         .setRequest(Any.pack(slistTopRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
@@ -76,7 +74,7 @@ public class DistkvAsyncSortedListProxy {
         .setKey(key)
         .setRequestType(RequestType.SORTED_LIST_DROP)
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> removeMember(String key, String member) {
@@ -90,7 +88,7 @@ public class DistkvAsyncSortedListProxy {
         .setRequestType(RequestType.SORTED_LIST_REMOVE_MEMBER)
         .setRequest(Any.pack(slistRemoveMemberRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> putMember(
@@ -106,7 +104,7 @@ public class DistkvAsyncSortedListProxy {
         .setRequestType(RequestType.SORTED_LIST_PUT_MEMBER)
         .setRequest(Any.pack(slistPutMemberRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> getMember(
@@ -121,6 +119,6 @@ public class DistkvAsyncSortedListProxy {
         .setRequestType(RequestType.SORTED_LIST_GET_MEMBER)
         .setRequest(Any.pack(slistGetMemberRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 }

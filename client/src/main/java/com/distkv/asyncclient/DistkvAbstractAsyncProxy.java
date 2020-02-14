@@ -9,22 +9,26 @@ import java.util.function.Function;
 
 public abstract class DistkvAbstractAsyncProxy implements DistkvService {
 
+  private final static String DKV_NAMESPACE_PREFIX = "DKV_NSP";
+
   private List<Function<DistkvProtocol.DistkvRequest,
       DistkvProtocol.DistkvRequest>> filters = new ArrayList<>();
 
+  /// The rpc service for this proxy.
   private DistkvService service;
 
   public DistkvAbstractAsyncProxy(DistkvAsyncClient client, DistkvService service) {
     this.service = service;
 
-    // The namespace filter.
+    // Append the namespace filter to filters.
     appendFilter((DistkvProtocol.DistkvRequest request) -> {
       if (client.getActivedNamespace() == null) {
         return request;
       }
 
-      final String key = String.format(
-          "DKV_NSP_%s_%s", client.getActivedNamespace(), request.getKey());
+      // If namespace actived, Add the namespace prefix to the key.
+      final String key = String.format("%s_%s_%s",
+          DKV_NAMESPACE_PREFIX, client.getActivedNamespace(), request.getKey());
       request = DistkvProtocol.DistkvRequest
           .newBuilder()
           .setKey(key)
@@ -35,11 +39,15 @@ public abstract class DistkvAbstractAsyncProxy implements DistkvService {
     });
   }
 
+  /// Append a filter to this proxy.
   private void appendFilter(
       Function<DistkvProtocol.DistkvRequest, DistkvProtocol.DistkvRequest> filter) {
     filters.add(filter);
   }
 
+  /**
+   * call rpc service.
+   */
   public CompletableFuture<DistkvProtocol.DistkvResponse> call(
       DistkvProtocol.DistkvRequest request) {
     DistkvProtocol.DistkvRequest localRequest = request;
