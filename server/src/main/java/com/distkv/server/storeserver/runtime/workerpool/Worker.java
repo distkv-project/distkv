@@ -150,6 +150,7 @@ public class Worker extends Thread {
       throws InvalidProtocolBufferException {
     RequestType requestType = distkvRequest.getRequestType();
     String key = distkvRequest.getKey();
+    // warning: Need to cover the exception of each case, otherwise the server will crash.
     switch (requestType) {
       case STR_PUT: {
         StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
@@ -439,8 +440,7 @@ public class Worker extends Thread {
           }
           storeEngine.dicts().put(key, map);
           builder.setStatus(CommonProtocol.Status.OK);
-        } catch (Exception e) {
-          // TODO(qwang): Use DistKVException instead of Exception here.
+        } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         }
         break;
