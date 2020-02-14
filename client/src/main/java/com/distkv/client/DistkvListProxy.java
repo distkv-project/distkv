@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class DistkvListProxy {
 
-  private final static String typeCode = "B";
+  private static final String typeCode = "B";
 
   private DistkvAsyncListProxy asyncListProxy;
 
