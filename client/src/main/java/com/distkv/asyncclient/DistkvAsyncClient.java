@@ -25,6 +25,13 @@ public interface DistkvAsyncClient {
   boolean disconnect();
 
   /**
+   * Active a namespace for this client.
+   */
+  void activeNamespace(String namespace);
+
+  String getActivedNamespace();
+
+  /**
    * Get the dst string proxy.
    *
    * @return The dst string proxy.

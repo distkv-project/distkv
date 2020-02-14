@@ -9,12 +9,10 @@ import com.google.protobuf.Any;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class DistkvAsyncDictProxy {
+public class DistkvAsyncDictProxy extends DistkvAbstractAsyncProxy {
 
-  private DistkvService service;
-
-  public DistkvAsyncDictProxy(DistkvService service) {
-    this.service = service;
+  public DistkvAsyncDictProxy(DistkvAsyncClient client, DistkvService service) {
+    super(client, service);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
@@ -28,7 +26,7 @@ public class DistkvAsyncDictProxy {
         .setRequestType(RequestType.DICT_PUT)
         .setRequest(Any.pack(dictPutRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
@@ -36,7 +34,7 @@ public class DistkvAsyncDictProxy {
         .setKey(key)
         .setRequestType(RequestType.DICT_GET)
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> getItem(
@@ -51,7 +49,7 @@ public class DistkvAsyncDictProxy {
         .setRequestType(RequestType.DICT_GET_ITEM)
         .setRequest(Any.pack(dictGetItemRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> popItem(String key, String itemKey) {
@@ -65,7 +63,7 @@ public class DistkvAsyncDictProxy {
         .setRequestType(RequestType.DICT_POP_ITEM)
         .setRequest(Any.pack(dictPopItemRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> putItem(
@@ -80,7 +78,7 @@ public class DistkvAsyncDictProxy {
         .setRequestType(RequestType.DICT_PUT_ITEM)
         .setRequest(Any.pack(dictPutItemRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
@@ -88,7 +86,7 @@ public class DistkvAsyncDictProxy {
         .setKey(key)
         .setRequestType(RequestType.DICT_DROP)
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> removeItem(
@@ -103,6 +101,6 @@ public class DistkvAsyncDictProxy {
         .setRequestType(RequestType.DICT_REMOVE_ITEM)
         .setRequest(Any.pack(dictRemoveItemRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 }
