@@ -153,14 +153,10 @@ public class Worker extends Thread {
     // warning: Need to cover the exception of each case, otherwise the server will crash.
     switch (requestType) {
       case STR_PUT: {
-        try {
           StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
               .unpack(StringProtocol.StrPutRequest.class);
           storeEngine.strs().put(key, strPutRequest.getValue());
           builder.setStatus(CommonProtocol.Status.OK);
-        } catch (Exception e) {
-          builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
-        }
         break;
       }
       case STR_DROP: {
@@ -446,8 +442,6 @@ public class Worker extends Thread {
           builder.setStatus(CommonProtocol.Status.OK);
         } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-        } catch (Exception e) {
-          builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
         }
         break;
       }
@@ -461,7 +455,6 @@ public class Worker extends Thread {
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } else {
-          try {
             DictProtocol.DictGetResponse.Builder responseBuilder =
                 DictProtocol.DictGetResponse.newBuilder();
             DictProtocol.DistKVDict.Builder dictBuilder = DictProtocol.DistKVDict.newBuilder();
@@ -471,10 +464,6 @@ public class Worker extends Thread {
             }
             responseBuilder.setDict(dictBuilder);
             builder.setResponse(Any.pack(responseBuilder.build()));
-          } catch (Exception e) {
-            LOGGER.error("Unknown Error");
-            builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
-          }
         }
         break;
       }
