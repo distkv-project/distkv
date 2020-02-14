@@ -24,6 +24,7 @@ import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,8 +36,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -150,12 +153,17 @@ public class Worker extends Thread {
       throws InvalidProtocolBufferException {
     RequestType requestType = distkvRequest.getRequestType();
     String key = distkvRequest.getKey();
+    // warning: Need to cover the exception of each case, otherwise the server will crash.
     switch (requestType) {
       case STR_PUT: {
-        StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
-            .unpack(StringProtocol.StrPutRequest.class);
-        storeEngine.strs().put(key, strPutRequest.getValue());
-        builder.setStatus(CommonProtocol.Status.OK);
+        try {
+          StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
+              .unpack(StringProtocol.StrPutRequest.class);
+          storeEngine.strs().put(key, strPutRequest.getValue());
+          builder.setStatus(CommonProtocol.Status.OK);
+        } catch (Exception e) {
+          builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
+        }
         break;
       }
       case STR_DROP: {
@@ -456,15 +464,20 @@ public class Worker extends Thread {
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } else {
-          DictProtocol.DictGetResponse.Builder responseBuilder =
-              DictProtocol.DictGetResponse.newBuilder();
-          DictProtocol.DistKVDict.Builder dictBuilder = DictProtocol.DistKVDict.newBuilder();
-          for (Map.Entry<String, String> entry : dict.entrySet()) {
-            dictBuilder.addKeys(entry.getKey());
-            dictBuilder.addValues(entry.getValue());
+          try {
+            DictProtocol.DictGetResponse.Builder responseBuilder =
+                DictProtocol.DictGetResponse.newBuilder();
+            DictProtocol.DistKVDict.Builder dictBuilder = DictProtocol.DistKVDict.newBuilder();
+            for (Map.Entry<String, String> entry : dict.entrySet()) {
+              dictBuilder.addKeys(entry.getKey());
+              dictBuilder.addValues(entry.getValue());
+            }
+            responseBuilder.setDict(dictBuilder);
+            builder.setResponse(Any.pack(responseBuilder.build()));
+          } catch (Exception e) {
+            LOGGER.error("Unknown Error");
+            builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
           }
-          responseBuilder.setDict(dictBuilder);
-          builder.setResponse(Any.pack(responseBuilder.build()));
         }
         break;
       }
