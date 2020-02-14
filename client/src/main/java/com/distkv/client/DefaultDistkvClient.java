@@ -2,12 +2,6 @@ package com.distkv.client;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DistkvAsyncClient;
-import org.dousi.Proxy;
-import org.dousi.api.Client;
-import org.dousi.config.ClientConfig;
-import org.dousi.netty.NettyClient;
-import com.distkv.common.exception.DistkvException;
-import com.distkv.rpc.service.DistkvService;
 
 public class DefaultDistkvClient implements DistkvClient {
 
@@ -21,7 +15,7 @@ public class DefaultDistkvClient implements DistkvClient {
 
   private DistkvSortedListProxy sortedListProxy;
 
-  /// The DistkvSyncClient is wrapped with a DistkvAsyncClient.
+  /// The `DistkvSyncClient` is wrapped with a `DistkvAsyncClient`.
   private DistkvAsyncClient asyncClient;
 
   public DefaultDistkvClient(String serverAddress) {
@@ -46,12 +40,8 @@ public class DefaultDistkvClient implements DistkvClient {
 
   @Override
   public boolean disconnect() {
-    try {
-      rpcClient.close();
-      return true;
-    } catch (DistkvException ex) {
-      throw new DistkvException(String.format("Failed close the clients : %s", ex.getMessage()));
-    }
+    asyncClient.disconnect();
+    return true;
   }
 
   @Override
