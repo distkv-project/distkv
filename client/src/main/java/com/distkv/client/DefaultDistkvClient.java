@@ -1,5 +1,7 @@
 package com.distkv.client;
 
+import com.distkv.asyncclient.DefaultAsyncClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -19,26 +21,17 @@ public class DefaultDistkvClient implements DistkvClient {
 
   private DistkvSortedListProxy sortedListProxy;
 
-  private Client rpcClient;
+  /// The DistkvSyncClient is wrapped with a DistkvAsyncClient.
+  private DistkvAsyncClient asyncClient;
 
   public DefaultDistkvClient(String serverAddress) {
-    ClientConfig clientConfig = ClientConfig.builder()
-          .address(serverAddress)
-          .build();
+    asyncClient = new DefaultAsyncClient(serverAddress);
 
-    rpcClient = new NettyClient(clientConfig);
-    rpcClient.open();
-
-    // Setup list proxy.
-    // TODO(qwang): Refine this to rpcClient.getService<DstStringService>();
-    Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
-    distkvRpcProxy.setInterfaceClass(DistkvService.class);
-
-    stringProxy = new DistkvStringProxy(distkvRpcProxy.getService(rpcClient));
-    listProxy = new DistkvListProxy(distkvRpcProxy.getService(rpcClient));
-    setProxy = new DistkvSetProxy(distkvRpcProxy.getService(rpcClient));
-    dictProxy = new DistkvDictProxy(distkvRpcProxy.getService(rpcClient));
-    sortedListProxy = new DistkvSortedListProxy(distkvRpcProxy.getService(rpcClient));
+    stringProxy = new DistkvStringProxy(asyncClient.strs());
+    listProxy = new DistkvListProxy(asyncClient.lists());
+    setProxy = new DistkvSetProxy(asyncClient.sets());
+    dictProxy = new DistkvDictProxy(asyncClient.dicts());
+    sortedListProxy = new DistkvSortedListProxy(asyncClient.sortedLists());
   }
 
   @Override
