@@ -5,13 +5,13 @@ package com.distkv.core.map;
  * which makes 16 key value as a group and use sse2 instructions to determine the group is full or
  * the group is deleted or empty. a group metadata contains 16 * 8 = 124 bit, which can be fully
  * put at L1 cache. So it's cache friendly. more information reference to
- * https://abseil.io/about/design/swisstables
+ * <li>https://abseil.io/about/design/swisstables</li>
  */
-public class DstOffHeapMapMeta {
+public class DistOffHeapMapMeta {
 
   private int size;
   private ByteSegment byteSegment = new ByteSegment(1);
-  private Hash hash;
+  private HashFunction hashFunction;
 
   // fist 8 bit 0000_0000 means empty.
   // last 8 bit 1111_1110 means the value is deleted
@@ -21,23 +21,25 @@ public class DstOffHeapMapMeta {
   private static final long GROUP_EMPTY_MASK = 0b0000_0000_0000_0000_0000_0000_0000_0000;
 
 
-  // sse instruction to
+  // sse instruction https://github.com/rust-lang/hashbrown
 
 
-  // TODO replaced by sse instruction
+  // TODO implemented by SSE instruction,
   public boolean isGroupFull(int hash) {
-    byte[] bArray = byteSegment.getValues(hash % size, 16);
     return false;
   }
 
+  // TODO implemented by SSE instruction
   public boolean isGroupMatch(long hash) {
     return false;
   }
 
+  // TODO implemented by SSE instruction
   public boolean isGroupEmpty(long hash) {
     return false;
   }
 
+  // TODO implemented by SSE instruction
   public boolean isGroupEmptyOrDeleted(byte b) {
     return false;
   }

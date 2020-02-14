@@ -113,7 +113,7 @@ public class BlockPool implements Closeable {
   }
 
   public int getBlockSize() {
-    return blockSize;
+    return this.blockSize;
   }
 
   @Override

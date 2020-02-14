@@ -2,6 +2,7 @@ package com.distkv.core.map;
 
 import com.distkv.common.utils.ByteUtil;
 import com.distkv.core.block.Block;
+
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class NonFixedSegment extends ValueSegment {
@@ -15,31 +16,68 @@ public class NonFixedSegment extends ValueSegment {
     blockValueCntArray = new int[initSize];
   }
 
-  public void addValue(byte[] value) {
+  public int addValue(byte[] value) {
     checkArgument(value.length + ByteUtil.SIZE_OF_INT <= pool.getBlockSize());
     Block block = blockArray[blockIndex];
     if (block.addNonFixedValue(value) > 0) {
+      int pointer = size;
       size++;
-      blockValueCntArray[blockIndex] = size;
+      return pointer;
     } else {
       blockIndex++;
       resize(blockIndex + 1);
-      addValue(value);
+      blockValueCntArray[blockIndex] = size;
+      return addValue(value);
     }
   }
 
-  public void addKeyValue(byte[] key, byte[] value) {
+  public int addKeyValue(byte[] key, byte[] value) {
     checkArgument(key.length + value.length <= pool.getBlockSize());
     Block block = blockArray[blockIndex];
-
+    if (block.addTwoNonFixedValue(key, value) > 0) {
+      int pointer = size;
+      size = size + 2;
+      return pointer;
+    } else {
+      blockIndex++;
+      resize(blockIndex + 1);
+      blockValueCntArray[blockIndex] = size;
+      return addKeyValue(key, value);
+    }
   }
 
   public void getValue(int pointer) {
-
+    checkArgument(pointer < size);
+    Block block = blockArray[locateBlock(pointer)];
+    block.readNonFixedValue(pointer);
   }
 
-  public void getKeyValue(int pointer) {
+  public byte[][] getKeyValue(int pointer) {
+    Block block = blockArray[locateBlock(pointer)];
+    return block.readTwoNonFixedValues(pointer);
+  }
 
+  public int locateBlock(int pointer) {
+    return binarySearch(pointer, 0, blockValueCntArray.length - 1);
+  }
+
+  public int binarySearch(int value, int start, int end) {
+    if (end - start <= 2) {
+      if (start + 1 <= end && blockValueCntArray[start + 1] > value) {
+        return start;
+      } else if (start + 2 <= end && blockValueCntArray[start + 2] > value) {
+        return start + 1;
+      } else {
+        return end;
+      }
+    } else {
+      int mid = (start + end) / 2;
+      if (value >= blockValueCntArray[mid]) {
+        return binarySearch(value, mid, end);
+      } else {
+        return binarySearch(value, start, mid);
+      }
+    }
   }
 
   public void resize(final int newSize) {

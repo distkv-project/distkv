@@ -20,7 +20,7 @@ public class ByteSegment extends FixedValueSegment {
     putFixedValue(key, new byte[] {b});
   }
 
-  public void putValues(int key, byte[] bArray) {
-    putFixedValue(key, bArray);
+  public void putValues(int key, byte[] bytes) {
+    putFixedValue(key, bytes);
   }
 }

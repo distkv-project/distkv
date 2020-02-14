@@ -14,7 +14,7 @@ public class FixedValueSegment extends ValueSegment {
 
     if (fixedLength > 0) {
       this.fixedLength = fixedLength;
-      this.blockItemSize = pool.getBlockSize() % fixedLength;
+      this.blockItemSize = pool.getBlockSize() / fixedLength;
     }
   }
 
