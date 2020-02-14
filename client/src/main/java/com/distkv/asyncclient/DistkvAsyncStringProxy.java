@@ -7,12 +7,10 @@ import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
 import java.util.concurrent.CompletableFuture;
 
-public class DistkvAsyncStringProxy {
+public class DistkvAsyncStringProxy extends DistkvAbstractAsyncProxy {
 
-  private DistkvService service;
-
-  public DistkvAsyncStringProxy(DistkvService service) {
-    this.service = service;
+  public DistkvAsyncStringProxy(DistkvAsyncClient client, DistkvService service) {
+    super(client, service);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
@@ -25,7 +23,7 @@ public class DistkvAsyncStringProxy {
         .setRequestType(RequestType.STR_PUT)
         .setRequest(Any.pack(strPutRequest))
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
@@ -33,7 +31,7 @@ public class DistkvAsyncStringProxy {
         .setKey(key)
         .setRequestType(RequestType.STR_GET)
         .build();
-    return service.call(request);
+    return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
@@ -41,6 +39,6 @@ public class DistkvAsyncStringProxy {
         .setKey(key)
         .setRequestType(RequestType.STR_DROP)
         .build();
-    return service.call(request);
+    return call(request);
   }
 }

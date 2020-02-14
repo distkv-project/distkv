@@ -1,5 +1,6 @@
 package com.distkv.asyncclient;
 
+import com.distkv.namespace.NamespaceInterceptor;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -14,7 +15,12 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   private DistkvAsyncSetProxy setProxy;
   private DistkvAsyncDictProxy dictProxy;
   private DistkvAsyncSortedListProxy sortedListProxy;
+
+  /// The rpc client.
   private Client rpcClient;
+
+  /// The interceptor to resolve the conflicts of keys in different clients.
+  private NamespaceInterceptor namespaceInterceptor = new NamespaceInterceptor();
 
   public DefaultAsyncClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
@@ -26,7 +32,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-    stringProxy = new DistkvAsyncStringProxy(distkvRpcProxy.getService(rpcClient));
+    stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
     listProxy = new DistkvAsyncListProxy(distkvRpcProxy.getService(rpcClient));
     setProxy = new DistkvAsyncSetProxy(distkvRpcProxy.getService(rpcClient));
     dictProxy = new DistkvAsyncDictProxy(distkvRpcProxy.getService(rpcClient));
@@ -51,6 +57,16 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     } catch (DistkvException ex) {
       throw new DistkvException(String.format("Failed close the clients : %s", ex.getMessage()));
     }
+  }
+
+  @Override
+  public void activeNamespace(String namespace) {
+    namespaceInterceptor.active(namespace);
+  }
+
+  @Override
+  public String getActivedNamespace() {
+    return namespaceInterceptor.getNamespace();
   }
 
   @Override
