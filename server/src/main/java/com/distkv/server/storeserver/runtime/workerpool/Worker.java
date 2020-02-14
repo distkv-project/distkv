@@ -153,10 +153,10 @@ public class Worker extends Thread {
     // warning: Need to cover the exception of each case, otherwise the server will crash.
     switch (requestType) {
       case STR_PUT: {
-          StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
-              .unpack(StringProtocol.StrPutRequest.class);
-          storeEngine.strs().put(key, strPutRequest.getValue());
-          builder.setStatus(CommonProtocol.Status.OK);
+        StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
+            .unpack(StringProtocol.StrPutRequest.class);
+        storeEngine.strs().put(key, strPutRequest.getValue());
+        builder.setStatus(CommonProtocol.Status.OK);
         break;
       }
       case STR_DROP: {
@@ -455,15 +455,15 @@ public class Worker extends Thread {
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } else {
-            DictProtocol.DictGetResponse.Builder responseBuilder =
-                DictProtocol.DictGetResponse.newBuilder();
-            DictProtocol.DistKVDict.Builder dictBuilder = DictProtocol.DistKVDict.newBuilder();
-            for (Map.Entry<String, String> entry : dict.entrySet()) {
-              dictBuilder.addKeys(entry.getKey());
-              dictBuilder.addValues(entry.getValue());
-            }
-            responseBuilder.setDict(dictBuilder);
-            builder.setResponse(Any.pack(responseBuilder.build()));
+          DictProtocol.DictGetResponse.Builder responseBuilder =
+              DictProtocol.DictGetResponse.newBuilder();
+          DictProtocol.DistKVDict.Builder dictBuilder = DictProtocol.DistKVDict.newBuilder();
+          for (Map.Entry<String, String> entry : dict.entrySet()) {
+            dictBuilder.addKeys(entry.getKey());
+            dictBuilder.addValues(entry.getValue());
+          }
+          responseBuilder.setDict(dictBuilder);
+          builder.setResponse(Any.pack(responseBuilder.build()));
         }
         break;
       }
