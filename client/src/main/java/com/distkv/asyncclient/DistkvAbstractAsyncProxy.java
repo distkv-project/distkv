@@ -9,7 +9,8 @@ import java.util.function.Function;
 
 public abstract class DistkvAbstractAsyncProxy implements DistkvService {
 
-  private List<Function<DistkvProtocol.DistkvRequest, DistkvProtocol.DistkvRequest>> filters = new ArrayList<>();
+  private List<Function<DistkvProtocol.DistkvRequest,
+      DistkvProtocol.DistkvRequest>> filters = new ArrayList<>();
 
   private DistkvService service;
 
@@ -22,7 +23,8 @@ public abstract class DistkvAbstractAsyncProxy implements DistkvService {
         return request;
       }
 
-      final String key = String.format("DKV_NSP_{}_{}", client.getActivedNamespace(), request.getKey());
+      final String key = String.format(
+          "DKV_NSP_%s_%s", client.getActivedNamespace(), request.getKey());
       request = DistkvProtocol.DistkvRequest
           .newBuilder()
           .setKey(key)
@@ -33,11 +35,13 @@ public abstract class DistkvAbstractAsyncProxy implements DistkvService {
     });
   }
 
-  private void appendFilter(Function<DistkvProtocol.DistkvRequest, DistkvProtocol.DistkvRequest> filter) {
+  private void appendFilter(
+      Function<DistkvProtocol.DistkvRequest, DistkvProtocol.DistkvRequest> filter) {
     filters.add(filter);
   }
 
-  public CompletableFuture<DistkvProtocol.DistkvResponse> call(DistkvProtocol.DistkvRequest request) {
+  public CompletableFuture<DistkvProtocol.DistkvResponse> call(
+      DistkvProtocol.DistkvRequest request) {
     DistkvProtocol.DistkvRequest localRequest = request;
     for (Function<DistkvProtocol.DistkvRequest, DistkvProtocol.DistkvRequest> filter : filters) {
       localRequest = filter.apply(localRequest);
