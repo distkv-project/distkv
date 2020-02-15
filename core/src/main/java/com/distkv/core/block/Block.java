@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class Block {
 
-  private final ByteBuffer buffer;
+  private final ByteBuffer buffer; //buffer use direct memory to store data.
   private final int capacity;
   private int size; // only used by non fixed value.
   private long blockId; // may be needed.
@@ -45,6 +45,36 @@ public class Block {
     return valueBytes;
   }
 
+  public short readShort(int offset) {
+    offset = offset << 1;
+    buffer.position(offset);
+    return buffer.getShort();
+  }
+
+  public int readInt(int offset) {
+    offset = offset << 2;
+    buffer.position(offset);
+    return buffer.getInt();
+  }
+
+  public long readLong(int offset) {
+    offset = offset << 4;
+    buffer.position(offset);
+    return buffer.getLong();
+  }
+
+  public double readDouble(int offset) {
+    offset = offset << 4;
+    buffer.position(offset);
+    return buffer.getDouble();
+  }
+
+  public float readFloat(int offset) {
+    offset = offset << 4;
+    buffer.position(offset);
+    return buffer.getFloat();
+  }
+
   public byte[] readNonFixedValue(int pointer) {
     checkArgument(pointer < size);
     // read the value start offset.
@@ -59,6 +89,7 @@ public class Block {
     byte[] result = new byte[valueEndOffset - valueStartOffset + 1];
     buffer.position(valueStartOffset);
     buffer.get(result);
+
     return result;
   }
 
@@ -87,6 +118,35 @@ public class Block {
     buffer.put(value);
   }
 
+  public void write(int offset, short value) {
+    offset = offset << 1;
+    buffer.position(offset);
+    buffer.putShort(value);
+  }
+
+  public void write(int offset, int value) {
+    offset = offset << 2;
+    buffer.position(offset);
+    buffer.putInt(value);
+  }
+
+  public void write(int offset, long value) {
+    offset = offset << 4;
+    buffer.position(offset);
+    buffer.putLong(value);
+  }
+
+  public void write(int offset, double value) {
+    offset = offset << 4;
+    buffer.position(offset);
+    buffer.putDouble(value);
+  }
+
+  public void write(int offset, float value) {
+    offset = offset << 4;
+    buffer.position(offset);
+    buffer.putFloat(value);
+  }
 
   public int writeNonFixedValue(byte[] value) {
     int pointerOffset = size << 2;
@@ -128,7 +188,6 @@ public class Block {
     } else {
       return -1;
     }
-
   }
 
   private int calcValueEndOffset(int pointerOffset) {

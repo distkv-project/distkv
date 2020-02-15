@@ -10,11 +10,11 @@ public class LongSegment extends FixedValueSegment {
   }
 
   public long getValue(int key) {
-    return ByteUtil.getLong(getFixedValue(key));
+    return getLong(key);
   }
 
   public void putValue(int key, long value) {
-    putFixedValue(key, ByteUtil.toArray(value));
+    put(key, value);
   }
 
 }

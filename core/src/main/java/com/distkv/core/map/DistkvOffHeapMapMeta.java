@@ -7,7 +7,7 @@ package com.distkv.core.map;
  * put at L1 cache. So it's cache friendly. more information reference to
  * <li>https://abseil.io/about/design/swisstables</li>
  */
-public class DistOffHeapMapMeta {
+public class DistkvOffHeapMapMeta {
 
   private int size;
   private ByteSegment byteSegment = new ByteSegment(1);

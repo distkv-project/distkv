@@ -4,7 +4,7 @@ package com.distkv.core.map;
  *
  * TODO　Collision detection, resize, rehash and so on.
  */
-public class DistNonHeapHashMapImpl {
+public class DistkvNonHeapHashMapImpl {
 
   private IntSegment hashSegment = new IntSegment(1);
   private NonFixedSegment valueSegment = new NonFixedSegment(1);

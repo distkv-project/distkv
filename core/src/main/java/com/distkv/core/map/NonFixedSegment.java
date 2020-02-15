@@ -9,10 +9,10 @@ public class NonFixedSegment extends ValueSegment {
 
   private int[] blockValueCntArray;
   private int blockIndex;
-  private int size;
+
 
   public NonFixedSegment(int initSize) {
-    super(initSize, -1);
+    super(initSize);
     blockValueCntArray = new int[initSize];
   }
 
