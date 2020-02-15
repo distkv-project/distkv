@@ -1,24 +1,26 @@
 package com.distkv.asyncclient;
 
+import com.distkv.namespace.NamespaceInterceptor;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.netty.NettyClient;
-import com.distkv.common.exception.DistKVException;
-import com.distkv.rpc.service.DistKVDictService;
-import com.distkv.rpc.service.DistKVListService;
-import com.distkv.rpc.service.DistKVSetService;
-import com.distkv.rpc.service.DistKVSortedListService;
-import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.common.exception.DistkvException;
+import com.distkv.rpc.service.DistkvService;
 
-public class DefaultAsyncClient implements DstAsyncClient {
+public class DefaultAsyncClient implements DistkvAsyncClient {
 
-  private DstAsyncStringProxy stringProxy;
-  private DstAsyncListProxy listProxy;
-  private DstAsyncSetProxy setProxy;
-  private DstAsyncDictProxy dictProxy;
-  private DstAsyncSortedListProxy sortedListProxy;
+  private DistkvAsyncStringProxy stringProxy;
+  private DistkvAsyncListProxy listProxy;
+  private DistkvAsyncSetProxy setProxy;
+  private DistkvAsyncDictProxy dictProxy;
+  private DistkvAsyncSortedListProxy sortedListProxy;
+
+  /// The rpc client.
   private Client rpcClient;
+
+  /// The interceptor to resolve the conflicts of keys in different clients.
+  private NamespaceInterceptor namespaceInterceptor = new NamespaceInterceptor();
 
   public DefaultAsyncClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
@@ -26,32 +28,15 @@ public class DefaultAsyncClient implements DstAsyncClient {
             .build();
 
     rpcClient = new NettyClient(clientConfig);
-    // Setup string proxy.
     rpcClient.open();
-    Proxy<DistKVStringService> strRpcProxy = new Proxy<>();
-    strRpcProxy.setInterfaceClass(DistKVStringService.class);
-    stringProxy = new DstAsyncStringProxy(strRpcProxy.getService(rpcClient));
+    Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
+    distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-    // Setup list proxy.
-    Proxy<DistKVListService> listRpcProxy = new Proxy<>();
-    listRpcProxy.setInterfaceClass(DistKVListService.class);
-    listProxy = new DstAsyncListProxy(listRpcProxy.getService(rpcClient));
-
-    // Setup set proxy.
-    Proxy<DistKVSetService> setRpcProxy = new Proxy<>();
-    setRpcProxy.setInterfaceClass(DistKVSetService.class);
-    setProxy = new DstAsyncSetProxy(setRpcProxy.getService(rpcClient));
-
-    // Setup dict proxy.
-    Proxy<DistKVDictService> dictRpcProxy = new Proxy<>();
-    dictRpcProxy.setInterfaceClass(DistKVDictService.class);
-    dictProxy = new DstAsyncDictProxy(dictRpcProxy.getService(rpcClient));
-
-    // Setup sortedList proxy.
-    Proxy<DistKVSortedListService> sortedListRpcProxy = new Proxy<>();
-    sortedListRpcProxy.setInterfaceClass(DistKVSortedListService.class);
-    sortedListProxy = new DstAsyncSortedListProxy(
-            sortedListRpcProxy.getService(rpcClient));
+    stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
+    listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
+    setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
+    dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
+    sortedListProxy = new DistkvAsyncSortedListProxy(this, distkvRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -69,33 +54,43 @@ public class DefaultAsyncClient implements DstAsyncClient {
     try {
       rpcClient.close();
       return true;
-    } catch (DistKVException ex) {
-      throw new DistKVException(String.format("Failed close the clients : %s", ex.getMessage()));
+    } catch (DistkvException ex) {
+      throw new DistkvException(String.format("Failed close the clients : %s", ex.getMessage()));
     }
   }
 
   @Override
-  public DstAsyncStringProxy strs() {
+  public void activeNamespace(String namespace) {
+    namespaceInterceptor.active(namespace);
+  }
+
+  @Override
+  public String getActivedNamespace() {
+    return namespaceInterceptor.getNamespace();
+  }
+
+  @Override
+  public DistkvAsyncStringProxy strs() {
     return stringProxy;
   }
 
   @Override
-  public DstAsyncListProxy lists() {
+  public DistkvAsyncListProxy lists() {
     return listProxy;
   }
 
   @Override
-  public DstAsyncSetProxy sets() {
+  public DistkvAsyncSetProxy sets() {
     return setProxy;
   }
 
   @Override
-  public DstAsyncDictProxy dicts() {
+  public DistkvAsyncDictProxy dicts() {
     return dictProxy;
   }
 
   @Override
-  public DstAsyncSortedListProxy sortedLists() {
+  public DistkvAsyncSortedListProxy sortedLists() {
     return sortedListProxy;
   }
 

@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class SortedListMembersDuplicatedException extends DistKVException {
+public class SortedListMembersDuplicatedException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
       .SortedListMembersDuplicatedErrorCode

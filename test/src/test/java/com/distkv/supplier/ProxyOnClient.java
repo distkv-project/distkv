@@ -33,7 +33,7 @@ public class ProxyOnClient<T> implements AutoCloseable {
   }
 
   private void closeConnection() {
-    // TODO(qwang): What should I do here?
+    client.close();
   }
 
   @Override

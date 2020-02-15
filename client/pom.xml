@@ -21,7 +21,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.distkv.client.commandlinetool.DstCommandLineToolStarter</mainClass>
+                            <mainClass>com.distkv.client.commandlinetool.DistkvCommandLineToolStarter</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

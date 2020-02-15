@@ -1,9 +1,9 @@
 package com.distkv.supplier;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
-import com.distkv.asyncclient.DstAsyncClient;
-import com.distkv.client.DefaultDstClient;
-import com.distkv.client.DstClient;
+import com.distkv.asyncclient.DistkvAsyncClient;
+import com.distkv.client.DefaultDistkvClient;
+import com.distkv.client.DistkvClient;
 import com.distkv.common.utils.RuntimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +36,11 @@ public class BaseTestSupplier {
     TestUtil.stopProcess(TestUtil.getProcess());
   }
 
-  protected DstClient newDstClient() {
-    final DefaultDstClient[] client = {null};
+  protected DistkvClient newDistkvClient() {
+    final DefaultDistkvClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client[0] = new DefaultDstClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
+        client[0] = new DefaultDistkvClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
         client[0].strs().put("ping", "ping");
         return true;
       } catch (Exception e) {
@@ -50,7 +50,7 @@ public class BaseTestSupplier {
     return client[0];
   }
 
-  protected DstAsyncClient newAsyncDstClient() {
+  protected DistkvAsyncClient newAsyncDistkvClient() {
     final DefaultAsyncClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {

@@ -9,9 +9,9 @@ public class JmhRunner {
 
   public static void main(String[] args) throws RunnerException {
     Options option = new OptionsBuilder()
-            .include(DstStrBenchmark.class.getSimpleName())
+            .include(DistkvStrBenchmark.class.getSimpleName())
             .include(RedisStrBenchmark.class.getSimpleName())
-            .include(DstListBenchmark.class.getSimpleName())
+            .include(DistkvListBenchmark.class.getSimpleName())
             .warmupIterations(5)
             .measurementIterations(8)
             .forks(1)

@@ -3,9 +3,17 @@ package com.distkv.server.service;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
-import com.distkv.rpc.service.DistKVDictService;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictGetItemResponse;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictGetResponse;
+import com.distkv.rpc.protobuf.generated.DictProtocol.DictPopItemResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.service.DistkvService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
+import com.google.protobuf.Any;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -15,7 +23,7 @@ import java.util.Map;
 /*
  * If you want to put a dict,you need new a map. Like this:
  * Map<String,String> localDict = new HashMap<>();
- * and add the kv to the request Builder
+ * and the kv to the request Builder
  * for (Map.Entry<String,String> entry : localDict.entrySet()) {
  *     DistKVDictBuilder.addKeys(entry.getKey());
  *     DistKVDictBuilder.addDict(entry.getValue());
@@ -25,15 +33,15 @@ import java.util.Map;
  * if you want to get a dict, you just need dictGetResponse.getDict() method.
  */
 public class DictRpcTest extends BaseTestSupplier {
+
   @Test
-  public void testDictRpcCall() {
-    try (ProxyOnClient<DistKVDictService> setProxy = new ProxyOnClient<>(
-        DistKVDictService.class, rpcServerPort)) {
-      DistKVDictService dictService = setProxy.getService();
+  public void testDictRpcCall() throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      DistkvService dictService = setProxy.getService();
       // Test dict put.
-      DictProtocol.PutRequest.Builder dictPutRequestBuilder =
-              DictProtocol.PutRequest.newBuilder();
-      dictPutRequestBuilder.setKey("m1");
+      DictProtocol.DictPutRequest.Builder dictPutRequestBuilder =
+          DictProtocol.DictPutRequest.newBuilder();
       final Map<String, String> localDict = new HashMap<>();
       localDict.put("k1", "v1");
       localDict.put("k2", "v2");
@@ -44,56 +52,81 @@ public class DictRpcTest extends BaseTestSupplier {
         distKVDictBuilder.addValues(entry.getValue());
       }
       dictPutRequestBuilder.setDict(distKVDictBuilder.build());
-      DictProtocol.PutResponse setPutResponse = FutureUtils.get(
-          dictService.put(dictPutRequestBuilder.build()));
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("m1")
+          .setRequestType(RequestType.DICT_PUT)
+          .setRequest(Any.pack(dictPutRequestBuilder.build()))
+          .build();
+      DistkvResponse setPutResponse = FutureUtils.get(
+          dictService.call(putRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, setPutResponse.getStatus());
 
       // Test putItem
-      DictProtocol.PutItemRequest.Builder putBuilder =
-              DictProtocol.PutItemRequest.newBuilder();
-      putBuilder.setKey("m1");
+      DictProtocol.DictPutItemRequest.Builder putBuilder =
+          DictProtocol.DictPutItemRequest.newBuilder();
       putBuilder.setItemKey("k4");
       putBuilder.setItemValue("v4");
-      DictProtocol.PutItemResponse putItemResponse = FutureUtils.get(
-          dictService.putItem(putBuilder.build()));
+      DistkvRequest putItemRequest = DistkvRequest.newBuilder()
+          .setKey("m1")
+          .setRequestType(RequestType.DICT_PUT_ITEM)
+          .setRequest(Any.pack(putBuilder.build()))
+          .build();
+      DistkvResponse putItemResponse = FutureUtils.get(
+          dictService.call(putItemRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, putItemResponse.getStatus());
 
       // Test getItemValue
-      DictProtocol.GetItemRequest.Builder getItemValueBuilder =
-              DictProtocol.GetItemRequest.newBuilder();
-      getItemValueBuilder.setKey("m1");
+      DictProtocol.DictGetItemRequest.Builder getItemValueBuilder =
+          DictProtocol.DictGetItemRequest.newBuilder();
       getItemValueBuilder.setItemKey("k3");
-      DictProtocol.GetItemResponse getItemValueResponse = FutureUtils.get(
-          dictService.getItemValue(getItemValueBuilder.build()));
+      DistkvRequest getItemRequest = DistkvRequest.newBuilder()
+          .setKey("m1")
+          .setRequestType(RequestType.DICT_GET_ITEM)
+          .setRequest(Any.pack(getItemValueBuilder.build()))
+          .build();
+      DistkvResponse getItemValueResponse = FutureUtils.get(
+          dictService.call(getItemRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, getItemValueResponse.getStatus());
-      Assert.assertEquals(getItemValueResponse.getItemValue(), "v3");
+      Assert.assertEquals(getItemValueResponse.getResponse()
+          .unpack(DictGetItemResponse.class).getItemValue(), "v3");
       // Test popItem
-      DictProtocol.PopItemRequest.Builder popItemBuilder =
-              DictProtocol.PopItemRequest.newBuilder();
-      popItemBuilder.setKey("m1");
+      DictProtocol.DictPopItemRequest.Builder popItemBuilder =
+          DictProtocol.DictPopItemRequest.newBuilder();
       popItemBuilder.setItemKey("k3");
-      DictProtocol.PopItemResponse popItemResponse = FutureUtils.get(
-          dictService.popItem(popItemBuilder.build()));
+      DistkvRequest popItemRequest = DistkvRequest.newBuilder()
+          .setKey("m1")
+          .setRequestType(RequestType.DICT_POP_ITEM)
+          .setRequest(Any.pack(popItemBuilder.build()))
+          .build();
+      DistkvResponse popItemResponse = FutureUtils.get(
+          dictService.call(popItemRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, popItemResponse.getStatus());
-      Assert.assertEquals(popItemResponse.getItemValue(), "v3");
+      Assert.assertEquals(popItemResponse.getResponse()
+          .unpack(DictPopItemResponse.class).getItemValue(), "v3");
       // Test delItem
-      DictProtocol.RemoveItemRequest.Builder delItemBuilder =
-              DictProtocol.RemoveItemRequest.newBuilder();
-      delItemBuilder.setKey("m1");
+      DictProtocol.DictRemoveItemRequest.Builder delItemBuilder =
+          DictProtocol.DictRemoveItemRequest.newBuilder();
       delItemBuilder.setItemKey("k2");
-      DictProtocol.RemoveItemResponse delItemResponse = FutureUtils.get(
-          dictService.removeItem(delItemBuilder.build()));
+      DistkvRequest delItemRequest = DistkvRequest.newBuilder()
+          .setKey("m1")
+          .setRequestType(RequestType.DICT_REMOVE_ITEM)
+          .setRequest(Any.pack(delItemBuilder.build()))
+          .build();
+      DistkvResponse delItemResponse = FutureUtils.get(
+          dictService.call(delItemRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, delItemResponse.getStatus());
       // Test dict get.
-      DictProtocol.GetRequest.Builder dictGetRequestBuilder =
-              DictProtocol.GetRequest.newBuilder();
-      dictGetRequestBuilder.setKey("m1");
-      DictProtocol.GetResponse dictGetResponse = FutureUtils.get(
-          dictService.get(dictGetRequestBuilder.build()));
+      DistkvRequest getRequest = DistkvRequest.newBuilder()
+          .setKey("m1")
+          .setRequestType(RequestType.DICT_GET)
+          .build();
+      DistkvResponse dictGetResponse = FutureUtils.get(
+          dictService.call(getRequest));
       final Map<String, String> judgeDict = new HashMap<>();
       judgeDict.put("k1", "v1");
       judgeDict.put("k4", "v4");
-      DictProtocol.DistKVDict values = dictGetResponse.getDict();
+      DictProtocol.DistKVDict values = dictGetResponse.getResponse()
+          .unpack(DictGetResponse.class).getDict();
       Map<String, String> results = new HashMap<>();
       for (int i = 0; i < values.getKeysCount(); i++) {
         results.put(values.getKeys(i), values.getValues(i));

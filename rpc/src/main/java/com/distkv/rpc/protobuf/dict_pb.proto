@@ -13,69 +13,47 @@ message DistKVDict {
     repeated string values = 2;
 }
 
-message PutRequest {
-    string key = 1;
-    DistKVDict dict = 2;
+message DictPutRequest {
+    DistKVDict dict = 1;
 }
 
-message PutResponse {
-    Status status = 1;
+message DictPutResponse {
 }
 
-message GetRequest {
-    string key = 1;
+message DictGetRequest {
 }
 
-message GetResponse {
-    Status status = 1;
-    DistKVDict dict = 2;
+message DictGetResponse {
+    DistKVDict dict = 1;
 }
 
-message GetItemRequest {
-    string key = 1;
-    string itemKey = 2;
+message DictGetItemRequest {
+    string itemKey = 1;
 }
 
-message GetItemResponse {
+message DictGetItemResponse {
     string itemValue = 1;
-    Status status = 2;
 }
 
-message PopItemRequest {
-    string key = 1;
-    string itemKey = 2;
+message DictPopItemRequest {
+    string itemKey = 1;
 }
 
-message PopItemResponse {
+message DictPopItemResponse {
     string itemValue = 1;
-    Status status = 2;
 }
 
-message PutItemRequest {
-    string key = 1;
-    string itemKey = 2;
-    string itemValue = 3;
+message DictPutItemRequest {
+    string itemKey = 1;
+    string itemValue = 2;
 }
 
-message PutItemResponse {
-    Status status = 1;
+message DictPutItemResponse {
 }
 
-message RemoveItemRequest {
-    string key = 1;
-    string itemKey = 2;
+message DictRemoveItemRequest {
+    string itemKey = 1;
 }
 
-message RemoveItemResponse {
-    Status status = 1;
-}
-
-service DistKVDictService {
-    rpc put(PutRequest) returns (PutResponse);
-    rpc get(GetRequest) returns (GetResponse);
-    rpc putItem(PutItemRequest) returns (PutItemResponse);
-    rpc getItem(GetItemRequest) returns (GetItemResponse);
-    rpc popItem(PopItemRequest) returns (PopItemResponse);
-    rpc RemoveItem(RemoveItemRequest) returns (RemoveItemResponse);
-    rpc drop(DropRequest) returns (DropResponse);
+message DictRemoveItemResponse {
 }

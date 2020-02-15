@@ -8,61 +8,42 @@ option java_package="com.distkv.rpc.protobuf.generated";
 option java_outer_classname="SetProtocol";
 option cc_generic_services = true;
 
-message PutRequest {
-    string key = 1;
-    repeated string values = 2;
+message SetPutRequest {
+    repeated string values = 1;
 }
 
-message PutResponse {
-    Status status = 1;
+message SetPutResponse {
 }
 
-message GetRequest {
-    string key = 1;
+message SetGetRequest {
 }
 
-message GetResponse {
-    Status Status = 1;
-    repeated string values = 2;
+message SetGetResponse {
+    repeated string values = 1;
 }
 
-message PutItemRequest {
-    string key = 1;
-    string itemValue = 2;
+message SetPutItemRequest {
+    string itemValue = 1;
 }
 
-message PutItemResponse {
-    Status status = 1;
+message SetPutItemResponse {
 }
 
-message RemoveItemRequest {
-    string key = 1;
+message SetRemoveItemRequest {
     // The entity that will be deleted from the set.
-    string itemValue = 2;
+    string itemValue = 1;
 }
 
-message RemoveItemResponse {
-    Status status = 1;
+message SetRemoveItemResponse {
 }
 
 //drop the whole set
 //
-message ExistsRequest {
-    string key = 1;
-    string entity = 2;
+message SetExistsRequest {
+    string entity = 1;
 }
 
-message ExistsResponse {
-    Status status = 1;
+message SetExistsResponse {
     // If status is not OK, the result is undefined.
-    bool result = 2;
-}
-
-service DistKVSetService {
-    rpc put(PutRequest) returns (PutResponse);
-    rpc get(GetRequest) returns (GetResponse);
-    rpc putItem(PutItemRequest) returns (PutItemResponse);
-    rpc removeItem(RemoveItemRequest) returns (RemoveItemResponse);
-    rpc exists(ExistsRequest) returns (ExistsResponse);
-    rpc drop(DropRequest) returns (DropResponse);
+    bool result = 1;
 }

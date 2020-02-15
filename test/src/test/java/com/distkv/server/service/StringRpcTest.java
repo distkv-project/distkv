@@ -2,38 +2,48 @@ package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
-import com.distkv.rpc.service.DistKVStringService;
+import com.distkv.rpc.protobuf.generated.StringProtocol.StrGetResponse;
+import com.distkv.rpc.service.DistkvService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
+import com.google.protobuf.Any;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class StringRpcTest extends BaseTestSupplier {
-  @Test
-  public void testRpcServer() {
-    try (ProxyOnClient<DistKVStringService> stringProxy = new ProxyOnClient<>(
-        DistKVStringService.class, rpcServerPort)) {
-      DistKVStringService stringService = stringProxy.getService();
-      // Test string put request.
-      StringProtocol.PutRequest putRequest =
-              StringProtocol.PutRequest.newBuilder()
-                      .setKey("k1")
-                      .setValue("v1")
-                      .build();
 
-      StringProtocol.PutResponse response = FutureUtils.get(stringService.put(putRequest));
-      Assert.assertEquals(CommonProtocol.Status.OK, response.getStatus());
+  @Test
+  public void testRpcServer() throws InvalidProtocolBufferException {
+    try (ProxyOnClient<DistkvService> stringProxy = new ProxyOnClient<>(
+        DistkvService.class, rpcServerPort)) {
+      DistkvService stringService = stringProxy.getService();
+      // Test string put request.
+      StringProtocol.StrPutRequest strPutRequest =
+          StringProtocol.StrPutRequest.newBuilder()
+              .setValue("v1")
+              .build();
+      DistkvRequest putRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.STR_PUT)
+          .setRequest(Any.pack(strPutRequest))
+          .build();
+      DistkvResponse putResponse = FutureUtils.get(stringService.call(putRequest));
+      Assert.assertEquals(CommonProtocol.Status.OK, putResponse.getStatus());
 
       // Test string get request.
-      StringProtocol.GetRequest getRequest =
-              StringProtocol.GetRequest.newBuilder()
-                      .setKey("k1")
-                      .build();
-
-      StringProtocol.GetResponse response2 = FutureUtils.get(stringService.get(getRequest));
-      Assert.assertEquals(CommonProtocol.Status.OK, response2.getStatus());
-      Assert.assertEquals("v1", response2.getValue());
+      DistkvRequest getRequest = DistkvRequest.newBuilder()
+          .setKey("k1")
+          .setRequestType(RequestType.STR_GET)
+          .build();
+      DistkvResponse getResponse = FutureUtils.get(stringService.call(getRequest));
+      Assert.assertEquals(CommonProtocol.Status.OK, getResponse.getStatus());
+      Assert.assertEquals("v1", getResponse.getResponse()
+          .unpack(StrGetResponse.class).getValue());
     }
   }
 }
