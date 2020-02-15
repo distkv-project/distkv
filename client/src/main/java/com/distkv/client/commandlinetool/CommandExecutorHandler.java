@@ -448,7 +448,7 @@ public class CommandExecutorHandler {
   public static String activeNamespace(
       DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     DistkvRequest request = parsedResult.getRequest();
-    distkvClient.activeNamespace(request.getName());
+    distkvClient.activeNamespace(request.getNamespace());
     return STATUS_OK;
   }
 
