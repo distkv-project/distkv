@@ -91,7 +91,7 @@ itemScore: anyInt;
 topCount: POSITIVE_INT;
 
 // meta
-name: STRING;
+namespace: STRING;
 key: STRING;
 value: STRING;
 valueArray: (STRING)+;
