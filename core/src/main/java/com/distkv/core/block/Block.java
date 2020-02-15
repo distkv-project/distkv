@@ -103,7 +103,7 @@ public class Block {
     int valueStartOffset = buffer.getInt();
 
     // read the key and value
-    int keyEndOffset = calcNonFixedValueEndOffset(keyPointerOffset);
+    int keyEndOffset = calcValueEndOffset(keyPointerOffset);
     keyValue[0] = new byte[keyEndOffset - keyStartOffset + 1];
     buffer.position(keyStartOffset);
     buffer.get(keyValue[0]);
@@ -171,7 +171,7 @@ public class Block {
 
   public int writeTwoNonFixedValue(byte[] firstValue, byte[] secondValue) {
     int keyPointerOffset = size << 2;
-    int valueEndOffset = calcNonFixedValueEndOffset(keyPointerOffset);
+    int valueEndOffset = calcValueEndOffset(keyPointerOffset);
     int valueStartOffset = valueEndOffset - firstValue.length - secondValue.length + 1;
     if (valueStartOffset >= size * ByteUtil.SIZE_OF_INT + ByteUtil.SIZE_OF_LONG) {
       // write the pointer information.
@@ -191,15 +191,6 @@ public class Block {
   }
 
   private int calcValueEndOffset(int pointerOffset) {
-    int valueEndOffset = capacity - 1;
-    if (pointerOffset > 0) {
-      buffer.position(pointerOffset - ByteUtil.SIZE_OF_INT);
-      valueEndOffset = buffer.getInt() - 1;
-    }
-    return valueEndOffset;
-  }
-
-  private int calcNonFixedValueEndOffset(int pointerOffset) {
     int valueEndOffset = capacity - 1;
     if (pointerOffset > 0) {
       buffer.position(pointerOffset - ByteUtil.SIZE_OF_INT);
