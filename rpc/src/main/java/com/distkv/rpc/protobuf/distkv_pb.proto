@@ -22,6 +22,8 @@ enum RequestType {
 
     EXIT = 1;
 
+    ACTIVE_NAMESPACE = 2;
+
     // string concept
     STR_PUT = 101;
     STR_GET = 102;
@@ -67,6 +69,7 @@ message DistkvRequest {
     string key = 1;
     RequestType requestType = 2;
     google.protobuf.Any request = 3;
+    string namespace = 4;
 }
 
 message DistkvResponse {

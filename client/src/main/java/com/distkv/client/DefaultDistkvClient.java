@@ -68,4 +68,15 @@ public class DefaultDistkvClient implements DistkvClient {
   public DistkvSortedListProxy sortedLists() {
     return sortedListProxy;
   }
+
+  @Override
+  public void activeNamespace(String namespace) {
+    asyncClient.activeNamespace(namespace);
+  }
+
+  @Override
+  public String getActivedNamespace() {
+    return asyncClient.getActivedNamespace();
+  }
+
 }
