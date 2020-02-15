@@ -16,14 +16,13 @@ public class DistkvNonHeapHashMapImpl {
     int hash = hashFunction.hash32(key);
     int pointer = valueSegment.addKeyValue(key, value);
     int keyPointer = hash % capacity;
-    hashSegment.putValue(keyPointer, pointer);
+    hashSegment.put(keyPointer, pointer);
   }
-
 
   public byte[] get(byte[] key) {
     int hash = hashFunction.hash32(key);
     int keyPointer = hash % capacity;
-    int pointer = hashSegment.getValue(keyPointer);
+    int pointer = hashSegment.get(keyPointer);
     return valueSegment.getKeyValue(pointer)[1];
   }
 }

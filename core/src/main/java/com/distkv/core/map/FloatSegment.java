@@ -1,6 +1,7 @@
 package com.distkv.core.map;
 
 import com.distkv.common.utils.ByteUtil;
+import com.distkv.core.block.Block;
 
 public class FloatSegment extends FixedValueSegment {
 
@@ -8,11 +9,16 @@ public class FloatSegment extends FixedValueSegment {
     super(initSize, ByteUtil.SIZE_OF_FLOAT);
   }
 
-  public float getValue(int key) {
-    return getFloat(key);
+  protected float get(int key) {
+    Block block = getBlock(key);
+    int offset = key % blockItemSize;
+    return block.readFloat(offset);
   }
 
-  public void putValue(int key, float value) {
-    put(key, value);
+  protected int put(int key, float value) {
+    Block block = getBlock(key);
+    int offset = key % blockItemSize;
+    block.write(offset, value);
+    return getAndAddPointer();
   }
 }

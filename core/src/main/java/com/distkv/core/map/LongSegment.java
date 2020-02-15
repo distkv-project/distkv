@@ -2,6 +2,7 @@ package com.distkv.core.map;
 
 
 import com.distkv.common.utils.ByteUtil;
+import com.distkv.core.block.Block;
 
 public class LongSegment extends FixedValueSegment {
 
@@ -9,12 +10,17 @@ public class LongSegment extends FixedValueSegment {
     super(initSize, ByteUtil.SIZE_OF_LONG);
   }
 
-  public long getValue(int key) {
-    return getLong(key);
+  protected long get(int key) {
+    Block block = getBlock(key);
+    int offset = key % blockItemSize;
+    return block.readLong(offset);
   }
 
-  public void putValue(int key, long value) {
-    put(key, value);
+  protected int put(int key, long value) {
+    Block block = getBlock(key);
+    int offset = key % blockItemSize;
+    block.write(offset, value);
+    return getAndAddPointer();
   }
 
 }

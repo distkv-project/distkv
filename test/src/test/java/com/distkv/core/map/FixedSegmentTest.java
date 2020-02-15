@@ -36,7 +36,7 @@ public class FixedSegmentTest {
       segment.put(i, i);
     }
     for (int i = 0; i < 100; i++) {
-      assertEquals(i, segment.getValue(i));
+      assertEquals(i, segment.get(i));
     }
   }
 }
