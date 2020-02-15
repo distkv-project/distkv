@@ -69,7 +69,7 @@ message DistkvRequest {
     string key = 1;
     RequestType requestType = 2;
     google.protobuf.Any request = 3;
-    string name = 4;
+    string namespace = 4;
 }
 
 message DistkvResponse {
