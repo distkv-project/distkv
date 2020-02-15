@@ -78,6 +78,8 @@ public class DistkvCommandExecutor {
         System.out.println("bye bye ~");
         System.exit(0);
         return null;
+      case ACTIVE_NAMESPACE:
+        return CommandExecutorHandler.activeNamespace(distkvClient, parsedResult);
       default:
         return null;
     }

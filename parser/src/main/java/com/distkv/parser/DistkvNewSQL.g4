@@ -12,8 +12,9 @@ statement: (conceptStatement) EOF;
 conceptStatement: basicOperationsStatement | strStatement | listStatement | setStatement | dictStatement | slistStatement;
 
 // basic operations
-basicOperationsStatement: exit;
+basicOperationsStatement: exit | activeNamespace;
 exit: 'exit';
+activeNamespace: 'active namespace' name;
 
 // str concept
 strStatement: strPut | strGet | strDrop;
@@ -90,6 +91,7 @@ itemScore: anyInt;
 topCount: POSITIVE_INT;
 
 // meta
+name: STRING;
 key: STRING;
 value: STRING;
 valueArray: (STRING)+;

@@ -34,6 +34,17 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   }
 
   @Override
+  public void enterActiveNamespace(DistkvNewSQLParser.ActiveNamespaceContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setName(ctx.children.get(2).getText())
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.ACTIVE_NAMESPACE, request);
+  }
+
+  @Override
   public void enterStrPut(DistkvNewSQLParser.StrPutContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);

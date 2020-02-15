@@ -24,6 +24,16 @@ public interface DistkvClient {
    */
   boolean disconnect();
 
+  /**
+   * Active a namespace for this client.
+   */
+  void activeNamespace(String namespace);
+
+  /**
+   * Get actived namespace
+   * @return the actived namespace's name
+   */
+  String getActivedNamespace();
 
   /**
    * Get the dst string proxy.

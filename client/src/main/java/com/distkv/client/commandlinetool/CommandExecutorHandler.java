@@ -443,6 +443,13 @@ public class CommandExecutorHandler {
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
-
   }
+
+  public static String activeNamespace(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.activeNamespace(request.getName());
+    return STATUS_OK;
+  }
+
 }
