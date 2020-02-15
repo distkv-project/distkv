@@ -14,7 +14,7 @@ conceptStatement: basicOperationsStatement | strStatement | listStatement | setS
 // basic operations
 basicOperationsStatement: exit | activeNamespace;
 exit: 'exit';
-activeNamespace: 'active namespace' name;
+activeNamespace: 'active namespace' namespace;
 
 // str concept
 strStatement: strPut | strGet | strDrop;
