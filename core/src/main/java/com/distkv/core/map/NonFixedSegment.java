@@ -19,7 +19,7 @@ public class NonFixedSegment extends ValueSegment {
   public int addValue(byte[] value) {
     checkArgument(value.length + ByteUtil.SIZE_OF_INT <= pool.getBlockSize());
     Block block = blockArray[blockIndex];
-    if (block.addNonFixedValue(value) > 0) {
+    if (block.writeNonFixedValue(value) > 0) {
       int pointer = size;
       size++;
       return pointer;
@@ -34,7 +34,7 @@ public class NonFixedSegment extends ValueSegment {
   public int addKeyValue(byte[] key, byte[] value) {
     checkArgument(key.length + value.length <= pool.getBlockSize());
     Block block = blockArray[blockIndex];
-    if (block.addTwoNonFixedValue(key, value) > 0) {
+    if (block.writeTwoNonFixedValue(key, value) > 0) {
       int pointer = size;
       size = size + 2;
       return pointer;
@@ -46,10 +46,10 @@ public class NonFixedSegment extends ValueSegment {
     }
   }
 
-  public void getValue(int pointer) {
+  public byte[] getValue(int pointer) {
     checkArgument(pointer < size);
     Block block = blockArray[locateBlock(pointer)];
-    block.readNonFixedValue(pointer);
+    return block.readNonFixedValue(pointer);
   }
 
   public byte[][] getKeyValue(int pointer) {

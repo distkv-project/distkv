@@ -15,14 +15,14 @@ public class DistNonHeapHashMapImpl {
   public void put(byte[] key, byte[] value) {
     int hash = hashFunction.hash32(key);
     int pointer = valueSegment.addKeyValue(key, value);
-    int keyPointer = hash % 16;
+    int keyPointer = hash % capacity;
     hashSegment.putValue(keyPointer, pointer);
   }
 
 
   public byte[] get(byte[] key) {
     int hash = hashFunction.hash32(key);
-    int keyPointer = hash % 16;
+    int keyPointer = hash % capacity;
     int pointer = hashSegment.getValue(keyPointer);
     return valueSegment.getKeyValue(pointer)[1];
   }

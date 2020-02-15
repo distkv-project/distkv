@@ -88,12 +88,12 @@ public class Block {
   }
 
 
-  public int addNonFixedValue(byte[] value) {
+  public int writeNonFixedValue(byte[] value) {
     int pointerOffset = size << 2;
     int valueEndOffset = calcValueEndOffset(pointerOffset);
     int valueStartOffset = valueEndOffset - value.length + 1;
 
-    if (valueStartOffset > (size + 1) * ByteUtil.SIZE_OF_INT) {
+    if (valueStartOffset >= (size + 1) * ByteUtil.SIZE_OF_INT) {
       // write the pointer information
       buffer.position(pointerOffset);
       buffer.putInt(valueStartOffset);
@@ -109,11 +109,11 @@ public class Block {
     }
   }
 
-  public int addTwoNonFixedValue(byte[] firstValue, byte[] secondValue) {
+  public int writeTwoNonFixedValue(byte[] firstValue, byte[] secondValue) {
     int keyPointerOffset = size << 2;
-    int keyEndOffset = calcNonFixedValueEndOffset(keyPointerOffset);
-    int valueStartOffset = keyEndOffset - firstValue.length - secondValue.length + 1;
-    if (valueStartOffset > (size + 1) * ByteUtil.SIZE_OF_LONG) {
+    int valueEndOffset = calcNonFixedValueEndOffset(keyPointerOffset);
+    int valueStartOffset = valueEndOffset - firstValue.length - secondValue.length + 1;
+    if (valueStartOffset >= size * ByteUtil.SIZE_OF_INT + ByteUtil.SIZE_OF_LONG) {
       // write the pointer information.
       buffer.position(keyPointerOffset);
       buffer.putInt(valueStartOffset + secondValue.length);
@@ -143,7 +143,7 @@ public class Block {
   private int calcNonFixedValueEndOffset(int pointerOffset) {
     int valueEndOffset = capacity - 1;
     if (pointerOffset > 0) {
-      buffer.position(pointerOffset - ByteUtil.SIZE_OF_LONG);
+      buffer.position(pointerOffset - ByteUtil.SIZE_OF_INT);
       valueEndOffset = buffer.getInt() - 1;
     }
     return valueEndOffset;
@@ -157,7 +157,4 @@ public class Block {
     return size;
   }
 
-  public static void main(String[] args) {
-
-  }
 }
