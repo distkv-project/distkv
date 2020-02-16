@@ -1,5 +1,5 @@
 import subprocess
-
+import sys
 import os
 
 # A helper method to locate the current dir.
@@ -13,7 +13,10 @@ def main():
          "-classpath",
          os.path.join(get_current_dir(), "distkv/jars/distkv-cli.jar"),
          "com.distkv.client.commandlinetool.DistkvCommandLineToolStarter"]
-    subprocess.check_call(command)
+    try:
+        subprocess.check_call(command)
+    except KeyboardInterrupt as e:
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
