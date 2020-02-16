@@ -47,36 +47,72 @@ public class Block {
     return valueBytes;
   }
 
+  /**
+   * read short value from given index.
+   * need to used with {@link Block#write(int, short)}
+   * @param offset the index of short value.
+   * @return the read value.
+   */
   public short readShort(int offset) {
     // convert short index to byte index of buffer for bytes where to read.
     offset = offset << 1;
     return buffer.getShort(offset);
   }
 
+  /**
+   * read int value from given index.
+   * need to used with {@link Block#write(int, int)}
+   * @param offset the index of int value.
+   * @return the read value.
+   */
   public int readInt(int offset) {
     // convert int index to byte index of buffer for bytes where to read.
     offset = offset << 2;
     return buffer.getInt(offset);
   }
 
+  /**
+   * read long value from given index.
+   * need to used with {@link Block#write(int, long)}
+   * @param offset the index of long value.
+   * @return the read value.
+   */
   public long readLong(int offset) {
     // convert long index to byte index of buffer for bytes where to read.
     offset = offset << 4;
     return buffer.getLong(offset);
   }
 
+  /**
+   * read double value from given index.
+   * need to used with {@link Block#write(int, double)}
+   * @param offset the index of double value.
+   * @return the read value.
+   */
   public double readDouble(int offset) {
     // convert double index to byte index of buffer for bytes where to read.
     offset = offset << 4;
     return buffer.getDouble(offset);
   }
 
+  /**
+   * read float value from given index.
+   * need to used with {@link Block#write(int, float)}
+   * @param offset the index of float value.
+   * @return the read value.
+   */
   public float readFloat(int offset) {
     // convert float index to byte index of buffer for bytes where to read.
     offset = offset << 4;
     return buffer.getFloat(offset);
   }
 
+  /**
+   * read the non fixed value from given pointer.
+   * need to used with {@link Block#writeNonFixedValue(byte[])}
+   * @param pointer indexed of the value to read.
+   * @return the read value.
+   */
   public byte[] readNonFixedValue(int pointer) {
     checkArgument(pointer < size);
     // read the value start offset.
@@ -94,6 +130,12 @@ public class Block {
     return result;
   }
 
+  /**
+   * read the two non fixed values(such as key value user case.) from given pointer.
+   * need to used with {@link Block#writeTwoNonFixedValue(byte[], byte[])}
+   * @param pointer indexed of to the value to read.
+   * @return the read value.
+   */
   public byte[][] readTwoNonFixedValues(int pointer) {
     checkArgument(pointer <= size / 2);
     byte[][] keyValue = new byte[2][];
@@ -119,36 +161,66 @@ public class Block {
     buffer.put(value);
   }
 
+  /**
+   * write the short value to given index.
+   * need to used with {@link Block#readShort(int)}
+   * @param offset the index of short value.
+   */
   public void write(int offset, short value) {
     // convert short index to byte index of buffer for bytes where to read.
     offset = offset << 1;
     buffer.putShort(offset, value);
   }
 
+  /**
+   * write the int value to given index.
+   * need to used with {@link Block#readInt(int)}
+   * @param offset the index of int value.
+   */
   public void write(int offset, int value) {
     // convert int index to byte index of buffer for bytes where to read.
     offset = offset << 2;
     buffer.putInt(offset, value);
   }
 
+  /**
+   * write the long value to given index.
+   * need to used with {@link Block#readLong(int)}
+   * @param offset the index of long value.
+   */
   public void write(int offset, long value) {
     // convert long index to byte index of buffer for bytes where to read.
     offset = offset << 4;
     buffer.putLong(offset, value);
   }
 
+  /**
+   * write the double value to given index.
+   * need to used with {@link Block#readDouble(int)}
+   * @param offset the index of double value.
+   */
   public void write(int offset, double value) {
     // convert double index to byte index of buffer for bytes where to read.
     offset = offset << 4;
     buffer.putDouble(offset, value);
   }
 
+  /**
+   * write the float value to given index.
+   * need to used with {@link Block#readFloat(int)}
+   * @param offset the index of float value.
+   */
   public void write(int offset, float value) {
     // convert float index to byte index of buffer for bytes where to read.
     offset = offset << 4;
     buffer.putFloat(offset, value);
   }
 
+  /**
+   * write the non fixed value
+   * need to used with {@link Block#readLong(int)}
+   * @return available space to write.
+   */
   public int writeNonFixedValue(byte[] value) {
     // convert int index to byte index of buffer for bytes where to read,
     // because key pointer is integer type
@@ -175,6 +247,11 @@ public class Block {
     }
   }
 
+  /**
+   * write the two non fixed values (such as key value user case).
+   * need to used with {@link Block#readTwoNonFixedValues(int)}
+   * @return available space to write.
+   */
   public int writeTwoNonFixedValue(byte[] firstValue, byte[] secondValue) {
     // convert int index to byte index of buffer for bytes where to read,
     // because key pointer is integer type
