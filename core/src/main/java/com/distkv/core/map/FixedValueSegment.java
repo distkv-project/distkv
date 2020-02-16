@@ -12,6 +12,7 @@ public class FixedValueSegment extends ValueSegment {
   public FixedValueSegment(int initSize, int fixedLength) {
     super(initSize);
 
+    checkArgument(fixedLength > 0);
     if (fixedLength > 0) {
       this.fixedLength = fixedLength;
       this.blockItemSize = pool.getBlockSize() / fixedLength;

@@ -5,6 +5,8 @@ import com.distkv.core.block.BlockPool;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 public abstract class ValueSegment {
 
   protected BlockPool pool = BlockPool.getInstance();
@@ -14,6 +16,7 @@ public abstract class ValueSegment {
   private AtomicBoolean isResizing = new AtomicBoolean(false);
 
   public ValueSegment(final int initSize) {
+    checkArgument(initSize > 0);
     blockArray = new Block[initSize];
     for (int i = 0; i < initSize; i++) {
       blockArray[i] = pool.getBlock();
