@@ -14,7 +14,7 @@ class build_ext(_build_ext.build_ext):
     def run(self):
         this_dir = get_current_dir()
         build_scripts = os.path.join(this_dir, "build.sh")
-        command = ["sh", build_scripts]
+        command = ["bash", build_scripts]
         subprocess.check_call(command)
 
 class BinaryDistribution(Distribution):
