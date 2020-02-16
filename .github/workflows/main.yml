@@ -5,7 +5,6 @@ on:
       - master
 jobs:
   build:
-    # TODO(qwang): Use a fixed version instead of the latest version.
     runs-on: ubuntu-latest
     steps:
       - name: use checkout@v2 action
