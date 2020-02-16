@@ -22,11 +22,13 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  */
 public class Block {
-
-  private final ByteBuffer buffer; //buffer use direct memory to store data.
+  //buffer use direct memory to store data.
+  private final ByteBuffer buffer;
   private final int capacity;
-  private int size; // only used by non fixed value.
-  private long blockId; // may be needed.
+  // only used by non fixed value.
+  private int size;
+  // may be needed.
+  private long blockId;
 
   public Block(int capacity) {
     checkArgument(capacity > 0);
