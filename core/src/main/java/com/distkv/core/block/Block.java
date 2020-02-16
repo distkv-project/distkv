@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  */
 public class Block {
-  //buffer use direct memory to store data.
+  // the direct memory buffer is used to store data.
   private final ByteBuffer buffer;
   private final int capacity;
   // only used by non fixed value.
