@@ -8,7 +8,7 @@ public class BlockPoolTest {
 
   @Test
   public void testAllocate() {
-    try(BlockPool blockPool = BlockPool.getInstance()) {
+    try (BlockPool blockPool = BlockPool.getInstance()) {
       int blockCnt = 33;
       Block[] blocks = blockPool.getBlock(blockCnt);
       assertEquals(blocks.length, blockCnt);
