@@ -37,6 +37,7 @@ public class FixedSegmentTest {
     FloatSegment floatSegment = new FloatSegment(1);
     DoubleSegment doubleSegment = new DoubleSegment(1);
     ByteSegment byteSegment = new ByteSegment(1);
+
     for (int i = 0; i < 100; i++) {
       intSegment.put(i, i);
       shortSegment.put(i, (short)i);
@@ -45,6 +46,7 @@ public class FixedSegmentTest {
       doubleSegment.put(i, i);
       byteSegment.putValue(i, (byte)i);
     }
+
     for (int i = 0; i < 100; i++) {
       assertEquals(i, intSegment.get(i));
       assertEquals(i, shortSegment.get(i));
