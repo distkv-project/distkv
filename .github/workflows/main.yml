@@ -62,5 +62,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
+    - name: install the dependencies
+      run: bash ./scripts/install_dependencies.sh
     - name: install python package
       run: cd deploy/python && pip install -e . -v
