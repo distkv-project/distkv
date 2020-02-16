@@ -148,12 +148,16 @@
                         <fileset>
                             <directory>${project.basedir}/parser/src/main/java/com/distkv/parser/generated
                             </directory>
-                            <includes>**</includes>
+                            <includes>
+                                <include>**</include>
+                            </includes>
                         </fileset>
                         <fileset>
                             <directory>${project.basedir}/rpc/src/main/java/com/distkv/rpc/protobuf/generated
                             </directory>
-                            <includes>**</includes>
+                            <includes>
+                                <include>**</include>
+                            </includes>
                         </fileset>
                     </filesets>
                 </configuration>
