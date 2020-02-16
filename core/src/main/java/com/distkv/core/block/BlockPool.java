@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BlockPool implements Closeable {
 
-  private static final Unsafe unsafe = getUnsafe();
   private static Unsafe getUnsafe() {
     try {
       Field field = Unsafe.class.getDeclaredField("theUnsafe");
@@ -21,6 +20,7 @@ public class BlockPool implements Closeable {
     }
   }
 
+  private static final Unsafe unsafe = getUnsafe();
   // the number of block size is a multiple of page size.
   private static final int BLOCK_SIZE = unsafe.pageSize() << 8;
   private static final int INIT_BLOCK_NUMBER = 1 << 4; // 16
