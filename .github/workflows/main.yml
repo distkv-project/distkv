@@ -47,3 +47,21 @@ jobs:
         run: sudo kill -9 $(cat /var/lib/dkv/dkv-server.currentpid) & sleep 2
       - name: uninstall the distkv
         run: ./scripts/uninstall_distkv.sh
+
+  install_python_package:
+    runs-on: ubuntu-latest
+    steps:
+    - name: use checkout@v2 action
+      uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: install the dependencies
+      run: bash ./scripts/install_dependencies.sh
+    - name: install python package
+      run: cd deploy/python && pip install -e . -v
