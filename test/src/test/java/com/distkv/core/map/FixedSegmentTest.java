@@ -30,13 +30,28 @@ public class FixedSegmentTest {
   }
 
   @Test
-  public void testInt() {
-    IntSegment segment = new IntSegment(1);
+  public void testSegment() {
+    IntSegment intSegment = new IntSegment(1);
+    ShortSegment shortSegment = new ShortSegment(1);
+    LongSegment longSegment = new LongSegment(1);
+    FloatSegment floatSegment = new FloatSegment(1);
+    DoubleSegment doubleSegment = new DoubleSegment(1);
+    ByteSegment byteSegment = new ByteSegment(1);
     for (int i = 0; i < 100; i++) {
-      segment.put(i, i);
+      intSegment.put(i, i);
+      shortSegment.put(i, (short)i);
+      longSegment.put(i, i);
+      floatSegment.put(i, i);
+      doubleSegment.put(i, i);
+      byteSegment.putValue(i, (byte)i);
     }
     for (int i = 0; i < 100; i++) {
-      assertEquals(i, segment.get(i));
+      assertEquals(i, intSegment.get(i));
+      assertEquals(i, shortSegment.get(i));
+      assertEquals(i, longSegment.get(i));
+      assertEquals(i, floatSegment.get(i));
+      assertEquals(i, doubleSegment.get(i));
+      assertEquals(i, byteSegment.getValue(i));
     }
   }
 }

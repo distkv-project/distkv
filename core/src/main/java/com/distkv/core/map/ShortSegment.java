@@ -5,7 +5,7 @@ import com.distkv.core.block.Block;
 
 public class ShortSegment extends FixedValueSegment {
 
-  public ShortSegment(int initSize, int fixedLength) {
+  public ShortSegment(int initSize) {
     super(initSize, ByteUtil.SIZE_OF_SHORT);
   }
 
