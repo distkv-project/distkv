@@ -39,48 +39,47 @@ public class Block {
   }
 
   public byte[] read(int offset, int length) {
-    buffer.position(offset);
     byte[] valueBytes = new byte[length];
+    buffer.position(offset);
     buffer.get(valueBytes);
     return valueBytes;
   }
 
   public short readShort(int offset) {
+    // convert short index to byte index of buffer for bytes where to read.
     offset = offset << 1;
-    buffer.position(offset);
-    return buffer.getShort();
+    return buffer.getShort(offset);
   }
 
   public int readInt(int offset) {
+    // convert int index to byte index of buffer for bytes where to read.
     offset = offset << 2;
-    buffer.position(offset);
-    return buffer.getInt();
+    return buffer.getInt(offset);
   }
 
   public long readLong(int offset) {
+    // convert long index to byte index of buffer for bytes where to read.
     offset = offset << 4;
-    buffer.position(offset);
-    return buffer.getLong();
+    return buffer.getLong(offset);
   }
 
   public double readDouble(int offset) {
+    // convert double index to byte index of buffer for bytes where to read.
     offset = offset << 4;
-    buffer.position(offset);
-    return buffer.getDouble();
+    return buffer.getDouble(offset);
   }
 
   public float readFloat(int offset) {
+    // convert float index to byte index of buffer for bytes where to read.
     offset = offset << 4;
-    buffer.position(offset);
-    return buffer.getFloat();
+    return buffer.getFloat(offset);
   }
 
   public byte[] readNonFixedValue(int pointer) {
     checkArgument(pointer < size);
     // read the value start offset.
     int pointerOffset = pointer << 2;
-    buffer.position(pointerOffset);
-    int valueStartOffset = buffer.getInt();
+    int valueStartOffset = buffer.getInt(pointerOffset);
 
     // read the value end offset.
     int valueEndOffset = calcValueEndOffset(pointerOffset);
@@ -119,73 +118,92 @@ public class Block {
   }
 
   public void write(int offset, short value) {
+    // convert short index to byte index of buffer for bytes where to read.
     offset = offset << 1;
-    buffer.position(offset);
-    buffer.putShort(value);
+    buffer.putShort(offset, value);
   }
 
   public void write(int offset, int value) {
+    // convert int index to byte index of buffer for bytes where to read.
     offset = offset << 2;
-    buffer.position(offset);
-    buffer.putInt(value);
+    buffer.putInt(offset, value);
   }
 
   public void write(int offset, long value) {
+    // convert long index to byte index of buffer for bytes where to read.
     offset = offset << 4;
-    buffer.position(offset);
-    buffer.putLong(value);
+    buffer.putLong(offset, value);
   }
 
   public void write(int offset, double value) {
+    // convert double index to byte index of buffer for bytes where to read.
     offset = offset << 4;
-    buffer.position(offset);
-    buffer.putDouble(value);
+    buffer.putDouble(offset, value);
   }
 
   public void write(int offset, float value) {
+    // convert float index to byte index of buffer for bytes where to read.
     offset = offset << 4;
-    buffer.position(offset);
-    buffer.putFloat(value);
+    buffer.putFloat(offset, value);
   }
 
   public int writeNonFixedValue(byte[] value) {
+    // convert int index to byte index of buffer for bytes where to read,
+    // because key pointer is integer type
     int pointerOffset = size << 2;
+
+    // for non-fixed length data. stored as blew format. the pointer is integer type.
+    // | pointer1 | pointer2 | ...... | data2 | data1 |
     int valueEndOffset = calcValueEndOffset(pointerOffset);
     int valueStartOffset = valueEndOffset - value.length + 1;
 
     if (valueStartOffset >= (size + 1) * ByteUtil.SIZE_OF_INT) {
       // write the pointer information
-      buffer.position(pointerOffset);
-      buffer.putInt(valueStartOffset);
+      buffer.putInt(pointerOffset, valueStartOffset);
       // write the value.
       buffer.position(valueStartOffset);
       buffer.put(value);
       // adjust the size
       size++;
       // return available size for write.
-      return valueStartOffset - (pointerOffset + ByteUtil.SIZE_OF_INT);
+      return valueStartOffset - pointerOffset - ByteUtil.SIZE_OF_INT;
     } else {
+      // no available space to store two non fixed value.
       return -1;
     }
   }
 
   public int writeTwoNonFixedValue(byte[] firstValue, byte[] secondValue) {
+    // convert int index to byte index of buffer for bytes where to read,
+    // because key pointer is integer type
     int keyPointerOffset = size << 2;
+
+    // for non-fixed length data with key and value. stored as blew format.
+    // | key1 pointer | value1 pointer |  ...... | value1 data | key1 data |
     int valueEndOffset = calcValueEndOffset(keyPointerOffset);
     int valueStartOffset = valueEndOffset - firstValue.length - secondValue.length + 1;
+
+    // Does it have available space to store firstValue, secondValue and their pointers
     if (valueStartOffset >= size * ByteUtil.SIZE_OF_INT + ByteUtil.SIZE_OF_LONG) {
+
       // write the pointer information.
       buffer.position(keyPointerOffset);
+      // key pointer
       buffer.putInt(valueStartOffset + secondValue.length);
+      // value pointer
       buffer.putInt(valueStartOffset);
 
       // write the second value and first value
       buffer.position(valueStartOffset);
       buffer.put(secondValue);
       buffer.put(firstValue);
+
+      // adjust the size;
       size = size + 2;
-      return valueStartOffset - keyPointerOffset - (ByteUtil.SIZE_OF_LONG);
+      // return available space.
+      return valueStartOffset - keyPointerOffset - ByteUtil.SIZE_OF_LONG;
     } else {
+      // no available space to store two non fixed value.
       return -1;
     }
   }
@@ -193,8 +211,7 @@ public class Block {
   private int calcValueEndOffset(int pointerOffset) {
     int valueEndOffset = capacity - 1;
     if (pointerOffset > 0) {
-      buffer.position(pointerOffset - ByteUtil.SIZE_OF_INT);
-      valueEndOffset = buffer.getInt() - 1;
+      valueEndOffset = buffer.getInt(pointerOffset - ByteUtil.SIZE_OF_INT) - 1;
     }
     return valueEndOffset;
   }

@@ -8,9 +8,10 @@ public class DistkvNonHeapHashMapImpl {
 
   private IntSegment hashSegment = new IntSegment(1);
   private NonFixedSegment valueSegment = new NonFixedSegment(1);
-
   private HashFunction hashFunction = new FnvHash();
-  private int capacity = 64;
+
+  private static final int DEFAULT_CAPACITY = 64;
+  private int capacity = DEFAULT_CAPACITY;
 
   public void put(byte[] key, byte[] value) {
     int hash = hashFunction.hash32(key);

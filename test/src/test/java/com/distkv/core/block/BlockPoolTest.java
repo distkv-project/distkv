@@ -1,7 +1,5 @@
-package com.distkv.core.map;
+package com.distkv.core.block;
 
-import com.distkv.core.block.Block;
-import com.distkv.core.block.BlockPool;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

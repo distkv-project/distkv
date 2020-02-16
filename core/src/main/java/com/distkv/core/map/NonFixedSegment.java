@@ -32,7 +32,7 @@ public class NonFixedSegment extends ValueSegment {
   }
 
   public int addKeyValue(byte[] key, byte[] value) {
-    checkArgument(key.length + value.length <= pool.getBlockSize());
+    checkArgument(key.length + value.length + ByteUtil.SIZE_OF_LONG <= pool.getBlockSize());
     Block block = blockArray[blockIndex];
     if (block.writeTwoNonFixedValue(key, value) > 0) {
       int pointer = size;

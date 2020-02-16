@@ -15,7 +15,7 @@ public class BlockPool implements Closeable {
       Field field = Unsafe.class.getDeclaredField("theUnsafe");
       field.setAccessible(true);
       return (Unsafe) field.get(null);
-    } catch (Exception e) {
+    } catch (IllegalAccessException | NoSuchFieldException e) {
       throw new RuntimeException(e);
     }
   }
