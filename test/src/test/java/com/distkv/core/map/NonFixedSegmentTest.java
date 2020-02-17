@@ -1,8 +1,8 @@
 package com.distkv.core.map;
 
-import static org.testng.Assert.assertEquals;
-
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
 
 public class NonFixedSegmentTest {
 
@@ -30,5 +30,23 @@ public class NonFixedSegmentTest {
     byte[] value2 = new byte[] {2, 32, 45, 67, 23, 35, 67, 23, 24, 56, 34, 65, 23};
     int pointer2 = segment.addKeyValue(key2, value2);
     assertEquals(segment.getKeyValue(pointer2), new byte[][] {key2, value2});
+  }
+
+  @Test
+  public void testResize() {
+    NonFixedSegment segment = new NonFixedSegment(1);
+    byte[] key1 = new byte[] {12, 45, 67, 78, 97};
+    byte[] value1 = new byte[] {2, 32, 45, 67, 23, 35, 67, 23, 24, 56, 34, 65, 23};
+    int iterator = 1024 * 712;
+    for (int i = 0; i < iterator; i++) {
+      segment.addKeyValue(key1, value1);
+    }
+    assertEquals(segment.getKeyValue(iterator - 43), new byte[][] {key1, value1});
+
+    segment = new NonFixedSegment(1);
+    for (int i = 0; i < iterator; i++) {
+      segment.addValue(value1);
+    }
+    assertEquals(segment.getValue(iterator - 43), value1);
   }
 }

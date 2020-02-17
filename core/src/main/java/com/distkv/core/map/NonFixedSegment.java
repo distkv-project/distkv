@@ -26,7 +26,7 @@ public class NonFixedSegment extends ValueSegment {
     } else {
       blockIndex++;
       resize(blockIndex + 1);
-      blockValueCntArray[blockIndex] = size;
+      blockValueCntArray[blockIndex] = size - 1;
       return addValue(value);
     }
   }
@@ -41,7 +41,7 @@ public class NonFixedSegment extends ValueSegment {
     } else {
       blockIndex++;
       resize(blockIndex + 1);
-      blockValueCntArray[blockIndex] = size;
+      blockValueCntArray[blockIndex] = size - 1;
       return addKeyValue(key, value);
     }
   }
@@ -49,11 +49,15 @@ public class NonFixedSegment extends ValueSegment {
   public byte[] getValue(int pointer) {
     checkArgument(pointer < size);
     Block block = blockArray[locateBlock(pointer)];
+    pointer = pointer - blockValueCntArray[blockIndex];
     return block.readNonFixedValue(pointer);
   }
 
   public byte[][] getKeyValue(int pointer) {
-    Block block = blockArray[locateBlock(pointer)];
+    checkArgument(pointer < (size << 1));
+    int blockIndex = locateBlock(pointer);
+    Block block = blockArray[blockIndex];
+    pointer = pointer - blockValueCntArray[blockIndex];
     return block.readTwoNonFixedValues(pointer);
   }
 
