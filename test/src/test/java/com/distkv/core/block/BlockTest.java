@@ -19,10 +19,8 @@ public class BlockTest {
     Block block = new Block(30);
     byte[] value1 = new byte[] {123, 23};
     byte[] value2 = new byte[] {12, 23};
-
     block.writeNonFixedValue(value1);
     block.writeNonFixedValue(value2);
-
     assertEquals(block.readNonFixedValue(0), value1);
     assertEquals(block.readNonFixedValue(1), value2);
   }
