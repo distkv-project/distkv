@@ -16,7 +16,7 @@ public class StoreServer {
 
   private StoreRuntime storeRuntime;
 
-  private StoreConfig config;
+  private StoreConfig storeConfig;
 
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static final String WELCOME_WORDS =
@@ -34,9 +34,9 @@ public class StoreServer {
       "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
       "'---'         ---`-'                                           ";
 
-  public StoreServer(StoreConfig config) {
-    this.config = config;
-    ServerConfig config1 = ServerConfig.builder()
+  public StoreServer(StoreConfig storeConfig) {
+    this.storeConfig = storeConfig;
+    ServerConfig dousiServerConfig = ServerConfig.builder()
         /// Note: This is a very important flag for `StoreServer` because it
         /// affects the threading model of `StoreServer`.
         /// For a `StoreServer`, it should have the rigorous threading model
@@ -46,10 +46,10 @@ public class StoreServer {
         /// hard to manage so many threads to meet our performance requirements if
         /// we don't enable this flag `enableIOThreadOnly`.
         .enableIOThreadOnly(true)
-        .port(config.getPort())
+        .port(storeConfig.getPort())
         .build();
-    dousiServer = new DousiServer(config1);
-    storeRuntime = new StoreRuntime(config);
+    dousiServer = new DousiServer(dousiServerConfig);
+    storeRuntime = new StoreRuntime(storeConfig);
     registerAllRpcServices();
   }
 
@@ -60,7 +60,7 @@ public class StoreServer {
       LOGGER.error("Failed with the exception: {}", e.toString());
       System.exit(-1);
     }
-    LOGGER.info("Succeeded to start dst server on port {}.", config.getPort());
+    LOGGER.info("Succeeded to start dst server on port {}.", storeConfig.getPort());
   }
 
   private void registerAllRpcServices() {

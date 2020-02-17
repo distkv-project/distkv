@@ -38,6 +38,7 @@ public class WorkerPool {
     } catch (InterruptedException e) {
       // TODO(qwang): Should be an assert here.
       LOGGER.error("Failed to post request to worker pool, key is {}", key);
+
     }
   }
 
