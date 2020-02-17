@@ -30,6 +30,13 @@
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>${jmh-generator-annprocess.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.distkv</groupId>
+            <artifactId>distkv-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.distkv</groupId>
             <artifactId>distkv-client</artifactId>
