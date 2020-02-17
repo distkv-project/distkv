@@ -145,14 +145,18 @@ public class Block {
     int keyStartOffset = buffer.getInt();
     int valueStartOffset = buffer.getInt();
 
-    // read the key and value
+    // read the key.
     int keyEndOffset = calcValueEndOffset(keyPointerOffset);
     keyValue[0] = new byte[keyEndOffset - keyStartOffset + 1];
     buffer.position(keyStartOffset);
     buffer.get(keyValue[0]);
+
+    // read the value
     keyValue[1] = new byte[keyStartOffset - valueStartOffset];
     buffer.position(valueStartOffset);
     buffer.get(keyValue[1]);
+
+    // return the result.
     return keyValue;
   }
 
