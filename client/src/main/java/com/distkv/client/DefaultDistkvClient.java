@@ -75,6 +75,11 @@ public class DefaultDistkvClient implements DistkvClient {
   }
 
   @Override
+  public void deactiveNamespace() {
+    asyncClient.deactiveNamespace();
+  }
+
+  @Override
   public String getActivedNamespace() {
     return asyncClient.getActivedNamespace();
   }

@@ -80,6 +80,8 @@ public class DistkvCommandExecutor {
         return null;
       case ACTIVE_NAMESPACE:
         return CommandExecutorHandler.activeNamespace(distkvClient, parsedResult);
+      case DEACTIVE_NAMESPACE:
+        return CommandExecutorHandler.deactiveNamespace(distkvClient, parsedResult);
       default:
         return null;
     }

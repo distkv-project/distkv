@@ -16,4 +16,8 @@ public class NamespaceInterceptor {
     this.namespace = namespace;
   }
 
+  public  void deactive() {
+    this.namespace = null;
+  }
+
 }
