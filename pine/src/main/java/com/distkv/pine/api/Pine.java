@@ -13,10 +13,12 @@ public class Pine {
 
   /**
    * Initial the Pine.
+   *
+   * @param address The address of distkv server to connect.
    */
-  public static void init() {
+  public static void init(String address) {
     runtime = new PineRuntime();
-    runtime.init();
+    runtime.init(address);
   }
 
   /**
