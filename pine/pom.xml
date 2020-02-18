@@ -11,5 +11,12 @@
 
     <artifactId>distkv-pine</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.distkv</groupId>
+            <artifactId>distkv-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

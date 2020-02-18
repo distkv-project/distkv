@@ -3,18 +3,29 @@ package com.distkv.pine.api;
 import com.distkv.pine.components.PineTopper;
 import com.distkv.pine.runtime.PineRuntime;
 
+/**
+ * The API class of Pine.
+ */
 public class Pine {
 
+  /// The Pine runtime.
   private static PineRuntime runtime;
 
+  /**
+   * Initial the Pine.
+   */
   public static void init() {
     runtime = new PineRuntime();
     runtime.init();
   }
 
+  /**
+   * Shutdown the Pine.
+   */
   public static void shutdown() {
     if (runtime != null) {
       runtime.shutdown();
+      runtime = null;
     }
   }
 
