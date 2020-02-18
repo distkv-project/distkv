@@ -112,7 +112,8 @@ public class Worker extends Thread {
     }
   }
 
-  private boolean needToSync(DistkvRequest distkvRequest) {
+  /// A helper method to query if we need sync the request to slaves.
+  private static boolean needToSync(DistkvRequest distkvRequest) {
     RequestType requestType = distkvRequest.getRequestType();
     switch (requestType) {
       case STR_PUT:

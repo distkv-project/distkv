@@ -49,3 +49,5 @@ test/tmp
 # python
 deploy/python/__pycache__/
 deploy/python/*.egg-info/
+deploy/python/dist/
+**__pycache__**
