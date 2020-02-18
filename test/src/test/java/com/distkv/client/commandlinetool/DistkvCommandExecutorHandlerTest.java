@@ -224,6 +224,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     Assert.assertEquals(
         CommandExecutorHandler.activeNamespace(distkvClient, distKVParsedResult), STATUS_OK);
 
+    // Test Deactive namespace
+    command = "deactive namespace";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(
+        CommandExecutorHandler.deactiveNamespace(distkvClient, distKVParsedResult), STATUS_OK);
+
     distkvClient.disconnect();
   }
 

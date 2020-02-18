@@ -65,6 +65,11 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   }
 
   @Override
+  public void deactiveNamespace() {
+    namespaceInterceptor.deactive();
+  }
+
+  @Override
   public String getActivedNamespace() {
     return namespaceInterceptor.getNamespace();
   }
