@@ -20,6 +20,8 @@ public class BaseTestSupplier {
 
   protected int rpcServerPort = -1;
 
+  protected String listeningAddress;
+
   @BeforeMethod
   public void setupBase(Method method) throws InterruptedException {
     LOGGER.info(String.format("\n==================== Running the test method: %s.%s",
@@ -28,6 +30,7 @@ public class BaseTestSupplier {
         method.getDeclaringClass(), method.getName()));
     rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
     TestUtil.startRpcServer(rpcServerPort);
+    listeningAddress = String.format("distkv://127.0.0.1:%d", rpcServerPort);
     TimeUnit.SECONDS.sleep(1);
   }
 

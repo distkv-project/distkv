@@ -2,7 +2,7 @@ package com.distkv.pine.components.topper;
 
 
 /**
- * The class represents a member of Topper.
+ * The class represents a handle of a Topper member.
  */
 public class TopperMember {
   private String name;
@@ -16,6 +16,7 @@ public class TopperMember {
     this.rankingNum = rankingNum;
     this.score = score;
   }
+
 
 
   public int getRankingNum() {

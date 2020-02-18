@@ -54,7 +54,8 @@ public class PineTopperImpl  extends PineHandle implements PineTopper {
   @Override
   public TopperMember getMember(String memberName) {
     try {
-      DistkvTuple<Integer, Integer> result = distkvClient.sortedLists().getMember(getKey(), memberName);
+      DistkvTuple<Integer, Integer> result = distkvClient.sortedLists().getMember(
+          getKey(), memberName);
       return new TopperMember(memberName, result.getSecond(), result.getFirst());
     } catch (InvalidProtocolBufferException e) {
       // TODO(qwang): Refine this exception.

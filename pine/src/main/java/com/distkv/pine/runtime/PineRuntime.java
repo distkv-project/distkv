@@ -22,7 +22,7 @@ public class PineRuntime {
   }
 
   public PineTopper newTopper() {
-    return new PineTopperImpl();
+    return new PineTopperImpl(distkvClient);
   }
 
 }
