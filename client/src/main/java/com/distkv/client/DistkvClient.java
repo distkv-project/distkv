@@ -30,6 +30,11 @@ public interface DistkvClient {
   void activeNamespace(String namespace);
 
   /**
+   * Deactivate the already achieved Namespace
+   */
+  void deactiveNamespace();
+
+  /**
    * Get actived namespace
    * @return the actived namespace's name
    */

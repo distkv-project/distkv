@@ -61,4 +61,36 @@ public class NamespaceTest extends BaseTestSupplier {
     Assert.assertEquals(value, "v2");
   }
 
+
+  @Test
+  public void testNamespaceDeactive()
+      throws ExecutionException, InterruptedException, InvalidProtocolBufferException {
+    DistkvAsyncClient client1 = newAsyncDistkvClient();
+    DistkvAsyncClient client2 = newAsyncDistkvClient();
+
+    client1.activeNamespace("a");
+
+    CompletableFuture<DistkvProtocol.DistkvResponse> putFuture =
+        client1.strs().put("k1", "v1");
+    Assert.assertEquals(CommonProtocol.Status.OK, putFuture.get().getStatus());
+    putFuture = client2.strs().put("k1", "v2");
+    Assert.assertEquals(CommonProtocol.Status.OK, putFuture.get().getStatus());
+
+    CompletableFuture<DistkvProtocol.DistkvResponse> getFuture = client1.strs().get("k1");
+    String value = getFuture.get()
+        .getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
+    Assert.assertEquals(value, "v1");
+
+    getFuture = client2.strs().get("k1");
+    value = getFuture.get()
+        .getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
+    Assert.assertEquals(value, "v2");
+
+    client1.deactiveNamespace();
+    CompletableFuture<DistkvProtocol.DistkvResponse> getFuture1 = client1.strs().get("k1");
+    String value1 = getFuture.get()
+        .getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
+    Assert.assertEquals(value, "v2");
+  }
+
 }

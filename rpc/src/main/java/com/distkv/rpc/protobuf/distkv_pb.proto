@@ -24,6 +24,8 @@ enum RequestType {
 
     ACTIVE_NAMESPACE = 2;
 
+    DEACTIVE_NAMESPACE = 3;
+
     // string concept
     STR_PUT = 101;
     STR_GET = 102;
