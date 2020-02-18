@@ -1,10 +1,10 @@
-package com.distkv.pine.components;
+package com.distkv.pine.components.topper;
 
-import javafx.util.Pair;
+import com.distkv.common.DistkvTuple;
 import java.util.List;
 
 /**
- * The `PineTopper` component is used to do a xxxx.
+ * The `PineTopper` component is used as a ranking list.
  */
 public interface PineTopper {
 
@@ -24,11 +24,18 @@ public interface PineTopper {
   public void removeMember(String memberName);
 
   /**
+   * Get the member of the given name.
+   *
+   * @param memberName The name of the member that will be find.
+   */
+  public TopperMember getMember(String memberName);
+
+  /**
    * Get the topper members.
    *
    * @param num The top number that will be returned.
    */
   // TODO(qwang): The `Pair` should be refined with our implementation.
-  public List<Pair<String, Integer>> top(int num);
+  public List<DistkvTuple<String, Integer>> top(int num);
 
 }

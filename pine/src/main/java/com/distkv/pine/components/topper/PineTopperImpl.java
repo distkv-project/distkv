@@ -1,20 +1,22 @@
-package com.distkv.pine.components;
+package com.distkv.pine.components.topper;
 
 import com.distkv.client.DistkvClient;
+import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.pine.components.PineHandle;
 import com.google.protobuf.InvalidProtocolBufferException;
-import javafx.util.Pair;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PineTopperImpl  extends PineHandle implements PineTopper {
-
 
   private static final String COMPONENT_TYPE = "TOPPER";
 
   private DistkvClient distkvClient;
 
   public PineTopperImpl(DistkvClient distkvClient) {
+    super();
     this.distkvClient = distkvClient;
     // Construct an empty sorted-list to the store.
     distkvClient.sortedLists().put(getKey(), new LinkedList<>());
@@ -29,13 +31,33 @@ public class PineTopperImpl  extends PineHandle implements PineTopper {
     distkvClient.sortedLists().removeMember(getKey(), memberName);
   }
 
-  public List<Pair<String, Integer>> top(int num) {
+  public List<DistkvTuple<String, Integer>> top(int num) {
     try {
       LinkedList<SortedListEntity> result = distkvClient.sortedLists().top(getKey(), num);
       // Covert the result type.
-
+      List<DistkvTuple<String, Integer>> ret = new ArrayList<>(result.size());
+      for (SortedListEntity entity : result) {
+        ret.add(new DistkvTuple<>(entity.getMember(), entity.getScore()));
+      }
+      return ret;
     } catch (InvalidProtocolBufferException e) {
-      // TODO(qwang): Refine this.
+      // TODO(qwang): Refine this exception.
+      throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * Get the member of the given name.
+   *
+   * @param memberName The name of the member that will be find.
+   */
+  @Override
+  public TopperMember getMember(String memberName) {
+    try {
+      DistkvTuple<Integer, Integer> result = distkvClient.sortedLists().getMember(getKey(), memberName);
+      return new TopperMember(memberName, result.getSecond(), result.getFirst());
+    } catch (InvalidProtocolBufferException e) {
+      // TODO(qwang): Refine this exception.
       throw new RuntimeException(e);
     }
   }
@@ -44,5 +66,4 @@ public class PineTopperImpl  extends PineHandle implements PineTopper {
   protected String getComponentType() {
     return COMPONENT_TYPE;
   }
-
 }

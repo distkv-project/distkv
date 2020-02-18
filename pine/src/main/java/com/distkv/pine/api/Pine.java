@@ -1,6 +1,6 @@
 package com.distkv.pine.api;
 
-import com.distkv.pine.components.PineTopper;
+import com.distkv.pine.components.topper.PineTopper;
 import com.distkv.pine.runtime.PineRuntime;
 
 /**
@@ -8,7 +8,9 @@ import com.distkv.pine.runtime.PineRuntime;
  */
 public class Pine {
 
-  /// The Pine runtime.
+  /**
+   * The Pine runtime.
+   */
   private static PineRuntime runtime;
 
   /**
