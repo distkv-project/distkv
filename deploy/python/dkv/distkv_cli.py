@@ -11,7 +11,7 @@ def main():
     command = [
         "java",
          "-classpath",
-         os.path.join(get_current_dir(), "distkv/jars/distkv-cli.jar"),
+         os.path.join(get_current_dir(), "jars/distkv-cli.jar"),
          "com.distkv.client.commandlinetool.DistkvCommandLineToolStarter"]
     try:
         subprocess.check_call(command)
