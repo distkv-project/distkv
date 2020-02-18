@@ -9,16 +9,16 @@
 A distributed key-value in-memory store system with table concept.
 
 ## Project Description
-`DistKV` project is a memory-based distributed key-value storage system. Besides these features, `DistKV` also supports table concept which looks like tables in relational databases. We use `Java` to finish this project, which is somewhat different from most databases using `C/C++`.
+`Distkv` project is a distributed key-value in-memory database system. Besides these features, `Distkv` supports table concept which looks like tables in relational databases. It also supports a rich ecosystem, named `Pine`, which has many easy-to-use and out-of-the-box components for Web application and micro-service.
 
 Full document is https://distkv.com
 
 ## Awesome Features
 1. Redis-like data structure
-2. Table concept based on KV Store
-3. Highly available
+2. Table concept based on kv store
+3. Strong consistency
 4. Easy to use clients
-5. Strong ecosystem for Web application
+5. Strong ecosystem for Web application and micro-service
 
 ## Quick Started
 #### 1. Install DistKV
@@ -70,11 +70,11 @@ dkv-cli > ("m2", -4), 3rd
 ```
 
 ## Java Client SDK
-[Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/client/example/DstUsageExample.java)
+[Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/client/example/DistkvUsageExample.java)
 
 ## Java Async Client SDK
-[Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/asyncclient/example/DstAsyncUsageExample.java)
+[Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/asyncclient/example/DistkvAsyncUsageExample.java)
 
 ## Getting Involved
-Thank you for your attention to the `DistKV` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/distkv-project/distkv/issues) list.
-We also welcome you to participate in our `DistKV` project, if you want to make contributions, you can refer the file [CONTRIBUTING.md](https://github.com/distkv-project/distkv/blob/master/CONTRIBUTING.md).
+Thank you for your attention to the `Distkv` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/distkv-project/distkv/issues) list.
+We also welcome you to participate in our `Distkv` project, if you want to make contributions, you can refer the file [CONTRIBUTING.md](https://github.com/distkv-project/distkv/blob/master/CONTRIBUTING.md).
