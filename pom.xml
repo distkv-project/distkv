@@ -17,6 +17,7 @@
         <module>rpc</module>
         <module>parser</module>
         <module>fclt</module>
+        <module>pine</module>
     </modules>
 
     <properties>
