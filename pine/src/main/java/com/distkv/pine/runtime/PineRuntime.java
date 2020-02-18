@@ -13,7 +13,7 @@ public class PineRuntime {
 
   }
 
-  public PineTopper getTopper() {
+  public PineTopper newTopper() {
     return new PineTopperImpl();
   }
 

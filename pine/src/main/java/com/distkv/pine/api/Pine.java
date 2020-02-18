@@ -18,8 +18,8 @@ public class Pine {
     }
   }
 
-  public static PineTopper getTopper() {
-    return runtime.getTopper();
+  public static PineTopper newTopper() {
+    return runtime.newTopper();
   }
 
 }
