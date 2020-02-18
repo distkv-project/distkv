@@ -32,7 +32,6 @@ import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistRemoveMemberReq
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopRequest;
 import com.distkv.rpc.protobuf.generated.StringProtocol.StrPutRequest;
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -391,7 +390,7 @@ public class CommandExecutorHandler {
   }
 
   public static String slistRemoveMember(DistkvClient distkvClient,
-                                         DistkvParsedResult parsedResult) {
+      DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
       SlistRemoveMemberRequest slistRemoveMemberRequest =
