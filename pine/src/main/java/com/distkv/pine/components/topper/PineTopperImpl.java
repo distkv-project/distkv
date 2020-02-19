@@ -3,13 +3,13 @@ package com.distkv.pine.components.topper;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.pine.components.PineHandle;
+import com.distkv.pine.components.AbstractPineHandle;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PineTopperImpl  extends PineHandle implements PineTopper {
+public class PineTopperImpl  extends AbstractPineHandle implements PineTopper {
 
   private static final String COMPONENT_TYPE = "TOPPER";
 

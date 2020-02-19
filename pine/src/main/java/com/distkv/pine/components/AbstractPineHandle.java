@@ -6,11 +6,11 @@ import com.distkv.common.id.PineHandleId;
  * The abstract class `PineHandle` is used to represent
  * a handle of the Pine component.
  */
-public abstract class PineHandle {
+public abstract class AbstractPineHandle {
 
   private PineHandleId handleId;
 
-  protected PineHandle() {
+  protected AbstractPineHandle() {
     handleId = PineHandleId.fromRandom();
   }
 
