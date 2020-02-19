@@ -10,7 +10,7 @@ public class ShardId implements Serializable {
   private static final long serialVersionUID = 6126218555756018827L;
 
   /**
-   * The index of the shard in the Dst cluster.
+   * The index of the shard in the Distkv cluster.
    */
   private int index;
 

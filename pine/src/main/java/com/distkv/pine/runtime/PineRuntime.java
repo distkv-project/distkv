@@ -1,12 +1,20 @@
 package com.distkv.pine.runtime;
 
-import com.distkv.pine.components.PineTopper;
-import com.distkv.pine.components.PineTopperImpl;
+import com.distkv.client.DefaultDistkvClient;
+import com.distkv.client.DistkvClient;
+import com.distkv.pine.components.topper.PineTopper;
+import com.distkv.pine.components.topper.PineTopperImpl;
 
 public class PineRuntime {
 
-  public void init() {
 
+  /**
+   * The distkv sync client.
+   */
+  private DistkvClient distkvClient;
+
+  public void init(String address) {
+    distkvClient = new DefaultDistkvClient(address);
   }
 
   public void shutdown() {
@@ -14,7 +22,7 @@ public class PineRuntime {
   }
 
   public PineTopper newTopper() {
-    return new PineTopperImpl();
+    return new PineTopperImpl(distkvClient);
   }
 
 }
