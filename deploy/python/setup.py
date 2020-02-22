@@ -29,15 +29,19 @@ setup(
         author_email='kingchin1218@gmail.com',
         license='BSD-3-clause',
         url='https://github.com/distkv-project/distkv',
-        packages=['distkv'],
+        packages=['dkv'],
+        package_data={
+                'dkv': ['*'],
+            },
         cmdclass={"build_ext": build_ext},
         # The BinaryDistribution argument triggers build_ext.
         distclass=BinaryDistribution,
         install_requires=[],
         entry_points={
             "console_scripts": [
-                "dkv-server=distkv_server:main",
-                "dkv-cli=distkv_cli:main",
+                "dkv-server=dkv.distkv_server:main",
+                "dkv-cli=dkv.distkv_cli:main",
            ]
        },
+#        include_package_data=True,
 )

@@ -11,7 +11,7 @@ def main():
     command = [
         "java",
          "-classpath",
-         os.path.join(get_current_dir(), "distkv/jars/distkv-server.jar"),
+         os.path.join(get_current_dir(), "jars/distkv-server.jar"),
          "com.distkv.server.storeserver.StoreServer"]
     try:
         subprocess.check_call(command)
