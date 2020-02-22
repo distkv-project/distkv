@@ -26,4 +26,8 @@ public class IdTest {
     Assert.assertEquals(id.getIndex(), 31000);
   }
 
+  @Test
+  public void testPineHandleId() {
+
+  }
 }

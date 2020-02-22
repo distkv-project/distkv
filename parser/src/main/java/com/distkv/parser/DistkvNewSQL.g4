@@ -12,9 +12,10 @@ statement: (conceptStatement) EOF;
 conceptStatement: basicOperationsStatement | strStatement | listStatement | setStatement | dictStatement | slistStatement;
 
 // basic operations
-basicOperationsStatement: exit | activeNamespace;
+basicOperationsStatement: exit | activeNamespace | deactiveNamespace;
 exit: 'exit';
 activeNamespace: 'active namespace' namespace;
+deactiveNamespace: 'deactive namespace';
 
 // str concept
 strStatement: strPut | strGet | strDrop;

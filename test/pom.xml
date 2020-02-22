@@ -49,6 +49,11 @@
         </dependency>
         <dependency>
             <groupId>com.distkv</groupId>
+            <artifactId>distkv-pine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.distkv</groupId>
             <artifactId>distkv-server</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>

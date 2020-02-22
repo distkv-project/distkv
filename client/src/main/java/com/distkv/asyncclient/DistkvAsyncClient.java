@@ -29,6 +29,11 @@ public interface DistkvAsyncClient {
    */
   void activeNamespace(String namespace);
 
+  /**
+   * Deactivate the already achieved Namespace
+   */
+  void deactiveNamespace();
+
   String getActivedNamespace();
 
   /**

@@ -452,4 +452,13 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
+  public static String deactiveNamespace(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    if (distkvClient.getActivedNamespace() == null) {
+      return "Namespace has not been activated";
+    }
+    distkvClient.deactiveNamespace();
+    return STATUS_OK;
+  }
+
 }
