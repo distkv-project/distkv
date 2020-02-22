@@ -7,7 +7,7 @@
     <groupId>com.distkv</groupId>
     <artifactId>distkv-superpom</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.1.3</version>
     <modules>
         <module>core</module>
         <module>server</module>
