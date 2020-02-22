@@ -30,6 +30,9 @@ setup(
         license='BSD-3-clause',
         url='https://github.com/distkv-project/distkv',
         packages=['dkv'],
+        package_data={
+                'dkv': ['*'],
+            },
         cmdclass={"build_ext": build_ext},
         # The BinaryDistribution argument triggers build_ext.
         distclass=BinaryDistribution,
@@ -40,4 +43,5 @@ setup(
                 "dkv-cli=dkv.distkv_cli:main",
            ]
        },
+#        include_package_data=True,
 )
