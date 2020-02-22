@@ -2,7 +2,7 @@
 
 # Start distkv-docker 
 
-If you want to build distkv-docker, follow this 3 steps:
+If you want to build distkv-docker, follow these 3 steps:
 
 1. Make sure you have `docker` and  `docker-compose` environment.
 
