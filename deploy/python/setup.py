@@ -49,6 +49,7 @@ setup(
     name='dkv',
     version='0.1.3',
     description='A distributed key-value in-memory store system with table concept.',
+    long_description=open("../../README.md").read(),
     author='Qing Wang',
     author_email='kingchin1218@gmail.com',
     license='BSD-3-clause',
