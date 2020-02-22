@@ -11,7 +11,7 @@ public class MasterSlaveSyncTestUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
-      + File.separator + "distkv-server-0.1.4-SNAPSHOP-jar-with-dependencies.jar";
+      + File.separator + "distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar";
 
   private static final int NODE_NUM = 3;
 
