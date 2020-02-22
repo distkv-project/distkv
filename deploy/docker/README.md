@@ -1,24 +1,23 @@
 
 
 # Start distkv-docker 
-If you want to build distkv-docker, follow this 4 steps:
+
+If you want to build distkv-docker, follow this 3 steps:
 
 1. Make sure you have `docker` and  `docker-compose` environment.
 
-2. Put the package `distkv.jar` into the working directory.
+2. Reset the variables in `docker-compose.yaml`.
 
-3. Reset the variables in `docker-compose.yaml`.
+   *  You can set the size of docker container with `mem_limit`.
 
-    *  You can set the size of docker container with `mem_limit`.
+   *  You can set JVM options with　`JAVA_OPTS`.
 
-    *  You can set JVM options with　`JAVA_OPTS`.
+3. Execute shell in the working directory:
 
-4. Execute shell in the working directory:
+   * start up: ```docker-compose up -d```
 
-    * start up: ```docker-compose up -d```
+   * query: ```docker-compose　ps``` or ```docker stats``` or ```docker logs```
 
-    * query: ```docker-compose　ps``` or ```docker stats``` or ```docker logs```
+   * stop: ```docker-compose stop```
 
-    * stop: ```docker-compose stop```
-
-    * enter: ```docker exec -it distkv bash```
+   * enter: ```docker exec -it distkv bash```

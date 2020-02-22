@@ -1,12 +1,13 @@
 version: "2"
 services:
   distkv:
-    build: ./
     container_name: distkv
-    image: distkv
+    image: dst0519/distkv:0.1.3
     mem_limit: 1073741824 # 1G
     ports:
-    - "8082:8082"
+      - "8082:8082"
+    volumes:
+      - ./logs/:/tmp/distkv/logs/
     environment:
       {
         JAVA_OPTS: -Xms820m -Xmx820m
