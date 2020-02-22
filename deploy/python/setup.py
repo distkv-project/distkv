@@ -47,8 +47,9 @@ class BinaryDistribution(Distribution):
 
 setup(
     name='dkv',
-    version='0.1.3',
+    version='0.1.4',
     description='A distributed key-value in-memory store system with table concept.',
+    long_description_content_type="text/markdown",
     long_description=open("../../README.md").read(),
     author='Qing Wang',
     author_email='kingchin1218@gmail.com',
