@@ -20,8 +20,8 @@ popd
 mvn clean install -DskipTests
 
 
-SERVER_JAR=$SCRIPT_DIR/../server/target/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar
-CLIENT_JAR=$SCRIPT_DIR/../client/target/distkv-client-0.1.3-SNAPSHOT-jar-with-dependencies.jar
+SERVER_JAR=$SCRIPT_DIR/../server/target/distkv-server-0.1.3-jar-with-dependencies.jar
+CLIENT_JAR=$SCRIPT_DIR/../client/target/distkv-client-0.1.3-jar-with-dependencies.jar
 
 SERVER_INSTALLING_DEST=/usr/local/distkv-all/server
 CLIENT_INSTALLING_DEST=/usr/local/distkv-all/client
@@ -40,11 +40,11 @@ sudo chmod +755 $CLIENT_INSTALLING_DEST/distkv-cli
 # create dkv user
 sudo useradd -M dkv
 
-sudo cp $SERVER_JAR $SERVER_INSTALLING_DEST/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar
-sudo chown dkv:dkv $SERVER_INSTALLING_DEST/distkv-server-0.1.3-SNAPSHOT-jar-with-dependencies.jar
+sudo cp $SERVER_JAR $SERVER_INSTALLING_DEST/distkv-server-0.1.3-jar-with-dependencies.jar
+sudo chown dkv:dkv $SERVER_INSTALLING_DEST/distkv-server-0.1.3-jar-with-dependencies.jar
 
-sudo cp $CLIENT_JAR $CLIENT_INSTALLING_DEST/distkv-client-0.1.3-SNAPSHOT-jar-with-dependencies.jar
-sudo chown dkv:dkv $CLIENT_INSTALLING_DEST/distkv-client-0.1.3-SNAPSHOT-jar-with-dependencies.jar
+sudo cp $CLIENT_JAR $CLIENT_INSTALLING_DEST/distkv-client-0.1.3-jar-with-dependencies.jar
+sudo chown dkv:dkv $CLIENT_INSTALLING_DEST/distkv-client-0.1.3-jar-with-dependencies.jar
 
 # create soft link to binaries.
 sudo ln -s $SERVER_INSTALLING_DEST/distkv-server /usr/local/bin/dkv-server
