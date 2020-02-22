@@ -6,7 +6,7 @@ set -e
 
 # install
 pushd ../../
-#mvn clean install -DskipTests
+mvn clean install -DskipTests
 
 # copy distkv-server jar to wheel dist.
 cp server/target/distkv-server-0.1.4-SNAPSHOP-jar-with-dependencies.jar deploy/python/dkv/jars/distkv-server.jar
