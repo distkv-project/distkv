@@ -72,7 +72,7 @@ public class DistkvCommandLineToolStarter {
   }
 
   private void loop(DistkvClient distkvClient) {
-    DistkvParser dstParser = new DistkvParser();
+    DistkvParser distkvParser = new DistkvParser();
     DistkvCommandExecutor distkvCommandExecutor = new DistkvCommandExecutor(distkvClient);
     Scanner sc = new Scanner(System.in);
     while (true) {
@@ -80,7 +80,7 @@ public class DistkvCommandLineToolStarter {
       final String command = sc.nextLine();
       String result = null;
       try {
-        DistkvParsedResult parsedResult = dstParser.parse(command);
+        DistkvParsedResult parsedResult = distkvParser.parse(command);
         result = distkvCommandExecutor.execute(parsedResult);
       } catch (DictKeyNotFoundException e) {
         result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
