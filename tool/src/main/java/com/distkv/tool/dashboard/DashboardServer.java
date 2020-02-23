@@ -1,4 +1,4 @@
-package dashboard;
+package com.distkv.tool.dashboard;
 
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.commandlinetool.DistkvCommandExecutor;
@@ -17,13 +17,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-public class DashBoardServer extends NanoHTTPD {
+public class DashboardServer extends NanoHTTPD {
 
   DistkvCommandExecutor distkvCommandExecutor;
 
   private DistkvParser distkvParser = new DistkvParser();
 
-  public DashBoardServer() throws IOException {
+  public DashboardServer() throws IOException {
     super(12223);
 
     // Init distkv related component.
@@ -90,7 +90,7 @@ public class DashBoardServer extends NanoHTTPD {
 
   public static void main(String[] args) {
     try {
-      new DashBoardServer();
+      new DashboardServer();
     } catch (IOException ioe) {
       System.err.println("Couldn't start server:\n" + ioe);
     }
