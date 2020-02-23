@@ -8,7 +8,7 @@ package com.distkv.core.map;
  * @author meijie
  * @since 0.1.4
  */
-public interface DistkvMap extends AutoCloseable{
+public interface DistkvMap extends AutoCloseable {
 
   /**
    * get mapped value by key. if the key is not exists, null will returned.
