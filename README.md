@@ -16,30 +16,33 @@ Full document is https://distkv.com
 ## Awesome Features
 1. Redis-like data structure
 2. Table concept based on kv store
-3. Strong consistency
+3. Strong consistency model
 4. Easy to use clients
 5. Strong ecosystem for Web application and micro-service
 
 ## Quick Started
-#### 1. Install DistKV
-Running `scripts/install_distkv.sh` will install the whole `DistKV` to your machine.
+#### 1. Install Distkv
+First make sure you have the python environment.
+
+Then running the following command to install the Distkv locally:
 ```bash
-./scripts/install_distkv.sh
+pip install -e deploy/python -v
 ```
 
-When we connect to the server, we must first start the server. At present, we only have two kinds of clients. One is `Command Line Tool`, another is `Java Client SDK`.
-We can use either of them to access the Distkv server.
-#### 2. Start DistKV Server
+#### 2. Start Distkv server
+Running the following command to start the Distkv server.
 ```bash
-[root@localhost ~]# dkv-server
+$ dkv-server
 ```
 
-#### 3. Start DistKV Cli
+#### 3. Start Distkv command line tool
+Running the following command to start the command line tool of a Distkv client.
 ```bash
-[root@localhost ~]# dkv-cli
+$ dkv-cli
 ```
 
 #### 4. Command Line Tool
+Once you started the command line tool `dkv-cli` successfully, type the following command to enjoy the trip of Distkv.
 ```bash
 dkv-cli > str.put "k1" "v1"
 dkv-cli > ok
@@ -69,11 +72,21 @@ dkv-cli > slist.getMember "k1" "m2"
 dkv-cli > ("m2", -4), 3rd
 ```
 
-## Java Client SDK
-[Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/client/example/DistkvUsageExample.java)
+## Client SDK
+Now we support both `Java Client SDK` and `Java Async Client SDK`. We are working in progress to support other languages SDK. 
 
-## Java Async Client SDK
-[Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/asyncclient/example/DistkvAsyncUsageExample.java)
+**Configure you dependency of Distkv client in `pom.xml`:**
+```xml
+<dependency>
+    <groupId>com.distkv</groupId>
+    <artifactId>distkv-client</artifactId>
+    <version>0.1.3</version>
+</dependency>
+```
+
+**To use Distkv client in Java, see the following examples:**
+- [Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/client/example/DistkvUsageExample.java)
+- [Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/asyncclient/example/DistkvAsyncUsageExample.java)
 
 ## Getting Involved
 Thank you for your attention to the `Distkv` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/distkv-project/distkv/issues) list.
