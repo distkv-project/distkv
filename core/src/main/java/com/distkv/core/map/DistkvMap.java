@@ -6,7 +6,7 @@ package com.distkv.core.map;
  * users known what type they wanted.
  *
  * @author meijie
- * @since 0.14
+ * @since 0.1.4
  */
 public interface DistkvMap extends AutoCloseable{
 
