@@ -2,11 +2,15 @@ package dashboard;
 
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.commandlinetool.DistkvCommandExecutor;
-import com.distkv.common.exception.*;
+import com.distkv.common.exception.DictKeyNotFoundException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
+import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.SortedListMemberNotFoundException;
+import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.DistkvParser;
 import com.distkv.parser.po.DistkvParsedResult;
 import fi.iki.elonen.NanoHTTPD;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,35 +27,24 @@ public class DashBoardServer extends NanoHTTPD {
     super(12223);
 
     // Init distkv related component.
-    distkvCommandExecutor = new DistkvCommandExecutor(new DefaultDistkvClient("distkv://127.0.0.1:8082"));
-
+    distkvCommandExecutor = new DistkvCommandExecutor(
+        new DefaultDistkvClient("distkv://127.0.0.1:8082"));
     start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
     System.out.println("\nRunning! Point your browsers to http://localhost:12223/ \n");
   }
 
-//  @Override
-//  public Response serve(IHTTPSession session) {
-//    String msg = "<html><body><h1>Hello server</h1>\n";
-//    Map<String, String> parms = session.getParms();
-//
-//    if (parms.get("username") == null) {
-//      msg += "<form action='?' method='get'>\n  <p>Your name: <input type='text' name='username'></p>\n" + "</form>\n";
-//    } else {
-//      msg += "<p>Hello, " + parms.get("username") + "!</p>";
-//    }
-//    return newFixedLengthResponse(msg + "</body></html>\n");
-//  }
-
   @Override
   public Response serve(IHTTPSession session) {
     if ("/".equals(session.getUri())) {
-      File file = new File("/Users/wangqing/Workspace/distkv/tool/src/main/java/dashboard/index.html");
+      final String workingDir = System.getProperty("user.dir");
+      File file = new File(workingDir,"index.html");
       return render200("/index.html", file);
     }
 
     if (!"/run_cli".equals(session.getUri())) {
       return newFixedLengthResponse("unknown uri:" + session.getUri());
     }
+
     // This is the code path of `/run_cli` URI.
     try {
       session.parseBody(null);
@@ -81,16 +74,16 @@ public class DashBoardServer extends NanoHTTPD {
       result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
     }
 
-
     return newFixedLengthResponse(result);
   }
 
   private Response render200(String uri, File file) {
     try {
-      return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.getMimeTypeForFile(uri), new FileInputStream(file), file.length());
+      return NanoHTTPD.newFixedLengthResponse(
+          NanoHTTPD.Response.Status.OK, NanoHTTPD.getMimeTypeForFile(uri),
+          new FileInputStream(file), file.length());
     } catch (FileNotFoundException e) {
-//      return render500(e.getMessage());
-      // TODO(qwang):
+      // TODO(qwang): Refine this with log
       throw new RuntimeException(e);
     }
   }
