@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Distkv, Ready Go!</title>
+    <script typet="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+<br id="my_area">
+    <div>
+        <h3>Please type your Distkv command.</h3>
+    </div>
+    <div>
+        <span id="tss"></span>
+    </div>
+    <div id="display_area">
+        </br>
+    </div>
+    <input type="text" name="text" id="command_text" style="width: 300px; height: 40px; font-size: 16px">
+    <button type="button" style="width: 100px; height: 30px; font-size: 14px" onclick="loadJSON()">run</button>
+</div>
+
+<script type="text/javascript">
+    function loadJSON(){
+        var value =$("#command_text").val();
+        $("#tss").append("dkv-cli> " + value + "</br>")
+
+        $.ajax({
+            type:"get",
+            dataType:"text",
+            url:"http://127.0.0.1:12223/run_cli",
+            data:{text:value},
+            async:true,
+            error:function(){
+                alert("connection not!");
+            },
+            success:function(data){
+                $("#tss").append("dkv-cli> " + data + "</br>")
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

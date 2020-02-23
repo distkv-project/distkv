@@ -6,6 +6,10 @@ import com.distkv.common.exception.*;
 import com.distkv.parser.DistkvParser;
 import com.distkv.parser.po.DistkvParsedResult;
 import fi.iki.elonen.NanoHTTPD;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
@@ -25,8 +29,26 @@ public class DashBoardServer extends NanoHTTPD {
     System.out.println("\nRunning! Point your browsers to http://localhost:12223/ \n");
   }
 
+//  @Override
+//  public Response serve(IHTTPSession session) {
+//    String msg = "<html><body><h1>Hello server</h1>\n";
+//    Map<String, String> parms = session.getParms();
+//
+//    if (parms.get("username") == null) {
+//      msg += "<form action='?' method='get'>\n  <p>Your name: <input type='text' name='username'></p>\n" + "</form>\n";
+//    } else {
+//      msg += "<p>Hello, " + parms.get("username") + "!</p>";
+//    }
+//    return newFixedLengthResponse(msg + "</body></html>\n");
+//  }
+
   @Override
   public Response serve(IHTTPSession session) {
+    if ("/".equals(session.getUri())) {
+      File file = new File("/Users/wangqing/Workspace/distkv/tool/src/main/java/dashboard/index.html");
+      return render200("/index.html", file);
+    }
+
     if (!"/run_cli".equals(session.getUri())) {
       return newFixedLengthResponse("unknown uri:" + session.getUri());
     }
@@ -58,7 +80,19 @@ public class DashBoardServer extends NanoHTTPD {
     } catch (DistkvException e) {
       result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
     }
+
+
     return newFixedLengthResponse(result);
+  }
+
+  private Response render200(String uri, File file) {
+    try {
+      return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.OK, NanoHTTPD.getMimeTypeForFile(uri), new FileInputStream(file), file.length());
+    } catch (FileNotFoundException e) {
+//      return render500(e.getMessage());
+      // TODO(qwang):
+      throw new RuntimeException(e);
+    }
   }
 
   public static void main(String[] args) {
