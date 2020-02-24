@@ -6,7 +6,10 @@ repo_name: GitHub
 site_description: "A distributed key-value in-memory store system with table concept."
 site_author: "Distkv Team"
 site_favicon: res/distkv_logo.png
-theme: "mkdocs"
+
+# `pip install mkdocs-bootswatch` for this theme
+theme: "flatly"
+
 copyright: "All Rights Reserved by Distkv Team"
 google_analytics: ['UA-36723568-3', 'distkv.com']
 
