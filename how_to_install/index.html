@@ -6,9 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Distkv Team">
-        <link rel="canonical" href="https://distkv.com/client_tool/">
-        <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Client tool - Distkv</title>
+        <link rel="canonical" href="https://distkv.com/how_to_install/">
+        <link rel="shortcut icon" href="../res/distkv_logo.png">
+        
+        <title>Install - Distkv</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -17,7 +18,16 @@
         <script src="../js/jquery-1.10.2.min.js" defer></script>
         <script src="../js/bootstrap.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-36723568-3', 'distkv.com');
+            ga('send', 'pageview');
+        </script> 
     </head>
 
     <body>
@@ -36,17 +46,42 @@
                             <li class="navitem">
                                 <a href=".." class="nav-link">Overview</a>
                             </li>
-                            <li class="navitem">
-                                <a href="../ErrorCode/" class="nav-link">ErrorCode</a>
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active">Install</a>
+</li>
+                                    
+<li>
+    <a href="../command_guide.md" class="dropdown-item">Distkv Command Guide</a>
+</li>
+                                    
+<li>
+    <a href="../java_client_sdk.md" class="dropdown-item">Java Client SDK</a>
+</li>
+                                </ul>
                             </li>
                             <li class="navitem">
-                                <a href="../build/" class="nav-link">Build</a>
+                                <a href="../download.md" class="nav-link">Download</a>
                             </li>
-                            <li class="navitem active">
-                                <a href="./" class="nav-link">Client tool</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="../usage/" class="nav-link">Usage</a>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../release_notes.md" class="dropdown-item">Release Notes</a>
+</li>
+                                    
+<li>
+    <a href="../contributors.md" class="dropdown-item">Contributors</a>
+</li>
+                                    
+<li>
+    <a href="../license.md" class="dropdown-item">License</a>
+</li>
+                                </ul>
                             </li>
                         </ul>
 
@@ -57,17 +92,17 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../build/" class="nav-link">
+                                <a rel="prev" href=".." class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../usage/" class="nav-link">
+                                <a rel="next" class="nav-link disabled">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/client_tool.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/how_to_install.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -86,12 +121,78 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#environment" class="nav-link">Environment</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#build-from-source" class="nav-link">Build From Source</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#run-unit-tests" class="nav-link">Run Unit Tests</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p>The <code>Dst client tool</code> is an useful tool to access a Dst server.</p></div>
+<h2 id="environment">Environment</h2>
+<p>The environment requirements of Distkv are:</p>
+<ul>
+<li>JDK &gt;= 1.8.0</li>
+<li>Maven &gt;= 3.5.0</li>
+<li>Python &gt;= 3.5</li>
+</ul>
+<h2 id="build-from-source">Build From Source</h2>
+<p>The following steps guide you to build a full version Distkv with <code>dkv-server</code> and <code>dkv-cli</code>.</p>
+<ol>
+<li>
+<p>Clone the Distkv repository to your local.</p>
+<pre><code>git clone https://github.com/distkv-project/distkv.git
+</code></pre>
+</li>
+<li>
+<p>Enter the root directory of Distkv.</p>
+<pre><code>cd distkv
+</code></pre>
+</li>
+<li>
+<p>Install the dependencies of Distkv.</p>
+<pre><code>bash scripts/install_dependencies.sh
+</code></pre>
+</li>
+<li>
+<p>Install Distkv.</p>
+<pre><code>pip install -e deploy/python -v
+</code></pre>
+</li>
+</ol>
+<p>After the 4 steps, the Distkv should be installed successfully on you local. Type <code>dkv-server --version</code> to have a check.</p>
+<h2 id="run-unit-tests">Run Unit Tests</h2>
+<p>If you'd like to run the unit tests of Distkv, you needn't build the full version Distkv. Just follow the following steps to build a simple version of Distkv and run the unit tests.</p>
+<ol>
+<li>
+<p>Install the dependencies of Distkv.</p>
+<pre><code>bash scripts/install_dependencies.sh
+</code></pre>
+</li>
+<li>
+<p>Build with skiping tests.</p>
+<pre><code>mvn clean install -DskipTests
+</code></pre>
+</li>
+<li>
+<p>If you'd like to run the tests, use this command.</p>
+<pre><code>mvn test
+</code></pre>
+</li>
+</ol>
+<p>If there is no error appearing, congratulations, you have succeeded to build Distkv and pass all tests.</p></div>
             </div>
         </div>
 
