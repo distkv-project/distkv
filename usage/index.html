@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Usage - My Docs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Welcome to MkDocs</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../ErrorCode/" class="nav-link">ErrorCode</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../build/" class="nav-link">Build</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../client_tool/" class="nav-link">Client tool</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Usage</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../client_tool/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#usage" class="nav-link">Usage</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h2 id="usage">Usage</h2>
+<p>In this section, you can learn some basic concepts in Dst, and learn how to use these concepts as well.</p>
+<h4 id="1-string-concept">1. String concept</h4>
+<p>Put a string value into the Dst store.  </p>
+<pre><code class="bash">str.put key value
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">distkv-cli &gt; str.put k1 v1
+distkv-cli &gt; ok
+</code></pre>
+
+<p>Get a string value from Dst store.</p>
+<pre><code class="bash">str.get key
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">distkv-cli &gt; str.get k1
+distkv-cli &gt; v1
+</code></pre>
+
+<p>Drop a string from the Dst store.</p>
+<pre><code class="bash">str.drop key
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">distkv-cli &gt; str.drop k1
+distkv-cli &gt; ok
+
+distkv-cli &gt; str.get k1
+distkv-cli &gt; Error(A202): The Key `k1` is not found in the store.
+</code></pre>
+
+<h4 id="2-list-concept">2. List concept</h4>
+<p>Put a list into Dst store.</p>
+<pre><code class="bash">list.put key value1 [value2 [value3 [...]]]
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">distkv-cli &gt; list.put k1 v1 v2 v3
+distkv-cli &gt; ok
+</code></pre>
+
+<p>Get a list from Dst store.</p>
+<pre><code class="bash">list.get key
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">distkv-cli &gt; list.get k1
+distkv-cli &gt; [v1, v2, v3]
+</code></pre>
+
+<p>Get a range of items of the list from Dst store.</p>
+<pre><code class="bash"># Note that it's excluding the `end_index`.
+list.get key from_index end_index
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">distkv-cli &gt; list.get k1 0 2
+distkv-cli &gt; [v1, v2]
+</code></pre>
+
+<p>Get one item of the list from Dst store.</p>
+<pre><code class="bash">list.get key index
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">distkv-cli &gt; list.get k1 1
+distkv-cli &gt; v1
+</code></pre>
+
+<p>distkv-cli &gt; list.lput "k1" "v4" "v5" "v6"
+distkv-cli &gt; ok</p>
+<p>distkv-cli &gt; list.rput "k1" "v7"
+distkv-cli &gt; ok</p>
+<p>distkv-cli &gt; list.ldel "k1" 2
+distkv-cli &gt; ok</p>
+<p>distkv-cli &gt; list.rdel "k1" 2
+distkv-cli &gt; ok</p>
+<p>distkv-cli &gt; list.get "k1"
+distkv-cli &gt; ["v6", "v1", "v2"]</p>
+<pre><code>
+#### 3. Set concept
+```bash
+distkv-cli &gt; set.put &quot;k1&quot; &quot;v1&quot; &quot;v2&quot; &quot;v3&quot;
+distkv-cli &gt; ok
+
+distkv-cli &gt; set.get &quot;k1&quot;
+distkv-cli &gt; {&quot;v1&quot;, &quot;v2&quot;, &quot;v3&quot;}
+
+distkv-cli &gt; set.del &quot;k1&quot; &quot;v1&quot;
+distkv-cli &gt; ok
+
+distkv-cli &gt; set.get &quot;k1&quot;
+distkv-cli &gt; {&quot;v2&quot;, &quot;v3&quot;}
+
+distkv-cli &gt; set.exists &quot;k1&quot; &quot;v2&quot;
+distkv-cli &gt; true
+
+distkv-cli &gt; set.exists &quot;k1&quot; &quot;v4&quot;
+distkv-cli &gt; false
+
+distkv-cli &gt; set.drop &quot;k1&quot;
+distkv-cli &gt; ok
+</code></pre>
+
+<h4 id="4-dict-concept">4. Dict concept</h4>
+<pre><code class="bash">distkv-cli &gt; dict.put &quot;dict1&quot; &quot;k1&quot; &quot;v1&quot; &quot;k2&quot; &quot;v2&quot;
+distkv-cli &gt; ok
+
+distkv-cli &gt; dict.get &quot;dict1&quot;
+distkv-cli &gt; { &quot;k1&quot; : &quot;v1&quot;, &quot;k2&quot; : &quot;v2&quot;}
+
+distkv-cli &gt; dict.get &quot;dict1&quot; &quot;k1&quot;
+distkv-cli &gt; &quot;v1&quot;
+
+distkv-cli &gt; dict.get &quot;dict1&quot; &quot;k1&quot;
+distkv-cli &gt; &quot;v1&quot;
+
+distkv-cli &gt; dict.del &quot;dict1&quot; &quot;k1&quot;
+distkv-cli &gt; ok
+
+distkv-cli &gt; dict.pop &quot;dict1&quot; &quot;k2&quot;
+distkv-cli &gt; &quot;v2&quot;
+
+distkv-cli &gt; dict.get &quot;dict1&quot;
+distkv-cli &gt; []
+
+distkv-cli &gt; dict.drop &quot;dict1&quot;
+distkv-cli &gt; ok
+</code></pre>
+
+<h4 id="5-table-concept">5. Table concept</h4>
+<ol>
+<li>Define your data structure in a schema file named <code>mytables.sc</code></li>
+</ol>
+<pre><code class="shell">table TaskTable {
+  [p]task_id: string;
+  [i]driver_id: string;
+  task_name: string;
+  return_num: int;
+  arguments: [string];
+}
+</code></pre>
+
+<pre><code class="shell">table DriverTable {
+ [p]driver_id: string;
+ driver_name: string;
+ actor_num: int;
+};
+</code></pre>
+
+<ol>
+<li>Start an distkv server and execute this command to create table:</li>
+</ol>
+<pre><code class="shell">&gt; distkv-cli -p 12344 # connect to distkv server
+&gt; create TaskTable, DriverTable from mytables.sc
+</code></pre>
+
+<ol>
+<li>Add data to the table:</li>
+</ol>
+<pre><code class="shell">&gt; TaskTable.add &quot;00001&quot;, &quot;22222&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
+&lt; ok
+&gt; TaskTable.add &quot;00002&quot;, &quot;99999&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
+&lt; ok
+&gt; TaskTable.add &quot;00003&quot;, &quot;22222&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
+&lt; ok
+&gt; DriverTable.add &quot;22222&quot;, &quot;my_driver&quot;, 10
+&lt; ok
+</code></pre>
+
+<ol>
+<li>Query all tasks by driver id:</li>
+</ol>
+<pre><code class="shell">&gt; TaskTable.query (*) when driver_id == &quot;22222&quot;
+&lt;
+&lt; task_id      driver_id     task_name      num_return      arguments
+&lt; &quot;00001&quot;      &quot;22222&quot;       &quot;my_task&quot;      3               [&quot;1&quot;, &quot;2&quot;]
+&lt; &quot;00003&quot;      &quot;22222&quot;       &quot;my_task&quot;      3               [&quot;1&quot;, &quot;2&quot;]
+&lt; 2 records
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
