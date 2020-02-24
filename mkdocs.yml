@@ -21,4 +21,4 @@ nav:
   - About:
     - 'Release Notes': 'release_notes.md'
     - 'Contributors': 'contributors.md'
-    - 'License': 'license.md'
+#    - 'License': 'license.md'
