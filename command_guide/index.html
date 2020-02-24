@@ -13,7 +13,7 @@
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
 
         <script src="../js/jquery-1.10.2.min.js" defer></script>
         <script src="../js/bootstrap.min.js" defer></script>
@@ -80,10 +80,6 @@
                                     
 <li>
     <a href="../contributors.md" class="dropdown-item">Contributors</a>
-</li>
-                                    
-<li>
-    <a href="../license.md" class="dropdown-item">License</a>
 </li>
                                 </ul>
                             </li>
@@ -257,7 +253,7 @@ dkv-cli &gt; ok
 dkv-cli &gt; ok
 </code></pre>
 
-<p>Remove the item from the list with the given index.</p>
+<p>Remove item from the list with the given index.</p>
 <pre><code class="bash">list.ldel key index
 </code></pre>
 
@@ -266,10 +262,22 @@ dkv-cli &gt; ok
 dkv-cli &gt; ok
 </code></pre>
 
+<p>Remove item from the back of the list with the given back index.</p>
+<pre><code class="bash">list.rdel key back_index
+</code></pre>
+
+<p>If the list is [1, 2, 3] and the given number is 0, item <code>3</code> will be removed.</p>
+<p>example:</p>
 <pre><code class="bash">dkv-cli &gt; list.rdel &quot;k1&quot; 2
 dkv-cli &gt; ok
+</code></pre>
 
-dkv-cli &gt; list.get &quot;k1&quot;
+<p>Get the list from Distkv store.</p>
+<pre><code class="bash">list.get key
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.get &quot;k1&quot;
 dkv-cli &gt; [&quot;v6&quot;, &quot;v1&quot;, &quot;v2&quot;]
 </code></pre>
 

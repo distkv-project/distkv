@@ -1,36 +1,16 @@
 html {
-    /* csslint ignore:start */
-    /* The nav header is 3.5rem high, plus 20px for the margin-top of the
+    /* The nav header is 4.40625rem high, plus 20px for the margin-top of the
        main container. */
-    scroll-padding-top: calc(3.5rem + 20px);
-    /* csslint ignore:end */
-}
-
-/* Replacement for `body { background-attachment: fixed; }`, which has
-   performance issues when scrolling on large displays. See #1394. */
-body::before {
-    content: ' ';
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: #f8f8f8;
-    background: url(../img/grid.png) repeat-x;
-    will-change: transform;
-    z-index: -1;
+    scroll-padding-top: calc(4.40625rem + 20px);
 }
 
 body > .container {
     margin-top: 20px;
-    min-height: 400px;
 }
 
-.navbar.fixed-top { /* csslint allow: adjoining-classes */
-    /* csslint ignore:start */
+.navbar.fixed-top {
     position: -webkit-sticky;
     position: sticky;
-    /* csslint ignore:end */
 }
 
 .source-links {
@@ -39,59 +19,36 @@ body > .container {
 
 .col-md-9 img {
     max-width: 100%;
-    display: inline-block;
-    padding: 4px;
-    line-height: 1.428571429;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin: 20px auto 30px auto;
 }
 
-h1 {
-    color: #444;
-    font-weight: 400;
-    font-size: 42px;
+pre, code {
+    background: #e9ecef;
+    color: #000;
+    border: 1px solid rgba(0,0,0,0.125);
+    border-radius: 0.25rem;
 }
 
-h2, h3, h4, h5, h6 {
-    color: #444;
-    font-weight: 300;
-}
-
-hr {
-    border-top: 1px solid #aaa;
-}
-
-pre, .rst-content tt {
-    max-width: 100%;
-    background: #fff;
-    border: solid 1px #e1e4e5;
-    color: #333;
-    overflow-x: auto;
-}
-
-code.code-large, .rst-content tt.code-large {
-    font-size: 90%;
+pre {
+    padding: 0.5em;
 }
 
 code {
-    padding: 2px 5px;
-    background: #fff;
-    border: solid 1px #e1e4e5;
-    color: #333;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    padding: 1px 3px;
 }
 
 pre code {
-    display: block;
-    background: transparent;
     border: none;
-    white-space: pre;
-    word-wrap: normal;
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 12px;
+    /* Override styles from hljs theme */
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+a code {
+    color: #18bc9c;
+}
+
+a:hover code {
+    color: #0f7864;
 }
 
 kbd {
@@ -104,14 +61,6 @@ kbd {
     box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
 }
 
-a code {
-    color: #2FA4E7;
-}
-
-a:hover code, a:focus code {
-    color: #157AB5;
-}
-
 footer {
     margin-top: 30px;
     margin-bottom: 10px;
@@ -120,7 +69,67 @@ footer {
 }
 
 .modal-dialog {
-    margin-top: 60px;
+    margin-top: 70px;
+}
+
+/* Style the admonitions. */
+
+.admonition {
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.admonition > .admonition-title {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    font-size: 1rem;
+}
+
+.admonition > * {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.admonition > *:not(.admonition-title):first-of-type,
+.admonition > .admonition-title + * {
+    margin-top: 1rem;
+}
+
+.admonition > *:last-child {
+    margin-bottom: 1rem;
+}
+
+/* Style each kind of admonition. */
+
+.admonition.note, .admonition.note > .admonition-title {
+    border-color: #3498db;
+}
+
+.admonition.note > .admonition-title {
+    color: #fff;
+    background-color: #3498db;
+}
+
+.admonition.warning, .admonition.warning > .admonition-title {
+    border-color: #f39c12;
+}
+
+.admonition.warning > .admonition-title {
+    color: #fff;
+    background-color: #f39c12;
+}
+
+.admonition.danger, .admonition.danger > .admonition-title {
+    border-color: #e74c3c;
+}
+
+.admonition.danger > .admonition-title {
+    color: #fff;
+    background-color: #e74c3c;
 }
 
 /*
@@ -130,20 +139,20 @@ footer {
  * sections of docs content.
  */
 
-.bs-sidebar.affix { /* csslint allow: adjoining-classes */
-    /* csslint ignore:start */
+.bs-sidebar.affix {
     position: -webkit-sticky;
     position: sticky;
-    /* csslint ignore:end */
-    /* The nav header is 3.5rem high, plus 20px for the margin-top of the
+    /* The nav header is 4.40625rem high, plus 20px for the margin-top of the
        main container. */
-    top: calc(3.5rem + 20px);
+    top: calc(4.40625rem + 20px);
 }
 
-.bs-sidebar.card { /* csslint allow: adjoining-classes */
+.bs-sidebar.card {
     padding: 0;
-    max-height: 90%;
-    overflow-y: auto;
+}
+
+.bs-sidebar > .card {
+    background-color: #ecf0f1 !important;
 }
 
 /* Toggle (vertically flip) sidebar collapse icon */
@@ -155,7 +164,7 @@ footer {
     transform: scale(1, -1);
 }
 
-.bs-sidebar .navbar-toggler.collapsed span { /* csslint allow: adjoining-classes */
+.bs-sidebar .navbar-toggler.collapsed span {
     -moz-transform: scale(1, 1);
     -webkit-transform: scale(1, 1);
     -o-transform: scale(1, 1);
@@ -203,8 +212,6 @@ footer {
 }
 
 .headerlink {
-    font-family: FontAwesome;
-    font-size: 14px;
     display: none;
     padding-left: .5em;
 }
@@ -213,49 +220,16 @@ h1:hover .headerlink, h2:hover .headerlink, h3:hover .headerlink, h4:hover .head
     display:inline-block;
 }
 
-
-
-.admonition {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    text-align: left;
-}
-
-.admonition.note { /* csslint allow: adjoining-classes */
-    color: #3a87ad;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-
-.admonition.warning { /* csslint allow: adjoining-classes */
-    color: #c09853;
-    background-color: #fcf8e3;
-    border-color: #fbeed5;
-}
-
-.admonition.danger { /* csslint allow: adjoining-classes */
-    color: #b94a48;
-    background-color: #f2dede;
-    border-color: #eed3d7;
-}
-
-.admonition-title {
-    font-weight: bold;
-    text-align: left;
-}
-
 @media (max-width: 991.98px) {
-    .navbar-collapse.show { /* csslint allow: adjoining-classes */
+    .navbar-collapse.show {
         overflow-y: auto;
-        max-height: calc(100vh - 3.5rem);
+        max-height: calc(100vh - 4.40625rem);
     }
 }
 
-.dropdown-item.open { /* csslint allow: adjoining-classes */
+.dropdown-item.open {
     color: #fff;
-    background-color: #2FA4E7;
+    background-color: #2C3E50;
 }
 
 .dropdown-submenu > .dropdown-menu {
@@ -285,7 +259,7 @@ h1:hover .headerlink, h2:hover .headerlink, h3:hover .headerlink, h4:hover .head
 @media (min-width: 992px) {
     .dropdown-menu {
         overflow-y: auto;
-        max-height: calc(100vh - 3.5rem);
+        max-height: calc(100vh - 4.40625rem);
     }
 
     .dropdown-submenu {
@@ -293,21 +267,10 @@ h1:hover .headerlink, h2:hover .headerlink, h3:hover .headerlink, h4:hover .head
     }
 
     .dropdown-submenu > .dropdown-menu {
-        /* csslint ignore:start */
         position: fixed !important;
-        /* csslint ignore:end */
         margin-top: -9px;
         margin-left: -2px;
         border-width: 1px;
         padding: 0.5rem 0;
-    }
-
-    .dropdown-submenu.pull-left { /* csslint allow: adjoining-classes */
-        float: none;
-    }
-
-    .dropdown-submenu.pull-left > .dropdown-menu { /* csslint allow: adjoining-classes */
-        left: -100%;
-        margin-left: 10px;
     }
 }
