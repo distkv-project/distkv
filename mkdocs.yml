@@ -1,0 +1,27 @@
+site_name: Distkv
+site_url: https://distkv.com
+repo_url: https://github.com/distkv-project/distkv
+repo_name: GitHub
+
+site_description: "A distributed key-value in-memory store system with table concept."
+site_author: "Distkv Team"
+site_favicon: res/distkv_logo.png
+
+# `pip install mkdocs-bootswatch` for this theme
+theme: "flatly"
+
+copyright: "All Rights Reserved by Distkv Team"
+google_analytics: ['UA-36723568-3', 'distkv.com']
+
+nav:
+  - Overview: 'index.md'
+  - User Guide:
+    - 'Install': 'install.md'
+    - 'Command Guide': 'command_guide.md'
+    - 'Java Client SDK': 'java_client_sdk.md'
+    - 'Pine Ecosystem': 'pine.md'
+  - Download: 'download.md'
+  - About:
+    - 'Release Notes': 'release_notes.md'
+    - 'Contributors': 'contributors.md'
+#    - 'License': 'license.md'
