@@ -5,8 +5,18 @@ repo_name: GitHub
 
 site_description: "A distributed key-value in-memory store system with table concept."
 site_author: "Distkv Team"
-#site_favicon: null
+site_favicon: res/distkv_logo.png
 theme: "mkdocs"
 copyright: "All Rights Reserved by Distkv Team"
-#google_analytics: null
+google_analytics: ['UA-36723568-3', 'distkv.com']
 
+nav:
+  - Overview: 'index.md'
+  - User Guide:
+    - 'How to Build': 'install_or_build.md'
+    - 'Distkv Command Guide': 'command_guide.md'
+    - 'Java Client SDK': 'java_client_sdk.md'
+  - About:
+    - 'Release Notes': 'release_notes.md'
+    - 'Contributors': 'contributors.md'
+    - 'License': 'license.md'
