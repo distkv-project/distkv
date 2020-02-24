@@ -104,7 +104,7 @@ dkv-cli > list.rput "k1" "v7"
 dkv-cli > ok
 ```
 
-Remove the item from the list with the given index.
+Remove item from the list with the given index.
 ```bash
 list.ldel key index
 ```
@@ -113,10 +113,25 @@ example:
 dkv-cli > list.ldel "k1" 2
 dkv-cli > ok
 ```
+
+Remove item from the back of the list with the given back index.
+```bash
+list.rdel key back_index
+```
+If the list is [1, 2, 3] and the given number is 0, item `3` will be removed.
+
+example:
 ```bash
 dkv-cli > list.rdel "k1" 2
 dkv-cli > ok
+```
 
+Get the list from Distkv store.
+```bash
+list.get key
+```
+example:
+```bash
 dkv-cli > list.get "k1"
 dkv-cli > ["v6", "v1", "v2"]
 ```
