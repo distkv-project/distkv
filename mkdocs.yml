@@ -1,1 +1,12 @@
-site_name: My Docs
+site_name: Distkv
+site_url: https://distkv.com
+repo_url: https://github.com/distkv-project/distkv
+repo_name: GitHub
+
+site_description: "A distributed key-value in-memory store system with table concept."
+site_author: "Distkv Team"
+#site_favicon: null
+theme: "mkdocs"
+copyright: "All Rights Reserved by Distkv Team"
+#google_analytics: null
+
