@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Distkv Team">
-        <link rel="canonical" href="https://distkv.com/userguide/">
+        <link rel="canonical" href="https://distkv.com/install/">
         <link rel="shortcut icon" href="../res/distkv_logo.png">
         
-        <title>Userguide - Distkv</title>
+        <title>Install - Distkv</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -46,20 +46,24 @@
                             <li class="navitem">
                                 <a href=".." class="nav-link">Overview</a>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown active">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../how_to_install/" class="dropdown-item">Install</a>
+    <a href="./" class="dropdown-item active">Install</a>
 </li>
                                     
 <li>
-    <a href="../command_guide.md" class="dropdown-item">Distkv Command Guide</a>
+    <a href="../command_guide/" class="dropdown-item">Command Guide</a>
 </li>
                                     
 <li>
     <a href="../java_client_sdk.md" class="dropdown-item">Java Client SDK</a>
+</li>
+                                    
+<li>
+    <a href="../pine.md" class="dropdown-item">Pine Ecosystem</a>
 </li>
                                 </ul>
                             </li>
@@ -92,7 +96,17 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/userguide.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../command_guide/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/install.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -111,12 +125,78 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#environment" class="nav-link">Environment</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#build-from-source" class="nav-link">Build From Source</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#run-unit-tests" class="nav-link">Run Unit Tests</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p>11111111111111</p></div>
+<h2 id="environment">Environment</h2>
+<p>The environment requirements of Distkv are:</p>
+<ul>
+<li>JDK &gt;= 1.8.0</li>
+<li>Maven &gt;= 3.5.0</li>
+<li>Python &gt;= 3.5</li>
+</ul>
+<h2 id="build-from-source">Build From Source</h2>
+<p>The following steps guide you to build a full version Distkv with <code>dkv-server</code> and <code>dkv-cli</code>.</p>
+<ol>
+<li>
+<p>Clone the Distkv repository to your local.</p>
+<pre><code>git clone https://github.com/distkv-project/distkv.git
+</code></pre>
+</li>
+<li>
+<p>Enter the root directory of Distkv.</p>
+<pre><code>cd distkv
+</code></pre>
+</li>
+<li>
+<p>Install the dependencies of Distkv.</p>
+<pre><code>bash scripts/install_dependencies.sh
+</code></pre>
+</li>
+<li>
+<p>Install Distkv.</p>
+<pre><code>pip install -e deploy/python -v
+</code></pre>
+</li>
+</ol>
+<p>After the 4 steps, the Distkv should be installed successfully on you local. Type <code>dkv-server --version</code> to have a check.</p>
+<h2 id="run-unit-tests">Run Unit Tests</h2>
+<p>If you'd like to run the unit tests of Distkv, you needn't build the full version Distkv. Just follow the following steps to build a simple version of Distkv and run the unit tests.</p>
+<ol>
+<li>
+<p>Install the dependencies of Distkv.</p>
+<pre><code>bash scripts/install_dependencies.sh
+</code></pre>
+</li>
+<li>
+<p>Build with skiping tests.</p>
+<pre><code>mvn clean install -DskipTests
+</code></pre>
+</li>
+<li>
+<p>If you'd like to run the tests, use this command.</p>
+<pre><code>mvn test
+</code></pre>
+</li>
+</ol>
+<p>If there is no error appearing, congratulations, you have succeeded to build Distkv and pass all tests.</p></div>
             </div>
         </div>
 

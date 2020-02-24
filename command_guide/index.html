@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Distkv Team">
-        <link rel="canonical" href="https://distkv.com/how_to_install/">
+        <link rel="canonical" href="https://distkv.com/command_guide/">
         <link rel="shortcut icon" href="../res/distkv_logo.png">
         
-        <title>Install - Distkv</title>
+        <title>Command Guide - Distkv</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -51,15 +51,19 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="./" class="dropdown-item active">Install</a>
+    <a href="../install/" class="dropdown-item">Install</a>
 </li>
                                     
 <li>
-    <a href="../command_guide.md" class="dropdown-item">Distkv Command Guide</a>
+    <a href="./" class="dropdown-item active">Command Guide</a>
 </li>
                                     
 <li>
     <a href="../java_client_sdk.md" class="dropdown-item">Java Client SDK</a>
+</li>
+                                    
+<li>
+    <a href="../pine.md" class="dropdown-item">Pine Ecosystem</a>
 </li>
                                 </ul>
                             </li>
@@ -92,7 +96,7 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href=".." class="nav-link">
+                                <a rel="prev" href="../install/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
@@ -102,7 +106,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/how_to_install.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/command_guide.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -122,17 +126,37 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="2"><a href="#environment" class="nav-link">Environment</a>
+            <li class="nav-item" data-level="2"><a href="#introduction" class="nav-link">Introduction</a>
               <ul class="nav flex-column">
               </ul>
             </li>
             
-            <li class="nav-item" data-level="2"><a href="#build-from-source" class="nav-link">Build From Source</a>
+            <li class="nav-item" data-level="2"><a href="#1-string-concept" class="nav-link">1. String Concept</a>
               <ul class="nav flex-column">
               </ul>
             </li>
             
-            <li class="nav-item" data-level="2"><a href="#run-unit-tests" class="nav-link">Run Unit Tests</a>
+            <li class="nav-item" data-level="2"><a href="#2-list-concept" class="nav-link">2. List Concept</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#3-set-concept" class="nav-link">3. Set concept</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#4-dict-concept" class="nav-link">4. Dict concept</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#5-sortedlist-concept" class="nav-link">5. SortedList Concept</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#6-table-concept" class="nav-link">6. Table concept</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -141,58 +165,214 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h2 id="environment">Environment</h2>
-<p>The environment requirements of Distkv are:</p>
-<ul>
-<li>JDK &gt;= 1.8.0</li>
-<li>Maven &gt;= 3.5.0</li>
-<li>Python &gt;= 3.5</li>
-</ul>
-<h2 id="build-from-source">Build From Source</h2>
-<p>The following steps guide you to build a full version Distkv with <code>dkv-server</code> and <code>dkv-cli</code>.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Distkv is a type-oriented database system. There are several concepts in Distkv that looks like the basic collections.
+We have 6 concepts <code>string</code>, <code>list</code>, <code>set</code>, <code>dict</code>, <code>sortedlist</code> and <code>table</code> yet.</p>
+<p>In this section, you will learn the grammer of these basic concepts in Distkv, and will learn how to use these concepts as examples as well.</p>
+<h2 id="1-string-concept">1. String Concept</h2>
+<p>Put a string value into Distkv store.</p>
+<pre><code class="bash">str.put key value
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">$ dkv-cli &gt; str.put k1 v1
+$ dkv-cli &gt; ok
+</code></pre>
+
+<p>Get a string value from Distkv store.</p>
+<pre><code class="bash">str.get key
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; str.get k1
+dkv-cli &gt; v1
+</code></pre>
+
+<p>Drop a string value from Distkv store.</p>
+<pre><code class="bash">str.drop key
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; str.drop k1
+dkv-cli &gt; ok
+
+dkv-cli &gt; str.get k1
+dkv-cli &gt; errorCode: A100;
+ Detail: The key k1 is not found in the store.
+</code></pre>
+
+<h2 id="2-list-concept">2. List Concept</h2>
+<p>Put a list into Distkv store.</p>
+<pre><code class="bash">list.put key value1 [value2 [value3 [...]]]
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.put k1 v1 v2 v3
+dkv-cli &gt; ok
+</code></pre>
+
+<p>Get a list from Distkv store.</p>
+<pre><code class="bash">list.get key
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.get k1
+dkv-cli &gt; [v1, v2, v3]
+</code></pre>
+
+<p>Get a range of items of the list from Distkv store.</p>
+<pre><code class="bash"># Note that it's excluding the `end_index`.
+list.get key from_index end_index
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.get k1 0 2
+dkv-cli &gt; [v1, v2]
+</code></pre>
+
+<p>Get one item of the list from Distkv store.</p>
+<pre><code class="bash">list.get key index
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.get k1 1
+dkv-cli &gt; v1
+</code></pre>
+
+<p>Put items into the front of the list.</p>
+<pre><code class="bash">list.lput key value1 [value2 [value3 [...]]]
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.lput &quot;k1&quot; &quot;v4&quot; &quot;v5&quot; &quot;v6&quot;
+dkv-cli &gt; ok
+</code></pre>
+
+<p>Put items into the back of the list.</p>
+<pre><code class="bash">list.rput key value1 [value2 [value3 [...]]]
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.rput &quot;k1&quot; &quot;v7&quot;
+dkv-cli &gt; ok
+</code></pre>
+
+<p>Remove the item from the list with the given index.</p>
+<pre><code class="bash">list.ldel key index
+</code></pre>
+
+<p>example:</p>
+<pre><code class="bash">dkv-cli &gt; list.ldel &quot;k1&quot; 2
+dkv-cli &gt; ok
+</code></pre>
+
+<pre><code class="bash">dkv-cli &gt; list.rdel &quot;k1&quot; 2
+dkv-cli &gt; ok
+
+dkv-cli &gt; list.get &quot;k1&quot;
+dkv-cli &gt; [&quot;v6&quot;, &quot;v1&quot;, &quot;v2&quot;]
+</code></pre>
+
+<h2 id="3-set-concept">3. Set concept</h2>
+<pre><code class="bash">dkv-cli &gt; set.put &quot;k1&quot; &quot;v1&quot; &quot;v2&quot; &quot;v3&quot;
+dkv-cli &gt; ok
+
+dkv-cli &gt; set.get &quot;k1&quot;
+dkv-cli &gt; {&quot;v1&quot;, &quot;v2&quot;, &quot;v3&quot;}
+
+dkv-cli &gt; set.del &quot;k1&quot; &quot;v1&quot;
+dkv-cli &gt; ok
+
+dkv-cli &gt; set.get &quot;k1&quot;
+dkv-cli &gt; {&quot;v2&quot;, &quot;v3&quot;}
+
+dkv-cli &gt; set.exists &quot;k1&quot; &quot;v2&quot;
+dkv-cli &gt; true
+
+dkv-cli &gt; set.exists &quot;k1&quot; &quot;v4&quot;
+dkv-cli &gt; false
+
+dkv-cli &gt; set.drop &quot;k1&quot;
+dkv-cli &gt; ok
+</code></pre>
+
+<h2 id="4-dict-concept">4. Dict concept</h2>
+<pre><code class="bash">dkv-cli &gt; dict.put &quot;dict1&quot; &quot;k1&quot; &quot;v1&quot; &quot;k2&quot; &quot;v2&quot;
+dkv-cli &gt; ok
+
+dkv-cli &gt; dict.get &quot;dict1&quot;
+dkv-cli &gt; { &quot;k1&quot; : &quot;v1&quot;, &quot;k2&quot; : &quot;v2&quot;}
+
+dkv-cli &gt; dict.get &quot;dict1&quot; &quot;k1&quot;
+dkv-cli &gt; &quot;v1&quot;
+
+dkv-cli &gt; dict.get &quot;dict1&quot; &quot;k1&quot;
+dkv-cli &gt; &quot;v1&quot;
+
+dkv-cli &gt; dict.del &quot;dict1&quot; &quot;k1&quot;
+dkv-cli &gt; ok
+
+dkv-cli &gt; dict.pop &quot;dict1&quot; &quot;k2&quot;
+dkv-cli &gt; &quot;v2&quot;
+
+dkv-cli &gt; dict.get &quot;dict1&quot;
+dkv-cli &gt; []
+
+dkv-cli &gt; dict.drop &quot;dict1&quot;
+dkv-cli &gt; ok
+</code></pre>
+
+<h2 id="5-sortedlist-concept">5. SortedList Concept</h2>
+<h2 id="6-table-concept">6. Table concept</h2>
 <ol>
-<li>
-<p>Clone the Distkv repository to your local.</p>
-<pre><code>git clone https://github.com/distkv-project/distkv.git
-</code></pre>
-</li>
-<li>
-<p>Enter the root directory of Distkv.</p>
-<pre><code>cd distkv
-</code></pre>
-</li>
-<li>
-<p>Install the dependencies of Distkv.</p>
-<pre><code>bash scripts/install_dependencies.sh
-</code></pre>
-</li>
-<li>
-<p>Install Distkv.</p>
-<pre><code>pip install -e deploy/python -v
-</code></pre>
-</li>
+<li>Define your data structure in a schema file named <code>mytables.sc</code></li>
 </ol>
-<p>After the 4 steps, the Distkv should be installed successfully on you local. Type <code>dkv-server --version</code> to have a check.</p>
-<h2 id="run-unit-tests">Run Unit Tests</h2>
-<p>If you'd like to run the unit tests of Distkv, you needn't build the full version Distkv. Just follow the following steps to build a simple version of Distkv and run the unit tests.</p>
+<pre><code class="shell">table TaskTable {
+  [p]task_id: string;
+  [i]driver_id: string;
+  task_name: string;
+  return_num: int;
+  arguments: [string];
+}
+</code></pre>
+
+<pre><code class="shell">table DriverTable {
+ [p]driver_id: string;
+ driver_name: string;
+ actor_num: int;
+};
+</code></pre>
+
 <ol>
-<li>
-<p>Install the dependencies of Distkv.</p>
-<pre><code>bash scripts/install_dependencies.sh
-</code></pre>
-</li>
-<li>
-<p>Build with skiping tests.</p>
-<pre><code>mvn clean install -DskipTests
-</code></pre>
-</li>
-<li>
-<p>If you'd like to run the tests, use this command.</p>
-<pre><code>mvn test
-</code></pre>
-</li>
+<li>Start an distkv server and execute this command to create table:</li>
 </ol>
-<p>If there is no error appearing, congratulations, you have succeeded to build Distkv and pass all tests.</p></div>
+<pre><code class="shell">&gt; dkv-cli -p 12344 # connect to distkv server
+&gt; create TaskTable, DriverTable from mytables.sc
+</code></pre>
+
+<ol>
+<li>Add data to the table:</li>
+</ol>
+<pre><code class="shell">&gt; TaskTable.add &quot;00001&quot;, &quot;22222&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
+&lt; ok
+&gt; TaskTable.add &quot;00002&quot;, &quot;99999&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
+&lt; ok
+&gt; TaskTable.add &quot;00003&quot;, &quot;22222&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
+&lt; ok
+&gt; DriverTable.add &quot;22222&quot;, &quot;my_driver&quot;, 10
+&lt; ok
+</code></pre>
+
+<ol>
+<li>Query all tasks by driver id:</li>
+</ol>
+<pre><code class="shell">&gt; TaskTable.query (*) when driver_id == &quot;22222&quot;
+&lt;
+&lt; task_id      driver_id     task_name      num_return      arguments
+&lt; &quot;00001&quot;      &quot;22222&quot;       &quot;my_task&quot;      3               [&quot;1&quot;, &quot;2&quot;]
+&lt; &quot;00003&quot;      &quot;22222&quot;       &quot;my_task&quot;      3               [&quot;1&quot;, &quot;2&quot;]
+&lt; 2 records
+</code></pre></div>
             </div>
         </div>
 
