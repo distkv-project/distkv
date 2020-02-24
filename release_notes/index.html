@@ -6,17 +6,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Distkv Team">
-        <link rel="canonical" href="https://distkv.com/nope/client_tool/">
-        <link rel="shortcut icon" href="../../res/distkv_logo.png">
+        <link rel="canonical" href="https://distkv.com/release_notes/">
+        <link rel="shortcut icon" href="../res/distkv_logo.png">
         
-        <title>Client tool - Distkv</title>
-        <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
+        <title>Release Notes - Distkv</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
 
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap.min.js" defer></script>
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
         <script>
@@ -33,7 +33,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="../..">Distkv</a>
+                <a class="navbar-brand" href="..">Distkv</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -44,42 +44,42 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="navitem">
-                                <a href="../.." class="nav-link">Overview</a>
+                                <a href=".." class="nav-link">Overview</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../install/" class="dropdown-item">Install</a>
+    <a href="../install/" class="dropdown-item">Install</a>
 </li>
                                     
 <li>
-    <a href="../../command_guide/" class="dropdown-item">Command Guide</a>
+    <a href="../command_guide/" class="dropdown-item">Command Guide</a>
 </li>
                                     
 <li>
-    <a href="../../java_client_sdk.md" class="dropdown-item">Java Client SDK</a>
+    <a href="../java_client_sdk.md" class="dropdown-item">Java Client SDK</a>
 </li>
                                     
 <li>
-    <a href="../../pine.md" class="dropdown-item">Pine Ecosystem</a>
+    <a href="../pine.md" class="dropdown-item">Pine Ecosystem</a>
 </li>
                                 </ul>
                             </li>
                             <li class="navitem">
-                                <a href="../../download.md" class="nav-link">Download</a>
+                                <a href="../download.md" class="nav-link">Download</a>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown active">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="../../release_notes/" class="dropdown-item">Release Notes</a>
+    <a href="./" class="dropdown-item active">Release Notes</a>
 </li>
                                     
 <li>
-    <a href="../../contributors/" class="dropdown-item">Contributors</a>
+    <a href="../contributors/" class="dropdown-item">Contributors</a>
 </li>
                                 </ul>
                             </li>
@@ -92,7 +92,17 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/nope/client_tool.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a rel="prev" href="../command_guide/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../contributors/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/release_notes.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -111,12 +121,102 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#release-013" class="nav-link">Release 0.1.3</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#release-012" class="nav-link">Release 0.1.2</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#release-011" class="nav-link">Release 0.1.1</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="2"><a href="#release-010" class="nav-link">Release 0.1.0</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p>The <code>Dst client tool</code> is an useful tool to access a Dst server.</p></div>
+<h2 id="release-013">Release 0.1.3</h2>
+<p>date: 22 Feb 2020</p>
+<h4 id="features">Features</h4>
+<ul>
+<li>Implement DstSortedListLinkedImpl for sorted list (#378)</li>
+<li>Add Distkv docker support (#411)</li>
+<li>Refine client with 1 client instance for all concepts (#413)</li>
+<li>Add BSD-3-clause LICENSE (#422)</li>
+<li>Support that master sync the requests to slaves (#435)</li>
+<li>Upgrade protobuf to proto3 (#458)</li>
+<li>Enable io thread only for dousi server (#460)</li>
+<li>Refine the relationship between worker, worker pool and store runtime (#467)</li>
+<li>Remove legacy table concept (#485)</li>
+<li>Support namespace filter for client to allow key conflicts (#504)</li>
+<li>Make SyncClient wrap the AsyncClient. (#506)</li>
+<li>Add namespace command executor (#508)</li>
+<li>The POC of non heap hash map for store. (#507)</li>
+<li>[Pine] Init pine module as the ecosystem of Distkv. (#518)</li>
+<li>Add deactive namespace support (#521)</li>
+<li>[Pine] Support PineTopper as a component of distkv ecosystem. (#520)</li>
+</ul>
+<h4 id="bug-fix">Bug Fix</h4>
+<ul>
+<li>Fix jmh bug (#481)</li>
+<li>Fix SortedListLinkedImpl bug (#487)</li>
+<li>Fix start dkv server and cli not work (#490)</li>
+<li>Fix keyboardinterrept exception (#512)</li>
+<li>Fix package wheel and deploy (#519)</li>
+</ul>
+<h2 id="release-012">Release 0.1.2</h2>
+<p>date: 29 Dec 2019</p>
+<h4 id="features_1">Features</h4>
+<ul>
+<li>Support asynchronous services.(#294 )</li>
+<li>Support Dst asynchronous client.(#333 #340 #341 )</li>
+<li>Enable new DstExecutor.(#314 #294 #321 #342 #343 #347 )</li>
+<li>Introduce Dmeta Module to Dst.(#290 )</li>
+<li>Introduce drpc to replace brpc.(#291 #307 #345 #364 )</li>
+<li>Support Dst Error code System.(#306 )</li>
+<li>Use HashMap instead of ConcurrentHashMap in core module.(#350 )</li>
+<li>Refactor the Dst core module.(#352 #316 #361 #371 )</li>
+<li>Refine and optimize the API.(#322 #317 #325 #328 #339 )</li>
+<li>Support Dst configuration classes.(#387 )</li>
+</ul>
+<h4 id="bug-fix_1">Bug Fix</h4>
+<ul>
+<li>Fix command line tool.(#296 )</li>
+<li>Fix client disconnection.(#319 )</li>
+<li>Fix unexpected output in the command line.(#358 )</li>
+<li>Fix the bug of out of index of the the shard index.(#365 )</li>
+<li>Fix list removeRange.(#389 )</li>
+</ul>
+<h2 id="release-011">Release 0.1.1</h2>
+<p>date: 30 Nov 2019</p>
+<h4 id="features_2">Features:</h4>
+<ul>
+<li>Support DstNewSQL, Parser and new client tool with antlr4(#236 #237 #242 #249 #264 #265 #263 #266 )</li>
+<li>Support table concept in core module (#155 )</li>
+<li>Support SortedList in core module (#186 )</li>
+<li>Support DstConcurrentQueue interface and DefaultConcurrentQueue (#248 )</li>
+<li>Refine rpc services (#251 #260 #255 )</li>
+<li>Rename group id from org.dst to com.distkv.dst(#282 )</li>
+</ul>
+<h2 id="release-010">Release 0.1.0</h2>
+<p>date: 22 Sep 2019</p>
+<h4 id="features_3">Features:</h4>
+<ul>
+<li>Support Redis-like structure: str, set, list and dict.</li>
+<li>Support dst-cli client tool.</li>
+<li>Support Java client SDK with sync client.</li>
+</ul></div>
             </div>
         </div>
 
@@ -126,11 +226,11 @@
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = "../..",
+            var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="../../js/base.js" defer></script>
-        <script src="../../search/main.js" defer></script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
