@@ -28,15 +28,23 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
             .build();
 
     rpcClient = new NettyClient(clientConfig);
-    rpcClient.open();
-    Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
-    distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-    stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
-    listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
-    setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
-    dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
-    sortedListProxy = new DistkvAsyncSortedListProxy(this, distkvRpcProxy.getService(rpcClient));
+    try {
+      rpcClient.open();
+    }catch (Exception e){
+      throw new DistkvException("Connected failed.",e);
+    }
+
+        Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
+        distkvRpcProxy.setInterfaceClass(DistkvService.class);
+
+        stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
+        listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
+        setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
+        dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
+        sortedListProxy = new DistkvAsyncSortedListProxy(this,
+            distkvRpcProxy.getService(rpcClient));
+
   }
 
   @Override
