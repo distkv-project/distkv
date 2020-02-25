@@ -12,10 +12,12 @@ files_need_to_be_packaged = [
     "dkv/jars/distkv-server.jar",
 ]
 
+
 # A helper method to locate the current dir.
 def get_current_dir():
     this_dir = os.path.dirname(os.path.realpath(__file__))
     return this_dir
+
 
 class build_ext(_build_ext.build_ext):
     def run(self):
@@ -45,12 +47,20 @@ class BinaryDistribution(Distribution):
     def has_ext_modules(self):
         return True
 
+
+read_me_file = os.path.join(get_current_dir(), "../../README.md")
+description = 'A distributed key-value in-memory store system with table concept.'
+if os.path.exists(read_me_file):
+    long_description = open(read_me_file).read()
+else:
+    long_description = description
+
 setup(
     name='dkv',
     version='0.1.4',
-    description='A distributed key-value in-memory store system with table concept.',
+    description=description,
     long_description_content_type="text/markdown",
-    long_description=open("../../README.md").read(),
+    long_description=long_description,
     author='Qing Wang',
     author_email='kingchin1218@gmail.com',
     license='BSD-3-clause',
@@ -67,7 +77,7 @@ setup(
         "console_scripts": [
             "dkv-server=dkv.distkv_server:main",
             "dkv-cli=dkv.distkv_cli:main",
-       ]
-   },
-   include_package_data=True,
+        ]
+    },
+    include_package_data=True,
 )
