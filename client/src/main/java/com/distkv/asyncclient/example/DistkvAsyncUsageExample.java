@@ -3,6 +3,7 @@ package com.distkv.asyncclient.example;
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
@@ -29,6 +30,8 @@ public class DistkvAsyncUsageExample {
           distkvClient.lists().put("k1", Arrays.asList("v1", "v2", "v3"));
       CompletableFuture<DistkvProtocol.DistkvResponse> setPutFuture =
           distkvClient.sets().put("k1", new HashSet<>(Arrays.asList("v1", "v2", "v3")));
+      CompletableFuture<DistkvProtocol.DistkvResponse> intPutFuture =
+          distkvClient.ints().put("k1", 1);
       Map<String, String> map = new HashMap<>();
       map.put("k1", "v1");
       map.put("k2", "v2");
@@ -46,6 +49,13 @@ public class DistkvAsyncUsageExample {
           throw new IllegalStateException(t);
         } else {
           System.out.println("String put completed.");
+        }
+      });
+      intPutFuture.whenComplete((r, t) -> {
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("Int put completed.");
         }
       });
       listPutFuture.whenComplete((r, t) -> {
@@ -71,12 +81,15 @@ public class DistkvAsyncUsageExample {
       });
 
       strPutFuture.get();
+      intPutFuture.get();
       listPutFuture.get();
       setPutFuture.get();
       dictPutFuture.get();
 
       CompletableFuture<DistkvProtocol.DistkvResponse> strGetFuture =
           distkvClient.strs().get("k1");
+      CompletableFuture<DistkvProtocol.DistkvResponse> intGetFuture =
+          distkvClient.ints().get("k1");
       CompletableFuture<DistkvProtocol.DistkvResponse> listGetFuture =
           distkvClient.lists().get("k1");
       CompletableFuture<DistkvProtocol.DistkvResponse> setGetFuture =
@@ -89,6 +102,13 @@ public class DistkvAsyncUsageExample {
           throw new IllegalStateException(t);
         } else {
           System.out.println("String get completed.");
+        }
+      });
+      intGetFuture.whenComplete((r, t) -> {
+        if (t != null) {
+          throw new IllegalStateException(t);
+        } else {
+          System.out.println("Int get completed.");
         }
       });
       listGetFuture.whenComplete((r, t) -> {
@@ -114,12 +134,15 @@ public class DistkvAsyncUsageExample {
       });
 
       DistkvProtocol.DistkvResponse strGet = strGetFuture.get();
+      DistkvProtocol.DistkvResponse intGet = strGetFuture.get();
       DistkvProtocol.DistkvResponse listGet = listGetFuture.get();
       DistkvProtocol.DistkvResponse setGet = setGetFuture.get();
       DistkvProtocol.DistkvResponse dictGet = dictGetFuture.get();
 
       System.out.println("The result of distkvClient.strs().get(\"k1\") is: "
           + strGet.getResponse().unpack(StringProtocol.StrGetResponse.class).getValue());
+      System.out.println("The result of distkvClient.ints().get(\"k1\") is: "
+          + intGet.getResponse().unpack(IntProtocol.IntGetResponse.class).getValue());
       System.out.println("The result of distkvClient.lists().get(\"k1\") is: "
           + listGet.getResponse().unpack(ListProtocol.ListGetResponse.class).getValuesList());
       System.out.println("The result of distkvClient.sets().get(\"k1\") is: "
