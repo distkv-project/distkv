@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Distkv, Ready Go!</title>
+    <script typet="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+        input, button {
+            border: none;
+            outline: none;
+        }
+        .tl-price-input{
+            size: 150px;
+            width: 100%;
+            border: 1px solid #ccc;
+            padding: 7px 0;
+            background: #F4F4F7;
+            border-radius: 3px;
+            padding-left:5px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+        }
+        .tl-price-input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+        }
+        .link {
+            outline: none;
+            text-decoration: none;
+            position: relative;
+            font-size: 40px;
+            line-height: 1;
+            color: #9e9ba4;
+            display: inline-block;
+        }
+        .link--kukuri {
+            /*text-transform: uppercase;*/
+            font-weight: 900;
+            overflow: hidden;
+            line-height: 0.75;
+            color: #b2b0a9;
+        }
+
+        .link--kukuri:hover {
+            color: #b2b0a9;
+        }
+
+        .link--kukuri::after {
+            content: '';
+            position: absolute;
+        height: 16px;
+            width: 100%;
+            top: 50%;
+            margin-top: -8px;
+            right: 0;
+            background: #F9F9F9;
+            transform: translate3d(-100%,0,0);
+            transition: transform 0.4s;
+            transition-timing-function: cubic-bezier(0.7,0,0.3,1);
+        }
+
+        .link--kukuri:hover::after {
+            transform: translate3d(100%,0,0);
+        }
+
+        .link--kukuri::before {
+            content: attr(data-letters);
+            position: absolute;
+            z-index: 2;
+            overflow: hidden;
+            color: #424242;
+            white-space: nowrap;
+            width: 0%;
+            transition: width 0.4s 0.3s;
+        }
+
+        .link--kukuri:hover::before {
+            width: 100%;
+        }
+        .ant-btn {
+            line-height: 1.499;
+            position: relative;
+            display: inline-block;
+            font-weight: 400;
+            white-space: nowrap;
+            text-align: center;
+            background-image: none;
+            border: 1px solid transparent;
+            -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.015);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.015);
+            cursor: pointer;
+            -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            height: 32px;
+            padding: 0 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            color: rgba(0,0,0,0.65);
+            background-color: #fff;
+            border-color: #d9d9d9;
+        }
+
+        .ant-btn-red {
+            color: #fff;
+            background-color: #FF5A44;
+            border-color: #FF5A44;
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+        }
+    </style>
+</head>
+
+<body>
+<br id="my_area">
+    <div class="link link--kukuri">
+        <p>Please type your Distkv command.</p>
+    </div>
+    <div>
+        <span id="tss"> dkv-cli> welcome ~ </span>
+    </div>
+    <div id="display_area">
+        </br>
+    </div>
+    <input type="text" name="text" id="command_text" class="tl-price-input" style="width: 300px; height: 40px; font-size: 16px">
+    <button type="button" class="ant-btn ant-btn-red" style="width: 100px; height: 30px; font-size: 14px" onclick="loadJSON()">run</button>
+</div>
+
+<script type="text/javascript">
+    function loadJSON(){
+        var value =$("#command_text").val();
+        $("#tss").append("</br>dkv-cli> " + value + "</br>")
+        $.ajax({
+            type:"get",
+            dataType:"text",
+            url:"http://127.0.0.1:12223/run_cli",
+            data:{text:value},
+            async:true,
+            error:function(){
+                alert("connection not!");
+            },
+            success:function(data){
+                $("#tss").append("dkv-cli> " + data)
+            }
+        });
+    }
+
+    function sleep(delay) {
+        var start = (new Date()).getTime();
+        while ((new Date()).getTime() - start < delay) {
+            continue;
+        }
+    }
+</script>
+</body>
+</html>

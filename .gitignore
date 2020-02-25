@@ -51,3 +51,6 @@ deploy/python/__pycache__/
 deploy/python/*.egg-info/
 deploy/python/dist/
 **__pycache__**
+
+# mkdocs generated files
+site
