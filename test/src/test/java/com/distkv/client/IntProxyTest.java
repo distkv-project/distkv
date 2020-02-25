@@ -1,7 +1,6 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.utils.Status;
 import com.distkv.supplier.BaseTestSupplier;
 
 import com.google.protobuf.InvalidProtocolBufferException;
