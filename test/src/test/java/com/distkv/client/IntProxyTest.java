@@ -15,10 +15,10 @@ public class IntProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     try {
       client.ints().put("k1", 1);
-      Assert.assertEquals(1, client.strs().get("k1"));
+      Assert.assertEquals(1, client.ints().get("k1"));
       client.ints().incr("k1", 2);
-      Assert.assertEquals(3, client.strs().get("k1"));
-      Assert.assertEquals(Status.OK, client.strs().drop("k1"));
+      Assert.assertEquals(3, client.ints().get("k1"));
+      Assert.assertTrue(client.ints().drop("k1"));
     } finally {
       client.disconnect();
     }

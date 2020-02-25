@@ -15,6 +15,7 @@ import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
@@ -136,7 +137,11 @@ public class Worker extends Thread {
       case SORTED_LIST_DROP:
       case SORTED_LIST_PUT_MEMBER:
       case SORTED_LIST_INCR_SCORE:
-      case SORTED_LIST_REMOVE_MEMBER: {
+      case SORTED_LIST_REMOVE_MEMBER:
+      case INT_PUT:
+      case INT_GET:
+      case INT_INCR:
+      case INT_DROP: {
         return true;
       }
       default: {
@@ -691,6 +696,56 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
           LOGGER.error("Failed to get slist member in store :{1}", e);
+          status = CommonProtocol.Status.UNKNOWN_ERROR;
+        }
+        builder.setStatus(status);
+        break;
+      }
+      case INT_PUT: {
+        IntProtocol.IntPutRequest intPutRequest = distkvRequest.getRequest()
+            .unpack(IntProtocol.IntPutRequest.class);
+        storeEngine.ints().put(key, intPutRequest.getValue());
+        builder.setStatus(CommonProtocol.Status.OK);
+        break;
+      }
+      case INT_DROP: {
+        CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
+        try {
+          Status localStatus = storeEngine.ints().drop(key);
+          if (localStatus == Status.OK) {
+            status = CommonProtocol.Status.OK;
+          } else if (localStatus == Status.KEY_NOT_FOUND) {
+            status = CommonProtocol.Status.KEY_NOT_FOUND;
+          }
+        } catch (DistkvException e) {
+          LOGGER.error("Failed to drop a string to store :{1}", e);
+        }
+        builder.setStatus(status);
+        break;
+      }
+      case INT_GET: {
+        try {
+          int value = storeEngine.ints().get(key);
+          IntProtocol.IntGetResponse intBuilder = IntProtocol.IntGetResponse
+              .newBuilder().setValue(value).build();
+          builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(intBuilder));
+        } catch (KeyNotFoundException e) {
+          builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+        }
+        break;
+      }
+      case INT_INCR: {
+        IntProtocol.IntIncrRequest intIncrRequest = distkvRequest
+            .getRequest()
+            .unpack(IntProtocol.IntIncrRequest.class);
+        CommonProtocol.Status status;
+        try {
+          storeEngine.ints().incr(key, intIncrRequest.getDelta());
+          status = CommonProtocol.Status.OK;
+        } catch (KeyNotFoundException e) {
+          status = CommonProtocol.Status.KEY_NOT_FOUND;
+        } catch (DistkvException e) {
+          LOGGER.error("Failed to incr a int value in ints store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
         builder.setStatus(status);
