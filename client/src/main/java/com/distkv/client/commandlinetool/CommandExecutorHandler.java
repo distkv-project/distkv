@@ -12,6 +12,7 @@ import com.distkv.rpc.protobuf.generated.DictProtocol.DictPutRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictRemoveItemRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DistKVDict;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.IntProtocol.IntPutRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListGetRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListLPutRequest;
@@ -461,4 +462,29 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
+  public static String intPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      IntPutRequest intPutRequest = request.getRequest().unpack(IntPutRequest.class);
+      distkvClient.strs().put(request.getKey(), intPutRequest.getValue());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static String strGet(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      return distkvClient.strs().get(request.getKey());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+  }
+
+  public static String strDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.strs().drop(request.getKey());
+    return STATUS_OK;
+  }
 }

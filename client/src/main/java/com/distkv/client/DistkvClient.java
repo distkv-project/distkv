@@ -1,5 +1,7 @@
 package com.distkv.client;
 
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+
 /**
  * The DstClient class is used to connect to the dst server.
  */
@@ -75,4 +77,11 @@ public interface DistkvClient {
    * @return The dst sortedList proxy.
    */
   DistkvSortedListProxy sortedLists();
+
+  /**
+   * Get the distkv int proxy
+   *
+   * @return The distkv int proxy
+   */
+
 }
