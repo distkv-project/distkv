@@ -61,8 +61,8 @@ public class DistkvUsageExample {
           "{ First: " + slistResult.get(0).getMember() +
           "; Second: " + slistResult.get(1).getMember() +
           "; Third: " + slistResult.get(2).getMember() + "; }");
-      System.out.println("In the key \"k1\" of distkvClient.sortedLists(), the member name is \"a\", "
-          + "its rank is " + distkvClient.sortedLists().getMember("k1", "a").getSecond()
+      System.out.println("In the key \"k1\" of distkvClient.sortedLists(), the member name is "
+          + "\"a\", its rank is " + distkvClient.sortedLists().getMember("k1", "a").getSecond()
           + " and its score is " + distkvClient.sortedLists().getMember("k1", "a").getFirst());
 
       // print ints result
