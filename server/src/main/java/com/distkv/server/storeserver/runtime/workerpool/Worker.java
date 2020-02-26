@@ -139,7 +139,6 @@ public class Worker extends Thread {
       case SORTED_LIST_INCR_SCORE:
       case SORTED_LIST_REMOVE_MEMBER:
       case INT_PUT:
-      case INT_GET:
       case INT_INCR:
       case INT_DROP: {
         return true;
@@ -718,7 +717,7 @@ public class Worker extends Thread {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
         } catch (DistkvException e) {
-          LOGGER.error("Failed to drop a string to store :{1}", e);
+          LOGGER.error("Failed to drop a int to store :{1}", e);
         }
         builder.setStatus(status);
         break;
