@@ -2,18 +2,20 @@ package com.distkv.parser;
 
 import com.distkv.parser.generated.DistkvNewSQLBaseListener;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.IntProtocol;
+import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
-import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.protobuf.generated.DictProtocol;
+import com.distkv.rpc.protobuf.generated.StringProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Any;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.distkv.parser.generated.DistkvNewSQLParser;
 import com.distkv.parser.po.DistkvParsedResult;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -599,5 +601,77 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
         .build();
     parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_GET_MEMBER,
         request);
+  }
+
+  @Override
+  public void enterIntPut(DistkvNewSQLParser.IntPutContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    IntProtocol.IntPutRequest.Builder intPutBuilder =
+            IntProtocol.IntPutRequest.newBuilder();
+    intPutBuilder.setValue(Integer.valueOf(ctx.children.get(2).getText()));
+    DistkvRequest request = DistkvRequest.newBuilder()
+          .setKey(ctx.children.get(1).getText())
+          .setRequestType(RequestType.INT_PUT)
+          .setRequest(Any.pack(intPutBuilder.build()))
+          .build();
+    parsedResult = new DistkvParsedResult(RequestType.INT_PUT, request);
+  }
+
+  @Override
+  public void enterIntGet(DistkvNewSQLParser.IntGetContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    DistkvRequest request = DistkvRequest.newBuilder()
+            .setKey(ctx.children.get(1).getText())
+            .setRequestType(RequestType.INT_GET)
+            .build();
+    parsedResult = new DistkvParsedResult(RequestType.INT_GET, request);
+  }
+
+  @Override
+  public void enterIntDrop(DistkvNewSQLParser.IntDropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    DistkvRequest request = DistkvRequest.newBuilder()
+            .setKey(ctx.children.get(1).getText())
+            .setRequestType(RequestType.INT_DROP)
+            .build();
+    parsedResult = new DistkvParsedResult(RequestType.INT_DROP, request);
+  }
+
+  @Override
+  public void enterIntIncrDefault(DistkvNewSQLParser.IntIncrDefaultContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 1);
+
+    IntProtocol.IntIncrRequest.Builder intIncrBuilder =
+            IntProtocol.IntIncrRequest.newBuilder();
+    intIncrBuilder.setDelta(1);
+    DistkvRequest request = DistkvRequest.newBuilder()
+            .setKey(ctx.children.get(0).getText())
+            .setRequestType(RequestType.INT_INCR)
+            .setRequest(Any.pack(intIncrBuilder.build()))
+            .build();
+    parsedResult = new DistkvParsedResult(RequestType.INT_INCR, request);
+  }
+
+  @Override
+  public void enterIntIncrDelta(DistkvNewSQLParser.IntIncrDeltaContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    IntProtocol.IntIncrRequest.Builder intIncrBuilder =
+            IntProtocol.IntIncrRequest.newBuilder();
+    intIncrBuilder.setDelta(Integer.valueOf(ctx.children.get(1).getText()));
+    DistkvRequest request = DistkvRequest.newBuilder()
+            .setKey(ctx.children.get(0).getText())
+            .setRequestType(RequestType.INT_INCR)
+            .setRequest(Any.pack(intIncrBuilder.build()))
+            .build();
+    parsedResult = new DistkvParsedResult(RequestType.INT_INCR, request);
   }
 }

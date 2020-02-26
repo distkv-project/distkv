@@ -70,6 +70,19 @@ dkv-cli > slist.top "k1" 2
 dkv-cli > [("m1", 4), ("m3", 0)]
 dkv-cli > slist.getMember "k1" "m2"
 dkv-cli > ("m2", -4), 3rd
+
+dkv-cli > int.put "k1" 1
+dkv-cli > ok
+dkv-cli > int.get "k1"
+dkv-cli > 1
+dkv-cli > int.incr "k1" 2
+dkv-cli > ok
+dkv-cli > int.get "k1"
+dkv-cli > 3
+dkv-cli > int.incr "k1"
+dkv-cli > ok
+dkv-cli > int.get "k1"
+dkv-cli > 4
 ```
 
 ## Client SDK

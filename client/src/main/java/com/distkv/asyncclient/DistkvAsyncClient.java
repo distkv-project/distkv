@@ -1,5 +1,6 @@
 package com.distkv.asyncclient;
 
+
 /**
  * The DstAsyncClient class is used to connect to the Dst server and do operations asynchronously.
  */
@@ -70,4 +71,11 @@ public interface DistkvAsyncClient {
    * @return The dst sortedList proxy.
    */
   DistkvAsyncSortedListProxy sortedLists();
+
+  /**
+   * Get the distkv int proxy
+   *
+   * @return The distkv int proxy
+   */
+  DistkvAsyncIntProxy ints();
 }

@@ -20,6 +20,7 @@ public class DistkvUsageExample {
       distkvClient.strs().put("k1", "v1");
       distkvClient.sets().put("k1", new HashSet<>(Arrays.asList("v1", "v2", "v3", "v3")));
       distkvClient.lists().put("k1", new ArrayList<>(Arrays.asList("v1", "v2", "v3")));
+      distkvClient.ints().put("k1", 1);
       Map<String, String> map = new HashMap<>();
       map.put("k1", "v1");
       map.put("k2", "v2");
@@ -39,6 +40,9 @@ public class DistkvUsageExample {
       List<String> listResult = distkvClient.lists().get("k1");
       Map<String, String> mapResult = distkvClient.dicts().get("dict1");
       LinkedList<SortedListEntity> slistResult = distkvClient.sortedLists().top("k1", 3);
+      int intResult = distkvClient.ints().get("k1");
+      distkvClient.ints().incr("k1", -2);
+      int intResultAfterIncr = distkvClient.ints().get("k1");
 
       //print String result
       System.out.println("The result of distkvClient.strs().get(\"k1\") is: " + strResult);
@@ -53,10 +57,18 @@ public class DistkvUsageExample {
       System.out.println("The result of distkvClient.dicts().get(\"dict1\") is: " + mapResult);
 
       //print sortedList result
-      System.out.println("The result of distkvClient.sortedLists().top(\"k1\") is: " +
+      System.out.println("The top3 entities in the \"k1\" of distkvClient.sortedLists() is: " +
           "{ First: " + slistResult.get(0).getMember() +
           "; Second: " + slistResult.get(1).getMember() +
           "; Third: " + slistResult.get(2).getMember() + "; }");
+      System.out.println("In the key \"k1\" of distkvClient.sortedLists(), the member name is "
+          + "\"a\", its rank is " + distkvClient.sortedLists().getMember("k1", "a").getSecond()
+          + " and its score is " + distkvClient.sortedLists().getMember("k1", "a").getFirst());
+
+      // print ints result
+      System.out.println("The result of distkvClient.ints().get(\"k1\") is: " + intResult);
+      System.out.println("The result of distkvClient.ints().get(\"k1\") "
+          + "after increasing the value -2 is: " + intResultAfterIncr);
 
       distkvClient.disconnect();
     }
