@@ -65,6 +65,12 @@ enum RequestType {
     SORTED_LIST_PUT_MEMBER = 505;
     SORTED_LIST_REMOVE_MEMBER = 506;
     SORTED_LIST_GET_MEMBER = 507;
+
+    // int concept
+    INT_PUT = 601;
+    INT_GET = 602;
+    INT_INCR = 603;
+    INT_DROP = 604;
 }
 
 message DistkvRequest {

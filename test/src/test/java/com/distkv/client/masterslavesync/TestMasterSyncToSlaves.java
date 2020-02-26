@@ -5,6 +5,7 @@ import com.distkv.client.DistkvClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -42,6 +43,7 @@ public class TestMasterSyncToSlaves {
     testSetPut(client0[0], client1[0]);
     testDictPut(client0[0], client1[0]);
     testSlistPut(client0[0], client1[0]);
+    testIntPut(client0[0], client1[0]);
     MasterSlaveSyncTestUtil.stopAllProcess();
     System.out.println("m-s sync test over");
   }
@@ -101,5 +103,12 @@ public class TestMasterSyncToSlaves {
     LinkedList<SortedListEntity> tlist1 = client1.sortedLists().top("k1", 100);
     Assert.assertEquals(tlist1.get(0).getMember(), "fw");
     Assert.assertEquals(tlist1.get(1).getMember(), "xswl");
+  }
+
+  public void testIntPut(DistkvClient client0, DistkvClient client1)
+      throws InvalidProtocolBufferException {
+    client0.ints().put("k1", 1);
+    Assert.assertEquals(1, client0.ints().get("k1"));
+    Assert.assertEquals(1, client1.ints().get("k1"));
   }
 }

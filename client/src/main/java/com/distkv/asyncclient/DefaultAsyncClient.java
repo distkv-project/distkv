@@ -11,10 +11,16 @@ import com.distkv.rpc.service.DistkvService;
 public class DefaultAsyncClient implements DistkvAsyncClient {
 
   private DistkvAsyncStringProxy stringProxy;
+
   private DistkvAsyncListProxy listProxy;
+
   private DistkvAsyncSetProxy setProxy;
+
   private DistkvAsyncDictProxy dictProxy;
+
   private DistkvAsyncSortedListProxy sortedListProxy;
+
+  private DistkvAsyncIntProxy intProxy;
 
   /// The rpc client.
   private Client rpcClient;
@@ -43,6 +49,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
     dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
     sortedListProxy = new DistkvAsyncSortedListProxy(this, distkvRpcProxy.getService(rpcClient));
+    intProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -103,6 +110,11 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   @Override
   public DistkvAsyncSortedListProxy sortedLists() {
     return sortedListProxy;
+  }
+
+  @Override
+  public DistkvAsyncIntProxy ints() {
+    return intProxy;
   }
 
 }

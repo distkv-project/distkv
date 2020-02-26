@@ -12,6 +12,8 @@ import com.distkv.rpc.protobuf.generated.DictProtocol.DictPutRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictRemoveItemRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DistKVDict;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.IntProtocol.IntIncrRequest;
+import com.distkv.rpc.protobuf.generated.IntProtocol.IntPutRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListGetRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListLPutRequest;
@@ -31,6 +33,7 @@ import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutRequest;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistRemoveMemberRequest;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopRequest;
 import com.distkv.rpc.protobuf.generated.StringProtocol.StrPutRequest;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -461,4 +464,44 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
+  public static String intPut(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      IntPutRequest intPutRequest = request.getRequest().unpack(IntPutRequest.class);
+      distkvClient.ints().put(request.getKey(), intPutRequest.getValue());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static int intGet(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      return distkvClient.ints().get(request.getKey());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+  }
+
+  public static String intDrop(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.ints().drop(request.getKey());
+    return STATUS_OK;
+  }
+
+  public static String intIncr(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      IntIncrRequest intIncrRequest = request.getRequest().unpack(IntIncrRequest.class);
+      distkvClient.ints().put(request.getKey(), intIncrRequest.getDelta());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
 }
