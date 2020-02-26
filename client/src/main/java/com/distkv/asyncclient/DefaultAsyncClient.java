@@ -31,18 +31,18 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
     try {
       rpcClient.open();
-    }catch (Exception e){
+    } catch (Exception e) {
       throw new DistkvException("Connected failed.",e);
     }
 
-        Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
-        distkvRpcProxy.setInterfaceClass(DistkvService.class);
+    Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
+    distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-        stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
-        listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
-        setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
-        dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
-        sortedListProxy = new DistkvAsyncSortedListProxy(this,
+    stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
+    listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
+    setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
+    dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
+    sortedListProxy = new DistkvAsyncSortedListProxy(this,
             distkvRpcProxy.getService(rpcClient));
 
   }
