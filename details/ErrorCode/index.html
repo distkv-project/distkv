@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Distkv Team">
-        <link rel="canonical" href="https://distkv.com/nope/client_tool/">
-        <link rel="shortcut icon" href="../../res/distkv_logo.png">
+        <link rel="canonical" href="https://distkv.com/details/ErrorCode/">
+        <link rel="shortcut icon" href="../../res/logo_30_x_30_cm.png">
         
-        <title>Client tool - Distkv</title>
+        <title>ErrorCode - Distkv</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/font-awesome.min.css" rel="stylesheet">
         <link href="../../css/base.css" rel="stylesheet">
@@ -92,7 +92,7 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/nope/client_tool.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/details/ErrorCode.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -111,12 +111,199 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#dst-errorcode-rule" class="nav-link">Dst-ErrorCode Rule</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p>The <code>Dst client tool</code> is an useful tool to access a Dst server.</p></div>
+<h2 id="dst-errorcode-rule">Dst-ErrorCode Rule</h2>
+<h3 id="introduction">Introduction:</h3>
+<p>Dst-ErrorCode provides specific rules to identify any error that 
+was occurred during the execution.
+According to the rules of ErrorCode, users can clearly interpret 
+the error class information from it.</p>
+<h3 id="the-meaning-of-each-code">The meaning of each code:</h3>
+<h4 id="1-first-digit-data-class-grammatical-errors">1. First digit: Data class / Grammatical errors</h4>
+<table>
+<thead>
+<tr>
+<th>Digit Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Meaningless/Error-free</td>
+</tr>
+<tr>
+<td>A</td>
+<td>String</td>
+</tr>
+<tr>
+<td>B</td>
+<td>List</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Set</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Dict</td>
+</tr>
+<tr>
+<td>E</td>
+<td>SortedList</td>
+</tr>
+<tr>
+<td>F</td>
+<td>Table</td>
+</tr>
+<tr>
+<td>X</td>
+<td>Grammatical error</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-second-digit-common-advanced-error-class">2. Second digit: Common advanced error class</h4>
+<table>
+<thead>
+<tr>
+<th>Digit Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Meaningless/Error-free</td>
+</tr>
+<tr>
+<td>1</td>
+<td>KeyNotFound</td>
+</tr>
+<tr>
+<td>2</td>
+<td>OutOfBounds</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-third-digit-grammatical-error-identification">3. Third digit: Grammatical error identification</h4>
+<table>
+<thead>
+<tr>
+<th>Digit Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Meaningless/Error-free</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Incomprehensible input</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Incorrect number of parameters</td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-fourth-digit-concrete-error-class">4. Fourth digit: Concrete error class</h4>
+<table>
+<thead>
+<tr>
+<th>Digit Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Meaningless/Error-free</td>
+</tr>
+<tr>
+<td>1</td>
+<td>DictKeyNotFound</td>
+</tr>
+<tr>
+<td>2</td>
+<td>ListIndexOutOfBounds</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ItemNotExistInSet</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ItemNotFoundInSortedList</td>
+</tr>
+<tr>
+<td>5</td>
+<td>SortedListTopNumBePositive</td>
+</tr>
+</tbody>
+</table>
+<h3 id="errorcode-list">ErrorCode List:</h3>
+<table>
+<thead>
+<tr>
+<th>ErrorCode</th>
+<th align="center">Meaning</th>
+<th>Suggest</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X010</td>
+<td align="center">Grammatical error. Incomprehensible input.</td>
+<td>Please check your command.</td>
+</tr>
+<tr>
+<td>X020</td>
+<td align="center">Grammatical error. Incorrect number of parameters.</td>
+<td>Please confirm whether the parameters of your command are correct.</td>
+</tr>
+<tr>
+<td>A100</td>
+<td align="center">String command. Key not found.</td>
+<td>Please check whether the content of 'key' is correct.</td>
+</tr>
+<tr>
+<td>B100</td>
+<td align="center">List command. Key not found.</td>
+<td>Please check whether the content of 'key' is correct.</td>
+</tr>
+<tr>
+<td>B202</td>
+<td align="center">List command. Out of bounds. List index out of bounds.</td>
+<td>Please confirm whether the 'index' parameter in your command is in the range of List.</td>
+</tr>
+<tr>
+<td>C100</td>
+<td align="center">Set command. Key not found.</td>
+<td>Please check whether the content of 'key' is correct.</td>
+</tr>
+<tr>
+<td>D100</td>
+<td align="center">Dict command. Key not found.</td>
+<td>Please check whether the content of 'key' is correct.</td>
+</tr>
+<tr>
+<td>D001</td>
+<td align="center">Dict command. Dict key not found.</td>
+<td>Please check whether the keyword in your command is correct.</td>
+</tr>
+</tbody>
+</table></div>
             </div>
         </div>
 
