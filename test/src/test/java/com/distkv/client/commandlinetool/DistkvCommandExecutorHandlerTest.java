@@ -249,10 +249,16 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       distKVParsedResult = distkvParser.parse(command);
       Assert.assertEquals(
           CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
+      Assert.assertEquals(
+          CommandExecutorHandler.intGet(
+              distkvClient, distkvParser.parse("int.get k1")), String.valueOf(9));
       command = "int.incr k1";
       distKVParsedResult = distkvParser.parse(command);
       Assert.assertEquals(
           CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
+      Assert.assertEquals(
+          CommandExecutorHandler.intGet(
+              distkvClient, distkvParser.parse("int.get k1")), String.valueOf(10));
 
       // Test command 'int.drop'
       command = "int.drop k1";
