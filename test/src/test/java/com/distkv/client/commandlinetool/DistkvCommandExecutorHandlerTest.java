@@ -244,23 +244,21 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       Assert.assertEquals(
           CommandExecutorHandler.intGet(distkvClient, distKVParsedResult), String.valueOf(12));
 
+      // Test command 'int.incr'
+      command = "int.incr k1 -3";
+      distKVParsedResult = distkvParser.parse(command);
+      Assert.assertEquals(
+          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
+      command = "int.incr k1";
+      distKVParsedResult = distkvParser.parse(command);
+      Assert.assertEquals(
+          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
+
       // Test command 'int.drop'
       command = "int.drop k1";
       distKVParsedResult = distkvParser.parse(command);
       Assert.assertEquals(
           CommandExecutorHandler.intDrop(distkvClient, distKVParsedResult), STATUS_OK);
-
-      // Test command 'int.incr'
-      command = "int.put k2 10";
-      distKVParsedResult = distkvParser.parse(command);
-      command = "int.incr k2 -3";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(
-          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
-      command = "int.incr k2";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(
-          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
 
     } finally {
       distkvClient.disconnect();
