@@ -476,11 +476,11 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static int intGet(
+  public static String intGet(
       DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
-      return distkvClient.ints().get(request.getKey());
+      return String.valueOf(distkvClient.ints().get(request.getKey()));
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
@@ -498,7 +498,7 @@ public class CommandExecutorHandler {
     try {
       DistkvRequest request = parsedResult.getRequest();
       IntIncrRequest intIncrRequest = request.getRequest().unpack(IntIncrRequest.class);
-      distkvClient.ints().put(request.getKey(), intIncrRequest.getDelta());
+      distkvClient.ints().incr(request.getKey(), intIncrRequest.getDelta());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }

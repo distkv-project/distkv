@@ -82,6 +82,14 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.activeNamespace(distkvClient, parsedResult);
       case DEACTIVE_NAMESPACE:
         return CommandExecutorHandler.deactiveNamespace(distkvClient, parsedResult);
+      case INT_PUT:
+        return CommandExecutorHandler.intPut(distkvClient, parsedResult);
+      case INT_GET:
+        return CommandExecutorHandler.intGet(distkvClient, parsedResult);
+      case INT_DROP:
+        return CommandExecutorHandler.intDrop(distkvClient, parsedResult);
+      case INT_INCR:
+        return CommandExecutorHandler.intIncr(distkvClient, parsedResult);
       default:
         return null;
     }
