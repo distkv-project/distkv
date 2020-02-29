@@ -6,10 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Distkv Team">
-        <link rel="canonical" href="https://distkv.com/command_guide/">
+        <link rel="canonical" href="https://distkv.com/pine/">
         <link rel="shortcut icon" href="../res/logo_30_x_30_cm.png">
         
-        <title>Command Guide - Distkv</title>
+        <title>Pine Ecosystem - Distkv</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -55,7 +55,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active">Command Guide</a>
+    <a href="../command_guide/" class="dropdown-item">Command Guide</a>
 </li>
                                     
 <li>
@@ -63,7 +63,7 @@
 </li>
                                     
 <li>
-    <a href="../pine/" class="dropdown-item">Pine Ecosystem</a>
+    <a href="./" class="dropdown-item active">Pine Ecosystem</a>
 </li>
                                 </ul>
                             </li>
@@ -92,17 +92,17 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../install/" class="nav-link">
+                                <a rel="prev" href="../command_guide/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../pine/" class="nav-link">
+                                <a rel="next" href="../release_notes/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/command_guide.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/pine.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -122,38 +122,20 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
+            <li class="nav-item" data-level="1"><a href="#pine-ecosystem" class="nav-link">Pine Ecosystem</a>
+              <ul class="nav flex-column">
             <li class="nav-item" data-level="2"><a href="#introduction" class="nav-link">Introduction</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            
-            <li class="nav-item" data-level="2"><a href="#1-string-concept" class="nav-link">1. String Concept</a>
+            <li class="nav-item" data-level="2"><a href="#components-of-pine" class="nav-link">Components of Pine</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            
-            <li class="nav-item" data-level="2"><a href="#2-list-concept" class="nav-link">2. List Concept</a>
+            <li class="nav-item" data-level="2"><a href="#contribute-components-to-pine" class="nav-link">Contribute Components to Pine</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            
-            <li class="nav-item" data-level="2"><a href="#3-set-concept" class="nav-link">3. Set concept</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            
-            <li class="nav-item" data-level="2"><a href="#4-dict-concept" class="nav-link">4. Dict concept</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            
-            <li class="nav-item" data-level="2"><a href="#5-sortedlist-concept" class="nav-link">5. SortedList Concept</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            
-            <li class="nav-item" data-level="2"><a href="#6-table-concept" class="nav-link">6. Table concept</a>
-              <ul class="nav flex-column">
               </ul>
             </li>
         </ul>
@@ -161,226 +143,30 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
+<h1 id="pine-ecosystem">Pine Ecosystem</h1>
 <h2 id="introduction">Introduction</h2>
-<p>Distkv is a type-oriented database system. There are several concepts in Distkv that looks like the basic collections.
-We have 6 concepts <code>string</code>, <code>list</code>, <code>set</code>, <code>dict</code>, <code>sortedlist</code> and <code>table</code> yet.</p>
-<p>In this section, you will learn the grammer of these basic concepts in Distkv, and will learn how to use these concepts as examples as well.</p>
-<h2 id="1-string-concept">1. String Concept</h2>
-<p>Put a string value into Distkv store.</p>
-<pre><code class="bash">str.put key value
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">$ dkv-cli &gt; str.put k1 v1
-$ dkv-cli &gt; ok
-</code></pre>
-
-<p>Get a string value from Distkv store.</p>
-<pre><code class="bash">str.get key
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; str.get k1
-dkv-cli &gt; v1
-</code></pre>
-
-<p>Drop a string value from Distkv store.</p>
-<pre><code class="bash">str.drop key
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; str.drop k1
-dkv-cli &gt; ok
-
-dkv-cli &gt; str.get k1
-dkv-cli &gt; errorCode: A100;
- Detail: The key k1 is not found in the store.
-</code></pre>
-
-<h2 id="2-list-concept">2. List Concept</h2>
-<p>Put a list into Distkv store.</p>
-<pre><code class="bash">list.put key value1 [value2 [value3 [...]]]
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.put k1 v1 v2 v3
-dkv-cli &gt; ok
-</code></pre>
-
-<p>Get a list from Distkv store.</p>
-<pre><code class="bash">list.get key
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.get k1
-dkv-cli &gt; [v1, v2, v3]
-</code></pre>
-
-<p>Get a range of items of the list from Distkv store.</p>
-<pre><code class="bash"># Note that it's excluding the `end_index`.
-list.get key from_index end_index
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.get k1 0 2
-dkv-cli &gt; [v1, v2]
-</code></pre>
-
-<p>Get one item of the list from Distkv store.</p>
-<pre><code class="bash">list.get key index
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.get k1 1
-dkv-cli &gt; v1
-</code></pre>
-
-<p>Put items into the front of the list.</p>
-<pre><code class="bash">list.lput key value1 [value2 [value3 [...]]]
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.lput &quot;k1&quot; &quot;v4&quot; &quot;v5&quot; &quot;v6&quot;
-dkv-cli &gt; ok
-</code></pre>
-
-<p>Put items into the back of the list.</p>
-<pre><code class="bash">list.rput key value1 [value2 [value3 [...]]]
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.rput &quot;k1&quot; &quot;v7&quot;
-dkv-cli &gt; ok
-</code></pre>
-
-<p>Remove item from the list with the given index.</p>
-<pre><code class="bash">list.ldel key index
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.ldel &quot;k1&quot; 2
-dkv-cli &gt; ok
-</code></pre>
-
-<p>Remove item from the back of the list with the given back index.</p>
-<pre><code class="bash">list.rdel key back_index
-</code></pre>
-
-<p>If the list is [1, 2, 3] and the given number is 0, item <code>3</code> will be removed.</p>
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.rdel &quot;k1&quot; 2
-dkv-cli &gt; ok
-</code></pre>
-
-<p>Get the list from Distkv store.</p>
-<pre><code class="bash">list.get key
-</code></pre>
-
-<p>example:</p>
-<pre><code class="bash">dkv-cli &gt; list.get &quot;k1&quot;
-dkv-cli &gt; [&quot;v6&quot;, &quot;v1&quot;, &quot;v2&quot;]
-</code></pre>
-
-<h2 id="3-set-concept">3. Set concept</h2>
-<pre><code class="bash">dkv-cli &gt; set.put &quot;k1&quot; &quot;v1&quot; &quot;v2&quot; &quot;v3&quot;
-dkv-cli &gt; ok
-
-dkv-cli &gt; set.get &quot;k1&quot;
-dkv-cli &gt; {&quot;v1&quot;, &quot;v2&quot;, &quot;v3&quot;}
-
-dkv-cli &gt; set.del &quot;k1&quot; &quot;v1&quot;
-dkv-cli &gt; ok
-
-dkv-cli &gt; set.get &quot;k1&quot;
-dkv-cli &gt; {&quot;v2&quot;, &quot;v3&quot;}
-
-dkv-cli &gt; set.exists &quot;k1&quot; &quot;v2&quot;
-dkv-cli &gt; true
-
-dkv-cli &gt; set.exists &quot;k1&quot; &quot;v4&quot;
-dkv-cli &gt; false
-
-dkv-cli &gt; set.drop &quot;k1&quot;
-dkv-cli &gt; ok
-</code></pre>
-
-<h2 id="4-dict-concept">4. Dict concept</h2>
-<pre><code class="bash">dkv-cli &gt; dict.put &quot;dict1&quot; &quot;k1&quot; &quot;v1&quot; &quot;k2&quot; &quot;v2&quot;
-dkv-cli &gt; ok
-
-dkv-cli &gt; dict.get &quot;dict1&quot;
-dkv-cli &gt; { &quot;k1&quot; : &quot;v1&quot;, &quot;k2&quot; : &quot;v2&quot;}
-
-dkv-cli &gt; dict.get &quot;dict1&quot; &quot;k1&quot;
-dkv-cli &gt; &quot;v1&quot;
-
-dkv-cli &gt; dict.get &quot;dict1&quot; &quot;k1&quot;
-dkv-cli &gt; &quot;v1&quot;
-
-dkv-cli &gt; dict.del &quot;dict1&quot; &quot;k1&quot;
-dkv-cli &gt; ok
-
-dkv-cli &gt; dict.pop &quot;dict1&quot; &quot;k2&quot;
-dkv-cli &gt; &quot;v2&quot;
-
-dkv-cli &gt; dict.get &quot;dict1&quot;
-dkv-cli &gt; []
-
-dkv-cli &gt; dict.drop &quot;dict1&quot;
-dkv-cli &gt; ok
-</code></pre>
-
-<h2 id="5-sortedlist-concept">5. SortedList Concept</h2>
-<h2 id="6-table-concept">6. Table concept</h2>
+<p>The Pine ecosystem is a module of Distkv. It extends the ability that users can use the out-of-box components for their Web applications and micro-services. </p>
+<p>Pine is also an open ecosystem that any body can contribute a component to it.</p>
+<h2 id="components-of-pine">Components of Pine</h2>
+<ul>
+<li>PineTopper</li>
+<li>PineLike</li>
+</ul>
+<h2 id="contribute-components-to-pine">Contribute Components to Pine</h2>
 <ol>
-<li>Define your data structure in a schema file named <code>mytables.sc</code></li>
-</ol>
-<pre><code class="shell">table TaskTable {
-  [p]task_id: string;
-  [i]driver_id: string;
-  task_name: string;
-  return_num: int;
-  arguments: [string];
-}
-</code></pre>
-
-<pre><code class="shell">table DriverTable {
- [p]driver_id: string;
- driver_name: string;
- actor_num: int;
-};
-</code></pre>
-
-<ol>
-<li>Start an distkv server and execute this command to create table:</li>
-</ol>
-<pre><code class="shell">&gt; dkv-cli -p 12344 # connect to distkv server
-&gt; create TaskTable, DriverTable from mytables.sc
-</code></pre>
-
-<ol>
-<li>Add data to the table:</li>
-</ol>
-<pre><code class="shell">&gt; TaskTable.add &quot;00001&quot;, &quot;22222&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
-&lt; ok
-&gt; TaskTable.add &quot;00002&quot;, &quot;99999&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
-&lt; ok
-&gt; TaskTable.add &quot;00003&quot;, &quot;22222&quot;, &quot;my_task&quot;, 3, [&quot;1&quot;, &quot;2&quot;]
-&lt; ok
-&gt; DriverTable.add &quot;22222&quot;, &quot;my_driver&quot;, 10
-&lt; ok
-</code></pre>
-
-<ol>
-<li>Query all tasks by driver id:</li>
-</ol>
-<pre><code class="shell">&gt; TaskTable.query (*) when driver_id == &quot;22222&quot;
-&lt;
-&lt; task_id      driver_id     task_name      num_return      arguments
-&lt; &quot;00001&quot;      &quot;22222&quot;       &quot;my_task&quot;      3               [&quot;1&quot;, &quot;2&quot;]
-&lt; &quot;00003&quot;      &quot;22222&quot;       &quot;my_task&quot;      3               [&quot;1&quot;, &quot;2&quot;]
-&lt; 2 records
-</code></pre></div>
+<li>
+<p>Create an issue to propose your Pine component proposal.</p>
+</li>
+<li>
+<p>The PEC(Pine Ecosystem Committee) will review the proposal in 3 ~ 5 days. While the proposal is reviewing, the author will answer the questions proposed by committer.</p>
+</li>
+<li>
+<p>After reviewed, the status of proposal will be <code>APPROVED</code> or <code>REQUIRE_CHANGES</code>. If status becomes <code>APPROVED</code>, the author will implement the component in next days. If it becomes <code>REQUIRE_CHANGES</code>, the author should change the proposal or close it.</p>
+</li>
+<li>
+<p>The author will post PRs for the proposal, and review the PRs until merging it.</p>
+</li>
+</ol></div>
             </div>
         </div>
 
