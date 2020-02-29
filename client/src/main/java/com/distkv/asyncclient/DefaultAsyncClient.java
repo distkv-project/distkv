@@ -4,7 +4,7 @@ import com.distkv.namespace.NamespaceInterceptor;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
-import org.dousi.netty.NettyClient;
+import org.dousi.netty.DousiClient;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.service.DistkvService;
 
@@ -33,7 +33,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
             .address(serverAddress)
             .build();
 
-    rpcClient = new NettyClient(clientConfig);
+    rpcClient = new DousiClient(clientConfig);
     rpcClient.open();
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
