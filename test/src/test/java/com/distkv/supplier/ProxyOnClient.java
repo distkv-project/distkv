@@ -4,7 +4,7 @@ import com.distkv.common.utils.RuntimeUtil;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
-import org.dousi.netty.NettyClient;
+import org.dousi.netty.DousiClient;
 
 public class ProxyOnClient<T> implements AutoCloseable {
 
@@ -17,7 +17,7 @@ public class ProxyOnClient<T> implements AutoCloseable {
         .build();
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client = new NettyClient(clientConfig);
+        client = new DousiClient(clientConfig);
         client.open();
         proxy = new Proxy<>();
         proxy.setInterfaceClass(clazz);
