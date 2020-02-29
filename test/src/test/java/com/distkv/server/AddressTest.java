@@ -1,24 +1,24 @@
 package com.distkv.server;
 
+import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class AddressTest {
-
-  public static final String DEFAULT_HOST = "127.0.1.1";
 
   @Test
   public void testDefaultAddress() {
     Address address = Address.defaultAddress();
-    assertEquals(address.getHost(), DEFAULT_HOST);
+    assertTrue(StringUtils.isNotBlank(address.getHost()));
     assertEquals(address.getPort(), 8082);
   }
 
   @Test
   public void  testFrom() {
     Address address = Address.from(8081);
-    assertEquals(address.getHost(), DEFAULT_HOST);
+    assertTrue(StringUtils.isNotBlank(address.getHost()));
     assertEquals(address.getPort(), 8081);
 
     address = Address.from("127.0.0.1");
