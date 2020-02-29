@@ -33,14 +33,6 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
             .address(serverAddress)
             .build();
 
-    rpcClient = new NettyClient(clientConfig);
-
-    try {
-      rpcClient.open();
-    } catch (Exception e) {
-      throw new DistkvException("Connected failed.",e);
-    }
-
     rpcClient = new DousiClient(clientConfig);
     rpcClient.open();
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
