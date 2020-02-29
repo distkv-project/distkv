@@ -1,6 +1,9 @@
 package com.distkv.server.storeserver;
 
 import com.distkv.rpc.service.DistkvService;
+import com.distkv.server.AbstractCompositeService;
+import com.distkv.server.Address;
+import com.distkv.server.Node;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.services.DistkvServiceImpl;
 import org.dousi.DousiServer;
@@ -8,9 +11,12 @@ import org.dousi.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StoreServer {
+public class StoreServer extends AbstractCompositeService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(StoreServer.class);
+
+  // used by meta server.
+  private Node node;
 
   private DousiServer dousiServer;
 
@@ -35,7 +41,12 @@ public class StoreServer {
       "'---'         ---`-'                                           ";
 
   public StoreServer(StoreConfig storeConfig) {
+    super("Store Service");
     this.storeConfig = storeConfig;
+  }
+
+  @Override
+  public void serviceInit() {
     ServerConfig dousiServerConfig = ServerConfig.builder()
         /// Note: This is a very important flag for `StoreServer` because it
         /// affects the threading model of `StoreServer`.
@@ -48,12 +59,19 @@ public class StoreServer {
         .enableIOThreadOnly(true)
         .port(storeConfig.getPort())
         .build();
+
+    node = new Node.NodeBuilder()
+        .withNodeId("store-server")
+        .withAddress(Address.from(storeConfig.getPort()))
+        .build();
+
     dousiServer = new DousiServer(dousiServerConfig);
     storeRuntime = new StoreRuntime(storeConfig);
     registerAllRpcServices();
   }
 
-  public void run() {
+  @Override
+  protected void serviceRun() {
     try {
       dousiServer.run();
     } catch (Throwable e) {
@@ -61,6 +79,11 @@ public class StoreServer {
       System.exit(-1);
     }
     LOGGER.info("Succeeded to start dst server on port {}.", storeConfig.getPort());
+  }
+
+  @Override
+  protected void serviceStop() {
+    // do nothing know.
   }
 
   private void registerAllRpcServices() {
@@ -85,7 +108,9 @@ public class StoreServer {
     if (listeningPort > 0) {
       config.setPort(listeningPort);
     }
+
     StoreServer storeServer = new StoreServer(config);
+    storeServer.config();
     System.out.println(WELCOME_WORDS);
     storeServer.run();
   }
