@@ -1,7 +1,7 @@
 # Pine Ecosystem
 
 ## Introduction
-The Pine ecosystem is a module of Distkv. It extends the ability that users can use the out-of-box components for their Web applications and micro-services. 
+The Pine ecosystem is a module of Distkv. It extends the ability that users can use the out-of-box components for their Web applications and Microservices. 
  
 Pine is also an open ecosystem that any body can contribute a component to it.
 
