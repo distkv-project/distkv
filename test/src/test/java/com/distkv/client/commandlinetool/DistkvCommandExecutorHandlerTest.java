@@ -242,25 +242,29 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       command = "int.get k1";
       distKVParsedResult = distkvParser.parse(command);
       Assert.assertEquals(
-          CommandExecutorHandler.intGet(distkvClient, distKVParsedResult), 12);
+          CommandExecutorHandler.intGet(distkvClient, distKVParsedResult), String.valueOf(12));
+
+      // Test command 'int.incr'
+      command = "int.incr k1 -3";
+      distKVParsedResult = distkvParser.parse(command);
+      Assert.assertEquals(
+          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
+      Assert.assertEquals(
+          CommandExecutorHandler.intGet(
+              distkvClient, distkvParser.parse("int.get k1")), String.valueOf(9));
+      command = "int.incr k1";
+      distKVParsedResult = distkvParser.parse(command);
+      Assert.assertEquals(
+          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
+      Assert.assertEquals(
+          CommandExecutorHandler.intGet(
+              distkvClient, distkvParser.parse("int.get k1")), String.valueOf(10));
 
       // Test command 'int.drop'
       command = "int.drop k1";
       distKVParsedResult = distkvParser.parse(command);
       Assert.assertEquals(
           CommandExecutorHandler.intDrop(distkvClient, distKVParsedResult), STATUS_OK);
-
-      // Test command 'int.incr'
-      command = "int.put k2 10";
-      distKVParsedResult = distkvParser.parse(command);
-      command = "int.incr k2 -3";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(
-          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
-      command = "int.incr k2";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(
-          CommandExecutorHandler.intIncr(distkvClient, distKVParsedResult), STATUS_OK);
 
     } finally {
       distkvClient.disconnect();
