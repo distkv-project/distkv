@@ -22,9 +22,10 @@
     </modules>
 
     <properties>
-        <dousi.version>0.1.0-SNAPSHOT</dousi.version>
+        <dousi.version>0.1.0</dousi.version>
         <lombok.version>1.18.8</lombok.version>
         <testng.version>7.0.0</testng.version>
+        <protobuf.version>3.11.4</protobuf.version>
         <junit-jupiter.version>5.3.2</junit-jupiter.version>
         <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -42,7 +43,16 @@
         </dependency>
     </dependencies>
     <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.2</version>
+            </extension>
+        </extensions>
+
         <plugins>
+
             <!-- automatically compile project -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -154,13 +164,6 @@
                                 <include>**</include>
                             </includes>
                         </fileset>
-                        <fileset>
-                            <directory>${project.basedir}/rpc/src/main/java/com/distkv/rpc/protobuf/generated
-                            </directory>
-                            <includes>
-                                <include>**</include>
-                            </includes>
-                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
@@ -171,6 +174,25 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>3.1.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.xolstice.maven.plugins</groupId>
+                    <artifactId>protobuf-maven-plugin</artifactId>
+                    <version>0.6.1</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
+                        </protocArtifact>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>test-compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

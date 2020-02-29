@@ -7,7 +7,7 @@ set -x
 
 # Install dousi RPC.
 DOUSI_REPOSITORY_URL=https://github.com/jovany-wang/dousi.git
-DOUSI_COMMIT_ID=aa414eda5b6f9a4dafc2c76a7bc999866f3d9d5f
+DOUSI_COMMIT_ID=28a386f3c40f7ab06a38e8cac84193c14dfeef8d
 
 git clone ${DOUSI_REPOSITORY_URL} dousi_tmp
 pushd dousi_tmp
