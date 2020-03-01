@@ -61,8 +61,7 @@ public class StoreServer extends AbstractCompositeService {
         .build();
 
     node = new Node.NodeBuilder()
-        .withNodeId("store-server")
-        .withAddress(Address.from(storeConfig.getPort()))
+        .withNodeAddress(Address.from(storeConfig.getPort()))
         .build();
 
     dousiServer = new DousiServer(dousiServerConfig);

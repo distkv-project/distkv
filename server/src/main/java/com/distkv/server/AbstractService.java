@@ -16,10 +16,6 @@ public abstract class AbstractService implements Service {
           /* stopped   */    {false, false, false, true},
       };
 
-  private boolean isInStates(ServiceStatus status) {
-    return this.status.equals(status);
-  }
-
   private boolean canEnterStatus(ServiceStatus status) {
     return stateMap[this.status.value][status.value];
   }
