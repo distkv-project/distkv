@@ -331,6 +331,31 @@ dkv-cli &gt; ok
 </code></pre>
 
 <h2 id="5-sortedlist-concept">5. SortedList Concept</h2>
+<pre><code class="bash">dkv-cli &gt; slist.put &quot;slist1&quot; &quot;m12&quot; 12 &quot;m2&quot; 2 &quot;m5&quot; 5
+dkv-cli &gt; ok
+
+dkv-cli &gt; slist.top &quot;slist1&quot; 2
+dkv-cli &gt; [(&quot;m12&quot;, 12), (&quot;m5&quot;, 5)]
+
+dkv-cli &gt; slist.incrScore &quot;slist1&quot; &quot;m5&quot; 10
+dkv-cli &gt; ok
+
+dkv-cli &gt; slist.putMember &quot;slist1&quot; &quot;m9&quot; 13
+dkv-cli &gt; ok
+
+dkv-cli &gt; slist.removeMember &quot;slist1&quot; &quot;m9&quot;
+dkv-cli &gt; ok
+
+dkv-cli &gt; slist.top &quot;slist1&quot; 2
+dkv-cli &gt; [(&quot;m5&quot;, 15), (&quot;m12&quot;, 12)]
+
+dkv-cli &gt; slist.getMember &quot;slist1&quot; &quot;m12&quot;
+dkv-cli &gt; (&quot;m12&quot;, 12), 2nd
+
+dkv-cli &gt; slist.drop &quot;slist1&quot;
+dkv-cli &gt; ok
+</code></pre>
+
 <h2 id="6-table-concept">6. Table concept</h2>
 <ol>
 <li>Define your data structure in a schema file named <code>mytables.sc</code></li>
