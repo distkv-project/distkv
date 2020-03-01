@@ -10,10 +10,10 @@ public abstract class AbstractService implements Service {
   private static final boolean[][] stateMap =
       {
           //                uninited inited running stopped
-          /* uninited  */    {false, true,  false,  true},
-          /* inited    */    {false, false,  true,   true},
-          /* running   */    {false, false, true,   true},
-          /* stopped   */    {false, false, false,  true},
+          /* uninited  */    {false, true, false, true},
+          /* inited    */    {false, false, true, true},
+          /* running   */    {false, false, true, true},
+          /* stopped   */    {false, false, false, true},
       };
 
   private boolean isInStates(ServiceStatus status) {
@@ -44,9 +44,9 @@ public abstract class AbstractService implements Service {
   @Override
   public void config() {
     if (canEnterStatus(ServiceStatus.INITED)) {
-        LOGGER.debug("init service {}", getName());
-        serviceInit();
-        this.status = ServiceStatus.INITED;
+      LOGGER.debug("init service {}", getName());
+      serviceInit();
+      this.status = ServiceStatus.INITED;
     }
   }
 
@@ -55,9 +55,9 @@ public abstract class AbstractService implements Service {
   @Override
   public void run() {
     if (canEnterStatus(ServiceStatus.RUNNING)) {
-        LOGGER.debug("run service {}", getName());
-        serviceRun();
-        this.status = ServiceStatus.RUNNING;
+      LOGGER.debug("run service {}", getName());
+      serviceRun();
+      this.status = ServiceStatus.RUNNING;
     }
   }
 
@@ -66,9 +66,9 @@ public abstract class AbstractService implements Service {
   @Override
   public void stop() {
     if (canEnterStatus(ServiceStatus.STOPPED)) {
-        LOGGER.debug("stop service {}", getName());
-        serviceStop();
-        this.status = ServiceStatus.STOPPED;
+      LOGGER.debug("stop service {}", getName());
+      serviceStop();
+      this.status = ServiceStatus.STOPPED;
     }
   }
 
