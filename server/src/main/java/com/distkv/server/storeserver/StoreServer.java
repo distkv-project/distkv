@@ -1,13 +1,8 @@
 package com.distkv.server.storeserver;
 
-import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.AbstractCompositeService;
 import com.distkv.server.Address;
 import com.distkv.server.Node;
-import com.distkv.server.storeserver.runtime.StoreRuntime;
-import com.distkv.server.storeserver.services.DistkvServiceImpl;
-import org.dousi.DousiServer;
-import org.dousi.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,77 +12,54 @@ public class StoreServer extends AbstractCompositeService {
 
   // used by meta server.
   private Node node;
-
-  private DousiServer dousiServer;
-
-  private StoreRuntime storeRuntime;
-
-  private StoreConfig storeConfig;
+  private int port;
+  private StoreService storeService;
 
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static final String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
-      "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
-      ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
-      "|   |  .`\\  ||  |,      .--.--.   :  : ' : :  : ' /      .---. \n" +
-      ":   : |  '  |`--'_     /  /    '.;__,'  /  |  '  /     /.  ./| \n" +
-      "|   ' '  ;  :,' ,'|   |  :  /`./|  |   |   '  |  :   .-' . ' | \n" +
-      "'   | ;  .  |'  | |   |  :  ;_  :__,'| :   |  |   \\ /___/ \\: | \n" +
-      "|   | :  |  '|  | :    \\  \\    `. '  : |__ '  : |. \\.   \\  ' . \n" +
-      "'   : | /  ; '  : |__   `----.   \\|  | '.'||  | ' \\ \\\\   \\   ' \n" +
-      "|   | '` ,/  |  | '.'| /  /`--'  /;  :    ;'  : |--'  \\   \\    \n" +
-      ";   :  .'    ;  :    ;'--'.     / |  ,   / ;  |,'      \\   \\ | \n" +
-      "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
-      "'---'         ---`-'                                           ";
+          "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
+          ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
+          "|   |  .`\\  ||  |,      .--.--.   :  : ' : :  : ' /      .---. \n" +
+          ":   : |  '  |`--'_     /  /    '.;__,'  /  |  '  /     /.  ./| \n" +
+          "|   ' '  ;  :,' ,'|   |  :  /`./|  |   |   '  |  :   .-' . ' | \n" +
+          "'   | ;  .  |'  | |   |  :  ;_  :__,'| :   |  |   \\ /___/ \\: | \n" +
+          "|   | :  |  '|  | :    \\  \\    `. '  : |__ '  : |. \\.   \\  ' . \n" +
+          "'   : | /  ; '  : |__   `----.   \\|  | '.'||  | ' \\ \\\\   \\   ' \n" +
+          "|   | '` ,/  |  | '.'| /  /`--'  /;  :    ;'  : |--'  \\   \\    \n" +
+          ";   :  .'    ;  :    ;'--'.     / |  ,   / ;  |,'      \\   \\ | \n" +
+          "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
+          "'---'         ---`-'                                           ";
 
-  public StoreServer(StoreConfig storeConfig) {
+  //  TODO(meijie) read the configuration from configure file.
+  public StoreServer(int port) {
     super("Store Service");
-    this.storeConfig = storeConfig;
+    this.port = port;
   }
 
   @Override
   public void serviceInit() {
-    ServerConfig dousiServerConfig = ServerConfig.builder()
-        /// Note: This is a very important flag for `StoreServer` because it
-        /// affects the threading model of `StoreServer`.
-        /// For a `StoreServer`, it should have the rigorous threading model
-        /// for the performance requirements. `Dousi` RPC has its own threading
-        /// model with multiple worker threads, and `StoreServer` should have
-        /// its own threading model with multiple threads as well. Therefore, it's
-        /// hard to manage so many threads to meet our performance requirements if
-        /// we don't enable this flag `enableIOThreadOnly`.
-        .enableIOThreadOnly(true)
-        .port(storeConfig.getPort())
-        .build();
-
     node = new Node.NodeBuilder()
-        .withNodeAddress(Address.from(storeConfig.getPort()))
+        .withNodeAddress(Address.from(port))
         .build();
 
-    dousiServer = new DousiServer(dousiServerConfig);
-    storeRuntime = new StoreRuntime(storeConfig);
-    registerAllRpcServices();
+    StoreConfig storeConfig = StoreConfig.create();
+    // TODO simple it.
+    if (port > 0) {
+      storeConfig.setPort(port);
+    }
+    storeService = new StoreService(storeConfig);
+    addService(storeService);
   }
 
   @Override
   protected void serviceRun() {
-    try {
-      dousiServer.run();
-    } catch (Throwable e) {
-      LOGGER.error("Failed with the exception: {}", e.toString());
-      System.exit(-1);
-    }
-    LOGGER.info("Succeeded to start dst server on port {}.", storeConfig.getPort());
+    // do nothing now.
   }
 
   @Override
   protected void serviceStop() {
-    dousiServer.stop();
-  }
-
-  private void registerAllRpcServices() {
-    dousiServer.registerService(
-        DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
+    // do nothing now.
   }
 
   public static void main(String[] args) {
@@ -103,12 +75,7 @@ public class StoreServer extends AbstractCompositeService {
       }
     }
 
-    StoreConfig config = StoreConfig.create();
-    if (listeningPort > 0) {
-      config.setPort(listeningPort);
-    }
-
-    StoreServer storeServer = new StoreServer(config);
+    StoreServer storeServer = new StoreServer(listeningPort);
     storeServer.config();
     System.out.println(WELCOME_WORDS);
     storeServer.run();

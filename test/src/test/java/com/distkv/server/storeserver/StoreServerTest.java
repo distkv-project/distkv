@@ -8,9 +8,7 @@ import static org.testng.Assert.assertEquals;
 public class StoreServerTest {
   @Test
   public void testStoreServer() {
-    StoreConfig config = StoreConfig.create();
-    config.setPort(8081);
-    StoreServer storeServer = new StoreServer(config);
+    StoreServer storeServer = new StoreServer(8081);
     assertEquals(storeServer.getStatus(), Service.ServiceStatus.UNINITED);
     storeServer.config();
     assertEquals(storeServer.getStatus(), Service.ServiceStatus.INITED);

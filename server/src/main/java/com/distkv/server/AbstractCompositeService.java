@@ -13,7 +13,7 @@ public abstract class AbstractCompositeService extends AbstractService {
   public AbstractCompositeService(String serviceName) {
     super(serviceName);
   }
-  
+
   public void addService(Service service) {
     serviceList.add(service);
   }
@@ -24,10 +24,11 @@ public abstract class AbstractCompositeService extends AbstractService {
 
   @Override
   public void config() {
+    super.config();
+
     for (Service service : serviceList) {
       service.config();
     }
-    super.config();
   }
 
   @Override
