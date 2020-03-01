@@ -4,6 +4,7 @@ import java.io.Closeable;
 
 /**
  * Service LifeCycle.
+ *
  */
 public interface Service extends Closeable {
 
