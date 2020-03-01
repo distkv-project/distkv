@@ -1,7 +1,7 @@
 package com.distkv.benchmark;
 
 import com.distkv.client.DistkvClient;
-import com.distkv.supplier.TestUtil;
+import com.distkv.supplier.TestWrapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class DistkvBenchmarkTest {
@@ -33,7 +33,7 @@ public class DistkvBenchmarkTest {
 
   public static void main(String[] args) {
     // Distkv benchmark test
-    TestUtil.startRpcServer(8082);
+    TestWrapper.startRpcServer(8082);
     DistkvBenchmark benchmark = new DistkvBenchmark(10);
     benchmark.setTestModule(distkvClient -> {
       try {
@@ -43,6 +43,6 @@ public class DistkvBenchmarkTest {
       }
     });
     benchmark.run();
-    TestUtil.stopProcess(TestUtil.getProcess());
+    TestWrapper.stopProcess();
   }
 }

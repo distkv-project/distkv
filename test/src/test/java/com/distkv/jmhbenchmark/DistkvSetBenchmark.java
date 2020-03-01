@@ -4,7 +4,7 @@ import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.supplier.TestUtil;
+import com.distkv.supplier.TestWrapper;
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import org.apache.commons.lang.RandomStringUtils;
@@ -30,7 +30,7 @@ public class DistkvSetBenchmark {
 
   @Setup
   public void init() {
-    TestUtil.startRpcServer(8082);
+    TestWrapper.startRpcServer(8082);
     dummyData = ImmutableSet.of(
         RandomStringUtils.random(5),
         RandomStringUtils.random(5),
@@ -46,7 +46,7 @@ public class DistkvSetBenchmark {
   public void close() {
     client.disconnect();
     asyncClient.disconnect();
-    TestUtil.stopProcess(TestUtil.getProcess());
+    TestWrapper.stopProcess();
   }
 
   @Benchmark

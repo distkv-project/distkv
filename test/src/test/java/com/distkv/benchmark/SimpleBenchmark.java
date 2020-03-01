@@ -2,8 +2,7 @@ package com.distkv.benchmark;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DistkvAsyncClient;
-import com.distkv.supplier.TestUtil;
-
+import com.distkv.supplier.TestWrapper;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +19,7 @@ public class SimpleBenchmark {
 
   public static void main(String[] args) throws Exception {
     // DST start server
-    TestUtil.startRpcServer(8082);
+    TestWrapper.startRpcServer(8082);
     System.out.println("============Benchmark Starting ......=============");
     final CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
     List<Long> costTimes = new ArrayList<>();
@@ -56,7 +55,7 @@ public class SimpleBenchmark {
             "tps                          " + tps + " k/s\n" +
             "=======================================================================");
     //DST stop server
-    TestUtil.stopProcess(TestUtil.getProcess());
+    TestWrapper.stopProcess();
   }
 
   /**

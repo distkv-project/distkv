@@ -4,7 +4,7 @@ import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.supplier.TestUtil;
+import com.distkv.supplier.TestWrapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.lang.RandomStringUtils;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -30,7 +30,7 @@ public class DistkvStrBenchmark {
 
   @Setup
   public void init() {
-    TestUtil.startRpcServer(8082);
+    TestWrapper.startRpcServer(8082);
 
     asyncClient = new DefaultAsyncClient(PROTOCOL);
     client = new DefaultDistkvClient(PROTOCOL);
@@ -43,7 +43,7 @@ public class DistkvStrBenchmark {
   public void close() {
     asyncClient.disconnect();
     client.disconnect();
-    TestUtil.stopProcess(TestUtil.getProcess());
+    TestWrapper.stopProcess();
   }
 
   @Benchmark

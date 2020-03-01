@@ -4,7 +4,7 @@ import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.supplier.TestUtil;
+import com.distkv.supplier.TestWrapper;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.RandomStringUtils;
 import org.openjdk.jmh.infra.Blackhole;
@@ -30,7 +30,7 @@ public class DistkvListBenchmark {
 
   @Setup
   public void init() {
-    TestUtil.startRpcServer(8082);
+    TestWrapper.startRpcServer(8082);
 
     dummyData = ImmutableList.of(
             RandomStringUtils.random(5),
@@ -47,7 +47,7 @@ public class DistkvListBenchmark {
   public void close() {
     asyncClient.disconnect();
     client.disconnect();
-    TestUtil.stopProcess(TestUtil.getProcess());
+    TestWrapper.stopProcess();
   }
 
   @Benchmark
