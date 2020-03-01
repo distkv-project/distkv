@@ -38,7 +38,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     try {
       rpcClient.open();
     } catch (DousiConnectionRefusedException connectFail) {
-      throw new DistkvException("Failed to connect to Distkv Server " + connectFail);
+      throw new DistkvException("Failed to connect to Distkv Server:" + connectFail);
     }
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
