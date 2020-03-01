@@ -26,10 +26,6 @@ public abstract class AbstractService implements Service {
 
   private final String serviceName;
   private ServiceStatus status = ServiceStatus.UNINITED;
-  private final byte[] statusLock = new byte[0];
-
-
-
 
   public AbstractService(String serviceName) {
     this.serviceName = serviceName;
@@ -48,11 +44,9 @@ public abstract class AbstractService implements Service {
   @Override
   public void config() {
     if (canEnterStatus(ServiceStatus.INITED)) {
-      synchronized (statusLock) {
         LOGGER.debug("init service {}", getName());
         serviceInit();
         this.status = ServiceStatus.INITED;
-      }
     }
   }
 
@@ -61,11 +55,9 @@ public abstract class AbstractService implements Service {
   @Override
   public void run() {
     if (canEnterStatus(ServiceStatus.RUNNING)) {
-      synchronized (statusLock) {
         LOGGER.debug("run service {}", getName());
         serviceRun();
         this.status = ServiceStatus.RUNNING;
-      }
     }
   }
 
@@ -74,11 +66,9 @@ public abstract class AbstractService implements Service {
   @Override
   public void stop() {
     if (canEnterStatus(ServiceStatus.STOPPED)) {
-      synchronized (statusLock) {
         LOGGER.debug("stop service {}", getName());
         serviceStop();
         this.status = ServiceStatus.STOPPED;
-      }
     }
   }
 
@@ -86,7 +76,7 @@ public abstract class AbstractService implements Service {
 
   @Override
   public void close() {
-    // do nothing now.
+    serviceStop();
   }
 
 }

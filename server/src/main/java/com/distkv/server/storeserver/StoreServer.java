@@ -83,7 +83,7 @@ public class StoreServer extends AbstractCompositeService {
 
   @Override
   protected void serviceStop() {
-    // do nothing know.
+    dousiServer.stop();
   }
 
   private void registerAllRpcServices() {

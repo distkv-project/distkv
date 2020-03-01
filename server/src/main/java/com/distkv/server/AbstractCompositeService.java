@@ -13,7 +13,7 @@ public abstract class AbstractCompositeService extends AbstractService {
   public AbstractCompositeService(String serviceName) {
     super(serviceName);
   }
-
+  
   public void addService(Service service) {
     serviceList.add(service);
   }
