@@ -1,11 +1,10 @@
 # Overview
+Homepage: [https://distkv.com](https://distkv.com)  
+Demo site: [https://distkv.cloud](https://distkv.cloud)  
+Github: [https://github.com/distkv-project/distkv](https://github.com/distkv-project/distkv)  
 
-A distributed key-value in-memory store system with table concept. [https://distkv.com](https://distkv.com)
 ## Project Description
 `Distkv` project is a distributed key-value in-memory database system. Besides these features, `Distkv` supports table concept which looks like tables in relational databases. It also supports a rich ecosystem, named `Pine`, which has many easy-to-use and out-of-the-box components for Web application and micro-service.
-
-For full documentation visit [distkv.com](https://distkv.com).
-
 
 ## Awesome Features
 1. Redis-like data structure
