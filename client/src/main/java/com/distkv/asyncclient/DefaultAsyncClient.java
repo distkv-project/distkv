@@ -4,6 +4,7 @@ import com.distkv.namespace.NamespaceInterceptor;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
+import org.dousi.exception.DousiConnectionRefusedException;
 import org.dousi.netty.DousiClient;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.service.DistkvService;
@@ -34,7 +35,11 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
             .build();
 
     rpcClient = new DousiClient(clientConfig);
-    rpcClient.open();
+    try {
+      rpcClient.open();
+    } catch (DousiConnectionRefusedException connectFail) {
+      throw new DistkvException("Failed to connect to Distkv Server:" + connectFail);
+    }
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
