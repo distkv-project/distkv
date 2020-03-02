@@ -1,60 +1,36 @@
 package com.distkv.supplier;
 
-import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.io.File;
-import java.util.List;
+import com.distkv.server.storeserver.StoreConfig;
+import com.distkv.server.storeserver.StoreServer;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MasterSlaveSyncTestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
+  private static final String KEY_PROPERTY = "distkv.store.config";
 
-  private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
-      + File.separator + "distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar";
+  private static CopyOnWriteArrayList<StoreServer> storeServers = new CopyOnWriteArrayList<>();
 
   private static final int NODE_NUM = 3;
 
-  private static Process[] processes = new Process[NODE_NUM];
-
-  private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
-
   public static void startAllProcess() {
-    final File userDir = new File(System.getProperty("user.dir"));
-    final String jarDir;
-    if (userDir.getPath().contains("test")) {
-      jarDir = userDir.getParent() + File.separator + SUFFIX_JAR_DIR;
-    } else {
-      jarDir = userDir.getPath() + File.separator + SUFFIX_JAR_DIR;
+    for (int i = 0; i < NODE_NUM - 1; i++) {
+      System.setProperty(KEY_PROPERTY, "slave_store_" + (i + 1) + ".conf");
+      StoreConfig config = StoreConfig.create();
+      StoreServer storeServer = new StoreServer(config);
+      storeServer.run();
+      storeServers.add(storeServer);
     }
 
-    String confPath = userDir.getParent() + File.separator + "test" +
-        File.separator + "conf" + File.separator;
-    int i;
-    for (i = 0; i < NODE_NUM - 1; i++) {
-      final List<String> startCommand = ImmutableList.of(
-          "java",
-          "-Ddistkv.store.config=" + confPath + "slave_store_" + (i + 1) + ".conf",
-          "-classpath",
-          jarDir,
-          "com.distkv.server.storeserver.StoreServer"
-      );
-      processes[i] = TestUtil.executeCommand(startCommand);
-    }
-
-    final List<String> startCommand = ImmutableList.of(
-        "java",
-        "-Ddistkv.store.config=" + confPath + "master_store.conf",
-        "-classpath",
-        jarDir,
-        "com.distkv.server.storeserver.StoreServer"
-    );
-    processes[i] = TestUtil.executeCommand(startCommand);
+    System.setProperty(KEY_PROPERTY, "master_store.conf");
+    StoreConfig config = StoreConfig.create();
+    StoreServer storeServer = new StoreServer(config);
+    storeServer.run();
+    storeServers.add(storeServer);
   }
 
   public static void stopAllProcess() {
     for (int i = 0; i < NODE_NUM; i++) {
-      TestUtil.stopProcess(processes[i]);
+
     }
   }
 }

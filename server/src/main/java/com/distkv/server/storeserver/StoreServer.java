@@ -21,18 +21,18 @@ public class StoreServer {
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static final String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
-      "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
-      ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
-      "|   |  .`\\  ||  |,      .--.--.   :  : ' : :  : ' /      .---. \n" +
-      ":   : |  '  |`--'_     /  /    '.;__,'  /  |  '  /     /.  ./| \n" +
-      "|   ' '  ;  :,' ,'|   |  :  /`./|  |   |   '  |  :   .-' . ' | \n" +
-      "'   | ;  .  |'  | |   |  :  ;_  :__,'| :   |  |   \\ /___/ \\: | \n" +
-      "|   | :  |  '|  | :    \\  \\    `. '  : |__ '  : |. \\.   \\  ' . \n" +
-      "'   : | /  ; '  : |__   `----.   \\|  | '.'||  | ' \\ \\\\   \\   ' \n" +
-      "|   | '` ,/  |  | '.'| /  /`--'  /;  :    ;'  : |--'  \\   \\    \n" +
-      ";   :  .'    ;  :    ;'--'.     / |  ,   / ;  |,'      \\   \\ | \n" +
-      "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
-      "'---'         ---`-'                                           ";
+          "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
+          ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
+          "|   |  .`\\  ||  |,      .--.--.   :  : ' : :  : ' /      .---. \n" +
+          ":   : |  '  |`--'_     /  /    '.;__,'  /  |  '  /     /.  ./| \n" +
+          "|   ' '  ;  :,' ,'|   |  :  /`./|  |   |   '  |  :   .-' . ' | \n" +
+          "'   | ;  .  |'  | |   |  :  ;_  :__,'| :   |  |   \\ /___/ \\: | \n" +
+          "|   | :  |  '|  | :    \\  \\    `. '  : |__ '  : |. \\.   \\  ' . \n" +
+          "'   : | /  ; '  : |__   `----.   \\|  | '.'||  | ' \\ \\\\   \\   ' \n" +
+          "|   | '` ,/  |  | '.'| /  /`--'  /;  :    ;'  : |--'  \\   \\    \n" +
+          ";   :  .'    ;  :    ;'--'.     / |  ,   / ;  |,'      \\   \\ | \n" +
+          "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
+          "'---'         ---`-'                                           ";
 
   public StoreServer(StoreConfig storeConfig) {
     this.storeConfig = storeConfig;
@@ -60,12 +60,22 @@ public class StoreServer {
       LOGGER.error("Failed with the exception: {}", e.toString());
       System.exit(-1);
     }
-    LOGGER.info("Succeeded to start dst server on port {}.", storeConfig.getPort());
+    LOGGER.info("Succeeded to start distkv server on port {}.", storeConfig.getPort());
   }
 
   private void registerAllRpcServices() {
     dousiServer.registerService(
         DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
+  }
+
+  public void shutdown() {
+    try {
+      dousiServer.stop();
+    } catch (Throwable e) {
+      LOGGER.error("Failed shutDown DistkvServer with the exception: {}", e.toString());
+      System.exit(-1);
+    }
+    LOGGER.info("Succeeded to shutdown distkv server on port {}.", storeConfig.getPort());
   }
 
   public static void main(String[] args) {
