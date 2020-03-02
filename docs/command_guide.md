@@ -186,7 +186,33 @@ dkv-cli > []
 dkv-cli > dict.drop "dict1"
 dkv-cli > ok
 ```
+
 ## 5. SortedList Concept
+```bash
+dkv-cli > slist.put "slist1" "m12" 12 "m2" 2 "m5" 5
+dkv-cli > ok
+
+dkv-cli > slist.top "slist1" 2
+dkv-cli > [("m12", 12), ("m5", 5)]
+
+dkv-cli > slist.incrScore "slist1" "m5" 10
+dkv-cli > ok
+
+dkv-cli > slist.putMember "slist1" "m9" 13
+dkv-cli > ok
+
+dkv-cli > slist.removeMember "slist1" "m9"
+dkv-cli > ok
+
+dkv-cli > slist.top "slist1" 2
+dkv-cli > [("m5", 15), ("m12", 12)]
+
+dkv-cli > slist.getMember "slist1" "m12"
+dkv-cli > ("m12", 12), 2nd
+
+dkv-cli > slist.drop "slist1"
+dkv-cli > ok
+```
 
 ## 6. Table concept
 1. Define your data structure in a schema file named `mytables.sc`
