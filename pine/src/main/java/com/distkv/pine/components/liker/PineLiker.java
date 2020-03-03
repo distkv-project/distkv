@@ -1,16 +1,26 @@
 package com.distkv.pine.components.liker;
 
-import java.time.LocalTime;
-
 /**
  * The `PineLiker` component is used to like the other comment
  */
 public interface PineLiker {
 
-  public void likesTo(String people, String content, LocalTime localTime);
+  /**
+   * The fromPeople will like the PineLiker comment
+   * @param fromPeople the liked name
+   */
+  public void likesFrom(String fromPeople);
 
-  public PineLiker getfromPeople(String people);
+  /**
+   * The fromPeople will unlike the PineLiker comment
+   * @param fromPeople the unLiked name
+   */
+  public void unLikesFrom(String fromPeople);
 
-  public void unLikesTo(String people, String content, LocalTime localTime);
+  /**
+   * Get the PineLiker's likes number
+   * @return the likes number
+   */
+  public int count();
 
 }
