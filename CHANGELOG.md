@@ -23,7 +23,7 @@
 
 ### Fix：
 
-- Fix jmh bug (#481)
+- Fix jmh bug ([#481](https://github.com/distkv-project/distkv/pull/481))
 - Fix SortedListLinkedImpl bug ([#487](https://github.com/distkv-project/distkv/pull/487))
 - Fix start dkv server and cli not work ([#490](https://github.com/distkv-project/distkv/pull/490))
 - Fix keyboardinterrept exception ([#512](https://github.com/distkv-project/distkv/pull/512))
