@@ -75,7 +75,7 @@ public class StoreServer {
       LOGGER.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
       System.exit(-1);
     }
-    LOGGER.info("Succeeded to shutdown distkv server on port {}.", storeConfig.getPort());
+    LOGGER.debug("Succeeded to shutdown DistkvServer.");
   }
 
   public static void main(String[] args) {
