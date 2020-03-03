@@ -1,5 +1,6 @@
 package com.distkv.pine.api;
 
+import com.distkv.pine.components.liker.PineLiker;
 import com.distkv.pine.components.topper.PineTopper;
 import com.distkv.pine.runtime.PineRuntime;
 
@@ -35,6 +36,10 @@ public class Pine {
 
   public static PineTopper newTopper() {
     return runtime.newTopper();
+  }
+
+  public static PineLiker newLiker(String people, String content) {
+    return runtime.newLiker(people, content);
   }
 
 }

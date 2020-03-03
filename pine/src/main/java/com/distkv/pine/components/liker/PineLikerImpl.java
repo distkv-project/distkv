@@ -1,6 +1,7 @@
 package com.distkv.pine.components.liker;
 
 import com.distkv.client.DistkvClient;
+import com.distkv.common.exception.KeyNotFoundException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,8 +16,9 @@ public class PineLikerImpl extends AbstractPineLiker implements PineLiker {
       DistkvClient distkvClient, String people, String content) {
     super(people, content);
     this.distkvClient = distkvClient;
-    Set<String> set = distkvClient.sets().get(getKey());
-    if (set == null) {
+    try {
+      Set<String> set = distkvClient.sets().get(getKey());
+    } catch (KeyNotFoundException e) {
       distkvClient.sets().put(getKey(), new HashSet<>());
     }
   }
