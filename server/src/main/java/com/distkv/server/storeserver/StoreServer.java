@@ -72,7 +72,7 @@ public class StoreServer {
     try {
       dousiServer.stop();
     } catch (Throwable e) {
-      LOGGER.error("Failed shutDown DistkvServer with the exception: {}", e.toString());
+      LOGGER.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
       System.exit(-1);
     }
     LOGGER.info("Succeeded to shutdown distkv server on port {}.", storeConfig.getPort());
