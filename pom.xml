@@ -206,8 +206,8 @@
     <url>https://distkv.com/</url>
     <licenses>
         <license>
-            <name>GNU General Public License, version 3</name>
-            <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+            <name>BSD 3-Clause "New" or "Revised" License</name>
+            <url>https://spdx.org/licenses/BSD-3-Clause.html</url>
         </license>
     </licenses>
     <developers>
