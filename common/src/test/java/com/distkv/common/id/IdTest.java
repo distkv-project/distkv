@@ -28,6 +28,11 @@ public class IdTest {
 
   @Test
   public void testPineHandleId() {
-   
+    PineHandleId id = PineHandleId.fromRandom();
+    char[] chars = id.hex().toCharArray();
+    Assert.assertEquals(32,id.hex().length());
+    for (char i:chars) {
+      Assert.assertFalse(i >= 'A' && i <= 'Z');
+    }
   }
 }
