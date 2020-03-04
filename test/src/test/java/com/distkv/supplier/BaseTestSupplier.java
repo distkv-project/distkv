@@ -5,6 +5,8 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.utils.RuntimeUtil;
+import com.distkv.server.storeserver.StoreConfig;
+import com.distkv.server.storeserver.StoreServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
@@ -22,6 +24,8 @@ public class BaseTestSupplier {
 
   protected String listeningAddress;
 
+  protected StoreServer storeServer;
+
   @BeforeMethod
   public void setupBase(Method method) throws InterruptedException {
     LOGGER.info(String.format("\n==================== Running the test method: %s.%s",
@@ -29,14 +33,19 @@ public class BaseTestSupplier {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         method.getDeclaringClass(), method.getName()));
     rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
-    TestUtil.startRpcServer(rpcServerPort);
+
+    StoreConfig config = StoreConfig.create();
+    config.setPort(rpcServerPort);
+    storeServer = new StoreServer(config);
+    storeServer.run();
+
     listeningAddress = String.format("distkv://127.0.0.1:%d", rpcServerPort);
     TimeUnit.SECONDS.sleep(1);
   }
 
   @AfterMethod
   public void teardownBase() {
-    TestUtil.stopProcess(TestUtil.getProcess());
+    storeServer.shutdown();
   }
 
   protected DistkvClient newDistkvClient() {

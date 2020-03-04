@@ -5,7 +5,6 @@ import com.distkv.client.DistkvClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
