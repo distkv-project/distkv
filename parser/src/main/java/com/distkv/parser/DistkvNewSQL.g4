@@ -107,7 +107,7 @@ topCount: POSITIVE_INT;
 // meta
 namespace: STRING;
 key: STRING;
-value: STRING;
+value: STRING | NEGATIVE_INT | POSITIVE_INT | ZERO;
 valueArray: (STRING)+;
 index: POSITIVE_INT | ZERO;
 anyInt: NEGATIVE_INT | POSITIVE_INT | ZERO;
