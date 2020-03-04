@@ -85,7 +85,7 @@ public class StoreServer {
       try {
         listeningPort = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
-        LOGGER.error("Failed to start dst server, because the port is incorrect format: {}",
+        LOGGER.error("Failed to start distkv server, because the port is incorrect format: {}",
             args[0]);
         System.exit(0);
       }
