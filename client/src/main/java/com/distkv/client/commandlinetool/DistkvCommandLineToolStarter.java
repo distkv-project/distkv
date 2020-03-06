@@ -1,19 +1,19 @@
 package com.distkv.client.commandlinetool;
 
-import java.io.IOException;
+import java.util.Scanner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import org.jline.reader.Completer;
-import org.jline.reader.LineReader;
-import org.jline.reader.LineReaderBuilder;
-import org.jline.reader.impl.completer.ArgumentCompleter;
-import org.jline.reader.impl.completer.NullCompleter;
-import org.jline.reader.impl.completer.StringsCompleter;
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
+import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.DictKeyNotFoundException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
+import com.distkv.common.exception.SortedListMemberNotFoundException;
+import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
+import com.distkv.parser.DistkvParser;
+import com.distkv.parser.po.DistkvParsedResult;
 
 public class DistkvCommandLineToolStarter {
 
@@ -68,36 +68,34 @@ public class DistkvCommandLineToolStarter {
               + "please check your input.", ADDRESS));
       return;
     }
-    try {
-      new DistkvCommandLineToolStarter().loop(distkvClient);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    new DistkvCommandLineToolStarter().loop(distkvClient);
   }
 
-  private void loop(DistkvClient distkvClient) throws IOException {
-
-    Completer strPutCompleter = new ArgumentCompleter(
-        new StringsCompleter("str.put"),
-        new StringsCompleter("*"),
-        new StringsCompleter("*"),
-        NullCompleter.INSTANCE);
-    Completer strGetCompleter = new ArgumentCompleter(
-        new StringsCompleter("str.get"),
-        new StringsCompleter("*"),
-        new StringsCompleter("*"),
-        NullCompleter.INSTANCE);
-    Completer allCompleter = new ArgumentCompleter(strPutCompleter,strGetCompleter);
-
-    Terminal terminal = TerminalBuilder.builder().system(true).build();
-    LineReader lineReader = LineReaderBuilder.builder().terminal(terminal)
-                            .completer(allCompleter).build();
-    final String prompt = "distkc-cli >";
+  private void loop(DistkvClient distkvClient) {
+    DistkvParser distkvParser = new DistkvParser();
+    DistkvCommandExecutor distkvCommandExecutor = new DistkvCommandExecutor(distkvClient);
+    Scanner sc = new Scanner(System.in);
     while (true) {
-
-      String line;
-      line = lineReader.readLine(prompt);
-      System.out.println(line);
+      System.out.print(PROMPT_STRING);
+      final String command = sc.nextLine();
+      String result = null;
+      try {
+        DistkvParsedResult parsedResult = distkvParser.parse(command);
+        result = distkvCommandExecutor.execute(parsedResult);
+      } catch (DictKeyNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (DistkvListIndexOutOfBoundsException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (KeyNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (SortedListMemberNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (SortedListTopNumIsNonNegativeException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (DistkvException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      }
+      System.out.println(PROMPT_STRING + result);
     }
   }
 

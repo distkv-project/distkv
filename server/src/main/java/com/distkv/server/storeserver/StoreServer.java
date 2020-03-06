@@ -60,12 +60,22 @@ public class StoreServer {
       LOGGER.error("Failed with the exception: {}", e.toString());
       System.exit(-1);
     }
-    LOGGER.info("Succeeded to start dst server on port {}.", storeConfig.getPort());
+    LOGGER.info("Succeeded to start distkv server on port {}.", storeConfig.getPort());
   }
 
   private void registerAllRpcServices() {
     dousiServer.registerService(
         DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
+  }
+
+  public void shutdown() {
+    try {
+      dousiServer.stop();
+    } catch (Throwable e) {
+      LOGGER.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
+      System.exit(-1);
+    }
+    LOGGER.debug("Succeeded to shutdown DistkvServer.");
   }
 
   public static void main(String[] args) {
@@ -75,7 +85,7 @@ public class StoreServer {
       try {
         listeningPort = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
-        LOGGER.error("Failed to start dst server, because the port is incorrect format: {}",
+        LOGGER.error("Failed to start distkv server, because the port is incorrect format: {}",
             args[0]);
         System.exit(0);
       }
