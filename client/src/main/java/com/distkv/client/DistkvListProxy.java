@@ -87,4 +87,16 @@ public class DistkvListProxy {
     DistkvResponse response = FutureUtils.get(asyncListProxy.mremove(key, indexes));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
+
+  /**
+   * Expire a key
+   *
+   * @param key The key to be expired
+   * @param expireTime Millisecond level to set expire
+   */
+  public void expire(String key, long expireTime) {
+    DistkvResponse response = FutureUtils.get(asyncListProxy.expire(key, expireTime));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+  }
+
 }

@@ -10,7 +10,7 @@ package com.distkv.parser.generated;
 
 statement: (conceptStatement) EOF;
 conceptStatement: basicOperationsStatement | strStatement | listStatement
-| setStatement | dictStatement | slistStatement | intStatement;
+| setStatement | dictStatement | slistStatement | intStatement | expireStatement;
 
 // basic operations
 basicOperationsStatement: exit | activeNamespace | deactiveNamespace;
@@ -81,7 +81,7 @@ slistIncrScoreDefault: key itemMember;
 // slist increase delta scores
 slistIncrScoreDelta: key itemMember anyInt;
 
-
+// int concept
 intStatement: intPut | intGet | intDrop | intIncr;
 intPut: 'int.put' key anyInt;
 intGet: 'int.get' key;
@@ -92,6 +92,14 @@ intIncrDefault: key;
 // Increase delta points
 intIncrDelta: key anyInt;
 
+// expire
+expireStatement: expireStr | expireList | expireDict | expireSet | expireSlist | expireInt;
+expireStr: 'expire.str' key anyInt;
+expireList: 'expire.list' key anyInt;
+expireDict: 'expire.dict' key anyInt;
+expireSet: 'expire.set' key anyInt;
+expireSlist: 'expire.slist' key anyInt;
+expireInt: 'expire.int' key anyInt;
 
 keyValuePairs: (keyValuePair)+;
 keyValuePair: itemKey itemValue;

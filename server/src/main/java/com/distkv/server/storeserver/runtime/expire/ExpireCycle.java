@@ -1,5 +1,6 @@
 package com.distkv.server.storeserver.runtime.expire;
 
+import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,9 +12,15 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ExpireCycle {
 
   private ConcurrentHashMap<String, Node> strMap;
+
   private static ScheduledExecutorService swapExpiredPool
       = new ScheduledThreadPoolExecutor(10);
+
   private ReentrantLock lock = new ReentrantLock();
+  /**
+   * Store engine.
+   */
+  private KVStore storeEngine;
 
   /*
    *  PriorityQueue allows the data with the lowest expiration time to be queued.
@@ -21,7 +28,8 @@ public class ExpireCycle {
    */
   public PriorityQueue<Node> expireQueue = new PriorityQueue<>(1024);
 
-  public ExpireCycle() {
+  public ExpireCycle(KVStore kvStore) {
+    storeEngine = kvStore;
     this.strMap = new ConcurrentHashMap<>();
     /*
      * Use the default thread pool to clear outdated data every 5 seconds.

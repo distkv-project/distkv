@@ -44,31 +44,33 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Worker extends Thread {
 
+  private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
+
   private StoreRuntime storeRuntime;
 
-  private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
+  private BlockingQueue<InternalRequest> queue;
+  /**
+   * Expire handler
+   */
+  private ExpireCycle expireCycle;
+  /**
+   * Store engine.
+   */
+  private KVStore storeEngine;
 
   public Worker(StoreRuntime storeRuntime) {
     this.storeRuntime = storeRuntime;
+    storeEngine = new KVStoreImpl();
+    expireCycle = new ExpireCycle(storeEngine);
     queue = new LinkedBlockingQueue<>();
   }
 
-  private BlockingQueue<InternalRequest> queue;
 
   // Note that this method is threading-safe because of the threading-safe blocking queue.
   public void post(InternalRequest internalRequest) throws InterruptedException {
     queue.put(internalRequest);
   }
 
-  /**
-   * Expire handler
-   */
-  private ExpireCycle expireCycle = new ExpireCycle();
-
-  /**
-   * Store engine.
-   */
-  private KVStore storeEngine = new KVStoreImpl();
 
   @Override
   public void run() {
@@ -93,7 +95,7 @@ public class Worker extends Thread {
     }
   }
 
-  private void expireHandle(DistkvRequest request){
+  private void expireHandle(DistkvRequest request) {
     //TODO (senyer)
   }
 
