@@ -1,16 +1,16 @@
 package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListGetResponse;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import com.google.common.collect.ImmutableList;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
@@ -28,7 +28,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testPutAndGet() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -77,7 +77,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testDrop() {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -117,7 +117,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testLPut() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -184,7 +184,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testRPut() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -250,7 +250,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testRemove() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -326,7 +326,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testMRemove() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       final DistkvService listService = listProxy.getService();
 
       // Put.

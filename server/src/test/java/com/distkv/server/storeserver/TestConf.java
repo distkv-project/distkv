@@ -2,8 +2,10 @@ package com.distkv.server.storeserver;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.io.File;
 
+@Test(singleThreaded = true)
 public class TestConf {
   @Test
   public void testDefaultConf() {
