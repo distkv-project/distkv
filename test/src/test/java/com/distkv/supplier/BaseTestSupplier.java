@@ -5,22 +5,25 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.utils.RuntimeUtil;
+import com.distkv.server.storeserver.StoreConfig;
+import com.distkv.server.storeserver.StoreServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BaseTestSupplier {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BaseTestSupplier.class);
 
-  protected int rpcServerPort = -1;
-
-  protected String listeningAddress;
+  private static final AtomicInteger PORT = new AtomicInteger(10000);
+  protected final ThreadLocal<Integer> rpcServerPort =
+          ThreadLocal.withInitial(() -> PORT.getAndIncrement());
+  protected final ThreadLocal<StoreServer> storeServer = new ThreadLocal<>();
 
   @BeforeMethod
   public void setupBase(Method method) throws InterruptedException {
@@ -28,22 +31,31 @@ public class BaseTestSupplier {
         method.getDeclaringClass(), method.getName()));
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         method.getDeclaringClass(), method.getName()));
-    rpcServerPort = (Math.abs(new Random().nextInt() % 10000)) + 10000;
-    TestUtil.startRpcServer(rpcServerPort);
-    listeningAddress = String.format("distkv://127.0.0.1:%d", rpcServerPort);
+
+    StoreConfig config = StoreConfig.create();
+    config.setPort(rpcServerPort.get());
+    storeServer.set(new StoreServer(config));
+    storeServer.get().run();
     TimeUnit.SECONDS.sleep(1);
+  }
+
+  public String getListeningAddress() {
+    return "distkv://127.0.0.1:" + rpcServerPort.get();
   }
 
   @AfterMethod
   public void teardownBase() {
-    TestUtil.stopProcess(TestUtil.getProcess());
+    if (storeServer.get() != null) {
+      storeServer.get().shutdown();
+    }
   }
 
   protected DistkvClient newDistkvClient() {
     final DefaultDistkvClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client[0] = new DefaultDistkvClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
+        client[0] = new DefaultDistkvClient(
+                String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
         client[0].strs().put("ping", "ping");
         return true;
       } catch (Exception e) {
@@ -57,7 +69,8 @@ public class BaseTestSupplier {
     final DefaultAsyncClient[] client = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client[0] = new DefaultAsyncClient(String.format("distkv://127.0.0.1:%d", rpcServerPort));
+        client[0] = new DefaultAsyncClient(
+                String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
         client[0].strs().put("ping", "ping");
         return true;
       } catch (Exception e) {

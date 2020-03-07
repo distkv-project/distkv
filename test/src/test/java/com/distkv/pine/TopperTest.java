@@ -6,13 +6,14 @@ import com.distkv.pine.components.topper.PineTopper;
 import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.util.List;
 
 public class TopperTest extends BaseTestSupplier {
 
   @Test
   public void testTopper() {
-    Pine.init(listeningAddress);
+    Pine.init(getListeningAddress());
     PineTopper topper = Pine.newTopper();
     topper.addMember("Bob", 80);
     topper.addMember("Allen", 100);

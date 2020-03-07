@@ -68,6 +68,16 @@ public class StoreServer {
         DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
   }
 
+  public void shutdown() {
+    try {
+      dousiServer.stop();
+    } catch (Throwable e) {
+      LOGGER.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
+      System.exit(-1);
+    }
+    LOGGER.debug("Succeeded to shutdown DistkvServer.");
+  }
+
   public static void main(String[] args) {
 
     int listeningPort = -1;

@@ -9,7 +9,7 @@ public class PineHandleId implements Serializable {
 
   private static final long serialVersionUID = -7937063292434146181L;
 
-  private static final int LENGTH = 16;
+  public static final int LENGTH = 16;
 
   private int hashCodeCache = 0;
 

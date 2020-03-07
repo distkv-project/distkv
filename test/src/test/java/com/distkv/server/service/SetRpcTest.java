@@ -1,16 +1,16 @@
 package com.distkv.server.service;
 
 import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetGetResponse;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
 import com.google.common.collect.ImmutableList;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
@@ -24,11 +24,11 @@ public class SetRpcTest extends BaseTestSupplier {
   public void testSet() throws InvalidProtocolBufferException {
     // The following methods should be called as ordered
     // because some methods depend on other methods.
-    testPut(rpcServerPort);
-    testGet(rpcServerPort);
-    testRemoveItem(rpcServerPort);
-    testDropByKey(rpcServerPort);
-    testExists(rpcServerPort);
+    testPut(rpcServerPort.get());
+    testGet(rpcServerPort.get());
+    testRemoveItem(rpcServerPort.get());
+    testDropByKey(rpcServerPort.get());
+    testExists(rpcServerPort.get());
   }
 
   private static void testPut(int rpcServerPort) {
