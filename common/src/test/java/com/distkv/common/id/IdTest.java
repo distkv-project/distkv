@@ -31,21 +31,20 @@ public class IdTest {
 
   @Test
   public void testPineHandleId() {
-    final String[] example = new String[] {"0","1","2","3","4","5","6","7",
-        "8","9","a","b","c","d","e","f"};
-    Set<Character> set = new HashSet<>();
-
-    Arrays.asList(example).stream().forEach(x -> {
-      set.add(x.charAt(0));
-    });
-
     PineHandleId id = PineHandleId.fromRandom();
 
-    String str = id.hex();
-    Assert.assertEquals(str.length(),32);
+    final String str = id.hex();
+    Assert.assertEquals(str.length(),2 * PineHandleId.LENGTH);
 
     for (int i = 0; i < str.length(); i++) {
-      Assert.assertFalse(set.contains(str.indexOf(i)));
+      Assert.assertTrue(isHexChar(str.charAt(i)));
+
     }
+  }
+
+  private boolean isHexChar(Character ch) {
+    final boolean isLeft = (ch >= '0' && ch <= '9');
+    final boolean isRight = (ch >= 'a' && ch <= 'f');
+    return isLeft || isRight;
   }
 }
