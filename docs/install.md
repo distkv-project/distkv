@@ -14,14 +14,9 @@ The following steps guide you to build a full version Distkv with `dkv-server` a
     
 2. Enter the root directory of Distkv.
 
-        cd distkv
-
-3. Install the dependencies of Distkv.
+        cd distkv        
         
-        bash scripts/install_dependencies.sh
-        
-        
-4. Install Distkv.
+3. Install Distkv.
 
         pip install -e deploy/python -v
         
@@ -31,16 +26,12 @@ After the 4 steps, the Distkv should be installed successfully on you local. Typ
 
 ## 3. Run Unit Tests
 If you'd like to run the unit tests of Distkv, you needn't build the full version Distkv. Just follow the following steps to build a simple version of Distkv and run the unit tests.
-
-1. Install the dependencies of Distkv.
         
-        bash scripts/install_dependencies.sh
-        
-2. Build with skiping tests.
+1. Build with skiping tests.
 
         mvn clean install -DskipTests
 
-3. If you'd like to run the tests, use this command.
+2. If you'd like to run the tests, use this command.
 
         mvn test
 
