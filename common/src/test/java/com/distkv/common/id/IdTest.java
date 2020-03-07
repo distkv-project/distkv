@@ -1,8 +1,5 @@
 package com.distkv.common.id;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
