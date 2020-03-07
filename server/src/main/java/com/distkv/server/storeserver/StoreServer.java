@@ -69,13 +69,14 @@ public class StoreServer {
   }
 
   public void shutdown() {
-    try {
-      dousiServer.stop();
-    } catch (Throwable e) {
-      LOGGER.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
-      System.exit(-1);
-    }
-    LOGGER.debug("Succeeded to shutdown DistkvServer.");
+  // TODO(qwang): This should be commented out once we upgrade the version of dousi.
+  //    try {
+  //      dousiServer.stop();
+  //    } catch (Throwable e) {
+  //      LOGGER.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
+  //      System.exit(-1);
+  //    }
+  //    LOGGER.debug("Succeeded to shutdown DistkvServer.");
   }
 
   public static void main(String[] args) {
