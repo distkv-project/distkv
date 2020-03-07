@@ -1,16 +1,18 @@
 package com.distkv.pine.components.liker;
 
 import com.distkv.client.DistkvClient;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.KeyNotFoundException;
 
+import com.distkv.common.exception.PineLikerLikeeNotFoundException;
 import java.util.HashSet;
 
-public class PipeLikerTopic {
+public class PineLikerTopic {
   private String topicName;
 
   private DistkvClient distkvClient;
 
-  private PipeLikerTopic() {
+  private PineLikerTopic() {
 
   }
 
@@ -31,24 +33,24 @@ public class PipeLikerTopic {
   }
 
   static class Builder {
-    private PipeLikerTopic pipeLikerTopic;
+    private PineLikerTopic pineLikerTopic;
 
     public Builder() {
-      pipeLikerTopic = new PipeLikerTopic();
+      pineLikerTopic = new PineLikerTopic();
     }
 
     public Builder setTopicKey(String topicKey) {
-      pipeLikerTopic.setTopicName(topicKey);
+      pineLikerTopic.setTopicName(topicKey);
       return this;
     }
 
     public Builder setDistkvClient(DistkvClient distkvClient) {
-      pipeLikerTopic.setDistkvClient(distkvClient);
+      pineLikerTopic.setDistkvClient(distkvClient);
       return this;
     }
 
-    public PipeLikerTopic build() {
-      return pipeLikerTopic;
+    public PineLikerTopic build() {
+      return pineLikerTopic;
     }
   }
 
@@ -67,13 +69,13 @@ public class PipeLikerTopic {
     } catch (KeyNotFoundException e) {
       distkvClient.sets().put(topicName, new HashSet<>());
     }
-    boolean isFind = true;
     try {
       distkvClient.sets().removeItem(topicName, likee);
     } catch (KeyNotFoundException e) {
-      isFind = false;
+      throw new PineLikerLikeeNotFoundException(
+          "This likee has never liked this topic");
     }
-    return isFind;
+    return true;
   }
 
   public int count() {

@@ -1,5 +1,7 @@
 package com.distkv.pine;
 
+import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.PineLikerLikeeNotFoundException;
 import com.distkv.pine.api.Pine;
 import com.distkv.pine.components.liker.PineLiker;
 import com.distkv.supplier.BaseTestSupplier;
@@ -21,9 +23,19 @@ public class LikerTest extends BaseTestSupplier {
     Assert.assertEquals(liker.getTopic("nihao").count(), 2);
 
     Assert.assertTrue(liker.getTopic("nihao").unLikesFrom("zhangsan"));
-    Assert.assertFalse(liker.getTopic("nihao").unLikesFrom("lisi3"));
     Assert.assertEquals(liker.getTopic("nihao").count(), 1);
 
     Pine.shutdown();
   }
+
+  @Test(expectedExceptions = PineLikerLikeeNotFoundException.class)
+  public void testLikeeNotFoundException() {
+    Pine.init(getListeningAddress());
+
+    PineLiker liker = Pine.newLiker();
+    liker.getTopic("nihao").unLikesFrom("lisi");
+
+    Pine.shutdown();
+  }
+
 }

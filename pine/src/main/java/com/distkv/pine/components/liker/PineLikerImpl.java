@@ -18,8 +18,8 @@ public class PineLikerImpl extends AbstractPineHandle implements PineLiker {
   }
 
   @Override
-  public PipeLikerTopic getTopic(String topic) {
-    return new PipeLikerTopic.Builder()
+  public PineLikerTopic getTopic(String topic) {
+    return new PineLikerTopic.Builder()
         .setTopicKey(getKey(topic))
         .setDistkvClient(distkvClient)
         .build();
