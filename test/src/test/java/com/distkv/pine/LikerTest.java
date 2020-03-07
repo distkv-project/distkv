@@ -11,7 +11,7 @@ public class LikerTest extends BaseTestSupplier {
 
   @Test
   public void testLiker() {
-    Pine.init(listeningAddress);
+    Pine.init(getListeningAddress());
 
     PineLiker liker = Pine.newLiker();
     liker.getTopic("nihao").likesFrom("zhangsan");
