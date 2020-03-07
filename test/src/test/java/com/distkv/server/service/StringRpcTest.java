@@ -20,7 +20,7 @@ public class StringRpcTest extends BaseTestSupplier {
   @Test
   public void testRpcServer() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> stringProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       DistkvService stringService = stringProxy.getService();
       // Test string put request.
       StringProtocol.StrPutRequest strPutRequest =

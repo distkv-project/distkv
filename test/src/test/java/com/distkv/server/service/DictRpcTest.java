@@ -37,7 +37,7 @@ public class DictRpcTest extends BaseTestSupplier {
   @Test
   public void testDictRpcCall() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> setProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort)) {
+        DistkvService.class, rpcServerPort.get())) {
       DistkvService dictService = setProxy.getService();
       // Test dict put.
       DictProtocol.DictPutRequest.Builder dictPutRequestBuilder =
