@@ -28,12 +28,12 @@ public class LikerTest extends BaseTestSupplier {
     Pine.shutdown();
   }
 
-  @Test(expectedExceptions = PineLikerLikeeNotFoundException.class)
+  @Test
   public void testLikeeNotFoundException() {
     Pine.init(getListeningAddress());
 
     PineLiker liker = Pine.newLiker();
-    liker.getTopic("nihao").unLikesFrom("lisi");
+    Assert.assertTrue(liker.getTopic("nihao").unLikesFrom("lisi"));
 
     Pine.shutdown();
   }
