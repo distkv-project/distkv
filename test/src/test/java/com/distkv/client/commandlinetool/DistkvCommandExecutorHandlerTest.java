@@ -1,6 +1,7 @@
 package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DistkvClient;
+import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.parser.DistkvParser;
 import com.distkv.parser.po.DistkvParsedResult;
 import com.distkv.supplier.BaseTestSupplier;
@@ -270,4 +271,155 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       distkvClient.disconnect();
     }
   }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void expireStrTest() throws InterruptedException {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    // put
+    command = "str.put k1 v1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .strPut(distkvClient, distKVParsedResult), STATUS_OK);
+    // expire
+    command = "expire.str k1 1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .expireStr(distkvClient, distKVParsedResult), STATUS_OK);
+
+    Thread.sleep(1000);
+
+    //Test KeyNotFoundException
+    command = "str.get k1";
+    distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.strGet(distkvClient, distKVParsedResult);
+  }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void expireListTest() throws InterruptedException {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+
+    // put
+    command = "list.put k1 v2 v1 v3";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .listPut(distkvClient, distKVParsedResult), STATUS_OK);
+    // expire
+    command = "expire.list k1 1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .expireList(distkvClient, distKVParsedResult), STATUS_OK);
+
+    Thread.sleep(1000);
+
+    // Test KeyNotFoundException
+    command = "list.get k1";
+    distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.listGet(distkvClient, distKVParsedResult);
+  }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void expireSetTest() throws InterruptedException {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    // put
+    command = "set.put k1 v1 v2 v3";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .setPut(distkvClient, distKVParsedResult), STATUS_OK);
+
+    // expire
+    command = "expire.set k1 1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .expireSet(distkvClient, distKVParsedResult), STATUS_OK);
+
+    Thread.sleep(1000);
+    // Test KeyNotFoundException
+    command = "set.get k1";
+    distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.setGet(distkvClient, distKVParsedResult);
+  }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void expireDictTest() throws InterruptedException {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    // put
+    command = "dict.put key k1 v1 k2 v2";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .dictPut(distkvClient, distKVParsedResult), STATUS_OK);
+    // expire
+    command = "expire.dict key 1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .expireDict(distkvClient, distKVParsedResult), STATUS_OK);
+    Thread.sleep(1000);
+    // Test KeyNotFoundException
+    command = "dict.get key";
+    distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.dictGet(distkvClient, distKVParsedResult);
+
+  }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void expireSlistTest() throws InterruptedException {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    // put
+    command = "slist.put k1 m1 12 m2 -2 m3 0";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .slistPut(distkvClient, distKVParsedResult), STATUS_OK);
+    // expire
+    command = "expire.slist k1 1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .expireSlist(distkvClient, distKVParsedResult), STATUS_OK);
+
+    Thread.sleep(1000);
+
+    // Test KeyNotFoundException
+    command = "slist.top k1 2";
+    distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.slistTop(distkvClient, distKVParsedResult);
+  }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void expireIntsTest() throws InterruptedException {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    // put
+    command = "int.put k1 12";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(
+        CommandExecutorHandler.intPut(distkvClient, distKVParsedResult), STATUS_OK);
+    // expire
+    command = "expire.int k1 1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .expireInt(distkvClient, distKVParsedResult), STATUS_OK);
+
+    Thread.sleep(1000);
+
+    // Test KeyNotFoundException
+    command = "int.get k1";
+    distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.intGet(distkvClient, distKVParsedResult);
+  }
+
 }

@@ -685,7 +685,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   @Override
   public void enterExpireStr(ExpireStrContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
+    Preconditions.checkState(ctx.children.size() == 3);
 
     ExpireRequest expireRequest = ExpireRequest
         .newBuilder()
@@ -702,7 +702,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   @Override
   public void enterExpireList(ExpireListContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
+    Preconditions.checkState(ctx.children.size() == 3);
 
     ExpireRequest expireRequest = ExpireRequest
         .newBuilder()
@@ -719,7 +719,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   @Override
   public void enterExpireDict(ExpireDictContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
+    Preconditions.checkState(ctx.children.size() == 3);
 
     ExpireRequest expireRequest = ExpireRequest
         .newBuilder()
@@ -736,7 +736,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   @Override
   public void enterExpireSet(ExpireSetContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
+    Preconditions.checkState(ctx.children.size() == 3);
 
     ExpireRequest expireRequest = ExpireRequest
         .newBuilder()
@@ -753,7 +753,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   @Override
   public void enterExpireSlist(ExpireSlistContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
+    Preconditions.checkState(ctx.children.size() == 3);
 
     ExpireRequest expireRequest = ExpireRequest
         .newBuilder()
@@ -770,7 +770,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   @Override
   public void enterExpireInt(ExpireIntContext ctx) {
     Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
+    Preconditions.checkState(ctx.children.size() == 3);
 
     ExpireRequest expireRequest = ExpireRequest
         .newBuilder()

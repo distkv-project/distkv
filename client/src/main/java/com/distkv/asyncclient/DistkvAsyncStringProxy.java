@@ -42,6 +42,7 @@ public class DistkvAsyncStringProxy extends DistkvAbstractAsyncProxy {
         .build();
     return call(request);
   }
+
   public CompletableFuture<DistkvProtocol.DistkvResponse> expire(String key, long expireTime) {
     ExpireRequest expireRequest = ExpireRequest
         .newBuilder()

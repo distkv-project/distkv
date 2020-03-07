@@ -38,10 +38,10 @@ public class ExpireCycle {
     storeEngine = kvStore;
 
     /*
-     * Use the default thread pool to clear outdated data every 5 seconds.
+     * Use the default thread pool to clear outdated data every 1 seconds.
      * The thread pool and the calling frequency can be set by the method overload to the caller.
      */
-    swapExpiredPool.scheduleWithFixedDelay(new SwapExpiredNode(), 5, 10, TimeUnit.SECONDS);
+    swapExpiredPool.scheduleWithFixedDelay(new SwapExpiredNode(), 1, 1, TimeUnit.SECONDS);
   }
 
   public void addToCycle(DistkvRequest request) {
@@ -67,7 +67,7 @@ public class ExpireCycle {
         lock.lock();
         try {
           Node node = expireQueue.peek();
-          if (node == null || node.expireTime > now) {
+          if (node == null || node.expireTime > now / 1000) {
             return;
           }
           expireQueue.poll();
