@@ -2,7 +2,8 @@ package com.distkv.asyncclient;
 
 
 /**
- * The DistkvAsyncClient class is used to connect to the distkv server and do operations asynchronously.
+ * The DistkvAsyncClient class is used to connect to the distkv server
+ * and do operations asynchronously.
  */
 public interface DistkvAsyncClient {
 

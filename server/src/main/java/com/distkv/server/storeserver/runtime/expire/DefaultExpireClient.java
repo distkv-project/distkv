@@ -4,7 +4,7 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.service.DistkvService;
-import com.distkv.server.storeserver.StoreConfig;
+import com.distkv.server.storeserver.StoreServer;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -22,9 +22,7 @@ public class DefaultExpireClient implements ExpireClient {
 
   @Override
   public void connect() {
-    StoreConfig storeConfig = StoreConfig.create();
-    int port = storeConfig.getPort();
-    String localAddress = String.format("distkv://127.0.0.1:%d", port);
+    String localAddress = String.format("distkv://127.0.0.1:%d", StoreServer.localPort);
     ClientConfig clientConfig = ClientConfig.builder()
         .address(localAddress)
         .build();
@@ -33,8 +31,8 @@ public class DefaultExpireClient implements ExpireClient {
       expireClient.open();
     } catch (DousiConnectionRefusedException connectFail) {
       throw new DistkvException("Failed to connect to Distkv Server:" + connectFail);
-    }finally {
-      isConnected=true;
+    } finally {
+      isConnected = true;
     }
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
@@ -50,7 +48,7 @@ public class DefaultExpireClient implements ExpireClient {
   public boolean disconnect() {
     try {
       expireClient.close();
-      isConnected=false;
+      isConnected = false;
       return true;
     } catch (DistkvException ex) {
       throw new DistkvException(String.format("Failed close the clients : %s", ex.getMessage()));

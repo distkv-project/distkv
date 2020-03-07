@@ -22,7 +22,6 @@ public class ExpireCycle {
 
   private ReentrantLock lock = new ReentrantLock();
 
-  private ExpireClient expireClient;
   /*
    *  PriorityQueue allows the data with the lowest expiration time to be queued.
    *  Just look at the cached most recent expired data and avoid scanning all caches.
@@ -30,9 +29,6 @@ public class ExpireCycle {
   public PriorityQueue<Node> expireQueue = new PriorityQueue<>(1024);
 
   public ExpireCycle() {
-    expireClient = new DefaultExpireClient();
-    expireClient.connect();
-
     /*
      * Use the default thread pool to clear outdated data every 1 seconds.
      */
@@ -75,6 +71,8 @@ public class ExpireCycle {
   }
 
   private void clearStore(Node node) {
+    ExpireClient expireClient = new DefaultExpireClient();
+    expireClient.connect();
     RequestType requestType = node.requestType;
     String key = node.key;
     switch (requestType) {
@@ -100,6 +98,7 @@ public class ExpireCycle {
         break;
       }
     }
+    expireClient.disconnect();
   }
 
   private static class Node implements Comparable<Node> {

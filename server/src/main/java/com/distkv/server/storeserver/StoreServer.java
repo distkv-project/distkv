@@ -18,24 +18,27 @@ public class StoreServer {
 
   private StoreConfig storeConfig;
 
+  public static int localPort;
+
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static final String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
-      "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
-      ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
-      "|   |  .`\\  ||  |,      .--.--.   :  : ' : :  : ' /      .---. \n" +
-      ":   : |  '  |`--'_     /  /    '.;__,'  /  |  '  /     /.  ./| \n" +
-      "|   ' '  ;  :,' ,'|   |  :  /`./|  |   |   '  |  :   .-' . ' | \n" +
-      "'   | ;  .  |'  | |   |  :  ;_  :__,'| :   |  |   \\ /___/ \\: | \n" +
-      "|   | :  |  '|  | :    \\  \\    `. '  : |__ '  : |. \\.   \\  ' . \n" +
-      "'   : | /  ; '  : |__   `----.   \\|  | '.'||  | ' \\ \\\\   \\   ' \n" +
-      "|   | '` ,/  |  | '.'| /  /`--'  /;  :    ;'  : |--'  \\   \\    \n" +
-      ";   :  .'    ;  :    ;'--'.     / |  ,   / ;  |,'      \\   \\ | \n" +
-      "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
-      "'---'         ---`-'                                           ";
+          "  .'  .' `\\    ,--,               ,--.'|_    ,--/ /|           \n" +
+          ",---.'     \\ ,--.'|               |  | :,' ,--. :/ |           \n" +
+          "|   |  .`\\  ||  |,      .--.--.   :  : ' : :  : ' /      .---. \n" +
+          ":   : |  '  |`--'_     /  /    '.;__,'  /  |  '  /     /.  ./| \n" +
+          "|   ' '  ;  :,' ,'|   |  :  /`./|  |   |   '  |  :   .-' . ' | \n" +
+          "'   | ;  .  |'  | |   |  :  ;_  :__,'| :   |  |   \\ /___/ \\: | \n" +
+          "|   | :  |  '|  | :    \\  \\    `. '  : |__ '  : |. \\.   \\  ' . \n" +
+          "'   : | /  ; '  : |__   `----.   \\|  | '.'||  | ' \\ \\\\   \\   ' \n" +
+          "|   | '` ,/  |  | '.'| /  /`--'  /;  :    ;'  : |--'  \\   \\    \n" +
+          ";   :  .'    ;  :    ;'--'.     / |  ,   / ;  |,'      \\   \\ | \n" +
+          "|   ,.'      |  ,   /   `--'---'   ---`-'  '--'         '---\"  \n" +
+          "'---'         ---`-'                                           ";
 
   public StoreServer(StoreConfig storeConfig) {
     this.storeConfig = storeConfig;
+    localPort = storeConfig.getPort();
     ServerConfig dousiServerConfig = ServerConfig.builder()
         /// Note: This is a very important flag for `StoreServer` because it
         /// affects the threading model of `StoreServer`.
@@ -96,6 +99,7 @@ public class StoreServer {
       config.setPort(listeningPort);
     }
     StoreServer storeServer = new StoreServer(config);
+
     System.out.println(WELCOME_WORDS);
     storeServer.run();
   }

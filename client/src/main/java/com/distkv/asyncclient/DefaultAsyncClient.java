@@ -47,7 +47,8 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
     setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
     dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
-    sortedListProxy = new DistkvAsyncSortedListProxy(this, distkvRpcProxy.getService(rpcClient));
+    sortedListProxy = new DistkvAsyncSortedListProxy(this,
+        distkvRpcProxy.getService(rpcClient));
     intProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
   }
 
