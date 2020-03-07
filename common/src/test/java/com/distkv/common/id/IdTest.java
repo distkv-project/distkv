@@ -31,7 +31,7 @@ public class IdTest {
 
   @Test
   public void testPineHandleId() {
-    String[] example = new String[] {"0","1","2","3","4","5","6","7",
+    final String[] example = new String[] {"0","1","2","3","4","5","6","7",
         "8","9","a","b","c","d","e","f"};
     Set<Character> set = new HashSet<>();
 
