@@ -50,7 +50,7 @@ public class ExpireCycle {
     long expireTime = -1;
     try {
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      expireTime = expireRequest.getExpireTime();
+      expireTime = expireRequest.getExpireTime() * 1000 + System.currentTimeMillis();
     } catch (InvalidProtocolBufferException e) {
       LOGGER.error("Failed to set expire for a key :{1}", e);
       throw new DistkvException(e.toString());
@@ -67,7 +67,7 @@ public class ExpireCycle {
         lock.lock();
         try {
           Node node = expireQueue.peek();
-          if (node == null || node.expireTime > now / 1000) {
+          if (node == null || node.expireTime > now) {
             return;
           }
           expireQueue.poll();

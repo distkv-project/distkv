@@ -1,5 +1,6 @@
 package com.distkv.client;
 
+import com.distkv.common.exception.KeyNotFoundException;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 import com.distkv.common.DistkvTuple;
@@ -56,6 +57,16 @@ public class SortedListProxyTest extends BaseTestSupplier {
     DistkvTuple<Integer, Integer> tuple = distkvClient.sortedLists().getMember("k1", "fw");
     Assert.assertEquals(tuple.getFirst().intValue(), 10);
     Assert.assertEquals(tuple.getSecond().intValue(), 2);
+  }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void testExpireSList() throws InterruptedException, InvalidProtocolBufferException {
+    distkvClient = newDistkvClient();
+    testPut();
+    distkvClient.sortedLists().expire("k1", 1);
+    Thread.sleep(2000);
+    distkvClient.sortedLists().getMember("k1", "fw");
+    distkvClient.disconnect();
   }
 
 }

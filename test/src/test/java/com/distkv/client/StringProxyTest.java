@@ -53,4 +53,15 @@ public class StringProxyTest extends BaseTestSupplier {
     Assert.assertEquals(set, client.sets().get("k1"));
     client.disconnect();
   }
+
+  @Test(expectedExceptions = KeyNotFoundException.class)
+  public void testExpireStr() throws InvalidProtocolBufferException, InterruptedException {
+    DistkvClient client = newDistkvClient();
+    client.strs().put("k1", "v1");
+    client.strs().expire("k1", 1);
+    Thread.sleep(2000);
+    client.strs().get("k1");
+    client.disconnect();
+  }
+
 }
