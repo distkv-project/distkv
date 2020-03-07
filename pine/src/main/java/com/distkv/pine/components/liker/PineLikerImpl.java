@@ -8,8 +8,7 @@ public class PineLikerImpl implements PineLiker {
 
   private DistkvClient distkvClient;
 
-  public PineLikerImpl(
-      DistkvClient distkvClient) {
+  public PineLikerImpl(DistkvClient distkvClient) {
     this.distkvClient = distkvClient;
   }
 
@@ -19,7 +18,7 @@ public class PineLikerImpl implements PineLiker {
 
   @Override
   public PipeLikerTopic getTopic(String topic) {
-   return new PipeLikerTopic(getKey(topic), distkvClient);
+    return new PipeLikerTopic(getKey(topic), distkvClient);
   }
 
   private String getKey(String topic) {

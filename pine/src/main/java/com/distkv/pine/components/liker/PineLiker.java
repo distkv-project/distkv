@@ -1,7 +1,5 @@
 package com.distkv.pine.components.liker;
 
-import java.util.Set;
-
 /**
  * The `PineLiker` component is used to like the other comment
  */
