@@ -1,5 +1,8 @@
 package com.distkv.common.id;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -28,6 +31,21 @@ public class IdTest {
 
   @Test
   public void testPineHandleId() {
+    final String[] example = new String[] {"0","1","2","3","4","5","6","7",
+        "8","9","a","b","c","d","e","f"};
+    Set<Character> set = new HashSet<>();
 
+    Arrays.asList(example).stream().forEach(x -> {
+      set.add(x.charAt(0));
+    });
+
+    PineHandleId id = PineHandleId.fromRandom();
+
+    String str = id.hex();
+    Assert.assertEquals(str.length(),32);
+
+    for (int i = 0; i < str.length(); i++) {
+      Assert.assertFalse(set.contains(str.indexOf(i)));
+    }
   }
 }
