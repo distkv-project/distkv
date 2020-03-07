@@ -31,13 +31,11 @@ public class IdTest {
 
   @Test
   public void testPineHandleId() {
-    String[] s = new String[]{"0","1","2","3","4","5","6","7",
-        "8","9","a","b","c","d","e","f",
-        "g","h","i","j","k","l","m","n",
-        "o","p","q","r","s","t","u","v","w","x","y","z"};
+    String[] example = new String[] {"0","1","2","3","4","5","6","7",
+        "8","9","a","b","c","d","e","f"};
     Set<Character> set = new HashSet<>();
 
-    Arrays.asList(s).stream().forEach(x -> {
+    Arrays.asList(example).stream().forEach(x -> {
       set.add(x.charAt(0));
     });
 
