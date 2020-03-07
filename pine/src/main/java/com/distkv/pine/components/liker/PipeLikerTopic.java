@@ -4,23 +4,29 @@ import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public class PipeLikerTopic {
+  private String topicName;
 
-  public String getTopicKey() {
-    return topicKey;
+  private DistkvClient distkvClient;
+
+  private PipeLikerTopic() {
+
   }
 
-  public void setTopicKey(String topicKey) {
-    this.topicKey = topicKey;
+  public String getTopicName() {
+    return topicName;
+  }
+
+  private void setTopicName(String topicName) {
+    this.topicName = topicName;
   }
 
   public DistkvClient getDistkvClient() {
     return distkvClient;
   }
 
-  public void setDistkvClient(DistkvClient distkvClient) {
+  private void setDistkvClient(DistkvClient distkvClient) {
     this.distkvClient = distkvClient;
   }
 
@@ -32,7 +38,7 @@ public class PipeLikerTopic {
     }
 
     public Builder setTopicKey(String topicKey) {
-      pipeLikerTopic.setTopicKey(topicKey);
+      pipeLikerTopic.setTopicName(topicKey);
       return this;
     }
 
@@ -46,43 +52,31 @@ public class PipeLikerTopic {
     }
   }
 
-  private String topicKey;
-
-  private DistkvClient distkvClient;
-
-  private PipeLikerTopic() {
-
+  public void likesFrom(String likee) {
+    try {
+      distkvClient.sets().get(topicName);
+    } catch (KeyNotFoundException e) {
+      distkvClient.sets().put(topicName, new HashSet<>());
+    }
+    distkvClient.sets().putItem(topicName, likee);
   }
 
-  public void likesFrom(String people) {
-    Set<String> set = new HashSet<>();
+  public boolean unLikesFrom(String likee) {
     try {
-      set = distkvClient.sets().get(topicKey);
+      distkvClient.sets().get(topicName);
     } catch (KeyNotFoundException e) {
-      distkvClient.sets().put(topicKey, new HashSet<>());
+      distkvClient.sets().put(topicName, new HashSet<>());
     }
-    distkvClient.sets().drop(topicKey);
-    set.add(people);
-    distkvClient.sets().put(topicKey, set);
-  }
-
-  public boolean unLikesFrom(String people) {
-    Set<String> set = new HashSet<>();
+    boolean isFind = true;
     try {
-      set = distkvClient.sets().get(topicKey);
+      distkvClient.sets().removeItem(topicName, likee);
     } catch (KeyNotFoundException e) {
-      distkvClient.sets().put(topicKey, new HashSet<>());
-    }
-    boolean isFind = set.contains(people);
-    if (isFind) {
-      set.remove(people);
-      distkvClient.sets().drop(topicKey);
-      distkvClient.sets().put(topicKey, set);
+      isFind = false;
     }
     return isFind;
   }
 
   public int count() {
-    return distkvClient.sets().get(topicKey).size();
+    return distkvClient.sets().get(topicName).size();
   }
 }
