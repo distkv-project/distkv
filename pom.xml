@@ -18,7 +18,6 @@
         <module>parser</module>
         <module>fclt</module>
         <module>pine</module>
-        <module>tool</module>
     </modules>
 
     <properties>
