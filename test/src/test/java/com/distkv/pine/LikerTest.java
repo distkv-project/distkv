@@ -21,7 +21,7 @@ public class LikerTest extends BaseTestSupplier {
     Assert.assertEquals(liker.getTopic("nihao").count(), 2);
 
     Assert.assertTrue(liker.getTopic("nihao").unLikesFrom("zhangsan"));
-    Assert.assertFalse(liker.getTopic("nihao").unLikesFrom("lisi4"));
+    Assert.assertFalse(liker.getTopic("nihao").unLikesFrom("lisi3"));
     Assert.assertEquals(liker.getTopic("nihao").count(), 1);
 
     Pine.shutdown();

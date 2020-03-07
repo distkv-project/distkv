@@ -1,7 +1,6 @@
 package com.distkv.pine.components.liker;
 
 import com.distkv.client.DistkvClient;
-import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.KeyNotFoundException;
 
 import java.util.HashSet;
@@ -21,28 +20,26 @@ public class PipeLikerTopic {
     Set<String> set = new HashSet<>();
     try {
       set = distkvClient.sets().get(topicKey);
-      distkvClient.sets().drop(topicKey);
     } catch (KeyNotFoundException e) {
-      throw new DistkvException("");
+      distkvClient.sets().put(topicKey, new HashSet<>());
     }
+    distkvClient.sets().drop(topicKey);
     set.add(people);
     distkvClient.sets().put(topicKey, set);
   }
 
   public boolean unLikesFrom(String people) {
-    Set<String> set = null;
+    Set<String> set = new HashSet<>();
     try {
       set = distkvClient.sets().get(topicKey);
     } catch (KeyNotFoundException e) {
-      set = new HashSet<>();
+      distkvClient.sets().put(topicKey, new HashSet<>());
     }
     boolean isFind = set.contains(people);
     if (isFind) {
       set.remove(people);
       distkvClient.sets().drop(topicKey);
-      if (!set.isEmpty()) {
-        distkvClient.sets().put(topicKey, set);
-      }
+      distkvClient.sets().put(topicKey, set);
     }
     return isFind;
   }
