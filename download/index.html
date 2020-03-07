@@ -6,17 +6,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <meta name="author" content="Distkv Team">
+        <link rel="canonical" href="https://distkv.com/download/">
+        <link rel="shortcut icon" href="../res/logo_30_x_30_cm.png">
         
-        <link rel="shortcut icon" href="res/logo_30_x_30_cm.png">
-        
-        <title>Distkv</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/font-awesome.min.css" rel="stylesheet">
-        <link href="css/base.css" rel="stylesheet">
+        <title>Download - Distkv</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/docco.min.css">
 
-        <script src="js/jquery-1.10.2.min.js" defer></script>
-        <script src="js/bootstrap.min.js" defer></script>
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
         <script>
@@ -33,7 +33,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">Distkv</a>
+                <a class="navbar-brand" href="..">Distkv</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -44,42 +44,42 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="navitem">
-                                <a href="." class="nav-link">Overview</a>
+                                <a href=".." class="nav-link">Overview</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="install/" class="dropdown-item">Install</a>
+    <a href="../install/" class="dropdown-item">Install</a>
 </li>
                                     
 <li>
-    <a href="command_guide/" class="dropdown-item">Command Guide</a>
+    <a href="../command_guide/" class="dropdown-item">Command Guide</a>
 </li>
                                     
 <li>
-    <a href="java_client_sdk.md" class="dropdown-item">Java Client SDK</a>
+    <a href="../java_client_sdk.md" class="dropdown-item">Java Client SDK</a>
 </li>
                                     
 <li>
-    <a href="pine/" class="dropdown-item">Pine Ecosystem</a>
+    <a href="../pine/" class="dropdown-item">Pine Ecosystem</a>
 </li>
                                 </ul>
                             </li>
-                            <li class="navitem">
-                                <a href="download/" class="nav-link">Download</a>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Download</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     
 <li>
-    <a href="release_notes/" class="dropdown-item">Release Notes</a>
+    <a href="../release_notes/" class="dropdown-item">Release Notes</a>
 </li>
                                     
 <li>
-    <a href="contributors/" class="dropdown-item">Contributors</a>
+    <a href="../contributors/" class="dropdown-item">Contributors</a>
 </li>
                                 </ul>
                             </li>
@@ -92,7 +92,17 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a href="https://github.com/distkv-project/distkv/" class="nav-link"><i class="fa fa-github"></i> GitHub</a>
+                                <a rel="prev" href="../pine/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../release_notes/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/distkv-project/distkv/edit/master/docs/download.md" class="nav-link"><i class="fa fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -101,15 +111,43 @@
 
         <div class="container">
             <div class="row">
-
-    <div class="row-fluid">
-      <div id="main-content" class="span12">
-        <h1 id="404-page-not-found" style="text-align: center">404</h1>
-        <p style="text-align: center"><strong>Page not found</strong></p>
-      </div>
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
     </div>
 
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="2"><a href="#downloading" class="nav-link">Downloading</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
 
+<h2 id="downloading">Downloading</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>URL</th>
+<th>md5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nightly</td>
+<td><a href="https://distkv-1252912764.cos.ap-shanghai.myqcloud.com/distkv-server-jars/nightly/distkv.jar">distkv-server.jar</a></td>
+<td>4dc542b282df923d79ae418f13773374</td>
+</tr>
+</tbody>
+</table></div>
             </div>
         </div>
 
@@ -119,11 +157,11 @@
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = "",
+            var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="js/base.js" defer></script>
-        <script src="search/main.js" defer></script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
