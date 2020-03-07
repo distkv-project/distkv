@@ -1,8 +1,9 @@
 package com.distkv.pine.components.liker;
 
 import com.distkv.client.DistkvClient;
+import com.distkv.pine.components.AbstractPineHandle;
 
-public class PineLikerImpl implements PineLiker {
+public class PineLikerImpl extends AbstractPineHandle implements PineLiker {
 
   private static final String COMPONENT_TYPE = "LIKER";
 
@@ -25,7 +26,7 @@ public class PineLikerImpl implements PineLiker {
   }
 
   private String getKey(String topic) {
-    return String.format("%s_%s", getComponentType(), topic);
+    return String.format("%s_%s", super.getKey(), topic);
   }
 
 }
