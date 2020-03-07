@@ -61,7 +61,7 @@ public class Worker extends Thread {
   public Worker(StoreRuntime storeRuntime) {
     this.storeRuntime = storeRuntime;
     storeEngine = new KVStoreImpl();
-    expireCycle = new ExpireCycle(storeEngine);
+    expireCycle = new ExpireCycle();
     queue = new LinkedBlockingQueue<>();
   }
 

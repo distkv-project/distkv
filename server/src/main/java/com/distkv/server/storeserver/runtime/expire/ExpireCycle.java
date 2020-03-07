@@ -1,7 +1,6 @@
 package com.distkv.server.storeserver.runtime.expire;
 
 import com.distkv.common.exception.DistkvException;
-import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
@@ -19,27 +18,23 @@ public class ExpireCycle {
   private static Logger LOGGER = LoggerFactory.getLogger(ExpireCycle.class);
 
   private static ScheduledExecutorService swapExpiredPool
-      = new ScheduledThreadPoolExecutor(10);
+      = new ScheduledThreadPoolExecutor(1);
 
   private ReentrantLock lock = new ReentrantLock();
 
-  /**
-   * Store engine.
-   */
-  private KVStore storeEngine;
-
+  private ExpireClient expireClient;
   /*
    *  PriorityQueue allows the data with the lowest expiration time to be queued.
    *  Just look at the cached most recent expired data and avoid scanning all caches.
    */
   public PriorityQueue<Node> expireQueue = new PriorityQueue<>(1024);
 
-  public ExpireCycle(KVStore kvStore) {
-    storeEngine = kvStore;
+  public ExpireCycle() {
+    expireClient = new DefaultExpireClient();
+    expireClient.connect();
 
     /*
      * Use the default thread pool to clear outdated data every 1 seconds.
-     * The thread pool and the calling frequency can be set by the method overload to the caller.
      */
     swapExpiredPool.scheduleWithFixedDelay(new SwapExpiredNode(), 1, 1, TimeUnit.SECONDS);
   }
@@ -84,22 +79,22 @@ public class ExpireCycle {
     String key = node.key;
     switch (requestType) {
       case EXPIRED_STR:
-        storeEngine.strs().drop(key);
+        expireClient.strDrop(key);
         break;
       case EXPIRED_LIST:
-        storeEngine.lists().drop(key);
+        expireClient.listDrop(key);
         break;
       case EXPIRED_SET:
-        storeEngine.sets().drop(key);
+        expireClient.setDrop(key);
         break;
       case EXPIRED_DICT:
-        storeEngine.dicts().drop(key);
+        expireClient.dictDrop(key);
         break;
       case EXPIRED_INT:
-        storeEngine.ints().drop(key);
+        expireClient.intDrop(key);
         break;
       case EXPIRED_SLIST:
-        storeEngine.sortLists().drop(key);
+        expireClient.slistDrop(key);
         break;
       default: {
         break;
