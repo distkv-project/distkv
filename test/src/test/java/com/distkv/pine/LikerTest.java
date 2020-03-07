@@ -1,7 +1,5 @@
 package com.distkv.pine;
 
-import com.distkv.common.exception.DistkvException;
-import com.distkv.common.exception.PineLikerLikeeNotFoundException;
 import com.distkv.pine.api.Pine;
 import com.distkv.pine.components.liker.PineLiker;
 import com.distkv.supplier.BaseTestSupplier;

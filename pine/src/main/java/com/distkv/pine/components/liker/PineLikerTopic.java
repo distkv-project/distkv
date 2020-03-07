@@ -1,7 +1,6 @@
 package com.distkv.pine.components.liker;
 
 import com.distkv.client.DistkvClient;
-import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.KeyNotFoundException;
 
 import com.distkv.common.exception.PineLikerLikeeNotFoundException;
