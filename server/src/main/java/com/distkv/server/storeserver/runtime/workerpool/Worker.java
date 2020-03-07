@@ -95,8 +95,11 @@ public class Worker extends Thread {
     }
   }
 
+  // Add expire request to ExpireCycle.
   private void expireHandle(DistkvRequest request) {
-    //TODO (senyer)
+    if (needExpire(request)) {
+      expireCycle.addToCycle(request);
+    }
   }
 
   private void syncToSlaves(DistkvRequest request, CompletableFuture<DistkvResponse> future) {
@@ -123,6 +126,25 @@ public class Worker extends Thread {
         }
       }
     }
+  }
+
+  /// A helper method to query if key need be expired.
+  private static boolean needExpire(DistkvRequest distkvRequest) {
+    RequestType requestType = distkvRequest.getRequestType();
+    switch (requestType) {
+      case EXPIRED_STR:
+      case EXPIRED_LIST:
+      case EXPIRED_SET:
+      case EXPIRED_DICT:
+      case EXPIRED_INT:
+      case EXPIRED_SLIST: {
+        return true;
+      }
+      default: {
+        break;
+      }
+    }
+    return false;
   }
 
   /// A helper method to query if we need sync the request to slaves.
