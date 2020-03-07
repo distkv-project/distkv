@@ -18,7 +18,10 @@ public class PineLikerImpl implements PineLiker {
 
   @Override
   public PipeLikerTopic getTopic(String topic) {
-    return new PipeLikerTopic(getKey(topic), distkvClient);
+    return new PipeLikerTopic.Builder()
+        .setTopicKey(getKey(topic))
+        .setDistkvClient(distkvClient)
+        .build();
   }
 
   private String getKey(String topic) {

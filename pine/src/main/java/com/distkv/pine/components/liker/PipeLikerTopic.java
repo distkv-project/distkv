@@ -7,13 +7,51 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PipeLikerTopic {
+
+  public String getTopicKey() {
+    return topicKey;
+  }
+
+  public void setTopicKey(String topicKey) {
+    this.topicKey = topicKey;
+  }
+
+  public DistkvClient getDistkvClient() {
+    return distkvClient;
+  }
+
+  public void setDistkvClient(DistkvClient distkvClient) {
+    this.distkvClient = distkvClient;
+  }
+
+  static class Builder {
+    private PipeLikerTopic pipeLikerTopic;
+
+    public Builder() {
+      pipeLikerTopic = new PipeLikerTopic();
+    }
+
+    public Builder setTopicKey(String topicKey) {
+      pipeLikerTopic.setTopicKey(topicKey);
+      return this;
+    }
+
+    public Builder setDistkvClient(DistkvClient distkvClient) {
+      pipeLikerTopic.setDistkvClient(distkvClient);
+      return this;
+    }
+
+    public PipeLikerTopic build() {
+      return pipeLikerTopic;
+    }
+  }
+
   private String topicKey;
 
   private DistkvClient distkvClient;
 
-  public PipeLikerTopic(String topicKey, DistkvClient distkvClient) {
-    this.topicKey = topicKey;
-    this.distkvClient = distkvClient;
+  private PipeLikerTopic() {
+
   }
 
   public void likesFrom(String people) {
