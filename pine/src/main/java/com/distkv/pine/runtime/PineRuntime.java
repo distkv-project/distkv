@@ -34,8 +34,8 @@ public class PineRuntime {
     return new PineTopperImpl(distkvClient);
   }
 
-  public PineLiker newLiker(String people, String content) {
-    return new PineLikerImpl(distkvClient, people, content);
+  public PineLiker newLiker() {
+    return new PineLikerImpl(distkvClient);
   }
 
 }

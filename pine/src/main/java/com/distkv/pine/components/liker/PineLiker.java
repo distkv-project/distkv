@@ -1,26 +1,17 @@
 package com.distkv.pine.components.liker;
 
+import java.util.Set;
+
 /**
  * The `PineLiker` component is used to like the other comment
  */
 public interface PineLiker {
 
   /**
-   * The fromPeople will like the PineLiker comment
-   * @param fromPeople the liked name
+   * Get the people set who is liking the topic
+   * @param topic the topic name
+   * @return the people set
    */
-  public void likesFrom(String fromPeople);
-
-  /**
-   * The fromPeople will unlike the PineLiker comment
-   * @param fromPeople the unLiked name
-   */
-  public void unLikesFrom(String fromPeople);
-
-  /**
-   * Get the PineLiker's likes number
-   * @return the likes number
-   */
-  public int count();
+  public PipeLikerTopic getTopic(String topic);
 
 }

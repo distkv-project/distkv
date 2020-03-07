@@ -38,8 +38,8 @@ public class Pine {
     return runtime.newTopper();
   }
 
-  public static PineLiker newLiker(String people, String content) {
-    return runtime.newLiker(people, content);
+  public static PineLiker newLiker() {
+    return runtime.newLiker();
   }
 
 }
