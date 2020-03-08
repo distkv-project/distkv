@@ -4,6 +4,7 @@ import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
 
 import com.distkv.common.exception.PineLikerLikeeNotFoundException;
+import com.distkv.common.exception.SetItemNotFoundException;
 import java.util.HashSet;
 
 public class PineLikerTopic {
@@ -70,7 +71,7 @@ public class PineLikerTopic {
     }
     try {
       distkvClient.sets().removeItem(topicName, likee);
-    } catch (KeyNotFoundException e) {
+    } catch (SetItemNotFoundException e) {
       throw new PineLikerLikeeNotFoundException(
           "This likee has never liked this topic");
     }

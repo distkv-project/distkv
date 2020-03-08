@@ -1,5 +1,6 @@
 package com.distkv.pine;
 
+import com.distkv.common.exception.DistkvException;
 import com.distkv.pine.api.Pine;
 import com.distkv.pine.components.liker.PineLiker;
 import com.distkv.supplier.BaseTestSupplier;
@@ -26,7 +27,7 @@ public class LikerTest extends BaseTestSupplier {
     Pine.shutdown();
   }
 
-  @Test
+  @Test(expectedExceptions = DistkvException.class)
   public void testLikeeNotFoundException() {
     Pine.init(getListeningAddress());
 
