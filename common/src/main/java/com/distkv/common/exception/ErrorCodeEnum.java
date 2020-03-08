@@ -3,7 +3,7 @@ package com.distkv.common.exception;
 public enum ErrorCodeEnum {
   DictKeyNotFoundErrorCode("001"),
   DistkvErrorCode(""),
-  PipeRuntimeShutdownFailedErrorCode(""),
+  PineRuntimeShutdownFailedErrorCode(""),
   DistkvListIndexOutOfBoundsErrorCode("202"),
   KeyNotFoundErrorCode("100"),
   DistkvKeyDuplicatedErrorCode("200"),
@@ -11,7 +11,7 @@ public enum ErrorCodeEnum {
   SortedListIncrScoreOutOfRangeErrorCode("009"),
   SortedListMemberNotFoundErrorCode("006"),
   SortedListTopNumBeNonNegativeErrorCode("007"),
-  SetKeyNotFoundErrorCode("");
+  SetItemNotFoundErrorCode("010");
 
   private final String errorcode;
 

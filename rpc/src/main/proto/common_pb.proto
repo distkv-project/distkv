@@ -21,7 +21,7 @@ enum Status {
     // Return when master-slave synchronization error occurs
     SYNC_ERROR = 8;
     // The key of the set is not found.
-    SET_KEY_NOT_FOUND = 9;
+    SET_ITEM_NOT_FOUND = 9;
 };
 
 // Drop the k-v pair by the given key.

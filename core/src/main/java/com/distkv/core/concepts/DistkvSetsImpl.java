@@ -1,7 +1,7 @@
 package com.distkv.core.concepts;
 
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.exception.SetKeyNotFoundException;
+import com.distkv.common.exception.SetItemNotFoundException;
 import com.distkv.common.utils.Status;
 import java.util.Set;
 
@@ -26,7 +26,7 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
     }
 
     if (!distkvKeyValueMap.get(key).contains(itemValue)) {
-      throw new SetKeyNotFoundException(key);
+      throw new SetItemNotFoundException(key);
     }
     distkvKeyValueMap.get(key).remove(itemValue);
     return Status.OK;
