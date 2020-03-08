@@ -1,13 +1,13 @@
 package com.distkv.common.exception;
 
-public class PipeRuntimeShutdownFailedException extends DistkvException {
+public class PineRuntimeShutdownFailedException extends DistkvException {
   protected String errorCode = ErrorCodeEnum
-      .PipeRuntimeShutdownFailedErrorCode
+      .PineRuntimeShutdownFailedErrorCode
       .getErrorCode();
 
   protected String key;
 
-  public PipeRuntimeShutdownFailedException(String errorMsg) {
+  public PineRuntimeShutdownFailedException(String errorMsg) {
     super(errorMsg);
   }
 

@@ -20,6 +20,8 @@ enum Status {
     SLIST_TOPNUM_BE_POSITIVE = 7;
     // Return when master-slave synchronization error occurs
     SYNC_ERROR = 8;
+    // The key of the set is not found.
+    SET_ITEM_NOT_FOUND = 9;
 };
 
 // Drop the k-v pair by the given key.

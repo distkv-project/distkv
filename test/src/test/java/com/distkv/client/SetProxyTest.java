@@ -34,6 +34,17 @@ public class SetProxyTest extends BaseTestSupplier {
   }
 
   @Test(expectedExceptions = DistkvException.class)
+  public void testRemoveItemException() {
+    Set<String> set1 = ImmutableSet.of("v1", "v2", "v3");
+
+    DistkvClient client = newDistkvClient();
+    client.sets().put("k1", set1);
+    client.sets().removeItem("k1", "v4");
+
+    client.disconnect();
+  }
+
+  @Test(expectedExceptions = DistkvException.class)
   public void testDropByKey() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
