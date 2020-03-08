@@ -11,7 +11,8 @@ public enum ErrorCodeEnum {
   SortedListMembersDuplicatedErrorCode("008"),
   SortedListIncrScoreOutOfRangeErrorCode("009"),
   SortedListMemberNotFoundErrorCode("006"),
-  SortedListTopNumBeNonNegativeErrorCode("007");
+  SortedListTopNumBeNonNegativeErrorCode("007"),
+  SetItemNotFoundErrorCode("010");
 
   private final String errorcode;
 
