@@ -9,11 +9,11 @@ public class SetKeyNotFoundException extends DistkvException {
   protected String key;
 
   public SetKeyNotFoundException(String key) {
-    super(String.format("The item is not found in the set %s",  key));
+    super(String.format("The key is not found in the sets %s",  key));
   }
 
   public SetKeyNotFoundException(String key, String typeCode) {
-    super(String.format("The item is not found in the set %s", key));
+    super(String.format("The key is not found in the sets %s", key));
     this.errorCode = typeCode + this.errorCode;
   }
 
