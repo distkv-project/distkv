@@ -6,7 +6,7 @@ public class SetItemNotFoundException extends DistkvException {
       .SetItemNotFoundErrorCode
       .getErrorCode();
 
-  protected String key;
+  protected String itemName;
 
   public SetItemNotFoundException(String key) {
     super(String.format("The item is not found in the set %s",  key));
