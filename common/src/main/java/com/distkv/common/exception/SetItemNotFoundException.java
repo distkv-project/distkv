@@ -20,6 +20,10 @@ public class SetItemNotFoundException extends DistkvException {
   }
 
   public String getKey() {
+    return key;
+  }
+
+  public String getItemName() {
     return itemName;
   }
 
