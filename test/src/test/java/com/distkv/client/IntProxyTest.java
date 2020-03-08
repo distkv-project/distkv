@@ -6,6 +6,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
 
   @Test

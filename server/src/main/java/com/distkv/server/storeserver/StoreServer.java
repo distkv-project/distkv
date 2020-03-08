@@ -18,7 +18,7 @@ public class StoreServer {
 
   private StoreConfig storeConfig;
 
-  public static int localPort;
+  public static volatile int localPort;
 
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static final String WELCOME_WORDS =

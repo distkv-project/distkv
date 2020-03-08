@@ -2,14 +2,9 @@ package com.distkv.server.storeserver.runtime.expire;
 
 import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.StoreServer;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -66,24 +61,7 @@ public class DefaultExpireClient implements ExpireClient {
         .setKey(key)
         .setRequestType(RequestType.STR_DROP)
         .build();
-    CompletableFuture<DistkvResponse> call = service.call(request);
-    call.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      }
-    });
-    try {
-      DistkvResponse putResponse =
-          call.get(1, TimeUnit.SECONDS);
-      System.out.println(">>>>>>>>>>>>>>>删除结果：》》》》》》》》《《《《》》》》》》》》》"
-          + putResponse.getStatus());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
+    service.call(request);
   }
 
   @Override
@@ -92,24 +70,7 @@ public class DefaultExpireClient implements ExpireClient {
         .setKey(key)
         .setRequestType(RequestType.LIST_DROP)
         .build();
-    CompletableFuture<DistkvResponse> call = service.call(request);
-    call.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      }
-    });
-    try {
-      DistkvResponse putResponse =
-          call.get(1, TimeUnit.SECONDS);
-      System.out.println(">>>>>>>>>>>>>>>删除结果：》》》》》》》》《《《《》》》》》》》》》"
-          + putResponse.getStatus());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
+    service.call(request);
   }
 
   @Override
@@ -118,24 +79,7 @@ public class DefaultExpireClient implements ExpireClient {
         .setKey(key)
         .setRequestType(RequestType.SET_DROP)
         .build();
-    CompletableFuture<DistkvResponse> call = service.call(request);
-    call.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      }
-    });
-    try {
-      DistkvResponse putResponse =
-          call.get(1, TimeUnit.SECONDS);
-      System.out.println(">>>>>>>>>>>>>>>删除结果：》》》》》》》》《《《《》》》》》》》》》"
-          + putResponse.getStatus());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
+    service.call(request);
   }
 
   @Override
@@ -144,28 +88,7 @@ public class DefaultExpireClient implements ExpireClient {
         .setKey(key)
         .setRequestType(RequestType.DICT_DROP)
         .build();
-    System.out.println(">>>>>>>>>>>>>>>服务端口：》》》》》》》》》》》》》》》》》 "
-        + StoreServer.localPort);
-    System.out.println(">>>>>>>>>>>>>>>删除Key：》》》》》》》》》》》》》》》》》 " + key);
-    CompletableFuture<DistkvResponse> call = service.call(request);
-    call.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      }
-    });
-    try {
-      DistkvResponse putResponse =
-          call.get(1, TimeUnit.SECONDS);
-      System.out.println(">>>>>>>>>>>>>>>删除结果：》》》》》》》》《《《《》》》》》》》》》"
-          + putResponse.getStatus());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
-
+    service.call(request);
   }
 
   @Override
@@ -174,24 +97,7 @@ public class DefaultExpireClient implements ExpireClient {
         .setKey(key)
         .setRequestType(RequestType.SORTED_LIST_DROP)
         .build();
-    CompletableFuture<DistkvResponse> call = service.call(request);
-    call.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      }
-    });
-    try {
-      DistkvResponse putResponse =
-          call.get(1, TimeUnit.SECONDS);
-      System.out.println(">>>>>>>>>>>>>>>删除结果：》》》》》》》》《《《《》》》》》》》》》"
-          + putResponse.getStatus());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
+    service.call(request);
   }
 
   @Override
@@ -200,24 +106,7 @@ public class DefaultExpireClient implements ExpireClient {
         .setKey(key)
         .setRequestType(RequestType.INT_DROP)
         .build();
-    CompletableFuture<DistkvResponse> call = service.call(request);
-    call.whenComplete((r, t) -> {
-      if (t != null) {
-        throw new IllegalStateException(t);
-      }
-    });
-    try {
-      DistkvResponse putResponse =
-          call.get(1, TimeUnit.SECONDS);
-      System.out.println(">>>>>>>>>>>>>>>删除结果：》》》》》》》》《《《《》》》》》》》》》"
-          + putResponse.getStatus());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    }
+    service.call(request);
   }
 
 }

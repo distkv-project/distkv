@@ -9,6 +9,7 @@ import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Test(singleThreaded = true)
 public class SortedListProxyTest extends BaseTestSupplier {
 
   private DistkvClient distkvClient = null;

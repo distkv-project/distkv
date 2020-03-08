@@ -1,13 +1,13 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.server.storeserver.StoreServer;
 import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Test(singleThreaded = true)
 public class DictProxyTest extends BaseTestSupplier {
 
   @Test
@@ -86,19 +86,13 @@ public class DictProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
   public void testExpireList() throws InterruptedException {
-    System.out.println("Running++++++++++++++++++++++++++++++");
     DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
-    System.out.println(">>>>>>>>>>>>>>>服务端口：》》》》》》》》》》》》》》》》》 " + StoreServer.localPort);
-    System.out.println("Running++++++++++++++++++++++++++++++1" + client.dicts().get("m1"));
     client.dicts().expire("m1", 1);
-    System.out.println("Running++++++++++++++++++++++++++++++2" + client.dicts().get("m1"));
     Thread.sleep(2000);
-    System.out.println("Running++++++++++++++++++++++++++++++3" + client.dicts().get("m1"));
     client.dicts().get("m1");
-    System.out.println("Running++++++++++++++++++++++++++++++4" + client.dicts().get("m1"));
     client.disconnect();
   }
 
