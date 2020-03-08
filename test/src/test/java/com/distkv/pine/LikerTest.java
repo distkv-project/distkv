@@ -21,7 +21,7 @@ public class LikerTest extends BaseTestSupplier {
     liker.getTopic("nihao").likesFrom("lisi");
     Assert.assertEquals(liker.getTopic("nihao").count(), 2);
 
-    Assert.assertTrue(liker.getTopic("nihao").unLikesFrom("zhangsan"));
+    liker.getTopic("nihao").unlikesFrom("zhangsan");
     Assert.assertEquals(liker.getTopic("nihao").count(), 1);
 
     Pine.shutdown();
@@ -32,7 +32,7 @@ public class LikerTest extends BaseTestSupplier {
     Pine.init(getListeningAddress());
 
     PineLiker liker = Pine.newLiker();
-    Assert.assertTrue(liker.getTopic("nihao").unLikesFrom("lisi"));
+    liker.getTopic("nihao").unlikesFrom("lisi");
 
     Pine.shutdown();
   }

@@ -63,7 +63,7 @@ public class PineLikerTopic {
     distkvClient.sets().putItem(topicName, likee);
   }
 
-  public boolean unLikesFrom(String likee) {
+  public void unlikesFrom(String likee) {
     try {
       distkvClient.sets().get(topicName);
     } catch (KeyNotFoundException e) {
@@ -75,7 +75,6 @@ public class PineLikerTopic {
       throw new PineLikerLikeeNotFoundException(
           "This likee has never liked this topic");
     }
-    return true;
   }
 
   public int count() {

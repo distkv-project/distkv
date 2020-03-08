@@ -1,9 +1,6 @@
 package com.distkv.common.exception;
 
 public class PineRuntimeShutdownFailedException extends DistkvException {
-  protected String errorCode = ErrorCodeEnum
-      .PineRuntimeShutdownFailedErrorCode
-      .getErrorCode();
 
   protected String key;
 
@@ -15,7 +12,4 @@ public class PineRuntimeShutdownFailedException extends DistkvException {
     return key;
   }
 
-  public String getErrorCode() {
-    return errorCode;
-  }
 }
