@@ -29,11 +29,23 @@ public class CheckStatusUtil {
         throw new SortedListTopNumIsNonNegativeException(key, typeCode);
       case SYNC_ERROR:
         throw new MasterSyncToSlaveException(key, typeCode);
-      case SET_ITEM_NOT_FOUND:
-        throw new SetItemNotFoundException(key, typeCode);
       default:
         throw new DistkvException(typeCode + "000",
               String.format("Error status is %s", status.getClass().toString()));
     }
   }
+
+  public static void checkStatus(
+      CommonProtocol.Status status, String key, String itemName, String typeCode) {
+    switch (status) {
+      case OK:
+        break;
+      case SET_ITEM_NOT_FOUND:
+        throw new SetItemNotFoundException(key, itemName, typeCode);
+      default:
+        throw new DistkvException(typeCode + "000",
+            String.format("Error status is %s", status.getClass().toString()));
+    }
+  }
+
 }

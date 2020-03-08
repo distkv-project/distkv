@@ -26,7 +26,7 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
     }
 
     if (!distkvKeyValueMap.get(key).contains(itemValue)) {
-      throw new SetItemNotFoundException(key);
+      throw new SetItemNotFoundException(key, itemValue);
     }
     distkvKeyValueMap.get(key).remove(itemValue);
     return Status.OK;
