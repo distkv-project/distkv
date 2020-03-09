@@ -2,9 +2,9 @@ package com.distkv.pine.components.liker;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
-
 import com.distkv.common.exception.PineLikerLikeeNotFoundException;
 import com.distkv.common.exception.SetItemNotFoundException;
+
 import java.util.HashSet;
 
 public class PineLikerTopic {
@@ -63,11 +63,17 @@ public class PineLikerTopic {
     distkvClient.sets().putItem(topicName, likee);
   }
 
-  public void unlikesFrom(String likee) {
+  /**
+   * Let people unlike the topic.
+   * @param likee the unliked people.
+   * @return false if this topic already did not exist,
+   * true if the operation succeeded.
+   */
+  public boolean unlikesFrom(String likee) {
     try {
       distkvClient.sets().get(topicName);
     } catch (KeyNotFoundException e) {
-      distkvClient.sets().put(topicName, new HashSet<>());
+      return false;
     }
     try {
       distkvClient.sets().removeItem(topicName, likee);
@@ -75,6 +81,7 @@ public class PineLikerTopic {
       throw new PineLikerLikeeNotFoundException(
           "This likee has never liked this topic");
     }
+    return true;
   }
 
   public int count() {
