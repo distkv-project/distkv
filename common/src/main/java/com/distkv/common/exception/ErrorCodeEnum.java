@@ -3,7 +3,6 @@ package com.distkv.common.exception;
 public enum ErrorCodeEnum {
   DictKeyNotFoundErrorCode("001"),
   DistkvErrorCode(""),
-  PineRuntimeShutdownFailedErrorCode(""),
   DistkvListIndexOutOfBoundsErrorCode("202"),
   KeyNotFoundErrorCode("100"),
   DistkvKeyDuplicatedErrorCode("200"),

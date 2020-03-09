@@ -1,10 +1,10 @@
 package com.distkv.common.exception;
 
-public class PineRuntimeShutdownFailedException extends DistkvException {
+public class PineLikerLikeeNotFoundException extends DistkvException {
 
   protected String key;
 
-  public PineRuntimeShutdownFailedException(String errorMsg) {
+  public PineLikerLikeeNotFoundException(String errorMsg) {
     super(errorMsg);
   }
 
