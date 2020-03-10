@@ -8,8 +8,8 @@ import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
 import com.distkv.server.metaserver.server.bean.GetValueRequest;
 import com.distkv.server.metaserver.server.bean.GetValueResponse;
-import com.distkv.server.metaserver.server.bean.PutKVRequest;
-import com.distkv.server.metaserver.server.bean.PutKVResponse;
+import com.distkv.server.metaserver.server.bean.PutRequest;
+import com.distkv.server.metaserver.server.bean.PutResponse;
 import com.distkv.server.metaserver.server.bean.PutKVType;
 import java.util.concurrent.TimeoutException;
 
@@ -42,10 +42,10 @@ public class DmetaClient {
       }
       //get leader term
       final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
-      PutKVRequest request = new PutKVRequest();
+      PutRequest request = new PutRequest();
       request.setPath(path);
       request.setType(PutKVType.CREATE_PATH);
-      PutKVResponse response = (PutKVResponse) cliClientService.getRpcClient()
+      PutResponse response = (PutResponse) cliClientService.getRpcClient()
           .invokeSync(leader.getEndpoint().toString(), request, 3000);
       if (!response.isSuccess()) {
         throw new RuntimeException("put error");
@@ -67,12 +67,12 @@ public class DmetaClient {
       //get leader term
       final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
 
-      PutKVRequest request = new PutKVRequest();
+      PutRequest request = new PutRequest();
       request.setKey(key);
       request.setValue(value);
       request.setPath(path);
       request.setType(PutKVType.PUT_KV);
-      PutKVResponse response = (PutKVResponse) cliClientService.getRpcClient()
+      PutResponse response = (PutResponse) cliClientService.getRpcClient()
           .invokeSync(leader.getEndpoint().toString(), request, 3000);
       if (!response.isSuccess()) {
         throw new RuntimeException("put error");

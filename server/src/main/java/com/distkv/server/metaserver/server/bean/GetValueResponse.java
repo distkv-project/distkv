@@ -11,6 +11,7 @@ public class GetValueResponse implements Serializable {
   private boolean success;
   /**
    * redirect peer id
+   * TODO(qwang): Use a abstract response to avoid these fields.
    */
   private String redirect;
 

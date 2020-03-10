@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class GetValueRequest implements Serializable {
   private static final long serialVersionUID = -5623664785560981849L;
 
-  private String path;
+  private String value;
 
-  public String getPath() {
-    return path;
+  public String getValue() {
+    return value;
   }
 
-  public void setPath(String path) {
-    this.path = path;
+  public void setValue(String value) {
+    this.value = value;
   }
 }

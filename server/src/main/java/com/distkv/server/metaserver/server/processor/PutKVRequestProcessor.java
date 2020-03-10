@@ -8,14 +8,14 @@ import com.alipay.remoting.serialization.SerializerManager;
 import com.alipay.sofa.jraft.entity.Task;
 import com.distkv.server.metaserver.server.DmetaServer;
 import com.distkv.server.metaserver.server.DmetaStoreClosure;
-import com.distkv.server.metaserver.server.bean.PutKVRequest;
-import com.distkv.server.metaserver.server.bean.PutKVResponse;
+import com.distkv.server.metaserver.server.bean.PutRequest;
+import com.distkv.server.metaserver.server.bean.PutResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
-public class PutKVRequestProcessor extends AsyncUserProcessor<PutKVRequest> {
+public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
 
   private static final Logger LOG = LoggerFactory.getLogger(PutKVRequestProcessor.class);
 
@@ -29,20 +29,20 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutKVRequest> {
   @Override
   public void handleRequest(final BizContext bizCtx,
                             final AsyncContext asyncCtx,
-                            final PutKVRequest request) {
-    if (!this.dmetaServer.getFsm().isLeader()) {
-      final PutKVResponse response = new PutKVResponse();
+                            final PutRequest request) {
+    if (this.dmetaServer.getFsm().isLeader()) {
+      final PutResponse response = new PutResponse();
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
       asyncCtx.sendResponse(response);
       return;
     }
 
-    final PutKVResponse response = new PutKVResponse();
+    final PutResponse response = new PutResponse();
     final DmetaStoreClosure closure = new DmetaStoreClosure(dmetaServer, request, response,
         status -> {
           if (!status.isOk()) {
-            response.setErrorMsg(status.getErrorMsg());
+            response.setErrorMessage(status.getErrorMsg());
             response.setSuccess(false);
           }
           asyncCtx.sendResponse(response);
@@ -59,13 +59,13 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutKVRequest> {
     } catch (final CodecException e) {
       LOG.error("Fail to encode IncrementAndGetRequest", e);
       response.setSuccess(false);
-      response.setErrorMsg(e.getMessage());
+      response.setErrorMessage(e.getMessage());
       asyncCtx.sendResponse(response);
     }
   }
 
   @Override
   public String interest() {
-    return PutKVRequest.class.getName();
+    return PutRequest.class.getName();
   }
 }

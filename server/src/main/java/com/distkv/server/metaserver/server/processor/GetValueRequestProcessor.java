@@ -22,7 +22,7 @@ public class GetValueRequestProcessor extends SyncUserProcessor<GetValueRequest>
   @Override
   public Object handleRequest(final BizContext bizCtx,
                               final GetValueRequest request) throws Exception {
-    if (!this.dmetaServer.getFsm().isLeader()) {
+    if (this.dmetaServer.getFsm().isLeader()) {
       final GetValueResponse response = new GetValueResponse();
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
