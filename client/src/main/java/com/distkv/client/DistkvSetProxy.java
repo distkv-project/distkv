@@ -43,7 +43,7 @@ public class DistkvSetProxy {
 
   public void removeItem(String key, String entity) {
     DistkvResponse response = FutureUtils.get(asyncSetProxy.removeItem(key, entity));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key, entity, typeCode);
   }
 
   public boolean drop(String key) {

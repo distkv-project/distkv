@@ -5,6 +5,7 @@ import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.SetItemNotFoundException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
@@ -272,6 +273,8 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
+        } catch (SetItemNotFoundException e) {
+          status = CommonProtocol.Status.SET_ITEM_NOT_FOUND;
         } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
