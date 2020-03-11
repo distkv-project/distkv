@@ -4,6 +4,7 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
+import com.distkv.server.storeserver.StoreConfig;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.PriorityQueue;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,6 +23,7 @@ public class ExpireCycle {
 
   private ReentrantLock lock = new ReentrantLock();
 
+  private StoreConfig storeConfig;
   /*
    *  PriorityQueue allows the data with the lowest expiration time to be queued.
    *  Just look at the cached most recent expired data and avoid scanning all caches.
@@ -35,7 +37,8 @@ public class ExpireCycle {
     swapExpiredPool.scheduleWithFixedDelay(new SwapExpiredNode(), 1, 1, TimeUnit.SECONDS);
   }
 
-  public void addToCycle(DistkvRequest request) {
+  public void addToCycle(DistkvRequest request, StoreConfig storeConfig) {
+    this.storeConfig = storeConfig;
     String key = request.getKey();
     RequestType requestType = request.getRequestType();
     long expireTime = -1;
@@ -71,7 +74,7 @@ public class ExpireCycle {
   }
 
   private void clearStore(Node node) {
-    ExpireClient expireClient = new DefaultExpireClient();
+    ExpireClient expireClient = new DefaultExpireClient(storeConfig);
     expireClient.connect();
     RequestType requestType = node.requestType;
     String key = node.key;

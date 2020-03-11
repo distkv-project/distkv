@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-@Test(singleThreaded = true)
 public class DictProxyTest extends BaseTestSupplier {
 
   @Test
@@ -91,7 +90,7 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
     client.dicts().expire("m1", 1);
-    Thread.sleep(2000);
+    Thread.sleep(4000);
     client.dicts().get("m1");
     client.disconnect();
   }

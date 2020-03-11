@@ -6,7 +6,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
 
   @Test
@@ -41,7 +40,7 @@ public class IntProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     client.ints().put("k1", 1);
     client.ints().expire("k1", 1);
-    Thread.sleep(2000);
+    Thread.sleep(4000);
     client.ints().get("k1");
     client.disconnect();
   }

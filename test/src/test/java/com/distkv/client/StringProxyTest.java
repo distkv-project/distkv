@@ -9,7 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.Set;
 
-@Test(singleThreaded = true)
 public class StringProxyTest extends BaseTestSupplier {
 
   @Test
@@ -59,7 +58,7 @@ public class StringProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     client.strs().put("k1", "v1");
     client.strs().expire("k1", 1);
-    Thread.sleep(2000);
+    Thread.sleep(4000);
     client.strs().get("k1");
     client.disconnect();
   }

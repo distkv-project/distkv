@@ -8,7 +8,6 @@ import com.distkv.common.exception.DistkvException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Test(singleThreaded = true)
 public class SetProxyTest extends BaseTestSupplier {
 
   @Test
@@ -70,7 +69,7 @@ public class SetProxyTest extends BaseTestSupplier {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
     client.sets().put("k1", set);
     client.sets().expire("k1", 1);
-    Thread.sleep(2000);
+    Thread.sleep(4000);
     client.sets().get("k1");
     client.disconnect();
   }

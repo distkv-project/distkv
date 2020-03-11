@@ -4,7 +4,7 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.service.DistkvService;
-import com.distkv.server.storeserver.StoreServer;
+import com.distkv.server.storeserver.StoreConfig;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -20,9 +20,15 @@ public class DefaultExpireClient implements ExpireClient {
 
   private boolean isConnected;
 
+  private StoreConfig storeConfig;
+
+  public DefaultExpireClient(StoreConfig storeConfig) {
+    this.storeConfig = storeConfig;
+  }
+
   @Override
   public void connect() {
-    String localAddress = String.format("distkv://127.0.0.1:%d", StoreServer.localPort);
+    String localAddress = String.format("distkv://127.0.0.1:%d", storeConfig.getPort());
     ClientConfig clientConfig = ClientConfig.builder()
         .address(localAddress)
         .build();

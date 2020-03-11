@@ -20,6 +20,7 @@ import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
+import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.runtime.expire.ExpireCycle;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
@@ -81,7 +82,7 @@ public class Worker extends Thread {
         CompletableFuture<DistkvResponse> future = internalRequest.getCompletableFuture();
         DistkvResponse.Builder builder = DistkvResponse.newBuilder();
 
-        expireHandle(distkvRequest);
+        expireHandle(distkvRequest,storeRuntime.getConfig());
         syncToSlaves(distkvRequest, future);
         storeHandler(distkvRequest, builder);
 
@@ -96,9 +97,9 @@ public class Worker extends Thread {
   }
 
   // Add expire request to ExpireCycle.
-  private void expireHandle(DistkvRequest request) {
+  private void expireHandle(DistkvRequest request, StoreConfig storeConfig) {
     if (needExpire(request)) {
-      expireCycle.addToCycle(request);
+      expireCycle.addToCycle(request, storeConfig);
     }
   }
 

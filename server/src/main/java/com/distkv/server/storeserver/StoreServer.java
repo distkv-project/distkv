@@ -18,8 +18,6 @@ public class StoreServer {
 
   private StoreConfig storeConfig;
 
-  public static volatile int localPort;
-
   /// http://patorjk.com/software/taag/#p=display&f=3D%20Diagonal&t=Distkv
   private static final String WELCOME_WORDS =
       "    ,---,                           ___          ,-.           \n" +
@@ -38,7 +36,6 @@ public class StoreServer {
 
   public StoreServer(StoreConfig storeConfig) {
     this.storeConfig = storeConfig;
-    localPort = storeConfig.getPort();
     ServerConfig dousiServerConfig = ServerConfig.builder()
         /// Note: This is a very important flag for `StoreServer` because it
         /// affects the threading model of `StoreServer`.
