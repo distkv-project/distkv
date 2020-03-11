@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Test(singleThreaded = true)
 public class DictProxyTest extends BaseTestSupplier {
 
   @Test

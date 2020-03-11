@@ -8,6 +8,7 @@ import com.distkv.common.exception.DistkvException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Test(singleThreaded = true)
 public class SetProxyTest extends BaseTestSupplier {
 
   @Test

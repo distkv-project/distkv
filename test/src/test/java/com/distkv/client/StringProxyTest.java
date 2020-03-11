@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.Set;
 
+@Test(singleThreaded = true)
 public class StringProxyTest extends BaseTestSupplier {
 
   @Test
