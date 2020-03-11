@@ -1,4 +1,4 @@
-package com.distkv.core.map;
+package com.distkv.core.segment;
 
 import com.distkv.core.block.Block;
 
@@ -6,17 +6,15 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 public class FixedValueSegment extends ValueSegment {
 
-  private int fixedLength = -1;
-  protected int blockItemSize = -1;
+  private int fixedLength;
+  protected int blockItemSize;
 
   public FixedValueSegment(int initSize, int fixedLength) {
     super(initSize);
 
     checkArgument(fixedLength > 0);
-    if (fixedLength > 0) {
-      this.fixedLength = fixedLength;
-      this.blockItemSize = pool.getBlockSize() / fixedLength;
-    }
+    this.fixedLength = fixedLength;
+    this.blockItemSize = pool.getBlockSize() / fixedLength;
   }
 
   protected byte[] getFixedValue(int key) {
