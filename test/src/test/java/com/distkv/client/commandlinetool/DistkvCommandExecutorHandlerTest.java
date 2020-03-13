@@ -289,7 +289,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     Assert.assertEquals(CommandExecutorHandler
         .expireStr(distkvClient, distKVParsedResult), STATUS_OK);
 
-    Thread.sleep(2000);
+    Thread.sleep(3000);
 
     //Test KeyNotFoundException
     command = "str.get k1";
@@ -315,7 +315,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     Assert.assertEquals(CommandExecutorHandler
         .expireList(distkvClient, distKVParsedResult), STATUS_OK);
 
-    Thread.sleep(2000);
+    Thread.sleep(3000);
 
     // Test KeyNotFoundException
     command = "list.get k1";
@@ -341,7 +341,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     Assert.assertEquals(CommandExecutorHandler
         .expireSet(distkvClient, distKVParsedResult), STATUS_OK);
 
-    Thread.sleep(2000);
+    Thread.sleep(3000);
     // Test KeyNotFoundException
     command = "set.get k1";
     distKVParsedResult = distkvParser.parse(command);
@@ -364,7 +364,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .expireDict(distkvClient, distKVParsedResult), STATUS_OK);
-    Thread.sleep(2000);
+    Thread.sleep(3000);
     // Test KeyNotFoundException
     command = "dict.get key";
     distKVParsedResult = distkvParser.parse(command);
@@ -389,7 +389,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     Assert.assertEquals(CommandExecutorHandler
         .expireSlist(distkvClient, distKVParsedResult), STATUS_OK);
 
-    Thread.sleep(2000);
+    Thread.sleep(3000);
 
     // Test KeyNotFoundException
     command = "slist.top k1 2";
@@ -414,7 +414,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     Assert.assertEquals(CommandExecutorHandler
         .expireInt(distkvClient, distKVParsedResult), STATUS_OK);
 
-    Thread.sleep(2000);
+    Thread.sleep(3000);
 
     // Test KeyNotFoundException
     command = "int.get k1";
