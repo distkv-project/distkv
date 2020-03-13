@@ -35,7 +35,7 @@ public class DmetaClient {
     cliClientService.init(new CliOptions());
   }
 
-  public void putKV(String key, String value) {
+  public void put(String key, String value) {
     try {
       if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");

@@ -18,8 +18,8 @@ public class TestServer {
     DmetaClient client = new DmetaClient();
 
     try {
-      client.putKV("a", "b");
-      client.putKV("c", "d");
+      client.put("a", "b");
+      client.put("c", "d");
       String result = client.get("a");
       Assert.assertEquals(result, "b");
       TimeUnit.SECONDS.sleep(3);
