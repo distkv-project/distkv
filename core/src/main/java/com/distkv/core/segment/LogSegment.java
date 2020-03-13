@@ -3,6 +3,7 @@ package com.distkv.core.segment;
 import com.distkv.core.LogEntry;
 import com.distkv.core.block.Block;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -12,19 +13,19 @@ import static com.google.common.base.Preconditions.checkArgument;
  * can't bigger than one block.
  *
  * </p>
- * LogSegment store the value to block array. if given block has no
- * enough space to store the LogEntry, the remaining byte of the LogEntry
- * will store to next block.
+ * {@link LogSegment} store the value to {@link LogSegment#blockArray}.
+ * if given block has no enough space to store the LogEntry,
+ * the remaining byte of the {@link LogEntry} will store to next block.
  * </p>
- * When block is full, the log index of last LogEntry at this block will be
- * stored to blockValueCntArray.
+ * When block is full, the log index of last {@link LogEntry} at this block will be
+ * stored to {@link LogSegment#blockValueCntArray}.
  * ---------------------------------------------------
  * |    block1       |    block2      |    block3    |
  * ---------------------------------------------------
  * |       0         |      23        |       46     |
  * ---------------------------------------------------
- * <p>
- * the block will be cleared when LogEntry is not needed any more.
+ * </p>
+ * the block will be cleared when {@link LogEntry} is not needed any more.
  * the data stored be changed as blew. the block1 and the index of last
  * LogEntry at block1 be removed from blockArray and  blockValueCntArray
  * ---------------------------------------------------
@@ -32,6 +33,12 @@ import static com.google.common.base.Preconditions.checkArgument;
  * ---------------------------------------------------
  * |       23        |      46        |     73       |
  * ---------------------------------------------------
+ * </p>
+ * the {@link LogSegment#offsetSegment} store the offset for every log entry.
+ * so the user can get the log entry with given index. the {@link LogSegment}
+ * use the {@link LogSegment#blockValueCntArray} to locate which block the value
+ * store at and read the value by start offset and end offset for this block from
+ * {@link LogSegment#offsetSegment}
  *
  * @author meijie
  * @since 0.1.4
@@ -97,6 +104,14 @@ public class LogSegment extends AbstractNonFixedSegment {
     resize(blockIndex + 1);
     blockValueCntArray[blockIndex] = size;
     return blockArray[blockIndex];
+  }
+
+  public List<LogEntry> getLogEntries(int fromIndex, int toIndex) {
+    List<LogEntry> logEntries = new ArrayList<>();
+    for (int i = fromIndex; i <= toIndex; i++) {
+      logEntries.add(getLogEntry(i));
+    }
+    return logEntries;
   }
 
   /**
