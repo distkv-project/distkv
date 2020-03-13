@@ -60,4 +60,9 @@ public class FixedValueSegment extends ValueSegment {
     return blockArray.length * pool.getBlockSize() / fixedLength;
   }
 
+  @Override
+  public void releaseBlock(int blockCnt) {
+    super.releaseBlock(blockCnt);
+    size -= blockCnt * blockItemSize;
+  }
 }

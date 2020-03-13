@@ -47,7 +47,7 @@ public class LogSegment extends AbstractNonFixedSegment {
   // unneeded LogEntry, so the baseOffsetIndex means how many offset
   // information has been cleared at offsetSegment. it helps to find out
   // which is the offset of one LogEntry.
-  private int baseIndexOffset;
+  private int baseOffsetIndex;
   // store the offset of the LogEntry at blocks.
   private IntSegment offsetSegment;
 
@@ -76,20 +76,27 @@ public class LogSegment extends AbstractNonFixedSegment {
 
   public void appendValue(byte[] logEntryValue) {
     Block block = blockArray[blockIndex];
+    if (block.getNextWriteOffset() == block.getCapacity()) {
+      block = getNextBlock();
+    }
     int remaining = block.writeValue(logEntryValue);
 
     // write the remaining byte of logEntry to another block.
     if (remaining > 0) {
-      blockIndex++;
-      resize(blockIndex + 1);
-      blockValueCntArray[blockIndex] = size;
-      block = blockArray[blockIndex];
+      block = getNextBlock();
       block.writeValue(logEntryValue, logEntryValue.length - remaining);
     }
 
     size++;
     // set the Log Entry end offset.
     offsetSegment.put(block.getNextWriteOffset());
+  }
+
+  private Block getNextBlock() {
+    blockIndex++;
+    resize(blockIndex + 1);
+    blockValueCntArray[blockIndex] = size;
+    return blockArray[blockIndex];
   }
 
   /**
@@ -125,15 +132,24 @@ public class LogSegment extends AbstractNonFixedSegment {
   }
 
   public int getLogEntryStartOffset(int logIndex) {
-    return offsetSegment.get(logIndex - baseIndexOffset);
+    return offsetSegment.get(logIndex - baseOffsetIndex);
   }
 
   public int getLogEntryEndOffset(int logIndex) {
-    return offsetSegment.get(logIndex - baseIndexOffset + 1);
+    return offsetSegment.get(logIndex - baseOffsetIndex + 1);
   }
 
-  // TODO
   public void clear(int logIndex) {
+    int blockIndex = locateBlock(logIndex);
+    if (blockIndex > 0) {
+      releaseBlock(blockIndex);
+      this.blockIndex = blockArray.length - 1;
+    }
+
+    int relativeOffsetIndex = logIndex - baseOffsetIndex;
+    int toRemoveBlockNumber = relativeOffsetIndex / offsetSegment.blockItemSize;
+    offsetSegment.releaseBlock(toRemoveBlockNumber);
+    baseOffsetIndex += toRemoveBlockNumber * offsetSegment.blockItemSize;
   }
 
 }

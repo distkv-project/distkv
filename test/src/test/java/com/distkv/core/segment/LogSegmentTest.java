@@ -25,4 +25,20 @@ public class LogSegmentTest {
     logSegment.appendValue(value2);
     assertEquals(logSegment.getLogEntry(1).getValue(), value2);
   }
+  
+  @Test
+  public void testClear() {
+    LogSegment logSegment = new LogSegment();
+    for (int i = 0; i < BlockPool.getInstance().getBlockSize(); i++) {
+      logSegment.appendValue(new byte[]{12,23,45,23});
+    }
+    byte[] value = new byte[] {36};
+    logSegment.appendValue(value);
+    logSegment.clear(logSegment.getSize() - 1);
+    assertEquals(logSegment.getLogEntry(logSegment.getSize() - 1).getValue(), value);
+
+    value = new byte[] {37, 23};
+    logSegment.appendValue(value);
+    assertEquals(logSegment.getLogEntry(logSegment.getSize() - 1).getValue(), value);
+  }
 }

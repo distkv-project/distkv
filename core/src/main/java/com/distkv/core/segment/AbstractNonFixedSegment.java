@@ -39,4 +39,13 @@ public abstract class AbstractNonFixedSegment extends ValueSegment {
     System.arraycopy(blockValueCntArray, 0, newBlockValueCntArray, 0, blockValueCntArray.length);
     blockValueCntArray = newBlockValueCntArray;
   }
+
+  @Override
+  public void releaseBlock(int blockCnt) {
+    super.releaseBlock(blockCnt);
+    int[] newBlockValueCntArray = new int[blockValueCntArray.length - blockCnt];
+    System.arraycopy(blockValueCntArray, blockCnt,
+        newBlockValueCntArray, 0, newBlockValueCntArray.length);
+    blockValueCntArray = newBlockValueCntArray;
+  }
 }
