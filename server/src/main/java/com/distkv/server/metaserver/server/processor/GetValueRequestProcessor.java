@@ -3,12 +3,12 @@ package com.distkv.server.metaserver.server.processor;
 import com.alipay.remoting.BizContext;
 import com.alipay.remoting.rpc.protocol.SyncUserProcessor;
 import com.distkv.server.metaserver.server.DmetaServer;
-import com.distkv.server.metaserver.server.bean.GetValueRequest;
-import com.distkv.server.metaserver.server.bean.GetValueResponse;
+import com.distkv.server.metaserver.server.bean.GetRequest;
+import com.distkv.server.metaserver.server.bean.GetResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GetValueRequestProcessor extends SyncUserProcessor<GetValueRequest> {
+public class GetValueRequestProcessor extends SyncUserProcessor<GetRequest> {
 
   private static final Logger LOG = LoggerFactory.getLogger(GetValueRequestProcessor.class);
 
@@ -21,17 +21,17 @@ public class GetValueRequestProcessor extends SyncUserProcessor<GetValueRequest>
 
   @Override
   public Object handleRequest(final BizContext bizCtx,
-                              final GetValueRequest request) throws Exception {
-    if (this.dmetaServer.getFsm().isLeader()) {
-      final GetValueResponse response = new GetValueResponse();
+                              final GetRequest request) throws Exception {
+    if (!this.dmetaServer.getFsm().isLeader()) {
+      final GetResponse response = new GetResponse();
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
       return response;
     }
 
-    final GetValueResponse response = new GetValueResponse();
+    final GetResponse response = new GetResponse();
     try {
-      response.setValue(this.dmetaServer.getFsm().getValueByPath(request.getPath()));
+      response.setValue(this.dmetaServer.getFsm().getGlobalView().get(request.getKey()));
     } catch (Exception e) {
       response.setSuccess(false);
       return response;
@@ -42,6 +42,6 @@ public class GetValueRequestProcessor extends SyncUserProcessor<GetValueRequest>
 
   @Override
   public String interest() {
-    return GetValueRequest.class.getName();
+    return GetRequest.class.getName();
   }
 }

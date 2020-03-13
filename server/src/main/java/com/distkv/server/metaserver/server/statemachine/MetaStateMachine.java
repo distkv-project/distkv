@@ -14,6 +14,7 @@ import com.distkv.server.metaserver.server.bean.PutRequest;
 import com.distkv.server.view.DistkvGlobalView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -24,7 +25,7 @@ public class MetaStateMachine extends StateMachineAdapter {
 
   /**
    * The global view of a Distkv cluster.
-   *
+   * <p>
    * TODO(qwang): Thread safe?
    */
   DistkvGlobalView globalView = new DistkvGlobalView();
@@ -36,6 +37,10 @@ public class MetaStateMachine extends StateMachineAdapter {
 
   public boolean isLeader() {
     return 0 < this.leaderTerm.get();
+  }
+
+  public DistkvGlobalView getGlobalView() {
+    return this.globalView;
   }
 
   @Override
@@ -70,18 +75,19 @@ public class MetaStateMachine extends StateMachineAdapter {
 
       try {
         globalView.put(key, value);
-        if (doneClosure != null) {
-          doneClosure.getResponse().setSuccess(true);
-          doneClosure.run(Status.OK());
-        }
+        LOG.debug("Added value={} by key={} at logIndex={}", value, key, iter.getIndex());
       } catch (Exception e) {
+        e.printStackTrace();
         if (doneClosure != null) {
-          doneClosure.getResponse().setSuccess(true);
-          doneClosure.run(Status.OK());
+          doneClosure.getResponse().setSuccess(false);
         }
+        LOG.error("Added value={} by key={} fail", value, key);
       }
 
-      LOG.debug("Added value={} by key={} at logIndex={}", value, key, iter.getIndex());
+      if (doneClosure != null) {
+        doneClosure.getResponse().setSuccess(true);
+        doneClosure.run(Status.OK());
+      }
       iter.next();
     }
   }

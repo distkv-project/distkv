@@ -30,7 +30,7 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
   public void handleRequest(final BizContext bizCtx,
                             final AsyncContext asyncCtx,
                             final PutRequest request) {
-    if (this.dmetaServer.getFsm().isLeader()) {
+    if (! this.dmetaServer.getFsm().isLeader()) {
       final PutResponse response = new PutResponse();
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
