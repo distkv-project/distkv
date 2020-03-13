@@ -87,7 +87,7 @@ public class ListProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().expire("k1", 1);
-    Thread.sleep(2000);
+    Thread.sleep(3000);
     client.lists().get("k1");
     client.disconnect();
   }

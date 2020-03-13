@@ -41,7 +41,7 @@ public class IntProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     client.ints().put("k1", 1);
     client.ints().expire("k1", 1);
-    Thread.sleep(2000);
+    Thread.sleep(3000);
     client.ints().get("k1");
     client.disconnect();
   }
