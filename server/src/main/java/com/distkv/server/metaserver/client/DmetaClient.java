@@ -6,11 +6,11 @@ import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
-import com.distkv.server.metaserver.server.bean.GetValueRequest;
-import com.distkv.server.metaserver.server.bean.GetValueResponse;
-import com.distkv.server.metaserver.server.bean.PutKVRequest;
-import com.distkv.server.metaserver.server.bean.PutKVResponse;
-import com.distkv.server.metaserver.server.bean.PutKVType;
+import com.distkv.server.metaserver.server.bean.GetRequest;
+import com.distkv.server.metaserver.server.bean.GetResponse;
+import com.distkv.server.metaserver.server.bean.PutRequest;
+import com.distkv.server.metaserver.server.bean.PutResponse;
+
 import java.util.concurrent.TimeoutException;
 
 public class DmetaClient {
@@ -35,31 +35,7 @@ public class DmetaClient {
     cliClientService.init(new CliOptions());
   }
 
-  public void createPath(String path) {
-    try {
-      if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
-        throw new IllegalStateException("Refresh leader failed");
-      }
-      //get leader term
-      final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
-      PutKVRequest request = new PutKVRequest();
-      request.setPath(path);
-      request.setType(PutKVType.CREATE_PATH);
-      PutKVResponse response = (PutKVResponse) cliClientService.getRpcClient()
-          .invokeSync(leader.getEndpoint().toString(), request, 3000);
-      if (!response.isSuccess()) {
-        throw new RuntimeException("put error");
-      }
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    } catch (RemotingException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void putKV(String key, String value, String path) {
+  public void put(String key, String value) {
     try {
       if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");
@@ -67,12 +43,10 @@ public class DmetaClient {
       //get leader term
       final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
 
-      PutKVRequest request = new PutKVRequest();
+      PutRequest request = new PutRequest();
       request.setKey(key);
       request.setValue(value);
-      request.setPath(path);
-      request.setType(PutKVType.PUT_KV);
-      PutKVResponse response = (PutKVResponse) cliClientService.getRpcClient()
+      PutResponse response = (PutResponse) cliClientService.getRpcClient()
           .invokeSync(leader.getEndpoint().toString(), request, 3000);
       if (!response.isSuccess()) {
         throw new RuntimeException("put error");
@@ -86,18 +60,18 @@ public class DmetaClient {
     }
   }
 
-  public String getValue(String path) {
+  public String get(String key) {
     try {
       if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");
       }
       //get leader term
       final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
-      System.out.println("Leader is " + leader);
 
-      final GetValueRequest request = new GetValueRequest();
-      request.setPath(path);
-      GetValueResponse response = (GetValueResponse) cliClientService.getRpcClient()
+      final GetRequest request = new GetRequest();
+      request.setKey(key);
+
+      GetResponse response = (GetResponse) cliClientService.getRpcClient()
           .invokeSync(leader.getEndpoint().toString(), request, 3000);
       if (!response.isSuccess()) {
         throw new RuntimeException("get error");
