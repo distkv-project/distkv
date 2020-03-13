@@ -1,9 +1,16 @@
 package com.distkv.core.segment;
 
+import com.distkv.core.LogEntry;
 import com.distkv.core.block.Block;
 
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
- * A segment implement for log, which store append-only value.
+ * A segment implement for log, which store append-only value. the value
+ * can't bigger than one block.
+ *
  * </p>
  * LogSegment store the value to block array. if given block has no
  * enough space to store the LogEntry, the remaining byte of the LogEntry
@@ -14,7 +21,7 @@ import com.distkv.core.block.Block;
  * ---------------------------------------------------
  * |    block1       |    block2      |    block3    |
  * ---------------------------------------------------
- * |       23        |      45        |              |
+ * |       0         |      23        |       46     |
  * ---------------------------------------------------
  * <p>
  * the block will be cleared when LogEntry is not needed any more.
@@ -23,7 +30,7 @@ import com.distkv.core.block.Block;
  * ---------------------------------------------------
  * |    block2       |    block3      |    block4    |
  * ---------------------------------------------------
- * |       45        |      56        |              |
+ * |       23        |      46        |     73       |
  * ---------------------------------------------------
  *
  * @author meijie
@@ -32,55 +39,57 @@ import com.distkv.core.block.Block;
 public class LogSegment extends AbstractNonFixedSegment {
 
   private static final int DEFAULT_BLOCK_SIZE = 1;
+  // when follower request newer log entries, the MAX_BATCH_NUMBER
+  // controls the max number should transfer to follower at one time.
+  private static final int MAX_BATCH_NUMBER = 10;
 
   // because the offset information of LogEntry will be cleared with
   // unneeded LogEntry, so the baseOffsetIndex means how many offset
-  // information be cleared at offsetSegment. it helps to find the
-  // which offset of one LogEntry.
+  // information has been cleared at offsetSegment. it helps to find out
+  // which is the offset of one LogEntry.
   private int baseIndexOffset;
   // store the offset of the LogEntry at blocks.
   private IntSegment offsetSegment;
 
-  // the blockValueCntArray record the absolute number of the blockArray.
-  // It help to find out which Block the LogEntry in.
-  private int[] blockValueCntArray;
-  private int blockIndex;
-
   public LogSegment() {
     super(DEFAULT_BLOCK_SIZE);
     offsetSegment = new IntSegment(DEFAULT_BLOCK_SIZE);
-    // first logEntry with 0 start offset.
-    offsetSegment.put(0);
+
+    // set first element start offset to block size, for start offset,
+    // it means the beginning of next block. for end offset, it means
+    // the ending of this block
+    offsetSegment.put(pool.getBlockSize());
     blockValueCntArray = new int[DEFAULT_BLOCK_SIZE];
   }
 
-  public void addLogEntry(byte[] logEntry) {
-    Block block = writeLogEntry(logEntry);
-    // set the Log Entry end offset.
-    offsetSegment.put(block.getNextWriteOffset());
+  public void appendLogEntry(LogEntry logEntry) {
+    checkArgument(logEntry.getLogIndex() == size);
+    appendValue(logEntry.getValue());
   }
 
-  public void addLogEntries(byte[] logEntries, int[] offsetArray) {
-    // TODO logEntries may bigger than block
-    writeLogEntry(logEntries);
-    // TODO write offset Array
+  // TODO provide simple implement now.
+  public void appendLogEntries(List<LogEntry> logEntries) {
+    for (LogEntry logEntry : logEntries) {
+      appendLogEntry(logEntry);
+    }
   }
 
-  private Block writeLogEntry(byte[] logEntry) {
+  public void appendValue(byte[] logEntryValue) {
     Block block = blockArray[blockIndex];
-    int remaining = block.writeValue(logEntry);
+    int remaining = block.writeValue(logEntryValue);
 
     // write the remaining byte of logEntry to another block.
     if (remaining > 0) {
-      blockValueCntArray[blockIndex] = size;
       blockIndex++;
       resize(blockIndex + 1);
+      blockValueCntArray[blockIndex] = size;
       block = blockArray[blockIndex];
-      block.writeValue(logEntry, logEntry.length - remaining);
+      block.writeValue(logEntryValue, logEntryValue.length - remaining);
     }
 
     size++;
-    return block;
+    // set the Log Entry end offset.
+    offsetSegment.put(block.getNextWriteOffset());
   }
 
   /**
@@ -89,36 +98,42 @@ public class LogSegment extends AbstractNonFixedSegment {
    * @param logEntryIndex the index of LogEntry, start from zero.
    * @return the LogEntry.
    */
-  public byte[] getLogEntry(int logEntryIndex) {
+  public LogEntry getLogEntry(int logEntryIndex) {
     int blockIndex = locateBlock(logEntryIndex);
     Block block = blockArray[blockIndex];
-    int startOffset = offsetSegment.get(logEntryIndex - baseIndexOffset);
-    int endOffset = offsetSegment.get(logEntryIndex - baseIndexOffset + 1);
+    int startOffset = getLogEntryStartOffset(logEntryIndex);
+    int endOffset = getLogEntryEndOffset(logEntryIndex);
 
     byte[] value;
-    if (blockValueCntArray[blockIndex] == logEntryIndex
+    if (blockValueCntArray.length > blockIndex + 1
+        && blockValueCntArray[blockIndex + 1] == logEntryIndex
         && endOffset != block.getCapacity()
         && logEntryIndex != 0) {
-      // TODO simple the code.
+      // this is the last log entry at given block and be stored across two blocks
       byte[] part1 = block.read(startOffset, block.getCapacity() - startOffset);
       byte[] part2 = blockArray[blockIndex + 1].read(0, endOffset);
       value = new byte[part1.length + part2.length];
       System.arraycopy(part1, 0, value, 0, part1.length);
       System.arraycopy(part2, 0, value, part1.length, part2.length);
     } else {
+      if (startOffset == block.getCapacity()) {
+        startOffset = 0;
+      }
       value = block.read(startOffset, endOffset - startOffset);
     }
-    return value;
+    return new LogEntry(logEntryIndex, value);
+  }
+
+  public int getLogEntryStartOffset(int logIndex) {
+    return offsetSegment.get(logIndex - baseIndexOffset);
+  }
+
+  public int getLogEntryEndOffset(int logIndex) {
+    return offsetSegment.get(logIndex - baseIndexOffset + 1);
   }
 
   // TODO
-  public void getNewerLogEntries(int index) {
-
-  }
-
-  // TODO
-  public void clear() {
-
+  public void clear(int logIndex) {
   }
 
 }

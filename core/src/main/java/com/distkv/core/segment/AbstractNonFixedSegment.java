@@ -16,9 +16,9 @@ public abstract class AbstractNonFixedSegment extends ValueSegment {
 
   public int binarySearch(int value, int start, int end) {
     if (end - start <= 2) {
-      if (start + 1 <= end && blockValueCntArray[start + 1] > value) {
+      if (start + 1 <= end && blockValueCntArray[start + 1] >= value) {
         return start;
-      } else if (start + 2 <= end && blockValueCntArray[start + 2] > value) {
+      } else if (start + 2 <= end && blockValueCntArray[start + 2] >= value) {
         return start + 1;
       } else {
         return end;

@@ -61,6 +61,20 @@ public class Block {
     return value;
   }
 
+  public byte[] readRemains(int offset) {
+    byte[] value = new byte[capacity - offset];
+    buffer.position(offset);
+    buffer.get(value);
+    return value;
+  }
+
+  public byte[] readFirstBytes(int endOffset) {
+    byte[] value = new byte[endOffset];
+    buffer.position(0);
+    buffer.get(value);
+    return value;
+  }
+
   /**
    * read short value from given index.
    * need to used with {@link Block#write(int, short)}
@@ -273,7 +287,7 @@ public class Block {
       return length - remaining;
     } else {
       buffer.put(value, offset, length);
-      nextWriteOffset = nextWriteOffset + value.length;
+      nextWriteOffset = nextWriteOffset + length;
       return 0;
     }
   }

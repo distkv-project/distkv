@@ -40,11 +40,11 @@ public class FixedSegmentTest {
 
     for (int i = 0; i < 100; i++) {
       intSegment.put(i, i);
-      shortSegment.put(i, (short)i);
+      shortSegment.put(i, (short) i);
       longSegment.put(i, i);
       floatSegment.put(i, i);
       doubleSegment.put(i, i);
-      byteSegment.putValue(i, (byte)i);
+      byteSegment.putValue(i, (byte) i);
     }
 
     for (int i = 0; i < 100; i++) {
