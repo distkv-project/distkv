@@ -23,7 +23,7 @@ import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
-import com.distkv.server.storeserver.runtime.expire.ExpireCycle;
+import com.distkv.server.storeserver.runtime.expire.ExpirationManager;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Any;
@@ -54,7 +54,7 @@ public class Worker extends Thread {
   /**
    * Expire handler
    */
-  private ExpireCycle expireCycle;
+  private ExpirationManager expirationManager;
   /**
    * Store engine.
    */
@@ -63,7 +63,7 @@ public class Worker extends Thread {
   public Worker(StoreRuntime storeRuntime) {
     this.storeRuntime = storeRuntime;
     storeEngine = new KVStoreImpl();
-    expireCycle = new ExpireCycle();
+    expirationManager = new ExpirationManager();
     queue = new LinkedBlockingQueue<>();
   }
 
@@ -100,7 +100,7 @@ public class Worker extends Thread {
   // Add expire request to ExpireCycle.
   private void expireHandle(DistkvRequest request, StoreConfig storeConfig) {
     if (needExpire(request)) {
-      expireCycle.addToCycle(request, storeConfig);
+      expirationManager.addToCycle(request, storeConfig);
     }
   }
 

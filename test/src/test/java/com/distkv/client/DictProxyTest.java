@@ -91,7 +91,7 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
     client.dicts().expire("m1", 1);
-    Thread.sleep(4000);
+    Thread.sleep(3000);
     client.dicts().get("m1");
     client.disconnect();
   }

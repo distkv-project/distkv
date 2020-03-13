@@ -40,10 +40,10 @@ public class DistkvStringProxy {
   }
 
   /**
-   * Expire a key
+   * Expire a key.
    *
-   * @param key The key to be expired
-   * @param expireTime Millisecond level to set expire
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
    */
   public void expire(String key, long expireTime) {
     DistkvResponse response = FutureUtils.get(asyncStrProxy.expire(key, expireTime));

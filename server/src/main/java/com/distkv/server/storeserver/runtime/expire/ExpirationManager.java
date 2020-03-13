@@ -14,9 +14,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExpireCycle {
+public class ExpirationManager {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(ExpireCycle.class);
+  private static Logger LOGGER = LoggerFactory.getLogger(ExpirationManager.class);
+
+  private static final Integer DEFAULT_CAPACITY = 2048;
 
   private static ScheduledExecutorService swapExpiredPool
       = new ScheduledThreadPoolExecutor(1);
@@ -24,19 +26,27 @@ public class ExpireCycle {
   private ReentrantLock lock = new ReentrantLock();
 
   private StoreConfig storeConfig;
-  /*
+
+  /**
    *  PriorityQueue allows the data with the lowest expiration time to be queued.
    *  Just look at the cached most recent expired data and avoid scanning all caches.
    */
-  public PriorityQueue<Node> expireQueue = new PriorityQueue<>(1024);
+  public PriorityQueue<Node> expirationQueue = new PriorityQueue<>(DEFAULT_CAPACITY);
 
-  public ExpireCycle() {
+  public ExpirationManager() {
     /*
      * Use the default thread pool to clear outdated data every 1 seconds.
      */
     swapExpiredPool.scheduleWithFixedDelay(new SwapExpiredNode(), 1, 1, TimeUnit.SECONDS);
   }
 
+  /**
+   * The expire request will be stored in the queue as a Node object.
+   * This internal Node object contains the key, expiration time and request type.
+   *
+   * @param request A expire request.
+   * @param storeConfig Local server config information.
+   */
   public void addToCycle(DistkvRequest request, StoreConfig storeConfig) {
     this.storeConfig = storeConfig;
     String key = request.getKey();
@@ -49,7 +59,7 @@ public class ExpireCycle {
       LOGGER.error("Failed to set expire for a key :{1}", e);
       throw new DistkvException(e.toString());
     }
-    expireQueue.offer(new Node(key, requestType, expireTime));
+    expirationQueue.offer(new Node(key, requestType, expireTime));
   }
 
   private class SwapExpiredNode implements Runnable {
@@ -60,11 +70,11 @@ public class ExpireCycle {
       while (true) {
         lock.lock();
         try {
-          Node node = expireQueue.peek();
+          Node node = expirationQueue.peek();
           if (node == null || node.expireTime > now) {
             return;
           }
-          expireQueue.poll();
+          expirationQueue.poll();
           clearStore(node);
         } finally {
           lock.unlock();
@@ -73,6 +83,12 @@ public class ExpireCycle {
     }
   }
 
+  /**
+   * When the timer detects that a key in the queue has expired, it clears it.
+   * The expired client establishes a connection with StoreServer and sends a drop operation.
+   *
+   * @param node A node object that needs to be cleaned up.
+   */
   private void clearStore(Node node) {
     ExpireClient expireClient = new DefaultExpireClient(storeConfig);
     expireClient.connect();

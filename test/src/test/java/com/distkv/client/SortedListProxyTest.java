@@ -65,7 +65,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     distkvClient = newDistkvClient();
     testPut();
     distkvClient.sortedLists().expire("k1", 1);
-    Thread.sleep(4000);
+    Thread.sleep(3000);
     distkvClient.sortedLists().getMember("k1", "fw");
     distkvClient.disconnect();
   }
