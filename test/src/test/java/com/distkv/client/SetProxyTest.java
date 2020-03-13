@@ -81,7 +81,7 @@ public class SetProxyTest extends BaseTestSupplier {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
     client.sets().put("k1", set);
     client.sets().expire("k1", 1);
-    Thread.sleep(3000);
+    Thread.sleep(2000);
     client.sets().get("k1");
     client.disconnect();
   }

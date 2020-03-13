@@ -7,10 +7,9 @@ import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.server.storeserver.StoreConfig;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.PriorityQueue;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,29 +19,28 @@ public class ExpirationManager {
 
   private static final Integer DEFAULT_CAPACITY = 2048;
 
-  private static ScheduledExecutorService swapExpiredPool
-      = new ScheduledThreadPoolExecutor(1);
-
-  private ReentrantLock lock = new ReentrantLock();
+  //Scheduled cleaning tasks.
+  ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
   private StoreConfig storeConfig;
 
   /**
-   *  PriorityQueue allows the data with the lowest expiration time to be queued.
-   *  Just look at the cached most recent expired data and avoid scanning all caches.
+   * PriorityQueue allows the data with the lowest expiration time to be queued. Just look at the
+   * cached most recent expired data and avoid scanning all caches.
    */
   public PriorityQueue<Node> expirationQueue = new PriorityQueue<>(DEFAULT_CAPACITY);
 
   public ExpirationManager() {
+
     /*
-     * Use the default thread pool to clear outdated data every 1 seconds.
+     * Use the default scheduled executor to clear outdated data every 1 seconds.
      */
-    swapExpiredPool.scheduleWithFixedDelay(new SwapExpiredNode(), 1, 1, TimeUnit.SECONDS);
+    scheduledExecutor.scheduleAtFixedRate(new SwapExpiredNode(), 0, 1, TimeUnit.SECONDS);
   }
 
   /**
-   * The expire request will be stored in the queue as a Node object.
-   * This internal Node object contains the key, expiration time and request type.
+   * The expire request will be stored in the queue as a Node object. This internal Node object
+   * contains the key, expiration time and request type.
    *
    * @param request A expire request.
    * @param storeConfig Local server config information.
@@ -68,24 +66,19 @@ public class ExpirationManager {
     public void run() {
       long now = System.currentTimeMillis();
       while (true) {
-        lock.lock();
-        try {
-          Node node = expirationQueue.peek();
-          if (node == null || node.expireTime > now) {
-            return;
-          }
-          expirationQueue.poll();
-          clearStore(node);
-        } finally {
-          lock.unlock();
+        Node node = expirationQueue.peek();
+        if (node == null || node.expireTime > now) {
+          return;
         }
+        expirationQueue.poll();
+        clearStore(node);
       }
     }
   }
 
   /**
-   * When the timer detects that a key in the queue has expired, it clears it.
-   * The expired client establishes a connection with StoreServer and sends a drop operation.
+   * When the timer detects that a key in the queue has expired, it clears it. The expired client
+   * establishes a connection with StoreServer and sends a drop operation.
    *
    * @param node A node object that needs to be cleaned up.
    */
