@@ -1,4 +1,4 @@
-package com.distkv.core.map;
+package com.distkv.core.segment;
 
 import com.distkv.core.block.Block;
 import com.distkv.core.block.BlockPool;
@@ -38,4 +38,19 @@ public abstract class ValueSegment {
   public int getSize() {
     return size;
   }
+
+  /**
+   * release the block to {@link BlockPool}.
+   *
+   * @param blockCnt the block count to be released.
+   */
+  public void releaseBlock(int blockCnt) {
+    checkArgument(blockCnt < blockArray.length);
+    int newBlockLength = blockArray.length - blockCnt;
+    Block[] newBlockArray = new Block[newBlockLength];
+    System.arraycopy(blockArray, blockCnt, newBlockArray, 0, newBlockLength);
+    blockArray = newBlockArray;
+  }
+
+
 }
