@@ -3,6 +3,7 @@ package com.distkv.server.storeserver.runtime.workerpool;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SetItemNotFoundException;
@@ -189,8 +190,12 @@ public class Worker extends Thread {
       case STR_PUT: {
         StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
             .unpack(StringProtocol.StrPutRequest.class);
-        storeEngine.strs().put(key, strPutRequest.getValue());
-        builder.setStatus(CommonProtocol.Status.OK);
+        try {
+          storeEngine.strs().put(key, strPutRequest.getValue());
+          builder.setStatus(CommonProtocol.Status.OK);
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
+        }
         break;
       }
       case STR_DROP: {
@@ -223,7 +228,11 @@ public class Worker extends Thread {
         SetProtocol.SetPutRequest setPutRequest = distkvRequest.getRequest()
             .unpack(SetProtocol.SetPutRequest.class);
         // TODO(qwang): Any thoughts on how to avoid this `new HasSet`.
-        storeEngine.sets().put(key, new HashSet<>(setPutRequest.getValuesList()));
+        try {
+          storeEngine.sets().put(key, new HashSet<>(setPutRequest.getValuesList()));
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
+        }
         builder.setStatus(CommonProtocol.Status.OK);
         break;
       }
@@ -314,6 +323,8 @@ public class Worker extends Thread {
           // at https://github.com/distkv-project/distkv/issues/349
           ArrayList<String> values = new ArrayList<>(listPutRequest.getValuesList());
           storeEngine.lists().put(key, values);
+        } catch (DistkvKeyDuplicatedException e) {
+          status = CommonProtocol.Status.DUPLICATED_KEY;
         } catch (DistkvException e) {
           LOGGER.error("Failed to put a list to store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -476,6 +487,8 @@ public class Worker extends Thread {
           }
           storeEngine.dicts().put(key, map);
           builder.setStatus(CommonProtocol.Status.OK);
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
         } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         }
@@ -593,6 +606,8 @@ public class Worker extends Thread {
           }
           storeEngine.sortLists().put(key, linkedList);
           status = CommonProtocol.Status.OK;
+        } catch (DistkvKeyDuplicatedException e) {
+          status = CommonProtocol.Status.DUPLICATED_KEY;
         } catch (DistkvException e) {
           LOGGER.error("Failed to put a slist to store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -734,7 +749,11 @@ public class Worker extends Thread {
       case INT_PUT: {
         IntProtocol.IntPutRequest intPutRequest = distkvRequest.getRequest()
             .unpack(IntProtocol.IntPutRequest.class);
-        storeEngine.ints().put(key, intPutRequest.getValue());
+        try {
+          storeEngine.ints().put(key, intPutRequest.getValue());
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
+        }
         builder.setStatus(CommonProtocol.Status.OK);
         break;
       }

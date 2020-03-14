@@ -1,5 +1,6 @@
 package com.distkv.core.concepts;
 
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.DistkvMapInterface;
@@ -14,6 +15,9 @@ public abstract class DistkvConcepts<T> {
   }
 
   public void put(String key, T value) {
+    if (distkvKeyValueMap.containsKey(key)) {
+      throw new DistkvKeyDuplicatedException(key);
+    }
     distkvKeyValueMap.put(key, value);
   }
 

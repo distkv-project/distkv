@@ -41,24 +41,17 @@ public class NamespaceTest extends BaseTestSupplier {
 
   @Test
   public void testNamespaceDisabled()
-      throws ExecutionException, InterruptedException, InvalidProtocolBufferException  {
+      throws ExecutionException, InterruptedException  {
     DistkvAsyncClient client1 = newAsyncDistkvClient();
     DistkvAsyncClient client2 = newAsyncDistkvClient();
 
     CompletableFuture<DistkvProtocol.DistkvResponse> putFuture =
         client1.strs().put("k1", "v1");
-    Assert.assertEquals(CommonProtocol.Status.OK, putFuture.get().getStatus());
-    putFuture = client2.strs().put("k1", "v2");
-    Assert.assertEquals(CommonProtocol.Status.OK, putFuture.get().getStatus());
 
-    CompletableFuture<DistkvProtocol.DistkvResponse> getFuture = client1.strs().get("k1");
-    String value = getFuture.get()
-        .getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
-    Assert.assertEquals(value, "v2");
-
-    getFuture = client2.strs().get("k1");
-    value = getFuture.get().getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
-    Assert.assertEquals(value, "v2");
+    Assert.assertEquals(CommonProtocol.Status.OK, putFuture.get().getStatus());
+    final CompletableFuture<DistkvProtocol.DistkvResponse> putFuture2 =
+        client2.strs().put("k1", "v2");
+    Assert.assertEquals(CommonProtocol.Status.DUPLICATED_KEY, putFuture2.get().getStatus());
   }
 
 
