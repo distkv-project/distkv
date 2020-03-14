@@ -65,7 +65,7 @@ public class ExpirationClient {
       isConnected = false;
       return true;
     } catch (DistkvException ex) {
-      throw new DistkvException(String.format("Failed close the clients : %s", ex.getMessage()));
+      throw new DistkvException(String.format("Failed to close the clients : %s", ex.getMessage()));
     }
   }
 

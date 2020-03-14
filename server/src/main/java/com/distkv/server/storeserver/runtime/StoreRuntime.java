@@ -1,6 +1,9 @@
 package com.distkv.server.storeserver.runtime;
 
 import com.distkv.common.utils.RuntimeUtil;
+import com.distkv.core.KVStore;
+import com.distkv.core.KVStoreImpl;
+import com.distkv.server.storeserver.runtime.expire.ExpirationManager;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.workerpool.WorkerPool;
@@ -15,12 +18,24 @@ public class StoreRuntime {
 
   private StoreConfig config;
 
+  /**
+   * Store engine.
+   */
+  private KVStore storeEngine;
+
+  /**
+   * A manager that handles key expire requests.
+   */
+  private ExpirationManager expirationManager;
+
   private WorkerPool workerPool;
 
   private List<SlaveClient> slaveClients;
 
   public StoreRuntime(StoreConfig config) {
     this.config = config;
+    storeEngine = new KVStoreImpl();
+    expirationManager = new ExpirationManager(config);
 
     if (config.isMaster()) {
       slaveClients = new ArrayList<>();
@@ -52,6 +67,14 @@ public class StoreRuntime {
 
   public StoreConfig getConfig() {
     return config;
+  }
+
+  public KVStore getStoreEngine() {
+    return storeEngine;
+  }
+
+  public ExpirationManager getExpirationManager() {
+    return expirationManager;
   }
 
   public List<SlaveClient> getAllSlaveClients() {

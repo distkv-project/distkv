@@ -10,7 +10,6 @@ import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
-import com.distkv.core.KVStoreImpl;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
@@ -22,7 +21,6 @@ import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
-import com.distkv.server.storeserver.runtime.expire.ExpirationManager;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Any;
@@ -50,10 +48,6 @@ public class Worker extends Thread {
   private StoreRuntime storeRuntime;
 
   private BlockingQueue<InternalRequest> queue;
-  /**
-   * A manager that handles key expire requests.
-   */
-  private ExpirationManager expirationManager;
 
   /**
    * Store engine.
@@ -62,8 +56,7 @@ public class Worker extends Thread {
 
   public Worker(StoreRuntime storeRuntime) {
     this.storeRuntime = storeRuntime;
-    storeEngine = new KVStoreImpl();
-    expirationManager = new ExpirationManager(storeRuntime.getConfig());
+    storeEngine = storeRuntime.getStoreEngine();
     queue = new LinkedBlockingQueue<>();
   }
 
@@ -100,7 +93,7 @@ public class Worker extends Thread {
   // Add expire request to ExpireCycle.
   private void handleExpiration(DistkvRequest request) {
     if (needExpire(request)) {
-      expirationManager.addToCycle(request);
+      storeRuntime.getExpirationManager().addToCycle(request);
     }
   }
 
