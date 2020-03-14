@@ -49,34 +49,34 @@ public class TestMasterSyncToSlaves {
 
   public void testStrPut(DistkvClient client0, DistkvClient client1)
       throws InvalidProtocolBufferException {
-    client0.strs().put("k1", "v1");
-    Assert.assertEquals("v1", client0.strs().get("k1"));
-    Assert.assertEquals("v1", client1.strs().get("k1"));
+    client0.strs().put("str_k1", "v1");
+    Assert.assertEquals("v1", client0.strs().get("str_k1"));
+    Assert.assertEquals("v1", client1.strs().get("str_k1"));
   }
 
 
   public void testListPut(DistkvClient client0, DistkvClient client1) {
 
-    client0.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client0.lists().get("k1"));
+    client0.lists().put("list_k1", ImmutableList.of("v1", "v2", "v3"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client0.lists().get("list_k1"));
     Assert.assertEquals(ImmutableList.of("v2", "v3"),
-        client0.lists().get("k1", 1, 3));
+        client0.lists().get("list_k1", 1, 3));
 
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client1.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"), client1.lists().get("list_k1"));
   }
 
 
   public void testSetPut(DistkvClient client0, DistkvClient client1) {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
-    client0.sets().put("k1", set);
-    Assert.assertEquals(set, client0.sets().get("k1"));
-    Assert.assertEquals(set, client1.sets().get("k1"));
+    client0.sets().put("set_k1", set);
+    Assert.assertEquals(set, client0.sets().get("set_k1"));
+    Assert.assertEquals(set, client1.sets().get("set_k1"));
   }
 
 
   public void testDictPut(DistkvClient client0, DistkvClient client1) {
     Map<String, String> dict = new HashMap<>();
-    dict.put("k1", "v1");
+    dict.put("dict_k1", "v1");
     client0.dicts().put("m1", dict);
     Map<String, String> dict1 = client0.dicts().get("m1");
     Assert.assertEquals(dict, dict1);
@@ -93,21 +93,21 @@ public class TestMasterSyncToSlaves {
     list.add(new SortedListEntity("wlll", 8));
     list.add(new SortedListEntity("fw", 9));
     list.add(new SortedListEntity("55", 6));
-    client0.sortedLists().put("k1", list);
+    client0.sortedLists().put("slist_k1", list);
 
-    LinkedList<SortedListEntity> tlist = client0.sortedLists().top("k1", 100);
+    LinkedList<SortedListEntity> tlist = client0.sortedLists().top("slist_k1", 100);
     Assert.assertEquals(tlist.get(0).getMember(), "fw");
     Assert.assertEquals(tlist.get(1).getMember(), "xswl");
 
-    LinkedList<SortedListEntity> tlist1 = client1.sortedLists().top("k1", 100);
+    LinkedList<SortedListEntity> tlist1 = client1.sortedLists().top("slist_k1", 100);
     Assert.assertEquals(tlist1.get(0).getMember(), "fw");
     Assert.assertEquals(tlist1.get(1).getMember(), "xswl");
   }
 
   public void testIntPut(DistkvClient client0, DistkvClient client1)
       throws InvalidProtocolBufferException {
-    client0.ints().put("k1", 1);
-    Assert.assertEquals(1, client0.ints().get("k1"));
-    Assert.assertEquals(1, client1.ints().get("k1"));
+    client0.ints().put("int_k1", 1);
+    Assert.assertEquals(1, client0.ints().get("int_k1"));
+    Assert.assertEquals(1, client1.ints().get("int_k1"));
   }
 }

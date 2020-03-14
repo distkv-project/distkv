@@ -8,6 +8,7 @@ import com.distkv.common.exception.SortedListIncrScoreOutOfRangeException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.core.DistkvMapInterface;
 import com.distkv.core.struct.slist.SortedList;
 import com.distkv.core.struct.slist.SortedListLinkedImpl;
 
@@ -17,8 +18,9 @@ import java.util.LinkedList;
 public class DistkvSortedListsImpl
     extends DistkvConcepts<SortedList>
     implements DistkvSortedLists {
-  public DistkvSortedListsImpl() {
 
+  public DistkvSortedListsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
+    super(distkvKeyValueMap);
   }
 
   @Override
@@ -38,7 +40,7 @@ public class DistkvSortedListsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final SortedList sortedList = distkvKeyValueMap.get(key);
+    final SortedList sortedList = get(key);
     sortedList.putItem(item);
   }
 
@@ -47,7 +49,7 @@ public class DistkvSortedListsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final SortedList sortedList = distkvKeyValueMap.get(key);
+    final SortedList sortedList = get(key);
     final boolean isFound = sortedList.removeItem(member);
     if (!isFound) {
       throw new SortedListMemberNotFoundException(key);
@@ -59,7 +61,7 @@ public class DistkvSortedListsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final SortedList sortedList = distkvKeyValueMap.get(key);
+    final SortedList sortedList = get(key);
     final int resultByIncrScore = sortedList.incrScore(member, delta);
     if (0 == resultByIncrScore) {
       throw new SortedListMemberNotFoundException(key);
@@ -73,7 +75,7 @@ public class DistkvSortedListsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final SortedList sortedList = distkvKeyValueMap.get(key);
+    final SortedList sortedList = get(key);
     if (topNum > sortedList.size()) {
       topNum = sortedList.size();
     }
@@ -88,7 +90,7 @@ public class DistkvSortedListsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final SortedList sortedLists = distkvKeyValueMap.get(key);
+    final SortedList sortedLists = get(key);
     DistkvTuple<Integer, Integer> result = sortedLists.getItem(member);
     if (null == result) {
       throw new SortedListMemberNotFoundException(key);
