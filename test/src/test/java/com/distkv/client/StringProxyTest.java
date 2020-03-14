@@ -7,9 +7,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.Set;
 
+@Test(singleThreaded = true)
 public class StringProxyTest extends BaseTestSupplier {
 
   @Test
@@ -53,4 +53,15 @@ public class StringProxyTest extends BaseTestSupplier {
     Assert.assertEquals(set, client.sets().get("k1"));
     client.disconnect();
   }
+
+  @Test
+  public void testExpireStr() throws InterruptedException {
+    DistkvClient client = newDistkvClient();
+    client.strs().put("k1", "v1");
+    client.strs().expire("k1", 1);
+    Thread.sleep(3000);
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.strs().get("k1"));
+    client.disconnect();
+  }
+
 }

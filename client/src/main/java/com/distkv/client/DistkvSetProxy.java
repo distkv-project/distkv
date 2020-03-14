@@ -61,4 +61,16 @@ public class DistkvSetProxy {
       throw new DistkvException(e.toString());
     }
   }
+
+  /**
+   * Expire a key.
+   *
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
+   */
+  public void expire(String key, long expireTime) {
+    DistkvResponse response = FutureUtils.get(asyncSetProxy.expire(key, expireTime));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+  }
+
 }

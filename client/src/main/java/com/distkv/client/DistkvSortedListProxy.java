@@ -69,4 +69,17 @@ public class DistkvSortedListProxy {
     SortedListProtocol.SortedListEntity sortedListEntity = slistGetMemberResponse.getEntity();
     return new DistkvTuple<>(sortedListEntity.getScore(), slistGetMemberResponse.getCount());
   }
+
+
+  /**
+   * Expire a key.
+   *
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
+   */
+  public void expire(String key, long expireTime) {
+    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.expire(key, expireTime));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+  }
+
 }

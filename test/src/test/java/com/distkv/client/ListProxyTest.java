@@ -5,10 +5,10 @@ import com.google.common.collect.ImmutableList;
 import com.distkv.common.exception.KeyNotFoundException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
+@Test(singleThreaded = true)
 public class ListProxyTest extends BaseTestSupplier {
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -82,4 +82,13 @@ public class ListProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
+  @Test
+  public void testExpireList() throws InterruptedException {
+    DistkvClient client = newDistkvClient();
+    client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
+    client.lists().expire("k1", 1);
+    Thread.sleep(3000);
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.lists().get("k1"));
+    client.disconnect();
+  }
 }

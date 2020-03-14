@@ -2,26 +2,27 @@ package com.distkv.asyncclient;
 
 
 /**
- * The DstAsyncClient class is used to connect to the Dst server and do operations asynchronously.
+ * The DistkvAsyncClient class is used to connect to the distkv server
+ * and do operations asynchronously.
  */
 public interface DistkvAsyncClient {
 
   /**
-   * Connect to dst server.
+   * Connect to distkv server.
    *
    * @return True if succeeded to connect, otherwise it's false.
    */
   boolean connect();
 
   /**
-   * Whether the client connected to dst server.
+   * Whether the client connected to distkv server.
    *
    * @return True if it connected, otherwise it's false.
    */
   boolean isConnected();
 
   /**
-   * Disconnect to dst server.
+   * Disconnect to distkv server.
    */
   boolean disconnect();
 
