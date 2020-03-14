@@ -82,13 +82,13 @@ public class ListProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void testExpireList() throws InterruptedException {
     DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
     client.lists().expire("k1", 1);
     Thread.sleep(3000);
-    client.lists().get("k1");
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.lists().get("k1"));
     client.disconnect();
   }
 }

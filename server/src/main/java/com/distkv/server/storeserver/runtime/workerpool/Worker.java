@@ -21,7 +21,6 @@ import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
-import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.runtime.expire.ExpirationManager;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
@@ -52,9 +51,10 @@ public class Worker extends Thread {
 
   private BlockingQueue<InternalRequest> queue;
   /**
-   * Expire handler
+   * A manager that handles key expire requests.
    */
   private ExpirationManager expirationManager;
+
   /**
    * Store engine.
    */
@@ -63,7 +63,7 @@ public class Worker extends Thread {
   public Worker(StoreRuntime storeRuntime) {
     this.storeRuntime = storeRuntime;
     storeEngine = new KVStoreImpl();
-    expirationManager = new ExpirationManager();
+    expirationManager = new ExpirationManager(storeRuntime.getConfig());
     queue = new LinkedBlockingQueue<>();
   }
 
@@ -83,7 +83,7 @@ public class Worker extends Thread {
         CompletableFuture<DistkvResponse> future = internalRequest.getCompletableFuture();
         DistkvResponse.Builder builder = DistkvResponse.newBuilder();
 
-        expireHandle(distkvRequest,storeRuntime.getConfig());
+        handleExpiration(distkvRequest);
         syncToSlaves(distkvRequest, future);
         storeHandler(distkvRequest, builder);
 
@@ -98,9 +98,9 @@ public class Worker extends Thread {
   }
 
   // Add expire request to ExpireCycle.
-  private void expireHandle(DistkvRequest request, StoreConfig storeConfig) {
+  private void handleExpiration(DistkvRequest request) {
     if (needExpire(request)) {
-      expirationManager.addToCycle(request, storeConfig);
+      expirationManager.addToCycle(request);
     }
   }
 
@@ -130,7 +130,7 @@ public class Worker extends Thread {
     }
   }
 
-  /// A helper method to query if key need be expired.
+  // A helper method to check if it's a request with expiration.
   private static boolean needExpire(DistkvRequest distkvRequest) {
     RequestType requestType = distkvRequest.getRequestType();
     switch (requestType) {
@@ -149,7 +149,7 @@ public class Worker extends Thread {
     return false;
   }
 
-  /// A helper method to query if we need sync the request to slaves.
+  // A helper method to query if we need sync the request to slaves.
   private static boolean needToSync(DistkvRequest distkvRequest) {
     RequestType requestType = distkvRequest.getRequestType();
     switch (requestType) {

@@ -272,7 +272,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     }
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void expireStrTest() throws InterruptedException {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
@@ -294,10 +294,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     //Test KeyNotFoundException
     command = "str.get k1";
     distKVParsedResult = distkvParser.parse(command);
-    CommandExecutorHandler.strGet(distkvClient, distKVParsedResult);
+    final DistkvParsedResult finalDistKVParsedResult = distKVParsedResult;
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> CommandExecutorHandler.strGet(distkvClient, finalDistKVParsedResult));
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void expireListTest() throws InterruptedException {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
@@ -320,10 +322,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     // Test KeyNotFoundException
     command = "list.get k1";
     distKVParsedResult = distkvParser.parse(command);
-    CommandExecutorHandler.listGet(distkvClient, distKVParsedResult);
+    final DistkvParsedResult finalDistKVParsedResult = distKVParsedResult;
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> CommandExecutorHandler.listGet(distkvClient, finalDistKVParsedResult));
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void expireSetTest() throws InterruptedException {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
@@ -345,10 +349,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     // Test KeyNotFoundException
     command = "set.get k1";
     distKVParsedResult = distkvParser.parse(command);
-    CommandExecutorHandler.setGet(distkvClient, distKVParsedResult);
+    final DistkvParsedResult finalDistKVParsedResult = distKVParsedResult;
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> CommandExecutorHandler.setGet(distkvClient, finalDistKVParsedResult));
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void expireDictTest() throws InterruptedException {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
@@ -368,11 +374,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     // Test KeyNotFoundException
     command = "dict.get key";
     distKVParsedResult = distkvParser.parse(command);
-    CommandExecutorHandler.dictGet(distkvClient, distKVParsedResult);
-
+    final DistkvParsedResult finalDistKVParsedResult = distKVParsedResult;
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> CommandExecutorHandler.dictGet(distkvClient, finalDistKVParsedResult));
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void expireSlistTest() throws InterruptedException {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
@@ -394,10 +401,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     // Test KeyNotFoundException
     command = "slist.top k1 2";
     distKVParsedResult = distkvParser.parse(command);
-    CommandExecutorHandler.slistTop(distkvClient, distKVParsedResult);
+    final DistkvParsedResult finalDistKVParsedResult = distKVParsedResult;
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> CommandExecutorHandler.slistTop(distkvClient, finalDistKVParsedResult));
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void expireIntsTest() throws InterruptedException {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
@@ -419,7 +428,9 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     // Test KeyNotFoundException
     command = "int.get k1";
     distKVParsedResult = distkvParser.parse(command);
-    CommandExecutorHandler.intGet(distkvClient, distKVParsedResult);
+    final DistkvParsedResult finalDistKVParsedResult = distKVParsedResult;
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> CommandExecutorHandler.intGet(distkvClient, finalDistKVParsedResult));
   }
 
 }

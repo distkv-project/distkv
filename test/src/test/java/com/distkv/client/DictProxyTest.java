@@ -84,7 +84,7 @@ public class DictProxyTest extends BaseTestSupplier {
     Assert.fail();
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void testExpireDict() throws InterruptedException {
     DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
@@ -92,7 +92,7 @@ public class DictProxyTest extends BaseTestSupplier {
     client.dicts().put("m1", dict);
     client.dicts().expire("m1", 1);
     Thread.sleep(3000);
-    client.dicts().get("m1");
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.dicts().get("m1"));
     client.disconnect();
   }
 

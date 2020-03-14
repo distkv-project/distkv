@@ -60,13 +60,14 @@ public class SortedListProxyTest extends BaseTestSupplier {
     Assert.assertEquals(tuple.getSecond().intValue(), 2);
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void testExpireSList() throws InterruptedException, InvalidProtocolBufferException {
     distkvClient = newDistkvClient();
     testPut();
     distkvClient.sortedLists().expire("k1", 1);
     Thread.sleep(3000);
-    distkvClient.sortedLists().getMember("k1", "fw");
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> distkvClient.sortedLists().getMember("k1", "fw"));
     distkvClient.disconnect();
   }
 

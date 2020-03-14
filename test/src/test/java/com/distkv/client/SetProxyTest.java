@@ -75,14 +75,14 @@ public class SetProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
-  @Test(expectedExceptions = KeyNotFoundException.class)
+  @Test
   public void testExpireSet() throws InterruptedException {
     DistkvClient client = newDistkvClient();
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
     client.sets().put("k1", set);
     client.sets().expire("k1", 1);
     Thread.sleep(3000);
-    client.sets().get("k1");
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.sets().get("k1"));
     client.disconnect();
   }
 }

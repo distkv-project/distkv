@@ -20,22 +20,22 @@ public class ExpirationManager {
   private static final Integer DEFAULT_CAPACITY = 2048;
 
   //Scheduled cleaning tasks.
-  ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+  private static ScheduledExecutorService scheduledExecutor = Executors
+      .newSingleThreadScheduledExecutor();
 
-  private StoreConfig storeConfig;
-
+  private ExpirationClient expireClient;
   /**
    * PriorityQueue allows the data with the lowest expiration time to be queued. Just look at the
    * cached most recent expired data and avoid scanning all caches.
    */
   public PriorityQueue<Node> expirationQueue = new PriorityQueue<>(DEFAULT_CAPACITY);
 
-  public ExpirationManager() {
-
+  public ExpirationManager(StoreConfig storeConfig) {
+    expireClient = new ExpirationClient(storeConfig);
     /*
      * Use the default scheduled executor to clear outdated data every 1 seconds.
      */
-    scheduledExecutor.scheduleAtFixedRate(new SwapExpiredNode(), 0, 1, TimeUnit.SECONDS);
+    scheduledExecutor.scheduleAtFixedRate(new SwapExpiredNode(), 1, 1, TimeUnit.SECONDS);
   }
 
   /**
@@ -43,23 +43,25 @@ public class ExpirationManager {
    * contains the key, expiration time and request type.
    *
    * @param request A expire request.
-   * @param storeConfig Local server config information.
    */
-  public void addToCycle(DistkvRequest request, StoreConfig storeConfig) {
-    this.storeConfig = storeConfig;
+  public void addToCycle(DistkvRequest request) {
     String key = request.getKey();
     RequestType requestType = request.getRequestType();
-    long expireTime = -1;
+    long expiredTime = -1;
     try {
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      expireTime = expireRequest.getExpireTime() * 1000 + System.currentTimeMillis();
+      expiredTime = expireRequest.getExpireTime() * 1000 + System.currentTimeMillis();
     } catch (InvalidProtocolBufferException e) {
-      LOGGER.error("Failed to set expire for a key :{1}", e);
+      LOGGER.error("Failed to unpack ExpireRequest {1}", e);
       throw new DistkvException(e.toString());
     }
-    expirationQueue.offer(new Node(key, requestType, expireTime));
+    expirationQueue.offer(new Node(key, requestType, expiredTime));
   }
 
+  /**
+   * This is a task for clean expired key. It will take all expired node from PriorityQueue, and
+   * drop them in store.
+   */
   private class SwapExpiredNode implements Runnable {
 
     @Override
@@ -83,36 +85,22 @@ public class ExpirationManager {
    * @param node A node object that needs to be cleaned up.
    */
   private void clearStore(Node node) {
-    ExpireClient expireClient = new DefaultExpireClient(storeConfig);
-    expireClient.connect();
-    RequestType requestType = node.requestType;
-    String key = node.key;
-    switch (requestType) {
-      case EXPIRED_STR:
-        expireClient.strDrop(key);
-        break;
-      case EXPIRED_LIST:
-        expireClient.listDrop(key);
-        break;
-      case EXPIRED_SET:
-        expireClient.setDrop(key);
-        break;
-      case EXPIRED_DICT:
-        expireClient.dictDrop(key);
-        break;
-      case EXPIRED_INT:
-        expireClient.intDrop(key);
-        break;
-      case EXPIRED_SLIST:
-        expireClient.slistDrop(key);
-        break;
-      default: {
-        break;
+    try {
+      expireClient.connect();
+      expireClient.drop(node.key, node.requestType);
+    } finally {
+      if (!expireClient.isConnected()) {
+        expireClient.disconnect();
       }
     }
-    expireClient.disconnect();
   }
 
+  /**
+   * A Node object to store information about invalid key settings.
+   * The object has key, requestType and expiration time three attributes.
+   * Implemented the Comparable interface, rewritten the compareTo method, and achieved the
+   * comparison of expiredTime.
+   */
   private static class Node implements Comparable<Node> {
 
     private String key;
