@@ -1,19 +1,14 @@
-package com.distkv.core.map;
+package com.distkv.core.segment;
 
 import com.distkv.common.utils.ByteUtil;
 import com.distkv.core.block.Block;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class NonFixedSegment extends ValueSegment {
-
-  private int[] blockValueCntArray;
-  private int blockIndex;
-
+public class NonFixedSegment extends AbstractNonFixedSegment {
 
   public NonFixedSegment(int initSize) {
     super(initSize);
-    blockValueCntArray = new int[initSize];
   }
 
   public int addValue(byte[] value) {
@@ -59,35 +54,5 @@ public class NonFixedSegment extends ValueSegment {
     Block block = blockArray[blockIndex];
     pointer = pointer - blockValueCntArray[blockIndex];
     return block.readTwoNonFixedValues(pointer);
-  }
-
-  public int locateBlock(int pointer) {
-    return binarySearch(pointer, 0, blockValueCntArray.length - 1);
-  }
-
-  public int binarySearch(int value, int start, int end) {
-    if (end - start <= 2) {
-      if (start + 1 <= end && blockValueCntArray[start + 1] > value) {
-        return start;
-      } else if (start + 2 <= end && blockValueCntArray[start + 2] > value) {
-        return start + 1;
-      } else {
-        return end;
-      }
-    } else {
-      int mid = (start + end) / 2;
-      if (value >= blockValueCntArray[mid]) {
-        return binarySearch(value, mid, end);
-      } else {
-        return binarySearch(value, start, mid);
-      }
-    }
-  }
-
-  public void resize(final int newSize) {
-    super.resize(newSize);
-    int[] newBlockValueCntArray = new int[newSize];
-    System.arraycopy(blockValueCntArray, 0, newBlockValueCntArray, 0, blockValueCntArray.length);
-    blockValueCntArray = newBlockValueCntArray;
   }
 }

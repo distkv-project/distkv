@@ -1,21 +1,21 @@
-package com.distkv.core.map;
+package com.distkv.core.segment;
 
 import com.distkv.common.utils.ByteUtil;
 import com.distkv.core.block.Block;
 
-public class FloatSegment extends FixedValueSegment {
+public class ShortSegment extends FixedValueSegment {
 
-  public FloatSegment(int initSize) {
-    super(initSize, ByteUtil.SIZE_OF_FLOAT);
+  public ShortSegment(int initSize) {
+    super(initSize, ByteUtil.SIZE_OF_SHORT);
   }
 
-  protected float get(int key) {
+  protected short get(int key) {
     Block block = getBlock(key);
     int offset = key % blockItemSize;
-    return block.readFloat(offset);
+    return block.readShort(offset);
   }
 
-  protected int put(int key, float value) {
+  protected int put(int key, short value) {
     Block block = getBlock(key);
     int offset = key % blockItemSize;
     block.write(offset, value);

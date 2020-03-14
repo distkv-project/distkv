@@ -1,21 +1,21 @@
-package com.distkv.core.map;
+package com.distkv.core.segment;
 
 import com.distkv.common.utils.ByteUtil;
 import com.distkv.core.block.Block;
 
-public class ShortSegment extends FixedValueSegment {
+public class DoubleSegment extends FixedValueSegment {
 
-  public ShortSegment(int initSize) {
-    super(initSize, ByteUtil.SIZE_OF_SHORT);
+  public DoubleSegment(int initSize) {
+    super(initSize, ByteUtil.SIZE_OF_DOUBLE);
   }
 
-  protected short get(int key) {
+  protected double get(int key) {
     Block block = getBlock(key);
     int offset = key % blockItemSize;
-    return block.readShort(offset);
+    return block.readDouble(offset);
   }
 
-  protected int put(int key, short value) {
+  protected int put(int key, double value) {
     Block block = getBlock(key);
     int offset = key % blockItemSize;
     block.write(offset, value);

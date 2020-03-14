@@ -1,5 +1,8 @@
 package com.distkv.core.map;
 
+import com.distkv.core.segment.IntSegment;
+import com.distkv.core.segment.NonFixedSegment;
+
 /**
  *
  * TODO　Collision detection, resize, rehash and so on.

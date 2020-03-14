@@ -1,4 +1,4 @@
-package com.distkv.core.map;
+package com.distkv.core.segment;
 
 
 import com.distkv.common.utils.ByteUtil;
