@@ -22,6 +22,8 @@ enum Status {
     SYNC_ERROR = 8;
     // The key of the set is not found.
     SET_ITEM_NOT_FOUND = 9;
+
+    DUPLICATED_KEY = 10;
 };
 
 // Drop the k-v pair by the given key.

@@ -7,6 +7,7 @@ import com.distkv.client.DistkvClient;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.StoreServer;
+import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
@@ -56,7 +57,9 @@ public class BaseTestSupplier {
       try {
         client[0] = new DefaultDistkvClient(
                 String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
-        client[0].strs().put("ping", "ping");
+        final String randomStr = RandomStringUtils.random(10);
+        // A dummy put to ping the server is serving.
+        client[0].strs().put(randomStr, randomStr);
         return true;
       } catch (Exception e) {
         return false;
@@ -71,7 +74,9 @@ public class BaseTestSupplier {
       try {
         client[0] = new DefaultAsyncClient(
                 String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
-        client[0].strs().put("ping", "ping");
+        final String randomStr = RandomStringUtils.random(10);
+        // A dummy put to ping the server is serving.
+        client[0].strs().put(randomStr, randomStr);
         return true;
       } catch (Exception e) {
         return false;
