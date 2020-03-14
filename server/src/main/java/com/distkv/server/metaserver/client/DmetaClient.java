@@ -17,8 +17,10 @@ public class DmetaClient {
 
   private BoltCliClientService cliClientService = null;
 
+  // TODO(qingw): Refine this.
   public static final String groupId = "KV";
 
+  // TODO(qingw): Refine this.
   public static final String confStr = "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083";
 
   public DmetaClient() {

@@ -1,8 +1,15 @@
 package com.distkv.server.view;
 
+
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class DistkvAbstractView {
+
+  protected GlobalTable globalTable;
+
+  protected NodeTable nodeTable;
+
+  protected ShardTable shardTable;
 
   private ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
 
