@@ -28,6 +28,20 @@ public class IdTest {
 
   @Test
   public void testPineHandleId() {
+    PineHandleId id = PineHandleId.fromRandom();
 
+    final String str = id.hex();
+    Assert.assertEquals(str.length(),2 * PineHandleId.LENGTH);
+
+    for (int i = 0; i < str.length(); i++) {
+      Assert.assertTrue(isHexChar(str.charAt(i)));
+
+    }
+  }
+
+  private boolean isHexChar(Character ch) {
+    final boolean isLeft = (ch >= '0' && ch <= '9');
+    final boolean isRight = (ch >= 'a' && ch <= 'f');
+    return isLeft || isRight;
   }
 }

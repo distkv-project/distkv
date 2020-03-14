@@ -1,7 +1,14 @@
 package com.distkv.parser;
 
 import com.distkv.parser.generated.DistkvNewSQLBaseListener;
+import com.distkv.parser.generated.DistkvNewSQLParser.ExpireDictContext;
+import com.distkv.parser.generated.DistkvNewSQLParser.ExpireIntContext;
+import com.distkv.parser.generated.DistkvNewSQLParser.ExpireListContext;
+import com.distkv.parser.generated.DistkvNewSQLParser.ExpireSetContext;
+import com.distkv.parser.generated.DistkvNewSQLParser.ExpireSlistContext;
+import com.distkv.parser.generated.DistkvNewSQLParser.ExpireStrContext;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
@@ -610,7 +617,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     IntProtocol.IntPutRequest.Builder intPutBuilder =
             IntProtocol.IntPutRequest.newBuilder();
-    intPutBuilder.setValue(Integer.valueOf(ctx.children.get(2).getText()));
+    intPutBuilder.setValue(Integer.parseInt(ctx.children.get(2).getText()));
     DistkvRequest request = DistkvRequest.newBuilder()
           .setKey(ctx.children.get(1).getText())
           .setRequestType(RequestType.INT_PUT)
@@ -666,7 +673,7 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
 
     IntProtocol.IntIncrRequest.Builder intIncrBuilder =
             IntProtocol.IntIncrRequest.newBuilder();
-    intIncrBuilder.setDelta(Integer.valueOf(ctx.children.get(1).getText()));
+    intIncrBuilder.setDelta(Integer.parseInt(ctx.children.get(1).getText()));
     DistkvRequest request = DistkvRequest.newBuilder()
             .setKey(ctx.children.get(0).getText())
             .setRequestType(RequestType.INT_INCR)
@@ -674,4 +681,108 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
             .build();
     parsedResult = new DistkvParsedResult(RequestType.INT_INCR, request);
   }
+
+  @Override
+  public void enterExpireStr(ExpireStrContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(Integer.parseInt(ctx.children.get(2).getText()))
+        .build();
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.EXPIRED_STR)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.EXPIRED_STR, request);
+  }
+
+  @Override
+  public void enterExpireList(ExpireListContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(Integer.parseInt(ctx.children.get(2).getText()))
+        .build();
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.EXPIRED_LIST)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.EXPIRED_LIST, request);
+  }
+
+  @Override
+  public void enterExpireDict(ExpireDictContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(Integer.parseInt(ctx.children.get(2).getText()))
+        .build();
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.EXPIRED_DICT)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.EXPIRED_DICT, request);
+  }
+
+  @Override
+  public void enterExpireSet(ExpireSetContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(Integer.parseInt(ctx.children.get(2).getText()))
+        .build();
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.EXPIRED_SET)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.EXPIRED_SET, request);
+  }
+
+  @Override
+  public void enterExpireSlist(ExpireSlistContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(Integer.parseInt(ctx.children.get(2).getText()))
+        .build();
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.EXPIRED_SLIST)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.EXPIRED_SLIST, request);
+  }
+
+  @Override
+  public void enterExpireInt(ExpireIntContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 3);
+
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(Integer.parseInt(ctx.children.get(2).getText()))
+        .build();
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.EXPIRED_INT)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.EXPIRED_INT, request);
+  }
+
+
 }

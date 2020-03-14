@@ -73,11 +73,6 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.slistDrop(distkvClient, parsedResult);
       case SORTED_LIST_GET_MEMBER:
         return CommandExecutorHandler.slistGetMember(distkvClient, parsedResult);
-      case EXIT:
-        // User inputs `exit`, let's exit client immediately.
-        System.out.println("bye bye ~");
-        System.exit(0);
-        return null;
       case ACTIVE_NAMESPACE:
         return CommandExecutorHandler.activeNamespace(distkvClient, parsedResult);
       case DEACTIVE_NAMESPACE:
@@ -90,6 +85,23 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.intDrop(distkvClient, parsedResult);
       case INT_INCR:
         return CommandExecutorHandler.intIncr(distkvClient, parsedResult);
+      case EXPIRED_STR:
+        return CommandExecutorHandler.expireStr(distkvClient, parsedResult);
+      case EXPIRED_LIST:
+        return CommandExecutorHandler.expireList(distkvClient, parsedResult);
+      case EXPIRED_SET:
+        return CommandExecutorHandler.expireSet(distkvClient, parsedResult);
+      case EXPIRED_DICT:
+        return CommandExecutorHandler.expireDict(distkvClient, parsedResult);
+      case EXPIRED_SLIST:
+        return CommandExecutorHandler.expireSlist(distkvClient, parsedResult);
+      case EXPIRED_INT:
+        return CommandExecutorHandler.expireInt(distkvClient, parsedResult);
+      case EXIT:
+        // User inputs `exit`, let's exit client immediately.
+        System.out.println("bye bye ~");
+        System.exit(0);
+        return null;
       default:
         return null;
     }

@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Test(singleThreaded = true)
 public class DictProxyTest extends BaseTestSupplier {
 
   @Test
@@ -82,4 +83,17 @@ public class DictProxyTest extends BaseTestSupplier {
     }
     Assert.fail();
   }
+
+  @Test
+  public void testExpireDict() throws InterruptedException {
+    DistkvClient client = newDistkvClient();
+    Map<String, String> dict = new HashMap<>();
+    dict.put("k1", "v1");
+    client.dicts().put("m1", dict);
+    client.dicts().expire("m1", 1);
+    Thread.sleep(3000);
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.dicts().get("m1"));
+    client.disconnect();
+  }
+
 }

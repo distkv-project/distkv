@@ -8,7 +8,7 @@ import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.NodeOptions;
 import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
 import org.apache.commons.io.FileUtils;
-import com.distkv.server.metaserver.server.statemachine.DmetaStateMachine;
+import com.distkv.server.metaserver.server.statemachine.MetaStateMachine;
 import com.distkv.server.metaserver.server.processor.GetValueRequestProcessor;
 import com.distkv.server.metaserver.server.processor.PutKVRequestProcessor;
 
@@ -19,7 +19,7 @@ public class DmetaServer {
 
   private RaftGroupService raftGroupService;
   private Node node;
-  private DmetaStateMachine fsm;
+  private MetaStateMachine fsm;
 
   public DmetaServer(final String dataPath, final String groupId, final PeerId serverId,
                      final NodeOptions nodeOptions) throws IOException {
@@ -33,7 +33,7 @@ public class DmetaServer {
     rpcServer.registerUserProcessor(new GetValueRequestProcessor(this));
     rpcServer.registerUserProcessor(new PutKVRequestProcessor(this));
     // init StateMachine
-    this.fsm = new DmetaStateMachine();
+    this.fsm = new MetaStateMachine();
     // set StateMachine
     nodeOptions.setFsm(this.fsm);
     // set data path
@@ -49,7 +49,9 @@ public class DmetaServer {
     this.node = this.raftGroupService.start();
   }
 
-  public DmetaStateMachine getFsm() {
+
+
+  public MetaStateMachine getFsm() {
     return this.fsm;
   }
 

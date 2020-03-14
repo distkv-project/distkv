@@ -2,7 +2,7 @@ package com.distkv.server.metaserver.server.bean;
 
 import java.io.Serializable;
 
-public class GetValueResponse implements Serializable {
+public class GetResponse implements Serializable {
 
   private static final long serialVersionUID = -4220017686727146673L;
 
@@ -11,6 +11,7 @@ public class GetValueResponse implements Serializable {
   private boolean success;
   /**
    * redirect peer id
+   * TODO(qwang): Use a abstract response to avoid these fields.
    */
   private String redirect;
 

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.distkv.rpc.protobuf;
+
+option java_package="com.distkv.rpc.protobuf.generated";
+option java_outer_classname = "ExpireProtocol";
+option cc_generic_services = true;
+
+message ExpireRequest {
+    int64 expireTime = 1;
+};
+
+message ExpireResponse {
+};
+
+

@@ -2,11 +2,11 @@ package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.supplier.BaseTestSupplier;
-
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
 
   @Test
@@ -35,4 +35,15 @@ public class IntProxyTest extends BaseTestSupplier {
       client.disconnect();
     }
   }
+
+  @Test
+  public void testExpireList() throws InterruptedException, InvalidProtocolBufferException {
+    DistkvClient client = newDistkvClient();
+    client.ints().put("k1", 1);
+    client.ints().expire("k1", 1);
+    Thread.sleep(3000);
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.ints().get("k1"));
+    client.disconnect();
+  }
+
 }

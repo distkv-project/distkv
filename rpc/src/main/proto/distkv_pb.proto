@@ -71,6 +71,14 @@ enum RequestType {
     INT_GET = 602;
     INT_INCR = 603;
     INT_DROP = 604;
+
+    //expire
+    EXPIRED_STR=701;
+    EXPIRED_LIST=702;
+    EXPIRED_SET=703;
+    EXPIRED_DICT=704;
+    EXPIRED_SLIST=705;
+    EXPIRED_INT=706;
 }
 
 message DistkvRequest {
