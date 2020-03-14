@@ -12,7 +12,11 @@ public class LogSegmentTest {
   public void testAddLogEntry() {
     LogSegment logSegment = new LogSegment();
     byte[] value = new byte[] {1, 3, 54, 23};
-    logSegment.appendLogEntry(new LogEntry(0, value));
+    LogEntry logEntry = new LogEntry.LogEntryBuilder()
+        .withLogIndex(0)
+        .withValue(value)
+        .build();
+    logSegment.appendLogEntry(logEntry);
     assertEquals(logSegment.getLogEntry(0).getValue(), value);
   }
 
