@@ -71,17 +71,7 @@ public class LogSegment extends AbstractNonFixedSegment {
 
   public void appendLogEntry(LogEntry logEntry) {
     checkArgument(logEntry.getLogIndex() == size);
-    appendValue(logEntry.getValue());
-  }
-
-  // TODO provide simple implement now.
-  public void appendLogEntries(List<LogEntry> logEntries) {
-    for (LogEntry logEntry : logEntries) {
-      appendLogEntry(logEntry);
-    }
-  }
-
-  public void appendValue(byte[] logEntryValue) {
+    byte[] logEntryValue = logEntry.getValue();
     Block block = blockArray[blockIndex];
     if (block.getNextWriteOffset() == block.getCapacity()) {
       block = getNextBlock();
@@ -97,6 +87,13 @@ public class LogSegment extends AbstractNonFixedSegment {
     size++;
     // set the Log Entry end offset.
     offsetSegment.put(block.getNextWriteOffset());
+  }
+
+  // TODO provide simple implement now.
+  public void appendLogEntries(List<LogEntry> logEntries) {
+    for (LogEntry logEntry : logEntries) {
+      appendLogEntry(logEntry);
+    }
   }
 
   private Block getNextBlock() {
@@ -143,7 +140,11 @@ public class LogSegment extends AbstractNonFixedSegment {
       }
       value = block.read(startOffset, endOffset - startOffset);
     }
-    return new LogEntry(logEntryIndex, value);
+
+    return new LogEntry.LogEntryBuilder()
+        .withLogIndex(logEntryIndex)
+        .withValue(value)
+        .build();
   }
 
   public int getLogEntryStartOffset(int logIndex) {

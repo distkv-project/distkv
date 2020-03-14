@@ -5,7 +5,7 @@ public class LogEntry {
   private int logIndex;
   private byte[] value;
 
-  public LogEntry(int logIndex, byte[] value) {
+  private LogEntry(int logIndex, byte[] value) {
     this.logIndex = logIndex;
     this.value = value;
   }

@@ -24,25 +24,39 @@ public class LogSegmentTest {
   public void testValueAcrossTwoBlocks() {
     LogSegment logSegment = new LogSegment();
     byte[] value = new byte[BlockPool.getInstance().getBlockSize() - 2];
-    logSegment.appendValue(value);
+    logSegment.appendLogEntry(new LogEntry.LogEntryBuilder()
+        .withValue(value)
+        .withLogIndex(0).build());
+
     byte[] value2 = new byte[] {1, 23, 45, 26};
-    logSegment.appendValue(value2);
+    logSegment.appendLogEntry(new LogEntry.LogEntryBuilder()
+        .withValue(value2)
+        .withLogIndex(1).build());
     assertEquals(logSegment.getLogEntry(1).getValue(), value2);
   }
-  
+
   @Test
   public void testClear() {
     LogSegment logSegment = new LogSegment();
     for (int i = 0; i < BlockPool.getInstance().getBlockSize(); i++) {
-      logSegment.appendValue(new byte[]{12,23,45,23});
+      logSegment.appendLogEntry(new LogEntry.LogEntryBuilder()
+          .withLogIndex(logSegment.getSize())
+          .withValue(new byte[] {12, 23, 45, 23})
+          .build());
     }
     byte[] value = new byte[] {36};
-    logSegment.appendValue(value);
+    logSegment.appendLogEntry(new LogEntry.LogEntryBuilder()
+        .withLogIndex(logSegment.getSize())
+        .withValue(value)
+        .build());
     logSegment.clear(logSegment.getSize() - 1);
     assertEquals(logSegment.getLogEntry(logSegment.getSize() - 1).getValue(), value);
 
     value = new byte[] {37, 23};
-    logSegment.appendValue(value);
+    logSegment.appendLogEntry(new LogEntry.LogEntryBuilder()
+        .withLogIndex(logSegment.getSize())
+        .withValue(value)
+        .build());
     assertEquals(logSegment.getLogEntry(logSegment.getSize() - 1).getValue(), value);
   }
 }
