@@ -96,9 +96,10 @@ public class ExpirationManager {
   }
 
   /**
-   * A Node object to store information about invalid key settings. The object has key, requestType
-   * and expiration time three attributes. Implemented the Comparable interface, rewritten the
-   * compareTo method, and achieved the comparison of expiredTime.
+   * A Node object to store information about invalid key settings.
+   * The object has key, requestType and expiration time three attributes.
+   * Implemented the Comparable interface, rewritten the compareTo method, and achieved the
+   * comparison of expiredTime.
    */
   private static class Node implements Comparable<Node> {
 
