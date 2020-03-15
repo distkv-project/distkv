@@ -68,14 +68,13 @@ public class SortedListProxyTest extends BaseTestSupplier {
     distkvClient.sortedLists().expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        try {
-          distkvClient.sortedLists().getMember("k1", "fw");
-        } catch (InvalidProtocolBufferException e) {
-          //ignore
-        }
+        distkvClient.sortedLists().getMember("k1", "fw");
         return false;
       } catch (KeyNotFoundException e) {
         return true;
+      } catch (InvalidProtocolBufferException e) {
+        e.printStackTrace();
+        return false;
       }
     }, 30 * 1000);
     Assert.assertTrue(result);

@@ -55,7 +55,7 @@ public class SetProxyTest extends BaseTestSupplier {
     client.sets().put("k1", set);
     Assert.assertTrue(client.sets().drop("k1"));
 
-    //If we drop the key in store, this method will throw a DstException.
+    // This method will throw a DistkvException if we drop the nonexistent key in store.
     Assert.assertThrows(DistkvException.class,
         () -> client.sets().get("k1"));
     client.disconnect();
@@ -73,8 +73,9 @@ public class SetProxyTest extends BaseTestSupplier {
     Assert.assertFalse(client.sets().exists("k1", "v1"));
 
     client.sets().drop("k1");
-    //If we drop the key in store, this method will throw a DstException.
-    Assert.assertThrows(KeyNotFoundException.class, () -> client.sets().exists("k1", "v1"));
+    // This method will throw a DistkvException if we drop the nonexistent key in store.
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> client.sets().exists("k1", "v1"));
     client.disconnect();
   }
 

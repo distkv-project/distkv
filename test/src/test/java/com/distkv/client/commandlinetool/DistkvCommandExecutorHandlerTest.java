@@ -279,12 +279,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     final DistkvParser distkvParser = new DistkvParser();
     DistkvParsedResult distKVParsedResult;
     String command;
-    // Put operate.
+    // Put operation.
     command = "str.put k1 v1";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .strPut(distkvClient, distKVParsedResult), STATUS_OK);
-    // Expire operate.
+    // Expire operation.
     command = "expire.str k1 1000";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
@@ -311,12 +311,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     DistkvParsedResult distKVParsedResult;
     String command;
 
-    // Put operate.
+    // Put operation.
     command = "list.put k1 v2 v1 v3";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .listPut(distkvClient, distKVParsedResult), STATUS_OK);
-    // Expire operate.
+    // Expire operation.
     command = "expire.list k1 1000";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
@@ -341,13 +341,13 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     final DistkvParser distkvParser = new DistkvParser();
     DistkvParsedResult distKVParsedResult;
     String command;
-    // Put operate.
+    // Put operation.
     command = "set.put k1 v1 v2 v3";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .setPut(distkvClient, distKVParsedResult), STATUS_OK);
 
-    // Expire operate.
+    // Expire operation.
     command = "expire.set k1 1000";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
@@ -372,12 +372,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     final DistkvParser distkvParser = new DistkvParser();
     DistkvParsedResult distKVParsedResult;
     String command;
-    // Put operate.
+    // Put operation.
     command = "dict.put key k1 v1 k2 v2";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .dictPut(distkvClient, distKVParsedResult), STATUS_OK);
-    // Expire operate.
+    // Expire operation.
     command = "expire.dict key 1000";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
@@ -402,12 +402,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     final DistkvParser distkvParser = new DistkvParser();
     DistkvParsedResult distKVParsedResult;
     String command;
-    // Put operate.
+    // Put operation.
     command = "slist.put k1 m1 12 m2 -2 m3 0";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .slistPut(distkvClient, distKVParsedResult), STATUS_OK);
-    // Expire operate.
+    // Expire operation.
     command = "expire.slist k1 1000";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
@@ -432,12 +432,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     final DistkvParser distkvParser = new DistkvParser();
     DistkvParsedResult distKVParsedResult;
     String command;
-    // put
+    // Put operation.
     command = "int.put k1 12";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(
         CommandExecutorHandler.intPut(distkvClient, distKVParsedResult), STATUS_OK);
-    // expire
+    // Expire operation
     command = "expire.int k1 1000";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler

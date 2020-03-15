@@ -62,14 +62,13 @@ public class StringProxyTest extends BaseTestSupplier {
     client.strs().expire("expired_k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        try {
-          client.strs().get("expired_k1");
-        } catch (InvalidProtocolBufferException e) {
-          //ignore
-        }
+        client.strs().get("expired_k1");
         return false;
       } catch (KeyNotFoundException e) {
         return true;
+      } catch (InvalidProtocolBufferException e) {
+        e.printStackTrace();
+        return false;
       }
     }, 30 * 1000);
     Assert.assertTrue(result);

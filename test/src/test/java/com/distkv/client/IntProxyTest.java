@@ -44,14 +44,13 @@ public class IntProxyTest extends BaseTestSupplier {
     client.ints().expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        try {
-          client.ints().get("k1");
-        } catch (InvalidProtocolBufferException e) {
-          //ignore
-        }
+        client.ints().get("k1");
         return false;
       } catch (KeyNotFoundException e) {
         return true;
+      } catch (InvalidProtocolBufferException e) {
+        e.printStackTrace();
+        return false;
       }
     }, 30 * 1000);
     Assert.assertTrue(result);
