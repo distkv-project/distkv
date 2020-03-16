@@ -6,12 +6,16 @@ import com.distkv.supplier.BaseTestSupplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.Set;
 
 @Test(singleThreaded = true)
 public class StringProxyTest extends BaseTestSupplier {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(StringProxyTest.class);
 
   @Test
   public void testPutAndGet() throws InvalidProtocolBufferException {
@@ -67,7 +71,7 @@ public class StringProxyTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       } catch (InvalidProtocolBufferException e) {
-        e.printStackTrace();
+        LOGGER.error("Failed to unpack response. {1}", e);
         return false;
       }
     }, 30 * 1000);

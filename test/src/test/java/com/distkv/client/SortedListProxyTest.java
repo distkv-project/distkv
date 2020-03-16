@@ -7,11 +7,15 @@ import java.util.LinkedList;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.supplier.BaseTestSupplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)
 public class SortedListProxyTest extends BaseTestSupplier {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SortedListProxyTest.class);
 
   private DistkvClient distkvClient = null;
 
@@ -73,7 +77,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       } catch (InvalidProtocolBufferException e) {
-        e.printStackTrace();
+        LOGGER.error("Failed to unpack response. {1}", e);
         return false;
       }
     }, 30 * 1000);

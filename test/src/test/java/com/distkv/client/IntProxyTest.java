@@ -4,11 +4,15 @@ import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(IntProxyTest.class);
 
   @Test
   public void testPutGetIncrDrop() throws InvalidProtocolBufferException {
@@ -49,7 +53,7 @@ public class IntProxyTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       } catch (InvalidProtocolBufferException e) {
-        e.printStackTrace();
+        LOGGER.error("Failed to unpack response. {1}", e);
         return false;
       }
     }, 30 * 1000);
