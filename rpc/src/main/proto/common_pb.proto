@@ -25,10 +25,3 @@ enum Status {
 
     DUPLICATED_KEY = 10;
 };
-
-// Drop the k-v pair by the given key.
-message DropRequest {
-}
-
-message DropResponse {
-}

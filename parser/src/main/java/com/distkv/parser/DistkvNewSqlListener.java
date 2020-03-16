@@ -7,7 +7,6 @@ import com.distkv.parser.generated.DistkvNewSQLParser.ExpireListContext;
 import com.distkv.parser.generated.DistkvNewSQLParser.ExpireSetContext;
 import com.distkv.parser.generated.DistkvNewSQLParser.ExpireSlistContext;
 import com.distkv.parser.generated.DistkvNewSQLParser.ExpireStrContext;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
@@ -264,11 +263,9 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
         .setRequestType(RequestType.LIST_DROP)
-        .setRequest(Any.pack(builder.build()))
         .build();
     parsedResult = new DistkvParsedResult(RequestType.LIST_DROP, request);
   }
@@ -456,11 +453,9 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   public void enterDictDrop(DistkvNewSQLParser.DictDropContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
-    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
         .setRequestType(RequestType.DICT_DROP)
-        .setRequest(Any.pack(builder.build()))
         .build();
     parsedResult = new DistkvParsedResult(RequestType.DICT_DROP, request);
   }
