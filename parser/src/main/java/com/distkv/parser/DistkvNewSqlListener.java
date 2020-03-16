@@ -7,7 +7,6 @@ import com.distkv.parser.generated.DistkvNewSQLParser.ExpireListContext;
 import com.distkv.parser.generated.DistkvNewSQLParser.ExpireSetContext;
 import com.distkv.parser.generated.DistkvNewSQLParser.ExpireSlistContext;
 import com.distkv.parser.generated.DistkvNewSQLParser.ExpireStrContext;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
@@ -85,18 +84,6 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
         .setRequestType(RequestType.STR_GET)
         .build();
     parsedResult = new DistkvParsedResult(RequestType.STR_GET, request);
-  }
-
-  @Override
-  public void enterStrDrop(DistkvNewSQLParser.StrDropContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-
-    DistkvRequest request = DistkvRequest.newBuilder()
-        .setKey(ctx.children.get(1).getText())
-        .setRequestType(RequestType.STR_DROP)
-        .build();
-    parsedResult = new DistkvParsedResult(RequestType.STR_DROP, request);
   }
 
   @Override
@@ -260,20 +247,6 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   }
 
   @Override
-  public void enterListDrop(DistkvNewSQLParser.ListDropContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-
-    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
-    DistkvRequest request = DistkvRequest.newBuilder()
-        .setKey(ctx.children.get(1).getText())
-        .setRequestType(RequestType.LIST_DROP)
-        .setRequest(Any.pack(builder.build()))
-        .build();
-    parsedResult = new DistkvParsedResult(RequestType.LIST_DROP, request);
-  }
-
-  @Override
   public void enterSetPut(DistkvNewSQLParser.SetPutContext ctx) {
     // The children of the `set_put` should be 3:
     //        `set.put    key     value_array`
@@ -302,17 +275,6 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
         .setRequestType(RequestType.SET_GET)
         .build();
     parsedResult = new DistkvParsedResult(RequestType.SET_GET, request);
-  }
-
-  @Override
-  public void enterSetDrop(DistkvNewSQLParser.SetDropContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-    DistkvRequest request = DistkvRequest.newBuilder()
-        .setKey(ctx.children.get(1).getText())
-        .setRequestType(RequestType.SET_DROP)
-        .build();
-    parsedResult = new DistkvParsedResult(RequestType.SET_DROP, request);
   }
 
   @Override
@@ -453,19 +415,6 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   }
 
   @Override
-  public void enterDictDrop(DistkvNewSQLParser.DictDropContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-    CommonProtocol.DropRequest.Builder builder = CommonProtocol.DropRequest.newBuilder();
-    DistkvRequest request = DistkvRequest.newBuilder()
-        .setKey(ctx.children.get(1).getText())
-        .setRequestType(RequestType.DICT_DROP)
-        .setRequest(Any.pack(builder.build()))
-        .build();
-    parsedResult = new DistkvParsedResult(RequestType.DICT_DROP, request);
-  }
-
-  @Override
   public void enterSlistPut(DistkvNewSQLParser.SlistPutContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
@@ -582,18 +531,6 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
   }
 
   @Override
-  public void enterSlistDrop(DistkvNewSQLParser.SlistDropContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-
-    DistkvRequest request = DistkvRequest.newBuilder()
-        .setKey(ctx.children.get(1).getText())
-        .setRequestType(RequestType.SORTED_LIST_DROP)
-        .build();
-    parsedResult = new DistkvParsedResult(RequestType.SORTED_LIST_DROP, request);
-  }
-
-  @Override
   public void enterSlistGetMember(DistkvNewSQLParser.SlistGetMemberContext ctx) {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
@@ -636,18 +573,6 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
             .setRequestType(RequestType.INT_GET)
             .build();
     parsedResult = new DistkvParsedResult(RequestType.INT_GET, request);
-  }
-
-  @Override
-  public void enterIntDrop(DistkvNewSQLParser.IntDropContext ctx) {
-    Preconditions.checkState(parsedResult == null);
-    Preconditions.checkState(ctx.children.size() == 2);
-
-    DistkvRequest request = DistkvRequest.newBuilder()
-            .setKey(ctx.children.get(1).getText())
-            .setRequestType(RequestType.INT_DROP)
-            .build();
-    parsedResult = new DistkvParsedResult(RequestType.INT_DROP, request);
   }
 
   @Override
@@ -784,5 +709,11 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     parsedResult = new DistkvParsedResult(RequestType.EXPIRED_INT, request);
   }
 
+  @Override
+  public void enterDrop(DistkvNewSQLParser.DropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
 
+
+  }
 }

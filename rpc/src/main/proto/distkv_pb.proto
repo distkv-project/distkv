@@ -29,56 +29,53 @@ enum RequestType {
     // string concept
     STR_PUT = 101;
     STR_GET = 102;
-    STR_DROP = 103;
 
     // list concept
     LIST_PUT = 201;
     LIST_GET = 202;
-    LIST_DROP = 203;
-    LIST_LPUT = 204;
-    LIST_RPUT = 205;
-    LIST_REMOVE = 206;
-    LIST_MREMOVE = 207;
+    LIST_LPUT = 203;
+    LIST_RPUT = 204;
+    LIST_REMOVE = 205;
+    LIST_MREMOVE = 206;
 
     // set concept
     SET_PUT = 301;
     SET_GET = 302;
-    SET_DROP = 303;
-    SET_PUT_ITEM = 304;
-    SET_REMOVE_ITEM = 305;
-    SET_EXISTS = 306;
+    SET_PUT_ITEM = 303;
+    SET_REMOVE_ITEM = 304;
+    SET_EXISTS = 305;
 
     // dict concept
     DICT_PUT = 401;
     DICT_GET = 402;
-    DICT_DROP = 403;
-    DICT_PUT_ITEM = 404;
-    DICT_GET_ITEM = 405;
-    DICT_POP_ITEM = 406;
-    DICT_REMOVE_ITEM = 407;
+    DICT_PUT_ITEM = 403;
+    DICT_GET_ITEM = 404;
+    DICT_POP_ITEM = 405;
+    DICT_REMOVE_ITEM = 406;
 
     // sorted list concept
     SORTED_LIST_PUT = 501;
     SORTED_LIST_TOP = 502;
-    SORTED_LIST_DROP = 503;
-    SORTED_LIST_INCR_SCORE = 504;
-    SORTED_LIST_PUT_MEMBER = 505;
-    SORTED_LIST_REMOVE_MEMBER = 506;
-    SORTED_LIST_GET_MEMBER = 507;
+    SORTED_LIST_INCR_SCORE = 503;
+    SORTED_LIST_PUT_MEMBER = 504;
+    SORTED_LIST_REMOVE_MEMBER = 505;
+    SORTED_LIST_GET_MEMBER = 506;
 
     // int concept
     INT_PUT = 601;
     INT_GET = 602;
     INT_INCR = 603;
-    INT_DROP = 604;
 
-    //expire
-    EXPIRED_STR=701;
-    EXPIRED_LIST=702;
-    EXPIRED_SET=703;
-    EXPIRED_DICT=704;
-    EXPIRED_SLIST=705;
-    EXPIRED_INT=706;
+    // expire
+    EXPIRED_STR = 701;
+    EXPIRED_LIST = 702;
+    EXPIRED_SET = 703;
+    EXPIRED_DICT = 704;
+    EXPIRED_SLIST = 705;
+    EXPIRED_INT = 706;
+
+    // drop
+    DROP = 801;
 }
 
 message DistkvRequest {
@@ -97,3 +94,4 @@ message DistkvResponse {
 service DistkvService {
     rpc call(DistkvRequest) returns (DistkvResponse);
 }
+

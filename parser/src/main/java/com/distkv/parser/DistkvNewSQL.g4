@@ -10,7 +10,8 @@ package com.distkv.parser.generated;
 
 statement: (conceptStatement) EOF;
 conceptStatement: basicOperationsStatement | strStatement | listStatement
-| setStatement | dictStatement | slistStatement | intStatement | expireStatement;
+| setStatement | dictStatement | slistStatement | intStatement | expireStatement
+| dropStatement;
 
 // basic operations
 basicOperationsStatement: exit | activeNamespace | deactiveNamespace;
@@ -19,20 +20,18 @@ activeNamespace: 'active namespace' namespace;
 deactiveNamespace: 'deactive namespace';
 
 // str concept
-strStatement: strPut | strGet | strDrop;
+strStatement: strPut | strGet;
 strPut: 'str.put' key value;
 strGet: 'str.get' key ;
-strDrop: 'str.drop' key ;
 
 // list concept
-listStatement: listPut | listLput | listRput | listGet | listRemove | listMRemove | listDrop;
+listStatement: listPut | listLput | listRput | listGet | listRemove | listMRemove;
 listPut: 'list.put' key valueArray;
 listLput: 'list.lput' key valueArray;
 listRput: 'list.rput' key valueArray;
 listGet: 'list.get' (listGetAll | listGetOne | listGetRange);
 listRemove: 'list.remove' (listRemoveOne | listRemoveRange);
 listMRemove: 'list.mremove' key (index)+;
-listDrop: 'list.drop' key;
 
 // Get the all values of this list.
 listGetAll: key;
@@ -46,33 +45,30 @@ listRemoveRange: key index index;
 
 
 // set concept
-setStatement: setPut | setGet | setPutItem | setRemoveItem | setExists | setDrop;
+setStatement: setPut | setGet | setPutItem | setRemoveItem | setExists;
 setPut: 'set.put' key valueArray;
 setGet:'set.get' key;
 setPutItem: 'set.putItem' key itemValue;
 setRemoveItem: ('set.remove'|'set.removeItem') key itemValue;
 setExists: 'set.exists' key itemValue;
-setDrop: 'set.drop' key;
 
 
 // dict concept
-dictStatement: dictPut | dictGet | dictPutItem | dictGetItem | dictPopItem | dictRemoveItem | dictDrop;
+dictStatement: dictPut | dictGet | dictPutItem | dictGetItem | dictPopItem | dictRemoveItem;
 dictPut: 'dict.put' key keyValuePairs;
 dictGet: 'dict.get' key;
 dictPutItem: 'dict.putItem' key itemKey itemValue;
 dictGetItem: 'dict.getItem' key itemKey;
 dictPopItem: 'dict.popItem' key itemKey;
 dictRemoveItem: 'dict.removeItem' key itemKey;
-dictDrop: 'dict.drop' key;
 
 // slist concept
-slistStatement: slistPut | slistTop | slistIncrScore | slistPutMember | slistRemoveMember | slistDrop | slistGetMember;
+slistStatement: slistPut | slistTop | slistIncrScore | slistPutMember | slistRemoveMember | slistGetMember;
 slistPut: 'slist.put' key sortedListEntityPairs;
 slistTop: 'slist.top' key topCount;
 slistIncrScore: 'slist.incrScore' (slistIncrScoreDefault | slistIncrScoreDelta);
 slistPutMember: 'slist.putMember' key itemMember itemScore;
 slistRemoveMember: 'slist.removeMember' key itemMember;
-slistDrop: 'slist.drop' key;
 slistGetMember: 'slist.getMember' key itemMember;
 
 // slist.incrScore arguments
@@ -82,10 +78,9 @@ slistIncrScoreDefault: key itemMember;
 slistIncrScoreDelta: key itemMember anyInt;
 
 // int concept
-intStatement: intPut | intGet | intDrop | intIncr;
+intStatement: intPut | intGet | intIncr;
 intPut: 'int.put' key anyInt;
 intGet: 'int.get' key;
-intDrop: 'int.drop' key;
 intIncr: 'int.incr' (intIncrDefault | intIncrDelta);
 //  Increase one point by default
 intIncrDefault: key;
@@ -100,6 +95,10 @@ expireDict: 'expire.dict' key anyInt;
 expireSet: 'expire.set' key anyInt;
 expireSlist: 'expire.slist' key anyInt;
 expireInt: 'expire.int' key anyInt;
+
+// drop
+dropStatement: drop;
+drop: 'drop' key;
 
 keyValuePairs: (keyValuePair)+;
 keyValuePair: itemKey itemValue;

@@ -21,3 +21,4 @@ message StrGetRequest {
 message StrGetResponse {
     string value =1;
 };
+
