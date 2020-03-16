@@ -1,16 +1,21 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.Set;
 
 @Test(singleThreaded = true)
 public class StringProxyTest extends BaseTestSupplier {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(StringProxyTest.class);
 
   @Test
   public void testPutAndGet() throws InvalidProtocolBufferException {
@@ -55,12 +60,22 @@ public class StringProxyTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testExpireStr() throws InterruptedException {
+  public void testExpireStr() {
     DistkvClient client = newDistkvClient();
     client.strs().put("expired_k1", "v1");
-    client.strs().expire("expired_k1", 1);
-    Thread.sleep(3000);
-    Assert.assertThrows(KeyNotFoundException.class, () -> client.strs().get("expired_k1"));
+    client.strs().expire("expired_k1", 1000);
+    boolean result = RuntimeUtil.waitForCondition(() -> {
+      try {
+        client.strs().get("expired_k1");
+        return false;
+      } catch (KeyNotFoundException e) {
+        return true;
+      } catch (InvalidProtocolBufferException e) {
+        LOGGER.error("Failed to unpack response. {1}", e);
+        return false;
+      }
+    }, 30 * 1000);
+    Assert.assertTrue(result);
     client.disconnect();
   }
 
