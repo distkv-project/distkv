@@ -43,7 +43,7 @@ public class DistkvSetProxy {
 
   public void removeItem(String key, String entity) {
     DistkvResponse response = FutureUtils.get(asyncSetProxy.removeItem(key, entity));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    CheckStatusUtil.checkStatus(response.getStatus(), key, entity, typeCode);
   }
 
   public boolean drop(String key) {
@@ -61,4 +61,16 @@ public class DistkvSetProxy {
       throw new DistkvException(e.toString());
     }
   }
+
+  /**
+   * Expire a key.
+   *
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
+   */
+  public void expire(String key, long expireTime) {
+    DistkvResponse response = FutureUtils.get(asyncSetProxy.expire(key, expireTime));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+  }
+
 }

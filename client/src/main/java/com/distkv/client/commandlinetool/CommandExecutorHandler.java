@@ -12,6 +12,7 @@ import com.distkv.rpc.protobuf.generated.DictProtocol.DictPutRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictRemoveItemRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DistKVDict;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol.IntIncrRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol.IntPutRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
@@ -499,6 +500,78 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       IntIncrRequest intIncrRequest = request.getRequest().unpack(IntIncrRequest.class);
       distkvClient.ints().incr(request.getKey(), intIncrRequest.getDelta());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static String expireStr(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
+      distkvClient.strs().expire(request.getKey(), expireRequest.getExpireTime());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static String expireList(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
+      distkvClient.lists().expire(request.getKey(), expireRequest.getExpireTime());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static String expireSet(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
+      distkvClient.sets().expire(request.getKey(), expireRequest.getExpireTime());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static String expireDict(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
+      distkvClient.dicts().expire(request.getKey(), expireRequest.getExpireTime());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static String expireSlist(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
+      distkvClient.sortedLists().expire(request.getKey(), expireRequest.getExpireTime());
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+    return STATUS_OK;
+  }
+
+  public static String expireInt(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    try {
+      DistkvRequest request = parsedResult.getRequest();
+      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
+      distkvClient.ints().expire(request.getKey(), expireRequest.getExpireTime());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }

@@ -1,5 +1,7 @@
 package com.distkv.core.map;
 
+import com.distkv.core.segment.ByteSegment;
+
 /**
  * DstOffHeapMapMeta store one byte metadata for every key value pair to support quicker lookup.
  * which makes 16 key value as a group and use sse2 instructions to determine the group is full or

@@ -3,13 +3,14 @@ package com.distkv.server.storeserver.runtime.workerpool;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.SetItemNotFoundException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
-import com.distkv.core.KVStoreImpl;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
@@ -43,27 +44,29 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Worker extends Thread {
 
+  private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
+
   private StoreRuntime storeRuntime;
 
-  private static Logger LOGGER = LoggerFactory.getLogger(Worker.class);
+  private BlockingQueue<InternalRequest> queue;
+
+  /**
+   * Store engine.
+   */
+  private KVStore storeEngine;
 
   public Worker(StoreRuntime storeRuntime) {
     this.storeRuntime = storeRuntime;
+    storeEngine = storeRuntime.getStoreEngine();
     queue = new LinkedBlockingQueue<>();
   }
 
-  private BlockingQueue<InternalRequest> queue;
 
   // Note that this method is threading-safe because of the threading-safe blocking queue.
   public void post(InternalRequest internalRequest) throws InterruptedException {
     queue.put(internalRequest);
   }
 
-
-  /**
-   * Store engine.
-   */
-  private KVStore storeEngine = new KVStoreImpl();
 
   @Override
   public void run() {
@@ -74,6 +77,7 @@ public class Worker extends Thread {
         CompletableFuture<DistkvResponse> future = internalRequest.getCompletableFuture();
         DistkvResponse.Builder builder = DistkvResponse.newBuilder();
 
+        handleExpiration(distkvRequest);
         syncToSlaves(distkvRequest, future);
         storeHandler(distkvRequest, builder);
 
@@ -84,6 +88,13 @@ public class Worker extends Thread {
         storeRuntime.shutdown();
         Runtime.getRuntime().exit(-1);
       }
+    }
+  }
+
+  // Add expire request to ExpireCycle.
+  private void handleExpiration(DistkvRequest request) {
+    if (needExpire(request)) {
+      storeRuntime.getExpirationManager().addToCycle(request);
     }
   }
 
@@ -113,7 +124,26 @@ public class Worker extends Thread {
     }
   }
 
-  /// A helper method to query if we need sync the request to slaves.
+  // A helper method to check if it's a request with expiration.
+  private static boolean needExpire(DistkvRequest distkvRequest) {
+    RequestType requestType = distkvRequest.getRequestType();
+    switch (requestType) {
+      case EXPIRED_STR:
+      case EXPIRED_LIST:
+      case EXPIRED_SET:
+      case EXPIRED_DICT:
+      case EXPIRED_INT:
+      case EXPIRED_SLIST: {
+        return true;
+      }
+      default: {
+        break;
+      }
+    }
+    return false;
+  }
+
+  // A helper method to query if we need sync the request to slaves.
   private static boolean needToSync(DistkvRequest distkvRequest) {
     RequestType requestType = distkvRequest.getRequestType();
     switch (requestType) {
@@ -160,8 +190,12 @@ public class Worker extends Thread {
       case STR_PUT: {
         StringProtocol.StrPutRequest strPutRequest = distkvRequest.getRequest()
             .unpack(StringProtocol.StrPutRequest.class);
-        storeEngine.strs().put(key, strPutRequest.getValue());
-        builder.setStatus(CommonProtocol.Status.OK);
+        try {
+          storeEngine.strs().put(key, strPutRequest.getValue());
+          builder.setStatus(CommonProtocol.Status.OK);
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
+        }
         break;
       }
       case STR_DROP: {
@@ -194,7 +228,11 @@ public class Worker extends Thread {
         SetProtocol.SetPutRequest setPutRequest = distkvRequest.getRequest()
             .unpack(SetProtocol.SetPutRequest.class);
         // TODO(qwang): Any thoughts on how to avoid this `new HasSet`.
-        storeEngine.sets().put(key, new HashSet<>(setPutRequest.getValuesList()));
+        try {
+          storeEngine.sets().put(key, new HashSet<>(setPutRequest.getValuesList()));
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
+        }
         builder.setStatus(CommonProtocol.Status.OK);
         break;
       }
@@ -237,6 +275,8 @@ public class Worker extends Thread {
           } else if (localStatus == Status.KEY_NOT_FOUND) {
             status = CommonProtocol.Status.KEY_NOT_FOUND;
           }
+        } catch (SetItemNotFoundException e) {
+          status = CommonProtocol.Status.SET_ITEM_NOT_FOUND;
         } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
@@ -283,6 +323,8 @@ public class Worker extends Thread {
           // at https://github.com/distkv-project/distkv/issues/349
           ArrayList<String> values = new ArrayList<>(listPutRequest.getValuesList());
           storeEngine.lists().put(key, values);
+        } catch (DistkvKeyDuplicatedException e) {
+          status = CommonProtocol.Status.DUPLICATED_KEY;
         } catch (DistkvException e) {
           LOGGER.error("Failed to put a list to store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -445,6 +487,8 @@ public class Worker extends Thread {
           }
           storeEngine.dicts().put(key, map);
           builder.setStatus(CommonProtocol.Status.OK);
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
         } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         }
@@ -562,6 +606,8 @@ public class Worker extends Thread {
           }
           storeEngine.sortLists().put(key, linkedList);
           status = CommonProtocol.Status.OK;
+        } catch (DistkvKeyDuplicatedException e) {
+          status = CommonProtocol.Status.DUPLICATED_KEY;
         } catch (DistkvException e) {
           LOGGER.error("Failed to put a slist to store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
@@ -703,7 +749,11 @@ public class Worker extends Thread {
       case INT_PUT: {
         IntProtocol.IntPutRequest intPutRequest = distkvRequest.getRequest()
             .unpack(IntProtocol.IntPutRequest.class);
-        storeEngine.ints().put(key, intPutRequest.getValue());
+        try {
+          storeEngine.ints().put(key, intPutRequest.getValue());
+        } catch (DistkvKeyDuplicatedException e) {
+          builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
+        }
         builder.setStatus(CommonProtocol.Status.OK);
         break;
       }

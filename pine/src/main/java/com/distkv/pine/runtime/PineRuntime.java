@@ -3,7 +3,9 @@ package com.distkv.pine.runtime;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.DistkvException;
-import com.distkv.common.exception.PipeRuntimeShutdownFailedException;
+import com.distkv.common.exception.PineRuntimeShutdownFailedException;
+import com.distkv.pine.components.liker.PineLiker;
+import com.distkv.pine.components.liker.PineLikerImpl;
 import com.distkv.pine.components.topper.PineTopper;
 import com.distkv.pine.components.topper.PineTopperImpl;
 
@@ -23,13 +25,17 @@ public class PineRuntime {
     try {
       distkvClient.disconnect();
     } catch (DistkvException e) {
-      throw new PipeRuntimeShutdownFailedException(
+      throw new PineRuntimeShutdownFailedException(
           String.format("Failed shutdown the client : %s", e.getMessage()));
     }
   }
 
   public PineTopper newTopper() {
     return new PineTopperImpl(distkvClient);
+  }
+
+  public PineLiker newLiker() {
+    return new PineLikerImpl(distkvClient);
   }
 
 }

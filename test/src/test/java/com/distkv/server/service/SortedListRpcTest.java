@@ -23,7 +23,7 @@ public class SortedListRpcTest extends BaseTestSupplier {
   @Test
   public void testPut() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> sortedListProxy =
-        new ProxyOnClient<>(DistkvService.class, rpcServerPort)) {
+        new ProxyOnClient<>(DistkvService.class, rpcServerPort.get())) {
       DistkvService service = sortedListProxy.getService();
       LinkedList<SortedListEntity> list = new LinkedList<>();
       list.add(new SortedListEntity("xswl", 9));

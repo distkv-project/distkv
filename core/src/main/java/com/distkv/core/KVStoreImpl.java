@@ -15,25 +15,32 @@ import com.distkv.core.concepts.DistkvSortedListsImpl;
 
 public class KVStoreImpl implements KVStore {
 
+  // The store proxy of string concept.
   private DistkvStringsImpl strs;
 
-  private DistkvListsImpl lists;
-
-  private DistkvSetsImpl sets;
-
-  private DistkvDictsImpl dicts;
-
-  private DistkvSortedLists sortedLists;
-
+  // The store proxy of int concept.
   private DistkvInts ints;
 
+  // The store proxy of list concept.
+  private DistkvListsImpl lists;
+
+  // The store proxy of set concept.
+  private DistkvSetsImpl sets;
+
+  // The store proxy of dict concept.
+  private DistkvDictsImpl dicts;
+
+  // The store proxy of sorted list concept.
+  private DistkvSortedLists sortedLists;
+
   public KVStoreImpl() {
-    this.strs = new DistkvStringsImpl();
-    this.lists = new DistkvListsImpl();
-    this.sets = new DistkvSetsImpl();
-    this.dicts = new DistkvDictsImpl();
-    this.sortedLists = new DistkvSortedListsImpl();
-    this.ints = new DistkvIntsImpl();
+    DistkvMapInterface<String, Object> distkvKeyValueMap = new DistkvHashMapImpl<>();
+    this.strs = new DistkvStringsImpl(distkvKeyValueMap);
+    this.lists = new DistkvListsImpl(distkvKeyValueMap);
+    this.sets = new DistkvSetsImpl(distkvKeyValueMap);
+    this.dicts = new DistkvDictsImpl(distkvKeyValueMap);
+    this.sortedLists = new DistkvSortedListsImpl(distkvKeyValueMap);
+    this.ints = new DistkvIntsImpl(distkvKeyValueMap);
   }
 
   @Override
