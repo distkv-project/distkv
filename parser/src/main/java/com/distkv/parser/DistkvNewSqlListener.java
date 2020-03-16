@@ -714,6 +714,10 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DROP)
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DROP, request);
   }
 }
