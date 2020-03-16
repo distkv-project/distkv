@@ -91,16 +91,6 @@ public class ParseDictCommandTest {
     Assert.assertEquals(request.getKey(), "dict1");
   }
 
-  @Test
-  public void testDrop() {
-    // TODO(qwang): Should be finished.
-    final String command = "dict.drop dict1";
-    DistkvParsedResult result = distKVParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestType.DICT_DROP);
-    DistkvRequest request = result.getRequest();
-    Assert.assertEquals(request.getKey(), "dict1");
-  }
-
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidCommand() {
     final String command = "dict.ldel k1";

@@ -87,15 +87,6 @@ public class ParseListCommandTest {
   }
 
   @Test
-  public void testDrop() {
-    final String command = "list.drop k1";
-    DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestType.LIST_DROP);
-    DistkvRequest request = result.getRequest();
-    Assert.assertEquals(request.getKey(), "k1");
-  }
-
-  @Test
   public void testRput() {
     // TODO(qwang): Should be finished.
   }

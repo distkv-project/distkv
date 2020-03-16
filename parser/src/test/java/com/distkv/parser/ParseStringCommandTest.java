@@ -32,15 +32,6 @@ public class ParseStringCommandTest {
     Assert.assertEquals(request.getKey(), "k1");
   }
 
-  @Test
-  public void testDrop() {
-    final String command = "str.drop k1";
-    DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestType.STR_DROP);
-    DistkvRequest request = result.getRequest();
-    Assert.assertEquals(request.getKey(), "k1");
-  }
-
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidPutCommand() {
     final String command = "str.put k1 v1 v2";

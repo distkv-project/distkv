@@ -85,7 +85,7 @@ public class DistkvAsyncDictProxy extends DistkvAbstractAsyncProxy {
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.DICT_DROP)
+        .setRequestType(RequestType.DROP)
         .build();
     return call(request);
   }

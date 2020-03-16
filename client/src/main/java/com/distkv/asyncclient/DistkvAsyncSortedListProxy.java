@@ -6,6 +6,7 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.service.DistkvService;
+
 import com.google.protobuf.Any;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
@@ -73,7 +74,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_DROP)
+        .setRequestType(RequestType.DROP)
         .build();
     return call(request);
   }

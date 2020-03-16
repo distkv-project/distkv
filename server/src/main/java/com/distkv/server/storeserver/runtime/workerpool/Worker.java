@@ -148,29 +148,24 @@ public class Worker extends Thread {
     RequestType requestType = distkvRequest.getRequestType();
     switch (requestType) {
       case STR_PUT:
-      case STR_DROP:
       case LIST_PUT:
-      case LIST_DROP:
       case LIST_LPUT:
       case LIST_RPUT:
       case LIST_REMOVE:
       case LIST_MREMOVE:
       case SET_PUT:
-      case SET_DROP:
       case SET_PUT_ITEM:
       case SET_REMOVE_ITEM:
       case DICT_PUT:
-      case DICT_DROP:
       case DICT_PUT_ITEM:
       case DICT_REMOVE_ITEM:
       case SORTED_LIST_PUT:
-      case SORTED_LIST_DROP:
       case SORTED_LIST_PUT_MEMBER:
       case SORTED_LIST_INCR_SCORE:
       case SORTED_LIST_REMOVE_MEMBER:
       case INT_PUT:
       case INT_INCR:
-      case INT_DROP: {
+      case DROP: {
         return true;
       }
       default: {
@@ -196,21 +191,6 @@ public class Worker extends Thread {
         } catch (DistkvKeyDuplicatedException e) {
           builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
         }
-        break;
-      }
-      case STR_DROP: {
-        CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
-        try {
-          Status localStatus = storeEngine.strs().drop(key);
-          if (localStatus == Status.OK) {
-            status = CommonProtocol.Status.OK;
-          } else if (localStatus == Status.KEY_NOT_FOUND) {
-            status = CommonProtocol.Status.KEY_NOT_FOUND;
-          }
-        } catch (DistkvException e) {
-          LOGGER.error("Failed to drop a string to store :{1}", e);
-        }
-        builder.setStatus(status);
         break;
       }
       case STR_GET: {
@@ -297,21 +277,6 @@ public class Worker extends Thread {
         } catch (DistkvException e) {
           builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
         }
-        break;
-      }
-      case SET_DROP: {
-        CommonProtocol.Status status = null;
-        try {
-          Status localStatus = storeEngine.sets().drop(key);
-          if (localStatus == Status.OK) {
-            status = CommonProtocol.Status.OK;
-          } else if (localStatus == Status.KEY_NOT_FOUND) {
-            status = CommonProtocol.Status.KEY_NOT_FOUND;
-          }
-        } catch (DistkvException e) {
-          status = CommonProtocol.Status.UNKNOWN_ERROR;
-        }
-        builder.setStatus(status);
         break;
       }
       case LIST_PUT: {
@@ -401,22 +366,6 @@ public class Worker extends Thread {
         } catch (DistkvException e) {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
           LOGGER.error("Failed to rput a list to store: {1}", e);
-        }
-        builder.setStatus(status);
-        break;
-      }
-      case LIST_DROP: {
-        CommonProtocol.Status status = null;
-        try {
-          Status localStatus = storeEngine.lists().drop(key);
-          if (localStatus == Status.OK) {
-            status = CommonProtocol.Status.OK;
-          } else if (localStatus == Status.KEY_NOT_FOUND) {
-            status = CommonProtocol.Status.KEY_NOT_FOUND;
-          }
-        } catch (DistkvException e) {
-          status = CommonProtocol.Status.UNKNOWN_ERROR;
-          LOGGER.error("Failed to drop a list from store: {1}", e);
         }
         builder.setStatus(status);
         break;
@@ -584,16 +533,6 @@ public class Worker extends Thread {
         }
         break;
       }
-      case DICT_DROP: {
-        builder.setStatus(CommonProtocol.Status.OK);
-        Status status = storeEngine.dicts().drop(key);
-        if (Status.KEY_NOT_FOUND == status) {
-          builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
-        } else if (Status.OK != status) {
-          builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
-        }
-        break;
-      }
       case SORTED_LIST_PUT: {
         SortedListProtocol.SlistPutRequest slistPutRequest = distkvRequest.getRequest()
             .unpack(SortedListProtocol.SlistPutRequest.class);
@@ -641,20 +580,6 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
         } catch (DistkvException e) {
           LOGGER.error("Failed to get a slist top in store: {1}", e);
-          status = CommonProtocol.Status.UNKNOWN_ERROR;
-        }
-        builder.setStatus(status);
-        break;
-      }
-      case SORTED_LIST_DROP: {
-        CommonProtocol.Status status;
-        try {
-          storeEngine.sortLists().drop(key);
-          status = CommonProtocol.Status.OK;
-        } catch (KeyNotFoundException e) {
-          status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (DistkvException e) {
-          LOGGER.error("Failed to drop a slist in store: {1}", e);
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
         builder.setStatus(status);
@@ -755,21 +680,6 @@ public class Worker extends Thread {
           builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
         }
         builder.setStatus(CommonProtocol.Status.OK);
-        break;
-      }
-      case INT_DROP: {
-        CommonProtocol.Status status = CommonProtocol.Status.UNKNOWN_ERROR;
-        try {
-          Status localStatus = storeEngine.ints().drop(key);
-          if (localStatus == Status.OK) {
-            status = CommonProtocol.Status.OK;
-          } else if (localStatus == Status.KEY_NOT_FOUND) {
-            status = CommonProtocol.Status.KEY_NOT_FOUND;
-          }
-        } catch (DistkvException e) {
-          LOGGER.error("Failed to drop a int to store :{1}", e);
-        }
-        builder.setStatus(status);
         break;
       }
       case INT_GET: {

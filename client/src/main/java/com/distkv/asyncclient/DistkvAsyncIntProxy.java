@@ -41,7 +41,7 @@ public class DistkvAsyncIntProxy extends DistkvAbstractAsyncProxy {
       String key) {
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.INT_DROP)
+        .setRequestType(RequestType.DROP)
         .build();
     return call(request);
   }
