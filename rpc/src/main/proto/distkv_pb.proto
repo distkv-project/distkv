@@ -94,4 +94,3 @@ message DistkvResponse {
 service DistkvService {
     rpc call(DistkvRequest) returns (DistkvResponse);
 }
-

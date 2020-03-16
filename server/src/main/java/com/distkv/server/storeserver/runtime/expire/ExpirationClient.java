@@ -1,11 +1,6 @@
 package com.distkv.server.storeserver.runtime.expire;
 
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_DROP;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.INT_DROP;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.LIST_DROP;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SET_DROP;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_DROP;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.STR_DROP;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
 
 import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
@@ -17,6 +12,7 @@ import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.exception.DousiConnectionRefusedException;
 import org.dousi.netty.DousiClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,30 +66,7 @@ public class ExpirationClient {
   }
 
   public void drop(String key, RequestType requestType) {
-    RequestType dropType = null;
-    switch (requestType) {
-      case EXPIRED_STR:
-        dropType = STR_DROP;
-        break;
-      case EXPIRED_LIST:
-        dropType = LIST_DROP;
-        break;
-      case EXPIRED_SET:
-        dropType = SET_DROP;
-        break;
-      case EXPIRED_DICT:
-        dropType = DICT_DROP;
-        break;
-      case EXPIRED_INT:
-        dropType = INT_DROP;
-        break;
-      case EXPIRED_SLIST:
-        dropType = SORTED_LIST_DROP;
-        break;
-      default:
-        LOGGER.error("Failed drop from store. Unknown request type: {}", requestType);
-        return;
-    }
+    RequestType dropType = DROP;
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
@@ -101,6 +74,4 @@ public class ExpirationClient {
         .build();
     service.call(request);
   }
-
-
 }

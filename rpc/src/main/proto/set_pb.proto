@@ -47,4 +47,3 @@ message SetExistsResponse {
     // If status is not OK, the result is undefined.
     bool result = 1;
 }
-

@@ -59,4 +59,3 @@ message SlistGetMemberResponse {
     SortedListEntity entity = 1;
     uint32 count = 2;
 }
-
