@@ -6,6 +6,7 @@ import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
+
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,20 +21,11 @@ public class DistkvAsyncSetProxy extends DistkvAbstractAsyncProxy {
         .addAllValues(values)
         .build();
 
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.SET_PUT)
-        .setRequest(Any.pack(setPutRequest))
-        .build();
-    return call(request);
+    return put(key, RequestType.SET_PUT, Any.pack(setPutRequest));
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.SET_GET)
-        .build();
-    return call(request);
+    return get(key, RequestType.SET_GET);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> putItem(String key, String entity) {
@@ -63,11 +55,7 @@ public class DistkvAsyncSetProxy extends DistkvAbstractAsyncProxy {
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.SET_DROP)
-        .build();
-    return call(request);
+    return drop(key, RequestType.SET_DROP);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> exists(String key, String entity) {
