@@ -90,18 +90,6 @@ public class ParseIntCommandTest {
   }
 
   @Test(expectedExceptions = DistkvException.class)
-  public void testInvalidDropCommand() {
-    final String command = "int.drop k1 v1";
-    dstParser.parse(command);
-  }
-
-  @Test(expectedExceptions = DistkvException.class)
-  public void testInvalidDropCommand2() {
-    final String command = "int.drop";
-    dstParser.parse(command);
-  }
-
-  @Test(expectedExceptions = DistkvException.class)
   public void testInvalidIncrCommand() {
     final String command = "int.incr k1 v1";
     dstParser.parse(command);

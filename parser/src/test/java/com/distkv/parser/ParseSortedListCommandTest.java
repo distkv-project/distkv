@@ -109,16 +109,6 @@ public class ParseSortedListCommandTest {
   }
 
   @Test
-  public void testSlistDrop() {
-    final String command = "slist.drop k1";
-    DistkvParsedResult result = dstParser.parse(command);
-    final DistkvRequest dropRequest = result.getRequest();
-
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_DROP);
-    Assert.assertEquals(dropRequest.getKey(), "k1");
-  }
-
-  @Test
   public void testSlistGetMember() throws InvalidProtocolBufferException {
     final String command = "slist.getMember k1 m1";
     DistkvParsedResult result = dstParser.parse(command);
