@@ -32,13 +32,6 @@ public class DistkvStringProxy {
     return response.getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
   }
 
-  public boolean drop(String key) {
-    CompletableFuture<DistkvProtocol.DistkvResponse> responseFuture = asyncStrProxy.drop(key);
-    DistkvProtocol.DistkvResponse response = FutureUtils.get(responseFuture);
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-    return true;
-  }
-
   /**
    * Expire a key.
    *

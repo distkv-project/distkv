@@ -58,11 +58,6 @@ public class DistkvListProxy {
     }
   }
 
-  public void drop(String key) {
-    DistkvResponse response = FutureUtils.get(asyncListProxy.drop(key));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
   public void lput(String key, List<String> values) {
     DistkvResponse response = FutureUtils.get(asyncListProxy.lput(key, values));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);

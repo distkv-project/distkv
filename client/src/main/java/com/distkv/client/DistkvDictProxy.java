@@ -73,16 +73,6 @@ public class DistkvDictProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  /**
-   * Drop the k-v pair.
-   *
-   * @param key The key to be dropped.
-   */
-  public void drop(String key) {
-    DistkvResponse response = FutureUtils.get(asyncDictProxy.drop(key));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
   // Remove the item in the dict corresponding to the key.
   public void removeItem(String key, String itemKey) {
     DistkvResponse response = FutureUtils.get(asyncDictProxy.removeItem(key, itemKey));

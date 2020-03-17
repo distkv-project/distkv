@@ -35,14 +35,6 @@ public class DistkvIntProxy {
     return response.getResponse().unpack(IntProtocol.IntGetResponse.class).getValue();
   }
 
-  public boolean drop(
-      String key) {
-    CompletableFuture<DistkvProtocol.DistkvResponse> responseFuture = asyncIntProxy.drop(key);
-    DistkvProtocol.DistkvResponse response = FutureUtils.get(responseFuture);
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-    return true;
-  }
-
   public void incr(
       String key, int delta) throws DistkvException {
     CompletableFuture<DistkvProtocol.DistkvResponse> responseFuture =

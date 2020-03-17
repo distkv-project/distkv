@@ -45,11 +45,6 @@ public class DistkvSortedListProxy {
     return list;
   }
 
-  public void drop(String key) {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.drop(key));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
   public void removeMember(String key, String member) {
     DistkvResponse response = FutureUtils.get(asyncSortedListProxy.removeMember(key, member));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
