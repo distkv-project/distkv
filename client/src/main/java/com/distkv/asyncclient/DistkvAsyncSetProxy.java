@@ -5,8 +5,8 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.service.DistkvService;
-import com.google.protobuf.Any;
 
+import com.google.protobuf.Any;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -52,10 +52,6 @@ public class DistkvAsyncSetProxy extends DistkvAbstractAsyncProxy {
         .setRequest(Any.pack(setRemoveItemRequest))
         .build();
     return call(request);
-  }
-
-  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    return drop(key, RequestType.SET_DROP);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> exists(String key, String entity) {

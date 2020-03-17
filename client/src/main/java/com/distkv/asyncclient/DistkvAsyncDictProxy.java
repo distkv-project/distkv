@@ -6,8 +6,8 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.service.DistkvService;
-import com.google.protobuf.Any;
 
+import com.google.protobuf.Any;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -73,10 +73,6 @@ public class DistkvAsyncDictProxy extends DistkvAbstractAsyncProxy {
         .setRequest(Any.pack(dictPutItemRequest))
         .build();
     return call(request);
-  }
-
-  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    return drop(key, RequestType.DICT_DROP);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> removeItem(

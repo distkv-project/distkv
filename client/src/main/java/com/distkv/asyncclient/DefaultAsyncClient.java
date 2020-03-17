@@ -1,13 +1,16 @@
 package com.distkv.asyncclient;
 
 import com.distkv.namespace.NamespaceInterceptor;
+import com.distkv.common.exception.DistkvException;
+import com.distkv.rpc.service.DistkvService;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
 import org.dousi.exception.DousiConnectionRefusedException;
 import org.dousi.netty.DousiClient;
-import com.distkv.common.exception.DistkvException;
-import com.distkv.rpc.service.DistkvService;
+
+import java.util.concurrent.CompletableFuture;
 
 public class DefaultAsyncClient implements DistkvAsyncClient {
 
@@ -29,6 +32,9 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   /// The interceptor to resolve the conflicts of keys in different clients.
   private NamespaceInterceptor namespaceInterceptor = new NamespaceInterceptor();
 
+  // The drop proxy.
+  private DistkvAsyncDropProxy dropProxy;
+
   public DefaultAsyncClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
             .address(serverAddress)
@@ -49,6 +55,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
     sortedListProxy = new DistkvAsyncSortedListProxy(this, distkvRpcProxy.getService(rpcClient));
     intProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
+    dropProxy = new DistkvAsyncDropProxy(this, distkvRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -116,4 +123,8 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     return intProxy;
   }
 
+  @Override
+  public CompletableFuture<DistkvResponse> drop(String key) {
+    return dropProxy.drop(key);
+  }
 }

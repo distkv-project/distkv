@@ -5,8 +5,8 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.service.DistkvService;
-import com.google.protobuf.Any;
 
+import com.google.protobuf.Any;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -65,10 +65,6 @@ public class DistkvAsyncListProxy extends DistkvAbstractAsyncProxy {
         .setRequest(Any.pack(listGetRequest))
         .build();
     return call(request);
-  }
-
-  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    return drop(key, RequestType.LIST_DROP);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> lput(String key, List<String> values) {

@@ -84,4 +84,9 @@ public interface DistkvClient {
    * @return The distkv int proxy
    */
   DistkvIntProxy ints();
+
+  /**
+   * Drop the given key synchronously.
+   */
+  void drop(String key);
 }

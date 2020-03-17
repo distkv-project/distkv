@@ -67,12 +67,6 @@ public class CommandExecutorHandler {
     }
   }
 
-  public static String strDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.strs().drop(request.getKey());
-    return STATUS_OK;
-  }
-
   public static String listPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
@@ -153,12 +147,6 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static String listDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.lists().drop(request.getKey());
-    return STATUS_OK;
-  }
-
   public static String setPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
@@ -187,12 +175,6 @@ public class CommandExecutorHandler {
     }
     stringBuilder.append("}");
     return stringBuilder.toString();
-  }
-
-  public static String setDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.sets().drop(request.getKey());
-    return STATUS_OK;
   }
 
   public static String setPutItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
@@ -310,12 +292,6 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static String dictDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.dicts().drop(request.getKey());
-    return STATUS_OK;
-  }
-
   public static String slistPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
@@ -408,12 +384,6 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static String slistDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.sortedLists().drop(request.getKey());
-    return STATUS_OK;
-  }
-
   public static String slistGetMember(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
@@ -485,13 +455,6 @@ public class CommandExecutorHandler {
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
-  }
-
-  public static String intDrop(
-      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.ints().drop(request.getKey());
-    return STATUS_OK;
   }
 
   public static String intIncr(
@@ -575,6 +538,13 @@ public class CommandExecutorHandler {
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
+    return STATUS_OK;
+  }
+
+  public static String drop(
+      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.drop(request.getKey());
     return STATUS_OK;
   }
 }

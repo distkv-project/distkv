@@ -5,8 +5,8 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.service.DistkvService;
-import com.google.protobuf.Any;
 
+import com.google.protobuf.Any;
 import java.util.concurrent.CompletableFuture;
 
 public class DistkvAsyncStringProxy extends DistkvAbstractAsyncProxy {
@@ -25,10 +25,6 @@ public class DistkvAsyncStringProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
     return get(key, RequestType.STR_GET);
-  }
-
-  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    return drop(key, RequestType.STR_DROP);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> expire(String key, long expireTime) {

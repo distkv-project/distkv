@@ -6,8 +6,8 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.service.DistkvService;
-import com.google.protobuf.Any;
 
+import com.google.protobuf.Any;
 import java.util.concurrent.CompletableFuture;
 
 public class DistkvAsyncIntProxy extends DistkvAbstractAsyncProxy {
@@ -27,11 +27,6 @@ public class DistkvAsyncIntProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvResponse> get(String key) {
     return get(key, RequestType.INT_GET);
-  }
-
-  public CompletableFuture<DistkvResponse> drop(
-      String key) {
-    return drop(key, RequestType.INT_DROP);
   }
 
   public CompletableFuture<DistkvResponse> incr(

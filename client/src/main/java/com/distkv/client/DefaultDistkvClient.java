@@ -2,6 +2,10 @@ package com.distkv.client;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DistkvAsyncClient;
+import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import java.util.concurrent.CompletableFuture;
 
 public class DefaultDistkvClient implements DistkvClient {
 
@@ -92,4 +96,10 @@ public class DefaultDistkvClient implements DistkvClient {
     return asyncClient.getActivedNamespace();
   }
 
+  @Override
+  public void drop(String key) {
+    CompletableFuture<DistkvResponse> future = asyncClient.drop(key);
+    DistkvProtocol.DistkvResponse response = FutureUtils.get(future);
+    CheckStatusUtil.checkStatus(response.getStatus(), key, "G");
+  }
 }
