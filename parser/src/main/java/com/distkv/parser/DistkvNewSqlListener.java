@@ -16,12 +16,12 @@ import com.distkv.rpc.protobuf.generated.SortedListProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+
 import com.google.common.base.Preconditions;
 import com.google.protobuf.Any;
 import org.antlr.v4.runtime.tree.ParseTree;
 import com.distkv.parser.generated.DistkvNewSQLParser;
 import com.distkv.parser.po.DistkvParsedResult;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -709,5 +709,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     parsedResult = new DistkvParsedResult(RequestType.EXPIRED_INT, request);
   }
 
+  @Override
+  public void enterDrop(DistkvNewSQLParser.DropContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
 
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(RequestType.DROP)
+        .build();
+    parsedResult = new DistkvParsedResult(RequestType.DROP, request);
+  }
 }

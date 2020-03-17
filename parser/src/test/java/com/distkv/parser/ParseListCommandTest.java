@@ -10,6 +10,7 @@ import com.distkv.rpc.protobuf.generated.ListProtocol.ListLPutRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListMRemoveRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListPutRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListRemoveRequest;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -147,5 +148,4 @@ public class ParseListCommandTest {
     final String command = "list.ldel k1";
     dstParser.parse(command);
   }
-
 }

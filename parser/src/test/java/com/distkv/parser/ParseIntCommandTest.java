@@ -35,15 +35,6 @@ public class ParseIntCommandTest {
   }
 
   @Test
-  public void testDrop() {
-    final String command = "int.drop key1";
-    DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestType.INT_DROP);
-    DistkvRequest request = result.getRequest();
-    Assert.assertEquals(request.getKey(), "key1");
-  }
-
-  @Test
   public void testIncrDefault() throws InvalidProtocolBufferException {
     final String command = "int.incr key1";
     DistkvParsedResult result = dstParser.parse(command);

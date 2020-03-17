@@ -10,6 +10,7 @@ import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutMemberReques
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutRequest;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistRemoveMemberRequest;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopRequest;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -131,5 +132,4 @@ public class ParseSortedListCommandTest {
     final String command = "slist.top k1 0";
     dstParser.parse(command);
   }
-
 }
