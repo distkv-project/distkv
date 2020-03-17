@@ -1,5 +1,6 @@
 package com.distkv.parser;
 
+import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.po.DistkvParsedResult;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
@@ -18,5 +19,11 @@ public class ParseDropCommandTest {
     Assert.assertEquals(result.getRequestType(), RequestType.DROP);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
+  }
+
+  @Test(expectedExceptions = DistkvException.class)
+  public void testInvalidCommand() {
+    final String command = "drop k1";
+    distKVParser.parse(command);
   }
 }

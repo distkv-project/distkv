@@ -11,12 +11,12 @@ import org.testng.annotations.Test;
 
 public class ParseSetCommandTest {
 
-  private static final DistkvParser dstParser = new DistkvParser();
+  private static final DistkvParser distKVParser = new DistkvParser();
 
   @Test
   public void testSetPut() throws InvalidProtocolBufferException {
     final String command = "set.put k1 v1 v2 v3 v4";
-    DistkvParsedResult result = dstParser.parse(command);
+    DistkvParsedResult result = distKVParser.parse(command);
     final DistkvRequest request = result.getRequest();
     Assert.assertEquals(DistkvRequest.class, request.getClass());
     Assert.assertEquals("k1", request.getKey());
@@ -35,7 +35,7 @@ public class ParseSetCommandTest {
   @Test
   public void testSetGet() {
     final String command = "set.get k1";
-    DistkvParsedResult result = dstParser.parse(command);
+    DistkvParsedResult result = distKVParser.parse(command);
     final DistkvRequest request = result.getRequest();
     Assert.assertEquals(DistkvRequest.class, request.getClass());
     Assert.assertEquals("k1", request.getKey());
@@ -44,12 +44,12 @@ public class ParseSetCommandTest {
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidCommandName() {
     final String command = "set1.get k1";
-    dstParser.parse(command);
+    distKVParser.parse(command);
   }
 
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidValue() {
     final String command = "set.get k1 k2";
-    dstParser.parse(command);
+    distKVParser.parse(command);
   }
 }
