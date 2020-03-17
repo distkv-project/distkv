@@ -5,12 +5,11 @@ package com.distkv.rpc.protobuf;
 import "common_pb.proto";
 
 option java_package="com.distkv.rpc.protobuf.generated";
-option java_outer_classname = "ExpireProtocol";
+option java_outer_classname = "DropProtocol";
 option cc_generic_services = true;
 
-message ExpireRequest {
-    int64 expireTime = 1;
+message DropRequest {
 };
 
-message ExpireResponse {
+message DropResponse {
 };
