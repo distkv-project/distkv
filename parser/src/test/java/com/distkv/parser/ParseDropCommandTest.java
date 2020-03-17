@@ -23,7 +23,7 @@ public class ParseDropCommandTest {
 
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidCommand() {
-    final String command = "drop k1";
+    final String command = "drop k1 k2 k3";
     distKVParser.parse(command);
   }
 }

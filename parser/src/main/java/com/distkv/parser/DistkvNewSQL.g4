@@ -10,11 +10,10 @@ package com.distkv.parser.generated;
 
 statement: (conceptStatement) EOF;
 conceptStatement: basicOperationsStatement | strStatement | listStatement
-| setStatement | dictStatement | slistStatement | intStatement | expireStatement
-| dropStatement;
+| setStatement | dictStatement | slistStatement | intStatement | expireStatement;
 
 // basic operations
-basicOperationsStatement: exit | activeNamespace | deactiveNamespace;
+basicOperationsStatement: exit | activeNamespace | deactiveNamespace | dropStatement;
 exit: 'exit';
 activeNamespace: 'active namespace' namespace;
 deactiveNamespace: 'deactive namespace';
