@@ -1,5 +1,6 @@
 package com.distkv.core;
 
+import com.distkv.common.utils.Status;
 import com.distkv.core.concepts.DistkvInts;
 import com.distkv.core.concepts.DistkvSets;
 import com.distkv.core.concepts.DistkvSortedLists;
@@ -23,4 +24,6 @@ public interface KVStore {
   DistkvSortedLists sortLists();
 
   DistkvInts ints();
+
+  Status drop(String key);
 }

@@ -38,5 +38,4 @@ public abstract class DistkvConcepts<T> {
     distkvKeyValueMap.remove(key);
     return Status.OK;
   }
-
 }

@@ -1,5 +1,7 @@
 package com.distkv.core;
 
+import com.distkv.common.utils.Status;
+import com.distkv.core.concepts.DistkvConcepts;
 import com.distkv.core.concepts.DistkvInts;
 import com.distkv.core.concepts.DistkvIntsImpl;
 import com.distkv.core.concepts.DistkvListsImpl;
@@ -33,6 +35,9 @@ public class KVStoreImpl implements KVStore {
   // The store proxy of sorted list concept.
   private DistkvSortedLists sortedLists;
 
+  // The store proxy of drop concept.
+  private DistkvConcepts dropConcept;
+
   public KVStoreImpl() {
     DistkvMapInterface<String, Object> distkvKeyValueMap = new DistkvHashMapImpl<>();
     this.strs = new DistkvStringsImpl(distkvKeyValueMap);
@@ -41,6 +46,13 @@ public class KVStoreImpl implements KVStore {
     this.dicts = new DistkvDictsImpl(distkvKeyValueMap);
     this.sortedLists = new DistkvSortedListsImpl(distkvKeyValueMap);
     this.ints = new DistkvIntsImpl(distkvKeyValueMap);
+
+    this.dropConcept = new DistkvConcepts(distkvKeyValueMap) {
+      @Override
+      public Status drop(String key) {
+        return super.drop(key);
+      }
+    };
   }
 
   @Override
@@ -73,4 +85,8 @@ public class KVStoreImpl implements KVStore {
     return ints;
   }
 
+  @Override
+  public Status drop(String key) {
+    return this.dropConcept.drop(key);
+  }
 }

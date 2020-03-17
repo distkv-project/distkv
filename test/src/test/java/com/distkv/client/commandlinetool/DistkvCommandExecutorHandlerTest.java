@@ -36,12 +36,6 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       Assert.assertEquals(CommandExecutorHandler
           .strGet(distkvClient, distKVParsedResult), "v1");
 
-      // Test command 'str.drop'
-      command = "str.drop k1";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(CommandExecutorHandler
-          .strDrop(distkvClient, distKVParsedResult), STATUS_OK);
-
       // Test command 'list.put'
       command = "list.put k1 v2 v1 v3";
       distKVParsedResult = distkvParser.parse(command);
@@ -84,12 +78,6 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       Assert.assertEquals(CommandExecutorHandler
           .listMRemove(distkvClient, distKVParsedResult), STATUS_OK);
 
-      // Test command 'list.drop'
-      command = "list.drop k1";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(CommandExecutorHandler
-          .listDrop(distkvClient, distKVParsedResult), STATUS_OK);
-
       // Test command 'set.put'
       command = "set.put k1 v1 v2 v3";
       distKVParsedResult = distkvParser.parse(command);
@@ -126,12 +114,6 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       Assert.assertEquals(CommandExecutorHandler
           .setExists(distkvClient, distKVParsedResult), "false");
 
-      // Test command 'set.drop'
-      command = "set.drop k1";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(CommandExecutorHandler
-          .setDrop(distkvClient, distKVParsedResult), STATUS_OK);
-
       // Test command 'dict.put'
       command = "dict.put key k1 v1 k2 v2";
       distKVParsedResult = distkvParser.parse(command);
@@ -167,12 +149,6 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       distKVParsedResult = distkvParser.parse(command);
       Assert.assertEquals(CommandExecutorHandler
           .dictRemoveItem(distkvClient, distKVParsedResult), STATUS_OK);
-
-      // Test command 'dict.drop'
-      command = "dict.drop key";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(CommandExecutorHandler
-          .dictDrop(distkvClient, distKVParsedResult), STATUS_OK);
 
       // Test command 'slist.put'
       command = "slist.put k1 m1 12 m2 -2 m3 0";
@@ -216,12 +192,6 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
       Assert.assertEquals(CommandExecutorHandler
           .slistGetMember(distkvClient, distKVParsedResult), "(m2, -1), 3rd");
 
-      // Test command 'slist.drop'
-      command = "slist.drop k1";
-      distKVParsedResult = distkvParser.parse(command);
-      Assert.assertEquals(CommandExecutorHandler
-          .slistDrop(distkvClient, distKVParsedResult), STATUS_OK);
-
       // Test active namespace
       command = "active namespace a";
       distKVParsedResult = distkvParser.parse(command);
@@ -262,11 +232,11 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
           CommandExecutorHandler.intGet(
               distkvClient, distkvParser.parse("int.get k1")), String.valueOf(10));
 
-      // Test command 'int.drop'
-      command = "int.drop k1";
+      // Test command 'drop'
+      command = "drop k1";
       distKVParsedResult = distkvParser.parse(command);
       Assert.assertEquals(
-          CommandExecutorHandler.intDrop(distkvClient, distKVParsedResult), STATUS_OK);
+          CommandExecutorHandler.drop(distkvClient, distKVParsedResult), STATUS_OK);
 
     } finally {
       distkvClient.disconnect();
