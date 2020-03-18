@@ -6,6 +6,7 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetExistsResponse;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetGetResponse;
 import com.distkv.supplier.BaseTestSupplier;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -71,9 +72,9 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
       }
     });
 
-    //TestDrop
+    // TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-            client.sets().drop("k1");
+        client.drop("k1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -90,11 +91,11 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(putItemResponse.getStatus(), status);
     Assert.assertEquals(removeItemResponse.getStatus(), status);
-    Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     Assert.assertTrue(existsResponse.getResponse()
         .unpack(SetExistsResponse.class).getResult());
     Assert.assertEquals(getResponse.getResponse()
         .unpack(SetGetResponse.class).getValuesList(), ImmutableList.of("v2", "v3", "v4"));
+    Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     client.disconnect();
   }
 }

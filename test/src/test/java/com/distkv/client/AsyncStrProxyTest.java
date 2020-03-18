@@ -5,6 +5,7 @@ import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.StringProtocol.StrGetResponse;
 import com.distkv.supplier.BaseTestSupplier;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -39,15 +40,27 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
       }
     });
 
+    // TestDrop
+    CompletableFuture<DistkvResponse> dropFuture =
+        client.drop("k1");
+    dropFuture.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
+    });
+
     DistkvResponse putResponse =
         putFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse getResponse =
         getFuture.get(1, TimeUnit.SECONDS);
+    DistkvResponse dropResponse =
+        dropFuture.get(1, TimeUnit.SECONDS);
 
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getStatus(), CommonProtocol.Status.OK);
     Assert.assertEquals(getResponse.getResponse()
         .unpack(StrGetResponse.class).getValue(), "v1");
+    Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     client.disconnect();
   }
 }

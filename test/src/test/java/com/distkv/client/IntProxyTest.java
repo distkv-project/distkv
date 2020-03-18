@@ -3,11 +3,12 @@ package com.distkv.client;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.BaseTestSupplier;
-import com.google.protobuf.InvalidProtocolBufferException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 @Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
@@ -22,7 +23,7 @@ public class IntProxyTest extends BaseTestSupplier {
       Assert.assertEquals(1, client.ints().get("k1"));
       client.ints().incr("k1", 2);
       Assert.assertEquals(3, client.ints().get("k1"));
-      Assert.assertTrue(client.ints().drop("k1"));
+      client.drop("k1");
     } finally {
       client.disconnect();
     }

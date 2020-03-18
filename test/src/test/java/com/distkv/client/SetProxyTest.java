@@ -2,12 +2,13 @@ package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
-import java.util.Set;
-import com.distkv.supplier.BaseTestSupplier;
-import com.google.common.collect.ImmutableSet;
 import com.distkv.common.exception.DistkvException;
+import com.distkv.supplier.BaseTestSupplier;
+
+import com.google.common.collect.ImmutableSet;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.util.Set;
 
 @Test(singleThreaded = true)
 public class SetProxyTest extends BaseTestSupplier {
@@ -53,7 +54,7 @@ public class SetProxyTest extends BaseTestSupplier {
 
     DistkvClient client = newDistkvClient();
     client.sets().put("k1", set);
-    Assert.assertTrue(client.sets().drop("k1"));
+    client.drop("k1");
 
     // This method will throw a DistkvException if we drop the nonexistent key in store.
     Assert.assertThrows(DistkvException.class,
@@ -72,7 +73,7 @@ public class SetProxyTest extends BaseTestSupplier {
     client.sets().removeItem("k1", "v1");
     Assert.assertFalse(client.sets().exists("k1", "v1"));
 
-    client.sets().drop("k1");
+    client.drop("k1");
     // This method will throw a DistkvException if we drop the nonexistent key in store.
     Assert.assertThrows(KeyNotFoundException.class,
         () -> client.sets().exists("k1", "v1"));

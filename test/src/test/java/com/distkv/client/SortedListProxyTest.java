@@ -2,15 +2,16 @@ package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
-import com.google.protobuf.InvalidProtocolBufferException;
-import java.util.LinkedList;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.supplier.BaseTestSupplier;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import com.google.protobuf.InvalidProtocolBufferException;
+import java.util.LinkedList;
 
 @Test(singleThreaded = true)
 public class SortedListProxyTest extends BaseTestSupplier {
@@ -84,5 +85,4 @@ public class SortedListProxyTest extends BaseTestSupplier {
     Assert.assertTrue(result);
     distkvClient.disconnect();
   }
-
 }

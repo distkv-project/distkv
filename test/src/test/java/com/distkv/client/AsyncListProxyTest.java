@@ -5,6 +5,7 @@ import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.ListProtocol.ListGetResponse;
 import com.distkv.supplier.BaseTestSupplier;
+
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
@@ -105,6 +106,15 @@ public class AsyncListProxyTest extends BaseTestSupplier {
       }
     });
 
+    // TestDrop
+    CompletableFuture<DistkvResponse> dropFuture =
+        client.drop("k1");
+    dropFuture.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
+    });
+
     DistkvResponse putResponse = putFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse getOneResponse = getOneFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse getRangeResponse = getRangeFuture.get(1, TimeUnit.SECONDS);
@@ -114,6 +124,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     DistkvResponse removeRangeResponse = removeRangeFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse mremoveResponse = mremoveFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse getResponse = getAllFuture.get(1, TimeUnit.SECONDS);
+    DistkvResponse dropResponse = dropFuture.get(1, TimeUnit.SECONDS);
 
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(rputResponse.getStatus(), status);
@@ -130,6 +141,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
         .unpack(ListGetResponse.class).getValuesList(), ImmutableList.of("v1"));
     Assert.assertEquals(getResponse.getResponse()
         .unpack(ListGetResponse.class).getValuesList(), ImmutableList.of("v2", "v4"));
+    Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     client.disconnect();
   }
 }

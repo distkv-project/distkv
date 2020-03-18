@@ -5,10 +5,10 @@ import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.IntProtocol.IntGetResponse;
 import com.distkv.supplier.BaseTestSupplier;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -50,8 +50,8 @@ public class AsyncIntProxyTest extends BaseTestSupplier {
       });
 
       CompletableFuture<DistkvResponse> dropFuture =
-          client.ints().drop("k1");
-      getFuture.whenComplete((r, t) -> {
+          client.drop("k1");
+      dropFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
         }
@@ -70,9 +70,8 @@ public class AsyncIntProxyTest extends BaseTestSupplier {
       Assert.assertEquals(getResponse.getStatus(), status);
       Assert.assertEquals(getResponse.getResponse()
           .unpack(IntGetResponse.class).getValue(), 1);
-      Assert.assertEquals(dropResponse.getStatus(), status);
       Assert.assertEquals(incrResponse.getStatus(), status);
-
+      Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     } finally {
       client.disconnect();
     }

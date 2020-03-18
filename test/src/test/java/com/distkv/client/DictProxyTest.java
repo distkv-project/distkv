@@ -3,6 +3,7 @@ package com.distkv.client;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.BaseTestSupplier;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     dict.put("k2", "v2");
     client.dicts().put("m1", dict);
-    client.dicts().drop("m1");
+    client.drop("m1");
     client.disconnect();
   }
 
@@ -75,7 +76,7 @@ public class DictProxyTest extends BaseTestSupplier {
   public void testKeyNotFoundException() {
     DistkvClient client = newDistkvClient();
     try {
-      client.dicts().drop("m1");
+      client.drop("m1");
     } catch (KeyNotFoundException e) {
       Assert.assertTrue(true);
       return;

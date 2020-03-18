@@ -6,6 +6,7 @@ import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictGetResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.supplier.BaseTestSupplier;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -75,7 +76,7 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
       }
     });
 
-    //TestGet
+    // TestGet
     CompletableFuture<DistkvResponse> getFuture =
         client.dicts().get("m1");
     getFuture.whenComplete((r, t) -> {
@@ -84,9 +85,9 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
       }
     });
 
-    //TestDrop
+    // TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-        client.dicts().drop("m1");
+        client.drop("m1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);

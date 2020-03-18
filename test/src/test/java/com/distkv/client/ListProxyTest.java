@@ -2,12 +2,13 @@ package com.distkv.client;
 
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.BaseTestSupplier;
-import com.google.common.collect.ImmutableList;
 import com.distkv.common.exception.KeyNotFoundException;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 @Test(singleThreaded = true)
 public class ListProxyTest extends BaseTestSupplier {
@@ -26,7 +27,7 @@ public class ListProxyTest extends BaseTestSupplier {
   public void testDrop() {
     DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    client.lists().drop("k1");
+    client.drop("k1");
     Assert.assertThrows(KeyNotFoundException.class, () -> client.lists().get("k1"));
     client.disconnect();
   }

@@ -6,6 +6,7 @@ import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopResponse;
 import com.distkv.supplier.BaseTestSupplier;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -84,9 +85,9 @@ public class AsyncSortedListTest extends BaseTestSupplier {
       }
     });
 
-    //TestDrop
+    // TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-        client.sortedLists().drop("k1");
+        client.drop("k1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -117,7 +118,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
         .unpack(SlistTopResponse.class).getList(0).getMember(), "aa");
     Assert.assertEquals(topResponse.getResponse()
         .unpack(SlistTopResponse.class).getList(1).getMember(), "fw");
-    Assert.assertEquals(dropResponse.getStatus(), status);
+    Assert.assertEquals(dropResponse.getStatus(), CommonProtocol.Status.OK);
     client.disconnect();
   }
 }
