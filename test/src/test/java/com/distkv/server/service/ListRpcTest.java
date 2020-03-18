@@ -97,7 +97,7 @@ public class ListRpcTest extends BaseTestSupplier {
       // Drop.
       DistkvRequest dropRequest = DistkvRequest.newBuilder()
           .setKey("k1")
-          .setRequestType(RequestType.LIST_DROP)
+          .setRequestType(RequestType.DROP)
           .build();
       DistkvResponse dropResponse = FutureUtils.get(
           listService.call(dropRequest));
@@ -106,7 +106,7 @@ public class ListRpcTest extends BaseTestSupplier {
       // Test drop a non-exist key.
       DistkvRequest dropRequest2 = DistkvRequest.newBuilder()
           .setKey("k2")
-          .setRequestType(RequestType.LIST_DROP)
+          .setRequestType(RequestType.DROP)
           .build();
       DistkvResponse dropResponse2 = FutureUtils.get(
           listService.call(dropRequest2));
