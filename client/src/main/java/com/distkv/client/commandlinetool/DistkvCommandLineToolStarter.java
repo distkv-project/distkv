@@ -1,20 +1,11 @@
 package com.distkv.client.commandlinetool;
 
 import java.io.IOException;
-import java.util.Scanner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.common.exception.DistkvException;
-import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.exception.DictKeyNotFoundException;
-import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
-import com.distkv.common.exception.SortedListMemberNotFoundException;
-import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.parser.DistkvParser;
-import com.distkv.parser.po.DistkvParsedResult;
 import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -91,23 +82,23 @@ public class DistkvCommandLineToolStarter {
         new StringsCompleter("str.put"),
         new StringsCompleter("*"),
         new StringsCompleter("*"),
-        NullCompleter.INSTANCE );
+        NullCompleter.INSTANCE);
     Completer strGetCompleter = new ArgumentCompleter(
         new StringsCompleter("str.get"),
         new StringsCompleter("*"),
         new StringsCompleter("*"),
-        NullCompleter.INSTANCE );
+        NullCompleter.INSTANCE);
     Completer allCompleters = new AggregateCompleter(strPutCompleter, strGetCompleter);
 
     Terminal terminal = TerminalBuilder.builder().system(true).build();
-    LineReader lineReader = LineReaderBuilder.builder().terminal(terminal).completer(allCompleters).build();
+    LineReader lineReader = LineReaderBuilder.builder().terminal(terminal)
+                            .completer(allCompleters).build();
     final String prompt = "dst-cli >";
     while (true) {
       String result = null;
       String line;
       line = lineReader.readLine(prompt);
     }
-
   }
 
 }
