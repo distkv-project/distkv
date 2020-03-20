@@ -1,5 +1,13 @@
 package com.distkv.client.commandlinetool;
 
+import com.distkv.common.exception.DictKeyNotFoundException;
+import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
+import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.SortedListMemberNotFoundException;
+import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
+import com.distkv.parser.DistkvParser;
+import com.distkv.parser.po.DistkvParsedResult;
 import java.io.IOException;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -77,7 +85,8 @@ public class DistkvCommandLineToolStarter {
   }
 
   private void loop(DistkvClient distkvClient) throws IOException {
-
+    DistkvParser distkvParser = new DistkvParser();
+    DistkvCommandExecutor distkvCommandExecutor = new DistkvCommandExecutor(distkvClient);
     Completer strPutCompleter = new ArgumentCompleter(
         new StringsCompleter("str.put"),
         new StringsCompleter("*"),
@@ -98,6 +107,24 @@ public class DistkvCommandLineToolStarter {
       String result = null;
       String line;
       line = lineReader.readLine(prompt);
+      try {
+        DistkvParsedResult parsedResult = distkvParser.parse(line);
+        result = distkvCommandExecutor.execute(parsedResult);
+      } catch (DictKeyNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (DistkvListIndexOutOfBoundsException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (KeyNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (SortedListMemberNotFoundException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (SortedListTopNumIsNonNegativeException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      } catch (DistkvException e) {
+        result = ("errorCode: " + e.getErrorCode() + ";\n Detail: " + e.getMessage());
+      }
+      System.out.println(PROMPT_STRING + result);
+
     }
   }
 
