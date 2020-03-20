@@ -5,7 +5,7 @@ import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.DistkvMapInterface;
 
-public abstract class DistkvConcepts<T> {
+public abstract class DistkvConcepts<T> implements DistkvBaseOperation<T> {
 
   // The Reference of the key value map.
   protected DistkvMapInterface<String, Object> distkvKeyValueMap;
@@ -14,6 +14,7 @@ public abstract class DistkvConcepts<T> {
     this.distkvKeyValueMap = distkvKeyValueMap;
   }
 
+  @Override
   public void put(String key, T value) {
     if (distkvKeyValueMap.containsKey(key)) {
       throw new DistkvKeyDuplicatedException(key);
@@ -21,7 +22,7 @@ public abstract class DistkvConcepts<T> {
     distkvKeyValueMap.put(key, value);
   }
 
-  @SuppressWarnings("unchecked")
+  @Override
   public T get(String key) {
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
@@ -30,6 +31,7 @@ public abstract class DistkvConcepts<T> {
     return (T) distkvKeyValueMap.get(key);
   }
 
+  @Override
   public Status drop(String key) {
     if (!distkvKeyValueMap.containsKey(key)) {
       return Status.KEY_NOT_FOUND;

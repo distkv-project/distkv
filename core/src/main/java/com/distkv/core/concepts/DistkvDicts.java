@@ -1,32 +1,21 @@
 package com.distkv.core.concepts;
 
-import com.distkv.common.utils.Status;
-import java.util.Map;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
+import com.google.protobuf.Any;
+import com.google.protobuf.InvalidProtocolBufferException;
 
-public interface DistkvDicts {
+public interface DistkvDicts<T> extends DistkvBaseOperation<T> {
+  void getItem(String key, Any requestBody, Builder builder)
+      throws InvalidProtocolBufferException;
 
-  /**
-   * Put a key-value pair to map.
-   *
-   * @param key The key to store.
-   * @param value The dictionary value to store.
-   */
-  void put(String key, Map<String, String> value);
+  void popItem(String key, Any requestBody, Builder builder)
+      throws InvalidProtocolBufferException;
 
-  /**
-   * Get a dictionary value by the given key.
-   *
-   * @param key The key that we will get its value.
-   * @return the dictionary value
-   */
-  Map<String, String> get(String key);
+  void putItem(String key, Any requestBody, Builder builder)
+      throws InvalidProtocolBufferException;
 
-  /**
-   * Delete a dictionary entry by the given key.
-   *
-   * @param key The key of the entry that we will delete.
-   * @return The status of this drop operation.
-   */
-  Status drop(String key);
+  void removeItem(String key, Any requestBody, Builder builder)
+      throws InvalidProtocolBufferException;
+
 }
 
