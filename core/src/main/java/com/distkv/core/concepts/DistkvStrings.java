@@ -1,5 +1,5 @@
 package com.distkv.core.concepts;
 
-public interface DistkvStrings extends DistkvBaseOperation<DistkvStrings> {
+public interface DistkvStrings extends DistkvBaseOperation<String> {
 
 }

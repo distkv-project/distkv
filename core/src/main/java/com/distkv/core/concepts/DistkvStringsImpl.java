@@ -11,7 +11,7 @@ import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class DistkvStringsImpl extends DistkvConcepts<String>
-    implements DistkvStrings<String> {
+    implements DistkvStrings {
 
   public DistkvStringsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);

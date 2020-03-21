@@ -6,7 +6,7 @@ import com.google.protobuf.Any;
 
 import java.util.List;
 
-public interface DistkvLists extends DistkvBaseOperation<DistkvLists> {
+public interface DistkvLists extends DistkvBaseOperation<List<String>> {
 
   /**
    * This method will query a list value based on the key

@@ -18,7 +18,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements DistkvSets<Set<String>> {
+public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements DistkvSets {
 
   public DistkvSetsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);

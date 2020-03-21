@@ -2,12 +2,13 @@ package com.distkv.core.concepts;
 
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
+import com.distkv.core.struct.slist.SortedList;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
 
 import java.util.List;
 
-public interface DistkvSortedLists extends DistkvBaseOperation<DistkvSortedLists> {
+public interface DistkvSortedLists extends DistkvBaseOperation<SortedList> {
 
   void putMember(String key, Any request) throws DistkvException;
 

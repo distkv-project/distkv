@@ -27,8 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
-    implements DistkvLists<ArrayList<String>> {
+public class DistkvListsImpl extends DistkvConcepts<List<String>>
+    implements DistkvLists {
 
   private static Logger LOGGER = LoggerFactory.getLogger(DistkvListsImpl.class);
 

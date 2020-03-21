@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
-    implements DistkvDicts<Map<String, String>> {
+    implements DistkvDicts {
 
   public DistkvDictsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);

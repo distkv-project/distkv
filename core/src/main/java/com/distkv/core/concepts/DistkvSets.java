@@ -4,7 +4,9 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
 
-public interface DistkvSets extends DistkvBaseOperation<DistkvSets> {
+import java.util.Set;
+
+public interface DistkvSets extends DistkvBaseOperation<Set<String>> {
 
   /**
    * Put item to the set.

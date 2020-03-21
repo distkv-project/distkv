@@ -10,7 +10,7 @@ import com.distkv.rpc.protobuf.generated.IntProtocol.IntPutRequest;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 
-public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInts<Integer> {
+public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInts {
 
   public DistkvIntsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);

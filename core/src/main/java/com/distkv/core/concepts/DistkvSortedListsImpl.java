@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
-    implements DistkvSortedLists<SortedList> {
+    implements DistkvSortedLists {
 
   public DistkvSortedListsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);

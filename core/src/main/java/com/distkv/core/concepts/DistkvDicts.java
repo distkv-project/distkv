@@ -4,11 +4,14 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
 
-public interface DistkvDicts extends DistkvBaseOperation<DistkvDicts> {
+import java.util.Map;
+
+public interface DistkvDicts extends DistkvBaseOperation<Map<String, String>> {
 
   /**
    * Get item from the dict stored at Distkv store.
-   * @param key the key related to dict.
+   *
+   * @param key     the key related to dict.
    * @param request the request.
    * @param builder the builder to build the response with item value got.
    */
