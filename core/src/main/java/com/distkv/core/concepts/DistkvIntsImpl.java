@@ -19,7 +19,6 @@ public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInt
   @Override
   public void put(String key, Any request)
       throws DistkvException {
-
     try {
       IntPutRequest intPutRequest = request.unpack(IntPutRequest.class);
       put(key, intPutRequest.getValue());
@@ -38,7 +37,6 @@ public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInt
   @Override
   public void incr(String key, Any request)
       throws DistkvException {
-
     try {
       IntIncrRequest intIncrRequest = request.unpack(IntIncrRequest.class);
       incr(key, intIncrRequest.getDelta());

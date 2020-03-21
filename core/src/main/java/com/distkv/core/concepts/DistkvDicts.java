@@ -7,15 +7,15 @@ import com.google.protobuf.Any;
 public interface DistkvDicts<T> extends DistkvBaseOperation<T> {
 
   /**
-   * Get item from the dict stored at distkv store.
+   * Get item from the dict stored at Distkv store.
    * @param key the key related to dict.
    * @param request the request.
-   * @param builder the builder to builde the response with item value got.
+   * @param builder the builder to build the response with item value got.
    */
   void getItem(String key, Any request, Builder builder) throws DistkvException;
 
   /**
-   * Pop the item from the dict stored  at distkv store.
+   * Pop the item from the dict stored  at Distkv store.
    * @param key the key related to dict.
    * @param request the request.
    * @param builder the builder to build the response with the item value popped.
@@ -23,14 +23,14 @@ public interface DistkvDicts<T> extends DistkvBaseOperation<T> {
   void popItem(String key, Any request, Builder builder) throws DistkvException;
 
   /**
-   * Put the item value to dict stored at distkv store by key.
+   * Put the item value to dict stored at Distkv store by key.
    * @param key the key related to dict.
    * @param request the request.
    */
   void putItem(String key, Any request) throws DistkvException;
 
   /**
-   * Remove the item value from dict stored at distkv store.
+   * Remove the item value from dict stored at Distkv store.
    * @param key the key related to dict.
    * @param request the request.
    */

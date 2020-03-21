@@ -71,7 +71,6 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
 
   @Override
   public void putMember(String key, Any request) throws DistkvException {
-
     try {
       SlistPutMemberRequest slistPutMemberRequest = request
           .unpack(SlistPutMemberRequest.class);
@@ -91,7 +90,6 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   @Override
   public void removeMember(String key, Any request)
       throws DistkvException {
-
     try {
       SlistRemoveMemberRequest slistRemoveMemberRequest = request
           .unpack(SlistRemoveMemberRequest.class);
@@ -111,7 +109,6 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
 
   @Override
   public void incrScore(String key, Any request) throws DistkvException {
-
     try {
       SlistIncrScoreRequest slistIncrScoreRequest = request
           .unpack(SlistIncrScoreRequest.class);
@@ -135,7 +132,6 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   @Override
   public void top(String key, Any request, Builder builder)
       throws DistkvException {
-
     try {
       SlistTopRequest slistTopRequest = request.unpack(SlistTopRequest.class);
       List<SortedListEntity> topList = top(key, slistTopRequest.getCount());
@@ -170,7 +166,6 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
 
   @Override
   public void getMember(String key, Any request, Builder builder) throws DistkvException {
-
     try {
       SlistGetMemberRequest slistGetMemberRequest =
           request.unpack(SlistGetMemberRequest.class);

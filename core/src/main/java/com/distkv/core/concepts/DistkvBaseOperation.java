@@ -8,35 +8,35 @@ import com.google.protobuf.Any;
 public interface DistkvBaseOperation<T> {
 
   /**
-   * Get the value by related key.
+   * Get the value by given key.
    * @param key the key to get related value.
-   * @param builder the builder which build response with the value.
+   * @param builder the builder which builds response with the value.
    */
   void get(String key, Builder builder) throws DistkvException;
 
   /**
-   * Get the value by related key.
+   * Get the value by given key.
    * @param key the key to get related value.
    * @return the value
    */
   T get(String key) throws DistkvException;
 
   /**
-   * Put the value to distkv store with related key.
+   * Put the value to Distkv store with given key.
    * @param key the key related to the value.
    * @param request the request
    */
   void put(String key, Any request) throws DistkvException;
 
   /**
-   * put the value to distkv store with related key.
+   * Put the value to Distkv store with given key.
    * @param key the key related to the value.
    * @param t the value to put.
    */
   void put(String key, T t) throws DistkvException;
 
   /**
-   * drop the related entry from distkv store by key.
+   * Drop the related entry from Distkv store by given key.
    * @param key the key related the entry to drop.
    */
   void drop(String key) throws DistkvException;

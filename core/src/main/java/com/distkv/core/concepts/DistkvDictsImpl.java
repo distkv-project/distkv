@@ -42,7 +42,6 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
 
   @Override
   public void put(String key, Any request) throws DistkvException {
-
     try {
       DictPutRequest dictPutRequest = request.unpack(DictPutRequest.class);
       DistKVDict distKVDict = dictPutRequest.getDict();
@@ -59,7 +58,6 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
 
   @Override
   public void getItem(String key, Any request, Builder builder) throws DistkvException {
-
     try {
       DictGetItemRequest dictGetItemRequest = request
           .unpack(DictGetItemRequest.class);
@@ -80,7 +78,6 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
 
   @Override
   public void popItem(String key, Any request, Builder builder) throws DistkvException {
-
     try {
       DictPopItemRequest dictPopItemRequest = request.unpack(DictPopItemRequest.class);
       final Map<String, String> dict = get(key);
@@ -99,7 +96,6 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
 
   @Override
   public void putItem(String key, Any request) throws DistkvException {
-
     try {
       DictPutItemRequest dictPutItemRequest = request.unpack(DictPutItemRequest.class);
       final Map<String, String> dict = get(key);
@@ -111,7 +107,6 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
 
   @Override
   public void removeItem(String key, Any request) throws DistkvException {
-
     try {
       DictRemoveItemRequest dictRemoveItemRequest = request.unpack(DictRemoveItemRequest.class);
       final Map<String, String> dict = get(key);

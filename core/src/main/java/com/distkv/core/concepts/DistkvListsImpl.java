@@ -90,7 +90,6 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
 
   @Override
   public void put(String key, Any request) throws DistkvException {
-
     try {
       ListPutRequest listPutRequest = request.unpack(ListPutRequest.class);
       // TODO(qwang): Avoid this copy. See the discussion
@@ -120,7 +119,6 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   @Override
   public void rput(String key, Any request)
       throws DistkvException {
-
     try {
       ListRPutRequest listRPutRequest = request.unpack(ListRPutRequest.class);
       rput(key, listRPutRequest.getValuesList());
@@ -136,7 +134,6 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   @Override
   public void remove(String key, Any request)
       throws DistkvException {
-
     try {
       ListRemoveRequest listRemoveRequest = request.unpack(ListRemoveRequest.class);
       final RemoveType type = listRemoveRequest.getType();
