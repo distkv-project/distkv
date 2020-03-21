@@ -3,6 +3,8 @@ package com.distkv.client;
 import com.distkv.common.exception.DictKeyNotFoundException;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistkvUnknownRequestException;
+import com.distkv.common.exception.DistkvWrongRequestFormatException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.MasterSyncToSlaveException;
 import com.distkv.common.exception.SetItemNotFoundException;
@@ -29,9 +31,13 @@ public class CheckStatusUtil {
         throw new SortedListTopNumIsNonNegativeException(key, typeCode);
       case SYNC_ERROR:
         throw new MasterSyncToSlaveException(key, typeCode);
+      case WRONG_REQUEST_FORMAT:
+        throw new DistkvWrongRequestFormatException(key, typeCode);
+      case UNKNOWN_REQUEST_TYPE:
+        throw new DistkvUnknownRequestException(key, typeCode);
       default:
         throw new DistkvException(typeCode + "000",
-              String.format("Error status is %s", status.getClass().toString()));
+            String.format("Error status is %s", status.getClass().toString()));
     }
   }
 
