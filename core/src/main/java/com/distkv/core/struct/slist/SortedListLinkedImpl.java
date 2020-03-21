@@ -6,7 +6,6 @@ import com.distkv.common.entity.sortedList.SortedListEntity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +13,6 @@ import java.util.Set;
  * The linkedlist implementation of the DistKV SortedList.
  */
 public final class SortedListLinkedImpl
-    extends LinkedList<SortedListEntity>
     implements SortedList, java.io.Serializable {
 
   private static final long serialVersionUID = -3486672273827013638L;
@@ -29,7 +27,6 @@ public final class SortedListLinkedImpl
 
   }
 
-  @Override
   public boolean isEmpty() {
     return (first == null || last == null);
   }
