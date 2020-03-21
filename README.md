@@ -8,19 +8,19 @@
 
 A distributed key-value in-memory database system with table concept.
 
-## Project Description
+# Project Description
 `Distkv` project is a distributed key-value in-memory database system. Besides these features, `Distkv` supports table concept which looks like tables in relational databases. It also supports a rich ecosystem, named `Pine`, which has many easy-to-use and out-of-the-box components for Web application and micro-service.
 
 Full document is https://distkv.com
 
-## Awesome Features
+# Awesome Features
 1. Redis-like data structure
 2. Table concept based on kv store
 3. Strong consistency model
 4. Easy to use clients
 5. Strong ecosystem for Web application and micro-service
 
-## Quick Started
+# Quick Started
 #### 1. Install Distkv
 First make sure you have the python environment.
 
@@ -85,7 +85,7 @@ dkv-cli > int.get "k1"
 dkv-cli > 4
 ```
 
-## Client SDK
+# Client SDK
 Now we support both `Java Client SDK` and `Java Async Client SDK`. We are working in progress to support other languages SDK. 
 
 **Configure you dependency of Distkv client in `pom.xml`:**
@@ -101,11 +101,11 @@ Now we support both `Java Client SDK` and `Java Async Client SDK`. We are workin
 - [Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/client/example/DistkvUsageExample.java)
 - [Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/asyncclient/example/DistkvAsyncUsageExample.java)
 
-## Who Is Using
+# Who Is Using
 <div align=left>
     <img src="docs/res/who_is_using_logos/yige_logo.png" width="200" height="200"> 
 </div>
 
-## Getting Involved
+# Getting Involved
 Thank you for your attention to the `Distkv` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/distkv-project/distkv/issues) list.
 We also welcome you to participate in our `Distkv` project, if you want to make contributions, you can refer the file [CONTRIBUTING.md](https://github.com/distkv-project/distkv/blob/master/CONTRIBUTING.md).
