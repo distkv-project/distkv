@@ -9,13 +9,9 @@ import com.distkv.rpc.protobuf.generated.StringProtocol.StrGetResponse;
 import com.distkv.rpc.protobuf.generated.StringProtocol.StrPutRequest;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DistkvStringsImpl extends DistkvConcepts<String>
     implements DistkvStrings<String> {
-
-  private static Logger LOGGER = LoggerFactory.getLogger(DistkvStringsImpl.class);
 
   public DistkvStringsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);
@@ -29,9 +25,9 @@ public class DistkvStringsImpl extends DistkvConcepts<String>
   }
 
   @Override
-  public void put(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void put(String key, Any request) throws DistkvException {
     try {
-      StrPutRequest strPutRequest = requestBody.unpack(StrPutRequest.class);
+      StrPutRequest strPutRequest = request.unpack(StrPutRequest.class);
       put(key, strPutRequest.getValue());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);

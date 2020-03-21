@@ -41,10 +41,10 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
   }
 
   @Override
-  public void put(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void put(String key, Any request) throws DistkvException {
 
     try {
-      DictPutRequest dictPutRequest = requestBody.unpack(DictPutRequest.class);
+      DictPutRequest dictPutRequest = request.unpack(DictPutRequest.class);
       DistKVDict distKVDict = dictPutRequest.getDict();
 
       final Map<String, String> map = new HashMap<>();
@@ -58,10 +58,10 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
   }
 
   @Override
-  public void getItem(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void getItem(String key, Any request, Builder builder) throws DistkvException {
 
     try {
-      DictGetItemRequest dictGetItemRequest = requestBody
+      DictGetItemRequest dictGetItemRequest = request
           .unpack(DictGetItemRequest.class);
       final Map<String, String> dict = get(key);
       final String itemValue = dict.get(dictGetItemRequest.getItemKey());
@@ -79,10 +79,10 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
   }
 
   @Override
-  public void popItem(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void popItem(String key, Any request, Builder builder) throws DistkvException {
 
     try {
-      DictPopItemRequest dictPopItemRequest = requestBody.unpack(DictPopItemRequest.class);
+      DictPopItemRequest dictPopItemRequest = request.unpack(DictPopItemRequest.class);
       final Map<String, String> dict = get(key);
       final String itemValue = dict.remove(dictPopItemRequest.getItemKey());
       if (itemValue == null) {
@@ -98,10 +98,10 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
   }
 
   @Override
-  public void putItem(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void putItem(String key, Any request) throws DistkvException {
 
     try {
-      DictPutItemRequest dictPutItemRequest = requestBody.unpack(DictPutItemRequest.class);
+      DictPutItemRequest dictPutItemRequest = request.unpack(DictPutItemRequest.class);
       final Map<String, String> dict = get(key);
       dict.put(dictPutItemRequest.getItemKey(), dictPutItemRequest.getItemValue());
     } catch (InvalidProtocolBufferException e) {
@@ -110,10 +110,10 @@ public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>>
   }
 
   @Override
-  public void removeItem(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void removeItem(String key, Any request) throws DistkvException {
 
     try {
-      DictRemoveItemRequest dictRemoveItemRequest = requestBody.unpack(DictRemoveItemRequest.class);
+      DictRemoveItemRequest dictRemoveItemRequest = request.unpack(DictRemoveItemRequest.class);
       final Map<String, String> dict = get(key);
       final String itemValue = dict.remove(dictRemoveItemRequest.getItemKey());
       if (itemValue == null) {

@@ -17,11 +17,11 @@ public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInt
   }
 
   @Override
-  public void put(String key, Any requestBody, Builder builder)
+  public void put(String key, Any request)
       throws DistkvException {
 
     try {
-      IntPutRequest intPutRequest = requestBody.unpack(IntPutRequest.class);
+      IntPutRequest intPutRequest = request.unpack(IntPutRequest.class);
       put(key, intPutRequest.getValue());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);
@@ -36,11 +36,11 @@ public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInt
   }
 
   @Override
-  public void incr(String key, Any requestBody, Builder builder)
+  public void incr(String key, Any request)
       throws DistkvException {
 
     try {
-      IntIncrRequest intIncrRequest = requestBody.unpack(IntIncrRequest.class);
+      IntIncrRequest intIncrRequest = request.unpack(IntIncrRequest.class);
       incr(key, intIncrRequest.getDelta());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);

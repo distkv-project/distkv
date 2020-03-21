@@ -62,10 +62,10 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   }
 
   @Override
-  public void get(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void get(String key, Any request, Builder builder) throws DistkvException {
 
     try {
-      ListGetRequest listGetRequest = requestBody.unpack(ListGetRequest.class);
+      ListGetRequest listGetRequest = request.unpack(ListGetRequest.class);
       final GetType type = listGetRequest.getType();
       ListGetResponse.Builder listBuilder = ListGetResponse.newBuilder();
       if (type == GetType.GET_ALL) {
@@ -89,10 +89,10 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   }
 
   @Override
-  public void put(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void put(String key, Any request) throws DistkvException {
 
     try {
-      ListPutRequest listPutRequest = requestBody.unpack(ListPutRequest.class);
+      ListPutRequest listPutRequest = request.unpack(ListPutRequest.class);
       // TODO(qwang): Avoid this copy. See the discussion
       // at https://github.com/distkv-project/distkv/issues/349
       ArrayList<String> values = new ArrayList<>(listPutRequest.getValuesList());
@@ -103,9 +103,9 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   }
 
   @Override
-  public void lput(String key, Any requestBody) throws DistkvException {
+  public void lput(String key, Any request) throws DistkvException {
     try {
-      ListLPutRequest listLPutRequest = requestBody.unpack(ListLPutRequest.class);
+      ListLPutRequest listLPutRequest = request.unpack(ListLPutRequest.class);
       lput(key, listLPutRequest.getValuesList());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);
@@ -118,11 +118,11 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   }
 
   @Override
-  public void rput(String key, Any requestBody, Builder builder)
+  public void rput(String key, Any request)
       throws DistkvException {
 
     try {
-      ListRPutRequest listRPutRequest = requestBody.unpack(ListRPutRequest.class);
+      ListRPutRequest listRPutRequest = request.unpack(ListRPutRequest.class);
       rput(key, listRPutRequest.getValuesList());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);
@@ -134,11 +134,11 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   }
 
   @Override
-  public void remove(String key, Any requestBody, Builder builder)
+  public void remove(String key, Any request)
       throws DistkvException {
 
     try {
-      ListRemoveRequest listRemoveRequest = requestBody.unpack(ListRemoveRequest.class);
+      ListRemoveRequest listRemoveRequest = request.unpack(ListRemoveRequest.class);
       final RemoveType type = listRemoveRequest.getType();
       if (type == RemoveType.RemoveOne) {
         remove(key, listRemoveRequest.getIndex());
@@ -175,9 +175,9 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>>
   }
 
   @Override
-  public void mremove(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void mremove(String key, Any request) throws DistkvException {
     try {
-      ListMRemoveRequest listMRemoveRequest = requestBody.unpack(ListMRemoveRequest.class);
+      ListMRemoveRequest listMRemoveRequest = request.unpack(ListMRemoveRequest.class);
       mremove(key, listMRemoveRequest.getIndexesList());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);

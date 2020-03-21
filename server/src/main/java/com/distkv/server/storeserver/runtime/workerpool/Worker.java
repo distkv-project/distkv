@@ -184,7 +184,7 @@ public class Worker extends Thread {
     try {
       switch (requestType) {
         case STR_PUT: {
-          storeEngine.strs().put(key, distkvRequest.getRequest(), builder);
+          storeEngine.strs().put(key, distkvRequest.getRequest());
           break;
         }
         case STR_DROP: {
@@ -196,7 +196,7 @@ public class Worker extends Thread {
           break;
         }
         case SET_PUT: {
-          storeEngine.sets().put(key, distkvRequest.getRequest(), builder);
+          storeEngine.sets().put(key, distkvRequest.getRequest());
           break;
         }
         case SET_GET: {
@@ -204,11 +204,11 @@ public class Worker extends Thread {
           break;
         }
         case SET_PUT_ITEM: {
-          storeEngine.sets().putItem(key, distkvRequest.getRequest(), builder);
+          storeEngine.sets().putItem(key, distkvRequest.getRequest());
           break;
         }
         case SET_REMOVE_ITEM: {
-          storeEngine.sets().removeItem(key, distkvRequest.getRequest(), builder);
+          storeEngine.sets().removeItem(key, distkvRequest.getRequest());
           break;
         }
         case SET_EXISTS: {
@@ -220,7 +220,7 @@ public class Worker extends Thread {
           break;
         }
         case LIST_PUT: {
-          storeEngine.lists().put(key, distkvRequest.getRequest(), builder);
+          storeEngine.lists().put(key, distkvRequest.getRequest());
           break;
         }
         case LIST_GET: {
@@ -232,7 +232,7 @@ public class Worker extends Thread {
           break;
         }
         case LIST_RPUT: {
-          storeEngine.lists().rput(key, distkvRequest.getRequest(), builder);
+          storeEngine.lists().rput(key, distkvRequest.getRequest());
           break;
         }
         case LIST_DROP: {
@@ -240,15 +240,15 @@ public class Worker extends Thread {
           break;
         }
         case LIST_MREMOVE: {
-          storeEngine.lists().mremove(key, distkvRequest.getRequest(), builder);
+          storeEngine.lists().mremove(key, distkvRequest.getRequest());
           break;
         }
         case LIST_REMOVE: {
-          storeEngine.lists().remove(key, distkvRequest.getRequest(), builder);
+          storeEngine.lists().remove(key, distkvRequest.getRequest());
           break;
         }
         case DICT_PUT: {
-          storeEngine.dicts().put(key, distkvRequest.getRequest(), builder);
+          storeEngine.dicts().put(key, distkvRequest.getRequest());
           break;
         }
         case DICT_GET: {
@@ -264,11 +264,11 @@ public class Worker extends Thread {
           break;
         }
         case DICT_PUT_ITEM: {
-          storeEngine.dicts().putItem(key, distkvRequest.getRequest(), builder);
+          storeEngine.dicts().putItem(key, distkvRequest.getRequest());
           break;
         }
         case DICT_REMOVE_ITEM: {
-          storeEngine.dicts().removeItem(key, distkvRequest.getRequest(), builder);
+          storeEngine.dicts().removeItem(key, distkvRequest.getRequest());
           break;
         }
         case DICT_DROP: {
@@ -276,7 +276,7 @@ public class Worker extends Thread {
           break;
         }
         case SORTED_LIST_PUT: {
-          storeEngine.sortLists().put(key, distkvRequest.getRequest(), builder);
+          storeEngine.sortLists().put(key, distkvRequest.getRequest());
           break;
         }
         case SORTED_LIST_TOP: {
@@ -288,15 +288,15 @@ public class Worker extends Thread {
           break;
         }
         case SORTED_LIST_INCR_SCORE: {
-          storeEngine.sortLists().incrScore(key, distkvRequest.getRequest(), builder);
+          storeEngine.sortLists().incrScore(key, distkvRequest.getRequest());
           break;
         }
         case SORTED_LIST_PUT_MEMBER: {
-          storeEngine.sortLists().putMember(key, distkvRequest.getRequest(), builder);
+          storeEngine.sortLists().putMember(key, distkvRequest.getRequest());
           break;
         }
         case SORTED_LIST_REMOVE_MEMBER: {
-          storeEngine.sortLists().removeMember(key, distkvRequest.getRequest(), builder);
+          storeEngine.sortLists().removeMember(key, distkvRequest.getRequest());
           break;
         }
         case SORTED_LIST_GET_MEMBER: {
@@ -304,7 +304,7 @@ public class Worker extends Thread {
           break;
         }
         case INT_PUT: {
-          storeEngine.ints().put(key, distkvRequest.getRequest(), builder);
+          storeEngine.ints().put(key, distkvRequest.getRequest());
           break;
         }
         case INT_DROP: {
@@ -316,7 +316,7 @@ public class Worker extends Thread {
           break;
         }
         case INT_INCR: {
-          storeEngine.ints().incr(key, distkvRequest.getRequest(), builder);
+          storeEngine.ints().incr(key, distkvRequest.getRequest());
           break;
         }
         default: {

@@ -25,10 +25,10 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
   }
 
   @Override
-  public void putItem(String key, Any itemValue, Builder builder)
+  public void putItem(String key, Any request)
       throws DistkvException {
     try {
-      SetPutItemRequest setPutItemRequest = itemValue.unpack(SetPutItemRequest.class);
+      SetPutItemRequest setPutItemRequest = request.unpack(SetPutItemRequest.class);
       putItem(key, setPutItemRequest.getItemValue());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);
@@ -40,10 +40,10 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
   }
 
   @Override
-  public void removeItem(String key, Any itemValue, Builder builder)
+  public void removeItem(String key, Any request)
       throws DistkvException {
     try {
-      SetRemoveItemRequest setRemoveItemRequest = itemValue.unpack(SetRemoveItemRequest.class);
+      SetRemoveItemRequest setRemoveItemRequest = request.unpack(SetRemoveItemRequest.class);
       removeItem(key, setRemoveItemRequest.getItemValue());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvWrongRequestFormatException(key, e);
@@ -59,9 +59,9 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
   }
 
   @Override
-  public void exists(String key, Any value, Builder builder) throws DistkvException {
+  public void exists(String key, Any request, Builder builder) throws DistkvException {
     try {
-      SetExistsRequest setExistsRequest = value.unpack(SetExistsRequest.class);
+      SetExistsRequest setExistsRequest = request.unpack(SetExistsRequest.class);
       boolean result = exists(key, setExistsRequest.getEntity());
       SetExistsResponse.Builder setBuilder = SetExistsResponse.newBuilder();
       setBuilder.setResult(result);
@@ -85,9 +85,9 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
   }
 
   @Override
-  public void put(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void put(String key, Any request) throws DistkvException {
     try {
-      SetPutRequest setPutRequest = requestBody.unpack(SetProtocol.SetPutRequest.class);
+      SetPutRequest setPutRequest = request.unpack(SetProtocol.SetPutRequest.class);
       // TODO(qwang): Any thoughts on how to avoid this `new HasSet`.
       put(key, new HashSet<>(setPutRequest.getValuesList()));
     } catch (InvalidProtocolBufferException e) {

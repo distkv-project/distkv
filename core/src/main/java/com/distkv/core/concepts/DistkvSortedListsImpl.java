@@ -23,8 +23,6 @@ import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopRequest;
 import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopResponse;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,8 +30,6 @@ import java.util.ListIterator;
 
 public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
     implements DistkvSortedLists<SortedList> {
-
-  private static Logger LOGGER = LoggerFactory.getLogger(DistkvSortedListsImpl.class);
 
   public DistkvSortedListsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);
@@ -45,9 +41,9 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   }
 
   @Override
-  public void put(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void put(String key, Any request) throws DistkvException {
     try {
-      SlistPutRequest slistPutRequest = requestBody.unpack(SlistPutRequest.class);
+      SlistPutRequest slistPutRequest = request.unpack(SlistPutRequest.class);
       LinkedList<SortedListEntity> linkedList = new LinkedList<>();
       for (int i = 0; i < slistPutRequest.getListCount(); i++) {
         linkedList.add(new SortedListEntity(slistPutRequest.getList(i).getMember(),
@@ -74,10 +70,10 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   }
 
   @Override
-  public void putMember(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void putMember(String key, Any request) throws DistkvException {
 
     try {
-      SlistPutMemberRequest slistPutMemberRequest = requestBody
+      SlistPutMemberRequest slistPutMemberRequest = request
           .unpack(SlistPutMemberRequest.class);
       putMember(key, new SortedListEntity(slistPutMemberRequest.getMember(),
           slistPutMemberRequest.getScore()));
@@ -93,11 +89,11 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   }
 
   @Override
-  public void removeMember(String key, Any requestBody, Builder builder)
+  public void removeMember(String key, Any request)
       throws DistkvException {
 
     try {
-      SlistRemoveMemberRequest slistRemoveMemberRequest = requestBody
+      SlistRemoveMemberRequest slistRemoveMemberRequest = request
           .unpack(SlistRemoveMemberRequest.class);
       removeMember(key, slistRemoveMemberRequest.getMember());
     } catch (InvalidProtocolBufferException e) {
@@ -114,10 +110,10 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   }
 
   @Override
-  public void incrScore(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void incrScore(String key, Any request) throws DistkvException {
 
     try {
-      SlistIncrScoreRequest slistIncrScoreRequest = requestBody
+      SlistIncrScoreRequest slistIncrScoreRequest = request
           .unpack(SlistIncrScoreRequest.class);
       incrScore(key, slistIncrScoreRequest.getMember(), slistIncrScoreRequest.getDelta());
     } catch (InvalidProtocolBufferException e) {
@@ -137,11 +133,11 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   }
 
   @Override
-  public void top(String key, Any requestBody, Builder builder)
+  public void top(String key, Any request, Builder builder)
       throws DistkvException {
 
     try {
-      SlistTopRequest slistTopRequest = requestBody.unpack(SlistTopRequest.class);
+      SlistTopRequest slistTopRequest = request.unpack(SlistTopRequest.class);
       List<SortedListEntity> topList = top(key, slistTopRequest.getCount());
       ListIterator<SortedListEntity> listIterator = topList.listIterator();
       SlistTopResponse.Builder slistBuilder = SlistTopResponse.newBuilder();
@@ -173,11 +169,11 @@ public class DistkvSortedListsImpl extends DistkvConcepts<SortedList>
   }
 
   @Override
-  public void getMember(String key, Any requestBody, Builder builder) throws DistkvException {
+  public void getMember(String key, Any request, Builder builder) throws DistkvException {
 
     try {
       SlistGetMemberRequest slistGetMemberRequest =
-          requestBody.unpack(SlistGetMemberRequest.class);
+          request.unpack(SlistGetMemberRequest.class);
       DistkvTuple<Integer, Integer> tuple =
           getMember(key, slistGetMemberRequest.getMember());
       SortedListProtocol.SortedListEntity.Builder slistEntity =
