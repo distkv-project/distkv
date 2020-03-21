@@ -18,7 +18,7 @@ public class PineLikerImpl extends AbstractPineHandle implements PineLiker {
   }
 
   @Override
-  public PineLikerTopic getTopic(String topic) {
+  public PineLikerTopic topic(String topic) {
     return new PineLikerTopic.Builder()
         .setTopicKey(getKey(topic))
         .setDistkvClient(distkvClient)

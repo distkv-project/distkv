@@ -10,6 +10,6 @@ public interface PineLiker {
    * @param topic the topic name.
    * @return the PipeLikerTopic object.
    */
-  public PineLikerTopic getTopic(String topic);
+  public PineLikerTopic topic(String topic);
 
 }
