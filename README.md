@@ -101,6 +101,11 @@ Now we support both `Java Client SDK` and `Java Async Client SDK`. We are workin
 - [Java Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/client/example/DistkvUsageExample.java)
 - [Java Async Client SDK Example](https://github.com/distkv-project/distkv/blob/master/client/src/main/java/com/distkv/asyncclient/example/DistkvAsyncUsageExample.java)
 
+## Who Is Using
+<div align=left>
+    <img src="docs/res/who_is_using_logos/yige_logo.png" width="200" height="200"> 
+</div>
+
 ## Getting Involved
 Thank you for your attention to the `Distkv` project. If you have any questions, you can create a new issue in our [Issues](https://github.com/distkv-project/distkv/issues) list.
 We also welcome you to participate in our `Distkv` project, if you want to make contributions, you can refer the file [CONTRIBUTING.md](https://github.com/distkv-project/distkv/blob/master/CONTRIBUTING.md).
