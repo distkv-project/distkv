@@ -4,7 +4,7 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
 
-public interface DistkvDicts<T> extends DistkvBaseOperation<T> {
+public interface DistkvDicts extends DistkvBaseOperation<DistkvDicts> {
 
   /**
    * Get item from the dict stored at Distkv store.

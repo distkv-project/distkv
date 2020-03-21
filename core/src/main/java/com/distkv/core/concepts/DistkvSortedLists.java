@@ -7,7 +7,7 @@ import com.google.protobuf.Any;
 
 import java.util.List;
 
-public interface DistkvSortedLists<T> extends DistkvBaseOperation<T> {
+public interface DistkvSortedLists extends DistkvBaseOperation<DistkvSortedLists> {
 
   void putMember(String key, Any request) throws DistkvException;
 

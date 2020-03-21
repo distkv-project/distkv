@@ -3,7 +3,7 @@ package com.distkv.core.concepts;
 import com.distkv.common.exception.DistkvException;
 import com.google.protobuf.Any;
 
-public interface DistkvInts<T> extends DistkvBaseOperation<T> {
+public interface DistkvInts extends DistkvBaseOperation<DistkvInts> {
 
 
   /**

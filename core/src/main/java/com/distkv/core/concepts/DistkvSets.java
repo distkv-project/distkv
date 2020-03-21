@@ -4,7 +4,7 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
 
-public interface DistkvSets<T> extends DistkvBaseOperation<T> {
+public interface DistkvSets extends DistkvBaseOperation<DistkvSets> {
 
   /**
    * Put item to the set.
