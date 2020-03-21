@@ -3,8 +3,7 @@ package com.distkv.common.exception;
 public class DistkvListIndexOutOfBoundsException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
-      .DistkvListIndexOutOfBoundsErrorCode
-      .getErrorCode();
+      .DistkvListIndexOutOfBoundsErrorCode.getErrorCode();
 
   protected String key;
 

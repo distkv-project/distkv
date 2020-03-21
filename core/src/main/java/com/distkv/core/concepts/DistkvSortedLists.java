@@ -1,9 +1,9 @@
 package com.distkv.core.concepts;
 
 import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.util.List;
 
@@ -15,10 +15,9 @@ public interface DistkvSortedLists<T> extends DistkvBaseOperation<T> {
    * @param key  the key to store
    * @param item the item in sortedList
    */
-  void putMember(String key, Any requestBody, Builder builder)
-      throws InvalidProtocolBufferException;
+  void putMember(String key, Any requestBody, Builder builder) throws DistkvException;
 
-  void putMember(String key, SortedListEntity item);
+  void putMember(String key, SortedListEntity item) throws DistkvException;
 
   /**
    * This method will del a item in sortedList
@@ -26,8 +25,7 @@ public interface DistkvSortedLists<T> extends DistkvBaseOperation<T> {
    * @param key    the key to store
    * @param member the itemEntity info in sortedList, Find the item by info
    */
-  void removeMember(String key, Any requestBody, Builder builder)
-      throws InvalidProtocolBufferException;
+  void removeMember(String key, Any requestBody, Builder builder) throws DistkvException;
 
   /**
    * This method will inc a itemEntity score in sortedList
@@ -36,10 +34,9 @@ public interface DistkvSortedLists<T> extends DistkvBaseOperation<T> {
    * @param member the itemEntity info in sortedList, Find the item by info
    * @param delta  amount of change in score
    */
-  void incrScore(String key, Any requestBody, Builder builder)
-      throws InvalidProtocolBufferException;
+  void incrScore(String key, Any requestBody, Builder builder) throws DistkvException;
 
-  void incrScore(String key, String member, int delta);
+  void incrScore(String key, String member, int delta) throws DistkvException;
 
   /**
    * This method will get a top list in map
@@ -47,10 +44,9 @@ public interface DistkvSortedLists<T> extends DistkvBaseOperation<T> {
    * @param key    the key to store
    * @param topNum the size of topList
    */
-  void top(String key, Any requestBody, Builder builder)
-      throws InvalidProtocolBufferException;
+  void top(String key, Any requestBody, Builder builder) throws DistkvException;
 
-  List<SortedListEntity> top(String key, int topNum);
+  List<SortedListEntity> top(String key, int topNum) throws DistkvException;
 
   /**
    * Get the score and ranking values of the given key and member
@@ -60,8 +56,7 @@ public interface DistkvSortedLists<T> extends DistkvBaseOperation<T> {
    * @return the DistKVTuple value which the first element is the score and
    * the second element is the ranking of the given key and member
    */
-  void getMember(String key, Any requestBody, Builder builder)
-      throws InvalidProtocolBufferException;
+  void getMember(String key, Any requestBody, Builder builder) throws DistkvException;
 
-  void put(String key, List<SortedListEntity> value);
+  void put(String key, List<SortedListEntity> value) throws DistkvException;
 }

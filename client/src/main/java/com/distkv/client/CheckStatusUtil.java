@@ -1,13 +1,13 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.DictKeyNotFoundException;
+import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.MasterSyncToSlaveException;
 import com.distkv.common.exception.SetItemNotFoundException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
-import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 
 public class CheckStatusUtil {

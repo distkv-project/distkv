@@ -1,13 +1,22 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
+import com.distkv.common.exception.DictKeyNotFoundException;
+import com.distkv.common.exception.DistkvException;
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
+import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
+import com.distkv.common.exception.DistkvUnknownRequestException;
+import com.distkv.common.exception.DistkvWrongRequestFormatException;
+import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.MasterSyncToSlaveException;
+import com.distkv.common.exception.SetItemNotFoundException;
+import com.distkv.common.exception.SortedListMemberNotFoundException;
+import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.core.KVStore;
-import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
-import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +25,19 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.DICT_KEY_NOT_FOUND;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.DUPLICATED_KEY;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.KEY_NOT_FOUND;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.LIST_INDEX_OUT_OF_BOUNDS;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.OK;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.SET_ITEM_NOT_FOUND;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.SYNC_ERROR;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.UNKNOWN_ERROR;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.UNKNOWN_REQUEST_TYPE;
+import static com.distkv.rpc.protobuf.generated.CommonProtocol.Status.WRONG_REQUEST_FORMAT;
 
 public class Worker extends Thread {
 
@@ -83,13 +105,13 @@ public class Worker extends Thread {
             try {
               DistkvResponse response =
                   client.getDistkvService().call(request).get();
-              if (response.getStatus() != CommonProtocol.Status.OK) {
+              if (response.getStatus() != OK) {
                 future.complete(DistkvResponse.newBuilder()
-                    .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                    .setStatus(SYNC_ERROR).build());
               }
             } catch (ExecutionException | InterruptedException e) {
               future.complete(DistkvResponse.newBuilder()
-                  .setStatus(CommonProtocol.Status.SYNC_ERROR).build());
+                  .setStatus(SYNC_ERROR).build());
               LOGGER.error("Process terminated because write to salve failed");
               Runtime.getRuntime().exit(-1);
             }
@@ -155,152 +177,181 @@ public class Worker extends Thread {
     return false;
   }
 
-  private void storeHandler(
-      DistkvRequest distkvRequest, DistkvResponse.Builder builder)
-      throws InvalidProtocolBufferException {
+  private void storeHandler(DistkvRequest distkvRequest, DistkvResponse.Builder builder) {
     RequestType requestType = distkvRequest.getRequestType();
     String key = distkvRequest.getKey();
     // warning: Need to cover the exception of each case, otherwise the server will crash.
-    switch (requestType) {
-      case STR_PUT: {
-        storeEngine.strs().put(key, distkvRequest.getRequest(), builder);
-        break;
+    try {
+      switch (requestType) {
+        case STR_PUT: {
+          storeEngine.strs().put(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case STR_DROP: {
+          storeEngine.strs().drop(key);
+          break;
+        }
+        case STR_GET: {
+          storeEngine.strs().get(key, builder);
+          break;
+        }
+        case SET_PUT: {
+          storeEngine.sets().put(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SET_GET: {
+          storeEngine.sets().get(key, builder);
+          break;
+        }
+        case SET_PUT_ITEM: {
+          storeEngine.sets().putItem(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SET_REMOVE_ITEM: {
+          storeEngine.sets().removeItem(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SET_EXISTS: {
+          storeEngine.sets().exists(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SET_DROP: {
+          storeEngine.sets().drop(key);
+          break;
+        }
+        case LIST_PUT: {
+          storeEngine.lists().put(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case LIST_GET: {
+          storeEngine.lists().get(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case LIST_LPUT: {
+          storeEngine.lists().lput(key, distkvRequest.getRequest());
+          break;
+        }
+        case LIST_RPUT: {
+          storeEngine.lists().rput(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case LIST_DROP: {
+          storeEngine.lists().drop(key);
+          break;
+        }
+        case LIST_MREMOVE: {
+          storeEngine.lists().mremove(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case LIST_REMOVE: {
+          storeEngine.lists().remove(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case DICT_PUT: {
+          storeEngine.dicts().put(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case DICT_GET: {
+          storeEngine.dicts().get(key, builder);
+          break;
+        }
+        case DICT_GET_ITEM: {
+          storeEngine.dicts().getItem(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case DICT_POP_ITEM: {
+          storeEngine.dicts().popItem(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case DICT_PUT_ITEM: {
+          storeEngine.dicts().putItem(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case DICT_REMOVE_ITEM: {
+          storeEngine.dicts().removeItem(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case DICT_DROP: {
+          storeEngine.dicts().drop(key);
+          break;
+        }
+        case SORTED_LIST_PUT: {
+          storeEngine.sortLists().put(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SORTED_LIST_TOP: {
+          storeEngine.sortLists().top(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SORTED_LIST_DROP: {
+          storeEngine.sortLists().drop(key);
+          break;
+        }
+        case SORTED_LIST_INCR_SCORE: {
+          storeEngine.sortLists().incrScore(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SORTED_LIST_PUT_MEMBER: {
+          storeEngine.sortLists().putMember(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SORTED_LIST_REMOVE_MEMBER: {
+          storeEngine.sortLists().removeMember(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case SORTED_LIST_GET_MEMBER: {
+          storeEngine.sortLists().getMember(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case INT_PUT: {
+          storeEngine.ints().put(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        case INT_DROP: {
+          storeEngine.ints().drop(key);
+          break;
+        }
+        case INT_GET: {
+          storeEngine.ints().get(key, builder);
+          break;
+        }
+        case INT_INCR: {
+          storeEngine.ints().incr(key, distkvRequest.getRequest(), builder);
+          break;
+        }
+        default: {
+          break;
+        }
       }
-      case STR_DROP: {
-        storeEngine.strs().drop(key, builder);
-        break;
-      }
-      case STR_GET: {
-        storeEngine.strs().get(key, builder);
-        break;
-      }
-      case SET_PUT: {
-        storeEngine.sets().put(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SET_GET: {
-        storeEngine.sets().get(key, builder);
-        break;
-      }
-      case SET_PUT_ITEM: {
-        storeEngine.sets().putItem(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SET_REMOVE_ITEM: {
-        storeEngine.sets().removeItem(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SET_EXISTS: {
-        storeEngine.sets().exists(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SET_DROP: {
-        storeEngine.sets().drop(key, builder);
-        break;
-      }
-      case LIST_PUT: {
-        storeEngine.lists().put(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case LIST_GET: {
-        storeEngine.lists().get(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case LIST_LPUT: {
-        storeEngine.lists().lput(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case LIST_RPUT: {
-        storeEngine.lists().rput(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case LIST_DROP: {
-        storeEngine.lists().drop(key, builder);
-        break;
-      }
-      case LIST_MREMOVE: {
-        storeEngine.lists().mremove(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case LIST_REMOVE: {
-        storeEngine.lists().remove(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case DICT_PUT: {
-        storeEngine.dicts().put(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case DICT_GET: {
-        storeEngine.dicts().get(key, builder);
-        break;
-      }
-      case DICT_GET_ITEM: {
-        storeEngine.dicts().getItem(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case DICT_POP_ITEM: {
-        storeEngine.dicts().popItem(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case DICT_PUT_ITEM: {
-        storeEngine.dicts().putItem(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case DICT_REMOVE_ITEM: {
-        storeEngine.dicts().removeItem(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case DICT_DROP: {
-        storeEngine.dicts().drop(key, builder);
-        break;
-      }
-      case SORTED_LIST_PUT: {
-        storeEngine.sortLists().put(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SORTED_LIST_TOP: {
-        storeEngine.sortLists().top(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SORTED_LIST_DROP: {
-        storeEngine.sortLists().drop(key, builder);
-        break;
-      }
-      case SORTED_LIST_INCR_SCORE: {
-        storeEngine.sortLists().incrScore(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SORTED_LIST_PUT_MEMBER: {
-        storeEngine.sortLists().putMember(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SORTED_LIST_REMOVE_MEMBER: {
-        storeEngine.sortLists().removeMember(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case SORTED_LIST_GET_MEMBER: {
-        storeEngine.sortLists().getMember(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case INT_PUT: {
-        storeEngine.ints().put(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      case INT_DROP: {
-        storeEngine.ints().drop(key, builder);
-        break;
-      }
-      case INT_GET: {
-        storeEngine.ints().get(key, builder);
-        break;
-      }
-      case INT_INCR: {
-        storeEngine.ints().incr(key, distkvRequest.getRequest(), builder);
-        break;
-      }
-      default: {
-        break;
-      }
+      builder.setStatus(OK);
+    } catch (DistkvException e) {
+      handleDistkvException(e, builder);
+    }
+  }
+
+  private void handleDistkvException(DistkvException e, DistkvResponse.Builder builder) {
+    if (e instanceof DistkvWrongRequestFormatException) {
+      builder.setStatus(WRONG_REQUEST_FORMAT);
+    } else if (e instanceof KeyNotFoundException) {
+      builder.setStatus(KEY_NOT_FOUND);
+    } else if (e instanceof DistkvUnknownRequestException) {
+      builder.setStatus(UNKNOWN_REQUEST_TYPE);
+    } else if (e instanceof DistkvListIndexOutOfBoundsException) {
+      builder.setStatus(LIST_INDEX_OUT_OF_BOUNDS);
+    } else if (e instanceof DictKeyNotFoundException) {
+      builder.setStatus(DICT_KEY_NOT_FOUND);
+    } else if (e instanceof SortedListMemberNotFoundException) {
+      builder.setStatus(SLIST_MEMBER_NOT_FOUND);
+    } else if (e instanceof SortedListTopNumIsNonNegativeException) {
+      builder.setStatus(SLIST_TOPNUM_BE_POSITIVE);
+    } else if (e instanceof MasterSyncToSlaveException) {
+      builder.setStatus(SYNC_ERROR);
+    } else if (e instanceof DistkvKeyDuplicatedException) {
+      builder.setStatus(DUPLICATED_KEY);
+    } else if (e instanceof SetItemNotFoundException) {
+      builder.setStatus(SET_ITEM_NOT_FOUND);
+    } else {
+      builder.setStatus(UNKNOWN_ERROR);
     }
   }
 

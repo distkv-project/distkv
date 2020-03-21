@@ -24,4 +24,6 @@ enum Status {
     SET_ITEM_NOT_FOUND = 9;
 
     DUPLICATED_KEY = 10;
+
+    WRONG_REQUEST_FORMAT = 11;
 };

@@ -1,24 +1,19 @@
 package com.distkv.core.concepts;
 
 
-import com.distkv.common.utils.Status;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 public interface DistkvBaseOperation<T> {
 
-  void get(String key, Builder builder);
+  void get(String key, Builder builder) throws DistkvException;
 
-  T get(String key);
+  T get(String key) throws DistkvException;
 
-  void put(String key, Any requestBody, Builder builder)
-      throws InvalidProtocolBufferException;
+  void put(String key, Any requestBody, Builder builder) throws DistkvException;
 
-  void put(String key, T t);
+  void put(String key, T t) throws DistkvException;
 
-  void drop(String key, Builder builder);
-
-  Status drop(String key);
-
+  void drop(String key) throws DistkvException;
 }

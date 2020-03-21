@@ -1,10 +1,9 @@
 package com.distkv.core.concepts;
 
+import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.utils.Status;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 public interface DistkvSets<T> extends DistkvBaseOperation<T> {
 
@@ -14,8 +13,7 @@ public interface DistkvSets<T> extends DistkvBaseOperation<T> {
    * @param key       The key that represents the name of the set.
    * @param itemValue The value of the item which will be putted into the set.
    */
-  void putItem(String key, Any itemValue, Builder builder)
-      throws InvalidProtocolBufferException;
+  void putItem(String key, Any itemValue, Builder builder) throws DistkvException;
 
   /**
    * This method will delete a value according to the key.
@@ -24,10 +22,9 @@ public interface DistkvSets<T> extends DistkvBaseOperation<T> {
    * @param itemValue The item value will be deleted.
    * @return Status Indicates that the deletion succeeded or failed.
    */
-  void removeItem(String key, Any itemValue, Builder builder)
-      throws InvalidProtocolBufferException;
+  void removeItem(String key, Any itemValue, Builder builder) throws DistkvException;
 
-  Status removeItem(String key, String itemValue);
+  void removeItem(String key, String itemValue) throws DistkvException;
 
   /**
    * This method will judge that if the value exists in map or not.
@@ -37,8 +34,7 @@ public interface DistkvSets<T> extends DistkvBaseOperation<T> {
    * @return Status indicates that the value exists or not.
    * @throws KeyNotFoundException If the key don't exist in map
    */
-  void exists(String key, Any value, Builder builder)
-      throws InvalidProtocolBufferException;
+  void exists(String key, Any value, Builder builder) throws DistkvException;
 
-  boolean exists(String key, String value) throws KeyNotFoundException;
+  boolean exists(String key, String value) throws DistkvException;
 }

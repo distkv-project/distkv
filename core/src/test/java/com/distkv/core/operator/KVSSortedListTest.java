@@ -1,8 +1,9 @@
 package com.distkv.core.operator;
 
+import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.core.KVStore;
 import com.distkv.core.KVStoreImpl;
-import com.distkv.common.entity.sortedList.SortedListEntity;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class KVSSortedListTest {
   @Test
-  public void testSortedList() {
+  public void testSortedList() throws DistkvException {
     KVStore store = new KVStoreImpl();
 
     LinkedList<SortedListEntity> list = new LinkedList<>();

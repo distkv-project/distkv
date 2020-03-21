@@ -1,8 +1,8 @@
 package com.distkv.core.concepts;
 
+import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse.Builder;
 import com.google.protobuf.Any;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 public interface DistkvInts<T> extends DistkvBaseOperation<T> {
 
@@ -13,7 +13,6 @@ public interface DistkvInts<T> extends DistkvBaseOperation<T> {
    * @param key   increase a int value based on the key
    * @param delta the increased value
    */
-  void incr(String key, Any requestBody, Builder builder)
-      throws InvalidProtocolBufferException;
+  void incr(String key, Any requestBody, Builder builder) throws DistkvException;
 
 }

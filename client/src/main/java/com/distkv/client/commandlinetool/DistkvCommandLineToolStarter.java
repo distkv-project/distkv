@@ -1,19 +1,20 @@
 package com.distkv.client.commandlinetool;
 
-import java.util.Scanner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.common.exception.DistkvException;
-import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.DictKeyNotFoundException;
+import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
+import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.parser.DistkvParser;
 import com.distkv.parser.po.DistkvParsedResult;
+
+import java.util.Scanner;
 
 public class DistkvCommandLineToolStarter {
 
