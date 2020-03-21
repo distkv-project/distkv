@@ -7,9 +7,9 @@ public interface PineLiker {
 
   /**
    * Get the people set who is liking the topic.
-   * @param topic the topic name.
-   * @return the PipeLikerTopic object.
+   * @param topic The topic name.
+   * @return The PipeLikerTopic object.
    */
-  public PineLikerTopic getTopic(String topic);
+  public PineLikerTopic topic(String topic);
 
 }

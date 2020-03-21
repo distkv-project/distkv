@@ -15,15 +15,15 @@ public class LikerTest extends BaseTestSupplier {
     Pine.init(getListeningAddress());
 
     PineLiker liker = Pine.newLiker();
-    liker.getTopic("nihao").likesFrom("zhangsan");
-    liker.getTopic("nihao").likesFrom("zhangsan");
-    Assert.assertEquals(liker.getTopic("nihao").count(), 1);
-    liker.getTopic("nihao").likesFrom("lisi");
-    Assert.assertEquals(liker.getTopic("nihao").count(), 2);
+    liker.topic("nihao").likesFrom("zhangsan");
+    liker.topic("nihao").likesFrom("zhangsan");
+    Assert.assertEquals(liker.topic("nihao").count(), 1);
+    liker.topic("nihao").likesFrom("lisi");
+    Assert.assertEquals(liker.topic("nihao").count(), 2);
 
-    Assert.assertTrue(liker.getTopic("nihao").unlikesFrom("zhangsan"));
-    Assert.assertFalse(liker.getTopic("nihao2").unlikesFrom("zhangsan"));
-    Assert.assertEquals(liker.getTopic("nihao").count(), 1);
+    Assert.assertTrue(liker.topic("nihao").unlikesFrom("zhangsan"));
+    Assert.assertFalse(liker.topic("nihao2").unlikesFrom("zhangsan"));
+    Assert.assertEquals(liker.topic("nihao").count(), 1);
 
     Pine.shutdown();
   }
@@ -33,8 +33,8 @@ public class LikerTest extends BaseTestSupplier {
     Pine.init(getListeningAddress());
 
     PineLiker liker = Pine.newLiker();
-    liker.getTopic("nihao").likesFrom("zhangsan");
-    liker.getTopic("nihao").unlikesFrom("lisi");
+    liker.topic("nihao").likesFrom("zhangsan");
+    liker.topic("nihao").unlikesFrom("lisi");
 
     Pine.shutdown();
   }
