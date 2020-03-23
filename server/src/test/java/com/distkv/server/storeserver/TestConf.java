@@ -11,8 +11,6 @@ public class TestConf {
   public void testDefaultConf() {
     StoreConfig config = StoreConfig.create();
     Assert.assertEquals(config.getPort(), 8082);
-    Assert.assertFalse(config.isMaster());
-    Assert.assertNull(config.getSlaveAddresses());
     Assert.assertEquals(config.getShardNum(), 8);
   }
 
@@ -24,8 +22,6 @@ public class TestConf {
     System.setProperty("distkv.store.config", confPath);
     StoreConfig config = StoreConfig.create();
     Assert.assertEquals(config.getPort(), 18082);
-    Assert.assertTrue(config.isMaster());
-    Assert.assertEquals(config.getSlaveAddresses().size(), 2);
     Assert.assertEquals(config.getShardNum(), 8);
   }
 }

@@ -1,15 +1,15 @@
 package com.distkv.server.metaserver.client;
 
 import com.alipay.remoting.exception.RemotingException;
+import com.alipay.sofa.jraft.JRaftUtils;
 import com.alipay.sofa.jraft.RouteTable;
 import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
-import com.distkv.server.metaserver.server.bean.GetRequest;
-import com.distkv.server.metaserver.server.bean.GetResponse;
-import com.distkv.server.metaserver.server.bean.PutRequest;
-import com.distkv.server.metaserver.server.bean.PutResponse;
+import com.distkv.common.NodeInfo;
+import com.distkv.server.metaserver.server.bean.HeartBeatRequest;
+import com.distkv.server.metaserver.server.bean.HeartBeatResponse;
 
 import java.util.concurrent.TimeoutException;
 
@@ -20,15 +20,9 @@ public class DmetaClient {
   // TODO(qingw): Refine this.
   public static final String groupId = "KV";
 
-  // TODO(qingw): Refine this.
-  public static final String confStr = "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083";
+  public DmetaClient(String confStr) {
 
-  public DmetaClient() {
-
-    final Configuration conf = new Configuration();
-    if (!conf.parse(confStr)) {
-      throw new IllegalArgumentException("Fail to parse conf:" + confStr);
-    }
+    final Configuration conf = JRaftUtils.getConfiguration(confStr);
 
     RouteTable.getInstance().updateConfiguration(groupId, conf);
 
@@ -37,7 +31,7 @@ public class DmetaClient {
     cliClientService.init(new CliOptions());
   }
 
-  public void put(String key, String value) {
+  public HeartBeatResponse heartBeat(NodeInfo nodeInfo) {
     try {
       if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");
@@ -45,46 +39,23 @@ public class DmetaClient {
       //get leader term
       final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
 
-      PutRequest request = new PutRequest();
-      request.setKey(key);
-      request.setValue(value);
-      PutResponse response = (PutResponse) cliClientService.getRpcClient()
-          .invokeSync(leader.getEndpoint().toString(), request, 3000);
-      if (!response.isSuccess()) {
-        throw new RuntimeException("put error");
-      }
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (TimeoutException e) {
-      e.printStackTrace();
-    } catch (RemotingException e) {
-      e.printStackTrace();
-    }
-  }
+      final HeartBeatRequest request = new HeartBeatRequest(nodeInfo);
 
-  public String get(String key) {
-    try {
-      if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
-        throw new IllegalStateException("Refresh leader failed");
-      }
-      //get leader term
-      final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
-
-      final GetRequest request = new GetRequest();
-      request.setKey(key);
-
-      GetResponse response = (GetResponse) cliClientService.getRpcClient()
+      HeartBeatResponse response = (HeartBeatResponse) cliClientService.getRpcClient()
           .invokeSync(leader.getEndpoint().toString(), request, 3000);
       if (!response.isSuccess()) {
         throw new RuntimeException("get error");
       }
-      return response.getValue();
+      return response;
 
     } catch (InterruptedException e) {
+      e.printStackTrace();
       return null;
     } catch (TimeoutException e) {
+      e.printStackTrace();
       return null;
     } catch (RemotingException e) {
+      e.printStackTrace();
       return null;
     }
   }

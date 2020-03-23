@@ -5,6 +5,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.List;
 
@@ -15,13 +16,11 @@ public class StoreConfig {
   public static final String DEFAULT_CONFIG_FILE = "store.default.conf";
 
   private int listeningPort;
-  private boolean isMaster;
   private int shardsNum;
-  private List<String> slaveAddresses;
-
-  public boolean isMaster() {
-    return isMaster;
-  }
+  private String mode;
+  private String nodeId;
+  private int heartBeatInterval;
+  private String dmetaServerListStr;
 
   public int getPort() {
     return listeningPort;
@@ -35,27 +34,51 @@ public class StoreConfig {
     return shardsNum;
   }
 
-  public List<String> getSlaveAddresses() {
-    return slaveAddresses;
+  public String getMode() {
+    return mode;
+  }
+
+  public void setMode(String mode) {
+    this.mode = mode;
+  }
+
+  public String getNodeId() {
+    return nodeId;
+  }
+
+  public void setNodeId(String nodeId) {
+    this.nodeId = nodeId;
+  }
+
+  public int getHeartBeatInterval() {
+    return heartBeatInterval;
+  }
+
+  public void setHeartBeatInterval(int heartBeatInterval) {
+    this.heartBeatInterval = heartBeatInterval;
+  }
+
+  public String getDmetaServerListStr() {
+    return dmetaServerListStr;
+  }
+
+  public void setDmetaServerListStr(String dmetaServerListStr) {
+    this.dmetaServerListStr = dmetaServerListStr;
   }
 
   public StoreConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
-    isMaster = config.getBoolean("store.isMaster");
     shardsNum = config.getInt("store.shardsNum");
-    if (isMaster) {
-      slaveAddresses = config.getStringList("store.slaveAddresses");
-    } else {
-      slaveAddresses = null;
-    }
+    mode = config.getString("store.mode");
+    nodeId = config.getString("store.nodeId");
+    heartBeatInterval = config.getInt("store.heartBeatInterval");
+    dmetaServerListStr = config.getString("store.dmetaServerList");
   }
 
   @Override
   public String toString() {
     return "listeningPort: " + listeningPort + ";\n"
-        + "isMaster: " + isMaster + ";\n"
-        + "shardNum: " + shardsNum + ";\n"
-        + "slaves" + slaveAddresses.toString() + "\n";
+        + "shardNum: " + shardsNum + ";\n";
   }
 
   public static StoreConfig create() {

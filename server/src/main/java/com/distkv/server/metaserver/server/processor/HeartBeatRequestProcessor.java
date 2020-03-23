@@ -8,20 +8,20 @@ import com.alipay.remoting.serialization.SerializerManager;
 import com.alipay.sofa.jraft.entity.Task;
 import com.distkv.server.metaserver.server.DmetaServer;
 import com.distkv.server.metaserver.server.DmetaStoreClosure;
-import com.distkv.server.metaserver.server.bean.PutRequest;
-import com.distkv.server.metaserver.server.bean.PutResponse;
+import com.distkv.server.metaserver.server.bean.HeartBeatRequest;
+import com.distkv.server.metaserver.server.bean.HeartBeatResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
-public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
+public class HeartBeatRequestProcessor extends AsyncUserProcessor<HeartBeatRequest> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PutKVRequestProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HeartBeatRequestProcessor.class);
 
   private final DmetaServer dmetaServer;
 
-  public PutKVRequestProcessor(DmetaServer dmetaServer) {
+  public HeartBeatRequestProcessor(DmetaServer dmetaServer) {
     super();
     this.dmetaServer = dmetaServer;
   }
@@ -29,16 +29,17 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
   @Override
   public void handleRequest(final BizContext bizCtx,
                             final AsyncContext asyncCtx,
-                            final PutRequest request) {
+                            final HeartBeatRequest request) {
     if (! this.dmetaServer.getFsm().isLeader()) {
-      final PutResponse response = new PutResponse();
+      final HeartBeatResponse response = new HeartBeatResponse();
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
       asyncCtx.sendResponse(response);
+      System.out.println("not main");
       return;
     }
 
-    final PutResponse response = new PutResponse();
+    final HeartBeatResponse response = new HeartBeatResponse();
     final DmetaStoreClosure closure = new DmetaStoreClosure(dmetaServer, request, response,
         status -> {
           if (!status.isOk()) {
@@ -66,6 +67,6 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
 
   @Override
   public String interest() {
-    return PutRequest.class.getName();
+    return HeartBeatRequest.class.getName();
   }
 }

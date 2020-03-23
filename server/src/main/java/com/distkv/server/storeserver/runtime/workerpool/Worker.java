@@ -100,7 +100,7 @@ public class Worker extends Thread {
 
   private void syncToSlaves(DistkvRequest request, CompletableFuture<DistkvResponse> future) {
     if (needToSync(request)) {
-      boolean isMaster = storeRuntime.getConfig().isMaster();
+      boolean isMaster = storeRuntime.getNodeInfo().isMaster();
       List<SlaveClient> slaveClients = storeRuntime.getAllSlaveClients();
       if (isMaster) {
         for (SlaveClient client : slaveClients) {

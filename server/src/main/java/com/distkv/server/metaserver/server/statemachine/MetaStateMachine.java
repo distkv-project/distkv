@@ -9,9 +9,10 @@ import com.alipay.sofa.jraft.core.StateMachineAdapter;
 import com.alipay.sofa.jraft.error.RaftException;
 import com.alipay.sofa.jraft.storage.snapshot.SnapshotReader;
 import com.alipay.sofa.jraft.storage.snapshot.SnapshotWriter;
+import com.distkv.common.NodeInfo;
 import com.distkv.server.metaserver.server.DmetaStoreClosure;
-import com.distkv.server.metaserver.server.bean.PutRequest;
-import com.distkv.server.view.DistkvGlobalView;
+import com.distkv.server.metaserver.server.bean.HeartBeatRequest;
+import com.distkv.server.view.NodeTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,7 @@ public class MetaStateMachine extends StateMachineAdapter {
    * <p>
    * TODO(qwang): Thread safe?
    */
-  DistkvGlobalView globalView = new DistkvGlobalView();
+  private NodeTable nodeTable = new NodeTable();
 
   /**
    * Leader term.
@@ -39,15 +40,14 @@ public class MetaStateMachine extends StateMachineAdapter {
     return 0 < this.leaderTerm.get();
   }
 
-  public DistkvGlobalView getGlobalView() {
-    return this.globalView;
+  public NodeTable getNodeTable() {
+    return this.nodeTable;
   }
 
   @Override
   public void onApply(final Iterator iter) {
     while (iter.hasNext()) {
-      String key = null;
-      String value = null;
+      NodeInfo nodeInfo = null;
 
       DmetaStoreClosure doneClosure = null;
       if (iter.done() != null) {
@@ -57,16 +57,15 @@ public class MetaStateMachine extends StateMachineAdapter {
         // just read it, because this is the task is from client side, it's not a sync task
         // of leader-follow.
         doneClosure = (DmetaStoreClosure) iter.done();
-        key = doneClosure.getRequest().getKey();
-        value = doneClosure.getRequest().getValue();
+        nodeInfo = doneClosure.getRequest().getNodeInfo();
       } else {
         // Have to parse FetchAddRequest from this user log.
         final ByteBuffer data = iter.getData();
         try {
-          final PutRequest request = SerializerManager.getSerializer(SerializerManager.Hessian2)
-              .deserialize(data.array(), PutRequest.class.getName());
-          key = request.getKey();
-          value = request.getValue();
+          final HeartBeatRequest request = SerializerManager
+              .getSerializer(SerializerManager.Hessian2)
+              .deserialize(data.array(), HeartBeatRequest.class.getName());
+          nodeInfo = request.getNodeInfo();
         } catch (final CodecException e) {
           // TODO(qwang): How to handle this error?
           LOG.error("Fail to decode IncrementAndGetRequest", e);
@@ -74,18 +73,18 @@ public class MetaStateMachine extends StateMachineAdapter {
       }
 
       try {
-        globalView.put(key, value);
-        LOG.debug("Added value={} by key={} at logIndex={}", value, key, iter.getIndex());
+        nodeTable.put(nodeInfo);
       } catch (Exception e) {
         e.printStackTrace();
         if (doneClosure != null) {
           doneClosure.getResponse().setSuccess(false);
         }
-        LOG.error("Added value={} by key={} fail", value, key);
+        LOG.error("Added node fail", nodeInfo.getNodeName());
       }
 
       if (doneClosure != null) {
         doneClosure.getResponse().setSuccess(true);
+        doneClosure.getResponse().setNodeTable(nodeTable.getMap());
         doneClosure.run(Status.OK());
       }
       iter.next();
@@ -112,6 +111,7 @@ public class MetaStateMachine extends StateMachineAdapter {
   public void onLeaderStart(final long term) {
     this.leaderTerm.set(term);
     super.onLeaderStart(term);
+    System.out.println(leaderTerm);
   }
 
   @Override
