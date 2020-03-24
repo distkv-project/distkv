@@ -45,13 +45,12 @@ public class StoreRuntime {
     slaveClients = new CopyOnWriteArrayList<>();
     nodeInfo = new NodeInfo(false, config.getNodeId(),
         String.format("distkv://%s:%d", config.getIp(), config.getPort()));
-    if (config.getMode().equals("m1")) {
+    if (config.getMode().equals("distributed")) {
       heartbeatManager = new HeartbeatManager(
           nodeInfo,
           config.getHeartBeatInterval(),
           config.getDmetaServerListStr(),
           slaveClients);
-
     }
 
     workerPool = new WorkerPool(this);

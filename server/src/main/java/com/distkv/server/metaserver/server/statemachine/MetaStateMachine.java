@@ -25,9 +25,7 @@ public class MetaStateMachine extends StateMachineAdapter {
   private static final Logger LOG = LoggerFactory.getLogger(MetaStateMachine.class);
 
   /**
-   * The global view of a Distkv cluster.
-   * <p>
-   * TODO(qwang): Thread safe?
+   * The Node Table of a Distkv cluster.
    */
   private NodeTable nodeTable = new NodeTable();
 
@@ -68,7 +66,7 @@ public class MetaStateMachine extends StateMachineAdapter {
           nodeInfo = request.getNodeInfo();
         } catch (final CodecException e) {
           // TODO(qwang): How to handle this error?
-          LOG.error("Fail to decode IncrementAndGetRequest", e);
+          LOG.error("Fail to decode Request", e);
         }
       }
 
@@ -79,7 +77,7 @@ public class MetaStateMachine extends StateMachineAdapter {
         if (doneClosure != null) {
           doneClosure.getResponse().setSuccess(false);
         }
-        LOG.error("Added node fail", nodeInfo.getNodeName());
+        LOG.error("Added node fail {}", nodeInfo.getNodeName());
       }
 
       if (doneClosure != null) {

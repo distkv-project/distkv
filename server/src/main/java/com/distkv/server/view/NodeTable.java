@@ -13,7 +13,6 @@ public class NodeTable {
   }
 
   public void put(NodeInfo e) {
-    System.out.println("hhh");
     if (nodeTable.isEmpty()) {
       e.setMaster(true);
     }

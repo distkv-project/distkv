@@ -35,7 +35,6 @@ public class HeartBeatRequestProcessor extends AsyncUserProcessor<HeartBeatReque
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
       asyncCtx.sendResponse(response);
-      System.out.println("not main");
       return;
     }
 
@@ -58,7 +57,7 @@ public class HeartBeatRequestProcessor extends AsyncUserProcessor<HeartBeatReque
       // apply task to raft group.
       dmetaServer.getNode().apply(task);
     } catch (final CodecException e) {
-      LOG.error("Fail to encode IncrementAndGetRequest", e);
+      LOG.error("Fail to encode Request", e);
       response.setSuccess(false);
       response.setErrorMessage(e.getMessage());
       asyncCtx.sendResponse(response);

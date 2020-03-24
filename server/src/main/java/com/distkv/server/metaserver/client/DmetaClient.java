@@ -47,15 +47,12 @@ public class DmetaClient {
         throw new RuntimeException("get error");
       }
       return response;
-
+    // TODO: Need to handle these exception.
     } catch (InterruptedException e) {
-      e.printStackTrace();
       return null;
     } catch (TimeoutException e) {
-      e.printStackTrace();
       return null;
     } catch (RemotingException e) {
-      e.printStackTrace();
       return null;
     }
   }
