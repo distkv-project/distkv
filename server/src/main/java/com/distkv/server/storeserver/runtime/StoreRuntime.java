@@ -43,9 +43,9 @@ public class StoreRuntime {
     storeEngine = new KVStoreImpl();
     expirationManager = new ExpirationManager(config);
     slaveClients = new CopyOnWriteArrayList<>();
+    nodeInfo = new NodeInfo(false, config.getNodeId(),
+        String.format("distkv://%s:%d", config.getIp(), config.getPort()));
     if (config.getMode().equals("m1")) {
-      nodeInfo = new NodeInfo(false, config.getNodeId(),
-          String.format("distkv://%s:%d", config.getIp(), config.getPort()));
       heartbeatManager = new HeartbeatManager(
           nodeInfo,
           config.getHeartBeatInterval(),
