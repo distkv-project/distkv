@@ -8,7 +8,7 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class ParseDistkvUniversalCommandTest {
+public class ParseBasicOperationCommandTest {
 
   private static final DistkvParser distkvParser = new DistkvParser();
 
@@ -31,31 +31,31 @@ public class ParseDistkvUniversalCommandTest {
   }
 
   @Test
-  public void testDrop1InvalidCommand() {
-    final String command = "drop k1 v1 v2";
+  public void testDropManyKeys() {
+    final String command = "drop k1 k2 k3";
     Assert.assertThrows(DistkvException.class, () ->  distkvParser.parse(command));
   }
 
   @Test
-  public void testDrop2InvalidCommand() {
+  public void testDropWithoutKey() {
     final String command = "drop";
     Assert.assertThrows(DistkvException.class, () -> distkvParser.parse(command));
   }
 
   @Test
-  public void testExpire1InvalidCommand() {
-    final String command = "expire k1 v1 v2";
-    Assert.assertThrows(DistkvException.class, () ->  distkvParser.parse(command));
-  }
-
-  @Test
-  public void testExpire2InvalidCommand() {
+  public void testExpireManyTime() {
     final String command = "expire k1 1000 1000";
     Assert.assertThrows(DistkvException.class, () ->  distkvParser.parse(command));
   }
 
   @Test
-  public void testExpire3InvalidCommand() {
+  public void testExpireWithoutTime() {
+    final String command = "expire k1";
+    Assert.assertThrows(DistkvException.class, () ->  distkvParser.parse(command));
+  }
+
+  @Test
+  public void testExpireWithoutKeyAndTime() {
     final String command = "expire";
     Assert.assertThrows(DistkvException.class, () -> distkvParser.parse(command));
   }

@@ -2,8 +2,12 @@ package com.distkv.client;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.asyncclient.DistkvAsyncClient;
+import com.distkv.common.utils.FutureUtils;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 
 public class DefaultDistkvClient implements DistkvClient {
+
+  private static final String typeCode = "X";
 
   private DistkvStringProxy stringProxy;
 
@@ -16,7 +20,6 @@ public class DefaultDistkvClient implements DistkvClient {
   private DistkvSortedListProxy sortedListProxy;
 
   private DistkvIntProxy intProxy;
-
 
 
   /// The `DistkvSyncClient` is wrapped with a `DistkvAsyncClient`.
@@ -91,12 +94,14 @@ public class DefaultDistkvClient implements DistkvClient {
 
   @Override
   public void drop(String key) {
-    asyncClient.drop(key);
+    DistkvResponse response = FutureUtils.get(asyncClient.drop(key));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
   @Override
   public void expire(String key, long expireTime) {
-    asyncClient.expire(key, expireTime);
+    DistkvResponse response = FutureUtils.get(asyncClient.expire(key, expireTime));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
   @Override

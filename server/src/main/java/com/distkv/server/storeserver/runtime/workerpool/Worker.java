@@ -95,7 +95,7 @@ public class Worker extends Thread {
 
   // Add expire request to ExpireCycle.
   private void handleExpiration(DistkvRequest request) {
-    if (request.getRequestType() == EXPIRE) {
+    if (needExpire(request)) {
       storeRuntime.getExpirationManager().addToCycle(request);
     }
   }
@@ -124,6 +124,12 @@ public class Worker extends Thread {
         }
       }
     }
+  }
+
+  // A helper method to check if it's a request with expiration.
+  private static boolean needExpire(DistkvRequest distkvRequest) {
+    RequestType requestType = distkvRequest.getRequestType();
+    return requestType == EXPIRE;
   }
 
   // A helper method to query if we need sync the request to slaves.
