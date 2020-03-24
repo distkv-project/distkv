@@ -47,7 +47,7 @@ public class DmetaClient {
         throw new RuntimeException("get error");
       }
       return response;
-    // TODO: Need to handle these exception.
+      // TODO(kairbon): Need to handle these exception.
     } catch (InterruptedException e) {
       return null;
     } catch (TimeoutException e) {
