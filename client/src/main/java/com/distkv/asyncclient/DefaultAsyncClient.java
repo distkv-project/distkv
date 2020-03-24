@@ -11,17 +11,19 @@ import com.distkv.rpc.service.DistkvService;
 
 public class DefaultAsyncClient implements DistkvAsyncClient {
 
-  private DistkvAsyncStringProxy stringProxy;
+  private DistkvAsyncStringProxy stringAsyncProxy;
 
-  private DistkvAsyncListProxy listProxy;
+  private DistkvAsyncListProxy listAsyncProxy;
 
-  private DistkvAsyncSetProxy setProxy;
+  private DistkvAsyncSetProxy setAsyncProxy;
 
-  private DistkvAsyncDictProxy dictProxy;
+  private DistkvAsyncDictProxy dictAsyncProxy;
 
-  private DistkvAsyncSortedListProxy sortedListProxy;
+  private DistkvAsyncSortedListProxy sortedListAsyncProxy;
 
-  private DistkvAsyncIntProxy intProxy;
+  private DistkvAsyncIntProxy intAsyncProxy;
+
+  private DistkvAsyncProxy distkvAsyncProxy;
 
   /// The rpc client.
   private Client rpcClient;
@@ -43,12 +45,14 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
 
-    stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
-    listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
-    setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
-    dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
-    sortedListProxy = new DistkvAsyncSortedListProxy(this, distkvRpcProxy.getService(rpcClient));
-    intProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
+    stringAsyncProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
+    listAsyncProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
+    setAsyncProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
+    dictAsyncProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
+    sortedListAsyncProxy = new DistkvAsyncSortedListProxy(this,
+        distkvRpcProxy.getService(rpcClient));
+    intAsyncProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
+    distkvAsyncProxy = new DistkvAsyncProxy(this, distkvRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -88,32 +92,37 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
   @Override
   public DistkvAsyncStringProxy strs() {
-    return stringProxy;
+    return stringAsyncProxy;
   }
 
   @Override
   public DistkvAsyncListProxy lists() {
-    return listProxy;
+    return listAsyncProxy;
   }
 
   @Override
   public DistkvAsyncSetProxy sets() {
-    return setProxy;
+    return setAsyncProxy;
   }
 
   @Override
   public DistkvAsyncDictProxy dicts() {
-    return dictProxy;
+    return dictAsyncProxy;
   }
 
   @Override
   public DistkvAsyncSortedListProxy sortedLists() {
-    return sortedListProxy;
+    return sortedListAsyncProxy;
   }
 
   @Override
   public DistkvAsyncIntProxy ints() {
-    return intProxy;
+    return intAsyncProxy;
+  }
+
+  @Override
+  public DistkvAsyncProxy distkv() {
+    return distkvAsyncProxy;
   }
 
 }

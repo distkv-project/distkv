@@ -79,4 +79,11 @@ public interface DistkvAsyncClient {
    * @return The distkv int proxy
    */
   DistkvAsyncIntProxy ints();
+
+  /**
+   * Get the distkv universal proxy
+   *
+   * @return The distkv proxy
+   */
+  DistkvAsyncProxy distkv();
 }

@@ -45,11 +45,6 @@ public class DistkvSortedListProxy {
     return list;
   }
 
-  public void drop(String key) {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.drop(key));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
   public void removeMember(String key, String member) {
     DistkvResponse response = FutureUtils.get(asyncSortedListProxy.removeMember(key, member));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
@@ -68,18 +63,6 @@ public class DistkvSortedListProxy {
         .unpack(SlistGetMemberResponse.class);
     SortedListProtocol.SortedListEntity sortedListEntity = slistGetMemberResponse.getEntity();
     return new DistkvTuple<>(sortedListEntity.getScore(), slistGetMemberResponse.getCount());
-  }
-
-
-  /**
-   * Expire a key.
-   *
-   * @param key The key to be expired.
-   * @param expireTime Millisecond level to set expire.
-   */
-  public void expire(String key, long expireTime) {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.expire(key, expireTime));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
 }

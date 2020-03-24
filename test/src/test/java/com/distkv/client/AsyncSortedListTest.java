@@ -86,7 +86,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     //TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-        client.sortedLists().drop("k1");
+        client.distkv().drop("k1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);

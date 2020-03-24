@@ -2,7 +2,6 @@ package com.distkv.server.storeserver.runtime.expire;
 
 import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.server.storeserver.StoreConfig;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -46,7 +45,6 @@ public class ExpirationManager {
    */
   public void addToCycle(DistkvRequest request) {
     String key = request.getKey();
-    RequestType requestType = request.getRequestType();
     long expiredTime = -1;
     try {
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
@@ -55,7 +53,7 @@ public class ExpirationManager {
       LOGGER.error("Failed to unpack ExpireRequest {1}", e);
       throw new DistkvException(e.toString());
     }
-    expirationQueue.offer(new Node(key, requestType, expiredTime));
+    expirationQueue.offer(new Node(key, expiredTime));
   }
 
   /**
@@ -87,7 +85,7 @@ public class ExpirationManager {
   private void clearStore(Node node) {
     try {
       expireClient.connect();
-      expireClient.drop(node.key, node.requestType);
+      expireClient.drop(node.key);
     } finally {
       if (!expireClient.isConnected()) {
         expireClient.disconnect();
@@ -96,20 +94,17 @@ public class ExpirationManager {
   }
 
   /**
-   * A Node object to store information about invalid key settings.
-   * The object has key, requestType and expiration time three attributes.
-   * Implemented the Comparable interface, rewritten the compareTo method, and achieved the
-   * comparison of expiredTime.
+   * A Node object to store information about invalid key settings. The object has key, requestType
+   * and expiration time three attributes. Implemented the Comparable interface, rewritten the
+   * compareTo method, and achieved the comparison of expiredTime.
    */
   private static class Node implements Comparable<Node> {
 
     private String key;
-    private RequestType requestType;
     private long expireTime;
 
-    public Node(String key, RequestType requestType, long expireTime) {
+    public Node(String key, long expireTime) {
       this.key = key;
-      this.requestType = requestType;
       this.expireTime = expireTime;
     }
 

@@ -17,6 +17,10 @@ public class DefaultDistkvClient implements DistkvClient {
 
   private DistkvIntProxy intProxy;
 
+  private DistkvProxy distkvProxy;
+
+
+
   /// The `DistkvSyncClient` is wrapped with a `DistkvAsyncClient`.
   private DistkvAsyncClient asyncClient;
 
@@ -29,6 +33,7 @@ public class DefaultDistkvClient implements DistkvClient {
     dictProxy = new DistkvDictProxy(asyncClient.dicts());
     sortedListProxy = new DistkvSortedListProxy(asyncClient.sortedLists());
     intProxy = new DistkvIntProxy(asyncClient.ints());
+    distkvProxy = new DistkvProxy(asyncClient.distkv());
   }
 
   @Override
@@ -75,6 +80,11 @@ public class DefaultDistkvClient implements DistkvClient {
   @Override
   public DistkvIntProxy ints() {
     return intProxy;
+  }
+
+  @Override
+  public DistkvProxy distkv() {
+    return distkvProxy;
   }
 
   @Override

@@ -84,4 +84,11 @@ public interface DistkvClient {
    * @return The distkv int proxy
    */
   DistkvIntProxy ints();
+
+  /**
+   * Get the distkv universal proxy
+   *
+   * @return The distkv proxy
+   */
+  DistkvProxy distkv();
 }

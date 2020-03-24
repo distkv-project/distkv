@@ -22,7 +22,7 @@ public class IntProxyTest extends BaseTestSupplier {
       Assert.assertEquals(1, client.ints().get("k1"));
       client.ints().incr("k1", 2);
       Assert.assertEquals(3, client.ints().get("k1"));
-      Assert.assertTrue(client.ints().drop("k1"));
+      //Assert.assertTrue(client.distkv().drop("k1"));
     } finally {
       client.disconnect();
     }
@@ -45,7 +45,7 @@ public class IntProxyTest extends BaseTestSupplier {
   public void testExpireList() {
     DistkvClient client = newDistkvClient();
     client.ints().put("k1", 1);
-    client.ints().expire("k1", 1000);
+    client.distkv().expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.ints().get("k1");

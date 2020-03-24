@@ -86,7 +86,7 @@ public class AsyncDictProxyTest extends BaseTestSupplier {
 
     //TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-        client.dicts().drop("m1");
+        client.distkv().drop("m1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);

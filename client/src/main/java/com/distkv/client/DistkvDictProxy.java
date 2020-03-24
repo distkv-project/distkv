@@ -73,30 +73,9 @@ public class DistkvDictProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  /**
-   * Drop the k-v pair.
-   *
-   * @param key The key to be dropped.
-   */
-  public void drop(String key) {
-    DistkvResponse response = FutureUtils.get(asyncDictProxy.drop(key));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
   // Remove the item in the dict corresponding to the key.
   public void removeItem(String key, String itemKey) {
     DistkvResponse response = FutureUtils.get(asyncDictProxy.removeItem(key, itemKey));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
-  /**
-   * Expire a key.
-   *
-   * @param key The key to be expired.
-   * @param expireTime Millisecond level to set expire.
-   */
-  public void expire(String key, long expireTime) {
-    DistkvResponse response = FutureUtils.get(asyncDictProxy.expire(key, expireTime));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
