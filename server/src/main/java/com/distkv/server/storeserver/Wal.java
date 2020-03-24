@@ -10,9 +10,6 @@ import java.util.List;
  * a WAL Implement.
  * </p>
  * The interface for wal is not stable now.  it will change for upper logical.
- *
- * @author meijie
- * @since 0.1.4
  */
 public class Wal {
   private LogSegment segment = new LogSegment();

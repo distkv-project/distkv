@@ -6,6 +6,7 @@ import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,12 +21,7 @@ public class DistkvAsyncListProxy extends DistkvAbstractAsyncProxy {
         .addAllValues(values)
         .build();
 
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.LIST_PUT)
-        .setRequest(Any.pack(listPutRequest))
-        .build();
-    return call(request);
+    return put(key, RequestType.LIST_PUT, Any.pack(listPutRequest));
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
@@ -72,11 +68,7 @@ public class DistkvAsyncListProxy extends DistkvAbstractAsyncProxy {
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.LIST_DROP)
-        .build();
-    return call(request);
+    return drop(key, RequestType.LIST_DROP);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> lput(String key, List<String> values) {
