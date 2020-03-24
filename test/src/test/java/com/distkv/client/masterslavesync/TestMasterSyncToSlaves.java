@@ -23,10 +23,10 @@ public class TestMasterSyncToSlaves {
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
-//    DmetaTestUtil.startAllDmetaProcess();
-//    TimeUnit.SECONDS.sleep(10);
-    MasterSlaveSyncTestUtil.startAllProcess();
+    DmetaTestUtil.startAllDmetaProcess();
     TimeUnit.SECONDS.sleep(10);
+    MasterSlaveSyncTestUtil.startAllProcess();
+    TimeUnit.SECONDS.sleep(5);
 
     final DistkvClient[] client0 = {null};
     final DistkvClient[] client1 = {null};
@@ -47,7 +47,9 @@ public class TestMasterSyncToSlaves {
     testDictPut(client0[0], client1[0]);
     testSlistPut(client0[0], client1[0]);
     testIntPut(client0[0], client1[0]);
+
     MasterSlaveSyncTestUtil.stopAllProcess();
+    DmetaTestUtil.stopAllDmetaProcess();
     System.out.println("m-s sync test over");
   }
 

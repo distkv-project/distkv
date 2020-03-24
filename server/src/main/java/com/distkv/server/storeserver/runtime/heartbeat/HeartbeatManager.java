@@ -32,10 +32,12 @@ public class HeartbeatManager {
     dmetaClient = new DmetaClient(dmetaServerListStr);
     scheduledExecutor.scheduleAtFixedRate(() -> {
       HeartBeatResponse response = dmetaClient.heartBeat(nodeInfo);
-      if (response.getNodeTable().size() != clients.size()-1) {
-        for (NodeInfo node : response.getNodeTable().values()) {
-          if (!buildSet.contains(nodeInfo.getNodeName())) {
-            clients.add(new SlaveClient(node.getIpAndPort()));
+      if (response.getNodeTable().size() > buildSet.size()) {
+        HashMap<String, NodeInfo> map = response.getNodeTable();
+        for (Map.Entry<String, NodeInfo> entry : map.entrySet()) {
+          if (!buildSet.contains(entry.getKey())) {
+            clients.add(new SlaveClient(entry.getValue().getIpAndPort()));
+            buildSet.add(entry.getKey());
           }
         }
       }

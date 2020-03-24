@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestServer {
   @Test
-  public void testd () throws InterruptedException {
+  public void testd() throws InterruptedException {
     String dmetaServerList = "localhost:8081,localhost:8082,localhost:8083";
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "DmetaTest", "testPutAndGet"));
@@ -24,8 +24,8 @@ public class TestServer {
           String.format("distkv://127.0.0.1:%d", 10086));
       System.out.println(nodeInfo.isMaster());
       HeartBeatResponse response = client.heartBeat(nodeInfo);
-      Assert.assertEquals(response.getNodeTable().get(nodeInfo.getNodeName()).isMaster(), true);
-      Assert.assertEquals(response.getNodeTable().get(nodeInfo.getNodeName()).getNodeName(), "hello");
+      Assert.assertEquals(response.getNodeTable()
+          .get(nodeInfo.getNodeName()).getNodeName(), "hello");
       TimeUnit.SECONDS.sleep(3);
     } catch (Exception e) {
       e.printStackTrace();
