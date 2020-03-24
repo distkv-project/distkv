@@ -12,6 +12,8 @@ import com.distkv.core.concepts.DistkvDicts;
  */
 public interface KVStore {
 
+  boolean drop(String key);
+
   DistkvStrings strs();
 
   DistkvLists lists();
