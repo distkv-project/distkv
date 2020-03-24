@@ -10,6 +10,7 @@ import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.workerpool.WorkerPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -44,28 +45,12 @@ public class StoreRuntime {
     slaveClients = new CopyOnWriteArrayList<>();
     if (config.getMode().equals("m1")) {
       nodeInfo = new NodeInfo(false, config.getNodeId(),
-          String.format("distkv://127.0.0.1:%d", config.getPort()));
+          String.format("distkv://%s:%d", config.getIp(), config.getPort()));
       heartbeatManager = new HeartbeatManager(
           nodeInfo,
           config.getHeartBeatInterval(),
           config.getDmetaServerListStr(),
           slaveClients);
-
-//      for (String slaveAddr : config.getSlaveAddresses()) {
-//        final SlaveClient[] client = {null};
-//        RuntimeUtil.waitForCondition(() -> {
-//          try {
-//            client[0] = new SlaveClient(slaveAddr);
-//            return true;
-//            //TODO : Drpc need to add a Exception to cover
-//            // io.netty.channel.AbstractChannel$AnnotatedConnectException
-//          } catch (Exception e) {
-//            return false;
-//          }
-//        }, 5 * 60 * 1000);
-//        slaveClients.add(client[0]);
-//        LOGGER.info("Connecting to slave(" + slaveAddr + ") success");
-//      }
 
     }
 

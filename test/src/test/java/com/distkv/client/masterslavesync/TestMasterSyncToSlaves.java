@@ -23,15 +23,17 @@ public class TestMasterSyncToSlaves {
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
-    DmetaTestUtil.startAllDmetaProcess();
+//    DmetaTestUtil.startAllDmetaProcess();
+//    TimeUnit.SECONDS.sleep(10);
     MasterSlaveSyncTestUtil.startAllProcess();
-    TimeUnit.SECONDS.sleep(1);
+    TimeUnit.SECONDS.sleep(10);
+
     final DistkvClient[] client0 = {null};
     final DistkvClient[] client1 = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client0[0] = new DefaultDistkvClient(String.format("list://127.0.0.1:%d", 18082));
-        client1[0] = new DefaultDistkvClient(String.format("list://127.0.0.1:%d", 18090));
+        client0[0] = new DefaultDistkvClient(String.format("distkv://127.0.0.1:%d", 8091));
+        client1[0] = new DefaultDistkvClient(String.format("distkv://127.0.0.1:%d", 8092));
         return true;
       } catch (Exception e) {
         return false;
@@ -46,7 +48,6 @@ public class TestMasterSyncToSlaves {
     testSlistPut(client0[0], client1[0]);
     testIntPut(client0[0], client1[0]);
     MasterSlaveSyncTestUtil.stopAllProcess();
-    DmetaTestUtil.stopAllDmetaProcess();
     System.out.println("m-s sync test over");
   }
 

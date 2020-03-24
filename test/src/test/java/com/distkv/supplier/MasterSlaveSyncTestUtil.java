@@ -30,17 +30,6 @@ public class MasterSlaveSyncTestUtil {
 
     String confPath = userDir.getParent() + File.separator + "test" +
         File.separator + "conf" + File.separator;
-    int i;
-    for (i = 0; i < NODE_NUM - 1; i++) {
-      final List<String> startCommand = ImmutableList.of(
-          "java",
-          "-Ddistkv.store.config=" + confPath + "slave_store_" + (i + 1) + ".conf",
-          "-classpath",
-          jarDir,
-          "com.distkv.server.storeserver.StoreServer"
-      );
-      processes[i] = TestUtil.executeCommand(startCommand);
-    }
 
     final List<String> startCommand = ImmutableList.of(
         "java",
@@ -49,7 +38,21 @@ public class MasterSlaveSyncTestUtil {
         jarDir,
         "com.distkv.server.storeserver.StoreServer"
     );
-    processes[i] = TestUtil.executeCommand(startCommand);
+    processes[0] = TestUtil.executeCommand(startCommand);
+
+    int i;
+    for (i = 1; i < NODE_NUM; i++) {
+      final List<String> startCommand1 = ImmutableList.of(
+          "java",
+          "-Ddistkv.store.config=" + confPath + "slave_store_" + i + ".conf",
+          "-classpath",
+          jarDir,
+          "com.distkv.server.storeserver.StoreServer"
+      );
+      processes[i] = TestUtil.executeCommand(startCommand1);
+    }
+
+
   }
 
   public static void stopAllProcess() {

@@ -20,12 +20,13 @@ public class TestServer {
     DmetaClient client = new DmetaClient(dmetaServerList);
 
     try {
-      NodeInfo nodeInfo = new NodeInfo(true, "hello",
+      NodeInfo nodeInfo = new NodeInfo(false, "hello",
           String.format("distkv://127.0.0.1:%d", 10086));
+      System.out.println(nodeInfo.isMaster());
       HeartBeatResponse response = client.heartBeat(nodeInfo);
       Assert.assertEquals(response.getNodeTable().get(nodeInfo.getNodeName()).isMaster(), true);
       Assert.assertEquals(response.getNodeTable().get(nodeInfo.getNodeName()).getNodeName(), "hello");
-      TimeUnit.SECONDS.sleep(30);
+      TimeUnit.SECONDS.sleep(3);
     } catch (Exception e) {
       e.printStackTrace();
       Assert.fail();

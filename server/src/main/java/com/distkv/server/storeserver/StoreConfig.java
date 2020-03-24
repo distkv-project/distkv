@@ -21,6 +21,7 @@ public class StoreConfig {
   private String nodeId;
   private int heartBeatInterval;
   private String dmetaServerListStr;
+  private String ip;
 
   public int getPort() {
     return listeningPort;
@@ -66,6 +67,14 @@ public class StoreConfig {
     this.dmetaServerListStr = dmetaServerListStr;
   }
 
+  public String getIp() {
+    return ip;
+  }
+
+  public void setIp(String ip) {
+    this.ip = ip;
+  }
+
   public StoreConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     shardsNum = config.getInt("store.shardsNum");
@@ -73,6 +82,7 @@ public class StoreConfig {
     nodeId = config.getString("store.nodeId");
     heartBeatInterval = config.getInt("store.heartBeatInterval");
     dmetaServerListStr = config.getString("store.dmetaServerList");
+    ip = config.getString("store.ip");
   }
 
   @Override

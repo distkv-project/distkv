@@ -111,7 +111,6 @@ public class MetaStateMachine extends StateMachineAdapter {
   public void onLeaderStart(final long term) {
     this.leaderTerm.set(term);
     super.onLeaderStart(term);
-    System.out.println(leaderTerm);
   }
 
   @Override
