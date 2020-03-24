@@ -10,13 +10,15 @@ package com.distkv.parser.generated;
 
 statement: (conceptStatement) EOF;
 conceptStatement: basicOperationsStatement | strStatement | listStatement
-| setStatement | dictStatement | slistStatement | intStatement | expireStatement | dropStatement;
+| setStatement | dictStatement | slistStatement | intStatement;
 
 // basic operations
-basicOperationsStatement: exit | activeNamespace | deactiveNamespace;
+basicOperationsStatement: exit | activeNamespace | deactiveNamespace | expire | drop;
 exit: 'exit';
 activeNamespace: 'active namespace' namespace;
 deactiveNamespace: 'deactive namespace';
+expire: 'expire' key anyInt;
+drop: 'drop' key;
 
 // str concept
 strStatement: strPut | strGet;
@@ -85,14 +87,6 @@ intIncr: 'int.incr' (intIncrDefault | intIncrDelta);
 intIncrDefault: key;
 // Increase delta points
 intIncrDelta: key anyInt;
-
-// expire
-expireStatement: expire;
-expire: 'expire' key anyInt;
-
-//drop
-dropStatement: drop;
-drop: 'drop' key;
 
 
 keyValuePairs: (keyValuePair)+;

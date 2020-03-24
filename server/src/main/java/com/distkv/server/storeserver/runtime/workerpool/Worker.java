@@ -1,6 +1,6 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRED;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
 
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
@@ -95,7 +95,7 @@ public class Worker extends Thread {
 
   // Add expire request to ExpireCycle.
   private void handleExpiration(DistkvRequest request) {
-    if (request.getRequestType() == EXPIRED) {
+    if (request.getRequestType() == EXPIRE) {
       storeRuntime.getExpirationManager().addToCycle(request);
     }
   }

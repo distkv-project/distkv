@@ -17,8 +17,6 @@ public class DefaultDistkvClient implements DistkvClient {
 
   private DistkvIntProxy intProxy;
 
-  private DistkvProxy distkvProxy;
-
 
 
   /// The `DistkvSyncClient` is wrapped with a `DistkvAsyncClient`.
@@ -33,7 +31,6 @@ public class DefaultDistkvClient implements DistkvClient {
     dictProxy = new DistkvDictProxy(asyncClient.dicts());
     sortedListProxy = new DistkvSortedListProxy(asyncClient.sortedLists());
     intProxy = new DistkvIntProxy(asyncClient.ints());
-    distkvProxy = new DistkvProxy(asyncClient.distkv());
   }
 
   @Override
@@ -83,11 +80,6 @@ public class DefaultDistkvClient implements DistkvClient {
   }
 
   @Override
-  public DistkvProxy distkv() {
-    return distkvProxy;
-  }
-
-  @Override
   public void activeNamespace(String namespace) {
     asyncClient.activeNamespace(namespace);
   }
@@ -95,6 +87,16 @@ public class DefaultDistkvClient implements DistkvClient {
   @Override
   public void deactiveNamespace() {
     asyncClient.deactiveNamespace();
+  }
+
+  @Override
+  public void drop(String key) {
+    asyncClient.drop(key);
+  }
+
+  @Override
+  public void expire(String key, long expireTime) {
+    asyncClient.expire(key, expireTime);
   }
 
   @Override

@@ -45,7 +45,7 @@ public class IntProxyTest extends BaseTestSupplier {
   public void testExpireList() {
     DistkvClient client = newDistkvClient();
     client.ints().put("k1", 1);
-    client.distkv().expire("k1", 1000);
+    client.expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.ints().get("k1");

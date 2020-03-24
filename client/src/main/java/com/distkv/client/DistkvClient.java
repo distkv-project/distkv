@@ -36,6 +36,21 @@ public interface DistkvClient {
   void deactiveNamespace();
 
   /**
+   * Drop the k-v pair.
+   *
+   * @param key The key to be dropped.
+   */
+  void drop(String key);
+
+  /**
+   * Expire a key.
+   *
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
+   */
+  void expire(String key, long expireTime);
+
+  /**
    * Get actived namespace
    * @return the actived namespace's name
    */
@@ -85,10 +100,4 @@ public interface DistkvClient {
    */
   DistkvIntProxy ints();
 
-  /**
-   * Get the distkv universal proxy
-   *
-   * @return The distkv proxy
-   */
-  DistkvProxy distkv();
 }

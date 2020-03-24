@@ -26,6 +26,10 @@ enum RequestType {
 
     DEACTIVE_NAMESPACE = 3;
 
+    DROP = 4;
+
+    EXPIRE = 5;
+
     // string concept
     STR_PUT = 101;
     STR_GET = 102;
@@ -66,11 +70,6 @@ enum RequestType {
     INT_GET = 602;
     INT_INCR = 603;
 
-    //expire
-    EXPIRED=701;
-
-    //drop
-    DROP=801;
 }
 
 message DistkvRequest {

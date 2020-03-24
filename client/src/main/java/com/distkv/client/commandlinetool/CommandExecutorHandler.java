@@ -473,7 +473,7 @@ public class CommandExecutorHandler {
     try {
       DistkvRequest request = parsedResult.getRequest();
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      distkvClient.distkv().expire(request.getKey(), expireRequest.getExpireTime());
+      distkvClient.expire(request.getKey(), expireRequest.getExpireTime());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
@@ -483,7 +483,7 @@ public class CommandExecutorHandler {
   public static String drop(
       DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     DistkvRequest request = parsedResult.getRequest();
-    distkvClient.distkv().drop(request.getKey());
+    distkvClient.drop(request.getKey());
     return STATUS_OK;
   }
 }

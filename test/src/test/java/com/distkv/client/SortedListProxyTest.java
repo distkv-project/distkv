@@ -69,7 +69,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
   public void testExpireSList() {
     distkvClient = newDistkvClient();
     testPut();
-    distkvClient.distkv().expire("k1", 1000);
+    distkvClient.expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         distkvClient.sortedLists().getMember("k1", "fw");

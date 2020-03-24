@@ -1,7 +1,7 @@
 package com.distkv.parser;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRED;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.po.DistkvParsedResult;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
@@ -25,7 +25,7 @@ public class ParseDistkvUniversalCommandTest {
   public void testExpire() {
     final String command = "expire k1 1000";
     DistkvParsedResult result = distkvParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), EXPIRED);
+    Assert.assertEquals(result.getRequestType(), EXPIRE);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
   }

@@ -10,7 +10,7 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_REMOVE_ITEM;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXIT;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRED;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.INT_GET;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.INT_INCR;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.INT_PUT;
@@ -644,10 +644,10 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
         .build();
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
-        .setRequestType(EXPIRED)
+        .setRequestType(EXPIRE)
         .setRequest(Any.pack(expireRequest))
         .build();
-    parsedResult = new DistkvParsedResult(EXPIRED, request);
+    parsedResult = new DistkvParsedResult(EXPIRE, request);
   }
 
   @Override

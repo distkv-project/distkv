@@ -1,6 +1,14 @@
 package com.distkv.asyncclient;
 
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
 import com.distkv.namespace.NamespaceInterceptor;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
+import com.google.protobuf.Any;
+import java.util.concurrent.CompletableFuture;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -23,7 +31,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
   private DistkvAsyncIntProxy intAsyncProxy;
 
-  private DistkvAsyncProxy distkvAsyncProxy;
+  DistkvService distkvService;
 
   /// The rpc client.
   private Client rpcClient;
@@ -33,8 +41,8 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
   public DefaultAsyncClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
-            .address(serverAddress)
-            .build();
+        .address(serverAddress)
+        .build();
 
     rpcClient = new DousiClient(clientConfig);
     try {
@@ -44,7 +52,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     }
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
-
+    distkvService = distkvRpcProxy.getService(rpcClient);
     stringAsyncProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
     listAsyncProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
     setAsyncProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
@@ -52,7 +60,6 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     sortedListAsyncProxy = new DistkvAsyncSortedListProxy(this,
         distkvRpcProxy.getService(rpcClient));
     intAsyncProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
-    distkvAsyncProxy = new DistkvAsyncProxy(this, distkvRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -91,6 +98,29 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   }
 
   @Override
+  public CompletableFuture<DistkvResponse> drop(String key) {
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(DROP)
+        .build();
+    return distkvService.call(request);
+  }
+
+  @Override
+  public CompletableFuture<DistkvResponse> expire(String key, long expireTime) {
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(expireTime)
+        .build();
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.EXPIRE)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    return distkvService.call(request);
+  }
+
+  @Override
   public DistkvAsyncStringProxy strs() {
     return stringAsyncProxy;
   }
@@ -118,11 +148,6 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   @Override
   public DistkvAsyncIntProxy ints() {
     return intAsyncProxy;
-  }
-
-  @Override
-  public DistkvAsyncProxy distkv() {
-    return distkvAsyncProxy;
   }
 
 }

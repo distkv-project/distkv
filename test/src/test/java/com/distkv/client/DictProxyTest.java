@@ -67,7 +67,7 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     dict.put("k2", "v2");
     client.dicts().put("m1", dict);
-    client.distkv().drop("m1");
+    client.drop("m1");
     client.disconnect();
   }
 
@@ -75,7 +75,7 @@ public class DictProxyTest extends BaseTestSupplier {
   public void testKeyNotFoundException() {
     DistkvClient client = newDistkvClient();
     try {
-      client.distkv().drop("m1");
+      client.drop("m1");
     } catch (KeyNotFoundException e) {
       Assert.assertTrue(true);
       return;
@@ -91,7 +91,7 @@ public class DictProxyTest extends BaseTestSupplier {
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
-    client.distkv().expire("m1", 1000);
+    client.expire("m1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.dicts().get("m1");

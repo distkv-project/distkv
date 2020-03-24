@@ -53,7 +53,7 @@ public class SetProxyTest extends BaseTestSupplier {
 
     DistkvClient client = newDistkvClient();
     client.sets().put("k1", set);
-    client.distkv().drop("k1");
+    client.drop("k1");
 
     // This method will throw a DistkvException if we drop the nonexistent key in store.
     Assert.assertThrows(DistkvException.class,
@@ -72,7 +72,7 @@ public class SetProxyTest extends BaseTestSupplier {
     client.sets().removeItem("k1", "v1");
     Assert.assertFalse(client.sets().exists("k1", "v1"));
 
-    client.distkv().drop("k1");
+    client.drop("k1");
     // This method will throw a DistkvException if we drop the nonexistent key in store.
     Assert.assertThrows(KeyNotFoundException.class,
         () -> client.sets().exists("k1", "v1"));
@@ -84,7 +84,7 @@ public class SetProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
     client.sets().put("k1", set);
-    client.distkv().expire("k1", 1000);
+    client.expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.sets().get("k1");

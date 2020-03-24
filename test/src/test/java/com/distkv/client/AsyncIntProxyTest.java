@@ -50,7 +50,7 @@ public class AsyncIntProxyTest extends BaseTestSupplier {
       });
 
       CompletableFuture<DistkvResponse> dropFuture =
-          client.distkv().drop("k1");
+          client.drop("k1");
       getFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);

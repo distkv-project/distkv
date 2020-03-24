@@ -1,6 +1,9 @@
 package com.distkv.asyncclient;
 
 
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * The DistkvAsyncClient class is used to connect to the distkv server
  * and do operations asynchronously.
@@ -37,6 +40,21 @@ public interface DistkvAsyncClient {
   void deactiveNamespace();
 
   String getActivedNamespace();
+
+  /**
+   * Drop the k-v pair.
+   *
+   * @param key The key to be dropped.
+   */
+  CompletableFuture<DistkvResponse> drop(String key);
+
+  /**
+   * Expire a key.
+   *
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
+   */
+  CompletableFuture<DistkvResponse> expire(String key, long expireTime);
 
   /**
    * Get the dst string proxy.
@@ -80,10 +98,4 @@ public interface DistkvAsyncClient {
    */
   DistkvAsyncIntProxy ints();
 
-  /**
-   * Get the distkv universal proxy
-   *
-   * @return The distkv proxy
-   */
-  DistkvAsyncProxy distkv();
 }

@@ -75,7 +75,7 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.intIncr(distkvClient, parsedResult);
       case DROP:
         return CommandExecutorHandler.drop(distkvClient, parsedResult);
-      case EXPIRED:
+      case EXPIRE:
         return CommandExecutorHandler.expire(distkvClient, parsedResult);
       case EXIT:
         // User inputs `exit`, let's exit client immediately.
