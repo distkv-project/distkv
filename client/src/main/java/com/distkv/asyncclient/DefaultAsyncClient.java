@@ -31,7 +31,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
   private DistkvAsyncIntProxy intAsyncProxy;
 
-  DistkvService distkvService;
+  private DistkvService distkvService;
 
   /// The rpc client.
   private Client rpcClient;
