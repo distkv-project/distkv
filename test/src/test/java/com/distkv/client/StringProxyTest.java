@@ -63,7 +63,7 @@ public class StringProxyTest extends BaseTestSupplier {
   public void testExpireStr() {
     DistkvClient client = newDistkvClient();
     client.strs().put("expired_k1", "v1");
-    client.strs().expire("expired_k1", 1000);
+    client.expire("expired_k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.strs().get("expired_k1");

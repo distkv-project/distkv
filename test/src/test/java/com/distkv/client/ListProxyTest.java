@@ -15,10 +15,16 @@ public class ListProxyTest extends BaseTestSupplier {
   @Test
   public void testPutAndGet() {
     DistkvClient client = newDistkvClient();
-    client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3"),client.lists().get("k1"));
+    client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
+    //Test get all.
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"), client.lists().get("k1"));
+    //Test get one.
+    Assert.assertEquals(ImmutableList.of("v3"),
+        client.lists().get("k1", 2));
+    //Test get range.
     Assert.assertEquals(ImmutableList.of("v2", "v3"),
         client.lists().get("k1", 1, 3));
+    //Test KeyNotFoundException.
     Assert.assertThrows(KeyNotFoundException.class, () -> client.lists().get("k2"));
   }
 
@@ -26,7 +32,7 @@ public class ListProxyTest extends BaseTestSupplier {
   public void testDrop() {
     DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    client.lists().drop("k1");
+    client.drop("k1");
     Assert.assertThrows(KeyNotFoundException.class, () -> client.lists().get("k1"));
     client.disconnect();
   }
@@ -83,7 +89,7 @@ public class ListProxyTest extends BaseTestSupplier {
   public void testExpireList() {
     DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
-    client.lists().expire("k1", 1000);
+    client.expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.lists().get("k1");

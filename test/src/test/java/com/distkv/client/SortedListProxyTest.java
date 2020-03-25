@@ -1,5 +1,6 @@
 package com.distkv.client;
 
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -66,10 +67,28 @@ public class SortedListProxyTest extends BaseTestSupplier {
   }
 
   @Test
+  public void testDistkvKeyDuplicatedException() {
+    distkvClient = newDistkvClient();
+    testPut();
+    Assert.assertThrows(
+        DistkvKeyDuplicatedException.class, this::testPut);
+    distkvClient.disconnect();
+  }
+
+  @Test
+  public void testKeyNotFoundException() {
+    distkvClient = newDistkvClient();
+    Assert
+        .assertThrows(KeyNotFoundException.class, () ->
+            distkvClient.sortedLists().top("k1", 100));
+    distkvClient.disconnect();
+  }
+
+  @Test
   public void testExpireSList() {
     distkvClient = newDistkvClient();
     testPut();
-    distkvClient.sortedLists().expire("k1", 1000);
+    distkvClient.expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         distkvClient.sortedLists().getMember("k1", "fw");

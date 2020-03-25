@@ -3,7 +3,6 @@ package com.distkv.asyncclient;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
-import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
@@ -29,11 +28,6 @@ public class DistkvAsyncIntProxy extends DistkvAbstractAsyncProxy {
     return get(key, RequestType.INT_GET);
   }
 
-  public CompletableFuture<DistkvResponse> drop(
-      String key) {
-    return drop(key, RequestType.INT_DROP);
-  }
-
   public CompletableFuture<DistkvResponse> incr(
       String key, int delta) {
     IntProtocol.IntIncrRequest intIncrRequest = IntProtocol.IntIncrRequest.newBuilder()
@@ -43,19 +37,6 @@ public class DistkvAsyncIntProxy extends DistkvAbstractAsyncProxy {
         .setKey(key)
         .setRequestType(RequestType.INT_INCR)
         .setRequest(Any.pack(intIncrRequest))
-        .build();
-    return call(request);
-  }
-
-  public CompletableFuture<DistkvResponse> expire(String key, long expireTime) {
-    ExpireRequest expireRequest = ExpireRequest
-        .newBuilder()
-        .setExpireTime(expireTime)
-        .build();
-    DistkvRequest request = DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.EXPIRED_INT)
-        .setRequest(Any.pack(expireRequest))
         .build();
     return call(request);
   }
