@@ -274,6 +274,37 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
   }
 
   @Test
+  public void testListGetOne() {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+
+    String command = "list.put k1 v2 v1 v3 v4 v5 v7 v9";
+    DistkvParsedResult distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.listPut(distkvClient, distKVParsedResult);
+
+    // Test command 'list.get'
+    command = "list.get k1 3";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .listGet(distkvClient, distKVParsedResult), "[v4]");
+  }
+
+  @Test
+  public void testListGetRange() {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    String command = "list.put k1 v2 v1 v3 v4 v5 v7 v9";
+    DistkvParsedResult distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.listPut(distkvClient, distKVParsedResult);
+
+    // Test command 'list.get'
+    command = "list.get k1 3 5";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .listGet(distkvClient, distKVParsedResult), "[v4, v5]");
+  }
+
+  @Test
   public void expireStrTest() {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
