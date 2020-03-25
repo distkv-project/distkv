@@ -11,11 +11,6 @@ public class DictKeyNotFoundException extends DistkvException {
 
   protected String key;
 
-  public DictKeyNotFoundException(String key) {
-    super(String.format("The dict key %s not found in the dicts.", key));
-    this.key = key;
-  }
-
   public DictKeyNotFoundException(String key, String typeCode) {
     super(String.format("The dict key %s not found in the dicts.", key));
     this.key = key;
