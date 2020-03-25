@@ -57,6 +57,14 @@ public interface DistkvAsyncClient {
   CompletableFuture<DistkvResponse> expire(String key, long expireTime);
 
   /**
+   * Get a servival time for a given key.
+   *
+   * @param key The key need to get the survival time.
+   */
+  CompletableFuture<DistkvResponse> ttl(String key);
+
+
+  /**
    * Get the dst string proxy.
    *
    * @return The dst string proxy.

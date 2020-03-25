@@ -51,6 +51,13 @@ public interface DistkvClient {
   void expire(String key, long expireTime);
 
   /**
+   * Get a servival time for a given key.
+   *
+   * @param key The key need to get the survival time.
+   */
+  void ttl(String key);
+
+  /**
    * Get actived namespace
    * @return the actived namespace's name
    */

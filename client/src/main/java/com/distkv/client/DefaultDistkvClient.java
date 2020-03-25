@@ -105,6 +105,12 @@ public class DefaultDistkvClient implements DistkvClient {
   }
 
   @Override
+  public void ttl(String key) {
+    DistkvResponse response = FutureUtils.get(asyncClient.ttl(key));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+  }
+
+  @Override
   public String getActivedNamespace() {
     return asyncClient.getActivedNamespace();
   }

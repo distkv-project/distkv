@@ -121,6 +121,12 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   }
 
   @Override
+  public CompletableFuture<DistkvResponse> ttl(String key) {
+    //TODO (senyer)
+    return null;
+  }
+
+  @Override
   public DistkvAsyncStringProxy strs() {
     return stringAsyncProxy;
   }
