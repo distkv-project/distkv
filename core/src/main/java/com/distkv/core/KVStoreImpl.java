@@ -15,6 +15,9 @@ import com.distkv.core.concepts.DistkvSortedListsImpl;
 
 public class KVStoreImpl implements KVStore {
 
+  // The key value map to store all kv pairs.
+  DistkvMapInterface<String, Object> distkvKeyValueMap;
+
   // The store proxy of string concept.
   private DistkvStringsImpl strs;
 
@@ -34,13 +37,18 @@ public class KVStoreImpl implements KVStore {
   private DistkvSortedLists sortedLists;
 
   public KVStoreImpl() {
-    DistkvMapInterface<String, Object> distkvKeyValueMap = new DistkvHashMapImpl<>();
+    distkvKeyValueMap = new DistkvHashMapImpl<>();
     this.strs = new DistkvStringsImpl(distkvKeyValueMap);
     this.lists = new DistkvListsImpl(distkvKeyValueMap);
     this.sets = new DistkvSetsImpl(distkvKeyValueMap);
     this.dicts = new DistkvDictsImpl(distkvKeyValueMap);
     this.sortedLists = new DistkvSortedListsImpl(distkvKeyValueMap);
     this.ints = new DistkvIntsImpl(distkvKeyValueMap);
+  }
+
+  @Override
+  public boolean drop(String key) {
+    return distkvKeyValueMap.remove(key);
   }
 
   @Override

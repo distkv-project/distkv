@@ -50,7 +50,7 @@ public class ExpirationManager {
     long expiredTime = -1;
     try {
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      expiredTime = expireRequest.getExpireTime() * 1000 + System.currentTimeMillis();
+      expiredTime = expireRequest.getExpireTime() + System.currentTimeMillis();
     } catch (InvalidProtocolBufferException e) {
       LOGGER.error("Failed to unpack ExpireRequest {1}", e);
       throw new DistkvException(e.toString());
