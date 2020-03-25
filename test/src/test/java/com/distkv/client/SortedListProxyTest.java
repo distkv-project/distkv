@@ -2,7 +2,6 @@ package com.distkv.client;
 
 import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.exception.SortedListMembersDuplicatedException;
 import com.distkv.common.utils.RuntimeUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;

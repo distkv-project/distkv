@@ -42,7 +42,7 @@ public interface DistkvAsyncClient {
   String getActivedNamespace();
 
   /**
-   * Drop the k-v pair.
+   * Drop the k-v pair for a given key.
    *
    * @param key The key to be dropped.
    */
