@@ -15,14 +15,26 @@ public class IntProxyTest extends BaseTestSupplier {
   private static final Logger LOGGER = LoggerFactory.getLogger(IntProxyTest.class);
 
   @Test
-  public void testPutGetIncrDrop() throws InvalidProtocolBufferException {
+  public void testPutAndGetIncr() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     try {
       client.ints().put("k1", 1);
       Assert.assertEquals(1, client.ints().get("k1"));
       client.ints().incr("k1", 2);
       Assert.assertEquals(3, client.ints().get("k1"));
-      Assert.assertTrue(client.ints().drop("k1"));
+    } finally {
+      client.disconnect();
+    }
+  }
+
+  @Test
+  public void testDrop() throws InvalidProtocolBufferException {
+    DistkvClient client = newDistkvClient();
+    try {
+      client.ints().put("k1", 1);
+      Assert.assertEquals(1, client.ints().get("k1"));
+      client.drop("k1");
+      Assert.assertThrows(KeyNotFoundException.class, () -> client.ints().get("k1"));
     } finally {
       client.disconnect();
     }
@@ -45,7 +57,7 @@ public class IntProxyTest extends BaseTestSupplier {
   public void testExpireList() {
     DistkvClient client = newDistkvClient();
     client.ints().put("k1", 1);
-    client.ints().expire("k1", 1000);
+    client.expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.ints().get("k1");
