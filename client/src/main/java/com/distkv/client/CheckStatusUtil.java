@@ -34,7 +34,7 @@ public class CheckStatusUtil {
         throw new DistkvKeyDuplicatedException(key, typeCode);
       default:
         throw new DistkvException(typeCode + "000",
-            String.format("Error status is %s", status.getClass().toString()));
+              String.format("Error status is %s", status.getClass().toString()));
     }
   }
 

@@ -72,18 +72,7 @@ public class SortedListProxyTest extends BaseTestSupplier {
     distkvClient = newDistkvClient();
     testPut();
     Assert.assertThrows(
-        DistkvKeyDuplicatedException.class, () ->
-            testPut());
-    distkvClient.disconnect();
-  }
-
-  @Test
-  public void testSortedListMembersDuplicatedException() {
-    distkvClient = newDistkvClient();
-    testPut();
-    Assert.assertThrows(
-        SortedListMembersDuplicatedException.class,
-        this::testPut);
+        DistkvKeyDuplicatedException.class, this::testPut);
     distkvClient.disconnect();
   }
 

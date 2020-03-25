@@ -19,8 +19,6 @@ enum Status {
     // The topNum of SortedList is less than zero.
     SLIST_TOPNUM_BE_POSITIVE = 7;
     // Return when master-slave synchronization error occurs
-    SLIST_MEMBER_DUPLICATE = 11;
-
     SYNC_ERROR = 8;
     // The key of the set is not found.
     SET_ITEM_NOT_FOUND = 9;
