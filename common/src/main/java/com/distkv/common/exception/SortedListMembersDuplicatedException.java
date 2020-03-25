@@ -13,12 +13,6 @@ public class SortedListMembersDuplicatedException extends DistkvException {
         "duplicated members.",  key));
   }
 
-  public SortedListMembersDuplicatedException(String key, String typeCode) {
-    super(String.format("The SortedList %s which you putted into has " +
-        "duplicated members.",  key));
-    this.errorCode = typeCode + this.errorCode;
-  }
-
   public String getKey() {
     return key;
   }
