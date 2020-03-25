@@ -33,7 +33,10 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTE
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_TOP;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.STR_GET;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.STR_PUT;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.TTL;
+
 import com.distkv.parser.generated.DistkvNewSQLBaseListener;
+import com.distkv.parser.generated.DistkvNewSQLParser.TtlContext;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
@@ -648,6 +651,18 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
         .setRequest(Any.pack(expireRequest))
         .build();
     parsedResult = new DistkvParsedResult(EXPIRE, request);
+  }
+
+  @Override
+  public void enterTtl(TtlContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
+
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(TTL)
+        .build();
+    parsedResult = new DistkvParsedResult(TTL, request);
   }
 
   @Override

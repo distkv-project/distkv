@@ -13,11 +13,12 @@ conceptStatement: basicOperationsStatement | strStatement | listStatement
 | setStatement | dictStatement | slistStatement | intStatement;
 
 // basic operations
-basicOperationsStatement: exit | activeNamespace | deactiveNamespace | expire | drop;
+basicOperationsStatement: exit | activeNamespace | deactiveNamespace | expire | ttl | drop;
 exit: 'exit';
 activeNamespace: 'active namespace' namespace;
 deactiveNamespace: 'deactive namespace';
 expire: 'expire' key anyInt;
+ttl: 'ttl' key;
 drop: 'drop' key;
 
 // str concept
