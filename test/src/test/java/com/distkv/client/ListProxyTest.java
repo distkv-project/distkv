@@ -17,7 +17,7 @@ public class ListProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     client.lists().put("k1", ImmutableList.of("v1", "v2", "v3", "v4"));
     //Test get all.
-    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"),client.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v1", "v2", "v3", "v4"), client.lists().get("k1"));
     //Test get one.
     Assert.assertEquals(ImmutableList.of("v3"),
         client.lists().get("k1", 2));
