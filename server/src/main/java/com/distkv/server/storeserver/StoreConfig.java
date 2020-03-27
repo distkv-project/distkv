@@ -19,7 +19,7 @@ public class StoreConfig {
   /**
    * Mode represents how to start the store server
    */
-  private String mode;
+  private ModeEnum mode;
   /**
    * Meta Server address str
    */
@@ -37,11 +37,11 @@ public class StoreConfig {
     return shardsNum;
   }
 
-  public String getMode() {
+  public ModeEnum getMode() {
     return mode;
   }
 
-  public void setMode(String mode) {
+  public void setMode(ModeEnum mode) {
     this.mode = mode;
   }
 
@@ -56,8 +56,8 @@ public class StoreConfig {
   public StoreConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     shardsNum = config.getInt("store.shardsNum");
-    mode = config.getString("store.mode");
     dmetaServerListStr = config.getString("store.dmetaServerList");
+    mode = config.getEnum(ModeEnum.class, "store.mode");
   }
 
   @Override

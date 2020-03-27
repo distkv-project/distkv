@@ -5,6 +5,7 @@ import com.distkv.common.id.GroupId;
 import com.distkv.common.id.NodeId;
 import com.distkv.core.KVStore;
 import com.distkv.core.KVStoreImpl;
+import com.distkv.server.storeserver.ModeEnum;
 import com.distkv.server.storeserver.runtime.expire.ExpirationManager;
 import com.distkv.server.storeserver.runtime.heartbeat.HeartbeatManager;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
@@ -55,7 +56,7 @@ public class StoreRuntime {
         .setAddress(String.format("distkv://%s:%d", getLocalIp(), config.getPort()))
         .setNodeId(nodeId)
         .build();
-    if (config.getMode().equals("distributed")) {
+    if (config.getMode() == ModeEnum.DISTRIBUTED) {
       heartbeatManager = new HeartbeatManager(
           nodeInfo,
           config.getDmetaServerListStr(),
