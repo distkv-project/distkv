@@ -26,18 +26,6 @@ import java.util.concurrent.TimeUnit;
 public class TestMasterSyncToSlaves {
 
   @Test
-  public void test() {
-    NodeInfo nodeInfo = NodeInfo.newBuilder()
-        .setNodeId(NodeId.from(1, GroupId.fromShort((short) 1), false))
-        .setAddress("whh")
-        .build();
-    DmetaClient client = new DmetaClient("127.0.0.1:8081");
-    HeartbeatResponse heartbeat = client.heartbeat(nodeInfo);
-    System.out.println(heartbeat.getNodeTable().get("whh").getAddress());
-  }
-
-
-  @Test
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
