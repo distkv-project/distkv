@@ -8,8 +8,8 @@ import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
 import com.distkv.common.NodeInfo;
-import com.distkv.server.metaserver.server.bean.HeartBeatRequest;
-import com.distkv.server.metaserver.server.bean.HeartBeatResponse;
+import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
+import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 
 import java.util.concurrent.TimeoutException;
 
@@ -31,7 +31,7 @@ public class DmetaClient {
     cliClientService.init(new CliOptions());
   }
 
-  public HeartBeatResponse heartBeat(NodeInfo nodeInfo) {
+  public HeartbeatResponse heartbeat(NodeInfo nodeInfo) {
     try {
       if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");
@@ -39,9 +39,9 @@ public class DmetaClient {
       //get leader term
       final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
 
-      final HeartBeatRequest request = new HeartBeatRequest(nodeInfo);
+      final HeartbeatRequest request = new HeartbeatRequest(nodeInfo);
 
-      HeartBeatResponse response = (HeartBeatResponse) cliClientService.getRpcClient()
+      HeartbeatResponse response = (HeartbeatResponse) cliClientService.getRpcClient()
           .invokeSync(leader.getEndpoint().toString(), request, 3000);
       if (!response.isSuccess()) {
         throw new RuntimeException("get error");

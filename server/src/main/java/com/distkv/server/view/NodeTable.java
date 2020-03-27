@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class NodeTable {
+  /**
+   * This map contains the info of all nodes in a group
+   */
   private ConcurrentHashMap<String, NodeInfo> nodeTable;
 
   public NodeTable() {

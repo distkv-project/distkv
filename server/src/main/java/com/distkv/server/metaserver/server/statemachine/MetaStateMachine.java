@@ -11,11 +11,10 @@ import com.alipay.sofa.jraft.storage.snapshot.SnapshotReader;
 import com.alipay.sofa.jraft.storage.snapshot.SnapshotWriter;
 import com.distkv.common.NodeInfo;
 import com.distkv.server.metaserver.server.DmetaStoreClosure;
-import com.distkv.server.metaserver.server.bean.HeartBeatRequest;
-import com.distkv.server.view.NodeTable;
+import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
+import com.distkv.server.view.DistkvGlobalView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,9 +24,9 @@ public class MetaStateMachine extends StateMachineAdapter {
   private static final Logger LOG = LoggerFactory.getLogger(MetaStateMachine.class);
 
   /**
-   * The Node Table of a Distkv cluster.
+   * The GlobalView of a Distkv cluster.
    */
-  private NodeTable nodeTable = new NodeTable();
+  private DistkvGlobalView globalView = new DistkvGlobalView();
 
   /**
    * Leader term.
@@ -38,8 +37,8 @@ public class MetaStateMachine extends StateMachineAdapter {
     return 0 < this.leaderTerm.get();
   }
 
-  public NodeTable getNodeTable() {
-    return this.nodeTable;
+  public DistkvGlobalView getGlobalView() {
+    return this.globalView;
   }
 
   @Override
@@ -60,9 +59,9 @@ public class MetaStateMachine extends StateMachineAdapter {
         // Have to parse FetchAddRequest from this user log.
         final ByteBuffer data = iter.getData();
         try {
-          final HeartBeatRequest request = SerializerManager
+          final HeartbeatRequest request = SerializerManager
               .getSerializer(SerializerManager.Hessian2)
-              .deserialize(data.array(), HeartBeatRequest.class.getName());
+              .deserialize(data.array(), HeartbeatRequest.class.getName());
           nodeInfo = request.getNodeInfo();
         } catch (final CodecException e) {
           // TODO(qwang): How to handle this error?
@@ -71,7 +70,7 @@ public class MetaStateMachine extends StateMachineAdapter {
       }
 
       try {
-        nodeTable.put(nodeInfo);
+        globalView.putNode(nodeInfo);
       } catch (Exception e) {
         e.printStackTrace();
         if (doneClosure != null) {
@@ -82,7 +81,9 @@ public class MetaStateMachine extends StateMachineAdapter {
 
       if (doneClosure != null) {
         doneClosure.getResponse().setSuccess(true);
-        doneClosure.getResponse().setNodeTable(nodeTable.getMap());
+        doneClosure.getResponse().setNodeTable(
+            globalView.get(String.valueOf(nodeInfo.getNodeId().getGroupId())).getMap()
+        );
         doneClosure.run(Status.OK());
       }
       iter.next();

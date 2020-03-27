@@ -16,7 +16,7 @@ public class IdTest {
     final GroupId partitionId = GroupId.fromShort((short) 21);
     NodeId id = NodeId.from(100, partitionId, true);
     Assert.assertEquals(id.getIndex(), 100);
-    Assert.assertEquals(id.getPartitionId(), partitionId);
+    Assert.assertEquals(id.getGroupId(), partitionId);
     Assert.assertTrue(id.isMaster());
   }
 

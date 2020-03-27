@@ -8,20 +8,20 @@ import com.alipay.remoting.serialization.SerializerManager;
 import com.alipay.sofa.jraft.entity.Task;
 import com.distkv.server.metaserver.server.DmetaServer;
 import com.distkv.server.metaserver.server.DmetaStoreClosure;
-import com.distkv.server.metaserver.server.bean.HeartBeatRequest;
-import com.distkv.server.metaserver.server.bean.HeartBeatResponse;
+import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
+import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
-public class HeartBeatRequestProcessor extends AsyncUserProcessor<HeartBeatRequest> {
+public class HeartbeatRequestProcessor extends AsyncUserProcessor<HeartbeatRequest> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(HeartBeatRequestProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HeartbeatRequestProcessor.class);
 
   private final DmetaServer dmetaServer;
 
-  public HeartBeatRequestProcessor(DmetaServer dmetaServer) {
+  public HeartbeatRequestProcessor(DmetaServer dmetaServer) {
     super();
     this.dmetaServer = dmetaServer;
   }
@@ -29,16 +29,16 @@ public class HeartBeatRequestProcessor extends AsyncUserProcessor<HeartBeatReque
   @Override
   public void handleRequest(final BizContext bizCtx,
                             final AsyncContext asyncCtx,
-                            final HeartBeatRequest request) {
+                            final HeartbeatRequest request) {
     if (! this.dmetaServer.getFsm().isLeader()) {
-      final HeartBeatResponse response = new HeartBeatResponse();
+      final HeartbeatResponse response = new HeartbeatResponse();
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
       asyncCtx.sendResponse(response);
       return;
     }
 
-    final HeartBeatResponse response = new HeartBeatResponse();
+    final HeartbeatResponse response = new HeartbeatResponse();
     final DmetaStoreClosure closure = new DmetaStoreClosure(dmetaServer, request, response,
         status -> {
           if (!status.isOk()) {
@@ -66,6 +66,6 @@ public class HeartBeatRequestProcessor extends AsyncUserProcessor<HeartBeatReque
 
   @Override
   public String interest() {
-    return HeartBeatRequest.class.getName();
+    return HeartbeatRequest.class.getName();
   }
 }

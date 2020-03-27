@@ -2,7 +2,7 @@ package com.distkv.server.storeserver.runtime.heartbeat;
 
 import com.distkv.common.NodeInfo;
 import com.distkv.server.metaserver.client.DmetaClient;
-import com.distkv.server.metaserver.server.bean.HeartBeatResponse;
+import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class HeartbeatManager {
     buildSet.add(nodeInfo.getAddress());
     dmetaClient = new DmetaClient(dmetaServerListStr);
     scheduledExecutor.scheduleAtFixedRate(() -> {
-      HeartBeatResponse response = dmetaClient.heartBeat(nodeInfo);
+      HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
       if (response.getNodeTable().size() > buildSet.size()) {
         HashMap<String, NodeInfo> map = response.getNodeTable();
         for (Map.Entry<String, NodeInfo> entry : map.entrySet()) {

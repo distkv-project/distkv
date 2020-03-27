@@ -5,20 +5,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class DistkvAbstractView {
 
-  protected GlobalTable globalTable;
-
-  protected NodeTable nodeTable;
-
   protected ShardTable shardTable;
 
-  private ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
+  private ConcurrentHashMap<String, NodeTable> map = new ConcurrentHashMap<>();
 
-  protected void put(String key, String value) {
+  protected void put(String key, NodeTable value) {
     map.put(key, value);
   }
 
-  public String get(String key) {
+  public NodeTable get(String key) {
     return map.get(key);
   }
 
+  public boolean containsKey(String key) {
+    return map.containsKey(key);
+  }
 }

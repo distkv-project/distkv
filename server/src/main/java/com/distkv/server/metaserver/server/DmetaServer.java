@@ -7,7 +7,7 @@ import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.NodeOptions;
 import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
-import com.distkv.server.metaserver.server.processor.HeartBeatRequestProcessor;
+import com.distkv.server.metaserver.server.processor.HeartbeatRequestProcessor;
 import org.apache.commons.io.FileUtils;
 import com.distkv.server.metaserver.server.statemachine.MetaStateMachine;
 
@@ -29,7 +29,7 @@ public class DmetaServer {
     final RpcServer rpcServer = new RpcServer(serverId.getPort());
     RaftRpcServerFactory.addRaftRequestProcessors(rpcServer);
     // Registration processor
-    rpcServer.registerUserProcessor(new HeartBeatRequestProcessor(this));
+    rpcServer.registerUserProcessor(new HeartbeatRequestProcessor(this));
     // init StateMachine
     this.fsm = new MetaStateMachine();
     // set StateMachine

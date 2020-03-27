@@ -34,7 +34,7 @@ public class NodeId implements Serializable {
     this.isMaster = isMaster;
   }
 
-  public GroupId getPartitionId() {
+  public GroupId getGroupId() {
     return groupId;
   }
 

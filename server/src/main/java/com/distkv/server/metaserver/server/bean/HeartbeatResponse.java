@@ -5,7 +5,7 @@ import com.distkv.common.NodeInfo;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class HeartBeatResponse implements Serializable {
+public class HeartbeatResponse implements Serializable {
   private static final long serialVersionUID = -4220017786727146673L;
 
   private HashMap<String, NodeInfo> nodeTable;
