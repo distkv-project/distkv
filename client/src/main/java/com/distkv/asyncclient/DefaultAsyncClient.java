@@ -1,6 +1,14 @@
 package com.distkv.asyncclient;
 
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
 import com.distkv.namespace.NamespaceInterceptor;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
+import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
+import com.google.protobuf.Any;
+import java.util.concurrent.CompletableFuture;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -11,17 +19,19 @@ import com.distkv.rpc.service.DistkvService;
 
 public class DefaultAsyncClient implements DistkvAsyncClient {
 
-  private DistkvAsyncStringProxy stringProxy;
+  private DistkvAsyncStringProxy stringAsyncProxy;
 
-  private DistkvAsyncListProxy listProxy;
+  private DistkvAsyncListProxy listAsyncProxy;
 
-  private DistkvAsyncSetProxy setProxy;
+  private DistkvAsyncSetProxy setAsyncProxy;
 
-  private DistkvAsyncDictProxy dictProxy;
+  private DistkvAsyncDictProxy dictAsyncProxy;
 
-  private DistkvAsyncSortedListProxy sortedListProxy;
+  private DistkvAsyncSortedListProxy sortedListAsyncProxy;
 
-  private DistkvAsyncIntProxy intProxy;
+  private DistkvAsyncIntProxy intAsyncProxy;
+
+  private DistkvService distkvService;
 
   /// The rpc client.
   private Client rpcClient;
@@ -31,8 +41,8 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
   public DefaultAsyncClient(String serverAddress) {
     ClientConfig clientConfig = ClientConfig.builder()
-            .address(serverAddress)
-            .build();
+        .address(serverAddress)
+        .build();
 
     rpcClient = new DousiClient(clientConfig);
     try {
@@ -42,13 +52,14 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     }
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
-
-    stringProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
-    listProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
-    setProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
-    dictProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
-    sortedListProxy = new DistkvAsyncSortedListProxy(this, distkvRpcProxy.getService(rpcClient));
-    intProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
+    distkvService = distkvRpcProxy.getService(rpcClient);
+    stringAsyncProxy = new DistkvAsyncStringProxy(this, distkvRpcProxy.getService(rpcClient));
+    listAsyncProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
+    setAsyncProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
+    dictAsyncProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
+    sortedListAsyncProxy = new DistkvAsyncSortedListProxy(this,
+        distkvRpcProxy.getService(rpcClient));
+    intAsyncProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
   }
 
   @Override
@@ -87,33 +98,56 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   }
 
   @Override
+  public CompletableFuture<DistkvResponse> drop(String key) {
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(DROP)
+        .build();
+    return distkvService.call(request);
+  }
+
+  @Override
+  public CompletableFuture<DistkvResponse> expire(String key, long expireTime) {
+    ExpireRequest expireRequest = ExpireRequest
+        .newBuilder()
+        .setExpireTime(expireTime)
+        .build();
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.EXPIRE)
+        .setRequest(Any.pack(expireRequest))
+        .build();
+    return distkvService.call(request);
+  }
+
+  @Override
   public DistkvAsyncStringProxy strs() {
-    return stringProxy;
+    return stringAsyncProxy;
   }
 
   @Override
   public DistkvAsyncListProxy lists() {
-    return listProxy;
+    return listAsyncProxy;
   }
 
   @Override
   public DistkvAsyncSetProxy sets() {
-    return setProxy;
+    return setAsyncProxy;
   }
 
   @Override
   public DistkvAsyncDictProxy dicts() {
-    return dictProxy;
+    return dictAsyncProxy;
   }
 
   @Override
   public DistkvAsyncSortedListProxy sortedLists() {
-    return sortedListProxy;
+    return sortedListAsyncProxy;
   }
 
   @Override
   public DistkvAsyncIntProxy ints() {
-    return intProxy;
+    return intAsyncProxy;
   }
 
 }

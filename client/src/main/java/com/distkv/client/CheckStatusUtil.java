@@ -1,6 +1,7 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.DictKeyNotFoundException;
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.MasterSyncToSlaveException;
 import com.distkv.common.exception.SetItemNotFoundException;
@@ -29,6 +30,8 @@ public class CheckStatusUtil {
         throw new SortedListTopNumIsNonNegativeException(key, typeCode);
       case SYNC_ERROR:
         throw new MasterSyncToSlaveException(key, typeCode);
+      case DUPLICATED_KEY:
+        throw new DistkvKeyDuplicatedException(key, typeCode);
       default:
         throw new DistkvException(typeCode + "000",
               String.format("Error status is %s", status.getClass().toString()));
