@@ -122,8 +122,11 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
   @Override
   public CompletableFuture<DistkvResponse> ttl(String key) {
-    //TODO (senyer)
-    return null;
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(RequestType.TTL)
+        .build();
+    return distkvService.call(request);
   }
 
   @Override

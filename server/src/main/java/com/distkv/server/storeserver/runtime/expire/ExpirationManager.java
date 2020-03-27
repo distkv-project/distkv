@@ -5,6 +5,9 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.server.storeserver.StoreConfig;
 import com.google.protobuf.InvalidProtocolBufferException;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,6 +57,26 @@ public class ExpirationManager {
       throw new DistkvException(e.toString());
     }
     expirationQueue.offer(new Node(key, expiredTime));
+  }
+
+  /**
+   * Get the remaining survival time of a key. For keys with no expiration time set and stored in
+   * the store, it will return -1.
+   *
+   * @param key The key to get time to live.
+   * @return Survival time for a key.
+   */
+  public long survivalTime(String key) {
+    Optional<Node> nodeOptional = expirationQueue.stream().filter(item -> item.key.equals(key))
+        .findFirst();
+    if (nodeOptional.isPresent()) {
+      Node node = nodeOptional.get();
+      return node.expireTime - new Date().getTime();
+    } else {
+
+    }
+
+    return -1;
   }
 
   /**

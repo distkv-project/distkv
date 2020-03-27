@@ -70,5 +70,13 @@ public class ExpirationClient {
     service.call(request);
   }
 
+  public boolean exist(String key) {
+    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType()
+        .build();
+    service.call(request);
+  }
+
 
 }

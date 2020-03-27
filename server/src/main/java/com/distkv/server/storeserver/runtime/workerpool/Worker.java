@@ -1,6 +1,7 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.TTL;
 
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
@@ -98,6 +99,10 @@ public class Worker extends Thread {
     if (needExpire(request)) {
       storeRuntime.getExpirationManager().addToCycle(request);
     }
+    if (isTimeRemainingQuery(request)) {
+      long survivalTime = storeRuntime.getExpirationManager().survivalTime(request.getKey());
+      //todo
+    }
   }
 
   private void syncToSlaves(DistkvRequest request, CompletableFuture<DistkvResponse> future) {
@@ -124,6 +129,12 @@ public class Worker extends Thread {
         }
       }
     }
+  }
+
+  // A helper method to check if it's a request with ttl.
+  private static boolean isTimeRemainingQuery(DistkvRequest distkvRequest) {
+    RequestType requestType = distkvRequest.getRequestType();
+    return requestType == TTL;
   }
 
   // A helper method to check if it's a request with expiration.
