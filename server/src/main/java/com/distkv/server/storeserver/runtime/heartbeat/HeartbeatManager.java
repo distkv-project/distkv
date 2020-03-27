@@ -18,6 +18,10 @@ public class HeartbeatManager {
 
   public static int HEARTBEAT_INTERVAL = 500;
 
+  public static int HEARTBEAT_TIMEOUT = 3000;
+
+  public static int INIT_DELAY = 0;
+
   private static ScheduledExecutorService scheduledExecutor = Executors
       .newSingleThreadScheduledExecutor();
 
@@ -25,15 +29,13 @@ public class HeartbeatManager {
 
   private static HashSet<String> buildSet;
 
-  private static AtomicInteger i = new AtomicInteger(0);
-
   public HeartbeatManager(NodeInfo nodeInfo, String dmetaServerListStr,
                           CopyOnWriteArrayList<SlaveClient> clients) {
     buildSet = new HashSet<>();
     buildSet.add(nodeInfo.getAddress());
     dmetaClient = new DmetaClient(dmetaServerListStr);
     scheduledExecutor.scheduleAtFixedRate(() -> {
-      HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
+      HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo, HEARTBEAT_TIMEOUT);
       HashMap<String, NodeInfo> nodeTable = response.getNodeTable();
       if (response.getNodeTable().size() > buildSet.size()) {
         for (Map.Entry<String, NodeInfo> entry : nodeTable.entrySet()) {
@@ -43,14 +45,9 @@ public class HeartbeatManager {
           }
         }
       }
-
-      System.out.println(nodeTable.get(nodeInfo.getAddress()).getNodeId().isMaster()
-          + nodeTable.get(nodeInfo.getAddress()).getAddress()
-          + clients.size()
-      );
       nodeInfo.getNodeId().setMaster(response.getNodeTable()
           .get(nodeInfo.getAddress()).getNodeId().isMaster());
-    }, 0, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS);
+    }, INIT_DELAY, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS);
   }
 
 }

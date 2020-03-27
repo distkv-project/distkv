@@ -18,31 +18,32 @@ public class DmetaClient {
   private BoltCliClientService cliClientService = null;
 
   // TODO(qingw): Refine this.
-  public static final String groupId = "KV";
+  public static final String GROUP_ID = "KV";
 
   public DmetaClient(String confStr) {
 
     final Configuration conf = JRaftUtils.getConfiguration(confStr);
 
-    RouteTable.getInstance().updateConfiguration(groupId, conf);
+    RouteTable.getInstance().updateConfiguration(GROUP_ID, conf);
 
     //init RPC client and update Routing table
     cliClientService = new BoltCliClientService();
     cliClientService.init(new CliOptions());
   }
 
-  public HeartbeatResponse heartbeat(NodeInfo nodeInfo) {
+  public HeartbeatResponse heartbeat(NodeInfo nodeInfo, int timeout) {
     try {
-      if (!RouteTable.getInstance().refreshLeader(cliClientService, groupId, 1000).isOk()) {
+      //refresh leader term.
+      if (!RouteTable.getInstance().refreshLeader(cliClientService, GROUP_ID, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");
       }
-      //get leader term
-      final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
+      //get leader term.
+      final PeerId leader = RouteTable.getInstance().selectLeader(GROUP_ID);
 
       final HeartbeatRequest request = new HeartbeatRequest(nodeInfo);
 
       HeartbeatResponse response = (HeartbeatResponse) cliClientService.getRpcClient()
-          .invokeSync(leader.getEndpoint().toString(), request, 3000);
+          .invokeSync(leader.getEndpoint().toString(), request, timeout);
       if (!response.isSuccess()) {
         throw new RuntimeException("get error");
       }

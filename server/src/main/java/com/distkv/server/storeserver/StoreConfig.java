@@ -16,7 +16,13 @@ public class StoreConfig {
 
   private int listeningPort;
   private int shardsNum;
+  /**
+   * Mode represents how to start the store server
+   */
   private String mode;
+  /**
+   * Meta Server address str
+   */
   private String dmetaServerListStr;
 
   public int getPort() {
