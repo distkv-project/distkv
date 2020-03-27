@@ -17,8 +17,6 @@ public class StoreConfig {
   private int listeningPort;
   private int shardsNum;
   private String mode;
-  private String nodeId;
-  private int heartBeatInterval;
   private String dmetaServerListStr;
   private String ip;
 
@@ -42,22 +40,6 @@ public class StoreConfig {
     this.mode = mode;
   }
 
-  public String getNodeId() {
-    return nodeId;
-  }
-
-  public void setNodeId(String nodeId) {
-    this.nodeId = nodeId;
-  }
-
-  public int getHeartBeatInterval() {
-    return heartBeatInterval;
-  }
-
-  public void setHeartBeatInterval(int heartBeatInterval) {
-    this.heartBeatInterval = heartBeatInterval;
-  }
-
   public String getDmetaServerListStr() {
     return dmetaServerListStr;
   }
@@ -78,8 +60,6 @@ public class StoreConfig {
     listeningPort = config.getInt("store.listeningPort");
     shardsNum = config.getInt("store.shardsNum");
     mode = config.getString("store.mode");
-    nodeId = config.getString("store.nodeId");
-    heartBeatInterval = config.getInt("store.heartBeatInterval");
     dmetaServerListStr = config.getString("store.dmetaServerList");
     ip = config.getString("store.ip");
   }

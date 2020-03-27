@@ -16,6 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class HeartbeatManager {
 
+  public static int HEARTBEAT_INTERVAL = 500;
+
   private static ScheduledExecutorService scheduledExecutor = Executors
       .newSingleThreadScheduledExecutor();
 
@@ -25,8 +27,8 @@ public class HeartbeatManager {
 
   private static AtomicInteger i = new AtomicInteger(0);
 
-  public HeartbeatManager(NodeInfo nodeInfo, int heartBeatInterval,
-                          String dmetaServerListStr, CopyOnWriteArrayList<SlaveClient> clients) {
+  public HeartbeatManager(NodeInfo nodeInfo, String dmetaServerListStr,
+                          CopyOnWriteArrayList<SlaveClient> clients) {
     buildSet = new HashSet<>();
     buildSet.add(nodeInfo.getAddress());
     dmetaClient = new DmetaClient(dmetaServerListStr);
@@ -46,10 +48,9 @@ public class HeartbeatManager {
           + nodeTable.get(nodeInfo.getAddress()).getAddress()
           + clients.size()
       );
-
       nodeInfo.getNodeId().setMaster(response.getNodeTable()
           .get(nodeInfo.getAddress()).getNodeId().isMaster());
-    }, 100, heartBeatInterval, TimeUnit.MILLISECONDS);
+    }, 0, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS);
   }
 
 }

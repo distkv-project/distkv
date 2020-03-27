@@ -56,7 +56,6 @@ public class StoreRuntime {
     if (config.getMode().equals("distributed")) {
       heartbeatManager = new HeartbeatManager(
           nodeInfo,
-          config.getHeartBeatInterval(),
           config.getDmetaServerListStr(),
           slaveClients);
     }

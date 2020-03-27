@@ -27,7 +27,7 @@ public class TestMasterSyncToSlaves {
     DmetaTestUtil.startAllDmetaProcess();
     TimeUnit.SECONDS.sleep(7);
     MasterSlaveSyncTestUtil.startAllProcess();
-    TimeUnit.SECONDS.sleep(70);
+    TimeUnit.SECONDS.sleep(7);
 
     final DistkvClient[] client0 = {null};
     final DistkvClient[] client1 = {null};
