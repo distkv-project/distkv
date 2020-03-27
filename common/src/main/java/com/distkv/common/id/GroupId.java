@@ -22,6 +22,10 @@ public class GroupId implements Serializable {
     return index;
   }
 
+  public void setIndex(short i) {
+    index = i;
+  }
+
   public static GroupId fromShort(short index) {
     return new GroupId(index);
   }

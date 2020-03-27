@@ -42,6 +42,10 @@ public class NodeId implements Serializable {
     return index;
   }
 
+  public void setIndex(int i) {
+    this.index = i;
+  }
+
   private NodeId(int index, GroupId groupId, boolean isMaster) {
     this.index = index;
     this.groupId = groupId;
