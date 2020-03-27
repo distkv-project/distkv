@@ -1,6 +1,5 @@
 package com.distkv.client;
 
-
 /**
  * The DistkvClient class is used to connect to the distkv server.
  */
@@ -49,6 +48,13 @@ public interface DistkvClient {
    * @param expireTime Millisecond level to set expire.
    */
   void expire(String key, long expireTime);
+
+  /**
+   * Determine if a key exists.
+   *
+   * @param key The key if exists.
+   */
+  boolean exist(String key);
 
   /**
    * Get actived namespace

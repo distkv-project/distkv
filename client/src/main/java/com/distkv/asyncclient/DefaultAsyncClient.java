@@ -1,6 +1,8 @@
 package com.distkv.asyncclient;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXIST;
+
 import com.distkv.namespace.NamespaceInterceptor;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
@@ -116,6 +118,15 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
         .setKey(key)
         .setRequestType(RequestType.EXPIRE)
         .setRequest(Any.pack(expireRequest))
+        .build();
+    return distkvService.call(request);
+  }
+
+  @Override
+  public CompletableFuture<DistkvResponse> exist(String key) {
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(EXIST)
         .build();
     return distkvService.call(request);
   }
