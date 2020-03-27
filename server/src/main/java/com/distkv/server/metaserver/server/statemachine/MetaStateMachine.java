@@ -15,6 +15,7 @@ import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
 import com.distkv.server.view.DistkvGlobalView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -82,7 +83,7 @@ public class MetaStateMachine extends StateMachineAdapter {
       if (doneClosure != null) {
         doneClosure.getResponse().setSuccess(true);
         doneClosure.getResponse().setNodeTable(
-            globalView.get(String.valueOf(nodeInfo.getNodeId().getIndex())).getMap()
+            globalView.get(String.valueOf(nodeInfo.getNodeId().getGroupId().getIndex())).getMap()
         );
         doneClosure.run(Status.OK());
       }

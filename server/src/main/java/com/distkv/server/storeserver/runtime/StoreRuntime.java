@@ -40,12 +40,14 @@ public class StoreRuntime {
 
   private volatile NodeInfo nodeInfo;
 
+  private short groupIndex = 1;
+
   public StoreRuntime(StoreConfig config) {
     this.config = config;
     storeEngine = new KVStoreImpl();
     expirationManager = new ExpirationManager(config);
     slaveClients = new CopyOnWriteArrayList<>();
-    GroupId groupId = GroupId.fromShort((short) 1);
+    GroupId groupId = GroupId.fromShort(groupIndex);
     NodeId nodeId = NodeId.from(-1, groupId, false);
     nodeInfo = NodeInfo.newBuilder()
         .setAddress(String.format("distkv://%s:%d", config.getIp(), config.getPort()))

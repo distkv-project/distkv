@@ -2,8 +2,13 @@ package com.distkv.client.masterslavesync;
 
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
+import com.distkv.common.NodeInfo;
 import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.id.GroupId;
+import com.distkv.common.id.NodeId;
 import com.distkv.common.utils.RuntimeUtil;
+import com.distkv.server.metaserver.client.DmetaClient;
+import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
 import com.google.common.collect.ImmutableList;
@@ -21,13 +26,25 @@ import java.util.concurrent.TimeUnit;
 public class TestMasterSyncToSlaves {
 
   @Test
+  public void test() {
+    NodeInfo nodeInfo = NodeInfo.newBuilder()
+        .setNodeId(NodeId.from(1, GroupId.fromShort((short) 1), false))
+        .setAddress("whh")
+        .build();
+    DmetaClient client = new DmetaClient("127.0.0.1:8081");
+    HeartbeatResponse heartbeat = client.heartbeat(nodeInfo);
+    System.out.println(heartbeat.getNodeTable().get("whh").getAddress());
+  }
+
+
+  @Test
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
     DmetaTestUtil.startAllDmetaProcess();
     TimeUnit.SECONDS.sleep(7);
     MasterSlaveSyncTestUtil.startAllProcess();
-    TimeUnit.SECONDS.sleep(7);
+    TimeUnit.SECONDS.sleep(70);
 
     final DistkvClient[] client0 = {null};
     final DistkvClient[] client1 = {null};
