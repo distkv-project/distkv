@@ -11,12 +11,12 @@ import org.testng.annotations.Test;
 
 public class ParseStringCommandTest {
 
-  private static final DistkvParser dstParser = new DistkvParser();
+  private static final DistkvParser distkvParser = new DistkvParser();
 
   @Test
   public void testPut() throws InvalidProtocolBufferException {
     final String command = "str.put k1 v1";
-    DistkvParsedResult result = dstParser.parse(command);
+    DistkvParsedResult result = distkvParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestType.STR_PUT);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
@@ -26,17 +26,8 @@ public class ParseStringCommandTest {
   @Test
   public void testGet() {
     final String command = "str.get k1";
-    DistkvParsedResult result = dstParser.parse(command);
+    DistkvParsedResult result = distkvParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestType.STR_GET);
-    DistkvRequest request = result.getRequest();
-    Assert.assertEquals(request.getKey(), "k1");
-  }
-
-  @Test
-  public void testDrop() {
-    final String command = "str.drop k1";
-    DistkvParsedResult result = dstParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestType.STR_DROP);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
   }
@@ -44,18 +35,18 @@ public class ParseStringCommandTest {
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidPutCommand() {
     final String command = "str.put k1 v1 v2";
-    dstParser.parse(command);
+    distkvParser.parse(command);
   }
 
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidGetCommand() {
     final String command = "str.get k1 v1";
-    dstParser.parse(command);
+    distkvParser.parse(command);
   }
 
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidStrCommand() {
     final String command = "str.get";
-    dstParser.parse(command);
+    distkvParser.parse(command);
   }
 }

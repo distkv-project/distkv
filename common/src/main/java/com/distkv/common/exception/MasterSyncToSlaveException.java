@@ -7,11 +7,6 @@ public class MasterSyncToSlaveException extends DistkvException {
 
   protected String key;
 
-  public MasterSyncToSlaveException(String key) {
-    super(String.format("Master slave synchronization failed", key));
-    this.key = key;
-  }
-
   public MasterSyncToSlaveException(String key, String typeCode) {
     super(String.format("Master slave synchronization failed. key: %s", key));
     this.key = key;

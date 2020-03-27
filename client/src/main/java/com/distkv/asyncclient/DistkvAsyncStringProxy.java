@@ -2,7 +2,6 @@ package com.distkv.asyncclient;
 
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
-import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
@@ -27,20 +26,4 @@ public class DistkvAsyncStringProxy extends DistkvAbstractAsyncProxy {
     return get(key, RequestType.STR_GET);
   }
 
-  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    return drop(key, RequestType.STR_DROP);
-  }
-
-  public CompletableFuture<DistkvProtocol.DistkvResponse> expire(String key, long expireTime) {
-    ExpireRequest expireRequest = ExpireRequest
-        .newBuilder()
-        .setExpireTime(expireTime)
-        .build();
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.EXPIRED_STR)
-        .setRequest(Any.pack(expireRequest))
-        .build();
-    return call(request);
-  }
 }

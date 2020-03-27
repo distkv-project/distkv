@@ -73,7 +73,7 @@ public class AsyncSetProxyTest extends BaseTestSupplier {
 
     //TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-            client.sets().drop("k1");
+            client.drop("k1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);

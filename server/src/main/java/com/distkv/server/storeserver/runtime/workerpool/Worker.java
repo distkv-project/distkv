@@ -1,5 +1,7 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
+
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
@@ -127,20 +129,7 @@ public class Worker extends Thread {
   // A helper method to check if it's a request with expiration.
   private static boolean needExpire(DistkvRequest distkvRequest) {
     RequestType requestType = distkvRequest.getRequestType();
-    switch (requestType) {
-      case EXPIRED_STR:
-      case EXPIRED_LIST:
-      case EXPIRED_SET:
-      case EXPIRED_DICT:
-      case EXPIRED_INT:
-      case EXPIRED_SLIST: {
-        return true;
-      }
-      default: {
-        break;
-      }
-    }
-    return false;
+    return requestType == EXPIRE;
   }
 
   // A helper method to query if we need sync the request to slaves.
@@ -148,29 +137,24 @@ public class Worker extends Thread {
     RequestType requestType = distkvRequest.getRequestType();
     switch (requestType) {
       case STR_PUT:
-      case STR_DROP:
       case LIST_PUT:
-      case LIST_DROP:
       case LIST_LPUT:
       case LIST_RPUT:
       case LIST_REMOVE:
       case LIST_MREMOVE:
       case SET_PUT:
-      case SET_DROP:
       case SET_PUT_ITEM:
       case SET_REMOVE_ITEM:
       case DICT_PUT:
-      case DICT_DROP:
       case DICT_PUT_ITEM:
       case DICT_REMOVE_ITEM:
       case SORTED_LIST_PUT:
-      case SORTED_LIST_DROP:
       case SORTED_LIST_PUT_MEMBER:
       case SORTED_LIST_INCR_SCORE:
       case SORTED_LIST_REMOVE_MEMBER:
       case INT_PUT:
       case INT_INCR:
-      case INT_DROP: {
+      case DROP: {
         return true;
       }
       default: {
@@ -196,15 +180,6 @@ public class Worker extends Thread {
         } catch (DistkvKeyDuplicatedException e) {
           builder.setStatus(CommonProtocol.Status.DUPLICATED_KEY);
         }
-        break;
-      }
-      case STR_DROP:
-      case LIST_DROP:
-      case SET_DROP:
-      case DICT_DROP:
-      case SORTED_LIST_DROP:
-      case INT_DROP: {
-        builder.setStatus(drop(key));
         break;
       }
       case STR_GET: {
@@ -722,6 +697,10 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.UNKNOWN_ERROR;
         }
         builder.setStatus(status);
+        break;
+      }
+      case DROP: {
+        builder.setStatus(drop(key));
         break;
       }
       default: {
