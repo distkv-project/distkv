@@ -13,6 +13,8 @@ import com.distkv.server.storeserver.runtime.workerpool.WorkerPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -50,7 +52,7 @@ public class StoreRuntime {
     GroupId groupId = GroupId.fromShort(groupIndex);
     NodeId nodeId = NodeId.from(-1, groupId, false);
     nodeInfo = NodeInfo.newBuilder()
-        .setAddress(String.format("distkv://%s:%d", config.getIp(), config.getPort()))
+        .setAddress(String.format("distkv://%s:%d", getLocalIp(), config.getPort()))
         .setNodeId(nodeId)
         .build();
     if (config.getMode().equals("distributed")) {
@@ -93,5 +95,15 @@ public class StoreRuntime {
 
   public synchronized void setNodeInfo(NodeInfo nodeInfo) {
     this.nodeInfo = nodeInfo;
+  }
+
+  public static String getLocalIp() {
+    try {
+      InetAddress inetAddress = InetAddress.getLocalHost();
+      String ip = inetAddress.getHostAddress().toString();
+      return ip;
+    } catch (UnknownHostException e) {
+      return "localhost";
+    }
   }
 }

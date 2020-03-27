@@ -18,7 +18,6 @@ public class StoreConfig {
   private int shardsNum;
   private String mode;
   private String dmetaServerListStr;
-  private String ip;
 
   public int getPort() {
     return listeningPort;
@@ -48,20 +47,11 @@ public class StoreConfig {
     this.dmetaServerListStr = dmetaServerListStr;
   }
 
-  public String getIp() {
-    return ip;
-  }
-
-  public void setIp(String ip) {
-    this.ip = ip;
-  }
-
   public StoreConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     shardsNum = config.getInt("store.shardsNum");
     mode = config.getString("store.mode");
     dmetaServerListStr = config.getString("store.dmetaServerList");
-    ip = config.getString("store.ip");
   }
 
   @Override
