@@ -1,6 +1,7 @@
 package com.distkv.parser;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXIST;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.parser.po.DistkvParsedResult;
@@ -26,6 +27,15 @@ public class ParseBasicOperationCommandTest {
     final String command = "expire k1 1000";
     DistkvParsedResult result = distkvParser.parse(command);
     Assert.assertEquals(result.getRequestType(), EXPIRE);
+    DistkvRequest request = result.getRequest();
+    Assert.assertEquals(request.getKey(), "k1");
+  }
+
+  @Test
+  public void testExist() {
+    final String command = "exist k1";
+    DistkvParsedResult result = distkvParser.parse(command);
+    Assert.assertEquals(result.getRequestType(), EXIST);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
   }
@@ -59,4 +69,18 @@ public class ParseBasicOperationCommandTest {
     final String command = "expire";
     Assert.assertThrows(DistkvException.class, () -> distkvParser.parse(command));
   }
+
+
+  @Test
+  public void testExistManyKeys() {
+    final String command = "exist k1 k2 k3";
+    Assert.assertThrows(DistkvException.class, () ->  distkvParser.parse(command));
+  }
+
+  @Test
+  public void testExistWithoutKey() {
+    final String command = "exist";
+    Assert.assertThrows(DistkvException.class, () -> distkvParser.parse(command));
+  }
+
 }
