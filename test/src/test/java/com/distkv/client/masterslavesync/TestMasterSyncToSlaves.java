@@ -2,13 +2,8 @@ package com.distkv.client.masterslavesync;
 
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.common.NodeInfo;
 import com.distkv.common.entity.sortedList.SortedListEntity;
-import com.distkv.common.id.GroupId;
-import com.distkv.common.id.NodeId;
 import com.distkv.common.utils.RuntimeUtil;
-import com.distkv.server.metaserver.client.DmetaClient;
-import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
 import com.google.common.collect.ImmutableList;
