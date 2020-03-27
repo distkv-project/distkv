@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -40,16 +41,20 @@ public class TestMasterSyncToSlaves {
       }
     }, 2 * 60 * 1000);
 
-    //test
-    testStrPut(client0[0], client1[0]);
-    testListPut(client0[0], client1[0]);
-    testSetPut(client0[0], client1[0]);
-    testDictPut(client0[0], client1[0]);
-    testSlistPut(client0[0], client1[0]);
-    testIntPut(client0[0], client1[0]);
-
-    MasterSlaveSyncTestUtil.stopAllProcess();
-    DmetaTestUtil.stopAllDmetaProcess();
+    try {
+      //test
+      testStrPut(client0[0], client1[0]);
+      testListPut(client0[0], client1[0]);
+      testSetPut(client0[0], client1[0]);
+      testDictPut(client0[0], client1[0]);
+      testSlistPut(client0[0], client1[0]);
+      testIntPut(client0[0], client1[0]);
+    } catch (Exception e) {
+      Assert.fail();
+    } finally {
+      MasterSlaveSyncTestUtil.stopAllProcess();
+      DmetaTestUtil.stopAllDmetaProcess();
+    }
     System.out.println("m-s sync test over");
   }
 

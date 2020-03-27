@@ -82,7 +82,7 @@ public class MetaStateMachine extends StateMachineAdapter {
       if (doneClosure != null) {
         doneClosure.getResponse().setSuccess(true);
         doneClosure.getResponse().setNodeTable(
-            globalView.get(String.valueOf(nodeInfo.getNodeId().getGroupId())).getMap()
+            globalView.get(String.valueOf(nodeInfo.getNodeId().getIndex())).getMap()
         );
         doneClosure.run(Status.OK());
       }
