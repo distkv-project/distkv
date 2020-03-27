@@ -54,3 +54,6 @@ deploy/python/dist/
 
 # mkdocs generated files
 site
+
+# cpp
+cpp/cmake-build-debug
