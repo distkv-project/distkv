@@ -20,7 +20,7 @@ public class DmetaClient {
   // TODO(qingw): Refine this.
   public static final String GROUP_ID = "KV";
 
-  public DmetaClient(String confStr) {
+  public DmetaClient(String confStr) throws TimeoutException, InterruptedException {
 
     final Configuration conf = JRaftUtils.getConfiguration(confStr);
 
@@ -29,14 +29,15 @@ public class DmetaClient {
     //init RPC client and update Routing table
     cliClientService = new BoltCliClientService();
     cliClientService.init(new CliOptions());
+    //refresh leader term.
+    if (!RouteTable.getInstance().refreshLeader(cliClientService, GROUP_ID, 1000).isOk()) {
+      throw new IllegalStateException("Refresh leader failed");
+    }
   }
 
   public HeartbeatResponse heartbeat(NodeInfo nodeInfo, int timeout) {
     try {
-      //refresh leader term.
-      if (!RouteTable.getInstance().refreshLeader(cliClientService, GROUP_ID, 1000).isOk()) {
-        throw new IllegalStateException("Refresh leader failed");
-      }
+
       //get leader term.
       final PeerId leader = RouteTable.getInstance().selectLeader(GROUP_ID);
 
@@ -45,13 +46,15 @@ public class DmetaClient {
       HeartbeatResponse response = (HeartbeatResponse) cliClientService.getRpcClient()
           .invokeSync(leader.getEndpoint().toString(), request, timeout);
       if (!response.isSuccess()) {
-        throw new RuntimeException("get error");
+        if (response.getRedirect().length() > 0) {
+          PeerId peerId = new PeerId();
+          peerId.parse(response.getRedirect());
+          RouteTable.getInstance().updateLeader(GROUP_ID, peerId);
+        }
       }
       return response;
       // TODO(kairbon): Need to handle these exception.
     } catch (InterruptedException e) {
-      return null;
-    } catch (TimeoutException e) {
       return null;
     } catch (RemotingException e) {
       return null;
