@@ -5,7 +5,6 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistResponse;
-import com.distkv.rpc.protobuf.generated.DictProtocol.DictPopItemResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.google.protobuf.InvalidProtocolBufferException;
 
