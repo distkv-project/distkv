@@ -1,40 +1,69 @@
 package com.distkv.common;
 
+import com.distkv.common.id.NodeId;
+
 import java.io.Serializable;
 
 public class NodeInfo implements Serializable {
 
   private static final long serialVersionUID = -4220017786527146673L;
 
-  private boolean isMaster;
+  private NodeId nodeId;
 
-  private String nodeName;
+  private String address;
 
-  private String ipAndPort;
-
-  public NodeInfo(boolean isMaster, String nodeName, String ipAndPort) {
-    this.nodeName = nodeName;
-    this.isMaster = isMaster;
-    this.ipAndPort = ipAndPort;
+  public static Builder newBuilder() {
+    return new Builder();
   }
 
-  public boolean isMaster() {
-    return isMaster;
+  private NodeInfo(Builder builder) {
+    this.address = builder.getAddress();
+    this.nodeId = builder.getNodeId();
   }
 
-  public String getNodeName() {
-    return nodeName;
+  public NodeId getNodeId() {
+    return nodeId;
   }
 
-  public void setMaster(boolean isMaster) {
-    this.isMaster = isMaster;
+  public void setNodeId(NodeId nodeId) {
+    this.nodeId = nodeId;
   }
 
-  public String getIpAndPort() {
-    return ipAndPort;
+  public String getAddress() {
+    return address;
   }
 
-  public void setIpAndPort(String ipAndPort) {
-    this.ipAndPort = ipAndPort;
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public static class Builder {
+    private NodeId nodeId;
+
+    private String address;
+
+    public NodeId getNodeId() {
+      return nodeId;
+    }
+
+    public Builder setNodeId(NodeId nodeId) {
+      this.nodeId = nodeId;
+      return this;
+    }
+
+    public String getAddress() {
+      return address;
+    }
+
+    public Builder setAddress(String address) {
+      this.address = address;
+      return this;
+    }
+
+    public NodeInfo build() {
+      return new NodeInfo(this);
+    }
+
   }
 }
+

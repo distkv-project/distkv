@@ -1,6 +1,8 @@
 package com.distkv.server.storeserver.runtime;
 
 import com.distkv.common.NodeInfo;
+import com.distkv.common.id.GroupId;
+import com.distkv.common.id.NodeId;
 import com.distkv.core.KVStore;
 import com.distkv.core.KVStoreImpl;
 import com.distkv.server.storeserver.runtime.expire.ExpirationManager;
@@ -43,8 +45,12 @@ public class StoreRuntime {
     storeEngine = new KVStoreImpl();
     expirationManager = new ExpirationManager(config);
     slaveClients = new CopyOnWriteArrayList<>();
-    nodeInfo = new NodeInfo(false, config.getNodeId(),
-        String.format("distkv://%s:%d", config.getIp(), config.getPort()));
+    GroupId groupId = GroupId.fromShort((short) 1);
+    NodeId nodeId = NodeId.from(-1, groupId, false);
+    nodeInfo = NodeInfo.newBuilder()
+        .setAddress(String.format("distkv://%s:%d", config.getIp(), config.getPort()))
+        .setNodeId(nodeId)
+        .build();
     if (config.getMode().equals("distributed")) {
       heartbeatManager = new HeartbeatManager(
           nodeInfo,

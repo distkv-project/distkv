@@ -14,9 +14,9 @@ public class NodeTable {
 
   public void put(NodeInfo e) {
     if (nodeTable.isEmpty()) {
-      e.setMaster(true);
+      e.getNodeId().setMaster(true);
     }
-    nodeTable.put(e.getNodeName(), e);
+    nodeTable.put(e.getAddress(), e);
   }
 
   public HashMap<String, NodeInfo> getMap() {

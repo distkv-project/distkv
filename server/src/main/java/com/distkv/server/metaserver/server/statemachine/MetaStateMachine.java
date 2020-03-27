@@ -77,7 +77,7 @@ public class MetaStateMachine extends StateMachineAdapter {
         if (doneClosure != null) {
           doneClosure.getResponse().setSuccess(false);
         }
-        LOG.error("Added node fail {}", nodeInfo.getNodeName());
+        LOG.error("Fail to add {}", nodeInfo.getAddress());
       }
 
       if (doneClosure != null) {

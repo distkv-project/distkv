@@ -28,7 +28,7 @@ public class HeartbeatManager {
   public HeartbeatManager(NodeInfo nodeInfo, int heartBeatInterval,
                           String dmetaServerListStr, CopyOnWriteArrayList<SlaveClient> clients) {
     buildSet = new HashSet<>();
-    buildSet.add(nodeInfo.getNodeName());
+    buildSet.add(nodeInfo.getAddress());
     dmetaClient = new DmetaClient(dmetaServerListStr);
     scheduledExecutor.scheduleAtFixedRate(() -> {
       HeartBeatResponse response = dmetaClient.heartBeat(nodeInfo);
@@ -36,17 +36,13 @@ public class HeartbeatManager {
         HashMap<String, NodeInfo> map = response.getNodeTable();
         for (Map.Entry<String, NodeInfo> entry : map.entrySet()) {
           if (!buildSet.contains(entry.getKey())) {
-            clients.add(new SlaveClient(entry.getValue().getIpAndPort()));
+            clients.add(new SlaveClient(entry.getValue().getAddress()));
             buildSet.add(entry.getKey());
           }
         }
       }
-      System.out.println(response.getNodeTable()
-          .get(nodeInfo.getNodeName()).isMaster() +
-          nodeInfo.getIpAndPort() +
-          "clientsS=" + clients.size());
-      nodeInfo.setMaster(response.getNodeTable()
-          .get(nodeInfo.getNodeName()).isMaster());
+      nodeInfo.getNodeId().setMaster(response.getNodeTable()
+          .get(nodeInfo.getAddress()).getNodeId().isMaster());
     }, 100, heartBeatInterval, TimeUnit.MILLISECONDS);
   }
 

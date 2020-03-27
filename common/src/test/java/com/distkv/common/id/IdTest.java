@@ -7,13 +7,13 @@ public class IdTest {
 
   @Test
   public void testPartitionId() {
-    PartitionId id = PartitionId.fromShort((short) 13);
+    GroupId id = GroupId.fromShort((short) 13);
     Assert.assertEquals(id.getIndex(), (short) 13);
   }
 
   @Test
   public void testNodeId() {
-    final PartitionId partitionId = PartitionId.fromShort((short) 21);
+    final GroupId partitionId = GroupId.fromShort((short) 21);
     NodeId id = NodeId.from(100, partitionId, true);
     Assert.assertEquals(id.getIndex(), 100);
     Assert.assertEquals(id.getPartitionId(), partitionId);

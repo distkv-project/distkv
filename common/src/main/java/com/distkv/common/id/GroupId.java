@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * The class that represents the Id of a partition.
  */
-public class PartitionId implements Serializable {
+public class GroupId implements Serializable {
 
   private static final long serialVersionUID = -5170144234860018298L;
 
@@ -14,7 +14,7 @@ public class PartitionId implements Serializable {
    */
   private short index;
 
-  private PartitionId(short index) {
+  private GroupId(short index) {
     this.index = index;
   }
 
@@ -22,8 +22,8 @@ public class PartitionId implements Serializable {
     return index;
   }
 
-  public static PartitionId fromShort(short index) {
-    return new PartitionId(index);
+  public static GroupId fromShort(short index) {
+    return new GroupId(index);
   }
 
   @Override
@@ -39,7 +39,7 @@ public class PartitionId implements Serializable {
     if (!this.getClass().equals(obj.getClass())) {
       return false;
     }
-    return (((PartitionId) obj).index == index);
+    return (((GroupId) obj).index == index);
   }
 
   @Override
