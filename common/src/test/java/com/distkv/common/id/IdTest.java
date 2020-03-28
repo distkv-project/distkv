@@ -14,10 +14,9 @@ public class IdTest {
   @Test
   public void testNodeId() {
     final PartitionId partitionId = PartitionId.fromShort((short) 21);
-    NodeId id = NodeId.from(100, partitionId, true);
+    NodeId id = NodeId.from(100, partitionId);
     Assert.assertEquals(id.getIndex(), 100);
     Assert.assertEquals(id.getPartitionId(), partitionId);
-    Assert.assertTrue(id.isMaster());
   }
 
   @Test
