@@ -13,7 +13,7 @@ conceptStatement: basicOperationsStatement | strStatement | listStatement
 | setStatement | dictStatement | slistStatement | intStatement;
 
 // basic operations
-basicOperationsStatement: exit | activeNamespace | deactiveNamespace | expire | ttl| drop | exists;
+basicOperationsStatement: exit | activeNamespace | deactiveNamespace | expire | ttl | drop | exists;
 exit: 'exit';
 activeNamespace: 'active namespace' namespace;
 deactiveNamespace: 'deactive namespace';

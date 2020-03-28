@@ -16,6 +16,7 @@ import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistsResponse;
+import com.distkv.rpc.protobuf.generated.CommonProtocol.TTLResponse;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
@@ -81,7 +82,7 @@ public class Worker extends Thread {
         CompletableFuture<DistkvResponse> future = internalRequest.getCompletableFuture();
         DistkvResponse.Builder builder = DistkvResponse.newBuilder();
 
-        handleExpiration(distkvRequest);
+        handleExpiration(distkvRequest, builder);
         syncToSlaves(distkvRequest, future);
         storeHandler(distkvRequest, builder);
 
@@ -96,13 +97,18 @@ public class Worker extends Thread {
   }
 
   // Add expire request to ExpireCycle.
-  private void handleExpiration(DistkvRequest request) {
+  private void handleExpiration(DistkvRequest request, DistkvResponse.Builder builder) {
     if (needExpire(request)) {
       storeRuntime.getExpirationManager().addToCycle(request);
     }
     if (isTimeRemainingQuery(request)) {
-      long survivalTime = storeRuntime.getExpirationManager().survivalTime(request.getKey());
-      //todo
+      try {
+        long survivalTime = storeRuntime.getExpirationManager().survivalTime(request.getKey());
+        TTLResponse response = TTLResponse.newBuilder().setTtl(survivalTime).build();
+        builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(response));
+      } catch (KeyNotFoundException e) {
+        builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+      }
     }
   }
 

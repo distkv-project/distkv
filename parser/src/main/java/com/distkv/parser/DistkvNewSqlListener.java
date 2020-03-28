@@ -9,6 +9,7 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_PUT_ITEM;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_REMOVE_ITEM;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXISTS;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXIT;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.INT_GET;

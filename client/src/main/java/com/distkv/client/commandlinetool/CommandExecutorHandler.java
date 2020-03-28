@@ -487,6 +487,11 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
+  public static String ttl(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    return String.valueOf(distkvClient.ttl(request.getKey()));
+  }
+
   public static String exists(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     DistkvRequest request = parsedResult.getRequest();
     return String.valueOf(distkvClient.exists(request.getKey()));

@@ -59,10 +59,10 @@ public interface DistkvClient {
 
   /**
    * Get a servival time for a given key.
-   *
    * @param key The key need to get the survival time.
+   * @return The key's servival time.
    */
-  void ttl(String key);
+  long ttl(String key);
 
   /**
    * Get actived namespace

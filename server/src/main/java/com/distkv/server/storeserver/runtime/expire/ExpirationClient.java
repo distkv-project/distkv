@@ -1,10 +1,15 @@
 package com.distkv.server.storeserver.runtime.expire;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXISTS;
 import com.distkv.common.exception.DistkvException;
+import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistsResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.StoreConfig;
+import com.google.protobuf.InvalidProtocolBufferException;
+import java.util.concurrent.ExecutionException;
 import org.dousi.Proxy;
 import org.dousi.api.Client;
 import org.dousi.config.ClientConfig;
@@ -70,12 +75,14 @@ public class ExpirationClient {
     service.call(request);
   }
 
-  public boolean exist(String key) {
+  public boolean exists(String key)
+      throws ExecutionException, InterruptedException, InvalidProtocolBufferException {
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType()
+        .setRequestType(EXISTS)
         .build();
-    service.call(request);
+    DistkvResponse response = service.call(request).get();
+    return response.getResponse().unpack(ExistsResponse.class).getExists();
   }
 
 
