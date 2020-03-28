@@ -62,8 +62,8 @@ public class HeartbeatManager {
     if (old.getNodeId().getIndex() != young.getNodeId().getIndex()) {
       old.getNodeId().setIndex(young.getNodeId().getIndex());
     }
-    if (old.getNodeId().isMaster() != young.getNodeId().isMaster()) {
-      old.getNodeId().setMaster(young.getNodeId().isMaster());
+    if (old.isMaster() != young.isMaster()) {
+      old.setMaster(young.isMaster());
     }
     if (old.getNodeId().getGroupId() == null ||
         !old.getNodeId().getGroupId().equals(young.getNodeId().getGroupId())) {

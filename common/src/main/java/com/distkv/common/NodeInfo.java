@@ -5,6 +5,12 @@ import com.distkv.common.id.NodeId;
 import java.io.Serializable;
 
 public class NodeInfo implements Serializable {
+  /**
+   * Whether this node is a master.
+   *
+   * True if this node is master node, false if this node is a slave node.
+   */
+  private boolean isMaster;
 
   private static final long serialVersionUID = -4220017786527146673L;
 
@@ -19,6 +25,7 @@ public class NodeInfo implements Serializable {
   private NodeInfo(Builder builder) {
     this.address = builder.getAddress();
     this.nodeId = builder.getNodeId();
+    this.isMaster = builder.isMaster();
   }
 
   public NodeId getNodeId() {
@@ -37,10 +44,29 @@ public class NodeInfo implements Serializable {
     this.address = address;
   }
 
+  public Boolean isMaster() {
+    return isMaster;
+  }
+
+  public void setMaster(Boolean master) {
+    isMaster = master;
+  }
+
   public static class Builder {
     private NodeId nodeId;
 
     private String address;
+
+    private Boolean isMaster;
+
+    public Boolean isMaster() {
+      return isMaster;
+    }
+
+    public Builder setMaster(Boolean master) {
+      isMaster = master;
+      return this;
+    }
 
     public NodeId getNodeId() {
       return nodeId;

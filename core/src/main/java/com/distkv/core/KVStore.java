@@ -14,6 +14,8 @@ public interface KVStore {
 
   boolean drop(String key);
 
+  boolean exists(String key);
+
   DistkvStrings strs();
 
   DistkvLists lists();

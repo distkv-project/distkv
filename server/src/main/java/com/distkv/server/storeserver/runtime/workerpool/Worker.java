@@ -14,6 +14,7 @@ import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
+import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistsResponse;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
@@ -104,7 +105,7 @@ public class Worker extends Thread {
 
   private void syncToSlaves(DistkvRequest request, CompletableFuture<DistkvResponse> future) {
     if (needToSync(request)) {
-      boolean isMaster = storeRuntime.getNodeInfo().getNodeId().isMaster();
+      boolean isMaster = storeRuntime.getNodeInfo().isMaster();
       ConcurrentHashMap<String, SlaveClient> slaveClients = storeRuntime.getAllSlaveClients();
       if (isMaster) {
         for (SlaveClient client : slaveClients.values()) {
@@ -703,6 +704,19 @@ public class Worker extends Thread {
       }
       case DROP: {
         builder.setStatus(drop(key));
+        break;
+      }
+      case EXISTS: {
+        try {
+          boolean exists = storeEngine.exists(key);
+          ExistsResponse existsResponse = ExistsResponse.newBuilder().setExists(exists).build();
+          builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(existsResponse));
+        } catch (KeyNotFoundException e) {
+          builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+        } catch (DistkvException e) {
+          LOGGER.error("Failed to determine if a key exists in store: {1}", e);
+          builder.setStatus(CommonProtocol.Status.UNKNOWN_ERROR);
+        }
         break;
       }
       default: {

@@ -13,11 +13,10 @@ public class IdTest {
 
   @Test
   public void testNodeId() {
-    final GroupId partitionId = GroupId.fromIndex((short) 21);
-    NodeId id = NodeId.from(100, partitionId, true);
+    final GroupId groupId = GroupId.fromIndex((short) 21);
+    NodeId id = NodeId.from(100, groupId);
     Assert.assertEquals(id.getIndex(), 100);
-    Assert.assertEquals(id.getGroupId(), partitionId);
-    Assert.assertTrue(id.isMaster());
+    Assert.assertEquals(id.getGroupId(), groupId);
   }
 
   @Test

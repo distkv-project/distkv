@@ -9,6 +9,7 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_PUT_ITEM;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DICT_REMOVE_ITEM;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXISTS;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXIT;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.INT_GET;
@@ -34,6 +35,7 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTE
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.STR_GET;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.STR_PUT;
 import com.distkv.parser.generated.DistkvNewSQLBaseListener;
+import com.distkv.parser.generated.DistkvNewSQLParser.ExistsContext;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
@@ -662,6 +664,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     parsedResult = new DistkvParsedResult(DROP, request);
   }
 
+  @Override
+  public void enterExists(ExistsContext ctx) {
+    Preconditions.checkState(parsedResult == null);
+    Preconditions.checkState(ctx.children.size() == 2);
 
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(ctx.children.get(1).getText())
+        .setRequestType(EXISTS)
+        .build();
+    parsedResult = new DistkvParsedResult(EXISTS, request);
+  }
 
 }
