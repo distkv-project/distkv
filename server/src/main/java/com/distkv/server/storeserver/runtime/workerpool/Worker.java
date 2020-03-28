@@ -37,12 +37,14 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class Worker extends Thread {
 
@@ -103,9 +105,9 @@ public class Worker extends Thread {
   private void syncToSlaves(DistkvRequest request, CompletableFuture<DistkvResponse> future) {
     if (needToSync(request)) {
       boolean isMaster = storeRuntime.getNodeInfo().getNodeId().isMaster();
-      List<SlaveClient> slaveClients = storeRuntime.getAllSlaveClients();
+      ConcurrentHashMap<String, SlaveClient> slaveClients = storeRuntime.getAllSlaveClients();
       if (isMaster) {
-        for (SlaveClient client : slaveClients) {
+        for (SlaveClient client : slaveClients.values()) {
           synchronized (client) {
             try {
               DistkvResponse response =

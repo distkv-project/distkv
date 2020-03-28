@@ -11,7 +11,6 @@ public class NodeId implements Serializable {
 
   /**
    * Whether this node is a master.
-   * <p>
    * True if this node is master node, false if this node is a slave node.
    */
   private boolean isMaster;
@@ -38,6 +37,10 @@ public class NodeId implements Serializable {
     return groupId;
   }
 
+  public void setGroupId(GroupId groupId) {
+    this.groupId = groupId;
+  }
+
   public int getIndex() {
     return index;
   }
@@ -54,6 +57,10 @@ public class NodeId implements Serializable {
 
   public static NodeId from(int index, GroupId groupId, boolean isMaster) {
     return new NodeId(index, groupId, isMaster);
+  }
+
+  public static NodeId nil() {
+    return new NodeId(-1, null, false);
   }
 
   @Override

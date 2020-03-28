@@ -10,6 +10,8 @@ import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
 import com.distkv.common.NodeInfo;
 import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
 import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeoutException;
 
@@ -17,39 +19,39 @@ public class DmetaClient {
 
   private BoltCliClientService cliClientService = null;
 
-  // TODO(qingw): Refine this.
-  public static final String GROUP_ID = "KV";
+  private static Logger logger = LoggerFactory.getLogger(DmetaClient.class);
+
+  public static final String RAFT_GROUP_ID = "META_SERVER";
+
+  public static int HEARTBEAT_TIMEOUT = 3000;
 
   public DmetaClient(String confStr) throws TimeoutException, InterruptedException {
 
     final Configuration conf = JRaftUtils.getConfiguration(confStr);
 
-    RouteTable.getInstance().updateConfiguration(GROUP_ID, conf);
+    RouteTable.getInstance().updateConfiguration(RAFT_GROUP_ID, conf);
 
     //init RPC client and update Routing table
     cliClientService = new BoltCliClientService();
     cliClientService.init(new CliOptions());
     //refresh leader term.
-    if (!RouteTable.getInstance().refreshLeader(cliClientService, GROUP_ID, 1000).isOk()) {
-      throw new IllegalStateException("Refresh leader failed");
-    }
+    refreshLeader();
   }
 
-  public HeartbeatResponse heartbeat(NodeInfo nodeInfo, int timeout) {
+  public HeartbeatResponse heartbeat(NodeInfo nodeInfo) {
     try {
-
       //get leader term.
-      final PeerId leader = RouteTable.getInstance().selectLeader(GROUP_ID);
+      final PeerId leader = RouteTable.getInstance().selectLeader(RAFT_GROUP_ID);
 
       final HeartbeatRequest request = new HeartbeatRequest(nodeInfo);
 
       HeartbeatResponse response = (HeartbeatResponse) cliClientService.getRpcClient()
-          .invokeSync(leader.getEndpoint().toString(), request, timeout);
+          .invokeSync(leader.getEndpoint().toString(), request, HEARTBEAT_TIMEOUT);
       if (!response.isSuccess()) {
         if (response.getRedirect().length() > 0) {
           PeerId peerId = new PeerId();
           peerId.parse(response.getRedirect());
-          RouteTable.getInstance().updateLeader(GROUP_ID, peerId);
+          RouteTable.getInstance().updateLeader(RAFT_GROUP_ID, peerId);
         }
       }
       return response;
@@ -57,7 +59,20 @@ public class DmetaClient {
     } catch (InterruptedException e) {
       return null;
     } catch (RemotingException e) {
+      refreshLeader();
       return null;
+    }
+  }
+
+  public void refreshLeader() {
+    try {
+      if (!RouteTable.getInstance().refreshLeader(cliClientService, RAFT_GROUP_ID, 1000).isOk()) {
+        throw new IllegalStateException("Refresh leader failed");
+      }
+    } catch (InterruptedException e) {
+      logger.error("Refresh leader failed");
+    } catch (TimeoutException e) {
+      logger.error("Refresh leader failed");
     }
   }
 

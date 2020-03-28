@@ -7,26 +7,26 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class NodeTable {
-  /**
-   * This map contains the info of all nodes in a group
-   */
 
   AtomicInteger nodeIndex = new AtomicInteger(1);
 
+  /**
+   * This map contains the info of all nodes in a group.
+   */
   private ConcurrentHashMap<String, NodeInfo> nodeTable;
 
   public NodeTable() {
     nodeTable = new ConcurrentHashMap<>();
   }
 
-  public void put(NodeInfo e) {
+  public void putNodeInfo(NodeInfo nodeInfo) {
     if (nodeTable.isEmpty()) {
-      e.getNodeId().setMaster(true);
+      nodeInfo.getNodeId().setMaster(true);
     }
-    if (e.getNodeId().getIndex() == -1) {
-      e.getNodeId().setIndex(nodeIndex.addAndGet(1));
+    if (nodeInfo.getNodeId().getIndex() == -1) {
+      nodeInfo.getNodeId().setIndex(nodeIndex.addAndGet(1));
     }
-    nodeTable.put(e.getAddress(), e);
+    nodeTable.put(nodeInfo.getAddress(), nodeInfo);
   }
 
   public HashMap<String, NodeInfo> getMap() {
