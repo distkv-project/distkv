@@ -489,7 +489,7 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testExist() {
+  public void testExists() {
     distkvClient = newDistkvClient();
     final DistkvParser distkvParser = new DistkvParser();
     DistkvParsedResult distKVParsedResult;
@@ -500,10 +500,10 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     Assert.assertEquals(CommandExecutorHandler
         .strPut(distkvClient, distKVParsedResult), STATUS_OK);
     // Exist operation.
-    command = "exist str_k1";
+    command = "exists str_k1";
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
-        .exist(distkvClient, distKVParsedResult), "true");
+        .exists(distkvClient, distKVParsedResult), "true");
   }
 
 }

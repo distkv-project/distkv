@@ -13,13 +13,13 @@ conceptStatement: basicOperationsStatement | strStatement | listStatement
 | setStatement | dictStatement | slistStatement | intStatement;
 
 // basic operations
-basicOperationsStatement: exit | activeNamespace | deactiveNamespace | expire | drop | exist;
+basicOperationsStatement: exit | activeNamespace | deactiveNamespace | expire | drop | exists;
 exit: 'exit';
 activeNamespace: 'active namespace' namespace;
 deactiveNamespace: 'deactive namespace';
 expire: 'expire' key anyInt;
 drop: 'drop' key;
-exist: 'exist' key;
+exists: 'exists' key;
 
 // str concept
 strStatement: strPut | strGet;

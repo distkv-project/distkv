@@ -14,7 +14,7 @@ import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
-import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistResponse;
+import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistsResponse;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
@@ -704,11 +704,11 @@ public class Worker extends Thread {
         builder.setStatus(drop(key));
         break;
       }
-      case EXIST: {
+      case EXISTS: {
         try {
-          boolean exist = storeEngine.exist(key);
-          ExistResponse existResponse = ExistResponse.newBuilder().setExist(exist).build();
-          builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(existResponse));
+          boolean exists = storeEngine.exists(key);
+          ExistsResponse existsResponse = ExistsResponse.newBuilder().setExists(exists).build();
+          builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(existsResponse));
         } catch (KeyNotFoundException e) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } catch (DistkvException e) {

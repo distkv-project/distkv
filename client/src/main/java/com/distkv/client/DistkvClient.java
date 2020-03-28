@@ -50,11 +50,11 @@ public interface DistkvClient {
   void expire(String key, long expireTime);
 
   /**
-   * Determine if a key exists.
+   * Query if a key exists.
    *
    * @param key The key if exists.
    */
-  boolean exist(String key);
+  boolean exists(String key);
 
   /**
    * Get actived namespace

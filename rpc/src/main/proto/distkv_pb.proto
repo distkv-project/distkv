@@ -30,7 +30,7 @@ enum RequestType {
 
     EXPIRE = 5;
 
-    EXIST = 6;
+    EXISTS = 6;
 
     // string concept
     STR_PUT = 101;
