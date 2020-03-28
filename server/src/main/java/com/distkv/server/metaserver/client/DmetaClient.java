@@ -25,7 +25,7 @@ public class DmetaClient {
 
   public static int HEARTBEAT_TIMEOUT = 3000;
 
-  public DmetaClient(String confStr) throws TimeoutException, InterruptedException {
+  public DmetaClient(String confStr) {
 
     final Configuration conf = JRaftUtils.getConfiguration(confStr);
 

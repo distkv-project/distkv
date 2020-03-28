@@ -7,6 +7,9 @@ public abstract class DistkvAbstractView {
 
   protected ShardTable shardTable;
 
+  /**
+   * Map storing node table.
+   */
   private ConcurrentHashMap<String, NodeTable> map = new ConcurrentHashMap<>();
 
   protected void put(String key, NodeTable value) {

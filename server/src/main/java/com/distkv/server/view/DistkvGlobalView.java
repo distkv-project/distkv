@@ -9,11 +9,6 @@ public class DistkvGlobalView extends DistkvAbstractView {
     shardTable = new ShardTable();
   }
 
-  @Override
-  public void put(String key, NodeTable value) {
-    super.put(key, value);
-  }
-
   public void putNode(NodeInfo nodeInfo) {
     if (nodeInfo.getNodeId().getGroupId() == null) {
       nodeInfo.getNodeId().setGroupId(GroupId.fromIndex((short) 1));

@@ -1,12 +1,12 @@
 package com.distkv.server.storeserver;
 
-public enum ModeEnum {
+public enum RunningMode {
   STANDALONE("standalone"),
   DISTRIBUTED("distributed");
 
   private String modeString;
 
-  ModeEnum(String mode) {
+  RunningMode(String mode) {
     this.modeString = mode;
   }
 
