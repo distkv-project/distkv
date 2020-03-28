@@ -21,7 +21,7 @@ public class NodeTable {
 
   public void putNodeInfo(NodeInfo nodeInfo) {
     if (nodeTable.isEmpty()) {
-      nodeInfo.setMaster(true);
+      nodeInfo.setIsMaster(true);
     }
     if (nodeInfo.getNodeId().getIndex() == -1) {
       nodeInfo.getNodeId().setIndex(nodeIndex.addAndGet(1));

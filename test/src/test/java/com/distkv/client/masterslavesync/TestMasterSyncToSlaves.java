@@ -11,7 +11,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -25,9 +24,9 @@ public class TestMasterSyncToSlaves {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
     DmetaTestUtil.startAllDmetaProcess();
-    TimeUnit.SECONDS.sleep(7);
+    TimeUnit.SECONDS.sleep(3);
     MasterSlaveSyncTestUtil.startAllProcess();
-    TimeUnit.SECONDS.sleep(7);
+    TimeUnit.SECONDS.sleep(3);
 
     final DistkvClient[] client0 = {null};
     final DistkvClient[] client1 = {null};

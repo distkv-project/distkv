@@ -26,7 +26,7 @@ public class HeartbeatManager {
   public static int INIT_DELAY = 0;
 
   /**
-   * A ThreadPool to mange heartbeat.
+   * A ThreadPool to manage heartbeat.
    */
   private static ScheduledExecutorService scheduledExecutor = Executors
       .newSingleThreadScheduledExecutor();
@@ -63,7 +63,7 @@ public class HeartbeatManager {
       old.getNodeId().setIndex(young.getNodeId().getIndex());
     }
     if (old.isMaster() != young.isMaster()) {
-      old.setMaster(young.isMaster());
+      old.setIsMaster(young.isMaster());
     }
     if (old.getNodeId().getGroupId() == null ||
         !old.getNodeId().getGroupId().equals(young.getNodeId().getGroupId())) {

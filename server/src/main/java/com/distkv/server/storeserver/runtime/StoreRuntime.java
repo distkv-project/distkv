@@ -48,7 +48,7 @@ public class StoreRuntime {
     nodeInfo = NodeInfo.newBuilder()
         .setAddress(String.format("distkv://%s:%d", NetUtil.getLocalIp(), config.getPort()))
         .setNodeId(nodeId)
-        .setMaster(false)
+        .setIsMaster(false)
         .build();
     if (config.getMode() == RunningMode.DISTRIBUTED) {
       heartbeatManager = new HeartbeatManager(

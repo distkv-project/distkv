@@ -48,7 +48,7 @@ public class NodeInfo implements Serializable {
     return isMaster;
   }
 
-  public void setMaster(Boolean master) {
+  public void setIsMaster(Boolean master) {
     isMaster = master;
   }
 
@@ -63,7 +63,7 @@ public class NodeInfo implements Serializable {
       return isMaster;
     }
 
-    public Builder setMaster(Boolean master) {
+    public Builder setIsMaster(Boolean master) {
       isMaster = master;
       return this;
     }

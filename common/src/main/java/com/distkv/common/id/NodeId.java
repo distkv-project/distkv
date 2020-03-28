@@ -70,7 +70,7 @@ public class NodeId implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("NodeId{%d-%d-%b}", index, groupId.getIndex());
+    return String.format("NodeId{%d-%d}", index, groupId.getIndex());
   }
 
 }
