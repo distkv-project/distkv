@@ -52,8 +52,8 @@ public class KVStoreImpl implements KVStore {
   }
 
   @Override
-  public boolean exist(String key) {
-    return false;
+  public boolean exists(String key) {
+    return distkvKeyValueMap.containsKey(key);
   }
 
   @Override

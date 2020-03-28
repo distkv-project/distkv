@@ -25,3 +25,8 @@ enum Status {
 
     DUPLICATED_KEY = 10;
 };
+
+//Query if a key exists.
+message ExistsResponse {
+    bool exists = 1;
+}

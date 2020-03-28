@@ -121,6 +121,15 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   }
 
   @Override
+  public CompletableFuture<DistkvResponse> exists(String key) {
+    DistkvRequest request = DistkvRequest.newBuilder()
+        .setKey(key)
+        .setRequestType(EXISTS)
+        .build();
+    return distkvService.call(request);
+  }
+
+  @Override
   public CompletableFuture<DistkvResponse> ttl(String key) {
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)

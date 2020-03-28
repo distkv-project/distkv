@@ -105,6 +105,17 @@ public class DefaultDistkvClient implements DistkvClient {
   }
 
   @Override
+  public boolean exists(String key) {
+    DistkvResponse response = FutureUtils.get(asyncClient.exists(key));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    try {
+      return response.getResponse().unpack(ExistsResponse.class).getExists();
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+  }
+
+  @Override
   public void ttl(String key) {
     DistkvResponse response = FutureUtils.get(asyncClient.ttl(key));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);

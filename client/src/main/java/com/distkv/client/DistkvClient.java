@@ -51,6 +51,13 @@ public interface DistkvClient {
   void expire(String key, long expireTime);
 
   /**
+   * Query if a key exists.
+   *
+   * @param key The key if exists.
+   */
+  boolean exists(String key);
+
+  /**
    * Get a servival time for a given key.
    *
    * @param key The key need to get the survival time.
