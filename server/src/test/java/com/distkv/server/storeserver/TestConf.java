@@ -2,7 +2,6 @@ package com.distkv.server.storeserver;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.io.File;
 
 @Test(singleThreaded = true)
@@ -13,7 +12,8 @@ public class TestConf {
     Assert.assertEquals(config.getPort(), 8082);
     Assert.assertEquals(config.getShardNum(), 8);
     Assert.assertEquals(config.getMode(), RunningMode.STANDALONE);
-    Assert.assertEquals(config.getMetaServerAddresses(), "localhost:8081,localhost:8082,localhost:8083");
+    Assert.assertEquals(config.getMetaServerAddresses(),
+        "localhost:8081,localhost:8082,localhost:8083");
   }
 
   @Test
