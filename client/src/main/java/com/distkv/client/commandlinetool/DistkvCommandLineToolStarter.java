@@ -40,7 +40,7 @@ public class DistkvCommandLineToolStarter {
       order = 1)
   private static String ADDRESS = "127.0.0.1:8082";
 
-  @Parameter(names = {"-v", "-version", "-V"}, description = "Show the version of Dst.",
+  @Parameter(names = {"-v", "-version", "-V"}, description = "Show the version of Distkv.",
       help = true, order = 2)
   private static boolean VERSION = false;
 
@@ -73,7 +73,7 @@ public class DistkvCommandLineToolStarter {
     try {
       distkvClient = new DefaultDistkvClient(String.format("distkv://%s", ADDRESS));
     } catch (Exception e) {
-      System.out.println(String.format("Failed to connect to dst server, %s, "
+      System.out.println(String.format("Failed to connect to distkv server, %s, "
           + "please check your input.", ADDRESS));
       return;
     }
@@ -102,7 +102,7 @@ public class DistkvCommandLineToolStarter {
     Terminal terminal = TerminalBuilder.builder().system(true).build();
     LineReader lineReader = LineReaderBuilder.builder().terminal(terminal)
                             .completer(allCompleters).build();
-    final String prompt = "dst-cli >";
+    final String prompt = "dkv-cli >";
     while (true) {
       String result = null;
       String line;
