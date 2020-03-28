@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class HeartbeatManager {
   /**
@@ -38,13 +37,8 @@ public class HeartbeatManager {
 
   public HeartbeatManager(NodeInfo nodeInfo, String dmetaServerListStr,
                           ConcurrentHashMap<String, SlaveClient> clients) {
-    try {
-      dmetaClient = new DmetaClient(dmetaServerListStr);
-    } catch (InterruptedException | TimeoutException e) {
-      logger.error("Fail to init dmeta client");
-      System.exit(-1);
-    }
 
+    dmetaClient = new DmetaClient(dmetaServerListStr);
     scheduledExecutor.scheduleAtFixedRate(() -> {
       HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
       if (response == null) {

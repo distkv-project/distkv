@@ -30,7 +30,7 @@ public class HeartbeatRequestProcessor extends AsyncUserProcessor<HeartbeatReque
   public void handleRequest(final BizContext bizCtx,
                             final AsyncContext asyncCtx,
                             final HeartbeatRequest request) {
-    // If it is not currently a leader, return the leader's peer
+    // If it is not currently a leader, return the leader's peer.
     if (! this.dmetaServer.getFsm().isLeader()) {
       final HeartbeatResponse response = new HeartbeatResponse();
       response.setSuccess(false);

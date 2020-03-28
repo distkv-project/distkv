@@ -23,7 +23,7 @@ public class StoreConfig {
   /**
    * Meta Server address str.
    */
-  private String dmetaServerListStr;
+  private final String metaServerAddresses;
 
   public int getPort() {
     return listeningPort;
@@ -45,18 +45,14 @@ public class StoreConfig {
     this.mode = mode;
   }
 
-  public String getDmetaServerListStr() {
-    return dmetaServerListStr;
-  }
-
-  public void setDmetaServerListStr(String dmetaServerListStr) {
-    this.dmetaServerListStr = dmetaServerListStr;
+  public String getMetaServerAddresses() {
+    return metaServerAddresses;
   }
 
   public StoreConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
     shardsNum = config.getInt("store.shardsNum");
-    dmetaServerListStr = config.getString("store.metaServerAddresses");
+    metaServerAddresses = config.getString("store.metaServerAddresses");
     mode = config.getEnum(RunningMode.class, "store.mode");
   }
 

@@ -34,13 +34,12 @@ public class DmetaClient {
     //init RPC client and update Routing table
     cliClientService = new BoltCliClientService();
     cliClientService.init(new CliOptions());
-    //refresh leader term.
     refreshLeader();
   }
 
   public HeartbeatResponse heartbeat(NodeInfo nodeInfo) {
     try {
-      //get leader term.
+      // Get leader.
       final PeerId leader = RouteTable.getInstance().selectLeader(RAFT_GROUP_ID);
 
       final HeartbeatRequest request = new HeartbeatRequest(nodeInfo);

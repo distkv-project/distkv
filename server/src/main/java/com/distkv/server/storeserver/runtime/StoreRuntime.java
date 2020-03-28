@@ -2,6 +2,7 @@ package com.distkv.server.storeserver.runtime;
 
 import com.distkv.common.NodeInfo;
 import com.distkv.common.id.NodeId;
+import com.distkv.common.utils.NetUtil;
 import com.distkv.core.KVStore;
 import com.distkv.core.KVStoreImpl;
 import com.distkv.server.storeserver.RunningMode;
@@ -12,9 +13,6 @@ import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.workerpool.WorkerPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StoreRuntime {
@@ -48,13 +46,13 @@ public class StoreRuntime {
     slaveClients = new ConcurrentHashMap<>();
     NodeId nodeId = NodeId.nil();
     nodeInfo = NodeInfo.newBuilder()
-        .setAddress(String.format("distkv://%s:%d", getLocalIp(), config.getPort()))
+        .setAddress(String.format("distkv://%s:%d", NetUtil.getLocalIp(), config.getPort()))
         .setNodeId(nodeId)
         .build();
     if (config.getMode() == RunningMode.DISTRIBUTED) {
       heartbeatManager = new HeartbeatManager(
           nodeInfo,
-          config.getDmetaServerListStr(),
+          config.getMetaServerAddresses(),
           slaveClients);
     }
 
@@ -91,15 +89,5 @@ public class StoreRuntime {
 
   public synchronized void setNodeInfo(NodeInfo nodeInfo) {
     this.nodeInfo = nodeInfo;
-  }
-
-  public static String getLocalIp() {
-    try {
-      InetAddress inetAddress = InetAddress.getLocalHost();
-      String ip = inetAddress.getHostAddress().toString();
-      return ip;
-    } catch (UnknownHostException e) {
-      return "localhost";
-    }
   }
 }
