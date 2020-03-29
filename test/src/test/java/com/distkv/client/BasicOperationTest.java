@@ -39,7 +39,7 @@ public class BasicOperationTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       }
-    }, 5 * 1000);
+    }, 3 * 1000);
     Assert.assertTrue(result);
     client.disconnect();
   }
@@ -85,7 +85,7 @@ public class BasicOperationTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       }
-    }, 5 * 1000);
+    }, 3 * 1000);
     Assert.assertTrue(result);
 
     client.disconnect();

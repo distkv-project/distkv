@@ -106,12 +106,13 @@ public class Worker extends Thread {
     if (isTTLRequest(request)) {
       String key = request.getKey();
       long timeToLive = storeRuntime.getExpirationManager().getTheTimeToLive(key);
-      boolean exists = checkExistsInStore(timeToLive, key);
-      if (exists) {
+      if (timeToLive == -1) {
+        if (!existsInStore(key)) {
+          builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+        }
+      } else {
         TTLResponse response = TTLResponse.newBuilder().setTtl(timeToLive).build();
         builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(response));
-      } else {
-        builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
       }
     }
   }
@@ -148,12 +149,8 @@ public class Worker extends Thread {
     return requestType == TTL;
   }
 
-  //
-  private boolean checkExistsInStore(long timeToLive, String key) {
-    if (timeToLive == -1) {
-      return storeEngine.exists(key);
-    }
-    return true;
+  private boolean existsInStore(String key) {
+    return storeEngine.exists(key);
   }
 
   // A helper method to check if it's a request with expiration.
