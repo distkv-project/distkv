@@ -109,11 +109,11 @@ public class Worker extends Thread {
       if (timeToLive == -1) {
         if (!existsInStore(key)) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+          return;
         }
-      } else {
-        TTLResponse response = TTLResponse.newBuilder().setTtl(timeToLive).build();
-        builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(response));
       }
+      TTLResponse response = TTLResponse.newBuilder().setTtl(timeToLive).build();
+      builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(response));
     }
   }
 
