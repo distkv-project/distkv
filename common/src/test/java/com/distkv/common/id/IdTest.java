@@ -6,17 +6,17 @@ import org.testng.annotations.Test;
 public class IdTest {
 
   @Test
-  public void testPartitionId() {
-    PartitionId id = PartitionId.fromShort((short) 13);
+  public void testGroupId() {
+    GroupId id = GroupId.fromIndex((short) 13);
     Assert.assertEquals(id.getIndex(), (short) 13);
   }
 
   @Test
   public void testNodeId() {
-    final PartitionId partitionId = PartitionId.fromShort((short) 21);
-    NodeId id = NodeId.from(100, partitionId);
+    final GroupId groupId = GroupId.fromIndex((short) 21);
+    NodeId id = NodeId.from(100, groupId);
     Assert.assertEquals(id.getIndex(), 100);
-    Assert.assertEquals(id.getPartitionId(), partitionId);
+    Assert.assertEquals(id.getGroupId(), groupId);
   }
 
   @Test

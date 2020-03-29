@@ -1,17 +1,26 @@
 package com.distkv.server.view;
 
+
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class DistkvAbstractView {
 
-  private ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
+  protected ShardTable shardTable;
 
-  protected void put(String key, String value) {
+  /**
+   * Map storing node table.
+   */
+  private ConcurrentHashMap<String, NodeTable> map = new ConcurrentHashMap<>();
+
+  protected void put(String key, NodeTable value) {
     map.put(key, value);
   }
 
-  public String get(String key) {
+  public NodeTable get(String key) {
     return map.get(key);
   }
 
+  public boolean containsKey(String key) {
+    return map.containsKey(key);
+  }
 }

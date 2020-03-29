@@ -8,20 +8,20 @@ import com.alipay.remoting.serialization.SerializerManager;
 import com.alipay.sofa.jraft.entity.Task;
 import com.distkv.server.metaserver.server.DmetaServer;
 import com.distkv.server.metaserver.server.DmetaStoreClosure;
-import com.distkv.server.metaserver.server.bean.PutRequest;
-import com.distkv.server.metaserver.server.bean.PutResponse;
+import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
+import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
-public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
+public class HeartbeatRequestProcessor extends AsyncUserProcessor<HeartbeatRequest> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PutKVRequestProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(HeartbeatRequestProcessor.class);
 
   private final DmetaServer dmetaServer;
 
-  public PutKVRequestProcessor(DmetaServer dmetaServer) {
+  public HeartbeatRequestProcessor(DmetaServer dmetaServer) {
     super();
     this.dmetaServer = dmetaServer;
   }
@@ -29,16 +29,17 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
   @Override
   public void handleRequest(final BizContext bizCtx,
                             final AsyncContext asyncCtx,
-                            final PutRequest request) {
+                            final HeartbeatRequest request) {
+    // If it is not currently a leader, return the leader's peer.
     if (! this.dmetaServer.getFsm().isLeader()) {
-      final PutResponse response = new PutResponse();
+      final HeartbeatResponse response = new HeartbeatResponse();
       response.setSuccess(false);
       response.setRedirect(dmetaServer.getRedirect());
       asyncCtx.sendResponse(response);
       return;
     }
 
-    final PutResponse response = new PutResponse();
+    final HeartbeatResponse response = new HeartbeatResponse();
     final DmetaStoreClosure closure = new DmetaStoreClosure(dmetaServer, request, response,
         status -> {
           if (!status.isOk()) {
@@ -57,7 +58,7 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
       // apply task to raft group.
       dmetaServer.getNode().apply(task);
     } catch (final CodecException e) {
-      LOG.error("Fail to encode IncrementAndGetRequest", e);
+      LOG.error("Fail to encode Request", e);
       response.setSuccess(false);
       response.setErrorMessage(e.getMessage());
       asyncCtx.sendResponse(response);
@@ -66,6 +67,6 @@ public class PutKVRequestProcessor extends AsyncUserProcessor<PutRequest> {
 
   @Override
   public String interest() {
-    return PutRequest.class.getName();
+    return HeartbeatRequest.class.getName();
   }
 }

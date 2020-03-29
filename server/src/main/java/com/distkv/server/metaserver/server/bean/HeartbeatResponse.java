@@ -1,9 +1,14 @@
 package com.distkv.server.metaserver.server.bean;
 
-import java.io.Serializable;
+import com.distkv.common.NodeInfo;
 
-public class PutResponse implements Serializable {
+import java.io.Serializable;
+import java.util.HashMap;
+
+public class HeartbeatResponse implements Serializable {
   private static final long serialVersionUID = -4220017786727146673L;
+
+  private HashMap<String, NodeInfo> nodeTable;
 
   /**
    * Whether the request is executed successfully.
@@ -34,12 +39,19 @@ public class PutResponse implements Serializable {
     this.redirect = redirect;
   }
 
-  // TODO(qwang)
   public String getErrorMessage() {
     return errorMessage;
   }
 
   public void setErrorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
+  }
+
+  public HashMap<String, NodeInfo> getNodeTable() {
+    return nodeTable;
+  }
+
+  public void setNodeTable(HashMap<String, NodeInfo> nodeTable) {
+    this.nodeTable = nodeTable;
   }
 }
