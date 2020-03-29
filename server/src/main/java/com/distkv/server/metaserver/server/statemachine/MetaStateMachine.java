@@ -51,13 +51,11 @@ public class MetaStateMachine extends StateMachineAdapter {
       if (iter.done() != null) {
         // The done closure of current iter is not null, so this is the code path of leader.
         //
-        // Note that this task is applied by this node, no need to parse anything data,
-        // just read it, because this is the task is from client side, it's not a sync task
-        // of leader-follow.
+        // Note that this task is applied by this node, no need to parse any data, just read it,
+        // because this is the task is from client side, it's not a sync task of leader-follow.
         doneClosure = (DmetaStoreClosure) iter.done();
         nodeInfo = doneClosure.getRequest().getNodeInfo();
       } else {
-        // Have to parse FetchAddRequest from this user log.
         final ByteBuffer data = iter.getData();
         try {
           final HeartbeatRequest request = SerializerManager
