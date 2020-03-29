@@ -103,7 +103,9 @@ public class Worker extends Thread {
     }
     if (isTimeRemainingQuery(request)) {
       try {
-        long survivalTime = storeRuntime.getExpirationManager().survivalTime(request.getKey());
+        String key = request.getKey();
+        long survivalTime = storeRuntime.getExpirationManager().survivalTime(key);
+        isExistsInStore(survivalTime, key);
         TTLResponse response = TTLResponse.newBuilder().setTtl(survivalTime).build();
         builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(response));
       } catch (KeyNotFoundException e) {
@@ -138,10 +140,20 @@ public class Worker extends Thread {
     }
   }
 
-  // A helper method to check if it's a request with ttl.
+  // Check if it's a request with ttl.
   private static boolean isTimeRemainingQuery(DistkvRequest distkvRequest) {
     RequestType requestType = distkvRequest.getRequestType();
     return requestType == TTL;
+  }
+
+  //
+  private void isExistsInStore(long survivalTime, String key) {
+    if (survivalTime == -1) {
+      boolean exists = storeEngine.exists(key);
+      if (!exists) {
+        throw new KeyNotFoundException("The key {1} not found in store.", key);
+      }
+    }
   }
 
   // A helper method to check if it's a request with expiration.

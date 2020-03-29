@@ -1,7 +1,6 @@
 package com.distkv.server.storeserver.runtime.expire;
 
 import com.distkv.common.exception.DistkvException;
-import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.server.storeserver.StoreConfig;
@@ -9,7 +8,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.Date;
 import java.util.Optional;
 import java.util.PriorityQueue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -61,8 +59,8 @@ public class ExpirationManager {
   }
 
   /**
-   * Get the remaining survival time of a key. For keys with no expiration time set and stored in
-   * the store, it will return -1.
+   * Get the remaining survival time of a key.
+   * If the key not found in PriorityQueue,it will return -1.
    *
    * @param key The key to get time to live.
    * @return Survival time for a key.
@@ -73,26 +71,8 @@ public class ExpirationManager {
     if (nodeOptional.isPresent()) {
       Node node = nodeOptional.get();
       return node.expireTime - new Date().getTime();
-    } else {
-      try {
-        expireClient.connect();
-        try {
-          boolean exists = expireClient.exists(key);
-          if (exists) {
-            return -1;
-          } else {
-            throw new KeyNotFoundException("The key {} is not found in the store.", key);
-          }
-        } catch (ExecutionException | InterruptedException | InvalidProtocolBufferException e) {
-          LOGGER.error("Failed to query if the key {} exists {}", key, e);
-          throw new DistkvException(e.toString());
-        }
-      } finally {
-        if (!expireClient.isConnected()) {
-          expireClient.disconnect();
-        }
-      }
     }
+    return -1;
   }
 
   /**
