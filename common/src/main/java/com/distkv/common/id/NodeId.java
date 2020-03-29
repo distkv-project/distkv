@@ -10,44 +10,43 @@ public class NodeId implements Serializable {
   private static final long serialVersionUID = -2216426913363839949L;
 
   /**
-   * Whether this node is a master.
-   *
-   * True if this node is master node, false if this node is a slave node.
-   */
-  private boolean isMaster;
-
-  /**
    * The Id of the partition that this node belongs to.
    */
-  private PartitionId partitionId;
+  private GroupId groupId;
 
   /**
    * The index of this node.
    */
   private int index;
 
-  public boolean isMaster() {
-    return isMaster;
+  public GroupId getGroupId() {
+    return groupId;
   }
 
-  public PartitionId getPartitionId() {
-    return partitionId;
+  public void setGroupId(GroupId groupId) {
+    this.groupId = groupId;
   }
 
   public int getIndex() {
     return index;
   }
 
-  private NodeId(int index, PartitionId partitionId, boolean isMaster) {
+  public void setIndex(int i) {
+    this.index = i;
+  }
+
+  private NodeId(int index, GroupId groupId) {
     this.index = index;
-    this.partitionId = partitionId;
-    this.isMaster = isMaster;
+    this.groupId = groupId;
   }
 
-  public static NodeId from(int index, PartitionId partitionId, boolean isMaster) {
-    return new NodeId(index, partitionId, isMaster);
+  public static NodeId from(int index, GroupId groupId) {
+    return new NodeId(index, groupId);
   }
 
+  public static NodeId nil() {
+    return new NodeId(-1, null);
+  }
 
   @Override
   public boolean equals(Object obj) {
@@ -58,21 +57,20 @@ public class NodeId implements Serializable {
       return false;
     }
     NodeId r = (NodeId) obj;
-    return (r.index == index && r.partitionId == partitionId && r.isMaster == isMaster);
+    return (r.index == index && r.groupId == groupId);
   }
 
   @Override
   public int hashCode() {
     int result = 17;
     result = 31 * result + Integer.hashCode(index);
-    result = 31 * result + Boolean.hashCode(isMaster);
-    result = 31 * result + partitionId.hashCode();
+    result = 31 * result + groupId.hashCode();
     return result;
   }
 
   @Override
   public String toString() {
-    return String.format("NodeId{%d-%d-%b}", index, partitionId.getIndex(), isMaster);
+    return String.format("NodeId{%d-%d}", index, groupId.getIndex());
   }
 
 }

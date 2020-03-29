@@ -5,8 +5,8 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.File;
-import java.util.List;
 
 public class StoreConfig {
   private static final Logger LOGGER = LoggerFactory.getLogger(StoreConfig.class);
@@ -15,13 +15,15 @@ public class StoreConfig {
   public static final String DEFAULT_CONFIG_FILE = "store.default.conf";
 
   private int listeningPort;
-  private boolean isMaster;
   private int shardsNum;
-  private List<String> slaveAddresses;
-
-  public boolean isMaster() {
-    return isMaster;
-  }
+  /**
+   * Mode represents how to start the store server.
+   */
+  private RunningMode mode;
+  /**
+   * Meta Server address str.
+   */
+  private final String metaServerAddresses;
 
   public int getPort() {
     return listeningPort;
@@ -35,27 +37,29 @@ public class StoreConfig {
     return shardsNum;
   }
 
-  public List<String> getSlaveAddresses() {
-    return slaveAddresses;
+  public RunningMode getMode() {
+    return mode;
+  }
+
+  public void setMode(RunningMode mode) {
+    this.mode = mode;
+  }
+
+  public String getMetaServerAddresses() {
+    return metaServerAddresses;
   }
 
   public StoreConfig(Config config) {
     listeningPort = config.getInt("store.listeningPort");
-    isMaster = config.getBoolean("store.isMaster");
     shardsNum = config.getInt("store.shardsNum");
-    if (isMaster) {
-      slaveAddresses = config.getStringList("store.slaveAddresses");
-    } else {
-      slaveAddresses = null;
-    }
+    metaServerAddresses = config.getString("store.metaServerAddresses");
+    mode = config.getEnum(RunningMode.class, "store.mode");
   }
 
   @Override
   public String toString() {
     return "listeningPort: " + listeningPort + ";\n"
-        + "isMaster: " + isMaster + ";\n"
-        + "shardNum: " + shardsNum + ";\n"
-        + "slaves" + slaveAddresses.toString() + "\n";
+        + "shardNum: " + shardsNum + ";\n";
   }
 
   public static StoreConfig create() {

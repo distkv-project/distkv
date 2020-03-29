@@ -2,18 +2,18 @@ package com.distkv.server.metaserver.server;
 
 import com.alipay.sofa.jraft.Closure;
 import com.alipay.sofa.jraft.Status;
-import com.distkv.server.metaserver.server.bean.PutRequest;
-import com.distkv.server.metaserver.server.bean.PutResponse;
+import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
+import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 
 public class DmetaStoreClosure implements Closure {
   private DmetaServer dmetaServer;
-  private PutRequest request;
-  private PutResponse response;
+  private HeartbeatRequest request;
+  private HeartbeatResponse response;
   private Closure done; // callback
 
   public DmetaStoreClosure(DmetaServer dmetaServer,
-                           PutRequest request,
-                           PutResponse response,
+                           HeartbeatRequest request,
+                           HeartbeatResponse response,
                            Closure done) {
     super();
     this.dmetaServer = dmetaServer;
@@ -30,15 +30,15 @@ public class DmetaStoreClosure implements Closure {
     }
   }
 
-  public PutRequest getRequest() {
+  public HeartbeatRequest getRequest() {
     return this.request;
   }
 
-  public void setRequest(PutRequest request) {
+  public void setRequest(HeartbeatRequest request) {
     this.request = request;
   }
 
-  public PutResponse getResponse() {
+  public HeartbeatResponse getResponse() {
     return this.response;
   }
 
