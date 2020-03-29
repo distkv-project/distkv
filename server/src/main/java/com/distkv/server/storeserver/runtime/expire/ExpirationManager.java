@@ -65,7 +65,7 @@ public class ExpirationManager {
    * @param key The key to get time to live.
    * @return Survival time for a key.
    */
-  public long survivalTime(String key) {
+  public long getTheTimeToLive(String key) {
     Optional<Node> nodeOptional = expirationQueue.stream().filter(item -> item.key.equals(key))
         .findFirst();
     if (nodeOptional.isPresent()) {

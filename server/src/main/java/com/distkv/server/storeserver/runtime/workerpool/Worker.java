@@ -103,14 +103,14 @@ public class Worker extends Thread {
     if (needExpire(request)) {
       storeRuntime.getExpirationManager().addToCycle(request);
     }
-    if (isTimeRemainingQuery(request)) {
-      try {
-        String key = request.getKey();
-        long survivalTime = storeRuntime.getExpirationManager().survivalTime(key);
-        isExistsInStore(survivalTime, key);
-        TTLResponse response = TTLResponse.newBuilder().setTtl(survivalTime).build();
+    if (isTTLRequest(request)) {
+      String key = request.getKey();
+      long timeToLive = storeRuntime.getExpirationManager().getTheTimeToLive(key);
+      boolean exists = checkExistsInStore(timeToLive, key);
+      if (exists) {
+        TTLResponse response = TTLResponse.newBuilder().setTtl(timeToLive).build();
         builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(response));
-      } catch (KeyNotFoundException e) {
+      } else {
         builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
       }
     }
@@ -143,19 +143,17 @@ public class Worker extends Thread {
   }
 
   // Check if it's a request with ttl.
-  private static boolean isTimeRemainingQuery(DistkvRequest distkvRequest) {
+  private static boolean isTTLRequest(DistkvRequest distkvRequest) {
     RequestType requestType = distkvRequest.getRequestType();
     return requestType == TTL;
   }
 
   //
-  private void isExistsInStore(long survivalTime, String key) {
-    if (survivalTime == -1) {
-      boolean exists = storeEngine.exists(key);
-      if (!exists) {
-        throw new KeyNotFoundException("The key {1} not found in store.", key);
-      }
+  private boolean checkExistsInStore(long timeToLive, String key) {
+    if (timeToLive == -1) {
+      return storeEngine.exists(key);
     }
+    return true;
   }
 
   // A helper method to check if it's a request with expiration.

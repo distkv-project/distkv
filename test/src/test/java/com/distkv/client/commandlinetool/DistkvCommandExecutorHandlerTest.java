@@ -522,8 +522,9 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     // TTL whit no expire operation.
     command = "ttl str_k1";
     distKVParsedResult = distkvParser.parse(command);
-    Assert.assertEquals(CommandExecutorHandler
-        .ttl(distkvClient, distKVParsedResult), "-1");
+    String timeToLive = CommandExecutorHandler.ttl(distkvClient, distKVParsedResult)
+        .replace(TimeUnit.MILLISECOND, "");
+    Assert.assertEquals(timeToLive, "-1");
   }
 
   @Test
@@ -559,9 +560,9 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     command = "ttl str_k1";
     final DistkvParsedResult ttlParsedResult = distkvParser.parse(command);
     boolean ttlResult = RuntimeUtil.waitForCondition(() -> {
-      String servivalTime = CommandExecutorHandler.ttl(distkvClient, ttlParsedResult)
+      String timeToLive = CommandExecutorHandler.ttl(distkvClient, ttlParsedResult)
           .replace(TimeUnit.MILLISECOND, "");
-      long result = Long.parseLong(servivalTime);
+      long result = Long.parseLong(timeToLive);
       return result < 2000 && result > 0;
     }, 1000);
     Assert.assertTrue(ttlResult);

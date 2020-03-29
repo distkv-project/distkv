@@ -26,12 +26,10 @@ enum Status {
     DUPLICATED_KEY = 10;
 };
 
-//Query if a key exists.
 message ExistsResponse {
     bool exists = 1;
 }
 
-//Query if a key exists.
 message TTLResponse {
     int64 ttl = 1;
 }

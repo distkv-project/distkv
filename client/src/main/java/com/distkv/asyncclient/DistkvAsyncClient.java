@@ -64,9 +64,9 @@ public interface DistkvAsyncClient {
   CompletableFuture<DistkvResponse> exists(String key);
 
   /**
-   * Get a servival time for a given key.
+   * Get the time to live by the given key. The time unit is millisecond.
    *
-   * @param key The key need to get the survival time.
+   * @param key The key to be query TTL.
    */
   CompletableFuture<DistkvResponse> ttl(String key);
 

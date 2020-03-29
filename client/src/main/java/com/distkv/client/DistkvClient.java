@@ -58,8 +58,8 @@ public interface DistkvClient {
   boolean exists(String key);
 
   /**
-   * Get a servival time for a given key.
-   * @param key The key need to get the survival time.
+   * Get the time to live by the given key.
+   * @param key The key to be query TTL.
    * @return The key's servival time.
    */
   long ttl(String key);

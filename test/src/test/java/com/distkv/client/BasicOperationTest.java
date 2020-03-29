@@ -7,7 +7,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Test(singleThreaded = true)
 public class BasicOperationTest extends BaseTestSupplier {
 
   private void dummyPut(DistkvClient client) throws InvalidProtocolBufferException {
@@ -26,7 +25,7 @@ public class BasicOperationTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testExpire() throws InvalidProtocolBufferException {
+  public void testExpiration() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     dummyPut(client);
     //Expire operation.
@@ -40,13 +39,13 @@ public class BasicOperationTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       }
-    }, 30 * 1000);
+    }, 5 * 1000);
     Assert.assertTrue(result);
     client.disconnect();
   }
 
   @Test
-  public void testExist() throws InvalidProtocolBufferException {
+  public void testExists() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     dummyPut(client);
     // Exist operation.
@@ -64,21 +63,21 @@ public class BasicOperationTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testTTLWithExpire() throws InvalidProtocolBufferException {
+  public void testTTLWithExpiration() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     dummyPut(client);
 
     //Expire operation.
     client.expire("k1", 2000);
 
-    // TTL key not expire operation.
+    // TTL with key has not expired operation.
     boolean ttlResult = RuntimeUtil.waitForCondition(() -> {
       long servivalTime = client.ttl("k1");
       return servivalTime < 2000 && servivalTime > 0;
     }, 1000);
     Assert.assertTrue(ttlResult);
 
-    // TTL key expire operation.
+    // TTL with key has expired operation.
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         client.ttl("k1");
@@ -86,7 +85,7 @@ public class BasicOperationTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       }
-    }, 30 * 1000);
+    }, 5 * 1000);
     Assert.assertTrue(result);
 
     client.disconnect();
