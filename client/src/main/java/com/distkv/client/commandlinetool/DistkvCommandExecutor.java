@@ -79,6 +79,8 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.expire(distkvClient, parsedResult);
       case EXISTS:
         return CommandExecutorHandler.exists(distkvClient, parsedResult);
+      case TTL:
+        return CommandExecutorHandler.ttl(distkvClient, parsedResult);
       case EXIT:
         // User inputs `exit`, let's exit client immediately.
         System.out.println("bye bye ~");

@@ -5,6 +5,7 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistsResponse;
+import com.distkv.rpc.protobuf.generated.CommonProtocol.TTLResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.google.protobuf.InvalidProtocolBufferException;
 
@@ -113,6 +114,17 @@ public class DefaultDistkvClient implements DistkvClient {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     try {
       return response.getResponse().unpack(ExistsResponse.class).getExists();
+    } catch (InvalidProtocolBufferException e) {
+      throw new DistkvException(e.toString());
+    }
+  }
+
+  @Override
+  public long ttl(String key) {
+    DistkvResponse response = FutureUtils.get(asyncClient.ttl(key));
+    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
+    try {
+      return response.getResponse().unpack(TTLResponse.class).getTtl();
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }

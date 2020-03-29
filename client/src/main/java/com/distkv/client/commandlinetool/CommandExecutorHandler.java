@@ -4,6 +4,7 @@ import com.distkv.client.DistkvClient;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.exception.DistkvException;
+import com.distkv.common.timeunit.TimeUnit;
 import com.distkv.parser.po.DistkvParsedResult;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictGetItemRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictPopItemRequest;
@@ -485,6 +486,11 @@ public class CommandExecutorHandler {
     DistkvRequest request = parsedResult.getRequest();
     distkvClient.drop(request.getKey());
     return STATUS_OK;
+  }
+
+  public static String ttl(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    return distkvClient.ttl(request.getKey()) + TimeUnit.MILLISECOND;
   }
 
   public static String exists(DistkvClient distkvClient, DistkvParsedResult parsedResult) {

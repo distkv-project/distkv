@@ -2,6 +2,7 @@ package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.timeunit.TimeUnit;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.parser.DistkvParser;
 import com.distkv.parser.po.DistkvParsedResult;
@@ -506,4 +507,77 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
         .exists(distkvClient, distKVParsedResult), "true");
   }
 
+  @Test
+  public void testTtlNoExpire() {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    // Put operation.
+    command = "str.put str_k1 v1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .strPut(distkvClient, distKVParsedResult), STATUS_OK);
+
+    // TTL whit no expire operation.
+    command = "ttl str_k1";
+    distKVParsedResult = distkvParser.parse(command);
+    String timeToLive = CommandExecutorHandler.ttl(distkvClient, distKVParsedResult)
+        .replace(TimeUnit.MILLISECOND, "");
+    Assert.assertEquals(timeToLive, "-1");
+  }
+
+  @Test
+  public void testTtlKeyNotFound() {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    command = "ttl str_k1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertThrows(KeyNotFoundException.class, () -> CommandExecutorHandler
+        .ttl(distkvClient, distKVParsedResult));
+  }
+
+  @Test
+  public void testTtlWithExpire() {
+    distkvClient = newDistkvClient();
+    final DistkvParser distkvParser = new DistkvParser();
+    DistkvParsedResult distKVParsedResult;
+    String command;
+    // Put operation.
+    command = "str.put str_k1 v1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(CommandExecutorHandler
+        .strPut(distkvClient, distKVParsedResult), STATUS_OK);
+
+    // Expire operation
+    command = "expire str_k1 2000";
+    distKVParsedResult = distkvParser.parse(command);
+    CommandExecutorHandler.expire(distkvClient, distKVParsedResult);
+
+    // TTL key not expire operation.
+    command = "ttl str_k1";
+    final DistkvParsedResult ttlParsedResult = distkvParser.parse(command);
+    boolean ttlResult = RuntimeUtil.waitForCondition(() -> {
+      String timeToLive = CommandExecutorHandler.ttl(distkvClient, ttlParsedResult)
+          .replace(TimeUnit.MILLISECOND, "");
+      long result = Long.parseLong(timeToLive);
+      return result < 2000 && result > 0;
+    }, 1000);
+    Assert.assertTrue(ttlResult);
+
+    // TTL key expire operation.
+    command = "ttl str_k1";
+    DistkvParsedResult finalDistKVParsedResult = distkvParser.parse(command);
+    boolean result = RuntimeUtil.waitForCondition(() -> {
+      try {
+        CommandExecutorHandler.ttl(distkvClient, finalDistKVParsedResult);
+        return false;
+      } catch (KeyNotFoundException e) {
+        return true;
+      }
+    }, 30 * 1000);
+    Assert.assertTrue(result);
+  }
 }

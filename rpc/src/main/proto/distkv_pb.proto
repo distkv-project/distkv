@@ -32,6 +32,8 @@ enum RequestType {
 
     EXISTS = 6;
 
+    TTL = 7;
+
     // string concept
     STR_PUT = 101;
     STR_GET = 102;

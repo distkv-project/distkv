@@ -1,6 +1,7 @@
 package com.distkv.server.storeserver.runtime.workerpool;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.TTL;
 
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
@@ -15,6 +16,7 @@ import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistsResponse;
+import com.distkv.rpc.protobuf.generated.CommonProtocol.TTLResponse;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
@@ -82,7 +84,7 @@ public class Worker extends Thread {
         CompletableFuture<DistkvResponse> future = internalRequest.getCompletableFuture();
         DistkvResponse.Builder builder = DistkvResponse.newBuilder();
 
-        handleExpiration(distkvRequest);
+        handleExpiration(distkvRequest, builder);
         syncToSlaves(distkvRequest, future);
         storeHandler(distkvRequest, builder);
 
@@ -97,9 +99,21 @@ public class Worker extends Thread {
   }
 
   // Add expire request to ExpireCycle.
-  private void handleExpiration(DistkvRequest request) {
+  private void handleExpiration(DistkvRequest request, DistkvResponse.Builder builder) {
     if (needExpire(request)) {
       storeRuntime.getExpirationManager().addToCycle(request);
+    }
+    if (isTTLRequest(request)) {
+      String key = request.getKey();
+      long timeToLive = storeRuntime.getExpirationManager().getTheTimeToLive(key);
+      if (timeToLive == -1) {
+        if (!existsInStore(key)) {
+          builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
+          return;
+        }
+      }
+      TTLResponse response = TTLResponse.newBuilder().setTtl(timeToLive).build();
+      builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(response));
     }
   }
 
@@ -127,6 +141,16 @@ public class Worker extends Thread {
         }
       }
     }
+  }
+
+  // Check if it's a request with ttl.
+  private static boolean isTTLRequest(DistkvRequest distkvRequest) {
+    RequestType requestType = distkvRequest.getRequestType();
+    return requestType == TTL;
+  }
+
+  private boolean existsInStore(String key) {
+    return storeEngine.exists(key);
   }
 
   // A helper method to check if it's a request with expiration.
