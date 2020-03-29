@@ -31,26 +31,41 @@ public class StoreRuntime {
    */
   private ExpirationManager expirationManager;
 
+  /**
+   * A manager that reports the heartbeats to MetaServer.
+   */
   private HeartbeatManager heartbeatManager;
 
+  /**
+   * The worker pool that executes requests by sharding.
+   */
   private WorkerPool workerPool;
 
+  /**
+   * The clients to connect to all slaves.
+   */
   private volatile ConcurrentHashMap<String, SlaveClient> slaveClients;
 
+  /**
+   * The information of this node.
+   */
   private volatile NodeInfo nodeInfo;
 
   public StoreRuntime(StoreConfig config) {
     this.config = config;
+    // Initial store engine.
     storeEngine = new KVStoreImpl();
+    // Initial expiration manager.
     expirationManager = new ExpirationManager(config);
+    // Initial clients connecting to MetaServer.
     slaveClients = new ConcurrentHashMap<>();
-    NodeId nodeId = NodeId.nil();
     nodeInfo = NodeInfo.newBuilder()
         .setAddress(String.format("distkv://%s:%d", NetUtil.getLocalIp(), config.getPort()))
-        .setNodeId(nodeId)
+        .setNodeId(NodeId.nil())
         .setIsMaster(false)
         .build();
     if (config.getMode() == RunningMode.DISTRIBUTED) {
+      // Initial the heartbeat manager if this node is running under DISTRIBUTED mode.
       heartbeatManager = new HeartbeatManager(
           nodeInfo,
           config.getMetaServerAddresses(),

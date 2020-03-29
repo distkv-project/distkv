@@ -7,15 +7,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * a WAL Implement.
- * </p>
+ * A WAL Implement.
+ *
  * The interface for wal is not stable now.  it will change for upper logical.
  */
 public class Wal {
   private LogSegment segment = new LogSegment();
   private int lastCommitIndex;
 
-  // this used by follower
+  // This used by follower.
   public void append(LogEntry logEntry) {
     segment.appendLogEntry(logEntry);
   }

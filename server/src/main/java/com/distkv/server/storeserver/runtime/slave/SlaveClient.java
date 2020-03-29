@@ -22,7 +22,7 @@ public class SlaveClient {
     rpcClient = new DousiClient(clientConfig);
     rpcClient.open();
     isOpen = true;
-    // Setup distkvService proxy.
+    // Setup DistkvService proxy.
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();
     distkvRpcProxy.setInterfaceClass(DistkvService.class);
     distkvService = distkvRpcProxy.getService(rpcClient);

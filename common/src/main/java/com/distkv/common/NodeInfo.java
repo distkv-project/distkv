@@ -4,7 +4,13 @@ import com.distkv.common.id.NodeId;
 
 import java.io.Serializable;
 
+/**
+ * The class presents for a store server node in the cluster.
+ */
 public class NodeInfo implements Serializable {
+
+  private static final long serialVersionUID = -4220017786527146673L;
+
   /**
    * Whether this node is a master.
    *
@@ -12,10 +18,14 @@ public class NodeInfo implements Serializable {
    */
   private boolean isMaster;
 
-  private static final long serialVersionUID = -4220017786527146673L;
-
+  /**
+   * The ID of this node.
+   */
   private NodeId nodeId;
 
+  /**
+   * The listening address of this node.
+   */
   private String address;
 
   public static Builder newBuilder() {

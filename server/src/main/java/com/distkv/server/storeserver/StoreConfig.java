@@ -5,13 +5,13 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 
 public class StoreConfig {
   private static final Logger LOGGER = LoggerFactory.getLogger(StoreConfig.class);
 
   public static final String CUSTOM_CONFIG_FILE = "store.conf";
+
   public static final String DEFAULT_CONFIG_FILE = "store.default.conf";
 
   private int listeningPort;
@@ -21,6 +21,7 @@ public class StoreConfig {
    */
   private RunningMode mode;
   /**
+   * TODO(qwang): Refine this.
    * Meta Server address str.
    */
   private final String metaServerAddresses;

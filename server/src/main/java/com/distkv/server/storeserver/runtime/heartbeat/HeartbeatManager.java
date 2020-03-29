@@ -6,7 +6,6 @@ import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,11 +32,11 @@ public class HeartbeatManager {
 
   private static DmetaClient dmetaClient;
 
-  private static Logger logger = LoggerFactory.getLogger(HeartbeatManager.class);
+  private static Logger LOGGER = LoggerFactory.getLogger(HeartbeatManager.class);
 
+  // TODO(qwang): Refine this ctor. clients and some parameters should not be here.
   public HeartbeatManager(NodeInfo nodeInfo, String dmetaServerListStr,
                           ConcurrentHashMap<String, SlaveClient> clients) {
-
     dmetaClient = new DmetaClient(dmetaServerListStr);
     scheduledExecutor.scheduleAtFixedRate(() -> {
       HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
@@ -58,16 +57,17 @@ public class HeartbeatManager {
     }, INIT_DELAY, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS);
   }
 
-  public void changeNodeInfo(NodeInfo old, NodeInfo young) {
-    if (old.getNodeId().getIndex() != young.getNodeId().getIndex()) {
-      old.getNodeId().setIndex(young.getNodeId().getIndex());
+  // Compare and change the node info of this node.
+  public void changeNodeInfo(NodeInfo oldNode, NodeInfo newNode) {
+    if (oldNode.getNodeId().getIndex() != newNode.getNodeId().getIndex()) {
+      oldNode.getNodeId().setIndex(newNode.getNodeId().getIndex());
     }
-    if (old.isMaster() != young.isMaster()) {
-      old.setIsMaster(young.isMaster());
+    if (oldNode.isMaster() != newNode.isMaster()) {
+      oldNode.setIsMaster(newNode.isMaster());
     }
-    if (old.getNodeId().getGroupId() == null ||
-        !old.getNodeId().getGroupId().equals(young.getNodeId().getGroupId())) {
-      old.getNodeId().setGroupId(young.getNodeId().getGroupId());
+    if (oldNode.getNodeId().getGroupId() == null ||
+        !oldNode.getNodeId().getGroupId().equals(newNode.getNodeId().getGroupId())) {
+      oldNode.getNodeId().setGroupId(newNode.getNodeId().getGroupId());
     }
 
   }
