@@ -2,7 +2,6 @@ package com.distkv.asyncclient;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.DROP;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXISTS;
-
 import com.distkv.namespace.NamespaceInterceptor;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
