@@ -2,6 +2,7 @@ package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.timeunit.TimeUnit;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.parser.DistkvParser;
 import com.distkv.parser.po.DistkvParsedResult;
@@ -558,9 +559,10 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     command = "ttl str_k1";
     final DistkvParsedResult ttlParsedResult = distkvParser.parse(command);
     boolean ttlResult = RuntimeUtil.waitForCondition(() -> {
-      long servivalTime = Long.parseLong(
-          CommandExecutorHandler.ttl(distkvClient, ttlParsedResult));
-      return servivalTime < 2000 && servivalTime > 0;
+      String servivalTime = CommandExecutorHandler.ttl(distkvClient, ttlParsedResult)
+          .replace(TimeUnit.MILLISECOND, "");
+      long result = Long.parseLong(servivalTime);
+      return result < 2000 && result > 0;
     }, 1000);
     Assert.assertTrue(ttlResult);
 
