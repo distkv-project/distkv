@@ -24,9 +24,9 @@ public class TestMasterSyncToSlaves {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
     DmetaTestUtil.startAllDmetaProcess();
-    TimeUnit.SECONDS.sleep(3);
+    TimeUnit.SECONDS.sleep(1);
     MasterSlaveSyncTestUtil.startAllProcess();
-    TimeUnit.SECONDS.sleep(3);
+    TimeUnit.SECONDS.sleep(1);
 
     final DistkvClient[] client0 = {null};
     final DistkvClient[] client1 = {null};

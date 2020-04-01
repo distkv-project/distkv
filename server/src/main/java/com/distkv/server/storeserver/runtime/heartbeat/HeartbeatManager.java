@@ -21,11 +21,6 @@ public class HeartbeatManager {
   public static int HEARTBEAT_INTERVAL = 3000;
 
   /**
-   * How long does the heartbeat start after startup.
-   */
-  public static int INIT_DELAY = 0;
-
-  /**
    * A ThreadPool to manage heartbeat.
    */
   private static ScheduledExecutorService scheduledExecutor = Executors
@@ -41,6 +36,7 @@ public class HeartbeatManager {
     dmetaClient = new DmetaClient(dmetaServerListStr);
     scheduledExecutor.scheduleAtFixedRate(() -> {
       HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
+      // TODO: When response == null, retry in current thread is required
       if (response == null) {
         return;
       }
@@ -55,7 +51,7 @@ public class HeartbeatManager {
         }
       }
       changeNodeInfo(nodeInfo, nodeTable.get(nodeInfo.getAddress()));
-    }, INIT_DELAY, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS);
+    }, 0, HEARTBEAT_INTERVAL, TimeUnit.MILLISECONDS);
   }
 
   public void changeNodeInfo(NodeInfo old, NodeInfo young) {
