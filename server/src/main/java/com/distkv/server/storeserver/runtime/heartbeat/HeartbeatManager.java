@@ -36,6 +36,8 @@ public class HeartbeatManager {
       public void run() {
         HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
         if (response == null) {
+          logger.warn("Failed to heartbeat to MetaServer, " +
+              "and let it retry next ticking.");
           return;
         }
         HashMap<String, NodeInfo> nodeTable = response.getNodeTable();
