@@ -19,7 +19,7 @@ public class HeartbeatManager {
   public static int HEARTBEAT_INTERVAL = 3000;
 
   /**
-   * A timer to manage heartbeat.
+   * A timer to post heartbeat to MetaServer.
    */
   private static Timer heartbeatTimer = new Timer();
 
@@ -35,7 +35,6 @@ public class HeartbeatManager {
       @Override
       public void run() {
         HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
-        // TODO: When response == null, retry in current thread is required
         if (response == null) {
           return;
         }
