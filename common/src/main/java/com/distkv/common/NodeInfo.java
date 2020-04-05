@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class NodeInfo implements Serializable {
   /**
    * Whether this node is a master.
-   *
+   * <p>
    * True if this node is master node, false if this node is a slave node.
    */
   private boolean isMaster;
@@ -18,6 +18,10 @@ public class NodeInfo implements Serializable {
 
   private String address;
 
+  private long lastTimeHeartbeat;
+
+  private NodeStatus status;
+
   public static Builder newBuilder() {
     return new Builder();
   }
@@ -26,6 +30,8 @@ public class NodeInfo implements Serializable {
     this.address = builder.getAddress();
     this.nodeId = builder.getNodeId();
     this.isMaster = builder.isMaster();
+    this.status = NodeStatus.RUNNING;
+    this.lastTimeHeartbeat = 0;
   }
 
   public NodeId getNodeId() {
@@ -50,6 +56,22 @@ public class NodeInfo implements Serializable {
 
   public void setIsMaster(Boolean master) {
     isMaster = master;
+  }
+
+  public NodeStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(NodeStatus status) {
+    this.status = status;
+  }
+
+  public long getLastTimeHeartbeat() {
+    return lastTimeHeartbeat;
+  }
+
+  public void setLastTimeHeartbeat(long lastTimeHeartbeat) {
+    this.lastTimeHeartbeat = lastTimeHeartbeat;
   }
 
   public static class Builder {
