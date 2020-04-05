@@ -7,7 +7,6 @@ import java.io.Serializable;
 public class NodeInfo implements Serializable {
   /**
    * Whether this node is a master.
-   * <p>
    * True if this node is master node, false if this node is a slave node.
    */
   private boolean isMaster;

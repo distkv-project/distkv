@@ -48,7 +48,7 @@ public class NodeTable implements Serializable {
     nodeInfo.setLastTimeHeartbeat(lastTimeHeartbeat = System.currentTimeMillis());
     nodeTable.put(nodeInfo.getAddress(), nodeInfo);
 
-    // Wait next time heartbeat;
+    // Wait next time heartbeat.
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
       @Override
