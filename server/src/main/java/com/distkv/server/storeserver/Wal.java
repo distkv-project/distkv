@@ -34,4 +34,7 @@ public class Wal {
     }
   }
 
+  public int nextIndex() {
+    return segment.getSize();
+  }
 }

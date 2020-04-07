@@ -1,0 +1,23 @@
+syntax="proto3";
+package com.distkv.rpc.protobuf;
+
+option java_package="com.distkv.rpc.protobuf.generated";
+option java_outer_classname="SyncProtocol";
+option cc_generic_services = true;
+
+message MasterCommitRequest {
+  uint32 commitIndex = 1;
+};
+
+message MasterAppendLogRequest{
+  uint32 logStartIndex = 1;
+  uint32 logEndIndex = 2;
+  repeated bytes logs = 3;
+}
+
+message FollowerAckRequest {
+  uint32 ackIndex = 1;
+}
+
+
+
