@@ -5,7 +5,7 @@ import com.distkv.pine.components.AbstractPineHandle;
 
 public class PineCacheImpl extends AbstractPineHandle implements PineCache {
 
-  private static final String COMPONENT_TYPE = "LIKER";
+  private static final String COMPONENT_TYPE = "Cache";
 
   private DistkvClient distkvClient;
 
