@@ -22,13 +22,4 @@ public class CacheTest extends BaseTestSupplier {
     Pine.shutdown();
   }
 
-  @Test(expectedExceptions = DistkvException.class)
-  public void testLikeeNotFoundException() {
-    Pine.init(getListeningAddress());
-
-    PineCache cache = Pine.newCache((long)5000);
-    cache.topic("nihao").newItem("zhangsan");
-
-    Pine.shutdown();
-  }
 }
