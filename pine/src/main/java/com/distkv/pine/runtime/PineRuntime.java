@@ -4,6 +4,8 @@ import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.PineRuntimeShutdownFailedException;
+import com.distkv.pine.components.cache.PineCache;
+import com.distkv.pine.components.cache.PineCacheImpl;
 import com.distkv.pine.components.liker.PineLiker;
 import com.distkv.pine.components.liker.PineLikerImpl;
 import com.distkv.pine.components.topper.PineTopper;
@@ -16,6 +18,8 @@ public class PineRuntime {
    * The distkv sync client.
    */
   private DistkvClient distkvClient;
+
+  private Long expireTime;
 
   public void init(String address) {
     distkvClient = new DefaultDistkvClient(address);
@@ -36,6 +40,10 @@ public class PineRuntime {
 
   public PineLiker newLiker() {
     return new PineLikerImpl(distkvClient);
+  }
+
+  public PineCache newCache(Long expireTime) {
+    return new PineCacheImpl(distkvClient, expireTime);
   }
 
 }
