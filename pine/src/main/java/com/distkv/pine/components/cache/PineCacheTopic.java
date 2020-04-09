@@ -79,8 +79,8 @@ public class PineCacheTopic {
 
   /**
    * Judgment key expire
-   * @param newItems
-   * @return
+   * @param newItems set newItems
+   * @return true is expire
    */
   public Boolean expire(String newItems) {
     try {
@@ -92,7 +92,7 @@ public class PineCacheTopic {
       distkvClient.drop(topicName);
     } catch (KeyNotFoundException e) {
       throw new KeyNotFoundException(
-          "This cache has never liked this topic");
+          "This key is drop");
     }
     return true;
   }

@@ -35,7 +35,7 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
 
   /**
    * this method renew expireTime
-   * @param expireTime
+   * @param expireTime set expireTime
    */
   public void setExpireTime(long expireTime) {
     this.expireTime = expireTime;
