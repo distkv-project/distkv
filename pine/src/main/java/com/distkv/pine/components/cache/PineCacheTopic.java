@@ -2,8 +2,6 @@ package com.distkv.pine.components.cache;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.exception.PineLikerLikeeNotFoundException;
-import com.distkv.common.exception.SetItemNotFoundException;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class PineCacheTopic {
@@ -79,6 +77,11 @@ public class PineCacheTopic {
     }
   }
 
+  /**
+   * Judgment key expire
+   * @param newItems
+   * @return
+   */
   public Boolean expire(String newItems) {
     try {
       distkvClient.strs().get(topicName);
@@ -87,8 +90,8 @@ public class PineCacheTopic {
     }
     try {
       distkvClient.drop(topicName);
-    } catch (SetItemNotFoundException e) {
-      throw new PineLikerLikeeNotFoundException(
+    } catch (KeyNotFoundException e) {
+      throw new KeyNotFoundException(
           "This cache has never liked this topic");
     }
     return true;

@@ -33,5 +33,12 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
     return String.format("%s_%s", super.getKey(), topic);
   }
 
+  /**
+   * this method renew expireTime
+   * @param expireTime
+   */
+  public void setExpireTime(long expireTime) {
+    this.expireTime = expireTime;
+  }
 
 }
