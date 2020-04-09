@@ -1,6 +1,5 @@
 package com.distkv.pine;
 
-import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.pine.api.Pine;
 import com.distkv.pine.components.cache.PineCache;
