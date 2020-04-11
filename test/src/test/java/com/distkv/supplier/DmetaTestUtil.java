@@ -33,8 +33,8 @@ public class DmetaTestUtil {
           "-classpath",
           jarDir,
           "com.distkv.server.metaserver.server.DmetaServer",
-          userDir.getPath() + File.separator + "tmp" + File.separator + "server" + (i + 1),
-          "KV",
+          File.separator + "tmp" + File.separator + "server" + (i + 1),
+          "META_SERVER",
           "127.0.0.1:808" + (i + 1),
           "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083"
       );

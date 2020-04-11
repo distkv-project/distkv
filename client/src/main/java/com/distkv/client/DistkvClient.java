@@ -51,6 +51,20 @@ public interface DistkvClient {
   void expire(String key, long expireTime);
 
   /**
+   * Query if a key exists.
+   *
+   * @param key The key if exists.
+   */
+  boolean exists(String key);
+
+  /**
+   * Get the time to live by the given key.
+   * @param key The key to be query TTL.
+   * @return The key's servival time.
+   */
+  long ttl(String key);
+
+  /**
    * Get actived namespace
    * @return the actived namespace's name
    */

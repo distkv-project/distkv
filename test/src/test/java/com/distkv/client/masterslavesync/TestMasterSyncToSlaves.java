@@ -4,6 +4,7 @@ import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.RuntimeUtil;
+import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -22,28 +23,37 @@ public class TestMasterSyncToSlaves {
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
-    MasterSlaveSyncTestUtil.startAllProcess();
+    DmetaTestUtil.startAllDmetaProcess();
     TimeUnit.SECONDS.sleep(1);
+    MasterSlaveSyncTestUtil.startAllProcess();
+    TimeUnit.SECONDS.sleep(3);
+
     final DistkvClient[] client0 = {null};
     final DistkvClient[] client1 = {null};
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client0[0] = new DefaultDistkvClient(String.format("list://127.0.0.1:%d", 18082));
-        client1[0] = new DefaultDistkvClient(String.format("list://127.0.0.1:%d", 18090));
+        client0[0] = new DefaultDistkvClient(String.format("distkv://127.0.0.1:%d", 8091));
+        client1[0] = new DefaultDistkvClient(String.format("distkv://127.0.0.1:%d", 8092));
         return true;
       } catch (Exception e) {
         return false;
       }
     }, 2 * 60 * 1000);
 
-    //test
-    testStrPut(client0[0], client1[0]);
-    testListPut(client0[0], client1[0]);
-    testSetPut(client0[0], client1[0]);
-    testDictPut(client0[0], client1[0]);
-    testSlistPut(client0[0], client1[0]);
-    testIntPut(client0[0], client1[0]);
-    MasterSlaveSyncTestUtil.stopAllProcess();
+    try {
+      //test
+      testStrPut(client0[0], client1[0]);
+      testListPut(client0[0], client1[0]);
+      testSetPut(client0[0], client1[0]);
+      testDictPut(client0[0], client1[0]);
+      testSlistPut(client0[0], client1[0]);
+      testIntPut(client0[0], client1[0]);
+    } catch (Exception e) {
+      Assert.fail();
+    } finally {
+      MasterSlaveSyncTestUtil.stopAllProcess();
+      DmetaTestUtil.stopAllDmetaProcess();
+    }
     System.out.println("m-s sync test over");
   }
 

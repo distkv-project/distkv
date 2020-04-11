@@ -25,3 +25,11 @@ enum Status {
 
     DUPLICATED_KEY = 10;
 };
+
+message ExistsResponse {
+    bool exists = 1;
+}
+
+message TTLResponse {
+    int64 ttl = 1;
+}

@@ -57,6 +57,21 @@ public interface DistkvAsyncClient {
   CompletableFuture<DistkvResponse> expire(String key, long expireTime);
 
   /**
+   * Query if a key exists.
+   *
+   * @param key The key if exists.
+   */
+  CompletableFuture<DistkvResponse> exists(String key);
+
+  /**
+   * Get the time to live by the given key. The time unit is millisecond.
+   *
+   * @param key The key to be query TTL.
+   */
+  CompletableFuture<DistkvResponse> ttl(String key);
+
+
+  /**
    * Get the dst string proxy.
    *
    * @return The dst string proxy.
