@@ -5,7 +5,7 @@ public class StorageEngine {
   private long nativePointer = 0;
 
   static {
-    System.loadLibrary("TestJNI");
+    System.loadLibrary("java_storage_engine");
   }
 
   public StorageEngine() {
