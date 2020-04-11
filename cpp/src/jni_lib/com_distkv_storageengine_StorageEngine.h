@@ -9,19 +9,35 @@ extern "C" {
 #endif
 /*
  * Class:     com_distkv_storageengine_StorageEngine
+ * Method:    nativeInit
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngine_nativeInit
+    (JNIEnv *, jobject);
+
+/*
+ * Class:     com_distkv_storageengine_StorageEngine
+ * Method:    nativeDestory
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngine_nativeDestory
+    (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_distkv_storageengine_StorageEngine
  * Method:    nativePut
- * Signature: (Ljava/lang/String;Ljava/lang/String;)V
+ * Signature: (JLjava/lang/String;Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_com_distkv_storageengine_StorageEngine_nativePut
-  (JNIEnv *, jobject, jstring, jstring);
+    (JNIEnv *, jobject, jlong, jstring, jstring);
 
 /*
  * Class:     com_distkv_storageengine_StorageEngine
  * Method:    nativeGet
- * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ * Signature: (JLjava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_distkv_storageengine_StorageEngine_nativeGet
-  (JNIEnv *, jobject, jstring);
+    (JNIEnv *, jobject, jlong, jstring);
 
 #ifdef __cplusplus
 }
