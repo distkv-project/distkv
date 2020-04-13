@@ -1,12 +1,12 @@
 package com.distkv.pine.components.cache;
-git
+
 /**
  * The `PineCache` component is used as a cache.
  */
 public interface PineCache {
 
   /**
-   * put a newItems in to cache
+   * Put a newItems in to cache.
    *
    * @param newItems newItems is not null
    */
@@ -14,15 +14,15 @@ public interface PineCache {
 
 
   /**
-   * if newTimes is expired
-   * @param expireTime expireTime
+   * Key(newItems) if or not exsit in the cache.
+   *
    * @param newItems newItems is the key if expired
    * @return true expired false not expired
    */
-  public Boolean expireIf(long expireTime, String newItems);
+  public Boolean expireIf(String newItems);
 
   /**
-   * get newItems from cache
+   * Get newItems from cache.
    *
    * @param newItems getItem which key is newItems
    * @return get value which key is newItems

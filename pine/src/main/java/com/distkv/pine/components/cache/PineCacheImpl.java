@@ -31,7 +31,7 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
   }
 
   @Override
-  public Boolean expireIf(long expireTime, String newItems) {
+  public Boolean expireIf(String newItems) {
     try {
       distkvClient.strs().get(newItems);
     } catch (KeyNotFoundException | InvalidProtocolBufferException e) {
