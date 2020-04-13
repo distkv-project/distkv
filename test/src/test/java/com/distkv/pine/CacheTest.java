@@ -6,10 +6,8 @@ import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.pine.api.Pine;
 import com.distkv.pine.components.cache.PineCache;
 import com.distkv.supplier.BaseTestSupplier;
-import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import sun.misc.Cache;
 
 public class CacheTest extends BaseTestSupplier {
 
