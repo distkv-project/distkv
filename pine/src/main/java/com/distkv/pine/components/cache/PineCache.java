@@ -1,34 +1,31 @@
 package com.distkv.pine.components.cache;
-
-
-import com.distkv.common.DistkvTuple;
-import com.distkv.pine.components.topper.TopperMember;
-import java.util.List;
-
+git
 /**
  * The `PineCache` component is used as a cache.
  */
 public interface PineCache {
 
   /**
+   * put a newItems in to cache
    *
-   * @param newItems
+   * @param newItems newItems is not null
    */
   public void newItems(String newItems);
 
 
   /**
-   *
-   * @param expireTime
-   * @param newItems
-   * @return
+   * if newTimes is expired
+   * @param expireTime expireTime
+   * @param newItems newItems is the key if expired
+   * @return true expired false not expired
    */
   public Boolean expireIf(long expireTime, String newItems);
 
   /**
+   * get newItems from cache
    *
-   * @param newItems
-   * @return
+   * @param newItems getItem which key is newItems
+   * @return get value which key is newItems
    */
   public String getItem(String newItems);
 }

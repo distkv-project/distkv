@@ -5,7 +5,7 @@ import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.pine.components.AbstractPineHandle;
 import com.google.protobuf.InvalidProtocolBufferException;
 
-public class PineCacheImpl extends AbstractPineHandle implements PineCache{
+public class PineCacheImpl extends AbstractPineHandle implements PineCache {
 
   private static final String COMPONENT_TYPE = "CACHE";
 
@@ -21,7 +21,7 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache{
   }
 
   protected String getComponentType() {
-      return COMPONENT_TYPE;
+    return COMPONENT_TYPE;
   }
 
   @Override
@@ -48,12 +48,12 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache{
 
   @Override
   public String getItem(String newItems) {
-      try {
-        String newItem = distkvClient.strs().get(getKey());
-        return newItem;
-      } catch (InvalidProtocolBufferException e) {
-        e.printStackTrace();
-        return "";
-      }
+    try {
+      String newItem = distkvClient.strs().get(getKey());
+      return newItem;
+    } catch (InvalidProtocolBufferException e) {
+      e.printStackTrace();
+      return "";
+    }
   }
 }
