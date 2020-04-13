@@ -14,10 +14,11 @@ public class CacheTest extends BaseTestSupplier {
     Pine.init(getListeningAddress());
 
     PineCache cache = Pine.newCache((long) 5000);
-    cache.topic("nihao").newItem("zhangsan");
-    Assert.assertEquals(cache.topic("nihao").getItem("zhangsan"),"zhangsan");
+    //cache.newItem("zhangsan");
+    cache.newItems("zhangsan");
+    Assert.assertEquals(cache.getItem("nihao"),"zhangsan");
     Thread.sleep((long)6000);
-    Assert.assertThrows(KeyNotFoundException.class, () -> cache.topic("nihao").getItem("zhangsan"));
+    Assert.assertThrows(KeyNotFoundException.class, () -> cache.getItem("zhangsan"));
     Pine.shutdown();
   }
 
