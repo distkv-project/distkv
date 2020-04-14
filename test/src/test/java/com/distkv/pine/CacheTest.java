@@ -16,7 +16,7 @@ public class CacheTest extends BaseTestSupplier {
     Pine.init(getListeningAddress());
 
     PineCache cache = Pine.newCache((long) 5000);
-    cache.newItems("zhangsan");
+    cache.newItem("zhangsan");
     Assert.assertEquals(cache.getItem("nihao"),"zhangsan");
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
@@ -30,7 +30,7 @@ public class CacheTest extends BaseTestSupplier {
 
     boolean expiredIf = RuntimeUtil.waitForCondition(() -> {
       try {
-        cache.expireIf("zhangsan");
+        cache.isExpired("zhangsan");
         return true;
       } catch (KeyNotFoundException e) {
         return true;

@@ -43,7 +43,7 @@ public class Pine {
     return runtime.newLiker();
   }
 
-  public static PineCache newCache(Long expireTime) {
+  public static PineCache newCache(long expireTime) {
     return runtime.newCache(expireTime);
   }
 

@@ -25,20 +25,20 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
   }
 
   @Override
-  public void newItems(String newItems) {
-    distkvClient.strs().put(getKey(), newItems);
+  public void newItem(String item) {
+    distkvClient.strs().put(getKey(), item);
     distkvClient.expire(getKey(),expireTime);
   }
 
   @Override
-  public Boolean expireIf(String newItems) {
+  public Boolean isExpired(String item) {
     try {
-      distkvClient.strs().get(newItems);
+      distkvClient.strs().get(item);
     } catch (KeyNotFoundException | InvalidProtocolBufferException e) {
       return false;
     }
     try {
-      distkvClient.drop(newItems);
+      distkvClient.drop(item);
     } catch (KeyNotFoundException e) {
       throw new KeyNotFoundException(
           "This key is drop");
