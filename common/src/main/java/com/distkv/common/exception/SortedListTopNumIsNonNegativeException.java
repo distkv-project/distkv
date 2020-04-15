@@ -3,7 +3,7 @@ package com.distkv.common.exception;
 public class SortedListTopNumIsNonNegativeException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
-      .SortedListTopNumBeNonNegativeErrorCode
+      .SlistTopNumBeNonNegativeErrorCode
       .getErrorCode();
 
   protected String key;

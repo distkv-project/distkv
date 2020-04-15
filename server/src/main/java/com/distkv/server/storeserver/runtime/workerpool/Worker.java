@@ -4,7 +4,7 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIR
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.TTL;
 
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
@@ -554,9 +554,9 @@ public class Worker extends Thread {
             .unpack(SlistProtocol.SlistPutRequest.class);
         CommonProtocol.Status status;
         try {
-          LinkedList<SortedListEntity> linkedList = new LinkedList<>();
+          LinkedList<SlistEntity> linkedList = new LinkedList<>();
           for (int i = 0; i < slistPutRequest.getListCount(); i++) {
-            linkedList.add(new SortedListEntity(slistPutRequest.getList(i).getMember(),
+            linkedList.add(new SlistEntity(slistPutRequest.getList(i).getMember(),
                 slistPutRequest.getList(i).getScore()));
           }
           storeEngine.sortLists().put(key, linkedList);
@@ -575,13 +575,13 @@ public class Worker extends Thread {
             .unpack(SlistProtocol.SlistTopRequest.class);
         CommonProtocol.Status status;
         try {
-          List<SortedListEntity> topList =
+          List<SlistEntity> topList =
               storeEngine.sortLists().top(key, slistTopRequest.getCount());
-          ListIterator<SortedListEntity> listIterator = topList.listIterator();
+          ListIterator<SlistEntity> listIterator = topList.listIterator();
           SlistProtocol.SlistTopResponse.Builder slistBuilder =
               SlistProtocol.SlistTopResponse.newBuilder();
           while (listIterator.hasNext()) {
-            SortedListEntity entity = listIterator.next();
+            SlistEntity entity = listIterator.next();
             SlistProtocol.SortedListEntity.Builder slistEntity =
                 SlistProtocol.SortedListEntity.newBuilder();
             slistEntity.setScore(entity.getScore());
@@ -627,7 +627,7 @@ public class Worker extends Thread {
         CommonProtocol.Status status;
         try {
           storeEngine.sortLists().putMember(
-              key, new SortedListEntity(slistPutMemberRequest.getMember(),
+              key, new SlistEntity(slistPutMemberRequest.getMember(),
                   slistPutMemberRequest.getScore()));
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {

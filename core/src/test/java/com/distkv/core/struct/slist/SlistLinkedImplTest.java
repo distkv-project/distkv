@@ -1,6 +1,6 @@
 package com.distkv.core.struct.slist;
 
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,12 +14,12 @@ public class SlistLinkedImplTest {
     Slist slist = new SlistLinkedImpl();
 
     // For init
-    List<SortedListEntity> putList = new ArrayList<>();
+    List<SlistEntity> putList = new ArrayList<>();
     for (int i = 100; i < 120; i++) {
-      putList.add(new SortedListEntity(String.valueOf(i), i));
+      putList.add(new SlistEntity(String.valueOf(i), i));
     }
-    List<SortedListEntity> anotherPutList = new ArrayList<>(putList);
-    anotherPutList.add(new SortedListEntity("101", 101));
+    List<SlistEntity> anotherPutList = new ArrayList<>(putList);
+    anotherPutList.add(new SlistEntity("101", 101));
 
     // Test put
     Assert.assertFalse(slist.put(anotherPutList));
@@ -35,9 +35,9 @@ public class SlistLinkedImplTest {
     Assert.assertEquals(slist.size(), 18);
 
     // Test putItem
-    slist.putItem(new SortedListEntity("109", 99));
-    slist.putItem(new SortedListEntity("119", 20));
-    slist.putItem(new SortedListEntity("115", -98));
+    slist.putItem(new SlistEntity("109", 99));
+    slist.putItem(new SlistEntity("119", 20));
+    slist.putItem(new SlistEntity("115", -98));
 
     // Test getSize
     Assert.assertEquals(slist.size(), 19);
@@ -56,7 +56,7 @@ public class SlistLinkedImplTest {
     Assert.assertEquals(slist.getItem("114").getSecond().intValue(), 5);
 
     // Test subList
-    List<SortedListEntity> listEntities = slist.subList(1, 5);
+    List<SlistEntity> listEntities = slist.subList(1, 5);
     Assert.assertEquals(listEntities.get(0).getMember(), "109");
     Assert.assertEquals(listEntities.get(0).getScore(), 1199);
     Assert.assertEquals(listEntities.get(1).getMember(), "118");
@@ -75,13 +75,13 @@ public class SlistLinkedImplTest {
   @Test
   public void testPutItemByDeleteNode() {
     Slist slist = new SlistLinkedImpl();
-    slist.putItem(new SortedListEntity(String.valueOf(123), 123));
-    slist.putItem(new SortedListEntity(String.valueOf(123), 122));
+    slist.putItem(new SlistEntity(String.valueOf(123), 123));
+    slist.putItem(new SlistEntity(String.valueOf(123), 122));
 
     Assert.assertEquals(slist.getItem("123").getFirst().intValue(), 122);
     Assert.assertEquals(slist.getItem("123").getSecond().intValue(), 1);
 
-    slist.putItem(new SortedListEntity(String.valueOf(123), 124));
+    slist.putItem(new SlistEntity(String.valueOf(123), 124));
 
     Assert.assertEquals(slist.getItem("123").getFirst().intValue(), 124);
     Assert.assertEquals(slist.getItem("123").getSecond().intValue(), 1);

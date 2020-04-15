@@ -2,7 +2,7 @@ package com.distkv.pine.components.topper;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.pine.components.AbstractPineHandle;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class PineTopperImpl  extends AbstractPineHandle implements PineTopper {
 
   @Override
   public void addMember(String memberName, int memberScore) {
-    distkvClient.sortedLists().putMember(getKey(), new SortedListEntity(memberName, memberScore));
+    distkvClient.sortedLists().putMember(getKey(), new SlistEntity(memberName, memberScore));
   }
 
   public void removeMember(String memberName) {
@@ -33,10 +33,10 @@ public class PineTopperImpl  extends AbstractPineHandle implements PineTopper {
 
   public List<DistkvTuple<String, Integer>> top(int num) {
     try {
-      LinkedList<SortedListEntity> result = distkvClient.sortedLists().top(getKey(), num);
+      LinkedList<SlistEntity> result = distkvClient.sortedLists().top(getKey(), num);
       // Covert the result type.
       List<DistkvTuple<String, Integer>> ret = new ArrayList<>(result.size());
-      for (SortedListEntity entity : result) {
+      for (SlistEntity entity : result) {
         ret.add(new DistkvTuple<>(entity.getMember(), entity.getScore()));
       }
       return ret;

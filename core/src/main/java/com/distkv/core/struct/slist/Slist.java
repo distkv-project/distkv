@@ -1,7 +1,7 @@
 package com.distkv.core.struct.slist;
 
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 
 import java.util.List;
 
@@ -24,14 +24,14 @@ public interface Slist {
    *
    * @return True if we put it successfully, otherwise it's false.
    */
-  boolean put(List<SortedListEntity> entities);
+  boolean put(List<SlistEntity> entities);
 
   /**
    * Insert the entity into this sorted list.
    *
    * @param entity The entity to be putted.
    */
-  void putItem(SortedListEntity entity);
+  void putItem(SlistEntity entity);
 
   /**
    * Remove the entity from the this sorted list.
@@ -62,7 +62,7 @@ public interface Slist {
    * @return The list of entities with the given rankings.
    */
   // TODO(qwang): Refine this.
-  List<SortedListEntity> subList(int start, int end);
+  List<SlistEntity> subList(int start, int end);
 
   /**
    * Get the entity with the given member.

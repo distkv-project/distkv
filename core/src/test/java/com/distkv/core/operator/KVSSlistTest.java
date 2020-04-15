@@ -1,8 +1,8 @@
 package com.distkv.core.operator;
 
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.core.KVStore;
 import com.distkv.core.KVStoreImpl;
-import com.distkv.common.entity.sortedList.SortedListEntity;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,17 +14,17 @@ public class KVSSlistTest {
   public void testSortedList() {
     KVStore store = new KVStoreImpl();
 
-    LinkedList<SortedListEntity> list = new LinkedList<>();
-    list.add(new SortedListEntity("xswl", 9));
-    list.add(new SortedListEntity("wlll", 8));
-    list.add(new SortedListEntity("fw", 10));
-    list.add(new SortedListEntity("55", 6));
+    LinkedList<SlistEntity> list = new LinkedList<>();
+    list.add(new SlistEntity("xswl", 9));
+    list.add(new SlistEntity("wlll", 8));
+    list.add(new SlistEntity("fw", 10));
+    list.add(new SlistEntity("55", 6));
     store.sortLists().put("k1", list);
-    store.sortLists().putMember("k1", new SortedListEntity("asd",1000));
+    store.sortLists().putMember("k1", new SlistEntity("asd",1000));
 
     store.sortLists().incrScore("k1", "xswl",1);
     store.sortLists().incrScore("k1", "fw",1);
-    List<SortedListEntity> k11 = store.sortLists().top("k1", 3);
+    List<SlistEntity> k11 = store.sortLists().top("k1", 3);
     Assert.assertEquals(k11.get(1).getMember(),"fw");
     Assert.assertEquals(k11.get(1).getScore(),11);
     Assert.assertEquals(k11.get(2).getMember(),"xswl");

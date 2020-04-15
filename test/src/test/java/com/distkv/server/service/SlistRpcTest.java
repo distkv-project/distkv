@@ -1,6 +1,6 @@
 package com.distkv.server.service;
 
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
@@ -25,17 +25,17 @@ public class SlistRpcTest extends BaseTestSupplier {
     try (ProxyOnClient<DistkvService> sortedListProxy =
         new ProxyOnClient<>(DistkvService.class, rpcServerPort.get())) {
       DistkvService service = sortedListProxy.getService();
-      LinkedList<SortedListEntity> list = new LinkedList<>();
-      list.add(new SortedListEntity("xswl", 9));
-      list.add(new SortedListEntity("wlll", 8));
-      list.add(new SortedListEntity("fw", 10));
-      list.add(new SortedListEntity("55", 6));
+      LinkedList<SlistEntity> list = new LinkedList<>();
+      list.add(new SlistEntity("xswl", 9));
+      list.add(new SlistEntity("wlll", 8));
+      list.add(new SlistEntity("fw", 10));
+      list.add(new SlistEntity("55", 6));
 
       SlistProtocol.SlistPutRequest.Builder requestBuilder =
           SlistProtocol.SlistPutRequest.newBuilder();
       LinkedList<SlistProtocol.SortedListEntity> listEntities =
           new LinkedList<>();
-      for (SortedListEntity entity : list) {
+      for (SlistEntity entity : list) {
         SlistProtocol.SortedListEntity.Builder builder =
             SlistProtocol.SortedListEntity.newBuilder();
         builder.setMember(entity.getMember());

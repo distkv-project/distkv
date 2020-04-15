@@ -1,6 +1,6 @@
 package com.distkv.asyncclient;
 
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.SlistProtocol;
@@ -17,7 +17,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
-      String key, LinkedList<SortedListEntity> list) {
+      String key, LinkedList<SlistEntity> list) {
 
     LinkedList<SlistProtocol.SortedListEntity> listEntities = new LinkedList<>();
     list.forEach((v) -> {
@@ -85,7 +85,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> putMember(
-      String key, SortedListEntity entity) {
+      String key, SlistEntity entity) {
     SlistProtocol.SlistPutMemberRequest slistPutMemberRequest =
         SlistProtocol.SlistPutMemberRequest.newBuilder()
             .setMember(entity.getMember())

@@ -1,7 +1,7 @@
 package com.distkv.benchmark.core.concepts;
 
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.core.struct.slist.Slist;
 import com.distkv.core.struct.slist.SlistLinkedImpl;
 
@@ -26,7 +26,7 @@ public class DistkvSortedListsImplSimpleBenchmark {
     double totalTimes = 0;
     for (int i = 0; i < maxOperationTimes; i++) {
       Slist slist = new SlistLinkedImpl();
-      List<SortedListEntity> list = generatePutDatas(minValueInPutList,
+      List<SlistEntity> list = generatePutDatas(minValueInPutList,
           maxValueInPutList, lengthInPutList);
       double consume = testPut(slist, list);
       totalTimes += addWeight(slist, consume);
@@ -39,12 +39,12 @@ public class DistkvSortedListsImplSimpleBenchmark {
 
     // Test SortedListLinkedImpl.putItem
     Slist slist = new SlistLinkedImpl();
-    List<SortedListEntity> list = generatePutDatas(minValueInPutList,
+    List<SlistEntity> list = generatePutDatas(minValueInPutList,
         maxValueInPutList, lengthInPutList);
     testPut(slist, list);
     totalTimes = 0;
     for (int i = 0; i < maxOperationTimes; i++) {
-      SortedListEntity entity = generatePutItemDatas(minValueInPutList - 1000,
+      SlistEntity entity = generatePutItemDatas(minValueInPutList - 1000,
           maxValueInPutList + 1000);
       double consume = testPutItem(slist, entity);
       totalTimes += addWeight(slist, consume);
@@ -121,35 +121,35 @@ public class DistkvSortedListsImplSimpleBenchmark {
   }
 
   private static long testPut(
-      Slist slist, List<SortedListEntity> sortedListEntities) {
+      Slist slist, List<SlistEntity> sortedListEntities) {
     long start = System.nanoTime();
     slist.put(sortedListEntities);
     long end = System.nanoTime();
     return end - start;
   }
 
-  private static List<SortedListEntity> generatePutDatas(
+  private static List<SlistEntity> generatePutDatas(
       int minValue, int maxValue, int len) {
-    List<SortedListEntity> list = new LinkedList<>();
+    List<SlistEntity> list = new LinkedList<>();
     for (int i = 0; i < len; i++) {
       int randomValue = (int) (Math.random() * (maxValue - minValue + 1)) + minValue;
-      list.add(new SortedListEntity(String.valueOf(randomValue), randomValue));
+      list.add(new SlistEntity(String.valueOf(randomValue), randomValue));
     }
     return list;
   }
 
   private static long testPutItem(
-      Slist slist, SortedListEntity sortedListEntity) {
+      Slist slist, SlistEntity slistEntity) {
     long start = System.nanoTime();
-    slist.putItem(sortedListEntity);
+    slist.putItem(slistEntity);
     long end = System.nanoTime();
     return end - start;
   }
 
-  private static SortedListEntity generatePutItemDatas(
+  private static SlistEntity generatePutItemDatas(
       int minValue, int maxValue) {
     int randomValue = (int) (Math.random() * (maxValue - minValue + 1)) + minValue;
-    return new SortedListEntity(String.valueOf(randomValue), randomValue);
+    return new SlistEntity(String.valueOf(randomValue), randomValue);
   }
 
   private static long testRemoveItem(

@@ -1,7 +1,7 @@
 package com.distkv.client;
 
 import com.distkv.asyncclient.DistkvAsyncClient;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistTopResponse;
@@ -26,11 +26,11 @@ public class AsyncSlistTest extends BaseTestSupplier {
     DistkvAsyncClient client = newAsyncDistkvClient();
 
     // TestPut
-    LinkedList<SortedListEntity> list = new LinkedList<>();
-    list.add(new SortedListEntity("xswl", 7));
-    list.add(new SortedListEntity("wlll", 8));
-    list.add(new SortedListEntity("fw", 9));
-    list.add(new SortedListEntity("55", 6));
+    LinkedList<SlistEntity> list = new LinkedList<>();
+    list.add(new SlistEntity("xswl", 7));
+    list.add(new SlistEntity("wlll", 8));
+    list.add(new SlistEntity("fw", 9));
+    list.add(new SlistEntity("55", 6));
     CompletableFuture<DistkvResponse> putFuture =
         client.sortedLists().put("k1", list);
     putFuture.whenComplete((r, t) -> {
@@ -50,7 +50,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
 
     // TestPutMember
     CompletableFuture<DistkvResponse> putMemberFuture =
-        client.sortedLists().putMember("k1", new SortedListEntity("aa", 10));
+        client.sortedLists().putMember("k1", new SlistEntity("aa", 10));
     putMemberFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);

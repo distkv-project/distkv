@@ -1,7 +1,7 @@
 package com.distkv.core.struct.slist;
 
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,9 +17,9 @@ public final class SlistLinkedImpl
 
   private static final long serialVersionUID = -3486672273827013638L;
 
-  private transient Node<SortedListEntity> first;
+  private transient Node<SlistEntity> first;
 
-  private transient Node<SortedListEntity> last;
+  private transient Node<SlistEntity> last;
 
   private transient int size = 0;
 
@@ -38,7 +38,7 @@ public final class SlistLinkedImpl
 
   @Override
   public boolean put(
-      List<SortedListEntity> sortedListEntities) {
+      List<SlistEntity> sortedListEntities) {
     if (hasDuplicatedMembers(sortedListEntities)) {
       return false;
     }
@@ -50,18 +50,18 @@ public final class SlistLinkedImpl
 
   @Override
   public void putItem(
-      SortedListEntity sortedListEntity) {
-    final String nowMember = sortedListEntity.getMember();
-    final int nowScore = sortedListEntity.getScore();
-    final DistkvTuple<Node<SortedListEntity>, Integer> tuple =
+      SlistEntity slistEntity) {
+    final String nowMember = slistEntity.getMember();
+    final int nowScore = slistEntity.getScore();
+    final DistkvTuple<Node<SlistEntity>, Integer> tuple =
         this.getItemByMember(nowMember);
     if (tuple != null) {
       // If the member of original SortedList is found, then override the score.
       // Firstly, delete original node whose name is member.
-      Node<SortedListEntity> now = tuple.getFirst();
+      Node<SlistEntity> now = tuple.getFirst();
       this.deleteNode(now);
     }
-    Node<SortedListEntity> sortedListEntityNode =
+    Node<SlistEntity> sortedListEntityNode =
         this.getInsertPosition(nowScore, nowMember);
     this.appendNode(sortedListEntityNode, nowMember, nowScore);
   }
@@ -69,12 +69,12 @@ public final class SlistLinkedImpl
   @Override
   public boolean removeItem(
       String member) {
-    final DistkvTuple<Node<SortedListEntity>, Integer> tuple =
+    final DistkvTuple<Node<SlistEntity>, Integer> tuple =
         this.getItemByMember(member);
     if (tuple == null) {
       return false;
     }
-    Node<SortedListEntity> now = tuple.getFirst();
+    Node<SlistEntity> now = tuple.getFirst();
     this.deleteNode(now);
     return true;
   }
@@ -82,13 +82,13 @@ public final class SlistLinkedImpl
   @Override
   public int incrScore(
       String member, int delta) {
-    final DistkvTuple<Node<SortedListEntity>, Integer> tuple =
+    final DistkvTuple<Node<SlistEntity>, Integer> tuple =
         this.getItemByMember(member);
     if (tuple == null) {
       return 0;
     }
 
-    Node<SortedListEntity> now = tuple.getFirst();
+    Node<SlistEntity> now = tuple.getFirst();
     final int nowScore = now.item.getScore();
     // Check if there is outing of range after increase the score:
     //     Case 1: The score will more than Integer.MAX_VALUE when delta is positive
@@ -100,22 +100,22 @@ public final class SlistLinkedImpl
 
     final int afterIncr = nowScore + delta;
     this.deleteNode(now);
-    Node<SortedListEntity> sortedListEntityNode =
+    Node<SlistEntity> sortedListEntityNode =
         this.getInsertPosition(afterIncr, member);
     this.appendNode(sortedListEntityNode, member, afterIncr);
     return 1;
   }
 
   @Override
-  public List<SortedListEntity> subList(
+  public List<SlistEntity> subList(
       int start, int end) {
-    final List<SortedListEntity> topList = new ArrayList<>();
+    final List<SlistEntity> topList = new ArrayList<>();
     int index = 1;
     int nowRank = 1;
     int lastRank = 1;
     boolean isFirst = true;
 
-    for (Node<SortedListEntity> cur = first; cur != null; cur = cur.next) {
+    for (Node<SlistEntity> cur = first; cur != null; cur = cur.next) {
       lastRank = nowRank;
       if (isFirst) {
         isFirst = false;
@@ -141,7 +141,7 @@ public final class SlistLinkedImpl
   @Override
   public DistkvTuple<Integer, Integer> getItem(
       String member) {
-    DistkvTuple<Node<SortedListEntity>, Integer> tuple = this.getItemByMember(member);
+    DistkvTuple<Node<SlistEntity>, Integer> tuple = this.getItemByMember(member);
     return tuple == null
         ? null
         : new DistkvTuple<>(tuple.getFirst().item.getScore(), tuple.getSecond());
@@ -161,10 +161,10 @@ public final class SlistLinkedImpl
   }
 
   private void addAll(
-      List<SortedListEntity> sortedListEntities) {
-    for (final SortedListEntity e : sortedListEntities) {
-      Node<SortedListEntity> temp = last;
-      Node<SortedListEntity> newNode = new Node<>(last, e, null);
+      List<SlistEntity> sortedListEntities) {
+    for (final SlistEntity e : sortedListEntities) {
+      Node<SlistEntity> temp = last;
+      Node<SlistEntity> newNode = new Node<>(last, e, null);
       if (first == null) {
         first = newNode;
       } else {
@@ -175,15 +175,15 @@ public final class SlistLinkedImpl
     }
   }
 
-  private DistkvTuple<Node<SortedListEntity>, Integer> getItemByMember(
+  private DistkvTuple<Node<SlistEntity>, Integer> getItemByMember(
       String member) {
-    DistkvTuple<Node<SortedListEntity>, Integer> tuple = null;
+    DistkvTuple<Node<SlistEntity>, Integer> tuple = null;
     int index = 1;
     int nowRank = 1;
     int lastRank = 1;
     boolean isFirst = true;
 
-    for (Node<SortedListEntity> cur = first; cur != null; cur = cur.next) {
+    for (Node<SlistEntity> cur = first; cur != null; cur = cur.next) {
       lastRank = nowRank;
       if (isFirst) {
         isFirst = false;
@@ -204,9 +204,9 @@ public final class SlistLinkedImpl
     return tuple;
   }
 
-  private Node<SortedListEntity> getInsertPosition(
+  private Node<SlistEntity> getInsertPosition(
       int insertScore, String insertMember) {
-    Node<SortedListEntity> cur = null;
+    Node<SlistEntity> cur = null;
     if (!isEmpty()) {
       if (this.compares(insertMember, insertScore, last.item) > 0) {
         return null;
@@ -223,27 +223,27 @@ public final class SlistLinkedImpl
   }
 
   private boolean hasDuplicatedMembers(
-      List<SortedListEntity> sortedListEntities) {
-    final Set<SortedListEntity> sortedListEntitySet = new HashSet<>();
-    for (final SortedListEntity e : sortedListEntities) {
-      if (sortedListEntitySet.contains(e)) {
+      List<SlistEntity> sortedListEntities) {
+    final Set<SlistEntity> slistEntitySet = new HashSet<>();
+    for (final SlistEntity e : sortedListEntities) {
+      if (slistEntitySet.contains(e)) {
         return true;
       }
-      sortedListEntitySet.add(e);
+      slistEntitySet.add(e);
     }
     return false;
   }
 
   private void appendNode(
-      Node<SortedListEntity> insertPos, String member, int score) {
-    final SortedListEntity appendElement = new SortedListEntity(member, score);
-    Node<SortedListEntity> newNode = null;
+      Node<SlistEntity> insertPos, String member, int score) {
+    final SlistEntity appendElement = new SlistEntity(member, score);
+    Node<SlistEntity> newNode = null;
     if (isEmpty()) {
       newNode = new Node<>(null, appendElement, null);
       first = newNode;
       last = newNode;
     } else if (insertPos == null) {
-      Node<SortedListEntity> temp = last;
+      Node<SlistEntity> temp = last;
       last = new Node<>(temp, appendElement, null);
       temp.next = last;
     } else {
@@ -260,7 +260,7 @@ public final class SlistLinkedImpl
   }
 
   private void deleteNode(
-      Node<SortedListEntity> node) {
+      Node<SlistEntity> node) {
     if (isEmpty()) {
       return;
     }
@@ -287,7 +287,7 @@ public final class SlistLinkedImpl
   }
 
   private int compares(
-      String insertMember, int insertScore, SortedListEntity entity) {
+      String insertMember, int insertScore, SlistEntity entity) {
     int compareByScore = insertScore - entity.getScore();
     int compareByMember = insertMember.compareTo(entity.getMember());
     if ((compareByScore < 0) ||

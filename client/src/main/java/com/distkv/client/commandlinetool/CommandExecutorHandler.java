@@ -2,7 +2,7 @@ package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.timeunit.TimeUnit;
 import com.distkv.parser.po.DistkvParsedResult;
@@ -296,13 +296,13 @@ public class CommandExecutorHandler {
     try {
       DistkvRequest request = parsedResult.getRequest();
       SlistPutRequest slistPutRequest = request.getRequest().unpack(SlistPutRequest.class);
-      final LinkedList<SortedListEntity> sortedListEntitiesResult = new LinkedList<>();
+      final LinkedList<SlistEntity> sortedListEntitiesResult = new LinkedList<>();
       final List<SlistProtocol.SortedListEntity> sortedListEntities
           = slistPutRequest.getListList();
       for (SlistProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
         final String sortedListEntityMember = sortedListEntity.getMember();
         final int sortedListEntityScore = sortedListEntity.getScore();
-        sortedListEntitiesResult.add(new SortedListEntity(sortedListEntityMember,
+        sortedListEntitiesResult.add(new SlistEntity(sortedListEntityMember,
             sortedListEntityScore));
       }
       distkvClient.sortedLists().put(request.getKey(), sortedListEntitiesResult);
@@ -317,11 +317,11 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistTopRequest slistTopRequest = request.getRequest().unpack(SlistTopRequest.class);
       final StringBuilder stringBuilder = new StringBuilder();
-      LinkedList<SortedListEntity> listEntities = distkvClient.sortedLists()
+      LinkedList<SlistEntity> listEntities = distkvClient.sortedLists()
           .top(request.getKey(), slistTopRequest.getCount());
       boolean first = true;
       stringBuilder.append("[");
-      for (final SortedListEntity entity : listEntities) {
+      for (final SlistEntity entity : listEntities) {
         if (first) {
           first = false;
         } else {
@@ -361,7 +361,7 @@ public class CommandExecutorHandler {
           request.getRequest().unpack(SlistPutMemberRequest.class);
       final String member = slistPutMemberRequest.getMember();
       final int score = slistPutMemberRequest.getScore();
-      distkvClient.sortedLists().putMember(request.getKey(), new SortedListEntity(member, score));
+      distkvClient.sortedLists().putMember(request.getKey(), new SlistEntity(member, score));
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }

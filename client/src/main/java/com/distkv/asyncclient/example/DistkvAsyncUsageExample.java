@@ -1,7 +1,7 @@
 package com.distkv.asyncclient.example;
 
 import com.distkv.asyncclient.DefaultAsyncClient;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.SlistProtocol;
@@ -38,11 +38,11 @@ public class DistkvAsyncUsageExample {
       map.put("k3", "v3");
       CompletableFuture<DistkvProtocol.DistkvResponse> dictPutFuture =
           distkvClient.dicts().put("dict", map);
-      LinkedList<SortedListEntity> slist = new LinkedList<>();
-      slist.add(new SortedListEntity("a", 10));
-      slist.add(new SortedListEntity("b", 8));
-      slist.add(new SortedListEntity("c", 6));
-      slist.add(new SortedListEntity("d", 4));
+      LinkedList<SlistEntity> slist = new LinkedList<>();
+      slist.add(new SlistEntity("a", 10));
+      slist.add(new SlistEntity("b", 8));
+      slist.add(new SlistEntity("c", 6));
+      slist.add(new SlistEntity("d", 4));
 
       strPutFuture.whenComplete((r, t) -> {
         if (t != null) {
@@ -154,7 +154,7 @@ public class DistkvAsyncUsageExample {
       CompletableFuture<DistkvProtocol.DistkvResponse> slistPutFuture =
           distkvClient.sortedLists().put("k1", slist);
       CompletableFuture<DistkvProtocol.DistkvResponse> slistPutMFuture =
-          distkvClient.sortedLists().putMember("k1", new SortedListEntity("s", 100));
+          distkvClient.sortedLists().putMember("k1", new SlistEntity("s", 100));
 
       slistPutFuture.whenComplete((r, t) -> {
         if (t != null) {

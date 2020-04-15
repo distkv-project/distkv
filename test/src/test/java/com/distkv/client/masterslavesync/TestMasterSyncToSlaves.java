@@ -2,7 +2,7 @@ package com.distkv.client.masterslavesync;
 
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
@@ -98,18 +98,18 @@ public class TestMasterSyncToSlaves {
 
   public void testSlistPut(DistkvClient client0, DistkvClient client1)
       throws InvalidProtocolBufferException {
-    LinkedList<SortedListEntity> list = new LinkedList<>();
-    list.add(new SortedListEntity("xswl", 9));
-    list.add(new SortedListEntity("wlll", 8));
-    list.add(new SortedListEntity("fw", 9));
-    list.add(new SortedListEntity("55", 6));
+    LinkedList<SlistEntity> list = new LinkedList<>();
+    list.add(new SlistEntity("xswl", 9));
+    list.add(new SlistEntity("wlll", 8));
+    list.add(new SlistEntity("fw", 9));
+    list.add(new SlistEntity("55", 6));
     client0.sortedLists().put("slist_k1", list);
 
-    LinkedList<SortedListEntity> tlist = client0.sortedLists().top("slist_k1", 100);
+    LinkedList<SlistEntity> tlist = client0.sortedLists().top("slist_k1", 100);
     Assert.assertEquals(tlist.get(0).getMember(), "fw");
     Assert.assertEquals(tlist.get(1).getMember(), "xswl");
 
-    LinkedList<SortedListEntity> tlist1 = client1.sortedLists().top("slist_k1", 100);
+    LinkedList<SlistEntity> tlist1 = client1.sortedLists().top("slist_k1", 100);
     Assert.assertEquals(tlist1.get(0).getMember(), "fw");
     Assert.assertEquals(tlist1.get(1).getMember(), "xswl");
   }

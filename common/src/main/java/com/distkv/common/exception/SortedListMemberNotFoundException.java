@@ -3,7 +3,7 @@ package com.distkv.common.exception;
 public class SortedListMemberNotFoundException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
-      .SortedListMemberNotFoundErrorCode
+      .SlistMemberNotFoundErrorCode
       .getErrorCode();
 
   protected String key;

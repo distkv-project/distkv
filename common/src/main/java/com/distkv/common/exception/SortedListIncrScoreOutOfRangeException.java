@@ -3,7 +3,7 @@ package com.distkv.common.exception;
 public class SortedListIncrScoreOutOfRangeException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
-      .SortedListIncrScoreOutOfRangeErrorCode
+      .SlistIncrScoreOutOfRangeErrorCode
       .getErrorCode();
 
   protected String key;

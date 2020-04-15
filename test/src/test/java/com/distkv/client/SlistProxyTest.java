@@ -1,12 +1,12 @@
 package com.distkv.client;
 
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.supplier.BaseTestSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class SlistProxyTest extends BaseTestSupplier {
   }
 
   private void testTop() throws InvalidProtocolBufferException {
-    LinkedList<SortedListEntity> list = distkvClient.sortedLists().top("k1", 100);
+    LinkedList<SlistEntity> list = distkvClient.sortedLists().top("k1", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
     Assert.assertEquals(list.get(1).getMember(), "fw");
   }
@@ -44,7 +44,7 @@ public class SlistProxyTest extends BaseTestSupplier {
   }
 
   private void testPutItem() {
-    distkvClient.sortedLists().putMember("k1", new SortedListEntity("whhh", 100));
+    distkvClient.sortedLists().putMember("k1", new SlistEntity("whhh", 100));
   }
 
   private void testIncItem() {
@@ -52,11 +52,11 @@ public class SlistProxyTest extends BaseTestSupplier {
   }
 
   private void testPut() {
-    LinkedList<SortedListEntity> list = new LinkedList<>();
-    list.add(new SortedListEntity("xswl", 9));
-    list.add(new SortedListEntity("wlll", 8));
-    list.add(new SortedListEntity("fw", 9));
-    list.add(new SortedListEntity("55", 6));
+    LinkedList<SlistEntity> list = new LinkedList<>();
+    list.add(new SlistEntity("xswl", 9));
+    list.add(new SlistEntity("wlll", 8));
+    list.add(new SlistEntity("fw", 9));
+    list.add(new SlistEntity("55", 6));
     distkvClient.sortedLists().put("k1", list);
   }
 

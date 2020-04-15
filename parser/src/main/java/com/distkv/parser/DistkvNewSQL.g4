@@ -96,8 +96,8 @@ keyValuePair: itemKey itemValue;
 itemKey: STRING;
 itemValue: STRING;
 
-sortedListEntityPairs: (sortedListEntity)+;
-sortedListEntity: itemMember itemScore;
+sortedListEntityPairs: (slistEntity)+;
+slistEntity: itemMember itemScore;
 itemMember: STRING;
 itemScore: anyInt;
 topCount: POSITIVE_INT;

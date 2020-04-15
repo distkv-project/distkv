@@ -2,7 +2,7 @@ package com.distkv.client;
 
 import com.distkv.asyncclient.DistkvAsyncSortedListProxy;
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.SlistProtocol;
@@ -12,17 +12,17 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 
 
-public class DistkvSortedListProxy {
+public class DistkvSlistProxy {
 
   private static final String typeCode = "E";
 
   private DistkvAsyncSortedListProxy asyncSortedListProxy;
 
-  public DistkvSortedListProxy(DistkvAsyncSortedListProxy asyncSortedListProxy) {
+  public DistkvSlistProxy(DistkvAsyncSortedListProxy asyncSortedListProxy) {
     this.asyncSortedListProxy = asyncSortedListProxy;
   }
 
-  public void put(String key, LinkedList<SortedListEntity> list) {
+  public void put(String key, LinkedList<SlistEntity> list) {
     DistkvResponse response = FutureUtils.get(asyncSortedListProxy.put(key, list));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
@@ -33,14 +33,14 @@ public class DistkvSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  public LinkedList<SortedListEntity> top(String key, int topNum)
+  public LinkedList<SlistEntity> top(String key, int topNum)
       throws InvalidProtocolBufferException {
     DistkvResponse response = FutureUtils.get(asyncSortedListProxy.top(key, topNum));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-    LinkedList<SortedListEntity> list = new LinkedList<>();
+    LinkedList<SlistEntity> list = new LinkedList<>();
     SlistTopResponse slistTopResponse = response.getResponse().unpack(SlistTopResponse.class);
     for (SlistProtocol.SortedListEntity entity : slistTopResponse.getListList()) {
-      list.add(new SortedListEntity(entity.getMember(), entity.getScore()));
+      list.add(new SlistEntity(entity.getMember(), entity.getScore()));
     }
     return list;
   }
@@ -50,7 +50,7 @@ public class DistkvSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
-  public void putMember(String key, SortedListEntity entity) {
+  public void putMember(String key, SlistEntity entity) {
     DistkvResponse response = FutureUtils.get(asyncSortedListProxy.putMember(key, entity));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }

@@ -1,5 +1,6 @@
 package com.distkv.core.concepts;
 
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.exception.KeyNotFoundException;
@@ -7,7 +8,6 @@ import com.distkv.common.exception.SortedListMembersDuplicatedException;
 import com.distkv.common.exception.SortedListIncrScoreOutOfRangeException;
 import com.distkv.common.exception.SortedListMemberNotFoundException;
 import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
-import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.core.DistkvMapInterface;
 import com.distkv.core.struct.slist.Slist;
 import com.distkv.core.struct.slist.SlistLinkedImpl;
@@ -24,7 +24,7 @@ public class DistkvSortedListsImpl
   }
 
   @Override
-  public void put(String key, LinkedList<SortedListEntity> list) {
+  public void put(String key, LinkedList<SlistEntity> list) {
     if (distkvKeyValueMap.containsKey(key)) {
       throw new DistkvKeyDuplicatedException(key);
     }
@@ -36,7 +36,7 @@ public class DistkvSortedListsImpl
   }
 
   @Override
-  public void putMember(String key, SortedListEntity item) {
+  public void putMember(String key, SlistEntity item) {
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
@@ -71,7 +71,7 @@ public class DistkvSortedListsImpl
   }
 
   @Override
-  public List<SortedListEntity> top(String key, int topNum) {
+  public List<SlistEntity> top(String key, int topNum) {
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
