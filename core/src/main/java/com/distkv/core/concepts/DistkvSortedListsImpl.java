@@ -4,10 +4,10 @@ import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.exception.SortedListMembersDuplicatedException;
-import com.distkv.common.exception.SortedListIncrScoreOutOfRangeException;
-import com.distkv.common.exception.SortedListMemberNotFoundException;
-import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
+import com.distkv.common.exception.SlistMemberNotFoundException;
+import com.distkv.common.exception.SlistMembersDuplicatedException;
+import com.distkv.common.exception.SlistIncrScoreOutOfRangeException;
+import com.distkv.common.exception.SlistTopNumIsNonNegativeException;
 import com.distkv.core.DistkvMapInterface;
 import com.distkv.core.struct.slist.Slist;
 import com.distkv.core.struct.slist.SlistLinkedImpl;
@@ -30,7 +30,7 @@ public class DistkvSortedListsImpl
     }
     Slist slist = new SlistLinkedImpl();
     if (!slist.put(list)) {
-      throw new SortedListMembersDuplicatedException(key);
+      throw new SlistMembersDuplicatedException(key);
     }
     distkvKeyValueMap.put(key, slist);
   }
@@ -52,7 +52,7 @@ public class DistkvSortedListsImpl
     final Slist slist = get(key);
     final boolean isFound = slist.removeItem(member);
     if (!isFound) {
-      throw new SortedListMemberNotFoundException(key);
+      throw new SlistMemberNotFoundException(key);
     }
   }
 
@@ -64,9 +64,9 @@ public class DistkvSortedListsImpl
     final Slist slist = get(key);
     final int resultByIncrScore = slist.incrScore(member, delta);
     if (0 == resultByIncrScore) {
-      throw new SortedListMemberNotFoundException(key);
+      throw new SlistMemberNotFoundException(key);
     } else if (-1 == resultByIncrScore) {
-      throw new SortedListIncrScoreOutOfRangeException(key);
+      throw new SlistIncrScoreOutOfRangeException(key);
     }
   }
 
@@ -80,7 +80,7 @@ public class DistkvSortedListsImpl
       topNum = slist.size();
     }
     if (topNum <= 0) {
-      throw new SortedListTopNumIsNonNegativeException(key, topNum);
+      throw new SlistTopNumIsNonNegativeException(key, topNum);
     }
     return slist.subList(1, topNum);
   }
@@ -93,7 +93,7 @@ public class DistkvSortedListsImpl
     final Slist sortedLists = get(key);
     DistkvTuple<Integer, Integer> result = sortedLists.getItem(member);
     if (null == result) {
-      throw new SortedListMemberNotFoundException(key);
+      throw new SlistMemberNotFoundException(key);
     }
     return result;
   }

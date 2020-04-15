@@ -10,8 +10,8 @@ import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SetItemNotFoundException;
-import com.distkv.common.exception.SortedListMemberNotFoundException;
-import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
+import com.distkv.common.exception.SlistMemberNotFoundException;
+import com.distkv.common.exception.SlistTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
@@ -592,7 +592,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListTopNumIsNonNegativeException e) {
+        } catch (SlistTopNumIsNonNegativeException e) {
           status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
         } catch (DistkvException e) {
           LOGGER.error("Failed to get a slist top in store: {1}", e);
@@ -612,7 +612,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListMemberNotFoundException e) {
+        } catch (SlistMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
           LOGGER.error("Failed to incr a slist score in store: {1}", e);
@@ -649,7 +649,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListMemberNotFoundException e) {
+        } catch (SlistMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
           LOGGER.error("Failed to remove slist member in store :{1}", e);
@@ -678,7 +678,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListMemberNotFoundException e) {
+        } catch (SlistMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
           LOGGER.error("Failed to get slist member in store :{1}", e);

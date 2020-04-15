@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class SortedListMemberNotFoundException extends DistkvException {
+public class SlistMemberNotFoundException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
       .SlistMemberNotFoundErrorCode
@@ -8,11 +8,11 @@ public class SortedListMemberNotFoundException extends DistkvException {
 
   protected String key;
 
-  public SortedListMemberNotFoundException(String key) {
+  public SlistMemberNotFoundException(String key) {
     super(String.format("The member is not found in the SortedList %s",  key));
   }
 
-  public SortedListMemberNotFoundException(String key, String typeCode) {
+  public SlistMemberNotFoundException(String key, String typeCode) {
     super(String.format("The member  is not found in the SortedList %s", key));
     this.errorCode = typeCode + this.errorCode;
   }

@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class SortedListMembersDuplicatedException extends DistkvException {
+public class SlistMembersDuplicatedException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
       .SlistMembersDuplicatedErrorCode
@@ -8,7 +8,7 @@ public class SortedListMembersDuplicatedException extends DistkvException {
 
   protected String key;
 
-  public SortedListMembersDuplicatedException(String key) {
+  public SlistMembersDuplicatedException(String key) {
     super(String.format("The SortedList %s which you putted into has " +
         "duplicated members.",  key));
   }

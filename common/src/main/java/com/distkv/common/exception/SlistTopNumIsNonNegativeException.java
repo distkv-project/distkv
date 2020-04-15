@@ -1,6 +1,6 @@
 package com.distkv.common.exception;
 
-public class SortedListTopNumIsNonNegativeException extends DistkvException {
+public class SlistTopNumIsNonNegativeException extends DistkvException {
 
   protected String errorCode = ErrorCodeEnum
       .SlistTopNumBeNonNegativeErrorCode
@@ -8,12 +8,12 @@ public class SortedListTopNumIsNonNegativeException extends DistkvException {
 
   protected String key;
 
-  public SortedListTopNumIsNonNegativeException(String key, int topNum) {
+  public SlistTopNumIsNonNegativeException(String key, int topNum) {
     super(String.format("The topNum must be bigger than 0, your parameter is %d", topNum));
     this.key = key;
   }
 
-  public SortedListTopNumIsNonNegativeException(String key, String typeCode) {
+  public SlistTopNumIsNonNegativeException(String key, String typeCode) {
     super("The topNum must be bigger than 0");
     this.key = key;
     this.errorCode = typeCode + this.errorCode;
