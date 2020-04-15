@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The interface of DistKVSortedList.
  */
-public interface SortedList {
+public interface Slist {
 
   /**
    * Get the size of this sorted list.

@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 
 import java.util.LinkedList;
 
-public class SortedListRpcTest extends BaseTestSupplier {
+public class SlistRpcTest extends BaseTestSupplier {
 
   @Test
   public void testPut() throws InvalidProtocolBufferException {

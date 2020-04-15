@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class AsyncSortedListTest extends BaseTestSupplier {
+public class AsyncSlistTest extends BaseTestSupplier {
 
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 

@@ -14,9 +14,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)
-public class SortedListProxyTest extends BaseTestSupplier {
+public class SlistProxyTest extends BaseTestSupplier {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SortedListProxyTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SlistProxyTest.class);
 
   private DistkvClient distkvClient = null;
 

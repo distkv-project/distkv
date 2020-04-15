@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KVSSortedListTest {
+public class KVSSlistTest {
   @Test
   public void testSortedList() {
     KVStore store = new KVStoreImpl();

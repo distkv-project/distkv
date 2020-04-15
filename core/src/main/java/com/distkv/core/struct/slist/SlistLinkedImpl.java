@@ -12,8 +12,8 @@ import java.util.Set;
 /**
  * The linkedlist implementation of the DistKV SortedList.
  */
-public final class SortedListLinkedImpl
-    implements SortedList, java.io.Serializable {
+public final class SlistLinkedImpl
+    implements Slist, java.io.Serializable {
 
   private static final long serialVersionUID = -3486672273827013638L;
 
@@ -23,7 +23,7 @@ public final class SortedListLinkedImpl
 
   private transient int size = 0;
 
-  public SortedListLinkedImpl() {
+  public SlistLinkedImpl() {
 
   }
 
@@ -149,11 +149,11 @@ public final class SortedListLinkedImpl
 
   private static class Node<E> {
     E item;
-    SortedListLinkedImpl.Node<E> next;
-    SortedListLinkedImpl.Node<E> prev;
+    SlistLinkedImpl.Node<E> next;
+    SlistLinkedImpl.Node<E> prev;
 
-    Node(SortedListLinkedImpl.Node<E> prev,
-         E element, SortedListLinkedImpl.Node<E> next) {
+    Node(SlistLinkedImpl.Node<E> prev,
+         E element, SlistLinkedImpl.Node<E> next) {
       this.item = element;
       this.next = next;
       this.prev = prev;
