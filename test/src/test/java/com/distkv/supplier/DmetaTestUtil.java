@@ -9,7 +9,8 @@ import java.util.List;
 
 public class DmetaTestUtil {
 
-  public static final String defaultMetaAddress = "localhost:8081,localhost:8082,localhost:8083";
+  public static final String DEFAULT_META_SERVER_ADDRESSES =
+      "localhost:8081,localhost:8082,localhost:8083";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DmetaTestUtil.class);
 
@@ -30,7 +31,7 @@ public class DmetaTestUtil {
     } else {
       jarDir = userDir.getPath() + File.separator + SERVER_SUFFIX_JAR_DIR;
     }
-    long currentTime = System.currentTimeMillis();
+    final long currentTime = System.currentTimeMillis();
     for (int i = 0; i < NODE_NUM; i++) {
       final List<String> startCommand = ImmutableList.of(
           "java",

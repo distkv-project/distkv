@@ -19,20 +19,22 @@ public class NodeDropTest {
   public void testNodeDrop() {
     DmetaTestUtil.startAllDmetaProcess();
     try {
-      DmetaClient client = new DmetaClient(DmetaTestUtil.defaultMetaAddress);
+      // It will take some time for MetaServer to start.
       TimeUnit.MILLISECONDS.sleep(500);
+      DmetaClient client = new DmetaClient(DmetaTestUtil.DEFAULT_META_SERVER_ADDRESSES);
       NodeInfo nodeInfo = NodeInfo.newBuilder()
           .setAddress("test")
           .setNodeId(NodeId.nil())
           .setIsMaster(false)
           .build();
       HeartbeatResponse heartbeatResponse = client.heartbeat(nodeInfo);
-      TimeUnit.SECONDS.sleep(1);
       GetGlobalViewResponse globalViewResponse0 = client.getGlobalView();
       Assert.assertEquals(globalViewResponse0
           .getGlobalView().get("1").getMap().get("test").getStatus(),
           NodeStatus.RUNNING);
-      TimeUnit.SECONDS.sleep(3);
+      // When the time exceeds 3500ms,
+      // the state of node will be changed from running to dead by dmeta.
+      TimeUnit.SECONDS.sleep(4);
       GetGlobalViewResponse globalViewResponse1 = client.getGlobalView();
       Assert.assertEquals(globalViewResponse1
               .getGlobalView().get("1").getMap().get("test").getStatus(),

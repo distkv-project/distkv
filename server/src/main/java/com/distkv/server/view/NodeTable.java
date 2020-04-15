@@ -1,5 +1,6 @@
 package com.distkv.server.view;
 
+import com.distkv.common.CommonConf;
 import com.distkv.common.NodeInfo;
 import com.distkv.common.NodeStatus;
 
@@ -21,16 +22,6 @@ public class NodeTable implements Serializable {
    */
   private ConcurrentHashMap<String, NodeInfo> nodeTable;
 
-  /**
-   * The interval time of heartbeat.
-   */
-  public static int HEARTBEAT_INTERVAL = 3000;
-
-  /**
-   * The delay time of next heartbeat.
-   */
-  public static int HEARTBEAT_INTERVAL_DELAY = 500;
-
   public NodeTable() {
     nodeTable = new ConcurrentHashMap<>();
   }
@@ -45,7 +36,7 @@ public class NodeTable implements Serializable {
     if (nodeInfo.getNodeId().getIndex() == -1) {
       nodeInfo.getNodeId().setIndex(nodeIndex.addAndGet(1));
     }
-    nodeInfo.setLastTimeHeartbeat(lastTimeHeartbeat = System.currentTimeMillis());
+    nodeInfo.setLastHeartbeatTimestamp(lastTimeHeartbeat = System.currentTimeMillis());
     nodeTable.put(nodeInfo.getAddress(), nodeInfo);
 
     // Wait next time heartbeat.
@@ -54,12 +45,12 @@ public class NodeTable implements Serializable {
       @Override
       public void run() {
         NodeInfo checkInfo = nodeTable.get(nodeInfo.getAddress());
-        if (checkInfo.getLastTimeHeartbeat() == lastTimeHeartbeat) {
+        if (checkInfo.getLastHeartbeatTimestamp() == lastTimeHeartbeat) {
           checkInfo.setStatus(NodeStatus.DEAD);
           nodeTable.put(checkInfo.getAddress(), checkInfo);
         }
       }
-    }, HEARTBEAT_INTERVAL + HEARTBEAT_INTERVAL_DELAY);
+    }, CommonConf.HEARTBEAT_INTERVAL + CommonConf.HEARTBEAT_INTERVAL_DELAY);
   }
 
   public HashMap<String, NodeInfo> getMap() {

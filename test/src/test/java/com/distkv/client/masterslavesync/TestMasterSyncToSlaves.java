@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+@Test(singleThreaded = true)
 public class TestMasterSyncToSlaves {
 
   @Test

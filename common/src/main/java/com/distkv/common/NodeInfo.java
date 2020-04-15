@@ -17,7 +17,7 @@ public class NodeInfo implements Serializable {
 
   private String address;
 
-  private long lastTimeHeartbeat;
+  private long lastHeartbeatTimestamp;
 
   private NodeStatus status;
 
@@ -30,7 +30,7 @@ public class NodeInfo implements Serializable {
     this.nodeId = builder.getNodeId();
     this.isMaster = builder.isMaster();
     this.status = NodeStatus.RUNNING;
-    this.lastTimeHeartbeat = 0;
+    this.lastHeartbeatTimestamp = 0;
   }
 
   public NodeId getNodeId() {
@@ -65,12 +65,12 @@ public class NodeInfo implements Serializable {
     this.status = status;
   }
 
-  public long getLastTimeHeartbeat() {
-    return lastTimeHeartbeat;
+  public long getLastHeartbeatTimestamp() {
+    return lastHeartbeatTimestamp;
   }
 
-  public void setLastTimeHeartbeat(long lastTimeHeartbeat) {
-    this.lastTimeHeartbeat = lastTimeHeartbeat;
+  public void setLastHeartbeatTimestamp(long lastHeartbeatTimestamp) {
+    this.lastHeartbeatTimestamp = lastHeartbeatTimestamp;
   }
 
   public static class Builder {
