@@ -12,11 +12,12 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-@Test(singleThreaded = true)
 public class NodeDropTest {
 
-  @Test
+  @Test(singleThreaded = true)
   public void testNodeDrop() {
+    System.out.println(String.format("\n==================== Running the test method: %s.%s",
+        "NodeDropTest", "test"));
     DmetaTestUtil.startAllDmetaProcess();
     try {
       // It will take some time for MetaServer to start.

@@ -17,10 +17,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-@Test(singleThreaded = true)
 public class TestMasterSyncToSlaves {
 
-  @Test
+  @Test(singleThreaded = true)
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
