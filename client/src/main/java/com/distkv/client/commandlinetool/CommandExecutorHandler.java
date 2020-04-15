@@ -27,13 +27,13 @@ import com.distkv.rpc.protobuf.generated.SetProtocol.SetExistsRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetPutItemRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetPutRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetRemoveItemRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistGetMemberRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistIncrScoreRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutMemberRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistRemoveMemberRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistGetMemberRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistIncrScoreRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistPutMemberRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistPutRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistRemoveMemberRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistTopRequest;
 import com.distkv.rpc.protobuf.generated.StringProtocol.StrPutRequest;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.HashMap;
@@ -297,9 +297,9 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistPutRequest slistPutRequest = request.getRequest().unpack(SlistPutRequest.class);
       final LinkedList<SortedListEntity> sortedListEntitiesResult = new LinkedList<>();
-      final List<SortedListProtocol.SortedListEntity> sortedListEntities
+      final List<SlistProtocol.SortedListEntity> sortedListEntities
           = slistPutRequest.getListList();
-      for (SortedListProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
+      for (SlistProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
         final String sortedListEntityMember = sortedListEntity.getMember();
         final int sortedListEntityScore = sortedListEntity.getScore();
         sortedListEntitiesResult.add(new SortedListEntity(sortedListEntityMember,

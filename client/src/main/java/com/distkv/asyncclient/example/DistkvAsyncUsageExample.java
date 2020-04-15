@@ -4,7 +4,7 @@ import com.distkv.asyncclient.DefaultAsyncClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
@@ -188,8 +188,8 @@ public class DistkvAsyncUsageExample {
       });
 
       DistkvProtocol.DistkvResponse slistTop = slistTopFuture.get();
-      SortedListProtocol.SlistTopResponse slistTopResponse = slistTop.getResponse()
-          .unpack(SortedListProtocol.SlistTopResponse.class);
+      SlistProtocol.SlistTopResponse slistTopResponse = slistTop.getResponse()
+          .unpack(SlistProtocol.SlistTopResponse.class);
       System.out.println(slistTopResponse.getListCount());
       System.out.println(slistTopResponse.getListList());
       System.out.println(slistTopResponse.getList(0));

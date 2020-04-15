@@ -3,7 +3,7 @@ package com.distkv.asyncclient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
 
@@ -19,17 +19,17 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
       String key, LinkedList<SortedListEntity> list) {
 
-    LinkedList<SortedListProtocol.SortedListEntity> listEntities = new LinkedList<>();
+    LinkedList<SlistProtocol.SortedListEntity> listEntities = new LinkedList<>();
     list.forEach((v) -> {
-      SortedListProtocol.SortedListEntity.Builder sortedListEntity =
-          SortedListProtocol.SortedListEntity.newBuilder();
+      SlistProtocol.SortedListEntity.Builder sortedListEntity =
+          SlistProtocol.SortedListEntity.newBuilder();
       sortedListEntity.setMember(v.getMember());
       sortedListEntity.setScore(v.getScore());
       listEntities.add(sortedListEntity.build());
     });
 
-    SortedListProtocol.SlistPutRequest slistPutRequest =
-        SortedListProtocol.SlistPutRequest.newBuilder().addAllList(listEntities).build();
+    SlistProtocol.SlistPutRequest slistPutRequest =
+        SlistProtocol.SlistPutRequest.newBuilder().addAllList(listEntities).build();
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
@@ -41,8 +41,8 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> incrScore(
       String key, String member, int delta) {
-    SortedListProtocol.SlistIncrScoreRequest slistInceScoreRequest =
-        SortedListProtocol.SlistIncrScoreRequest.newBuilder()
+    SlistProtocol.SlistIncrScoreRequest slistInceScoreRequest =
+        SlistProtocol.SlistIncrScoreRequest.newBuilder()
             .setDelta(delta)
             .setMember(member)
             .build();
@@ -57,8 +57,8 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> top(String key, int topNum) {
 
-    SortedListProtocol.SlistTopRequest slistTopRequest =
-        SortedListProtocol.SlistTopRequest.newBuilder()
+    SlistProtocol.SlistTopRequest slistTopRequest =
+        SlistProtocol.SlistTopRequest.newBuilder()
             .setCount(topNum)
             .build();
 
@@ -71,8 +71,8 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> removeMember(String key, String member) {
-    SortedListProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
-        SortedListProtocol.SlistRemoveMemberRequest.newBuilder()
+    SlistProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
+        SlistProtocol.SlistRemoveMemberRequest.newBuilder()
             .setMember(member)
             .build();
 
@@ -86,8 +86,8 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> putMember(
       String key, SortedListEntity entity) {
-    SortedListProtocol.SlistPutMemberRequest slistPutMemberRequest =
-        SortedListProtocol.SlistPutMemberRequest.newBuilder()
+    SlistProtocol.SlistPutMemberRequest slistPutMemberRequest =
+        SlistProtocol.SlistPutMemberRequest.newBuilder()
             .setMember(entity.getMember())
             .setScore(entity.getScore())
             .build();
@@ -102,8 +102,8 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> getMember(
       String key, String member) {
-    SortedListProtocol.SlistGetMemberRequest slistGetMemberRequest =
-        SortedListProtocol.SlistGetMemberRequest.newBuilder()
+    SlistProtocol.SlistGetMemberRequest slistGetMemberRequest =
+        SlistProtocol.SlistGetMemberRequest.newBuilder()
             .setMember(member)
             .build();
 

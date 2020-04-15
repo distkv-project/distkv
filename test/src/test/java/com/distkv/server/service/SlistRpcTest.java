@@ -5,9 +5,9 @@ import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistGetMemberResponse;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopResponse;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistGetMemberResponse;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistTopResponse;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.supplier.BaseTestSupplier;
 import com.distkv.supplier.ProxyOnClient;
@@ -31,13 +31,13 @@ public class SlistRpcTest extends BaseTestSupplier {
       list.add(new SortedListEntity("fw", 10));
       list.add(new SortedListEntity("55", 6));
 
-      SortedListProtocol.SlistPutRequest.Builder requestBuilder =
-          SortedListProtocol.SlistPutRequest.newBuilder();
-      LinkedList<SortedListProtocol.SortedListEntity> listEntities =
+      SlistProtocol.SlistPutRequest.Builder requestBuilder =
+          SlistProtocol.SlistPutRequest.newBuilder();
+      LinkedList<SlistProtocol.SortedListEntity> listEntities =
           new LinkedList<>();
       for (SortedListEntity entity : list) {
-        SortedListProtocol.SortedListEntity.Builder builder =
-            SortedListProtocol.SortedListEntity.newBuilder();
+        SlistProtocol.SortedListEntity.Builder builder =
+            SlistProtocol.SortedListEntity.newBuilder();
         builder.setMember(entity.getMember());
         builder.setScore(entity.getScore());
         listEntities.add(builder.build());
@@ -51,8 +51,8 @@ public class SlistRpcTest extends BaseTestSupplier {
       FutureUtils.get(
           service.call(putRequest));
 
-      SortedListProtocol.SlistTopRequest.Builder topRequestBuilder =
-          SortedListProtocol.SlistTopRequest.newBuilder();
+      SlistProtocol.SlistTopRequest.Builder topRequestBuilder =
+          SlistProtocol.SlistTopRequest.newBuilder();
       topRequestBuilder.setCount(2);
       DistkvRequest topRequest = DistkvRequest.newBuilder()
           .setKey("k1")
@@ -66,8 +66,8 @@ public class SlistRpcTest extends BaseTestSupplier {
       Assert.assertEquals(top.getResponse()
           .unpack(SlistTopResponse.class).getList(1).getMember(), "xswl");
 
-      SortedListProtocol.SlistPutMemberRequest.Builder putRequestBuilder =
-          SortedListProtocol.SlistPutMemberRequest.newBuilder();
+      SlistProtocol.SlistPutMemberRequest.Builder putRequestBuilder =
+          SlistProtocol.SlistPutMemberRequest.newBuilder();
       putRequestBuilder.setMember("asd");
       putRequestBuilder.setScore(1000);
       DistkvRequest putMemberRequest = DistkvRequest.newBuilder()
@@ -84,8 +84,8 @@ public class SlistRpcTest extends BaseTestSupplier {
       Assert.assertEquals(top1.getResponse()
           .unpack(SlistTopResponse.class).getList(0).getMember(), "asd");
 
-      SortedListProtocol.SlistGetMemberRequest.Builder getMemberRequestBuilder =
-          SortedListProtocol.SlistGetMemberRequest.newBuilder();
+      SlistProtocol.SlistGetMemberRequest.Builder getMemberRequestBuilder =
+          SlistProtocol.SlistGetMemberRequest.newBuilder();
       getMemberRequestBuilder.setMember("asd");
       DistkvRequest getMemberRequest = DistkvRequest.newBuilder()
           .setKey("k1")
@@ -94,7 +94,7 @@ public class SlistRpcTest extends BaseTestSupplier {
           .build();
       DistkvResponse getMemberResponse = FutureUtils.get(
           service.call(getMemberRequest));
-      SortedListProtocol.SortedListEntity sortedListEntity =
+      SlistProtocol.SortedListEntity sortedListEntity =
           getMemberResponse.getResponse().unpack(SlistGetMemberResponse.class).getEntity();
       Assert.assertEquals(sortedListEntity.getMember(), "asd");
       Assert.assertEquals(sortedListEntity.getScore(), 1000);

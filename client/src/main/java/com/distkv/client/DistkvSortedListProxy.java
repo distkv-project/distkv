@@ -5,9 +5,9 @@ import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistGetMemberResponse;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopResponse;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistGetMemberResponse;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistTopResponse;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 
@@ -39,7 +39,7 @@ public class DistkvSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     LinkedList<SortedListEntity> list = new LinkedList<>();
     SlistTopResponse slistTopResponse = response.getResponse().unpack(SlistTopResponse.class);
-    for (SortedListProtocol.SortedListEntity entity : slistTopResponse.getListList()) {
+    for (SlistProtocol.SortedListEntity entity : slistTopResponse.getListList()) {
       list.add(new SortedListEntity(entity.getMember(), entity.getScore()));
     }
     return list;
@@ -61,7 +61,7 @@ public class DistkvSortedListProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     SlistGetMemberResponse slistGetMemberResponse = response.getResponse()
         .unpack(SlistGetMemberResponse.class);
-    SortedListProtocol.SortedListEntity sortedListEntity = slistGetMemberResponse.getEntity();
+    SlistProtocol.SortedListEntity sortedListEntity = slistGetMemberResponse.getEntity();
     return new DistkvTuple<>(sortedListEntity.getScore(), slistGetMemberResponse.getCount());
   }
 

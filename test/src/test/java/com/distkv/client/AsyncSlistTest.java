@@ -4,7 +4,7 @@ import com.distkv.asyncclient.DistkvAsyncClient;
 import com.distkv.common.entity.sortedList.SortedListEntity;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopResponse;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistTopResponse;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
