@@ -305,7 +305,7 @@ public class CommandExecutorHandler {
         sortedListEntitiesResult.add(new SlistEntity(sortedListEntityMember,
             sortedListEntityScore));
       }
-      distkvClient.sortedLists().put(request.getKey(), sortedListEntitiesResult);
+      distkvClient.slists().put(request.getKey(), sortedListEntitiesResult);
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
@@ -317,7 +317,7 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistTopRequest slistTopRequest = request.getRequest().unpack(SlistTopRequest.class);
       final StringBuilder stringBuilder = new StringBuilder();
-      LinkedList<SlistEntity> listEntities = distkvClient.sortedLists()
+      LinkedList<SlistEntity> listEntities = distkvClient.slists()
           .top(request.getKey(), slistTopRequest.getCount());
       boolean first = true;
       stringBuilder.append("[");
@@ -346,7 +346,7 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistIncrScoreRequest slistIncrScoreRequest = request.getRequest()
           .unpack(SlistIncrScoreRequest.class);
-      distkvClient.sortedLists().incrScore(
+      distkvClient.slists().incrScore(
           request.getKey(), slistIncrScoreRequest.getMember(), slistIncrScoreRequest.getDelta());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
@@ -361,7 +361,7 @@ public class CommandExecutorHandler {
           request.getRequest().unpack(SlistPutMemberRequest.class);
       final String member = slistPutMemberRequest.getMember();
       final int score = slistPutMemberRequest.getScore();
-      distkvClient.sortedLists().putMember(request.getKey(), new SlistEntity(member, score));
+      distkvClient.slists().putMember(request.getKey(), new SlistEntity(member, score));
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
@@ -375,7 +375,7 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistRemoveMemberRequest slistRemoveMemberRequest =
           request.getRequest().unpack(SlistRemoveMemberRequest.class);
-      distkvClient.sortedLists().removeMember(
+      distkvClient.slists().removeMember(
           request.getKey(), slistRemoveMemberRequest.getMember());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
@@ -390,7 +390,7 @@ public class CommandExecutorHandler {
       SlistGetMemberRequest slistGetMemberRequest =
           request.getRequest().unpack(SlistGetMemberRequest.class);
       final DistkvTuple<Integer, Integer> tuple =
-          distkvClient.sortedLists().getMember(request.getKey(), slistGetMemberRequest.getMember());
+          distkvClient.slists().getMember(request.getKey(), slistGetMemberRequest.getMember());
       // output: (member, score), ranking
       final StringBuilder stringBuilder = new StringBuilder();
       stringBuilder.append("(");

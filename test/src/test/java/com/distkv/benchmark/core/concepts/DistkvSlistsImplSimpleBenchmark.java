@@ -8,7 +8,7 @@ import com.distkv.core.struct.slist.SlistLinkedImpl;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DistkvSortedListsImplSimpleBenchmark {
+public class DistkvSlistsImplSimpleBenchmark {
 
   private static final int maxOperationTimes = 10000;
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class KVSSlistTest {
   @Test
-  public void testSortedList() {
+  public void testSlist() {
     KVStore store = new KVStoreImpl();
 
     LinkedList<SlistEntity> list = new LinkedList<>();

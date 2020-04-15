@@ -15,11 +15,11 @@ import com.distkv.core.struct.slist.SlistLinkedImpl;
 import java.util.List;
 import java.util.LinkedList;
 
-public class DistkvSortedListsImpl
+public class DistkvSlistsImpl
     extends DistkvConcepts<Slist>
-    implements DistkvSortedLists {
+    implements DistkvSlists {
 
-  public DistkvSortedListsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
+  public DistkvSlistsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 

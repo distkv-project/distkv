@@ -34,21 +34,21 @@ public class SlistProxyTest extends BaseTestSupplier {
   }
 
   private void testTop() throws InvalidProtocolBufferException {
-    LinkedList<SlistEntity> list = distkvClient.sortedLists().top("k1", 100);
+    LinkedList<SlistEntity> list = distkvClient.slists().top("k1", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
     Assert.assertEquals(list.get(1).getMember(), "fw");
   }
 
   private void testRemoveItem() {
-    distkvClient.sortedLists().removeMember("k1", "55");
+    distkvClient.slists().removeMember("k1", "55");
   }
 
   private void testPutItem() {
-    distkvClient.sortedLists().putMember("k1", new SlistEntity("whhh", 100));
+    distkvClient.slists().putMember("k1", new SlistEntity("whhh", 100));
   }
 
   private void testIncItem() {
-    distkvClient.sortedLists().incrScore("k1", "fw", 1);
+    distkvClient.slists().incrScore("k1", "fw", 1);
   }
 
   private void testPut() {
@@ -57,11 +57,11 @@ public class SlistProxyTest extends BaseTestSupplier {
     list.add(new SlistEntity("wlll", 8));
     list.add(new SlistEntity("fw", 9));
     list.add(new SlistEntity("55", 6));
-    distkvClient.sortedLists().put("k1", list);
+    distkvClient.slists().put("k1", list);
   }
 
   private void testGetItem() throws InvalidProtocolBufferException {
-    DistkvTuple<Integer, Integer> tuple = distkvClient.sortedLists().getMember("k1", "fw");
+    DistkvTuple<Integer, Integer> tuple = distkvClient.slists().getMember("k1", "fw");
     Assert.assertEquals(tuple.getFirst().intValue(), 10);
     Assert.assertEquals(tuple.getSecond().intValue(), 2);
   }
@@ -80,7 +80,7 @@ public class SlistProxyTest extends BaseTestSupplier {
     distkvClient = newDistkvClient();
     Assert
         .assertThrows(KeyNotFoundException.class, () ->
-            distkvClient.sortedLists().top("k1", 100));
+            distkvClient.slists().top("k1", 100));
     distkvClient.disconnect();
   }
 
@@ -91,7 +91,7 @@ public class SlistProxyTest extends BaseTestSupplier {
     distkvClient.expire("k1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        distkvClient.sortedLists().getMember("k1", "fw");
+        distkvClient.slists().getMember("k1", "fw");
         return false;
       } catch (KeyNotFoundException e) {
         return true;

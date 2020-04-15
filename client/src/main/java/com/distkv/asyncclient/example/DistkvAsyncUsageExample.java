@@ -152,9 +152,9 @@ public class DistkvAsyncUsageExample {
 
       // SortedList example.
       CompletableFuture<DistkvProtocol.DistkvResponse> slistPutFuture =
-          distkvClient.sortedLists().put("k1", slist);
+          distkvClient.slists().put("k1", slist);
       CompletableFuture<DistkvProtocol.DistkvResponse> slistPutMFuture =
-          distkvClient.sortedLists().putMember("k1", new SlistEntity("s", 100));
+          distkvClient.slists().putMember("k1", new SlistEntity("s", 100));
 
       slistPutFuture.whenComplete((r, t) -> {
         if (t != null) {
@@ -177,7 +177,7 @@ public class DistkvAsyncUsageExample {
       slistPutMFuture.get();
 
       CompletableFuture<DistkvProtocol.DistkvResponse> slistTopFuture =
-          distkvClient.sortedLists().top("k1", 3);
+          distkvClient.slists().top("k1", 3);
 
       slistTopFuture.whenComplete((r, t) -> {
         if (t != null) {

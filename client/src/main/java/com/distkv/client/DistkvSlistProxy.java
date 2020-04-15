@@ -16,26 +16,26 @@ public class DistkvSlistProxy {
 
   private static final String typeCode = "E";
 
-  private DistkvAsyncSlistProxy asyncSortedListProxy;
+  private DistkvAsyncSlistProxy asyncSlistProxy;
 
-  public DistkvSlistProxy(DistkvAsyncSlistProxy asyncSortedListProxy) {
-    this.asyncSortedListProxy = asyncSortedListProxy;
+  public DistkvSlistProxy(DistkvAsyncSlistProxy asyncSlistProxy) {
+    this.asyncSlistProxy = asyncSlistProxy;
   }
 
   public void put(String key, LinkedList<SlistEntity> list) {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.put(key, list));
+    DistkvResponse response = FutureUtils.get(asyncSlistProxy.put(key, list));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
   public void incrScore(String key, String member, int delta) {
 
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.incrScore(key, member, delta));
+    DistkvResponse response = FutureUtils.get(asyncSlistProxy.incrScore(key, member, delta));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
   public LinkedList<SlistEntity> top(String key, int topNum)
       throws InvalidProtocolBufferException {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.top(key, topNum));
+    DistkvResponse response = FutureUtils.get(asyncSlistProxy.top(key, topNum));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     LinkedList<SlistEntity> list = new LinkedList<>();
     SlistTopResponse slistTopResponse = response.getResponse().unpack(SlistTopResponse.class);
@@ -46,18 +46,18 @@ public class DistkvSlistProxy {
   }
 
   public void removeMember(String key, String member) {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.removeMember(key, member));
+    DistkvResponse response = FutureUtils.get(asyncSlistProxy.removeMember(key, member));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
   public void putMember(String key, SlistEntity entity) {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.putMember(key, entity));
+    DistkvResponse response = FutureUtils.get(asyncSlistProxy.putMember(key, entity));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
   public DistkvTuple<Integer, Integer> getMember(String key, String member)
       throws InvalidProtocolBufferException {
-    DistkvResponse response = FutureUtils.get(asyncSortedListProxy.getMember(key, member));
+    DistkvResponse response = FutureUtils.get(asyncSlistProxy.getMember(key, member));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     SlistGetMemberResponse slistGetMemberResponse = response.getResponse()
         .unpack(SlistGetMemberResponse.class);

@@ -104,7 +104,7 @@ public interface DistkvClient {
    *
    * @return The distkv sortedList proxy.
    */
-  DistkvSlistProxy sortedLists();
+  DistkvSlistProxy slists();
 
 
   /**

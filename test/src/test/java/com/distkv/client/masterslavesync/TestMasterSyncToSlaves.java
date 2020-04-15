@@ -103,13 +103,13 @@ public class TestMasterSyncToSlaves {
     list.add(new SlistEntity("wlll", 8));
     list.add(new SlistEntity("fw", 9));
     list.add(new SlistEntity("55", 6));
-    client0.sortedLists().put("slist_k1", list);
+    client0.slists().put("slist_k1", list);
 
-    LinkedList<SlistEntity> tlist = client0.sortedLists().top("slist_k1", 100);
+    LinkedList<SlistEntity> tlist = client0.slists().top("slist_k1", 100);
     Assert.assertEquals(tlist.get(0).getMember(), "fw");
     Assert.assertEquals(tlist.get(1).getMember(), "xswl");
 
-    LinkedList<SlistEntity> tlist1 = client1.sortedLists().top("slist_k1", 100);
+    LinkedList<SlistEntity> tlist1 = client1.slists().top("slist_k1", 100);
     Assert.assertEquals(tlist1.get(0).getMember(), "fw");
     Assert.assertEquals(tlist1.get(1).getMember(), "xswl");
   }

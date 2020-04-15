@@ -19,21 +19,21 @@ public class PineTopperImpl  extends AbstractPineHandle implements PineTopper {
     super();
     this.distkvClient = distkvClient;
     // Construct an empty sorted-list to the store.
-    distkvClient.sortedLists().put(getKey(), new LinkedList<>());
+    distkvClient.slists().put(getKey(), new LinkedList<>());
   }
 
   @Override
   public void addMember(String memberName, int memberScore) {
-    distkvClient.sortedLists().putMember(getKey(), new SlistEntity(memberName, memberScore));
+    distkvClient.slists().putMember(getKey(), new SlistEntity(memberName, memberScore));
   }
 
   public void removeMember(String memberName) {
-    distkvClient.sortedLists().removeMember(getKey(), memberName);
+    distkvClient.slists().removeMember(getKey(), memberName);
   }
 
   public List<DistkvTuple<String, Integer>> top(int num) {
     try {
-      LinkedList<SlistEntity> result = distkvClient.sortedLists().top(getKey(), num);
+      LinkedList<SlistEntity> result = distkvClient.slists().top(getKey(), num);
       // Covert the result type.
       List<DistkvTuple<String, Integer>> ret = new ArrayList<>(result.size());
       for (SlistEntity entity : result) {
@@ -54,7 +54,7 @@ public class PineTopperImpl  extends AbstractPineHandle implements PineTopper {
   @Override
   public TopperMember getMember(String memberName) {
     try {
-      DistkvTuple<Integer, Integer> result = distkvClient.sortedLists().getMember(
+      DistkvTuple<Integer, Integer> result = distkvClient.slists().getMember(
           getKey(), memberName);
       return new TopperMember(memberName, result.getSecond(), result.getFirst());
     } catch (InvalidProtocolBufferException e) {

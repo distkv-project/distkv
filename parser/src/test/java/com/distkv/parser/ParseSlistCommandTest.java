@@ -14,7 +14,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class ParseSortedListCommandTest {
+public class ParseSlistCommandTest {
 
   private static final DistkvParser distkvParser = new DistkvParser();
 
