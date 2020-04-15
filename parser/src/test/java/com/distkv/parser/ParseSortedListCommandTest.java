@@ -24,7 +24,7 @@ public class ParseSortedListCommandTest {
     DistkvParsedResult result = distkvParser.parse(command);
     final DistkvRequest putRequest = result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_PUT);
+    Assert.assertEquals(result.getRequestType(), RequestType.SLIST_PUT);
     Assert.assertEquals(putRequest.getKey(), "k1");
     Assert.assertEquals(putRequest.getRequest()
         .unpack(SlistPutRequest.class).getListCount(), 3);
@@ -48,7 +48,7 @@ public class ParseSortedListCommandTest {
     DistkvParsedResult result = distkvParser.parse(command);
     final DistkvRequest topRequest = result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_TOP);
+    Assert.assertEquals(result.getRequestType(), RequestType.SLIST_TOP);
     Assert.assertEquals(topRequest.getKey(), "k1");
     Assert.assertEquals(topRequest.getRequest()
         .unpack(SlistTopRequest.class).getCount(), 2);
@@ -60,7 +60,7 @@ public class ParseSortedListCommandTest {
     DistkvParsedResult result = distkvParser.parse(command);
     final DistkvRequest incrScoreRequest = result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_INCR_SCORE);
+    Assert.assertEquals(result.getRequestType(), RequestType.SLIST_INCR_SCORE);
     Assert.assertEquals(incrScoreRequest.getKey(), "k1");
     Assert.assertEquals(incrScoreRequest.getRequest()
         .unpack(SlistIncrScoreRequest.class).getMember(), "m1");
@@ -74,7 +74,7 @@ public class ParseSortedListCommandTest {
     DistkvParsedResult result = distkvParser.parse(command);
     final DistkvRequest incrScoreRequest = result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_INCR_SCORE);
+    Assert.assertEquals(result.getRequestType(), RequestType.SLIST_INCR_SCORE);
     Assert.assertEquals(incrScoreRequest.getKey(), "k1");
     Assert.assertEquals(incrScoreRequest.getRequest()
         .unpack(SlistIncrScoreRequest.class).getMember(), "m1");
@@ -88,7 +88,7 @@ public class ParseSortedListCommandTest {
     DistkvParsedResult result = distkvParser.parse(command);
     final DistkvRequest putMemberRequest = result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_PUT_MEMBER);
+    Assert.assertEquals(result.getRequestType(), RequestType.SLIST_PUT_MEMBER);
     Assert.assertEquals(putMemberRequest.getKey(), "k1");
     Assert.assertEquals(putMemberRequest.getRequest()
         .unpack(SlistPutMemberRequest.class).getScore(), 4);
@@ -102,7 +102,7 @@ public class ParseSortedListCommandTest {
     DistkvParsedResult result = distkvParser.parse(command);
     final DistkvRequest removeMemberRequest = result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_REMOVE_MEMBER);
+    Assert.assertEquals(result.getRequestType(), RequestType.SLIST_REMOVE_MEMBER);
     Assert.assertEquals(removeMemberRequest.getKey(), "k1");
     Assert.assertEquals(removeMemberRequest.getRequest()
         .unpack(SlistRemoveMemberRequest.class).getMember(), "m4");
@@ -114,7 +114,7 @@ public class ParseSortedListCommandTest {
     DistkvParsedResult result = distkvParser.parse(command);
     final DistkvRequest getMemberRequest = result.getRequest();
 
-    Assert.assertEquals(result.getRequestType(), RequestType.SORTED_LIST_GET_MEMBER);
+    Assert.assertEquals(result.getRequestType(), RequestType.SLIST_GET_MEMBER);
     Assert.assertEquals(getMemberRequest.getKey(), "k1");
     Assert.assertEquals(getMemberRequest.getRequest()
         .unpack(SlistGetMemberRequest.class).getMember(), "m1");

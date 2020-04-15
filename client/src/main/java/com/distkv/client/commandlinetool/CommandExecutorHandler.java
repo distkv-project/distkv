@@ -297,9 +297,9 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistPutRequest slistPutRequest = request.getRequest().unpack(SlistPutRequest.class);
       final LinkedList<SlistEntity> sortedListEntitiesResult = new LinkedList<>();
-      final List<SlistProtocol.SortedListEntity> sortedListEntities
+      final List<SlistProtocol.SlistEntity> sortedListEntities
           = slistPutRequest.getListList();
-      for (SlistProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
+      for (SlistProtocol.SlistEntity sortedListEntity : sortedListEntities) {
         final String sortedListEntityMember = sortedListEntity.getMember();
         final int sortedListEntityScore = sortedListEntity.getScore();
         sortedListEntitiesResult.add(new SlistEntity(sortedListEntityMember,

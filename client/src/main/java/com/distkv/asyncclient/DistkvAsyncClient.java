@@ -104,7 +104,7 @@ public interface DistkvAsyncClient {
    *
    * @return The dst sortedList proxy.
    */
-  DistkvAsyncSortedListProxy sortedLists();
+  DistkvAsyncSlistProxy sortedLists();
 
   /**
    * Get the distkv int proxy

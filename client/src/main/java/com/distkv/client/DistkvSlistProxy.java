@@ -1,6 +1,6 @@
 package com.distkv.client;
 
-import com.distkv.asyncclient.DistkvAsyncSortedListProxy;
+import com.distkv.asyncclient.DistkvAsyncSlistProxy;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.FutureUtils;
@@ -16,9 +16,9 @@ public class DistkvSlistProxy {
 
   private static final String typeCode = "E";
 
-  private DistkvAsyncSortedListProxy asyncSortedListProxy;
+  private DistkvAsyncSlistProxy asyncSortedListProxy;
 
-  public DistkvSlistProxy(DistkvAsyncSortedListProxy asyncSortedListProxy) {
+  public DistkvSlistProxy(DistkvAsyncSlistProxy asyncSortedListProxy) {
     this.asyncSortedListProxy = asyncSortedListProxy;
   }
 
@@ -39,7 +39,7 @@ public class DistkvSlistProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     LinkedList<SlistEntity> list = new LinkedList<>();
     SlistTopResponse slistTopResponse = response.getResponse().unpack(SlistTopResponse.class);
-    for (SlistProtocol.SortedListEntity entity : slistTopResponse.getListList()) {
+    for (SlistProtocol.SlistEntity entity : slistTopResponse.getListList()) {
       list.add(new SlistEntity(entity.getMember(), entity.getScore()));
     }
     return list;
@@ -61,7 +61,7 @@ public class DistkvSlistProxy {
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     SlistGetMemberResponse slistGetMemberResponse = response.getResponse()
         .unpack(SlistGetMemberResponse.class);
-    SlistProtocol.SortedListEntity sortedListEntity = slistGetMemberResponse.getEntity();
+    SlistProtocol.SlistEntity sortedListEntity = slistGetMemberResponse.getEntity();
     return new DistkvTuple<>(sortedListEntity.getScore(), slistGetMemberResponse.getCount());
   }
 

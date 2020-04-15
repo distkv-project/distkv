@@ -10,19 +10,19 @@ import com.google.protobuf.Any;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
-public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
+public class DistkvAsyncSlistProxy extends DistkvAbstractAsyncProxy {
 
-  public DistkvAsyncSortedListProxy(DistkvAsyncClient client, DistkvService service) {
+  public DistkvAsyncSlistProxy(DistkvAsyncClient client, DistkvService service) {
     super(client, service);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
       String key, LinkedList<SlistEntity> list) {
 
-    LinkedList<SlistProtocol.SortedListEntity> listEntities = new LinkedList<>();
+    LinkedList<SlistProtocol.SlistEntity> listEntities = new LinkedList<>();
     list.forEach((v) -> {
-      SlistProtocol.SortedListEntity.Builder sortedListEntity =
-          SlistProtocol.SortedListEntity.newBuilder();
+      SlistProtocol.SlistEntity.Builder sortedListEntity =
+          SlistProtocol.SlistEntity.newBuilder();
       sortedListEntity.setMember(v.getMember());
       sortedListEntity.setScore(v.getScore());
       listEntities.add(sortedListEntity.build());
@@ -33,7 +33,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_PUT)
+        .setRequestType(RequestType.SLIST_PUT)
         .setRequest(Any.pack(slistPutRequest))
         .build();
     return call(request);
@@ -49,7 +49,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_INCR_SCORE)
+        .setRequestType(RequestType.SLIST_INCR_SCORE)
         .setRequest(Any.pack(slistInceScoreRequest))
         .build();
     return call(request);
@@ -64,7 +64,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_TOP)
+        .setRequestType(RequestType.SLIST_TOP)
         .setRequest(Any.pack(slistTopRequest))
         .build();
     return call(request);
@@ -78,7 +78,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_REMOVE_MEMBER)
+        .setRequestType(RequestType.SLIST_REMOVE_MEMBER)
         .setRequest(Any.pack(slistRemoveMemberRequest))
         .build();
     return call(request);
@@ -94,7 +94,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_PUT_MEMBER)
+        .setRequestType(RequestType.SLIST_PUT_MEMBER)
         .setRequest(Any.pack(slistPutMemberRequest))
         .build();
     return call(request);
@@ -109,7 +109,7 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_GET_MEMBER)
+        .setRequestType(RequestType.SLIST_GET_MEMBER)
         .setRequest(Any.pack(slistGetMemberRequest))
         .build();
     return call(request);

@@ -175,10 +175,10 @@ public class Worker extends Thread {
       case DICT_PUT:
       case DICT_PUT_ITEM:
       case DICT_REMOVE_ITEM:
-      case SORTED_LIST_PUT:
-      case SORTED_LIST_PUT_MEMBER:
-      case SORTED_LIST_INCR_SCORE:
-      case SORTED_LIST_REMOVE_MEMBER:
+      case SLIST_PUT:
+      case SLIST_PUT_MEMBER:
+      case SLIST_INCR_SCORE:
+      case SLIST_REMOVE_MEMBER:
       case INT_PUT:
       case INT_INCR:
       case DROP: {
@@ -549,7 +549,7 @@ public class Worker extends Thread {
         }
         break;
       }
-      case SORTED_LIST_PUT: {
+      case SLIST_PUT: {
         SlistProtocol.SlistPutRequest slistPutRequest = distkvRequest.getRequest()
             .unpack(SlistProtocol.SlistPutRequest.class);
         CommonProtocol.Status status;
@@ -570,7 +570,7 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_TOP: {
+      case SLIST_TOP: {
         SlistProtocol.SlistTopRequest slistTopRequest = distkvRequest.getRequest()
             .unpack(SlistProtocol.SlistTopRequest.class);
         CommonProtocol.Status status;
@@ -582,8 +582,8 @@ public class Worker extends Thread {
               SlistProtocol.SlistTopResponse.newBuilder();
           while (listIterator.hasNext()) {
             SlistEntity entity = listIterator.next();
-            SlistProtocol.SortedListEntity.Builder slistEntity =
-                SlistProtocol.SortedListEntity.newBuilder();
+            SlistProtocol.SlistEntity.Builder slistEntity =
+                SlistProtocol.SlistEntity.newBuilder();
             slistEntity.setScore(entity.getScore());
             slistEntity.setMember(entity.getMember());
             slistBuilder.addList(slistEntity.build());
@@ -601,7 +601,7 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_INCR_SCORE: {
+      case SLIST_INCR_SCORE: {
         SlistProtocol.SlistIncrScoreRequest slistIncrScoreRequest = distkvRequest
             .getRequest()
             .unpack(SlistProtocol.SlistIncrScoreRequest.class);
@@ -621,7 +621,7 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_PUT_MEMBER: {
+      case SLIST_PUT_MEMBER: {
         SlistProtocol.SlistPutMemberRequest slistPutMemberRequest =
             distkvRequest.getRequest().unpack(SlistProtocol.SlistPutMemberRequest.class);
         CommonProtocol.Status status;
@@ -639,7 +639,7 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_REMOVE_MEMBER: {
+      case SLIST_REMOVE_MEMBER: {
         SlistProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
             distkvRequest.getRequest()
                 .unpack(SlistProtocol.SlistRemoveMemberRequest.class);
@@ -658,7 +658,7 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_GET_MEMBER: {
+      case SLIST_GET_MEMBER: {
         SlistProtocol.SlistGetMemberRequest slistGetMemberRequest =
             distkvRequest.getRequest()
                 .unpack(SlistProtocol.SlistGetMemberRequest.class);
@@ -666,8 +666,8 @@ public class Worker extends Thread {
         try {
           DistkvTuple<Integer, Integer> tuple =
               storeEngine.sortLists().getMember(key, slistGetMemberRequest.getMember());
-          SlistProtocol.SortedListEntity.Builder slistEntity =
-              SlistProtocol.SortedListEntity.newBuilder();
+          SlistProtocol.SlistEntity.Builder slistEntity =
+              SlistProtocol.SlistEntity.newBuilder();
           slistEntity.setMember(slistGetMemberRequest.getMember());
           slistEntity.setScore(tuple.getFirst());
           SlistProtocol.SlistGetMemberResponse.Builder slistBuilder =

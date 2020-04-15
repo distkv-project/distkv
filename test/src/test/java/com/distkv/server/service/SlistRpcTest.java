@@ -33,11 +33,11 @@ public class SlistRpcTest extends BaseTestSupplier {
 
       SlistProtocol.SlistPutRequest.Builder requestBuilder =
           SlistProtocol.SlistPutRequest.newBuilder();
-      LinkedList<SlistProtocol.SortedListEntity> listEntities =
+      LinkedList<SlistProtocol.SlistEntity> listEntities =
           new LinkedList<>();
       for (SlistEntity entity : list) {
-        SlistProtocol.SortedListEntity.Builder builder =
-            SlistProtocol.SortedListEntity.newBuilder();
+        SlistProtocol.SlistEntity.Builder builder =
+            SlistProtocol.SlistEntity.newBuilder();
         builder.setMember(entity.getMember());
         builder.setScore(entity.getScore());
         listEntities.add(builder.build());
@@ -45,7 +45,7 @@ public class SlistRpcTest extends BaseTestSupplier {
       requestBuilder.addAllList(listEntities);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
           .setKey("k1")
-          .setRequestType(RequestType.SORTED_LIST_PUT)
+          .setRequestType(RequestType.SLIST_PUT)
           .setRequest(Any.pack(requestBuilder.build()))
           .build();
       FutureUtils.get(
@@ -56,7 +56,7 @@ public class SlistRpcTest extends BaseTestSupplier {
       topRequestBuilder.setCount(2);
       DistkvRequest topRequest = DistkvRequest.newBuilder()
           .setKey("k1")
-          .setRequestType(RequestType.SORTED_LIST_TOP)
+          .setRequestType(RequestType.SLIST_TOP)
           .setRequest(Any.pack(topRequestBuilder.build()))
           .build();
       DistkvResponse top = FutureUtils.get(
@@ -72,7 +72,7 @@ public class SlistRpcTest extends BaseTestSupplier {
       putRequestBuilder.setScore(1000);
       DistkvRequest putMemberRequest = DistkvRequest.newBuilder()
           .setKey("k1")
-          .setRequestType(RequestType.SORTED_LIST_PUT_MEMBER)
+          .setRequestType(RequestType.SLIST_PUT_MEMBER)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
       DistkvResponse response = FutureUtils.get(
@@ -89,12 +89,12 @@ public class SlistRpcTest extends BaseTestSupplier {
       getMemberRequestBuilder.setMember("asd");
       DistkvRequest getMemberRequest = DistkvRequest.newBuilder()
           .setKey("k1")
-          .setRequestType(RequestType.SORTED_LIST_GET_MEMBER)
+          .setRequestType(RequestType.SLIST_GET_MEMBER)
           .setRequest(Any.pack(getMemberRequestBuilder.build()))
           .build();
       DistkvResponse getMemberResponse = FutureUtils.get(
           service.call(getMemberRequest));
-      SlistProtocol.SortedListEntity sortedListEntity =
+      SlistProtocol.SlistEntity sortedListEntity =
           getMemberResponse.getResponse().unpack(SlistGetMemberResponse.class).getEntity();
       Assert.assertEquals(sortedListEntity.getMember(), "asd");
       Assert.assertEquals(sortedListEntity.getScore(), 1000);
