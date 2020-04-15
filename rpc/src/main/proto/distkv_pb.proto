@@ -1,11 +1,6 @@
 syntax="proto3";
 import "google/protobuf/any.proto";
 
-import "string_pb.proto";
-import "list_pb.proto";
-import "set_pb.proto";
-import "dict_pb.proto";
-import "sorted_list_pb.proto";
 import "common_pb.proto";
 
 package com.distkv.rpc.protobuf;
