@@ -1,39 +1,39 @@
 package com.distkv.asyncclient;
 
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
 
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 
-public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
+public class DistkvAsyncSlistProxy extends DistkvAbstractAsyncProxy {
 
-  public DistkvAsyncSortedListProxy(DistkvAsyncClient client, DistkvService service) {
+  public DistkvAsyncSlistProxy(DistkvAsyncClient client, DistkvService service) {
     super(client, service);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
-      String key, LinkedList<SortedListEntity> list) {
+      String key, LinkedList<SlistEntity> list) {
 
-    LinkedList<SortedListProtocol.SortedListEntity> listEntities = new LinkedList<>();
+    LinkedList<SlistProtocol.SlistEntity> listEntities = new LinkedList<>();
     list.forEach((v) -> {
-      SortedListProtocol.SortedListEntity.Builder sortedListEntity =
-          SortedListProtocol.SortedListEntity.newBuilder();
+      SlistProtocol.SlistEntity.Builder sortedListEntity =
+          SlistProtocol.SlistEntity.newBuilder();
       sortedListEntity.setMember(v.getMember());
       sortedListEntity.setScore(v.getScore());
       listEntities.add(sortedListEntity.build());
     });
 
-    SortedListProtocol.SlistPutRequest slistPutRequest =
-        SortedListProtocol.SlistPutRequest.newBuilder().addAllList(listEntities).build();
+    SlistProtocol.SlistPutRequest slistPutRequest =
+        SlistProtocol.SlistPutRequest.newBuilder().addAllList(listEntities).build();
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_PUT)
+        .setRequestType(RequestType.SLIST_PUT)
         .setRequest(Any.pack(slistPutRequest))
         .build();
     return call(request);
@@ -41,15 +41,15 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> incrScore(
       String key, String member, int delta) {
-    SortedListProtocol.SlistIncrScoreRequest slistInceScoreRequest =
-        SortedListProtocol.SlistIncrScoreRequest.newBuilder()
+    SlistProtocol.SlistIncrScoreRequest slistInceScoreRequest =
+        SlistProtocol.SlistIncrScoreRequest.newBuilder()
             .setDelta(delta)
             .setMember(member)
             .build();
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_INCR_SCORE)
+        .setRequestType(RequestType.SLIST_INCR_SCORE)
         .setRequest(Any.pack(slistInceScoreRequest))
         .build();
     return call(request);
@@ -57,44 +57,44 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> top(String key, int topNum) {
 
-    SortedListProtocol.SlistTopRequest slistTopRequest =
-        SortedListProtocol.SlistTopRequest.newBuilder()
+    SlistProtocol.SlistTopRequest slistTopRequest =
+        SlistProtocol.SlistTopRequest.newBuilder()
             .setCount(topNum)
             .build();
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_TOP)
+        .setRequestType(RequestType.SLIST_TOP)
         .setRequest(Any.pack(slistTopRequest))
         .build();
     return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> removeMember(String key, String member) {
-    SortedListProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
-        SortedListProtocol.SlistRemoveMemberRequest.newBuilder()
+    SlistProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
+        SlistProtocol.SlistRemoveMemberRequest.newBuilder()
             .setMember(member)
             .build();
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_REMOVE_MEMBER)
+        .setRequestType(RequestType.SLIST_REMOVE_MEMBER)
         .setRequest(Any.pack(slistRemoveMemberRequest))
         .build();
     return call(request);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> putMember(
-      String key, SortedListEntity entity) {
-    SortedListProtocol.SlistPutMemberRequest slistPutMemberRequest =
-        SortedListProtocol.SlistPutMemberRequest.newBuilder()
+      String key, SlistEntity entity) {
+    SlistProtocol.SlistPutMemberRequest slistPutMemberRequest =
+        SlistProtocol.SlistPutMemberRequest.newBuilder()
             .setMember(entity.getMember())
             .setScore(entity.getScore())
             .build();
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_PUT_MEMBER)
+        .setRequestType(RequestType.SLIST_PUT_MEMBER)
         .setRequest(Any.pack(slistPutMemberRequest))
         .build();
     return call(request);
@@ -102,14 +102,14 @@ public class DistkvAsyncSortedListProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> getMember(
       String key, String member) {
-    SortedListProtocol.SlistGetMemberRequest slistGetMemberRequest =
-        SortedListProtocol.SlistGetMemberRequest.newBuilder()
+    SlistProtocol.SlistGetMemberRequest slistGetMemberRequest =
+        SlistProtocol.SlistGetMemberRequest.newBuilder()
             .setMember(member)
             .build();
 
     DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
         .setKey(key)
-        .setRequestType(RequestType.SORTED_LIST_GET_MEMBER)
+        .setRequestType(RequestType.SLIST_GET_MEMBER)
         .setRequest(Any.pack(slistGetMemberRequest))
         .build();
     return call(request);

@@ -26,4 +26,3 @@ message IntIncrRequest {
 
 message IntIncrResponse {
 }
-

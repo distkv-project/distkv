@@ -6,10 +6,10 @@ public enum ErrorCodeEnum {
   DistkvListIndexOutOfBoundsErrorCode("202"),
   KeyNotFoundErrorCode("100"),
   DistkvKeyDuplicatedErrorCode("200"),
-  SortedListMembersDuplicatedErrorCode("008"),
-  SortedListIncrScoreOutOfRangeErrorCode("009"),
-  SortedListMemberNotFoundErrorCode("006"),
-  SortedListTopNumBeNonNegativeErrorCode("007"),
+  SlistMembersDuplicatedErrorCode("008"),
+  SlistIncrScoreOutOfRangeErrorCode("009"),
+  SlistMemberNotFoundErrorCode("006"),
+  SlistTopNumBeNonNegativeErrorCode("007"),
   SetItemNotFoundErrorCode("010");
 
   private final String errorcode;

@@ -56,13 +56,13 @@ enum RequestType {
     DICT_POP_ITEM = 405;
     DICT_REMOVE_ITEM = 406;
 
-    // sorted list concept
-    SORTED_LIST_PUT = 501;
-    SORTED_LIST_TOP = 502;
-    SORTED_LIST_INCR_SCORE = 503;
-    SORTED_LIST_PUT_MEMBER = 504;
-    SORTED_LIST_REMOVE_MEMBER = 505;
-    SORTED_LIST_GET_MEMBER = 506;
+    // Slist concept
+    SLIST_PUT = 501;
+    SLIST_TOP = 502;
+    SLIST_INCR_SCORE = 503;
+    SLIST_PUT_MEMBER = 504;
+    SLIST_REMOVE_MEMBER = 505;
+    SLIST_GET_MEMBER = 506;
 
     // int concept
     INT_PUT = 601;
