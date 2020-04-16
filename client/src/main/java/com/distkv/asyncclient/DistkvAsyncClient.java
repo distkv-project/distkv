@@ -72,37 +72,37 @@ public interface DistkvAsyncClient {
 
 
   /**
-   * Get the dst string proxy.
+   * Get the distkv string proxy.
    *
-   * @return The dst string proxy.
+   * @return The distkv string proxy.
    */
   DistkvAsyncStringProxy strs();
 
   /**
-   * Get the dst list proxy.
+   * Get the distkv list proxy.
    *
-   * @return The dst list proxy.
+   * @return The distkv list proxy.
    */
   DistkvAsyncListProxy lists();
 
   /**
-   * Get the dst set proxy.
+   * Get the distkv set proxy.
    *
-   * @return The dst set proxy.
+   * @return The distkv set proxy.
    */
   DistkvAsyncSetProxy sets();
 
   /**
-   * Get the dst dict proxy.
+   * Get the distkv dict proxy.
    *
-   * @return The dst string proxy.
+   * @return The distkv string proxy.
    */
   DistkvAsyncDictProxy dicts();
 
   /**
-   * Get the dst sortedList proxy.
+   * Get the distkv sortedList proxy.
    *
-   * @return The dst sortedList proxy.
+   * @return The distkv sortedList proxy.
    */
   DistkvAsyncSlistProxy slists();
 
