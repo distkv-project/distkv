@@ -4,14 +4,14 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIR
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.TTL;
 
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SetItemNotFoundException;
-import com.distkv.common.exception.SortedListMemberNotFoundException;
-import com.distkv.common.exception.SortedListTopNumIsNonNegativeException;
+import com.distkv.common.exception.SlistMemberNotFoundException;
+import com.distkv.common.exception.SlistTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
@@ -24,7 +24,7 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
@@ -175,10 +175,10 @@ public class Worker extends Thread {
       case DICT_PUT:
       case DICT_PUT_ITEM:
       case DICT_REMOVE_ITEM:
-      case SORTED_LIST_PUT:
-      case SORTED_LIST_PUT_MEMBER:
-      case SORTED_LIST_INCR_SCORE:
-      case SORTED_LIST_REMOVE_MEMBER:
+      case SLIST_PUT:
+      case SLIST_PUT_MEMBER:
+      case SLIST_INCR_SCORE:
+      case SLIST_REMOVE_MEMBER:
       case INT_PUT:
       case INT_INCR:
       case DROP: {
@@ -549,14 +549,14 @@ public class Worker extends Thread {
         }
         break;
       }
-      case SORTED_LIST_PUT: {
-        SortedListProtocol.SlistPutRequest slistPutRequest = distkvRequest.getRequest()
-            .unpack(SortedListProtocol.SlistPutRequest.class);
+      case SLIST_PUT: {
+        SlistProtocol.SlistPutRequest slistPutRequest = distkvRequest.getRequest()
+            .unpack(SlistProtocol.SlistPutRequest.class);
         CommonProtocol.Status status;
         try {
-          LinkedList<SortedListEntity> linkedList = new LinkedList<>();
+          LinkedList<SlistEntity> linkedList = new LinkedList<>();
           for (int i = 0; i < slistPutRequest.getListCount(); i++) {
-            linkedList.add(new SortedListEntity(slistPutRequest.getList(i).getMember(),
+            linkedList.add(new SlistEntity(slistPutRequest.getList(i).getMember(),
                 slistPutRequest.getList(i).getScore()));
           }
           storeEngine.sortLists().put(key, linkedList);
@@ -570,20 +570,20 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_TOP: {
-        SortedListProtocol.SlistTopRequest slistTopRequest = distkvRequest.getRequest()
-            .unpack(SortedListProtocol.SlistTopRequest.class);
+      case SLIST_TOP: {
+        SlistProtocol.SlistTopRequest slistTopRequest = distkvRequest.getRequest()
+            .unpack(SlistProtocol.SlistTopRequest.class);
         CommonProtocol.Status status;
         try {
-          List<SortedListEntity> topList =
+          List<SlistEntity> topList =
               storeEngine.sortLists().top(key, slistTopRequest.getCount());
-          ListIterator<SortedListEntity> listIterator = topList.listIterator();
-          SortedListProtocol.SlistTopResponse.Builder slistBuilder =
-              SortedListProtocol.SlistTopResponse.newBuilder();
+          ListIterator<SlistEntity> listIterator = topList.listIterator();
+          SlistProtocol.SlistTopResponse.Builder slistBuilder =
+              SlistProtocol.SlistTopResponse.newBuilder();
           while (listIterator.hasNext()) {
-            SortedListEntity entity = listIterator.next();
-            SortedListProtocol.SortedListEntity.Builder slistEntity =
-                SortedListProtocol.SortedListEntity.newBuilder();
+            SlistEntity entity = listIterator.next();
+            SlistProtocol.SlistEntity.Builder slistEntity =
+                SlistProtocol.SlistEntity.newBuilder();
             slistEntity.setScore(entity.getScore());
             slistEntity.setMember(entity.getMember());
             slistBuilder.addList(slistEntity.build());
@@ -592,7 +592,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListTopNumIsNonNegativeException e) {
+        } catch (SlistTopNumIsNonNegativeException e) {
           status = CommonProtocol.Status.SLIST_TOPNUM_BE_POSITIVE;
         } catch (DistkvException e) {
           LOGGER.error("Failed to get a slist top in store: {1}", e);
@@ -601,10 +601,10 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_INCR_SCORE: {
-        SortedListProtocol.SlistIncrScoreRequest slistIncrScoreRequest = distkvRequest
+      case SLIST_INCR_SCORE: {
+        SlistProtocol.SlistIncrScoreRequest slistIncrScoreRequest = distkvRequest
             .getRequest()
-            .unpack(SortedListProtocol.SlistIncrScoreRequest.class);
+            .unpack(SlistProtocol.SlistIncrScoreRequest.class);
         CommonProtocol.Status status;
         try {
           storeEngine.sortLists().incrScore(key,
@@ -612,7 +612,7 @@ public class Worker extends Thread {
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListMemberNotFoundException e) {
+        } catch (SlistMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
           LOGGER.error("Failed to incr a slist score in store: {1}", e);
@@ -621,13 +621,13 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_PUT_MEMBER: {
-        SortedListProtocol.SlistPutMemberRequest slistPutMemberRequest =
-            distkvRequest.getRequest().unpack(SortedListProtocol.SlistPutMemberRequest.class);
+      case SLIST_PUT_MEMBER: {
+        SlistProtocol.SlistPutMemberRequest slistPutMemberRequest =
+            distkvRequest.getRequest().unpack(SlistProtocol.SlistPutMemberRequest.class);
         CommonProtocol.Status status;
         try {
           storeEngine.sortLists().putMember(
-              key, new SortedListEntity(slistPutMemberRequest.getMember(),
+              key, new SlistEntity(slistPutMemberRequest.getMember(),
                   slistPutMemberRequest.getScore()));
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
@@ -639,17 +639,17 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_REMOVE_MEMBER: {
-        SortedListProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
+      case SLIST_REMOVE_MEMBER: {
+        SlistProtocol.SlistRemoveMemberRequest slistRemoveMemberRequest =
             distkvRequest.getRequest()
-                .unpack(SortedListProtocol.SlistRemoveMemberRequest.class);
+                .unpack(SlistProtocol.SlistRemoveMemberRequest.class);
         CommonProtocol.Status status;
         try {
           storeEngine.sortLists().removeMember(key, slistRemoveMemberRequest.getMember());
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListMemberNotFoundException e) {
+        } catch (SlistMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
           LOGGER.error("Failed to remove slist member in store :{1}", e);
@@ -658,27 +658,27 @@ public class Worker extends Thread {
         builder.setStatus(status);
         break;
       }
-      case SORTED_LIST_GET_MEMBER: {
-        SortedListProtocol.SlistGetMemberRequest slistGetMemberRequest =
+      case SLIST_GET_MEMBER: {
+        SlistProtocol.SlistGetMemberRequest slistGetMemberRequest =
             distkvRequest.getRequest()
-                .unpack(SortedListProtocol.SlistGetMemberRequest.class);
+                .unpack(SlistProtocol.SlistGetMemberRequest.class);
         CommonProtocol.Status status;
         try {
           DistkvTuple<Integer, Integer> tuple =
               storeEngine.sortLists().getMember(key, slistGetMemberRequest.getMember());
-          SortedListProtocol.SortedListEntity.Builder slistEntity =
-              SortedListProtocol.SortedListEntity.newBuilder();
+          SlistProtocol.SlistEntity.Builder slistEntity =
+              SlistProtocol.SlistEntity.newBuilder();
           slistEntity.setMember(slistGetMemberRequest.getMember());
           slistEntity.setScore(tuple.getFirst());
-          SortedListProtocol.SlistGetMemberResponse.Builder slistBuilder =
-              SortedListProtocol.SlistGetMemberResponse.newBuilder();
+          SlistProtocol.SlistGetMemberResponse.Builder slistBuilder =
+              SlistProtocol.SlistGetMemberResponse.newBuilder();
           slistBuilder.setEntity(slistEntity);
           slistBuilder.setCount(tuple.getSecond());
           builder.setResponse(Any.pack(slistBuilder.build()));
           status = CommonProtocol.Status.OK;
         } catch (KeyNotFoundException e) {
           status = CommonProtocol.Status.KEY_NOT_FOUND;
-        } catch (SortedListMemberNotFoundException e) {
+        } catch (SlistMemberNotFoundException e) {
           status = CommonProtocol.Status.SLIST_MEMBER_NOT_FOUND;
         } catch (DistkvException e) {
           LOGGER.error("Failed to get slist member in store :{1}", e);
