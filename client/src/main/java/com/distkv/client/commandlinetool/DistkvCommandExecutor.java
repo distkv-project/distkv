@@ -51,17 +51,17 @@ public class DistkvCommandExecutor {
         return CommandExecutorHandler.dictPopItem(distkvClient, parsedResult);
       case DICT_REMOVE_ITEM:
         return CommandExecutorHandler.dictRemoveItem(distkvClient, parsedResult);
-      case SORTED_LIST_PUT:
+      case SLIST_PUT:
         return CommandExecutorHandler.slistPut(distkvClient, parsedResult);
-      case SORTED_LIST_TOP:
+      case SLIST_TOP:
         return CommandExecutorHandler.slistTop(distkvClient, parsedResult);
-      case SORTED_LIST_INCR_SCORE:
+      case SLIST_INCR_SCORE:
         return CommandExecutorHandler.slistIncrScore(distkvClient, parsedResult);
-      case SORTED_LIST_PUT_MEMBER:
+      case SLIST_PUT_MEMBER:
         return CommandExecutorHandler.slistPutMember(distkvClient, parsedResult);
-      case SORTED_LIST_REMOVE_MEMBER:
+      case SLIST_REMOVE_MEMBER:
         return CommandExecutorHandler.slistRemoveMember(distkvClient, parsedResult);
-      case SORTED_LIST_GET_MEMBER:
+      case SLIST_GET_MEMBER:
         return CommandExecutorHandler.slistGetMember(distkvClient, parsedResult);
       case ACTIVE_NAMESPACE:
         return CommandExecutorHandler.activeNamespace(distkvClient, parsedResult);
