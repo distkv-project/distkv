@@ -28,7 +28,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
 
   private DistkvAsyncDictProxy dictAsyncProxy;
 
-  private DistkvAsyncSortedListProxy sortedListAsyncProxy;
+  private DistkvAsyncSlistProxy slistAsyncProxy;
 
   private DistkvAsyncIntProxy intAsyncProxy;
 
@@ -58,7 +58,7 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
     listAsyncProxy = new DistkvAsyncListProxy(this, distkvRpcProxy.getService(rpcClient));
     setAsyncProxy = new DistkvAsyncSetProxy(this, distkvRpcProxy.getService(rpcClient));
     dictAsyncProxy = new DistkvAsyncDictProxy(this, distkvRpcProxy.getService(rpcClient));
-    sortedListAsyncProxy = new DistkvAsyncSortedListProxy(this,
+    slistAsyncProxy = new DistkvAsyncSlistProxy(this,
         distkvRpcProxy.getService(rpcClient));
     intAsyncProxy = new DistkvAsyncIntProxy(this, distkvRpcProxy.getService(rpcClient));
   }
@@ -160,8 +160,8 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
   }
 
   @Override
-  public DistkvAsyncSortedListProxy sortedLists() {
-    return sortedListAsyncProxy;
+  public DistkvAsyncSlistProxy slists() {
+    return slistAsyncProxy;
   }
 
   @Override
