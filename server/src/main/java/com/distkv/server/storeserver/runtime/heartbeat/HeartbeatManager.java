@@ -1,6 +1,6 @@
 package com.distkv.server.storeserver.runtime.heartbeat;
 
-import com.distkv.common.CommonConf;
+import com.distkv.common.Constants;
 import com.distkv.common.NodeInfo;
 import com.distkv.server.metaserver.client.DmetaClient;
 import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
@@ -48,7 +48,7 @@ public class HeartbeatManager {
         }
         changeNodeInfo(nodeInfo, nodeTable.get(nodeInfo.getAddress()));
       }
-    }, 0, CommonConf.HEARTBEAT_INTERVAL);
+    }, 0, Constants.HEARTBEAT_INTERVAL);
   }
 
   public void changeNodeInfo(NodeInfo old, NodeInfo young) {

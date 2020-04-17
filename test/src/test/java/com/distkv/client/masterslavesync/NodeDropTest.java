@@ -1,7 +1,7 @@
 package com.distkv.client.masterslavesync;
 
 import com.distkv.common.NodeInfo;
-import com.distkv.common.NodeStatus;
+import com.distkv.common.NodeState;
 import com.distkv.common.id.NodeId;
 import com.distkv.server.metaserver.client.DmetaClient;
 import com.distkv.server.metaserver.server.bean.GetGlobalViewResponse;
@@ -31,15 +31,15 @@ public class NodeDropTest {
       HeartbeatResponse heartbeatResponse = client.heartbeat(nodeInfo);
       GetGlobalViewResponse globalViewResponse0 = client.getGlobalView();
       Assert.assertEquals(globalViewResponse0
-          .getGlobalView().get("1").getMap().get("test").getStatus(),
-          NodeStatus.RUNNING);
+          .getGlobalView().get("1").getMap().get("test").getState(),
+          NodeState.RUNNING);
       // When the time exceeds 3500ms,
       // the state of node will be changed from running to dead by dmeta.
       TimeUnit.SECONDS.sleep(4);
       GetGlobalViewResponse globalViewResponse1 = client.getGlobalView();
       Assert.assertEquals(globalViewResponse1
-              .getGlobalView().get("1").getMap().get("test").getStatus(),
-          NodeStatus.DEAD);
+              .getGlobalView().get("1").getMap().get("test").getState(),
+          NodeState.DEAD);
     } catch (Exception e) {
       Assert.fail();
     } finally {

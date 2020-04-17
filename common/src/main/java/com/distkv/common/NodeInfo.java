@@ -19,7 +19,7 @@ public class NodeInfo implements Serializable {
 
   private long lastHeartbeatTimestamp;
 
-  private NodeStatus status;
+  private NodeState state;
 
   public static Builder newBuilder() {
     return new Builder();
@@ -29,7 +29,9 @@ public class NodeInfo implements Serializable {
     this.address = builder.getAddress();
     this.nodeId = builder.getNodeId();
     this.isMaster = builder.isMaster();
-    this.status = NodeStatus.RUNNING;
+    //TODO(kairbon) The initial state is running by default,
+    // and it can be corrected after subsequent changes.
+    this.state = NodeState.RUNNING;
     this.lastHeartbeatTimestamp = 0;
   }
 
@@ -57,12 +59,12 @@ public class NodeInfo implements Serializable {
     isMaster = master;
   }
 
-  public NodeStatus getStatus() {
-    return status;
+  public NodeState getState() {
+    return state;
   }
 
-  public void setStatus(NodeStatus status) {
-    this.status = status;
+  public void setState(NodeState state) {
+    this.state = state;
   }
 
   public long getLastHeartbeatTimestamp() {

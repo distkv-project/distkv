@@ -24,7 +24,7 @@ public class GetGlobalViewRequestProcessor extends AsyncUserProcessor<GetGlobalV
   public void handleRequest(BizContext bizContext,
                             AsyncContext asyncContext,
                             GetGlobalViewRequest getGlobalViewRequest) {
-    // If it is not currently a leader, return the leader's peer.
+    // If it is not a leader, return the leader's peer.
     if (!this.dmetaServer.getFsm().isLeader()) {
       final GetGlobalViewResponse response = new GetGlobalViewResponse();
       response.setSuccess(false);

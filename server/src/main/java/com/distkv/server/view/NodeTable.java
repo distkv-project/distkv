@@ -1,8 +1,8 @@
 package com.distkv.server.view;
 
-import com.distkv.common.CommonConf;
+import com.distkv.common.Constants;
 import com.distkv.common.NodeInfo;
-import com.distkv.common.NodeStatus;
+import com.distkv.common.NodeState;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -46,11 +46,11 @@ public class NodeTable implements Serializable {
       public void run() {
         NodeInfo checkInfo = nodeTable.get(nodeInfo.getAddress());
         if (checkInfo.getLastHeartbeatTimestamp() == lastTimeHeartbeat) {
-          checkInfo.setStatus(NodeStatus.DEAD);
+          checkInfo.setState(NodeState.DEAD);
           nodeTable.put(checkInfo.getAddress(), checkInfo);
         }
       }
-    }, CommonConf.HEARTBEAT_INTERVAL + CommonConf.HEARTBEAT_INTERVAL_DELAY);
+    }, Constants.HEARTBEAT_INTERVAL + Constants.HEARTBEAT_INTERVAL_DELAY);
   }
 
   public HashMap<String, NodeInfo> getMap() {

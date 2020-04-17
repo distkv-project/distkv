@@ -2,7 +2,7 @@ package com.distkv.common;
 
 import java.io.Serializable;
 
-public enum NodeStatus implements Serializable {
+public enum NodeState implements Serializable {
   STARTING(0),
   RUNNING(1),
   DEAD(2);
@@ -11,7 +11,7 @@ public enum NodeStatus implements Serializable {
 
   private int statusCode;
 
-  NodeStatus(int statusCode) {
+  NodeState(int statusCode) {
     this.statusCode = statusCode;
   }
 

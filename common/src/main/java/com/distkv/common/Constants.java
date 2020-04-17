@@ -1,6 +1,6 @@
 package com.distkv.common;
 
-public class CommonConf {
+public class Constants {
   /**
    * The interval time of heartbeat.
    */
