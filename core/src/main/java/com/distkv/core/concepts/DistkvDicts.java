@@ -11,7 +11,7 @@ public interface DistkvDicts {
    * @param key The key to store.
    * @param value The dictionary value to store.
    */
-  void put(String key, Map<String, String> value);
+  void put(String key, DistkvValue<Map<String, String>> value);
 
   /**
    * Get a dictionary value by the given key.
@@ -19,7 +19,7 @@ public interface DistkvDicts {
    * @param key The key that we will get its value.
    * @return the dictionary value
    */
-  Map<String, String> get(String key);
+  DistkvValue<Map<String, String>> get(String key);
 
   /**
    * Delete a dictionary entry by the given key.

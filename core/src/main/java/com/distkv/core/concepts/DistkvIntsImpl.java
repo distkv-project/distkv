@@ -2,18 +2,18 @@ package com.distkv.core.concepts;
 
 import com.distkv.core.DistkvMapInterface;
 
-public class DistkvIntsImpl
-    extends DistkvConcepts<Integer>
-    implements DistkvInts {
+public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInts {
 
-  public DistkvIntsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
+  public DistkvIntsImpl(DistkvMapInterface<String, DistkvValue<Integer>> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
   @Override
   public void incr(String key, int delta) {
-    Integer oldValue = get(key);
+    DistkvValue<Integer> integerDistkvValue = get(key);
+    Integer oldValue = integerDistkvValue.getValue();
     oldValue += delta;
-    super.distkvKeyValueMap.put(key, oldValue);
+    integerDistkvValue.setValue(oldValue);
+    super.distkvKeyValueMap.put(key, integerDistkvValue);
   }
 }

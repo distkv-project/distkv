@@ -10,7 +10,7 @@ public interface DistkvInts {
    * @param key   the key to store
    * @param value the int value to store
    */
-  void put(String key, Integer value);
+  void put(String key, DistkvValue<Integer> value);
 
   /**
    * This method will query a string value based on the key
@@ -18,7 +18,7 @@ public interface DistkvInts {
    * @param key obtain a int value based on the key
    * @return the int value
    */
-  Integer get(String key);
+  DistkvValue<Integer> get(String key);
 
   /**
    * This method will delete a string value based on the key
