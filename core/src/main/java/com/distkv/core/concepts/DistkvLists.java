@@ -53,10 +53,10 @@ public interface DistkvLists {
   Status drop(String key);
 
   //insert value from the left of list
-  Status lput(String key, DistkvValue<List<String>> value);
+  Status lput(String key, List<String> value);
 
   //insert value from the right of list
-  Status rput(String key, DistkvValue<List<String>> value);
+  Status rput(String key, List<String> value);
 
   /**
    * This method will remove an item from the list.
@@ -86,7 +86,7 @@ public interface DistkvLists {
    * @param indexes A list of indexes for those items you wanna to remove.
    * @return Whether we succeed to remove the items.
    */
-  Status mremove(String key, DistkvValue<List<Integer>> indexes)
+  Status mremove(String key, List<Integer> indexes)
           throws KeyNotFoundException, IndexOutOfBoundsException;
 
 }

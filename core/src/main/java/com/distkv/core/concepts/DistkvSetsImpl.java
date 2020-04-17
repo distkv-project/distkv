@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements DistkvSets {
 
-  public DistkvSetsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
+  public DistkvSetsImpl(DistkvMapInterface<String, DistkvValue<Set<String>>> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
@@ -19,7 +19,7 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
       throw new KeyNotFoundException(key);
     }
 
-    get(key).add(itemValue);
+    get(key).getValue().add(itemValue);
   }
 
   @Override
@@ -28,10 +28,10 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
       return Status.KEY_NOT_FOUND;
     }
 
-    if (!get(key).contains(itemValue)) {
+    if (!get(key).getValue().contains(itemValue)) {
       throw new SetItemNotFoundException(key, itemValue);
     }
-    get(key).remove(itemValue);
+    get(key).getValue().remove(itemValue);
     return Status.OK;
   }
 
@@ -41,7 +41,7 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
       throw new KeyNotFoundException(key);
     }
 
-    return get(key).contains(value);
+    return get(key).getValue().contains(value);
   }
 
 }

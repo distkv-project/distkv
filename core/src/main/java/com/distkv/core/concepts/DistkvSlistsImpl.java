@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class DistkvSlistsImpl
-    extends DistkvConcepts<Slist>
+    extends DistkvConcepts<LinkedList<SlistEntity>>
     implements DistkvSlists {
 
-  public DistkvSlistsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
+  public DistkvSlistsImpl(DistkvMapInterface<String, DistkvValue<LinkedList<SlistEntity>>> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 

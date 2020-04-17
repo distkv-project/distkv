@@ -10,7 +10,7 @@ public interface DistkvStrings {
    * @param key   the key to store
    * @param value the string value to store
    */
-  void put(String key, String value);
+  void put(String key, DistkvValue<String> value);
 
   /**
    * This method will query a string value based on the key
@@ -18,7 +18,7 @@ public interface DistkvStrings {
    * @param key Obtain a string value based on the key
    * @return the string  value
    */
-  String get(String key);
+  DistkvValue<String> get(String key);
 
   /**
    * This method will delete a string value based on the key
