@@ -12,11 +12,12 @@ import com.distkv.core.concepts.DistkvDicts;
 import com.distkv.core.concepts.DistkvSets;
 import com.distkv.core.concepts.DistkvLists;
 import com.distkv.core.concepts.DistkvSlistsImpl;
+import com.distkv.core.concepts.DistkvValue;
 
 public class KVStoreImpl implements KVStore {
 
   // The key value map to store all kv pairs.
-  DistkvMapInterface<String, Object> distkvKeyValueMap;
+  DistkvMapInterface<String, DistkvValue<Object>> distkvKeyValueMap;
 
   // The store proxy of string concept.
   private DistkvStringsImpl strs;
