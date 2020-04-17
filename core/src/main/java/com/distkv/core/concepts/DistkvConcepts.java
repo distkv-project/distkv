@@ -8,24 +8,25 @@ import com.distkv.core.DistkvMapInterface;
 public abstract class DistkvConcepts<T> {
 
   // The Reference of the key value map.
-  protected DistkvMapInterface<String, DistkvValue<T>> distkvKeyValueMap;
+  protected DistkvMapInterface<String, Object> distkvKeyValueMap;
 
-  protected DistkvConcepts(DistkvMapInterface<String, DistkvValue<T>> distkvKeyValueMap) {
+  protected DistkvConcepts(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     this.distkvKeyValueMap = distkvKeyValueMap;
   }
 
-  public void put(String key, DistkvValue<T> value) {
+  public void put(String key, Object value) {
     if (distkvKeyValueMap.containsKey(key)) {
       throw new DistkvKeyDuplicatedException(key);
     }
     distkvKeyValueMap.put(key, value);
   }
 
+  @SuppressWarnings("unchecked")
   public DistkvValue<T> get(String key) {
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    return distkvKeyValueMap.get(key);
+    return (DistkvValue<T>)distkvKeyValueMap.get(key);
   }
 
   public Status drop(String key) {

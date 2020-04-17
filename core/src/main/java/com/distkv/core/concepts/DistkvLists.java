@@ -13,7 +13,7 @@ public interface DistkvLists {
    * @param key   the key to store
    * @param value the list value to store
    */
-  void put(String key, DistkvValue<ArrayList<String>> value);
+  void put(String key, ArrayList<String> value);
 
   /**
    * This method will query a list value based on the key

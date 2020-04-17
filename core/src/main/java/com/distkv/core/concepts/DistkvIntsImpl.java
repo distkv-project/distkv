@@ -1,11 +1,21 @@
 package com.distkv.core.concepts;
 
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.core.DistkvMapInterface;
+import com.distkv.core.concepts.DistkvValue.TYPE;
 
 public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInts {
 
-  public DistkvIntsImpl(DistkvMapInterface<String, DistkvValue<Integer>> distkvKeyValueMap) {
+  public DistkvIntsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);
+  }
+
+  @Override
+  public void put(String key, Integer value) {
+    if (distkvKeyValueMap.containsKey(key)) {
+      throw new DistkvKeyDuplicatedException(key);
+    }
+    distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.INT.ordinal(),value));
   }
 
   @Override

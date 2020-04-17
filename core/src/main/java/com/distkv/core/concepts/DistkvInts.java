@@ -10,7 +10,7 @@ public interface DistkvInts {
    * @param key   the key to store
    * @param value the int value to store
    */
-  void put(String key, DistkvValue<Integer> value);
+  void put(String key, Integer value);
 
   /**
    * This method will query a string value based on the key

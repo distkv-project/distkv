@@ -12,7 +12,7 @@ public interface DistkvSets {
    * @param key   the key to store
    * @param value the set value to store
    */
-  void put(String key, DistkvValue<Set<String>> value);
+  void put(String key, Set<String> value);
 
   /**
    * This method will query a set value based on the key

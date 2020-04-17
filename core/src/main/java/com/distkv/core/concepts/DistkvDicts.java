@@ -11,7 +11,7 @@ public interface DistkvDicts {
    * @param key The key to store.
    * @param value The dictionary value to store.
    */
-  void put(String key, DistkvValue<Map<String, String>> value);
+  void put(String key, Map<String, String> value);
 
   /**
    * Get a dictionary value by the given key.

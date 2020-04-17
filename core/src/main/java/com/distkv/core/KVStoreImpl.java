@@ -17,7 +17,7 @@ import com.distkv.core.concepts.DistkvValue;
 public class KVStoreImpl implements KVStore {
 
   // The key value map to store all kv pairs.
-  DistkvMapInterface<String, DistkvValue<Object>> distkvKeyValueMap;
+  DistkvMapInterface<String, Object> distkvKeyValueMap;
 
   // The store proxy of string concept.
   private DistkvStringsImpl strs;

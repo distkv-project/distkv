@@ -20,7 +20,7 @@ public class DistkvSlistsImpl
     extends DistkvConcepts<Slist>
     implements DistkvSlists {
 
-  public DistkvSlistsImpl(DistkvMapInterface<String, DistkvValue<Slist>> distkvKeyValueMap) {
+  public DistkvSlistsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 

@@ -1,9 +1,11 @@
 package com.distkv.core.concepts;
 
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.DistkvMapInterface;
+import com.distkv.core.concepts.DistkvValue.TYPE;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,10 +14,18 @@ import java.util.Set;
 public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implements DistkvLists {
 
   public DistkvListsImpl(
-      DistkvMapInterface<String, DistkvValue<ArrayList<String>>> distkvKeyValueMap) {
+      DistkvMapInterface<String, Object> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
+
+  @Override
+  public void put(String key, ArrayList<String> value) {
+    if (distkvKeyValueMap.containsKey(key)) {
+      throw new DistkvKeyDuplicatedException(key);
+    }
+    distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.LIST.ordinal(),value));
+  }
 
   @Override
   public String get(String key, int index) throws KeyNotFoundException, IndexOutOfBoundsException {
