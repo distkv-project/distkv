@@ -6,6 +6,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A helper class to help you to start meta servers and store servers.
+ * So that you will be easy to add your distributed tests.
+ */
 public class DistkvNodesManager {
   public static final String DEFAULT_META_SERVER_ADDRESSES =
       "localhost:8081,localhost:8082,localhost:8083";
