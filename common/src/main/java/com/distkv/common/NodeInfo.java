@@ -7,7 +7,6 @@ import java.io.Serializable;
 public class NodeInfo implements Serializable {
   /**
    * Whether this node is a master.
-   *
    * True if this node is master node, false if this node is a slave node.
    */
   private boolean isMaster;
@@ -18,6 +17,10 @@ public class NodeInfo implements Serializable {
 
   private String address;
 
+  private long lastHeartbeatTimestamp;
+
+  private NodeState state;
+
   public static Builder newBuilder() {
     return new Builder();
   }
@@ -26,6 +29,10 @@ public class NodeInfo implements Serializable {
     this.address = builder.getAddress();
     this.nodeId = builder.getNodeId();
     this.isMaster = builder.isMaster();
+    //TODO(kairbon) The initial state is running by default,
+    // and it can be corrected after subsequent changes.
+    this.state = NodeState.RUNNING;
+    this.lastHeartbeatTimestamp = 0;
   }
 
   public NodeId getNodeId() {
@@ -50,6 +57,22 @@ public class NodeInfo implements Serializable {
 
   public void setIsMaster(Boolean master) {
     isMaster = master;
+  }
+
+  public NodeState getState() {
+    return state;
+  }
+
+  public void setState(NodeState state) {
+    this.state = state;
+  }
+
+  public long getLastHeartbeatTimestamp() {
+    return lastHeartbeatTimestamp;
+  }
+
+  public void setLastHeartbeatTimestamp(long lastHeartbeatTimestamp) {
+    this.lastHeartbeatTimestamp = lastHeartbeatTimestamp;
   }
 
   public static class Builder {

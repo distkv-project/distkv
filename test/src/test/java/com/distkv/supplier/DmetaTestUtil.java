@@ -3,10 +3,14 @@ package com.distkv.supplier;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.List;
 
 public class DmetaTestUtil {
+
+  public static final String DEFAULT_META_SERVER_ADDRESSES =
+      "localhost:8081,localhost:8082,localhost:8083";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DmetaTestUtil.class);
 
@@ -27,13 +31,15 @@ public class DmetaTestUtil {
     } else {
       jarDir = userDir.getPath() + File.separator + SERVER_SUFFIX_JAR_DIR;
     }
+    final long currentTime = System.currentTimeMillis();
     for (int i = 0; i < NODE_NUM; i++) {
       final List<String> startCommand = ImmutableList.of(
           "java",
           "-classpath",
           jarDir,
           "com.distkv.server.metaserver.server.DmetaServer",
-          File.separator + "tmp" + File.separator + "server" + (i + 1),
+          File.separator + "tmp" + File.separator + "dmeta" + currentTime
+              + File.separator + "server" + (i + 1),
           "META_SERVER",
           "127.0.0.1:808" + (i + 1),
           "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083"

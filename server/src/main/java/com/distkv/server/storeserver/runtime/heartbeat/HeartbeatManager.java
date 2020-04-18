@@ -1,5 +1,6 @@
 package com.distkv.server.storeserver.runtime.heartbeat;
 
+import com.distkv.common.Constants;
 import com.distkv.common.NodeInfo;
 import com.distkv.server.metaserver.client.DmetaClient;
 import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
@@ -13,11 +14,6 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HeartbeatManager {
-  /**
-   * The interval time of heartbeat.
-   */
-  public static int HEARTBEAT_INTERVAL = 3000;
-
   /**
    * A timer to post heartbeat to MetaServer.
    */
@@ -52,7 +48,7 @@ public class HeartbeatManager {
         }
         changeNodeInfo(nodeInfo, nodeTable.get(nodeInfo.getAddress()));
       }
-    }, 0, HEARTBEAT_INTERVAL);
+    }, 0, Constants.HEARTBEAT_INTERVAL);
   }
 
   public void changeNodeInfo(NodeInfo old, NodeInfo young) {

@@ -3,6 +3,8 @@ package com.distkv.server.view;
 import com.distkv.common.NodeInfo;
 import com.distkv.common.id.GroupId;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class DistkvGlobalView extends DistkvAbstractView {
 
   public DistkvGlobalView() {
@@ -19,6 +21,10 @@ public class DistkvGlobalView extends DistkvAbstractView {
     }
     NodeTable table = get(groupIndex);
     table.putNodeInfo(nodeInfo);
+  }
+
+  public ConcurrentHashMap<String, NodeTable> getGlobalViewTable() {
+    return this.map;
   }
 
 }
