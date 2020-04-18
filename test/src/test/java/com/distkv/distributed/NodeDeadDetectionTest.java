@@ -1,4 +1,4 @@
-package com.distkv.client.masterslavesync;
+package com.distkv.distributed;
 
 import com.distkv.common.NodeInfo;
 import com.distkv.common.NodeState;
@@ -9,16 +9,16 @@ import com.distkv.server.metaserver.server.bean.GetGlobalViewResponse;
 import com.distkv.server.view.NodeTable;
 import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
+import java.util.concurrent.TimeUnit;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import java.util.concurrent.TimeUnit;
 
-public class NodeDropTest {
+public class NodeDeadDetectionTest {
 
   @Test(singleThreaded = true)
-  public void testNodeDrop() {
+  public void testMetaServerDetectNodeDead() {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
-        "NodeDropTest", "test"));
+        "KillingNodeTest", "test"));
     DmetaTestUtil.startAllMetaServerProcesses();
     try {
       // It will take some time for MetaServer to start.
@@ -32,7 +32,7 @@ public class NodeDropTest {
       client.heartbeat(nodeInfo);
       GetGlobalViewResponse globalViewResponse0 = client.getGlobalView();
       Assert.assertEquals(globalViewResponse0
-          .getGlobalView().get("1").getMap().get("test").getState(),
+              .getGlobalView().get("1").getMap().get("test").getState(),
           NodeState.RUNNING);
       // When the time exceeds 3500 ms,
       // the state of node will be changed from running to dead by MetaServer.
@@ -49,7 +49,7 @@ public class NodeDropTest {
   }
 
   @Test(singleThreaded = true)
-  public void testSingleStoreServerDead() {
+  public void testKillSingleNode() {
     try {
       DmetaTestUtil.startAllMetaServerProcesses();
       // Sleep a while to wait all meta servers get started.

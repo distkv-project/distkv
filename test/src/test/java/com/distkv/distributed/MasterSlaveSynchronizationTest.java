@@ -1,4 +1,4 @@
-package com.distkv.client.masterslavesync;
+package com.distkv.distributed;
 
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class TestMasterSyncToSlaves {
+public class MasterSlaveSynchronizationTest {
 
   @Test(singleThreaded = true)
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
