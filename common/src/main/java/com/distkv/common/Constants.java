@@ -7,7 +7,7 @@ public class Constants {
   public static final int HEARTBEAT_INTERVAL = 3000;
 
   /**
-   * The delay time of next heartbeat.
+   * The milliseconds of delaying next heartbeat.
    */
   public static final int HEARTBEAT_INTERVAL_DELAY = 500;
 }
