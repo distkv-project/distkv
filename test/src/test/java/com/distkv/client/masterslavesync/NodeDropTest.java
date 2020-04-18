@@ -48,7 +48,7 @@ public class NodeDropTest {
     }
   }
 
-  @Test(singleThreaded=true)
+  @Test(singleThreaded = true)
   public void testSingleStoreServerDead() {
     try {
       DmetaTestUtil.startAllMetaServerProcesses();
