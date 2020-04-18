@@ -1,5 +1,6 @@
 package com.distkv.common.utils;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class RuntimeUtil {
@@ -22,5 +23,17 @@ public class RuntimeUtil {
       }
     }
     return false;
+  }
+
+  /**
+   * Sleep timeoutMs milliseconds without exception throwing.
+   */
+  public static boolean sleepWithoutException(int timeoutMs) {
+    try {
+      TimeUnit.MILLISECONDS.sleep(timeoutMs);
+    } catch (InterruptedException e) {
+      return false;
+    }
+    return true;
   }
 }

@@ -23,9 +23,9 @@ public class TestMasterSyncToSlaves {
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
-    DmetaTestUtil.startAllDmetaProcess();
+    DmetaTestUtil.startAllMetaServerProcesses();
     TimeUnit.SECONDS.sleep(1);
-    MasterSlaveSyncTestUtil.startAllProcess();
+    MasterSlaveSyncTestUtil.startAGroupOfStoreServers();
     TimeUnit.SECONDS.sleep(3);
 
     final DistkvClient[] client0 = {null};
@@ -51,8 +51,8 @@ public class TestMasterSyncToSlaves {
     } catch (Exception e) {
       Assert.fail();
     } finally {
-      MasterSlaveSyncTestUtil.stopAllProcess();
-      DmetaTestUtil.stopAllDmetaProcess();
+      MasterSlaveSyncTestUtil.stopAGroupOfStoreServers();
+      DmetaTestUtil.stopAllMetaServerProcesses();
     }
     System.out.println("m-s sync test over");
   }

@@ -19,7 +19,7 @@ public class MasterSlaveSyncTestUtil {
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
-  public static void startAllProcess() {
+  public static void startAGroupOfStoreServers() {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().contains("test")) {
@@ -55,7 +55,11 @@ public class MasterSlaveSyncTestUtil {
 
   }
 
-  public static void stopAllProcess() {
+  public static void killOneStoreServerRandomly() {
+    TestUtil.stopProcess(processes[0]);
+  }
+
+  public static void stopAGroupOfStoreServers() {
     for (int i = 0; i < NODE_NUM; i++) {
       TestUtil.stopProcess(processes[i]);
     }
