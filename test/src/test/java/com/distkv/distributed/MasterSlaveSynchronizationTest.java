@@ -105,13 +105,13 @@ public class MasterSlaveSynchronizationTest {
     list.add(new SlistEntity("55", 6));
     client0.slists().put("slist_k1", list);
 
-    LinkedList<SlistEntity> tlist = client0.slists().top("slist_k1", 100);
-    Assert.assertEquals(tlist.get(0).getMember(), "fw");
-    Assert.assertEquals(tlist.get(1).getMember(), "xswl");
+    LinkedList<SlistEntity> slist = client0.slists().top("slist_k1", 100);
+    Assert.assertEquals(slist.get(0).getMember(), "fw");
+    Assert.assertEquals(slist.get(1).getMember(), "xswl");
 
-    LinkedList<SlistEntity> tlist1 = client1.slists().top("slist_k1", 100);
-    Assert.assertEquals(tlist1.get(0).getMember(), "fw");
-    Assert.assertEquals(tlist1.get(1).getMember(), "xswl");
+    LinkedList<SlistEntity> slist1 = client1.slists().top("slist_k1", 100);
+    Assert.assertEquals(slist1.get(0).getMember(), "fw");
+    Assert.assertEquals(slist1.get(1).getMember(), "xswl");
   }
 
   public void testIntPut(DistkvClient client0, DistkvClient client1)
