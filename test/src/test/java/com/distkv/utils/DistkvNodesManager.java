@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class DistkvNodesManager {
   public static final String DEFAULT_META_SERVER_ADDRESSES =
-      "localhost:8081,localhost:8082,localhost:8083";
+      "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083";
 
   private static final String SERVER_SUFFIX_JAR_DIR = "server" + File.separator + "target"
       + File.separator + "distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar";
