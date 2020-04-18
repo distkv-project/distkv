@@ -9,7 +9,6 @@ import com.distkv.server.metaserver.server.bean.GetGlobalViewResponse;
 import com.distkv.server.view.NodeTable;
 import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
-import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.concurrent.TimeUnit;
@@ -77,16 +76,16 @@ public class NodeDropTest {
       nodeTable = globalViewResponse.getGlobalView().get("1");
       // TODO(qwang): Enable this assertion once we enabled the timeout
       // of store server in meta server.
-       Assert.assertEquals(nodeTable.getMap().size(), 3);
-       int deadNode = 0;
-       for (String key : nodeTable.getMap().keySet()) {
-         if (nodeTable.getMap().get(key).getState() == NodeState.DEAD) {
-           deadNode += 1;
-         }
-       }
-       Assert.assertEquals(deadNode, 1);
+      Assert.assertEquals(nodeTable.getMap().size(), 3);
+      int deadNode = 0;
+      for (String key : nodeTable.getMap().keySet()) {
+        if (nodeTable.getMap().get(key).getState() == NodeState.DEAD) {
+          deadNode += 1;
+        }
+      }
+      Assert.assertEquals(deadNode, 1);
     } catch (Exception e) {
-
+      Assert.fail();
     } finally {
       DmetaTestUtil.stopAllMetaServerProcesses();
       MasterSlaveSyncTestUtil.stopAGroupOfStoreServers();
