@@ -10,7 +10,7 @@ public class NetUtil {
       String ip = inetAddress.getHostAddress().toString();
       return ip;
     } catch (UnknownHostException e) {
-      return "localhost";
+      return "127.0.0.1";
     }
   }
 }

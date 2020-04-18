@@ -4,8 +4,8 @@ import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
 import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.RuntimeUtil;
-import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
+import com.distkv.utils.DistkvNodesManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -23,7 +23,8 @@ public class MasterSlaveSynchronizationTest {
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
-    DmetaTestUtil.startAllMetaServerProcesses();
+    DistkvNodesManager nodesManager = new DistkvNodesManager(3);
+    nodesManager.startAllMetaServers();
     TimeUnit.SECONDS.sleep(1);
     MasterSlaveSyncTestUtil.startAGroupOfStoreServers();
     TimeUnit.SECONDS.sleep(3);
@@ -52,7 +53,7 @@ public class MasterSlaveSynchronizationTest {
       Assert.fail();
     } finally {
       MasterSlaveSyncTestUtil.stopAGroupOfStoreServers();
-      DmetaTestUtil.stopAllMetaServerProcesses();
+      nodesManager.stopAllMetaServers();
     }
     System.out.println("m-s sync test over");
   }
