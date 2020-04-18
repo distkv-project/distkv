@@ -2,7 +2,7 @@ package com.distkv.common;
 
 public class Constants {
   /**
-   * The interval time of heartbeat.
+   * The interval milliseconds of heartbeat.
    */
   public static final int HEARTBEAT_INTERVAL = 3000;
 
