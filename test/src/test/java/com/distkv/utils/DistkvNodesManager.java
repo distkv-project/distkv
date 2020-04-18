@@ -1,29 +1,28 @@
-package com.distkv.supplier;
+package com.distkv.utils;
 
+import com.distkv.supplier.TestUtil;
 import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class DmetaTestUtil {
-
+public class DistkvNodesManager {
   public static final String DEFAULT_META_SERVER_ADDRESSES =
       "localhost:8081,localhost:8082,localhost:8083";
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(DmetaTestUtil.class);
 
   private static final String SERVER_SUFFIX_JAR_DIR = "server" + File.separator + "target"
       + File.separator + "distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar";
 
-  private static final int NODE_NUM = 3;
+  public DistkvNodesManager(int metaServerProcessesNum) {
+    this.metaServersNum = metaServerProcessesNum;
+    metaServers = new ArrayList<>();
+  }
 
-  private static Process[] processes = new Process[NODE_NUM];
+  private int metaServersNum;
 
-  private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
+  private List<Process> metaServers;
 
-  public static void startAllMetaServerProcesses() {
+  public void startAllMetaServers() {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().contains("test")) {
@@ -32,7 +31,7 @@ public class DmetaTestUtil {
       jarDir = userDir.getPath() + File.separator + SERVER_SUFFIX_JAR_DIR;
     }
     final long currentTime = System.currentTimeMillis();
-    for (int i = 0; i < NODE_NUM; i++) {
+    for (int i = 0; i < metaServersNum; i++) {
       final List<String> startCommand = ImmutableList.of(
           "java",
           "-classpath",
@@ -42,16 +41,19 @@ public class DmetaTestUtil {
               + File.separator + "server" + (i + 1),
           "META_SERVER",
           "127.0.0.1:808" + (i + 1),
-          "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083"
+          DEFAULT_META_SERVER_ADDRESSES
       );
-      int finalI = i;
-      processes[finalI] = TestUtil.executeCommand(startCommand);
+      metaServers.add(TestUtil.executeCommand(startCommand));
     }
   }
 
-  public static void stopAllMetaServerProcesses() {
-    for (int i = 0; i < NODE_NUM; i++) {
-      TestUtil.stopProcess(processes[i]);
+  public void stopAllMetaServers() {
+    for (Process process : metaServers) {
+      TestUtil.stopProcess(process);
     }
+  }
+
+  public String getMetaServerAddresses() {
+    return DEFAULT_META_SERVER_ADDRESSES;
   }
 }

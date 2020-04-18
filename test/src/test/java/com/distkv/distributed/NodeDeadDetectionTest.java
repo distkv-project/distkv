@@ -7,8 +7,8 @@ import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.server.metaserver.client.DmetaClient;
 import com.distkv.server.metaserver.server.bean.GetGlobalViewResponse;
 import com.distkv.server.view.NodeTable;
-import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
+import com.distkv.utils.DistkvNodesManager;
 import java.util.concurrent.TimeUnit;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -19,11 +19,12 @@ public class NodeDeadDetectionTest {
   public void testMetaServerDetectNodeDead() {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "KillingNodeTest", "test"));
-    DmetaTestUtil.startAllMetaServerProcesses();
+    DistkvNodesManager nodesManager = new DistkvNodesManager(3);
+    nodesManager.startAllMetaServers();
     try {
       // It will take some time for MetaServer to start.
       TimeUnit.MILLISECONDS.sleep(500);
-      DmetaClient client = new DmetaClient(DmetaTestUtil.DEFAULT_META_SERVER_ADDRESSES);
+      DmetaClient client = new DmetaClient(nodesManager.getMetaServerAddresses());
       NodeInfo nodeInfo = NodeInfo.newBuilder()
           .setAddress("test")
           .setNodeId(NodeId.nil())
@@ -44,20 +45,20 @@ public class NodeDeadDetectionTest {
     } catch (Exception e) {
       Assert.fail();
     } finally {
-      DmetaTestUtil.stopAllMetaServerProcesses();
+      nodesManager.stopAllMetaServers();
     }
   }
 
   @Test(singleThreaded = true)
   public void testKillSingleNode() {
+    DistkvNodesManager nodesManager = new DistkvNodesManager(3);
     try {
-      DmetaTestUtil.startAllMetaServerProcesses();
       // Sleep a while to wait all meta servers get started.
       // TODO(qwang): This should be refined as that `startAllMetaServerProcesses`
       // should do the promise.
       RuntimeUtil.sleepWithoutException(500);
 
-      DmetaClient client = new DmetaClient(DmetaTestUtil.DEFAULT_META_SERVER_ADDRESSES);
+      DmetaClient client = new DmetaClient(nodesManager.getMetaServerAddresses());
       GetGlobalViewResponse globalViewResponse = client.getGlobalView();
       // There is no any store server in global view.
       Assert.assertTrue(globalViewResponse.getGlobalView().isEmpty());
@@ -87,7 +88,7 @@ public class NodeDeadDetectionTest {
     } catch (Exception e) {
       Assert.fail();
     } finally {
-      DmetaTestUtil.stopAllMetaServerProcesses();
+      nodesManager.stopAllMetaServers();
       MasterSlaveSyncTestUtil.stopAGroupOfStoreServers();
     }
   }
