@@ -52,6 +52,7 @@ public class NodeDeadDetectionTest {
   @Test(singleThreaded = true)
   public void testKillSingleNode() {
     DistkvNodesManager nodesManager = new DistkvNodesManager(3);
+    nodesManager.startAllMetaServers();
     try {
       // Sleep a while to wait all meta servers get started.
       // TODO(qwang): This should be refined as that `startAllMetaServerProcesses`

@@ -1,6 +1,8 @@
 package com.distkv.supplier;
 
 import com.google.common.collect.ImmutableList;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;
@@ -19,7 +21,10 @@ public class MasterSlaveSyncTestUtil {
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
+  private static Set<Integer> killedProcessIndexes;
+
   public static void startAGroupOfStoreServers() {
+    killedProcessIndexes = new HashSet<>();
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().contains("test")) {
@@ -57,11 +62,14 @@ public class MasterSlaveSyncTestUtil {
 
   public static void killOneStoreServerRandomly() {
     TestUtil.stopProcess(processes[0]);
+    killedProcessIndexes.add(0);
   }
 
   public static void stopAGroupOfStoreServers() {
     for (int i = 0; i < NODE_NUM; i++) {
-      TestUtil.stopProcess(processes[i]);
+      if (!killedProcessIndexes.contains(i)) {
+        TestUtil.stopProcess(processes[i]);
+      }
     }
   }
 }

@@ -13,7 +13,7 @@ public class TestConf {
     Assert.assertEquals(config.getShardNum(), 8);
     Assert.assertEquals(config.getMode(), RunningMode.STANDALONE);
     Assert.assertEquals(config.getMetaServerAddresses(),
-        "localhost:8081,localhost:8082,localhost:8083");
+        "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083");
   }
 
   @Test
