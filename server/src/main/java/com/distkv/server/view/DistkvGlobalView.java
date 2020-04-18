@@ -2,7 +2,6 @@ package com.distkv.server.view;
 
 import com.distkv.common.NodeInfo;
 import com.distkv.common.id.GroupId;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DistkvGlobalView extends DistkvAbstractView {

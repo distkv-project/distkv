@@ -23,7 +23,7 @@ public class DmetaTestUtil {
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
-  public static void startAllDmetaProcess() {
+  public static void startAllMetaServerProcesses() {
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().contains("test")) {
@@ -49,7 +49,7 @@ public class DmetaTestUtil {
     }
   }
 
-  public static void stopAllDmetaProcess() {
+  public static void stopAllMetaServerProcesses() {
     for (int i = 0; i < NODE_NUM; i++) {
       TestUtil.stopProcess(processes[i]);
     }
