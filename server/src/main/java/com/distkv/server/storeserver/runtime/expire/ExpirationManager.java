@@ -6,12 +6,14 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.server.storeserver.StoreConfig;
 import com.google.protobuf.InvalidProtocolBufferException;
-import java.util.PriorityQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Queue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ExpirationManager {
 
@@ -28,7 +30,7 @@ public class ExpirationManager {
    * PriorityQueue allows the data with the lowest expiration time to be queued. Just look at the
    * cached most recent expired data and avoid scanning all caches.
    */
-  public PriorityQueue<Node> expirationQueue = new PriorityQueue<>(DEFAULT_CAPACITY);
+  public Queue<Node> expirationQueue = new PriorityBlockingQueue<>(DEFAULT_CAPACITY);
 
   public ExpirationManager(StoreConfig storeConfig) {
     expireClient = new ExpirationClient(storeConfig);
