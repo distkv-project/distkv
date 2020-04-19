@@ -94,7 +94,7 @@ public class SetRpcTest extends BaseTestSupplier {
 
       DistkvRequest request = DistkvRequest.newBuilder()
           .setKey("k1")
-          .setRequestType(RequestType.SET_DROP)
+          .setRequestType(RequestType.DROP)
           .build();
       DistkvResponse setDropByKeyResponse = FutureUtils.get(
           setService.call(request));

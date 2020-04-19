@@ -1,6 +1,7 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -66,7 +67,7 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     dict.put("k2", "v2");
     client.dicts().put("m1", dict);
-    client.dicts().drop("m1");
+    client.drop("m1");
     client.disconnect();
   }
 
@@ -74,7 +75,7 @@ public class DictProxyTest extends BaseTestSupplier {
   public void testKeyNotFoundException() {
     DistkvClient client = newDistkvClient();
     try {
-      client.dicts().drop("m1");
+      client.drop("m1");
     } catch (KeyNotFoundException e) {
       Assert.assertTrue(true);
       return;
@@ -85,14 +86,21 @@ public class DictProxyTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testExpireDict() throws InterruptedException {
+  public void testExpireDict() {
     DistkvClient client = newDistkvClient();
     Map<String, String> dict = new HashMap<>();
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
-    client.dicts().expire("m1", 1);
-    Thread.sleep(3000);
-    Assert.assertThrows(KeyNotFoundException.class, () -> client.dicts().get("m1"));
+    client.expire("m1", 1000);
+    boolean result = RuntimeUtil.waitForCondition(() -> {
+      try {
+        client.dicts().get("m1");
+        return false;
+      } catch (KeyNotFoundException e) {
+        return true;
+      }
+    }, 30 * 1000);
+    Assert.assertTrue(result);
     client.disconnect();
   }
 

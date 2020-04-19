@@ -1,23 +1,40 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(IntProxyTest.class);
+
   @Test
-  public void testPutGetIncrDrop() throws InvalidProtocolBufferException {
+  public void testPutAndGetIncr() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     try {
       client.ints().put("k1", 1);
       Assert.assertEquals(1, client.ints().get("k1"));
       client.ints().incr("k1", 2);
       Assert.assertEquals(3, client.ints().get("k1"));
-      Assert.assertTrue(client.ints().drop("k1"));
+    } finally {
+      client.disconnect();
+    }
+  }
+
+  @Test
+  public void testDrop() throws InvalidProtocolBufferException {
+    DistkvClient client = newDistkvClient();
+    try {
+      client.ints().put("k1", 1);
+      Assert.assertEquals(1, client.ints().get("k1"));
+      client.drop("k1");
+      Assert.assertThrows(KeyNotFoundException.class, () -> client.ints().get("k1"));
     } finally {
       client.disconnect();
     }
@@ -37,12 +54,22 @@ public class IntProxyTest extends BaseTestSupplier {
   }
 
   @Test
-  public void testExpireList() throws InterruptedException, InvalidProtocolBufferException {
+  public void testExpireList() {
     DistkvClient client = newDistkvClient();
     client.ints().put("k1", 1);
-    client.ints().expire("k1", 1);
-    Thread.sleep(3000);
-    Assert.assertThrows(KeyNotFoundException.class, () -> client.ints().get("k1"));
+    client.expire("k1", 1000);
+    boolean result = RuntimeUtil.waitForCondition(() -> {
+      try {
+        client.ints().get("k1");
+        return false;
+      } catch (KeyNotFoundException e) {
+        return true;
+      } catch (InvalidProtocolBufferException e) {
+        LOGGER.error("Failed to unpack response. {1}", e);
+        return false;
+      }
+    }, 30 * 1000);
+    Assert.assertTrue(result);
     client.disconnect();
   }
 

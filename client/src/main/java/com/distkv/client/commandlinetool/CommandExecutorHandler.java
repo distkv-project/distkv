@@ -2,8 +2,9 @@ package com.distkv.client.commandlinetool;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvException;
+import com.distkv.common.timeunit.TimeUnit;
 import com.distkv.parser.po.DistkvParsedResult;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictGetItemRequest;
 import com.distkv.rpc.protobuf.generated.DictProtocol.DictPopItemRequest;
@@ -26,15 +27,14 @@ import com.distkv.rpc.protobuf.generated.SetProtocol.SetExistsRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetPutItemRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetPutRequest;
 import com.distkv.rpc.protobuf.generated.SetProtocol.SetRemoveItemRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistGetMemberRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistIncrScoreRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutMemberRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistPutRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistRemoveMemberRequest;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistGetMemberRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistIncrScoreRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistPutMemberRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistPutRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistRemoveMemberRequest;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistTopRequest;
 import com.distkv.rpc.protobuf.generated.StringProtocol.StrPutRequest;
-
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -65,12 +65,6 @@ public class CommandExecutorHandler {
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
-  }
-
-  public static String strDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.strs().drop(request.getKey());
-    return STATUS_OK;
   }
 
   public static String listPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
@@ -153,12 +147,6 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static String listDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.lists().drop(request.getKey());
-    return STATUS_OK;
-  }
-
   public static String setPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
@@ -187,12 +175,6 @@ public class CommandExecutorHandler {
     }
     stringBuilder.append("}");
     return stringBuilder.toString();
-  }
-
-  public static String setDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.sets().drop(request.getKey());
-    return STATUS_OK;
   }
 
   public static String setPutItem(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
@@ -310,26 +292,20 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static String dictDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.dicts().drop(request.getKey());
-    return STATUS_OK;
-  }
-
   public static String slistPut(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
       SlistPutRequest slistPutRequest = request.getRequest().unpack(SlistPutRequest.class);
-      final LinkedList<SortedListEntity> sortedListEntitiesResult = new LinkedList<>();
-      final List<SortedListProtocol.SortedListEntity> sortedListEntities
+      final LinkedList<SlistEntity> sortedListEntitiesResult = new LinkedList<>();
+      final List<SlistProtocol.SlistEntity> sortedListEntities
           = slistPutRequest.getListList();
-      for (SortedListProtocol.SortedListEntity sortedListEntity : sortedListEntities) {
+      for (SlistProtocol.SlistEntity sortedListEntity : sortedListEntities) {
         final String sortedListEntityMember = sortedListEntity.getMember();
         final int sortedListEntityScore = sortedListEntity.getScore();
-        sortedListEntitiesResult.add(new SortedListEntity(sortedListEntityMember,
+        sortedListEntitiesResult.add(new SlistEntity(sortedListEntityMember,
             sortedListEntityScore));
       }
-      distkvClient.sortedLists().put(request.getKey(), sortedListEntitiesResult);
+      distkvClient.slists().put(request.getKey(), sortedListEntitiesResult);
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
@@ -341,11 +317,11 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistTopRequest slistTopRequest = request.getRequest().unpack(SlistTopRequest.class);
       final StringBuilder stringBuilder = new StringBuilder();
-      LinkedList<SortedListEntity> listEntities = distkvClient.sortedLists()
+      LinkedList<SlistEntity> listEntities = distkvClient.slists()
           .top(request.getKey(), slistTopRequest.getCount());
       boolean first = true;
       stringBuilder.append("[");
-      for (final SortedListEntity entity : listEntities) {
+      for (final SlistEntity entity : listEntities) {
         if (first) {
           first = false;
         } else {
@@ -370,7 +346,7 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistIncrScoreRequest slistIncrScoreRequest = request.getRequest()
           .unpack(SlistIncrScoreRequest.class);
-      distkvClient.sortedLists().incrScore(
+      distkvClient.slists().incrScore(
           request.getKey(), slistIncrScoreRequest.getMember(), slistIncrScoreRequest.getDelta());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
@@ -385,7 +361,7 @@ public class CommandExecutorHandler {
           request.getRequest().unpack(SlistPutMemberRequest.class);
       final String member = slistPutMemberRequest.getMember();
       final int score = slistPutMemberRequest.getScore();
-      distkvClient.sortedLists().putMember(request.getKey(), new SortedListEntity(member, score));
+      distkvClient.slists().putMember(request.getKey(), new SlistEntity(member, score));
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
@@ -399,18 +375,12 @@ public class CommandExecutorHandler {
       DistkvRequest request = parsedResult.getRequest();
       SlistRemoveMemberRequest slistRemoveMemberRequest =
           request.getRequest().unpack(SlistRemoveMemberRequest.class);
-      distkvClient.sortedLists().removeMember(
+      distkvClient.slists().removeMember(
           request.getKey(), slistRemoveMemberRequest.getMember());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
 
-    return STATUS_OK;
-  }
-
-  public static String slistDrop(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.sortedLists().drop(request.getKey());
     return STATUS_OK;
   }
 
@@ -420,7 +390,7 @@ public class CommandExecutorHandler {
       SlistGetMemberRequest slistGetMemberRequest =
           request.getRequest().unpack(SlistGetMemberRequest.class);
       final DistkvTuple<Integer, Integer> tuple =
-          distkvClient.sortedLists().getMember(request.getKey(), slistGetMemberRequest.getMember());
+          distkvClient.slists().getMember(request.getKey(), slistGetMemberRequest.getMember());
       // output: (member, score), ranking
       final StringBuilder stringBuilder = new StringBuilder();
       stringBuilder.append("(");
@@ -487,13 +457,6 @@ public class CommandExecutorHandler {
     }
   }
 
-  public static String intDrop(
-      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    DistkvRequest request = parsedResult.getRequest();
-    distkvClient.ints().drop(request.getKey());
-    return STATUS_OK;
-  }
-
   public static String intIncr(
       DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
@@ -506,75 +469,32 @@ public class CommandExecutorHandler {
     return STATUS_OK;
   }
 
-  public static String expireStr(
+  public static String expire(
       DistkvClient distkvClient, DistkvParsedResult parsedResult) {
     try {
       DistkvRequest request = parsedResult.getRequest();
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      distkvClient.strs().expire(request.getKey(), expireRequest.getExpireTime());
+      distkvClient.expire(request.getKey(), expireRequest.getExpireTime());
     } catch (InvalidProtocolBufferException e) {
       throw new DistkvException(e.toString());
     }
     return STATUS_OK;
   }
 
-  public static String expireList(
+  public static String drop(
       DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    try {
-      DistkvRequest request = parsedResult.getRequest();
-      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      distkvClient.lists().expire(request.getKey(), expireRequest.getExpireTime());
-    } catch (InvalidProtocolBufferException e) {
-      throw new DistkvException(e.toString());
-    }
+    DistkvRequest request = parsedResult.getRequest();
+    distkvClient.drop(request.getKey());
     return STATUS_OK;
   }
 
-  public static String expireSet(
-      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    try {
-      DistkvRequest request = parsedResult.getRequest();
-      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      distkvClient.sets().expire(request.getKey(), expireRequest.getExpireTime());
-    } catch (InvalidProtocolBufferException e) {
-      throw new DistkvException(e.toString());
-    }
-    return STATUS_OK;
+  public static String ttl(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    return distkvClient.ttl(request.getKey()) + TimeUnit.MILLISECOND;
   }
 
-  public static String expireDict(
-      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    try {
-      DistkvRequest request = parsedResult.getRequest();
-      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      distkvClient.dicts().expire(request.getKey(), expireRequest.getExpireTime());
-    } catch (InvalidProtocolBufferException e) {
-      throw new DistkvException(e.toString());
-    }
-    return STATUS_OK;
-  }
-
-  public static String expireSlist(
-      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    try {
-      DistkvRequest request = parsedResult.getRequest();
-      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      distkvClient.sortedLists().expire(request.getKey(), expireRequest.getExpireTime());
-    } catch (InvalidProtocolBufferException e) {
-      throw new DistkvException(e.toString());
-    }
-    return STATUS_OK;
-  }
-
-  public static String expireInt(
-      DistkvClient distkvClient, DistkvParsedResult parsedResult) {
-    try {
-      DistkvRequest request = parsedResult.getRequest();
-      ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      distkvClient.ints().expire(request.getKey(), expireRequest.getExpireTime());
-    } catch (InvalidProtocolBufferException e) {
-      throw new DistkvException(e.toString());
-    }
-    return STATUS_OK;
+  public static String exists(DistkvClient distkvClient, DistkvParsedResult parsedResult) {
+    DistkvRequest request = parsedResult.getRequest();
+    return String.valueOf(distkvClient.exists(request.getKey()));
   }
 }

@@ -26,9 +26,10 @@ enum Status {
     DUPLICATED_KEY = 10;
 };
 
-// Drop the k-v pair by the given key.
-message DropRequest {
+message ExistsResponse {
+    bool exists = 1;
 }
 
-message DropResponse {
+message TTLResponse {
+    int64 ttl = 1;
 }

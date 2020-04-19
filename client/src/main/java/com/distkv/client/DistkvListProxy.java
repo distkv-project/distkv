@@ -58,11 +58,6 @@ public class DistkvListProxy {
     }
   }
 
-  public void drop(String key) {
-    DistkvResponse response = FutureUtils.get(asyncListProxy.drop(key));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
   public void lput(String key, List<String> values) {
     DistkvResponse response = FutureUtils.get(asyncListProxy.lput(key, values));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
@@ -85,17 +80,6 @@ public class DistkvListProxy {
 
   public void mremove(String key, List<Integer> indexes) {
     DistkvResponse response = FutureUtils.get(asyncListProxy.mremove(key, indexes));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-  }
-
-  /**
-   * Expire a key.
-   *
-   * @param key The key to be expired.
-   * @param expireTime Millisecond level to set expire.
-   */
-  public void expire(String key, long expireTime) {
-    DistkvResponse response = FutureUtils.get(asyncListProxy.expire(key, expireTime));
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 

@@ -14,6 +14,7 @@ public class DistkvKeyDuplicatedException extends DistkvException {
 
   public DistkvKeyDuplicatedException(String key, String typeCode) {
     super(String.format("The store has multiple duplicate keys %s", key));
+    this.key = key;
     this.errorCode = typeCode + this.errorCode;
   }
 

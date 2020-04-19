@@ -39,9 +39,6 @@ import static com.google.common.base.Preconditions.checkArgument;
  * use the {@link LogSegment#blockValueCntArray} to locate which block the value
  * store at and read the value by start offset and end offset for this block from
  * {@link LogSegment#offsetSegment}
- *
- * @author meijie
- * @since 0.1.4
  */
 public class LogSegment extends AbstractNonFixedSegment {
 

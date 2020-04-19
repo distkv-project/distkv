@@ -4,16 +4,19 @@ import com.distkv.core.concepts.DistkvInts;
 import com.distkv.core.concepts.DistkvIntsImpl;
 import com.distkv.core.concepts.DistkvListsImpl;
 import com.distkv.core.concepts.DistkvSetsImpl;
-import com.distkv.core.concepts.DistkvSortedLists;
+import com.distkv.core.concepts.DistkvSlists;
 import com.distkv.core.concepts.DistkvStrings;
 import com.distkv.core.concepts.DistkvDictsImpl;
 import com.distkv.core.concepts.DistkvStringsImpl;
 import com.distkv.core.concepts.DistkvDicts;
 import com.distkv.core.concepts.DistkvSets;
 import com.distkv.core.concepts.DistkvLists;
-import com.distkv.core.concepts.DistkvSortedListsImpl;
+import com.distkv.core.concepts.DistkvSlistsImpl;
 
 public class KVStoreImpl implements KVStore {
+
+  // The key value map to store all kv pairs.
+  DistkvMapInterface<String, Object> distkvKeyValueMap;
 
   // The store proxy of string concept.
   private DistkvStringsImpl strs;
@@ -31,16 +34,26 @@ public class KVStoreImpl implements KVStore {
   private DistkvDictsImpl dicts;
 
   // The store proxy of sorted list concept.
-  private DistkvSortedLists sortedLists;
+  private DistkvSlists slists;
 
   public KVStoreImpl() {
-    DistkvMapInterface<String, Object> distkvKeyValueMap = new DistkvHashMapImpl<>();
+    distkvKeyValueMap = new DistkvHashMapImpl<>();
     this.strs = new DistkvStringsImpl(distkvKeyValueMap);
     this.lists = new DistkvListsImpl(distkvKeyValueMap);
     this.sets = new DistkvSetsImpl(distkvKeyValueMap);
     this.dicts = new DistkvDictsImpl(distkvKeyValueMap);
-    this.sortedLists = new DistkvSortedListsImpl(distkvKeyValueMap);
+    this.slists = new DistkvSlistsImpl(distkvKeyValueMap);
     this.ints = new DistkvIntsImpl(distkvKeyValueMap);
+  }
+
+  @Override
+  public boolean drop(String key) {
+    return distkvKeyValueMap.remove(key);
+  }
+
+  @Override
+  public boolean exists(String key) {
+    return distkvKeyValueMap.containsKey(key);
   }
 
   @Override
@@ -64,8 +77,8 @@ public class KVStoreImpl implements KVStore {
   }
 
   @Override
-  public DistkvSortedLists sortLists() {
-    return sortedLists;
+  public DistkvSlists sortLists() {
+    return slists;
   }
 
   @Override

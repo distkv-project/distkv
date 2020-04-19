@@ -1,6 +1,8 @@
 package com.distkv.supplier;
 
 import com.google.common.collect.ImmutableList;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;
@@ -19,7 +21,10 @@ public class MasterSlaveSyncTestUtil {
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
-  public static void startAllProcess() {
+  private static Set<Integer> killedProcessIndexes;
+
+  public static void startAGroupOfStoreServers() {
+    killedProcessIndexes = new HashSet<>();
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().contains("test")) {
@@ -30,17 +35,6 @@ public class MasterSlaveSyncTestUtil {
 
     String confPath = userDir.getParent() + File.separator + "test" +
         File.separator + "conf" + File.separator;
-    int i;
-    for (i = 0; i < NODE_NUM - 1; i++) {
-      final List<String> startCommand = ImmutableList.of(
-          "java",
-          "-Ddistkv.store.config=" + confPath + "slave_store_" + (i + 1) + ".conf",
-          "-classpath",
-          jarDir,
-          "com.distkv.server.storeserver.StoreServer"
-      );
-      processes[i] = TestUtil.executeCommand(startCommand);
-    }
 
     final List<String> startCommand = ImmutableList.of(
         "java",
@@ -49,12 +43,33 @@ public class MasterSlaveSyncTestUtil {
         jarDir,
         "com.distkv.server.storeserver.StoreServer"
     );
-    processes[i] = TestUtil.executeCommand(startCommand);
+    processes[0] = TestUtil.executeCommand(startCommand);
+
+    int i;
+    for (i = 1; i < NODE_NUM; i++) {
+      final List<String> startCommand1 = ImmutableList.of(
+          "java",
+          "-Ddistkv.store.config=" + confPath + "slave_store_" + i + ".conf",
+          "-classpath",
+          jarDir,
+          "com.distkv.server.storeserver.StoreServer"
+      );
+      processes[i] = TestUtil.executeCommand(startCommand1);
+    }
+
+
   }
 
-  public static void stopAllProcess() {
+  public static void killOneStoreServerRandomly() {
+    TestUtil.stopProcess(processes[0]);
+    killedProcessIndexes.add(0);
+  }
+
+  public static void stopAGroupOfStoreServers() {
     for (int i = 0; i < NODE_NUM; i++) {
-      TestUtil.stopProcess(processes[i]);
+      if (!killedProcessIndexes.contains(i)) {
+        TestUtil.stopProcess(processes[i]);
+      }
     }
   }
 }

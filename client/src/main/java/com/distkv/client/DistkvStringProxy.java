@@ -4,7 +4,6 @@ import com.distkv.asyncclient.DistkvAsyncStringProxy;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.common.utils.FutureUtils;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.concurrent.CompletableFuture;
@@ -30,24 +29,6 @@ public class DistkvStringProxy {
     DistkvProtocol.DistkvResponse response = FutureUtils.get(future);
     CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
     return response.getResponse().unpack(StringProtocol.StrGetResponse.class).getValue();
-  }
-
-  public boolean drop(String key) {
-    CompletableFuture<DistkvProtocol.DistkvResponse> responseFuture = asyncStrProxy.drop(key);
-    DistkvProtocol.DistkvResponse response = FutureUtils.get(responseFuture);
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
-    return true;
-  }
-
-  /**
-   * Expire a key.
-   *
-   * @param key The key to be expired.
-   * @param expireTime Millisecond level to set expire.
-   */
-  public void expire(String key, long expireTime) {
-    DistkvResponse response = FutureUtils.get(asyncStrProxy.expire(key, expireTime));
-    CheckStatusUtil.checkStatus(response.getStatus(), key, typeCode);
   }
 
 }

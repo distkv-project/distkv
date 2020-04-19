@@ -36,6 +36,35 @@ public interface DistkvClient {
   void deactiveNamespace();
 
   /**
+   * Drop the k-v pair.
+   *
+   * @param key The key to be dropped.
+   */
+  void drop(String key);
+
+  /**
+   * Expire a key.
+   *
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
+   */
+  void expire(String key, long expireTime);
+
+  /**
+   * Query if a key exists.
+   *
+   * @param key The key if exists.
+   */
+  boolean exists(String key);
+
+  /**
+   * Get the time to live by the given key.
+   * @param key The key to be query TTL.
+   * @return The key's servival time.
+   */
+  long ttl(String key);
+
+  /**
    * Get actived namespace
    * @return the actived namespace's name
    */
@@ -75,7 +104,7 @@ public interface DistkvClient {
    *
    * @return The distkv sortedList proxy.
    */
-  DistkvSortedListProxy sortedLists();
+  DistkvSlistProxy slists();
 
 
   /**
@@ -84,4 +113,5 @@ public interface DistkvClient {
    * @return The distkv int proxy
    */
   DistkvIntProxy ints();
+
 }

@@ -12,5 +12,3 @@ message ExpireRequest {
 
 message ExpireResponse {
 };
-
-

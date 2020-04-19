@@ -2,7 +2,6 @@ package com.distkv.server.storeserver;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.io.File;
 
 @Test(singleThreaded = true)
@@ -11,9 +10,10 @@ public class TestConf {
   public void testDefaultConf() {
     StoreConfig config = StoreConfig.create();
     Assert.assertEquals(config.getPort(), 8082);
-    Assert.assertFalse(config.isMaster());
-    Assert.assertNull(config.getSlaveAddresses());
     Assert.assertEquals(config.getShardNum(), 8);
+    Assert.assertEquals(config.getMode(), RunningMode.STANDALONE);
+    Assert.assertEquals(config.getMetaServerAddresses(),
+        "127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083");
   }
 
   @Test
@@ -24,8 +24,6 @@ public class TestConf {
     System.setProperty("distkv.store.config", confPath);
     StoreConfig config = StoreConfig.create();
     Assert.assertEquals(config.getPort(), 18082);
-    Assert.assertTrue(config.isMaster());
-    Assert.assertEquals(config.getSlaveAddresses().size(), 2);
     Assert.assertEquals(config.getShardNum(), 8);
   }
 }

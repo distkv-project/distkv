@@ -7,10 +7,10 @@ import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.NodeOptions;
 import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
+import com.distkv.server.metaserver.server.processor.GetGlobalViewRequestProcessor;
+import com.distkv.server.metaserver.server.processor.HeartbeatRequestProcessor;
 import org.apache.commons.io.FileUtils;
 import com.distkv.server.metaserver.server.statemachine.MetaStateMachine;
-import com.distkv.server.metaserver.server.processor.GetValueRequestProcessor;
-import com.distkv.server.metaserver.server.processor.PutKVRequestProcessor;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,15 +30,15 @@ public class DmetaServer {
     final RpcServer rpcServer = new RpcServer(serverId.getPort());
     RaftRpcServerFactory.addRaftRequestProcessors(rpcServer);
     // Registration processor
-    rpcServer.registerUserProcessor(new GetValueRequestProcessor(this));
-    rpcServer.registerUserProcessor(new PutKVRequestProcessor(this));
+    rpcServer.registerUserProcessor(new HeartbeatRequestProcessor(this));
+    rpcServer.registerUserProcessor(new GetGlobalViewRequestProcessor(this));
     // init StateMachine
     this.fsm = new MetaStateMachine();
     // set StateMachine
     nodeOptions.setFsm(this.fsm);
     // set data path
     // log
-    nodeOptions.setLogUri(dataPath + File.separator + "log");
+    nodeOptions.setLogUri(dataPath + File.separator + "log" + serverId.getPort());
     // meta info
     nodeOptions.setRaftMetaUri(dataPath + File.separator + "raft_meta");
     // snapshot,optional
@@ -48,7 +48,6 @@ public class DmetaServer {
     // start
     this.node = this.raftGroupService.start();
   }
-
 
 
   public MetaStateMachine getFsm() {

@@ -1,6 +1,7 @@
 package com.distkv.client;
 
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.utils.RuntimeUtil;
 import java.util.Set;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.common.collect.ImmutableSet;
@@ -34,31 +35,33 @@ public class SetProxyTest extends BaseTestSupplier {
     client.disconnect();
   }
 
-  @Test(expectedExceptions = DistkvException.class)
+  @Test
   public void testRemoveItemException() {
     Set<String> set1 = ImmutableSet.of("v1", "v2", "v3");
 
     DistkvClient client = newDistkvClient();
     client.sets().put("k1", set1);
-    client.sets().removeItem("k1", "v4");
+    Assert.assertThrows(DistkvException.class,
+        () -> client.sets().removeItem("k1", "v4"));
 
     client.disconnect();
   }
 
-  @Test(expectedExceptions = DistkvException.class)
+  @Test
   public void testDropByKey() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
     DistkvClient client = newDistkvClient();
     client.sets().put("k1", set);
-    Assert.assertTrue(client.sets().drop("k1"));
+    client.drop("k1");
 
-    //if we drop the key in store, this method will throw a DstException
-    client.sets().get("k1");
+    // This method will throw a DistkvException if we drop the nonexistent key in store.
+    Assert.assertThrows(DistkvException.class,
+        () -> client.sets().get("k1"));
     client.disconnect();
   }
 
-  @Test(expectedExceptions = DistkvException.class)
+  @Test
   public void testExists() {
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
 
@@ -69,20 +72,28 @@ public class SetProxyTest extends BaseTestSupplier {
     client.sets().removeItem("k1", "v1");
     Assert.assertFalse(client.sets().exists("k1", "v1"));
 
-    client.sets().drop("k1");
-    //if we drop the key in store, this method will throw a DstException
-    client.sets().exists("k1", "v1");
+    client.drop("k1");
+    // This method will throw a DistkvException if we drop the nonexistent key in store.
+    Assert.assertThrows(KeyNotFoundException.class,
+        () -> client.sets().exists("k1", "v1"));
     client.disconnect();
   }
 
   @Test
-  public void testExpireSet() throws InterruptedException {
+  public void testExpireSet() {
     DistkvClient client = newDistkvClient();
     Set<String> set = ImmutableSet.of("v1", "v2", "v3");
     client.sets().put("k1", set);
-    client.sets().expire("k1", 1);
-    Thread.sleep(3000);
-    Assert.assertThrows(KeyNotFoundException.class, () -> client.sets().get("k1"));
+    client.expire("k1", 1000);
+    boolean result = RuntimeUtil.waitForCondition(() -> {
+      try {
+        client.sets().get("k1");
+        return false;
+      } catch (KeyNotFoundException e) {
+        return true;
+      }
+    }, 30 * 1000);
+    Assert.assertTrue(result);
     client.disconnect();
   }
 }

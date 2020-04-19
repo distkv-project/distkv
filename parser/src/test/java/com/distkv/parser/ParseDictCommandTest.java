@@ -15,12 +15,12 @@ import org.testng.annotations.Test;
 
 public class ParseDictCommandTest {
 
-  private static final DistkvParser distKVParser = new DistkvParser();
+  private static final DistkvParser distkvParser = new DistkvParser();
 
   @Test
   public void testPut() throws InvalidProtocolBufferException {
     final String putDictCommand = "dict.put dict1 k1 v1 k2 v2 k3 v3";
-    DistkvParsedResult result = distKVParser.parse(putDictCommand);
+    DistkvParsedResult result = distkvParser.parse(putDictCommand);
     Assert.assertEquals(result.getRequestType(), RequestType.DICT_PUT);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "dict1");
@@ -40,7 +40,7 @@ public class ParseDictCommandTest {
   @Test
   public void testGet() {
     final String getDictCommand = "dict.get dict1";
-    DistkvParsedResult result = distKVParser.parse(getDictCommand);
+    DistkvParsedResult result = distkvParser.parse(getDictCommand);
     Assert.assertEquals(result.getRequestType(), RequestType.DICT_GET);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "dict1");
@@ -49,7 +49,7 @@ public class ParseDictCommandTest {
   @Test
   public void testPutItem() throws InvalidProtocolBufferException {
     final String command = "dict.putItem dict1 k1 v1";
-    DistkvParsedResult result = distKVParser.parse(command);
+    DistkvParsedResult result = distkvParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestType.DICT_PUT_ITEM);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getRequest()
@@ -62,7 +62,7 @@ public class ParseDictCommandTest {
   public void testGetItem() throws InvalidProtocolBufferException {
     // TODO(qwang): Should be finished.
     final String command = "dict.getItem dict1 v1";
-    DistkvParsedResult result = distKVParser.parse(command);
+    DistkvParsedResult result = distkvParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestType.DICT_GET_ITEM);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getRequest()
@@ -74,7 +74,7 @@ public class ParseDictCommandTest {
   public void testPopItem() throws InvalidProtocolBufferException {
     // TODO(qwang): Should be finished.
     final String command = "dict.popItem k1 v1";
-    DistkvParsedResult result = distKVParser.parse(command);
+    DistkvParsedResult result = distkvParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestType.DICT_POP_ITEM);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "k1");
@@ -85,18 +85,8 @@ public class ParseDictCommandTest {
   @Test
   public void testRemoveItem() {
     final String command = "dict.removeItem dict1 v1";
-    DistkvParsedResult result = distKVParser.parse(command);
+    DistkvParsedResult result = distkvParser.parse(command);
     Assert.assertEquals(result.getRequestType(), RequestType.DICT_REMOVE_ITEM);
-    DistkvRequest request = result.getRequest();
-    Assert.assertEquals(request.getKey(), "dict1");
-  }
-
-  @Test
-  public void testDrop() {
-    // TODO(qwang): Should be finished.
-    final String command = "dict.drop dict1";
-    DistkvParsedResult result = distKVParser.parse(command);
-    Assert.assertEquals(result.getRequestType(), RequestType.DICT_DROP);
     DistkvRequest request = result.getRequest();
     Assert.assertEquals(request.getKey(), "dict1");
   }
@@ -104,6 +94,6 @@ public class ParseDictCommandTest {
   @Test(expectedExceptions = DistkvException.class)
   public void testInvalidCommand() {
     final String command = "dict.ldel k1";
-    distKVParser.parse(command);
+    distkvParser.parse(command);
   }
 }

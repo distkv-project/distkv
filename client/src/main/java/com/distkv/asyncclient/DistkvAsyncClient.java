@@ -1,6 +1,9 @@
 package com.distkv.asyncclient;
 
 
+import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * The DistkvAsyncClient class is used to connect to the distkv server
  * and do operations asynchronously.
@@ -39,39 +42,69 @@ public interface DistkvAsyncClient {
   String getActivedNamespace();
 
   /**
-   * Get the dst string proxy.
+   * Drop the k-v pair for a given key.
    *
-   * @return The dst string proxy.
+   * @param key The key to be dropped.
+   */
+  CompletableFuture<DistkvResponse> drop(String key);
+
+  /**
+   * Expire a key.
+   *
+   * @param key The key to be expired.
+   * @param expireTime Millisecond level to set expire.
+   */
+  CompletableFuture<DistkvResponse> expire(String key, long expireTime);
+
+  /**
+   * Query if a key exists.
+   *
+   * @param key The key if exists.
+   */
+  CompletableFuture<DistkvResponse> exists(String key);
+
+  /**
+   * Get the time to live by the given key. The time unit is millisecond.
+   *
+   * @param key The key to be query TTL.
+   */
+  CompletableFuture<DistkvResponse> ttl(String key);
+
+
+  /**
+   * Get the distkv string proxy.
+   *
+   * @return The distkv string proxy.
    */
   DistkvAsyncStringProxy strs();
 
   /**
-   * Get the dst list proxy.
+   * Get the distkv list proxy.
    *
-   * @return The dst list proxy.
+   * @return The distkv list proxy.
    */
   DistkvAsyncListProxy lists();
 
   /**
-   * Get the dst set proxy.
+   * Get the distkv set proxy.
    *
-   * @return The dst set proxy.
+   * @return The distkv set proxy.
    */
   DistkvAsyncSetProxy sets();
 
   /**
-   * Get the dst dict proxy.
+   * Get the distkv dict proxy.
    *
-   * @return The dst string proxy.
+   * @return The distkv string proxy.
    */
   DistkvAsyncDictProxy dicts();
 
   /**
-   * Get the dst sortedList proxy.
+   * Get the distkv sortedList proxy.
    *
-   * @return The dst sortedList proxy.
+   * @return The distkv sortedList proxy.
    */
-  DistkvAsyncSortedListProxy sortedLists();
+  DistkvAsyncSlistProxy slists();
 
   /**
    * Get the distkv int proxy
@@ -79,4 +112,5 @@ public interface DistkvAsyncClient {
    * @return The distkv int proxy
    */
   DistkvAsyncIntProxy ints();
+
 }

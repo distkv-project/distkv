@@ -2,14 +2,19 @@ package com.distkv.server.storeserver.runtime.expire;
 
 import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
-import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.server.storeserver.StoreConfig;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.*;
+import java.util.Date;
+import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ExpirationManager {
 
@@ -44,16 +49,32 @@ public class ExpirationManager {
    */
   public void addToCycle(DistkvRequest request) {
     String key = request.getKey();
-    RequestType requestType = request.getRequestType();
     long expiredTime = -1;
     try {
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
-      expiredTime = expireRequest.getExpireTime() * 1000 + System.currentTimeMillis();
+      expiredTime = expireRequest.getExpireTime() + System.currentTimeMillis();
     } catch (InvalidProtocolBufferException e) {
       LOGGER.error("Failed to unpack ExpireRequest {1}", e);
       throw new DistkvException(e.toString());
     }
-    expirationQueue.offer(new Node(key, requestType, expiredTime));
+    expirationQueue.offer(new Node(key, expiredTime));
+  }
+
+  /**
+   * Get the remaining survival time of a key.
+   * If the key not found in PriorityQueue,it will return -1.
+   *
+   * @param key The key to get time to live.
+   * @return Survival time for a key.
+   */
+  public long getTheTimeToLive(String key) {
+    Optional<Node> nodeOptional = expirationQueue.stream().filter(item -> item.key.equals(key))
+        .findFirst();
+    if (nodeOptional.isPresent()) {
+      Node node = nodeOptional.get();
+      return node.expireTime - new Date().getTime();
+    }
+    return -1;
   }
 
   /**
@@ -85,7 +106,7 @@ public class ExpirationManager {
   private void clearStore(Node node) {
     try {
       expireClient.connect();
-      expireClient.drop(node.key, node.requestType);
+      expireClient.drop(node.key);
     } finally {
       if (!expireClient.isConnected()) {
         expireClient.disconnect();
@@ -94,20 +115,17 @@ public class ExpirationManager {
   }
 
   /**
-   * A Node object to store information about invalid key settings.
-   * The object has key, requestType and expiration time three attributes.
-   * Implemented the Comparable interface, rewritten the compareTo method, and achieved the
-   * comparison of expiredTime.
+   * A Node object to store information about invalid key settings. The object has key, requestType
+   * and expiration time three attributes. Implemented the Comparable interface, rewritten the
+   * compareTo method, and achieved the comparison of expiredTime.
    */
   private static class Node implements Comparable<Node> {
 
     private String key;
-    private RequestType requestType;
     private long expireTime;
 
-    public Node(String key, RequestType requestType, long expireTime) {
+    public Node(String key, long expireTime) {
       this.key = key;
-      this.requestType = requestType;
       this.expireTime = expireTime;
     }
 

@@ -4,9 +4,9 @@ import com.distkv.client.DictUtil;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
-import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.distkv.rpc.service.DistkvService;
 import com.google.protobuf.Any;
+
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -18,24 +18,16 @@ public class DistkvAsyncDictProxy extends DistkvAbstractAsyncProxy {
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> put(
       String key, Map<String, String> dict) {
-    DictProtocol.DictPutRequest dictPutRequest = DictProtocol.DictPutRequest.newBuilder()
+    DictProtocol.DictPutRequest dictPutRequest = DictProtocol.DictPutRequest
+        .newBuilder()
         .setDict(DictUtil.buildDistKVDict(dict))
         .build();
 
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.DICT_PUT)
-        .setRequest(Any.pack(dictPutRequest))
-        .build();
-    return call(request);
+    return put(key, RequestType.DICT_PUT, Any.pack(dictPutRequest));
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> get(String key) {
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.DICT_GET)
-        .build();
-    return call(request);
+    return get(key, RequestType.DICT_GET);
   }
 
   public CompletableFuture<DistkvProtocol.DistkvResponse> getItem(
@@ -82,14 +74,6 @@ public class DistkvAsyncDictProxy extends DistkvAbstractAsyncProxy {
     return call(request);
   }
 
-  public CompletableFuture<DistkvProtocol.DistkvResponse> drop(String key) {
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.DICT_DROP)
-        .build();
-    return call(request);
-  }
-
   public CompletableFuture<DistkvProtocol.DistkvResponse> removeItem(
       String key, String itemKey) {
     DictProtocol.DictRemoveItemRequest dictRemoveItemRequest = DictProtocol.DictRemoveItemRequest
@@ -101,19 +85,6 @@ public class DistkvAsyncDictProxy extends DistkvAbstractAsyncProxy {
         .setKey(key)
         .setRequestType(RequestType.DICT_REMOVE_ITEM)
         .setRequest(Any.pack(dictRemoveItemRequest))
-        .build();
-    return call(request);
-  }
-
-  public CompletableFuture<DistkvProtocol.DistkvResponse> expire(String key, long expireTime) {
-    ExpireRequest expireRequest = ExpireRequest
-        .newBuilder()
-        .setExpireTime(expireTime)
-        .build();
-    DistkvProtocol.DistkvRequest request = DistkvProtocol.DistkvRequest.newBuilder()
-        .setKey(key)
-        .setRequestType(RequestType.EXPIRED_DICT)
-        .setRequest(Any.pack(expireRequest))
         .build();
     return call(request);
   }
