@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,7 +30,8 @@ public class ExpirationManager {
    * PriorityQueue allows the data with the lowest expiration time to be queued. Just look at the
    * cached most recent expired data and avoid scanning all caches.
    */
-  public BlockingQueue<Node> expirationQueue = new PriorityBlockingQueue<>(DEFAULT_CAPACITY);
+  public PriorityBlockingQueue<Node> expirationQueue =
+          new PriorityBlockingQueue<>(DEFAULT_CAPACITY);
 
   public ExpirationManager(StoreConfig storeConfig) {
     expireClient = new ExpirationClient(storeConfig);
