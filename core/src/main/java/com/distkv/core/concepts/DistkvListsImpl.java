@@ -25,6 +25,7 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implement
       throw new DistkvKeyDuplicatedException(key);
     }
     distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.LIST.ordinal(),value));
+    Object o = distkvKeyValueMap.get(key);
   }
 
   @Override
@@ -40,13 +41,12 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implement
   }
 
   @Override
-  public DistkvValue<ArrayList<String>> get(String key, int from, int end)
+  public DistkvValue<List<String>> get(String key, int from, int end)
       throws KeyNotFoundException, IndexOutOfBoundsException {
     try {
       DistkvValue<ArrayList<String>> value = get(key);
-      List<String> strings = value.getValue().subList(from, end);
-      value.setValue(new ArrayList<>(strings));
-      return value;
+      List<String> subValues = value.getValue().subList(from, end);
+      return new DistkvValue<>(value.getType(),subValues);
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
     } catch (IndexOutOfBoundsException e) {
