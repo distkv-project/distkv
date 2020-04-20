@@ -211,7 +211,7 @@ public class Worker extends Thread {
       }
       case STR_GET: {
         try {
-          String value = storeEngine.strs().get(key);
+          String value = storeEngine.strs().get(key).getValue();
           StringProtocol.StrGetResponse strBuilder = StringProtocol.StrGetResponse
               .newBuilder().setValue(value).build();
           builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(strBuilder));
@@ -234,7 +234,7 @@ public class Worker extends Thread {
       }
       case SET_GET: {
         try {
-          Set<String> values = storeEngine.sets().get(key);
+          Set<String> values = storeEngine.sets().get(key).getValue();
           SetProtocol.SetGetResponse.Builder setBuilder = SetProtocol.SetGetResponse
               .newBuilder();
           values.forEach(setBuilder::addValues);
@@ -322,7 +322,7 @@ public class Worker extends Thread {
           ListProtocol.ListGetResponse.Builder listBuilder = ListProtocol.ListGetResponse
               .newBuilder();
           if (type == ListProtocol.GetType.GET_ALL) {
-            final List<String> values = storeEngine.lists().get(key);
+            final List<String> values = storeEngine.lists().get(key).getValue();
             Optional.ofNullable(values).ifPresent(v -> listBuilder.addAllValues(values));
             builder.setResponse(Any.pack(listBuilder.build()));
           } else if (type == ListProtocol.GetType.GET_ONE) {
@@ -331,7 +331,7 @@ public class Worker extends Thread {
             builder.setResponse(Any.pack(listBuilder.build()));
           } else if (type == ListProtocol.GetType.GET_RANGE) {
             final List<String> values = storeEngine.lists().get(
-                key, listGetRequest.getFrom(), listGetRequest.getEnd());
+                key, listGetRequest.getFrom(), listGetRequest.getEnd()).getValue();
             Optional.ofNullable(values).ifPresent(v -> listBuilder.addAllValues(values));
             builder.setResponse(Any.pack(listBuilder.build()));
           } else {
@@ -462,7 +462,7 @@ public class Worker extends Thread {
       case DICT_GET: {
         Map<String, String> dict = null;
         try {
-          dict = storeEngine.dicts().get(key);
+          dict = storeEngine.dicts().get(key).getValue();
         } catch (KeyNotFoundException e) {
           LOGGER.info("Failed to get dict from store: {1}", e);
         }
@@ -484,7 +484,7 @@ public class Worker extends Thread {
       case DICT_GET_ITEM: {
         DictProtocol.DictGetItemRequest dictGetItemRequest = distkvRequest.getRequest()
             .unpack(DictProtocol.DictGetItemRequest.class);
-        final Map<String, String> dict = storeEngine.dicts().get(key);
+        final Map<String, String> dict = storeEngine.dicts().get(key).getValue();
         builder.setStatus(CommonProtocol.Status.OK);
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
@@ -505,7 +505,7 @@ public class Worker extends Thread {
         DictProtocol.DictPopItemRequest dictPopItemRequest = distkvRequest.getRequest()
             .unpack(DictProtocol.DictPopItemRequest.class);
         builder.setStatus(CommonProtocol.Status.OK);
-        final Map<String, String> dict = storeEngine.dicts().get(key);
+        final Map<String, String> dict = storeEngine.dicts().get(key).getValue();
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } else {
@@ -525,7 +525,7 @@ public class Worker extends Thread {
         DictProtocol.DictPutItemRequest dictPutItemRequest = distkvRequest.getRequest()
             .unpack(DictProtocol.DictPutItemRequest.class);
         builder.setStatus(CommonProtocol.Status.OK);
-        final Map<String, String> dict = storeEngine.dicts().get(key);
+        final Map<String, String> dict = storeEngine.dicts().get(key).getValue();
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } else {
@@ -537,7 +537,7 @@ public class Worker extends Thread {
         DictProtocol.DictRemoveItemRequest dictRemoveItemRequest = distkvRequest.getRequest()
             .unpack(DictProtocol.DictRemoveItemRequest.class);
         builder.setStatus(CommonProtocol.Status.OK);
-        final Map<String, String> dict = storeEngine.dicts().get(key);
+        final Map<String, String> dict = storeEngine.dicts().get(key).getValue();
         if (dict == null) {
           builder.setStatus(CommonProtocol.Status.KEY_NOT_FOUND);
         } else {
@@ -700,7 +700,7 @@ public class Worker extends Thread {
       }
       case INT_GET: {
         try {
-          int value = storeEngine.ints().get(key);
+          int value = storeEngine.ints().get(key).getValue();
           IntProtocol.IntGetResponse intBuilder = IntProtocol.IntGetResponse
               .newBuilder().setValue(value).build();
           builder.setStatus(CommonProtocol.Status.OK).setResponse(Any.pack(intBuilder));
