@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class BaseTestSupplier {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(BaseTestSupplier.class);
+  private static final Logger LOG = LoggerFactory.getLogger(BaseTestSupplier.class);
 
   private static final AtomicInteger PORT = new AtomicInteger(10000);
   protected final ThreadLocal<Integer> rpcServerPort =
@@ -27,7 +27,7 @@ public class BaseTestSupplier {
 
   @BeforeMethod
   public void setupBase(Method method) throws InterruptedException {
-    LOGGER.info(String.format("\n==================== Running the test method: %s.%s",
+    LOG.info(String.format("\n==================== Running the test method: %s.%s",
         method.getDeclaringClass(), method.getName()));
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         method.getDeclaringClass(), method.getName()));

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TestUtil.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TestUtil.class);
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
@@ -28,7 +28,7 @@ public class TestUtil {
           .redirectOutput(ProcessBuilder.Redirect.INHERIT)
           .redirectError(ProcessBuilder.Redirect.INHERIT)
           .redirectErrorStream(true);
-      LOGGER.debug("Executing command: {}", String.join(" ", command));
+      LOG.debug("Executing command: {}", String.join(" ", command));
       process = processBuilder.start();
       process.waitFor(1, TimeUnit.SECONDS);
       return process;
@@ -36,7 +36,7 @@ public class TestUtil {
       if (process != null) {
         process.destroyForcibly();
       }
-      LOGGER.error(e.getMessage());
+      LOG.error(e.getMessage());
       throw new RuntimeException("Error executing command " + String.join(" ", command), e);
     }
   }
@@ -63,7 +63,7 @@ public class TestUtil {
     int numAttempts = 0;
     while (process.isAlive()) {
       if (numAttempts > 0) {
-        LOGGER.warn("Attempting to kill rpc server, numAttempts={}.", numAttempts);
+        LOG.warn("Attempting to kill rpc server, numAttempts={}.", numAttempts);
       }
       if (numAttempts == 0) {
         process.destroy();
@@ -74,7 +74,7 @@ public class TestUtil {
       try {
         process.waitFor(KILL_PROCESS_WAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
       } catch (InterruptedException e) {
-        LOGGER.error("Failed to stop rpc server. This process is exiting.");
+        LOG.error("Failed to stop rpc server. This process is exiting.");
         System.exit(-1);
       }
     }

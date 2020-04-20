@@ -15,7 +15,7 @@ import java.util.Set;
 @Test(singleThreaded = true)
 public class StringProxyTest extends BaseTestSupplier {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(StringProxyTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StringProxyTest.class);
 
   @Test
   public void testPutAndGet() throws InvalidProtocolBufferException {
@@ -71,7 +71,7 @@ public class StringProxyTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       } catch (InvalidProtocolBufferException e) {
-        LOGGER.error("Failed to unpack response. {1}", e);
+        LOG.error("Failed to unpack response. {1}", e);
         return false;
       }
     }, 30 * 1000);

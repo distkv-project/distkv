@@ -21,7 +21,7 @@ public class DmetaClient {
 
   private BoltCliClientService cliClientService = null;
 
-  private static Logger logger = LoggerFactory.getLogger(DmetaClient.class);
+  private static Logger LOG = LoggerFactory.getLogger(DmetaClient.class);
 
   public static final String RAFT_GROUP_ID = "META_SERVER";
 
@@ -88,9 +88,9 @@ public class DmetaClient {
         throw new IllegalStateException("Refresh leader failed");
       }
     } catch (InterruptedException e) {
-      logger.error("Refresh leader failed");
+      LOG.error("Refresh leader failed");
     } catch (TimeoutException e) {
-      logger.error("Refresh leader failed");
+      LOG.error("Refresh leader failed");
     }
   }
 
