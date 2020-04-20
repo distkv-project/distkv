@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 public class StoreConfig {
-  private static final Logger LOGGER = LoggerFactory.getLogger(StoreConfig.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StoreConfig.class);
 
   public static final String CUSTOM_CONFIG_FILE = "store.conf";
   public static final String DEFAULT_CONFIG_FILE = "store.default.conf";
@@ -67,10 +67,10 @@ public class StoreConfig {
     Config config = ConfigFactory.systemProperties();
     String configPath = System.getProperty("distkv.store.config");
     if (Strings.isNullOrEmpty(configPath)) {
-      LOGGER.info("Loading config from \"store.conf\" file in classpath.");
+      LOG.info("Loading config from \"store.conf\" file in classpath.");
       config = config.withFallback(ConfigFactory.load(CUSTOM_CONFIG_FILE));
     } else {
-      LOGGER.info("Loading config from " + configPath + ".");
+      LOG.info("Loading config from " + configPath + ".");
       config = config.withFallback(ConfigFactory.parseFile(new File(configPath)));
     }
     config = config.withFallback(ConfigFactory.load(DEFAULT_CONFIG_FILE));
