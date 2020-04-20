@@ -27,9 +27,10 @@ public class KVSListTest {
     KVStore store = new KVStoreImpl();
     // Note that the list is `v1 v2 v3`.
     store.lists().put("k1", listForKVSTest());
-    Assert.assertEquals(listForKVSTest(), store.lists().get("k1"));
+    Assert.assertEquals(listForKVSTest(), store.lists().get("k1").getValue());
     Assert.assertEquals(store.lists().get("k1", 1), "v2");
-    Assert.assertEquals(store.lists().get("k1", 1, 3), ImmutableList.of("v2", "v3"));
+    Assert.assertEquals(store.lists()
+        .get("k1", 1, 3).getValue(), ImmutableList.of("v2", "v3"));
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -48,7 +49,8 @@ public class KVSListTest {
     list2.add("v4");
     list2.add("v5");
     store.lists().lput("k1", list2);
-    Assert.assertEquals(Arrays.asList("v4", "v5", "v1", "v2", "v3"), store.lists().get("k1"));
+    Assert.assertEquals(Arrays.asList("v4", "v5", "v1", "v2", "v3"),
+        store.lists().get("k1").getValue());
   }
 
   @Test
@@ -59,7 +61,8 @@ public class KVSListTest {
     list2.add("v4");
     list2.add("v5");
     store.lists().rput("k1", list2);
-    Assert.assertEquals(Arrays.asList("v1", "v2", "v3", "v4", "v5"), store.lists().get("k1"));
+    Assert.assertEquals(Arrays.asList("v1", "v2", "v3", "v4", "v5"),
+        store.lists().get("k1").getValue());
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -67,9 +70,9 @@ public class KVSListTest {
     KVStore store = new KVStoreImpl();
     store.lists().put("k1", listForKVSTest());
     store.lists().remove("k1", 0);
-    Assert.assertEquals(Arrays.asList("v2", "v3"), store.lists().get("k1"));
+    Assert.assertEquals(Arrays.asList("v2", "v3"), store.lists().get("k1").getValue());
     store.lists().remove("k1", 1, 2);
-    Assert.assertEquals(Collections.singletonList("v2"), store.lists().get("k1"));
+    Assert.assertEquals(Collections.singletonList("v2"), store.lists().get("k1").getValue());
     //test exceptions
     store.lists().remove("-k", 0);
   }
@@ -82,7 +85,7 @@ public class KVSListTest {
     list.add(0);
     store.lists().put("k1", listForKVSTest());
     store.lists().mremove("k1", list);
-    Assert.assertEquals(ImmutableList.of("v2"), store.lists().get("k1"));
+    Assert.assertEquals(ImmutableList.of("v2"), store.lists().get("k1").getValue());
     //test exceptions
     list.clear();
     list.add(0);

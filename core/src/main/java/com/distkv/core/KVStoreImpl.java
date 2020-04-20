@@ -12,7 +12,6 @@ import com.distkv.core.concepts.DistkvDicts;
 import com.distkv.core.concepts.DistkvSets;
 import com.distkv.core.concepts.DistkvLists;
 import com.distkv.core.concepts.DistkvSlistsImpl;
-import com.distkv.core.concepts.DistkvValue;
 
 public class KVStoreImpl implements KVStore {
 
