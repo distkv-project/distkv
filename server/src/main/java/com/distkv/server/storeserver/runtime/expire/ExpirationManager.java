@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public class ExpirationManager {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(ExpirationManager.class);
+  private static Logger LOG = LoggerFactory.getLogger(ExpirationManager.class);
 
   private static final Integer DEFAULT_CAPACITY = 2048;
 
@@ -52,7 +52,7 @@ public class ExpirationManager {
       ExpireRequest expireRequest = request.getRequest().unpack(ExpireRequest.class);
       expiredTime = expireRequest.getExpireTime() + System.currentTimeMillis();
     } catch (InvalidProtocolBufferException e) {
-      LOGGER.error("Failed to unpack ExpireRequest {1}", e);
+      LOG.error("Failed to unpack ExpireRequest {1}", e);
       throw new DistkvException(e.toString());
     }
     expirationQueue.offer(new Node(key, expiredTime));

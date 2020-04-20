@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DmetaTestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DmetaTestUtil.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DmetaTestUtil.class);
 
   private static final String SERVER_SUFFIX_JAR_DIR = "server" + File.separator + "target"
       + File.separator + "distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar";

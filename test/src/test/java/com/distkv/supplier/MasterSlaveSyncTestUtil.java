@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MasterSlaveSyncTestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
       + File.separator + "distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar";
