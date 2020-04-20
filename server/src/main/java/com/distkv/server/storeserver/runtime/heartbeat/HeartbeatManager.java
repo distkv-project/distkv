@@ -21,7 +21,7 @@ public class HeartbeatManager {
 
   private static DmetaClient dmetaClient;
 
-  private static Logger logger = LoggerFactory.getLogger(HeartbeatManager.class);
+  private static Logger LOG = LoggerFactory.getLogger(HeartbeatManager.class);
 
   public HeartbeatManager(NodeInfo nodeInfo, String dmetaServerListStr,
                           ConcurrentHashMap<String, SlaveClient> clients) {
@@ -32,7 +32,7 @@ public class HeartbeatManager {
       public void run() {
         HeartbeatResponse response = dmetaClient.heartbeat(nodeInfo);
         if (response == null) {
-          logger.warn("Failed to heartbeat to MetaServer, " +
+          LOG.warn("Failed to heartbeat to MetaServer, " +
               "and let it retry next ticking.");
           return;
         }
