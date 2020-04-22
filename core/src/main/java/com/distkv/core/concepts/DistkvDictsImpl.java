@@ -9,7 +9,7 @@ import java.util.Map;
 public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>> implements DistkvDicts {
 
   public DistkvDictsImpl(
-      DistkvMapInterface<String, Object> distkvKeyValueMap) {
+      DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 

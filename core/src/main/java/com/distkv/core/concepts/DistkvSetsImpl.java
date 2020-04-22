@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements DistkvSets {
 
-  public DistkvSetsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
+  public DistkvSetsImpl(DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
