@@ -16,7 +16,7 @@ public abstract class DistkvConcepts<T> {
   public abstract void put(String key, T value);
 
   /**
-   * Return target the value of the corresponding type according to the key.
+   * Return target the value of the corresponding type by key.
    * @param key The key.
    * @return Value corresponding to the data type.
    */
