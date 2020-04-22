@@ -22,7 +22,6 @@ public class CacheTest extends BaseTestSupplier {
     cache.newItem("lisi");
     Thread.sleep(2000);
     Assert.assertFalse(cache.isExpired("zhangsan"));
-    //Assert.assertFalse(cache.isExpired("wangwu"));
     Assert.assertThrows(KeyNotFoundException.class, () ->  distkvClient.strs().get("wangwu"));
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
@@ -43,17 +42,6 @@ public class CacheTest extends BaseTestSupplier {
       }
     }, 5 * 1000);
     Assert.assertTrue(expiredIf);
-
-    Pine.shutdown();
-  }
-
-  @Test(expectedExceptions = Exception.class)
-  public void testLikeeNotFoundException() {
-    Pine.init(getListeningAddress());
-
-    PineCache cache = Pine.newCache((long)5000);
-    cache.newItem("lisi");
-    cache.isExpired("zhangsan");
 
     Pine.shutdown();
   }
