@@ -9,8 +9,13 @@ import java.util.Map;
 public class DistkvDictsImpl extends DistkvConcepts<Map<String, String>> implements DistkvDicts {
 
   public DistkvDictsImpl(
-      DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
+      DistkvMapInterface<String, DistkvValue<Map<String, String>>> distkvKeyValueMap) {
     super(distkvKeyValueMap);
+  }
+
+  @Override
+  public Map<String, String> as(DistkvValue<Map<String, String>> distkvValue) {
+    return distkvValue.getValue();
   }
 
   @Override

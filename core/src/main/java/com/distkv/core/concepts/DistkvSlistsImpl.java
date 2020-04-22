@@ -16,15 +16,18 @@ import com.distkv.core.struct.slist.SlistLinkedImpl;
 import java.util.List;
 import java.util.LinkedList;
 
-public class DistkvSlistsImpl
-    extends DistkvConcepts<Slist>
-    implements DistkvSlists {
+public class DistkvSlistsImpl extends DistkvConcepts<Slist> implements DistkvSlists {
 
-  public DistkvSlistsImpl(DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
+  public DistkvSlistsImpl(DistkvMapInterface<String, DistkvValue<Slist>> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
   @Override
+  public Slist as(DistkvValue<Slist> distkvValue) {
+    return distkvValue.getValue();
+  }
+
+  /*@Override
   public void put(String key, LinkedList<SlistEntity> list) {
     if (distkvKeyValueMap.containsKey(key)) {
       throw new DistkvKeyDuplicatedException(key);
@@ -34,6 +37,14 @@ public class DistkvSlistsImpl
       throw new SlistMembersDuplicatedException(key);
     }
     distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.SLIST.ordinal(),slist));
+  }*/
+
+  @Override
+  public void put(String key, Slist list) {
+    if (distkvKeyValueMap.containsKey(key)) {
+      throw new DistkvKeyDuplicatedException(key);
+    }
+    distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.SLIST.ordinal(),list));
   }
 
   @Override
@@ -41,7 +52,7 @@ public class DistkvSlistsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final Slist slist = get(key).getValue();
+    final Slist slist = get(key);
     slist.putItem(item);
   }
 
@@ -50,7 +61,7 @@ public class DistkvSlistsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final Slist slist = get(key).getValue();
+    final Slist slist = get(key);
     final boolean isFound = slist.removeItem(member);
     if (!isFound) {
       throw new SlistMemberNotFoundException(key);
@@ -62,7 +73,7 @@ public class DistkvSlistsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final Slist slist = get(key).getValue();
+    final Slist slist = get(key);
     final int resultByIncrScore = slist.incrScore(member, delta);
     if (0 == resultByIncrScore) {
       throw new SlistMemberNotFoundException(key);
@@ -76,7 +87,7 @@ public class DistkvSlistsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final Slist slist = get(key).getValue();
+    final Slist slist = get(key);
     if (topNum > slist.size()) {
       topNum = slist.size();
     }
@@ -91,7 +102,7 @@ public class DistkvSlistsImpl
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    final Slist sortedLists = get(key).getValue();
+    final Slist sortedLists = get(key);
     DistkvTuple<Integer, Integer> result = sortedLists.getItem(member);
     if (null == result) {
       throw new SlistMemberNotFoundException(key);

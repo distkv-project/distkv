@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements DistkvSets {
 
-  public DistkvSetsImpl(DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
+  public DistkvSetsImpl(DistkvMapInterface<String, DistkvValue<Set<String>>> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
@@ -20,7 +20,12 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
     if (distkvKeyValueMap.containsKey(key)) {
       throw new DistkvKeyDuplicatedException(key);
     }
-    distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.SET.ordinal(),value));
+    distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.SET.ordinal(), value));
+  }
+
+  @Override
+  public Set<String> as(DistkvValue<Set<String>> distkvValue) {
+    return distkvValue.getValue();
   }
 
   @Override
@@ -28,8 +33,7 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-
-    get(key).getValue().add(itemValue);
+    get(key).add(itemValue);
   }
 
   @Override
@@ -38,10 +42,10 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
       return Status.KEY_NOT_FOUND;
     }
 
-    if (!get(key).getValue().contains(itemValue)) {
+    if (!get(key).contains(itemValue)) {
       throw new SetItemNotFoundException(key, itemValue);
     }
-    get(key).getValue().remove(itemValue);
+    get(key).remove(itemValue);
     return Status.OK;
   }
 
@@ -51,7 +55,7 @@ public class DistkvSetsImpl extends DistkvConcepts<Set<String>> implements Distk
       throw new KeyNotFoundException(key);
     }
 
-    return get(key).getValue().contains(value);
+    return get(key).contains(value);
   }
 
 }

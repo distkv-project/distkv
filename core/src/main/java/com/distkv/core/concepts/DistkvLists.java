@@ -21,7 +21,7 @@ public interface DistkvLists {
    * @param key Obtain a list value based on the key
    * @return the list value.
    */
-  DistkvValue<ArrayList<String>> get(String key) throws KeyNotFoundException;
+  ArrayList<String> get(String key) throws KeyNotFoundException;
 
   /**
    * Get the value of the given index from the list.
@@ -41,7 +41,7 @@ public interface DistkvLists {
    * @param end The right index of the range.
    * @return The values of the given range.
    */
-  DistkvValue<List<String>> get(String key, int from, int end)
+  List<String> get(String key, int from, int end)
       throws KeyNotFoundException, IndexOutOfBoundsException;
 
   /**

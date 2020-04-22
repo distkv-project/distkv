@@ -18,7 +18,7 @@ public interface DistkvInts {
    * @param key obtain a int value based on the key
    * @return the int value
    */
-  DistkvValue<Integer> get(String key);
+  Integer get(String key);
 
   /**
    * This method will delete a string value based on the key

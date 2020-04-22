@@ -18,7 +18,7 @@ public interface DistkvStrings {
    * @param key Obtain a string value based on the key
    * @return the string  value
    */
-  DistkvValue<String> get(String key);
+  String get(String key);
 
   /**
    * This method will delete a string value based on the key

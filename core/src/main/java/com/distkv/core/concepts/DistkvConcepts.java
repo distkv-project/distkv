@@ -14,21 +14,24 @@ public abstract class DistkvConcepts<T> {
     this.distkvKeyValueMap = distkvKeyValueMap;
   }
 
-  public void put(String key, DistkvValue value) {
-    if (distkvKeyValueMap.containsKey(key)) {
-      throw new DistkvKeyDuplicatedException(key);
-    }
-    distkvKeyValueMap.put(key, value);
-  }
+  public abstract void put(String key, T value);
 
-  public abstract T as(DistkvValue distkvValue);
-
+  /**
+   * According to the key to return the corresponding value information.
+   * @param key The key.
+   * @return Value corresponding to the data type.
+   */
   public T get(String key) {
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
     return as(distkvKeyValueMap.get(key));
   }
+
+  /**
+   * The specific return object is handed over to the specified subclass for implementation.
+   */
+  public abstract T as(DistkvValue<T> distkvValue);
 
   public Status drop(String key) {
     if (!distkvKeyValueMap.containsKey(key)) {

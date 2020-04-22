@@ -20,7 +20,7 @@ public interface DistkvSets {
    * @param key Obtain a set value based on the key
    * @return the set value
    */
-  DistkvValue<Set<String>> get(String key);
+  Set<String> get(String key);
 
   /**
    * Put item to the set.

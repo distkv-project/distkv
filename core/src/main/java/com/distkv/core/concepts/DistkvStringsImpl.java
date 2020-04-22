@@ -7,7 +7,7 @@ import com.distkv.core.concepts.DistkvValue.TYPE;
 
 public class DistkvStringsImpl extends DistkvConcepts<String> implements DistkvStrings {
 
-  public DistkvStringsImpl(DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
+  public DistkvStringsImpl(DistkvMapInterface<String, DistkvValue<String>> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
@@ -17,5 +17,10 @@ public class DistkvStringsImpl extends DistkvConcepts<String> implements DistkvS
       throw new DistkvKeyDuplicatedException(key);
     }
     distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.STRING.ordinal(),value));
+  }
+
+  @Override
+  public String as(DistkvValue<String> distkvValue) {
+    return distkvValue.getValue();
   }
 }
