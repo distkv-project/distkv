@@ -22,15 +22,6 @@ public class CacheTest extends BaseTestSupplier {
     cache.newItem("lisi");
     Assert.assertFalse(cache.isExpired("zhangsan"));
     Assert.assertThrows(KeyNotFoundException.class, () ->  distkvClient.strs().get("wangwu"));
-    boolean result = RuntimeUtil.waitForCondition(() -> {
-      try {
-
-        return true;
-      } catch (KeyNotFoundException e) {
-        return true;
-      }
-    }, 6 * 1000);
-    Assert.assertTrue(result);
 
     boolean expiredIf = RuntimeUtil.waitForCondition(() -> {
       try {
