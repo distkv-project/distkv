@@ -29,8 +29,7 @@ public class KVSListTest {
     store.lists().put("k1", listForKVSTest());
     Assert.assertEquals(listForKVSTest(), store.lists().get("k1"));
     Assert.assertEquals(store.lists().get("k1", 1), "v2");
-    Assert.assertEquals(store.lists()
-        .get("k1", 1, 3), ImmutableList.of("v2", "v3"));
+    Assert.assertEquals(store.lists().get("k1", 1, 3), ImmutableList.of("v2", "v3"));
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)
@@ -60,8 +59,7 @@ public class KVSListTest {
     list2.add("v4");
     list2.add("v5");
     store.lists().rput("k1", list2);
-    Assert.assertEquals(Arrays.asList("v1", "v2", "v3", "v4", "v5"),
-        store.lists().get("k1"));
+    Assert.assertEquals(Arrays.asList("v1", "v2", "v3", "v4", "v5"), store.lists().get("k1"));
   }
 
   @Test(expectedExceptions = KeyNotFoundException.class)

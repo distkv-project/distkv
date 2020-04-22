@@ -26,12 +26,12 @@ public class KVSSlistTest {
     store.sortLists().put("k1", slist);
     store.sortLists().putMember("k1", new SlistEntity("asd", 1000));
 
-    store.sortLists().incrScore("k1", "xswl", 1);
-    store.sortLists().incrScore("k1", "fw", 1);
-    List<SlistEntity> k11 = store.sortLists().top("k1", 3);
-    Assert.assertEquals(k11.get(1).getMember(), "fw");
-    Assert.assertEquals(k11.get(1).getScore(), 11);
-    Assert.assertEquals(k11.get(2).getMember(), "xswl");
-    Assert.assertEquals(k11.get(2).getScore(), 10);
+    store.sortLists().incrScore("k1", "xswl",1);
+    store.sortLists().incrScore("k1", "fw",1);
+    List<SlistEntity> k11 = store.sortLists().top("k1",3);
+    Assert.assertEquals(k11.get(1).getMember(),"fw");
+    Assert.assertEquals(k11.get(1).getScore(),11);
+    Assert.assertEquals(k11.get(2).getMember(),"xswl");
+    Assert.assertEquals(k11.get(2).getScore(),10);
   }
 }
