@@ -2,7 +2,6 @@ package com.distkv.pine.components.cache;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
-import com.distkv.common.exception.PineCacheKeyNotFoundException;
 import com.distkv.pine.components.AbstractPineHandle;
 import com.google.protobuf.InvalidProtocolBufferException;
 
@@ -46,16 +45,15 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
   @Override
   public Boolean isExpired(String item) {
     try {
-      if (set.contains(item)) {
-        distkvClient.strs().get(item);
-      } else {
-        throw new PineCacheKeyNotFoundException("This key has never found in cache");
-      }
+      distkvClient.strs().get(item);
     } catch (KeyNotFoundException e) {
-      throw new PineCacheKeyNotFoundException(
-          "This key has never found in cache");
+      if (set.contains(item)) {
+        return true;
+      } else {
+        throw new KeyNotFoundException("the item is not in cache");
+      }
     } catch (InvalidProtocolBufferException e) {
-      throw new RuntimeException("this is InvalidProtocolBufferException");
+      throw new RuntimeException(e);
     }
     return false;
   }

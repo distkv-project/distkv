@@ -20,29 +20,18 @@ public class CacheTest extends BaseTestSupplier {
     PineCache cache = Pine.newCache((long) 1000);
     cache.newItem("zhangsan");
     cache.newItem("lisi");
+    //test  key not expired
     Assert.assertFalse(cache.isExpired("zhangsan"));
+
+    //test key expired
     boolean flg = RuntimeUtil.waitForCondition(() -> {
       try {
-        cache.isExpired("lisi");
-        return true;
+        return cache.isExpired("wuzi");
       } catch (KeyNotFoundException e) {
         return true;
       }
-    }, 5 * 1000);
+    }, 3 * 1000);
     Assert.assertTrue(flg);
-
-   // Assert.assertThrows(KeyNotFoundException.class, () ->  distkvClient.strs().get("wangwu"));
-
-    boolean expiredIf = RuntimeUtil.waitForCondition(() -> {
-      try {
-        cache.isExpired("zhangsan");
-        return true;
-      } catch (KeyNotFoundException e) {
-        return true;
-      }
-    }, 5 * 1000);
-    Assert.assertTrue(expiredIf);
-
     Pine.shutdown();
   }
 
