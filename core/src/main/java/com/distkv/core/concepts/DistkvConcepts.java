@@ -16,7 +16,7 @@ public abstract class DistkvConcepts<T> {
   public abstract void put(String key, T value);
 
   /**
-   * According to the key to return the corresponding value information.
+   * Return target the value of the corresponding type according to the key.
    * @param key The key.
    * @return Value corresponding to the data type.
    */
@@ -25,7 +25,7 @@ public abstract class DistkvConcepts<T> {
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    return (T)as(distkvKeyValueMap.get(key));
+    return (T) as(distkvKeyValueMap.get(key));
   }
 
   /**
