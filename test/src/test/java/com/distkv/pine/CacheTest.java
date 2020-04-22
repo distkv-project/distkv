@@ -11,16 +11,22 @@ import org.testng.annotations.Test;
 
 public class CacheTest extends BaseTestSupplier {
 
+  private DistkvClient distkvClient;
+
   @Test
   public void testCache() throws InterruptedException {
     Pine.init(getListeningAddress());
 
-    PineCache cache = Pine.newCache((long) 5000);
-    cache.newItems("zhangsan");
-    Assert.assertEquals(cache.getItem("nihao"),"zhangsan");
+    PineCache cache = Pine.newCache((long) 1);
+    cache.newItem("zhangsan");
+    cache.newItem("lisi");
+    Thread.sleep(2000);
+    Assert.assertFalse(cache.isExpired("zhangsan"));
+    //Assert.assertFalse(cache.isExpired("wangwu"));
+    Assert.assertThrows(KeyNotFoundException.class, () ->  distkvClient.strs().get("wangwu"));
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        cache.getItem("zhangsan");
+
         return true;
       } catch (KeyNotFoundException e) {
         return true;
@@ -30,7 +36,7 @@ public class CacheTest extends BaseTestSupplier {
 
     boolean expiredIf = RuntimeUtil.waitForCondition(() -> {
       try {
-        cache.expireIf("zhangsan");
+        cache.isExpired("zhangsan");
         return true;
       } catch (KeyNotFoundException e) {
         return true;
@@ -41,19 +47,15 @@ public class CacheTest extends BaseTestSupplier {
     Pine.shutdown();
   }
 
-  @Test
-  public void testKeyNotFoundException() {
-    DistkvClient client = newDistkvClient();
-    try {
-      client.drop("zhangsan");
-    } catch (KeyNotFoundException e) {
-      Assert.assertTrue(true);
-      return;
-    } finally {
-      client.disconnect();
-    }
-    Assert.fail();
-  }
+  @Test(expectedExceptions = Exception.class)
+  public void testLikeeNotFoundException() {
+    Pine.init(getListeningAddress());
 
+    PineCache cache = Pine.newCache((long)5000);
+    cache.newItem("lisi");
+    cache.isExpired("zhangsan");
+
+    Pine.shutdown();
+  }
 
 }

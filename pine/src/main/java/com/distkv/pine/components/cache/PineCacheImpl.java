@@ -2,8 +2,12 @@ package com.distkv.pine.components.cache;
 
 import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
+import com.distkv.common.exception.PineCacheKeyNotFoundException;
 import com.distkv.pine.components.AbstractPineHandle;
 import com.google.protobuf.InvalidProtocolBufferException;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PineCacheImpl extends AbstractPineHandle implements PineCache {
 
@@ -13,11 +17,12 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
 
   private Long expireTime;
 
+  final Set<String> set = new HashSet<>();
+
   public PineCacheImpl(DistkvClient distkvClient, Long expireTime) {
     super();
     this.distkvClient = distkvClient;
     this.expireTime = expireTime;
-    distkvClient.expire(getKey(),expireTime);
   }
 
   protected String getComponentType() {
@@ -25,35 +30,32 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
   }
 
   @Override
-  public void newItems(String newItems) {
-    distkvClient.strs().put(getKey(), newItems);
-    distkvClient.expire(getKey(),expireTime);
-  }
-
-  @Override
-  public Boolean expireIf(String newItems) {
+  public void newItem(String item) {
     try {
-      distkvClient.strs().get(newItems);
+      distkvClient.strs().get(item);
+      distkvClient.expire(item,expireTime);
+      set.add(item);
     } catch (KeyNotFoundException | InvalidProtocolBufferException e) {
-      return false;
+      distkvClient.strs().put(item, item);
+      distkvClient.expire(item,expireTime);
+      set.add(item);
     }
-    try {
-      distkvClient.drop(newItems);
-    } catch (KeyNotFoundException e) {
-      throw new KeyNotFoundException(
-          "This key is drop");
-    }
-    return true;
+
   }
 
   @Override
-  public String getItem(String newItems) {
+  public Boolean isExpired(String item) {
     try {
-      String newItem = distkvClient.strs().get(getKey());
-      return newItem;
-    } catch (InvalidProtocolBufferException e) {
-      e.printStackTrace();
-      return "";
+      if (set.contains(item)) {
+        distkvClient.strs().get(item);
+      } else {
+        throw new PineCacheKeyNotFoundException("This key has never found in cache");
+      }
+    } catch (KeyNotFoundException | InvalidProtocolBufferException e) {
+      throw new PineCacheKeyNotFoundException(
+          "This key has never found in cache");
     }
+    return false;
   }
+
 }
