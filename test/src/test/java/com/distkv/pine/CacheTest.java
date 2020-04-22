@@ -17,11 +17,21 @@ public class CacheTest extends BaseTestSupplier {
   public void testCache() throws InterruptedException {
     Pine.init(getListeningAddress());
 
-    PineCache cache = Pine.newCache((long) 1);
+    PineCache cache = Pine.newCache((long) 1000);
     cache.newItem("zhangsan");
     cache.newItem("lisi");
     Assert.assertFalse(cache.isExpired("zhangsan"));
-    Assert.assertThrows(KeyNotFoundException.class, () ->  distkvClient.strs().get("wangwu"));
+    boolean flg = RuntimeUtil.waitForCondition(() -> {
+      try {
+        cache.isExpired("lisi");
+        return true;
+      } catch (KeyNotFoundException e) {
+        return true;
+      }
+    }, 5 * 1000);
+    Assert.assertTrue(flg);
+
+   // Assert.assertThrows(KeyNotFoundException.class, () ->  distkvClient.strs().get("wangwu"));
 
     boolean expiredIf = RuntimeUtil.waitForCondition(() -> {
       try {

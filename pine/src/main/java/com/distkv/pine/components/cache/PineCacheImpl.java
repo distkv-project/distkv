@@ -33,11 +33,11 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
   public void newItem(String item) {
     try {
       distkvClient.strs().get(item);
-      distkvClient.expire(item,expireTime);
+      distkvClient.expire(item, expireTime);
       set.add(item);
     } catch (KeyNotFoundException | InvalidProtocolBufferException e) {
       distkvClient.strs().put(item, item);
-      distkvClient.expire(item,expireTime);
+      distkvClient.expire(item, expireTime);
       set.add(item);
     }
 
@@ -51,11 +51,12 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
       } else {
         throw new PineCacheKeyNotFoundException("This key has never found in cache");
       }
-    } catch (KeyNotFoundException | InvalidProtocolBufferException e) {
+    } catch (KeyNotFoundException e) {
       throw new PineCacheKeyNotFoundException(
           "This key has never found in cache");
+    } catch (InvalidProtocolBufferException e) {
+      throw new RuntimeException("this is InvalidProtocolBufferException");
     }
     return false;
   }
-
 }
