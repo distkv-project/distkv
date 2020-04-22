@@ -7,7 +7,7 @@ import com.distkv.core.concepts.DistkvValue.TYPE;
 
 public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInts {
 
-  public DistkvIntsImpl(DistkvMapInterface<String, DistkvValue<Integer>> distkvKeyValueMap) {
+  public DistkvIntsImpl(DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 

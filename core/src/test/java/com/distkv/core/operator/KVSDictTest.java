@@ -19,7 +19,7 @@ public class KVSDictTest {
     dict.put("k2", "v2");
     dict.put("k3", "v3");
     store.dicts().put("k1", dict);
-    Assert.assertEquals(dict, store.dicts().get("k1").getValue());
+    Assert.assertEquals(dict, store.dicts().get("k1"));
     Assert.assertEquals(Status.OK, store.dicts().drop("k1"));
     store.dicts().get("k1");
   }

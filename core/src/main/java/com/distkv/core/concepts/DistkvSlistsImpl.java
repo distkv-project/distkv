@@ -5,20 +5,16 @@ import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.exception.SlistMemberNotFoundException;
-import com.distkv.common.exception.SlistMembersDuplicatedException;
 import com.distkv.common.exception.SlistIncrScoreOutOfRangeException;
 import com.distkv.common.exception.SlistTopNumIsNonNegativeException;
 import com.distkv.core.DistkvMapInterface;
 import com.distkv.core.concepts.DistkvValue.TYPE;
 import com.distkv.core.struct.slist.Slist;
-import com.distkv.core.struct.slist.SlistLinkedImpl;
-
 import java.util.List;
-import java.util.LinkedList;
 
 public class DistkvSlistsImpl extends DistkvConcepts<Slist> implements DistkvSlists {
 
-  public DistkvSlistsImpl(DistkvMapInterface<String, DistkvValue<Slist>> distkvKeyValueMap) {
+  public DistkvSlistsImpl(DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
@@ -26,18 +22,6 @@ public class DistkvSlistsImpl extends DistkvConcepts<Slist> implements DistkvSli
   public Slist as(DistkvValue<Slist> distkvValue) {
     return distkvValue.getValue();
   }
-
-  /*@Override
-  public void put(String key, LinkedList<SlistEntity> list) {
-    if (distkvKeyValueMap.containsKey(key)) {
-      throw new DistkvKeyDuplicatedException(key);
-    }
-    Slist slist = new SlistLinkedImpl();
-    if (!slist.put(list)) {
-      throw new SlistMembersDuplicatedException(key);
-    }
-    distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.SLIST.ordinal(),slist));
-  }*/
 
   @Override
   public void put(String key, Slist list) {

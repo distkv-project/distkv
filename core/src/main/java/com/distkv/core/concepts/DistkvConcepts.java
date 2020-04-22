@@ -1,6 +1,5 @@
 package com.distkv.core.concepts;
 
-import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.DistkvMapInterface;
@@ -8,9 +7,9 @@ import com.distkv.core.DistkvMapInterface;
 public abstract class DistkvConcepts<T> {
 
   // The Reference of the key value map.
-  protected DistkvMapInterface<String, DistkvValue<T>> distkvKeyValueMap;
+  protected DistkvMapInterface<String, DistkvValue> distkvKeyValueMap;
 
-  protected DistkvConcepts(DistkvMapInterface<String, DistkvValue<T>> distkvKeyValueMap) {
+  protected DistkvConcepts(DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
     this.distkvKeyValueMap = distkvKeyValueMap;
   }
 
@@ -21,11 +20,12 @@ public abstract class DistkvConcepts<T> {
    * @param key The key.
    * @return Value corresponding to the data type.
    */
+  @SuppressWarnings("unchecked")
   public T get(String key) {
     if (!distkvKeyValueMap.containsKey(key)) {
       throw new KeyNotFoundException(key);
     }
-    return as(distkvKeyValueMap.get(key));
+    return (T)as(distkvKeyValueMap.get(key));
   }
 
   /**

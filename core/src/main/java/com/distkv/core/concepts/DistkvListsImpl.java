@@ -14,7 +14,7 @@ import java.util.Set;
 public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implements DistkvLists {
 
   public DistkvListsImpl(
-      DistkvMapInterface<String, DistkvValue<ArrayList<String>>> distkvKeyValueMap) {
+      DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
