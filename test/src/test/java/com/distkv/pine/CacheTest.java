@@ -20,7 +20,6 @@ public class CacheTest extends BaseTestSupplier {
     PineCache cache = Pine.newCache((long) 1);
     cache.newItem("zhangsan");
     cache.newItem("lisi");
-    Thread.sleep(2000);
     Assert.assertFalse(cache.isExpired("zhangsan"));
     Assert.assertThrows(KeyNotFoundException.class, () ->  distkvClient.strs().get("wangwu"));
     boolean result = RuntimeUtil.waitForCondition(() -> {
