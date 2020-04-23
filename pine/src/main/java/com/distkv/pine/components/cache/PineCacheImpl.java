@@ -39,7 +39,6 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
       distkvClient.expire(item, expireTime);
       set.add(item);
     }
-
   }
 
   @Override
