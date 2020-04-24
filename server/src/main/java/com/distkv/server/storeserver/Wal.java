@@ -5,6 +5,7 @@ import com.distkv.core.segment.LogSegment;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * a WAL Implement.
@@ -12,12 +13,19 @@ import java.util.List;
  * The interface for wal is not stable now.  it will change for upper logical.
  */
 public class Wal {
+
   private LogSegment segment = new LogSegment();
   private int lastCommitIndex;
+  private ReentrantLock writeLock = new ReentrantLock();
 
   // this used by follower
   public void append(LogEntry logEntry) {
-    segment.appendLogEntry(logEntry);
+    try {
+      writeLock.lock();
+      segment.appendLogEntry(logEntry);
+    } finally {
+      writeLock.unlock();
+    }
   }
 
   public LogEntry get(int logIndex) {
