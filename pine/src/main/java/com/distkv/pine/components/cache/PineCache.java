@@ -5,17 +5,17 @@ package com.distkv.pine.components.cache;
  */
 public interface PineCache {
   /**
-   * Put a newItem into cache.
+   * Put a item into cache,and add a expireTime.
    *
-   * @param item newItems is not null
+   * @param item items is not null
    */
   public void newItem(String item);
 
 
   /**
-   * Key(item) if or not exsit in the cache.
+   *  whether the key exsist in  cached .
    *
-   * @param item item is the key if expired
+   * @param item the key if expired
    * @return true expired false not expired
    */
   public Boolean isExpired(String item);

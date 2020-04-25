@@ -24,14 +24,14 @@ public class CacheTest extends BaseTestSupplier {
     Assert.assertFalse(cache.isExpired("zhangsan"));
 
     //test key expired
-    boolean flg = RuntimeUtil.waitForCondition(() -> {
+    boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
         return cache.isExpired("wqi");
       } catch (KeyNotFoundException e) {
         return true;
       }
     }, 3 * 1000);
-    Assert.assertTrue(flg);
+    Assert.assertTrue(result);
     Pine.shutdown();
   }
 
