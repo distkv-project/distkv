@@ -5,9 +5,6 @@ import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.pine.components.AbstractPineHandle;
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class PineCacheImpl extends AbstractPineHandle implements PineCache {
 
   private static final String COMPONENT_TYPE = "CACHE";
@@ -15,8 +12,6 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
   private DistkvClient distkvClient;
 
   private Long expireTime;
-
-  final Set<String> set = new HashSet<>();
 
   public PineCacheImpl(DistkvClient distkvClient, Long expireTime) {
     super();
@@ -33,11 +28,11 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
     try {
       distkvClient.strs().get(item);
       distkvClient.expire(item, expireTime);
-      set.add(item);
-    } catch (KeyNotFoundException | InvalidProtocolBufferException e) {
+    } catch (KeyNotFoundException  e) {
       distkvClient.strs().put(item, item);
       distkvClient.expire(item, expireTime);
-      set.add(item);
+    } catch (InvalidProtocolBufferException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -46,11 +41,7 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
     try {
       distkvClient.strs().get(item);
     } catch (KeyNotFoundException e) {
-      if (set.contains(item)) {
-        return true;
-      } else {
-        throw new KeyNotFoundException("the item is not in cache");
-      }
+      return true;
     } catch (InvalidProtocolBufferException e) {
       throw new RuntimeException(e);
     }
