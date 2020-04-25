@@ -1,6 +1,5 @@
 package com.distkv.pine;
 
-import com.distkv.client.DistkvClient;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.RuntimeUtil;
 import com.distkv.pine.api.Pine;
@@ -10,8 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class CacheTest extends BaseTestSupplier {
-
-  private DistkvClient distkvClient;
 
   @Test
   public void testCache() throws InterruptedException {

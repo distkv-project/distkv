@@ -18,9 +18,7 @@ public class PineRuntime {
    * The distkv sync client.
    */
   private DistkvClient distkvClient;
-
-  private Long expireTime;
-
+  
   public void init(String address) {
     distkvClient = new DefaultDistkvClient(address);
   }

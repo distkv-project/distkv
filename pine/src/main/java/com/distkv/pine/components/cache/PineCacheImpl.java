@@ -11,12 +11,12 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
 
   private DistkvClient distkvClient;
 
-  private Long expireTime;
+  private Long defaultExpireTime;
 
   public PineCacheImpl(DistkvClient distkvClient, Long expireTime) {
     super();
     this.distkvClient = distkvClient;
-    this.expireTime = expireTime;
+    this.defaultExpireTime = expireTime;
   }
 
   protected String getComponentType() {
@@ -27,10 +27,10 @@ public class PineCacheImpl extends AbstractPineHandle implements PineCache {
   public void newItem(String item) {
     try {
       distkvClient.strs().get(item);
-      distkvClient.expire(item, expireTime);
+      distkvClient.expire(item, defaultExpireTime);
     } catch (KeyNotFoundException  e) {
       distkvClient.strs().put(item, item);
-      distkvClient.expire(item, expireTime);
+      distkvClient.expire(item, defaultExpireTime);
     } catch (InvalidProtocolBufferException e) {
       throw new RuntimeException(e);
     }
