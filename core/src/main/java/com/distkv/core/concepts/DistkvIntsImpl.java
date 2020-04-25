@@ -25,9 +25,7 @@ public class DistkvIntsImpl extends DistkvConcepts<Integer> implements DistkvInt
       throw new KeyNotFoundException(key);
     }
     DistkvValue<Integer> distkvValue = super.distkvKeyValueMap.get(key);
-    Integer value = distkvValue.getValue();
-    value += delta;
-    distkvValue.setValue(value);
+    distkvValue.setValue(distkvValue.getValue()+delta);
   }
 
   @Override
