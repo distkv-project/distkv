@@ -1,9 +1,11 @@
 package com.distkv.core.concepts;
 
+import com.distkv.common.exception.DistkvKeyDuplicatedException;
 import com.distkv.common.exception.DistkvListIndexOutOfBoundsException;
 import com.distkv.common.exception.KeyNotFoundException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.DistkvMapInterface;
+import com.distkv.core.concepts.DistkvValue.TYPE;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,17 +13,28 @@ import java.util.Set;
 
 public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implements DistkvLists {
 
-  public DistkvListsImpl(DistkvMapInterface<String, Object> distkvKeyValueMap) {
+  public DistkvListsImpl(
+      DistkvMapInterface<String, DistkvValue> distkvKeyValueMap) {
     super(distkvKeyValueMap);
   }
 
+  @Override
+  public void put(String key, ArrayList<String> value) {
+    if (distkvKeyValueMap.containsKey(key)) {
+      throw new DistkvKeyDuplicatedException(key);
+    }
+    distkvKeyValueMap.put(key, new DistkvValue<>(TYPE.LIST.ordinal(), value));
+  }
 
+  @Override
+  public ArrayList<String> as(DistkvValue<ArrayList<String>> distkvValue) {
+    return distkvValue.getValue();
+  }
 
   @Override
   public String get(String key, int index) throws KeyNotFoundException, IndexOutOfBoundsException {
     try {
-      final List<String> list = get(key);
-      return list.get(index);
+      return get(key).get(index);
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
     } catch (IndexOutOfBoundsException e) {
@@ -33,8 +46,7 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implement
   public List<String> get(String key, int from, int end)
       throws KeyNotFoundException, IndexOutOfBoundsException {
     try {
-      final List<String> list = get(key);
-      return list.subList(from, end);
+      return get(key).subList(from, end);
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
     } catch (IndexOutOfBoundsException e) {
@@ -62,10 +74,9 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implement
 
   @Override
   public Status remove(String key, int index)
-          throws KeyNotFoundException, DistkvListIndexOutOfBoundsException {
+      throws KeyNotFoundException, DistkvListIndexOutOfBoundsException {
     try {
-      List<String> list = get(key);
-      list.remove(index);
+      get(key).remove(index);
       return Status.OK;
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
@@ -76,10 +87,9 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implement
 
   @Override
   public Status remove(String key, int from, int end)
-          throws KeyNotFoundException, DistkvListIndexOutOfBoundsException {
+      throws KeyNotFoundException, DistkvListIndexOutOfBoundsException {
     try {
-      List<String> list = get(key);
-      list.subList(from, end).clear();
+      get(key).subList(from, end).clear();
       return Status.OK;
     } catch (NullPointerException e) {
       throw new KeyNotFoundException(key);
@@ -90,7 +100,7 @@ public class DistkvListsImpl extends DistkvConcepts<ArrayList<String>> implement
 
   @Override
   public Status mremove(String key, List<Integer> indexes)
-          throws KeyNotFoundException, DistkvListIndexOutOfBoundsException {
+      throws KeyNotFoundException, DistkvListIndexOutOfBoundsException {
     final List<String> list = get(key);
     if (list == null) {
       throw new KeyNotFoundException(key);

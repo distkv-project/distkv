@@ -2,7 +2,6 @@ package com.distkv.server.storeserver.runtime.workerpool;
 
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.EXPIRE;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.TTL;
-
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.exception.DistkvException;
@@ -14,6 +13,8 @@ import com.distkv.common.exception.SlistMemberNotFoundException;
 import com.distkv.common.exception.SlistTopNumIsNonNegativeException;
 import com.distkv.common.utils.Status;
 import com.distkv.core.KVStore;
+import com.distkv.core.struct.slist.Slist;
+import com.distkv.core.struct.slist.SlistLinkedImpl;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.CommonProtocol.ExistsResponse;
 import com.distkv.rpc.protobuf.generated.CommonProtocol.TTLResponse;
@@ -45,7 +46,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -559,7 +559,9 @@ public class Worker extends Thread {
             linkedList.add(new SlistEntity(slistPutRequest.getList(i).getMember(),
                 slistPutRequest.getList(i).getScore()));
           }
-          storeEngine.sortLists().put(key, linkedList);
+          Slist slist = new SlistLinkedImpl();
+          slist.put(linkedList);
+          storeEngine.sortLists().put(key, slist);
           status = CommonProtocol.Status.OK;
         } catch (DistkvKeyDuplicatedException e) {
           status = CommonProtocol.Status.DUPLICATED_KEY;
