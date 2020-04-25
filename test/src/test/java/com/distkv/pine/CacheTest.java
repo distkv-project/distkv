@@ -26,7 +26,7 @@ public class CacheTest extends BaseTestSupplier {
     //test key expired
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        return cache.isExpired("wqi");
+        return cache.isExpired("zhangsan");
       } catch (KeyNotFoundException e) {
         return true;
       }
