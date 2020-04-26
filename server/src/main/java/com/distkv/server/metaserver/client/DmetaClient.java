@@ -8,6 +8,8 @@ import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
 import com.distkv.common.NodeInfo;
+import com.distkv.server.metaserver.server.bean.GetGlobalViewRequest;
+import com.distkv.server.metaserver.server.bean.GetGlobalViewResponse;
 import com.distkv.server.metaserver.server.bean.HeartbeatRequest;
 import com.distkv.server.metaserver.server.bean.HeartbeatResponse;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ public class DmetaClient {
 
   private BoltCliClientService cliClientService = null;
 
-  private static Logger logger = LoggerFactory.getLogger(DmetaClient.class);
+  private static Logger LOG = LoggerFactory.getLogger(DmetaClient.class);
 
   public static final String RAFT_GROUP_ID = "META_SERVER";
 
@@ -48,9 +50,8 @@ public class DmetaClient {
           .invokeSync(leader.getEndpoint().toString(), request, HEARTBEAT_TIMEOUT);
       if (!response.isSuccess()) {
         if (response.getRedirect().length() > 0) {
-          PeerId peerId = new PeerId();
-          peerId.parse(response.getRedirect());
-          RouteTable.getInstance().updateLeader(RAFT_GROUP_ID, peerId);
+          refreshLeader();
+          return null;
         }
       }
       return response;
@@ -63,15 +64,33 @@ public class DmetaClient {
     }
   }
 
+  public GetGlobalViewResponse getGlobalView() {
+    // Get leader.
+    final PeerId leader = RouteTable.getInstance().selectLeader(RAFT_GROUP_ID);
+    final GetGlobalViewRequest request = new GetGlobalViewRequest();
+
+    try {
+      GetGlobalViewResponse response = (GetGlobalViewResponse) cliClientService.getRpcClient()
+          .invokeSync(leader.getEndpoint().toString(), request, HEARTBEAT_TIMEOUT);
+      return response;
+    } catch (RemotingException e) {
+      refreshLeader();
+      return null;
+    } catch (InterruptedException e) {
+      return null;
+    }
+
+  }
+
   public void refreshLeader() {
     try {
       if (!RouteTable.getInstance().refreshLeader(cliClientService, RAFT_GROUP_ID, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");
       }
     } catch (InterruptedException e) {
-      logger.error("Refresh leader failed");
+      LOG.error("Refresh leader failed");
     } catch (TimeoutException e) {
-      logger.error("Refresh leader failed");
+      LOG.error("Refresh leader failed");
     }
   }
 

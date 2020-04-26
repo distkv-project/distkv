@@ -1,10 +1,10 @@
 package com.distkv.client;
 
 import com.distkv.asyncclient.DistkvAsyncClient;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.rpc.protobuf.generated.CommonProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol.SlistTopResponse;
+import com.distkv.rpc.protobuf.generated.SlistProtocol.SlistTopResponse;
 import com.distkv.supplier.BaseTestSupplier;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class AsyncSortedListTest extends BaseTestSupplier {
+public class AsyncSlistTest extends BaseTestSupplier {
 
   CommonProtocol.Status status = CommonProtocol.Status.OK;
 
@@ -26,13 +26,13 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     DistkvAsyncClient client = newAsyncDistkvClient();
 
     // TestPut
-    LinkedList<SortedListEntity> list = new LinkedList<>();
-    list.add(new SortedListEntity("xswl", 7));
-    list.add(new SortedListEntity("wlll", 8));
-    list.add(new SortedListEntity("fw", 9));
-    list.add(new SortedListEntity("55", 6));
+    LinkedList<SlistEntity> list = new LinkedList<>();
+    list.add(new SlistEntity("xswl", 7));
+    list.add(new SlistEntity("wlll", 8));
+    list.add(new SlistEntity("fw", 9));
+    list.add(new SlistEntity("55", 6));
     CompletableFuture<DistkvResponse> putFuture =
-        client.sortedLists().put("k1", list);
+        client.slists().put("k1", list);
     putFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -41,7 +41,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestIncScore
     CompletableFuture<DistkvResponse> incFuture =
-        client.sortedLists().incrScore("k1", "fw", 1);
+        client.slists().incrScore("k1", "fw", 1);
     incFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -50,7 +50,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestPutMember
     CompletableFuture<DistkvResponse> putMemberFuture =
-        client.sortedLists().putMember("k1", new SortedListEntity("aa", 10));
+        client.slists().putMember("k1", new SlistEntity("aa", 10));
     putMemberFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -59,7 +59,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestRemoveMember
     CompletableFuture<DistkvResponse> removeFuture =
-        client.sortedLists().removeMember("k1", "xswl");
+        client.slists().removeMember("k1", "xswl");
     removeFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -68,7 +68,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestTop
     CompletableFuture<DistkvResponse> topFuture =
-        client.sortedLists().top("k1", 3);
+        client.slists().top("k1", 3);
     topFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -77,7 +77,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
 
     // TestGetMember
     CompletableFuture<DistkvResponse> getMemberFuture =
-        client.sortedLists().getMember("k1", "55");
+        client.slists().getMember("k1", "55");
     getMemberFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -111,7 +111,7 @@ public class AsyncSortedListTest extends BaseTestSupplier {
     Assert.assertEquals(putMemberResponse.getStatus(), status);
     Assert.assertEquals(removeMemberResponse.getStatus(), status);
     CompletableFuture<DistkvResponse> getMember =
-        client.sortedLists().getMember("k1", "fw");
+        client.slists().getMember("k1", "fw");
     DistkvResponse distkvResponse = getMember.get();
     Assert.assertEquals(topResponse.getResponse()
         .unpack(SlistTopResponse.class).getList(0).getMember(), "aa");

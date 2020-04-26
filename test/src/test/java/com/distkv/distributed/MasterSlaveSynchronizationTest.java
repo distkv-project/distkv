@@ -1,11 +1,11 @@
-package com.distkv.client.masterslavesync;
+package com.distkv.distributed;
 
 import com.distkv.client.DefaultDistkvClient;
 import com.distkv.client.DistkvClient;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.RuntimeUtil;
-import com.distkv.supplier.DmetaTestUtil;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
+import com.distkv.utils.DistkvNodesManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -17,15 +17,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class TestMasterSyncToSlaves {
+public class MasterSlaveSynchronizationTest {
 
-  @Test
+  @Test(singleThreaded = true)
   public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
-    DmetaTestUtil.startAllDmetaProcess();
+    DistkvNodesManager nodesManager = new DistkvNodesManager(3);
+    nodesManager.startAllMetaServers();
     TimeUnit.SECONDS.sleep(1);
-    MasterSlaveSyncTestUtil.startAllProcess();
+    MasterSlaveSyncTestUtil.startAGroupOfStoreServers();
     TimeUnit.SECONDS.sleep(3);
 
     final DistkvClient[] client0 = {null};
@@ -51,8 +52,8 @@ public class TestMasterSyncToSlaves {
     } catch (Exception e) {
       Assert.fail();
     } finally {
-      MasterSlaveSyncTestUtil.stopAllProcess();
-      DmetaTestUtil.stopAllDmetaProcess();
+      MasterSlaveSyncTestUtil.stopAGroupOfStoreServers();
+      nodesManager.stopAllMetaServers();
     }
     System.out.println("m-s sync test over");
   }
@@ -98,20 +99,20 @@ public class TestMasterSyncToSlaves {
 
   public void testSlistPut(DistkvClient client0, DistkvClient client1)
       throws InvalidProtocolBufferException {
-    LinkedList<SortedListEntity> list = new LinkedList<>();
-    list.add(new SortedListEntity("xswl", 9));
-    list.add(new SortedListEntity("wlll", 8));
-    list.add(new SortedListEntity("fw", 9));
-    list.add(new SortedListEntity("55", 6));
-    client0.sortedLists().put("slist_k1", list);
+    LinkedList<SlistEntity> list = new LinkedList<>();
+    list.add(new SlistEntity("xswl", 9));
+    list.add(new SlistEntity("wlll", 8));
+    list.add(new SlistEntity("fw", 9));
+    list.add(new SlistEntity("55", 6));
+    client0.slists().put("slist_k1", list);
 
-    LinkedList<SortedListEntity> tlist = client0.sortedLists().top("slist_k1", 100);
-    Assert.assertEquals(tlist.get(0).getMember(), "fw");
-    Assert.assertEquals(tlist.get(1).getMember(), "xswl");
+    LinkedList<SlistEntity> slist = client0.slists().top("slist_k1", 100);
+    Assert.assertEquals(slist.get(0).getMember(), "fw");
+    Assert.assertEquals(slist.get(1).getMember(), "xswl");
 
-    LinkedList<SortedListEntity> tlist1 = client1.sortedLists().top("slist_k1", 100);
-    Assert.assertEquals(tlist1.get(0).getMember(), "fw");
-    Assert.assertEquals(tlist1.get(1).getMember(), "xswl");
+    LinkedList<SlistEntity> slist1 = client1.slists().top("slist_k1", 100);
+    Assert.assertEquals(slist1.get(0).getMember(), "fw");
+    Assert.assertEquals(slist1.get(1).getMember(), "xswl");
   }
 
   public void testIntPut(DistkvClient client0, DistkvClient client1)

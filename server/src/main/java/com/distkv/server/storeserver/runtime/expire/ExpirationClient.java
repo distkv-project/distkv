@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class ExpirationClient {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(ExpirationClient.class);
+  private static Logger LOG = LoggerFactory.getLogger(ExpirationClient.class);
 
   /// The expire client.
   private Client expireClient;

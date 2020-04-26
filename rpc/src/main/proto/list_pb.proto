@@ -2,8 +2,6 @@ syntax="proto3";
 
 package com.distkv.rpc.protobuf;
 
-import "common_pb.proto";
-
 option java_package="com.distkv.rpc.protobuf.generated";
 option java_outer_classname="ListProtocol";
 option cc_generic_services = true;
@@ -78,4 +76,3 @@ message ListMRemoveRequest {
 
 message ListMRemoveResponse {
 }
-

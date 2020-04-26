@@ -1,5 +1,6 @@
 package com.distkv.client.example;
 
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.google.protobuf.InvalidProtocolBufferException;
 import java.util.LinkedList;
 import java.util.HashSet;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.distkv.client.DefaultDistkvClient;
-import com.distkv.common.entity.sortedList.SortedListEntity;
 
 public class DistkvUsageExample {
   public static void main(String[] args) throws InvalidProtocolBufferException {
@@ -27,19 +27,19 @@ public class DistkvUsageExample {
       map.put("k3", "v3");
       map.put("k4", "v4");
       distkvClient.dicts().put("dict1", map);
-      LinkedList<SortedListEntity> slist = new LinkedList<>();
-      slist.add(new SortedListEntity("a", 10));
-      slist.add(new SortedListEntity("b", 8));
-      slist.add(new SortedListEntity("c", 6));
-      slist.add(new SortedListEntity("d", 4));
-      distkvClient.sortedLists().put("k1", slist);
-      distkvClient.sortedLists().putMember("k1", new SortedListEntity("s",100));
+      LinkedList<SlistEntity> slist = new LinkedList<>();
+      slist.add(new SlistEntity("a", 10));
+      slist.add(new SlistEntity("b", 8));
+      slist.add(new SlistEntity("c", 6));
+      slist.add(new SlistEntity("d", 4));
+      distkvClient.slists().put("k1", slist);
+      distkvClient.slists().putMember("k1", new SlistEntity("s",100));
 
       String strResult = distkvClient.strs().get("k1");
       Set<String> setResult = distkvClient.sets().get("k1");
       List<String> listResult = distkvClient.lists().get("k1");
       Map<String, String> mapResult = distkvClient.dicts().get("dict1");
-      LinkedList<SortedListEntity> slistResult = distkvClient.sortedLists().top("k1", 3);
+      LinkedList<SlistEntity> slistResult = distkvClient.slists().top("k1", 3);
       int intResult = distkvClient.ints().get("k1");
       distkvClient.ints().incr("k1", -2);
       int intResultAfterIncr = distkvClient.ints().get("k1");
@@ -62,8 +62,8 @@ public class DistkvUsageExample {
           "; Second: " + slistResult.get(1).getMember() +
           "; Third: " + slistResult.get(2).getMember() + "; }");
       System.out.println("In the key \"k1\" of distkvClient.sortedLists(), the member name is "
-          + "\"a\", its rank is " + distkvClient.sortedLists().getMember("k1", "a").getSecond()
-          + " and its score is " + distkvClient.sortedLists().getMember("k1", "a").getFirst());
+          + "\"a\", its rank is " + distkvClient.slists().getMember("k1", "a").getSecond()
+          + " and its score is " + distkvClient.slists().getMember("k1", "a").getFirst());
 
       // print ints result
       System.out.println("The result of distkvClient.ints().get(\"k1\") is: " + intResult);

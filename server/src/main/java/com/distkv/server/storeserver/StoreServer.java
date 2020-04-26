@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class StoreServer {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(StoreServer.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StoreServer.class);
 
   private DousiServer dousiServer;
 
@@ -57,10 +57,10 @@ public class StoreServer {
     try {
       dousiServer.run();
     } catch (Throwable e) {
-      LOGGER.error("Failed with the exception: {}", e.toString());
+      LOG.error("Failed with the exception: {}", e.toString());
       System.exit(-1);
     }
-    LOGGER.info("Succeeded to start distkv server on port {}.", storeConfig.getPort());
+    LOG.info("Succeeded to start distkv server on port {}.", storeConfig.getPort());
   }
 
   private void registerAllRpcServices() {
@@ -72,10 +72,10 @@ public class StoreServer {
     try {
       dousiServer.stop();
     } catch (Throwable e) {
-      LOGGER.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
+      LOG.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
       System.exit(-1);
     }
-    LOGGER.debug("Succeeded to shutdown DistkvServer.");
+    LOG.debug("Succeeded to shutdown DistkvServer.");
   }
 
   public static void main(String[] args) {
@@ -85,7 +85,7 @@ public class StoreServer {
       try {
         listeningPort = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
-        LOGGER.error("Failed to start distkv server, because the port is incorrect format: {}",
+        LOG.error("Failed to start distkv server, because the port is incorrect format: {}",
             args[0]);
         System.exit(0);
       }

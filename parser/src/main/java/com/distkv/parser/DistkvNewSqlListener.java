@@ -26,12 +26,12 @@ import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SET_G
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SET_PUT;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SET_PUT_ITEM;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SET_REMOVE_ITEM;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_GET_MEMBER;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_INCR_SCORE;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_PUT;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_PUT_MEMBER;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_REMOVE_MEMBER;
-import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SORTED_LIST_TOP;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SLIST_GET_MEMBER;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SLIST_INCR_SCORE;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SLIST_PUT;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SLIST_PUT_MEMBER;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SLIST_REMOVE_MEMBER;
+import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.SLIST_TOP;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.STR_GET;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.STR_PUT;
 import static com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType.TTL;
@@ -44,7 +44,7 @@ import com.distkv.rpc.protobuf.generated.IntProtocol;
 import com.distkv.rpc.protobuf.generated.DictProtocol;
 import com.distkv.rpc.protobuf.generated.ListProtocol;
 import com.distkv.rpc.protobuf.generated.SetProtocol;
-import com.distkv.rpc.protobuf.generated.SortedListProtocol;
+import com.distkv.rpc.protobuf.generated.SlistProtocol;
 import com.distkv.rpc.protobuf.generated.StringProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvRequest;
 import com.google.common.base.Preconditions;
@@ -450,13 +450,13 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
 
-    SortedListProtocol.SlistPutRequest.Builder slistPutRequestBuilder =
-        SortedListProtocol.SlistPutRequest.newBuilder();
+    SlistProtocol.SlistPutRequest.Builder slistPutRequestBuilder =
+        SlistProtocol.SlistPutRequest.newBuilder();
     final ParseTree sortedListEntityPairsParseTree = ctx.children.get(2);
     final int sortedListEntityPairs = sortedListEntityPairsParseTree.getChildCount();
     for (int i = 0; i < sortedListEntityPairs; i++) {
-      final SortedListProtocol.SortedListEntity.Builder slistBuilder =
-          SortedListProtocol.SortedListEntity.newBuilder();
+      final SlistProtocol.SlistEntity.Builder slistBuilder =
+          SlistProtocol.SlistEntity.newBuilder();
       final ParseTree sortedListEntityParseTree =
           sortedListEntityPairsParseTree.getChild(i);
       Preconditions.checkState(sortedListEntityParseTree.getChildCount() == 2);
@@ -466,11 +466,11 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     }
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
-        .setRequestType(SORTED_LIST_PUT)
+        .setRequestType(SLIST_PUT)
         .setRequest(Any.pack(slistPutRequestBuilder.build()))
         .build();
     parsedResult = new DistkvParsedResult(
-        SORTED_LIST_PUT, request);
+        SLIST_PUT, request);
   }
 
   @Override
@@ -478,16 +478,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
 
-    SortedListProtocol.SlistTopRequest.Builder slistTopRequestBuilder =
-        SortedListProtocol.SlistTopRequest.newBuilder();
+    SlistProtocol.SlistTopRequest.Builder slistTopRequestBuilder =
+        SlistProtocol.SlistTopRequest.newBuilder();
     slistTopRequestBuilder.setCount(Integer.parseInt(ctx.children.get(2).getText()));
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
-        .setRequestType(SORTED_LIST_TOP)
+        .setRequestType(SLIST_TOP)
         .setRequest(Any.pack(slistTopRequestBuilder.build()))
         .build();
     parsedResult = new DistkvParsedResult(
-        SORTED_LIST_TOP, request);
+        SLIST_TOP, request);
   }
 
   @Override
@@ -495,16 +495,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 2);
 
-    SortedListProtocol.SlistIncrScoreRequest.Builder slistIncrScoreRequest =
-        SortedListProtocol.SlistIncrScoreRequest.newBuilder();
+    SlistProtocol.SlistIncrScoreRequest.Builder slistIncrScoreRequest =
+        SlistProtocol.SlistIncrScoreRequest.newBuilder();
     slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
     slistIncrScoreRequest.setDelta(1);
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(0).getText())
-        .setRequestType(SORTED_LIST_INCR_SCORE)
+        .setRequestType(SLIST_INCR_SCORE)
         .setRequest(Any.pack(slistIncrScoreRequest.build()))
         .build();
-    parsedResult = new DistkvParsedResult(SORTED_LIST_INCR_SCORE,
+    parsedResult = new DistkvParsedResult(SLIST_INCR_SCORE,
         request);
   }
 
@@ -513,16 +513,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
 
-    SortedListProtocol.SlistIncrScoreRequest.Builder slistIncrScoreRequest =
-        SortedListProtocol.SlistIncrScoreRequest.newBuilder();
+    SlistProtocol.SlistIncrScoreRequest.Builder slistIncrScoreRequest =
+        SlistProtocol.SlistIncrScoreRequest.newBuilder();
     slistIncrScoreRequest.setMember(ctx.children.get(1).getText());
     slistIncrScoreRequest.setDelta(Integer.parseInt(ctx.children.get(2).getText()));
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(0).getText())
-        .setRequestType(SORTED_LIST_INCR_SCORE)
+        .setRequestType(SLIST_INCR_SCORE)
         .setRequest(Any.pack(slistIncrScoreRequest.build()))
         .build();
-    parsedResult = new DistkvParsedResult(SORTED_LIST_INCR_SCORE,
+    parsedResult = new DistkvParsedResult(SLIST_INCR_SCORE,
         request);
   }
 
@@ -531,16 +531,16 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 4);
 
-    SortedListProtocol.SlistPutMemberRequest.Builder slistPutMemberRequestBuilder =
-        SortedListProtocol.SlistPutMemberRequest.newBuilder();
+    SlistProtocol.SlistPutMemberRequest.Builder slistPutMemberRequestBuilder =
+        SlistProtocol.SlistPutMemberRequest.newBuilder();
     slistPutMemberRequestBuilder.setScore(Integer.parseInt(ctx.children.get(3).getText()));
     slistPutMemberRequestBuilder.setMember(ctx.children.get(2).getText());
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
-        .setRequestType(SORTED_LIST_PUT_MEMBER)
+        .setRequestType(SLIST_PUT_MEMBER)
         .setRequest(Any.pack(slistPutMemberRequestBuilder.build()))
         .build();
-    parsedResult = new DistkvParsedResult(SORTED_LIST_PUT_MEMBER,
+    parsedResult = new DistkvParsedResult(SLIST_PUT_MEMBER,
         request);
   }
 
@@ -549,15 +549,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
 
-    SortedListProtocol.SlistRemoveMemberRequest.Builder removeMemberRequestBuilder =
-        SortedListProtocol.SlistRemoveMemberRequest.newBuilder();
+    SlistProtocol.SlistRemoveMemberRequest.Builder removeMemberRequestBuilder =
+        SlistProtocol.SlistRemoveMemberRequest.newBuilder();
     removeMemberRequestBuilder.setMember(ctx.children.get(2).getText());
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
-        .setRequestType(SORTED_LIST_REMOVE_MEMBER)
+        .setRequestType(SLIST_REMOVE_MEMBER)
         .setRequest(Any.pack(removeMemberRequestBuilder.build()))
         .build();
-    parsedResult = new DistkvParsedResult(SORTED_LIST_REMOVE_MEMBER,
+    parsedResult = new DistkvParsedResult(SLIST_REMOVE_MEMBER,
         request);
   }
 
@@ -566,15 +566,15 @@ public class DistkvNewSqlListener extends DistkvNewSQLBaseListener {
     Preconditions.checkState(parsedResult == null);
     Preconditions.checkState(ctx.children.size() == 3);
 
-    SortedListProtocol.SlistGetMemberRequest.Builder getMemberRequestBuilder =
-        SortedListProtocol.SlistGetMemberRequest.newBuilder();
+    SlistProtocol.SlistGetMemberRequest.Builder getMemberRequestBuilder =
+        SlistProtocol.SlistGetMemberRequest.newBuilder();
     getMemberRequestBuilder.setMember(ctx.children.get(2).getText());
     DistkvRequest request = DistkvRequest.newBuilder()
         .setKey(ctx.children.get(1).getText())
-        .setRequestType(SORTED_LIST_GET_MEMBER)
+        .setRequestType(SLIST_GET_MEMBER)
         .setRequest(Any.pack(getMemberRequestBuilder.build()))
         .build();
-    parsedResult = new DistkvParsedResult(SORTED_LIST_GET_MEMBER,
+    parsedResult = new DistkvParsedResult(SLIST_GET_MEMBER,
         request);
   }
 

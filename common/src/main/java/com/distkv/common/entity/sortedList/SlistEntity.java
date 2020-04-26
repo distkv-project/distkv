@@ -1,11 +1,11 @@
 package com.distkv.common.entity.sortedList;
 
-public class SortedListEntity implements Comparable<SortedListEntity> {
+public class SlistEntity implements Comparable<SlistEntity> {
   private int score;
 
   private String member;
 
-  public SortedListEntity(String member, int score) {
+  public SlistEntity(String member, int score) {
     this.score = score;
     this.member = member;
   }
@@ -27,7 +27,7 @@ public class SortedListEntity implements Comparable<SortedListEntity> {
   }
 
   @Override
-  public int compareTo(SortedListEntity o) {
+  public int compareTo(SlistEntity o) {
     if (o.getScore() != getScore()) {
       return o.getScore() - getScore();
     }
@@ -42,7 +42,7 @@ public class SortedListEntity implements Comparable<SortedListEntity> {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SortedListEntity anotherEntity = (SortedListEntity) o;
+    SlistEntity anotherEntity = (SlistEntity) o;
     return member.equals(anotherEntity.getMember());
   }
 

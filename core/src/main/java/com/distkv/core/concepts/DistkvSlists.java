@@ -1,12 +1,12 @@
 package com.distkv.core.concepts;
 
 import com.distkv.common.DistkvTuple;
-import com.distkv.common.entity.sortedList.SortedListEntity;
+import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.Status;
-import java.util.LinkedList;
+import com.distkv.core.struct.slist.Slist;
 import java.util.List;
 
-public interface DistkvSortedLists {
+public interface DistkvSlists {
 
   /**
    * This method will put a key-value pair to map.
@@ -14,7 +14,7 @@ public interface DistkvSortedLists {
    * @param key The key to store.
    * @param list The SortedList value to store.
    */
-  void put(String key, LinkedList<SortedListEntity> list);
+  void put(String key, Slist list);
 
   /**
    * This method will del a key-value pair to map.
@@ -29,7 +29,7 @@ public interface DistkvSortedLists {
    * @param key   the key to store
    * @param item  the item in sortedList
    */
-  void putMember(String key, SortedListEntity item);
+  void putMember(String key, SlistEntity item);
 
   /**
    * This method will del a item in sortedList
@@ -54,7 +54,7 @@ public interface DistkvSortedLists {
    * @param key   the key to store
    * @param topNum  the size of topList
    */
-  List<SortedListEntity> top(String key, int topNum);
+  List<SlistEntity> top(String key, int topNum);
 
   /**
    * Get the score and ranking values of the given key and member

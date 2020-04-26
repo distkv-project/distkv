@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class StoreRuntime {
 
-  private static Logger LOGGER = LoggerFactory.getLogger(StoreRuntime.class);
+  private static Logger LOG = LoggerFactory.getLogger(StoreRuntime.class);
 
   private StoreConfig config;
 

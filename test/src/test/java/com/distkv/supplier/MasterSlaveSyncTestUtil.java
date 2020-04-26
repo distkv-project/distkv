@@ -1,6 +1,8 @@
 package com.distkv.supplier;
 
 import com.google.common.collect.ImmutableList;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;
@@ -8,7 +10,7 @@ import java.util.List;
 
 public class MasterSlaveSyncTestUtil {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
+  private static final Logger LOG = LoggerFactory.getLogger(MasterSlaveSyncTestUtil.class);
 
   private static final String SUFFIX_JAR_DIR = "server" + File.separator + "target"
       + File.separator + "distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar";
@@ -19,7 +21,10 @@ public class MasterSlaveSyncTestUtil {
 
   private static final int KILL_PROCESS_WAIT_TIMEOUT_SECONDS = 1;
 
-  public static void startAllProcess() {
+  private static Set<Integer> killedProcessIndexes;
+
+  public static void startAGroupOfStoreServers() {
+    killedProcessIndexes = new HashSet<>();
     final File userDir = new File(System.getProperty("user.dir"));
     final String jarDir;
     if (userDir.getPath().contains("test")) {
@@ -55,9 +60,16 @@ public class MasterSlaveSyncTestUtil {
 
   }
 
-  public static void stopAllProcess() {
+  public static void killOneStoreServerRandomly() {
+    TestUtil.stopProcess(processes[0]);
+    killedProcessIndexes.add(0);
+  }
+
+  public static void stopAGroupOfStoreServers() {
     for (int i = 0; i < NODE_NUM; i++) {
-      TestUtil.stopProcess(processes[i]);
+      if (!killedProcessIndexes.contains(i)) {
+        TestUtil.stopProcess(processes[i]);
+      }
     }
   }
 }

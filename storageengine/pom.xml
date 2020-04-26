@@ -11,5 +11,12 @@
 
     <artifactId>storageengine</artifactId>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>native_dependencies</directory>
+            </resource>
+        </resources>
+    </build>
 
 </project>
