@@ -1,5 +1,6 @@
 package com.distkv.pine.api;
 
+import com.distkv.pine.components.cache.PineCache;
 import com.distkv.pine.components.liker.PineLiker;
 import com.distkv.pine.components.topper.PineTopper;
 import com.distkv.pine.runtime.PineRuntime;
@@ -40,6 +41,10 @@ public class Pine {
 
   public static PineLiker newLiker() {
     return runtime.newLiker();
+  }
+
+  public static PineCache newCache(Long expireTime) {
+    return runtime.newCache(expireTime);
   }
 
 }
