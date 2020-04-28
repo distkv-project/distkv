@@ -13,7 +13,7 @@ public class StorageEngine {
   }
 
   public void put(String key, String value) {
-    nativePut(nativePointer,key, value);
+    nativePut(nativePointer, key, value);
   }
 
   public String get(String key) {
