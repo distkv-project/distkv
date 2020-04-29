@@ -10,6 +10,7 @@ public class DistkvDBTest {
 
   //For test
   private static final Map<String, DistkvValue> kvStore = new HashMap<>();
+
   //For test
   static {
     //String
@@ -21,13 +22,8 @@ public class DistkvDBTest {
   }
 
   public static void main(String[] args) throws Exception {
-    DistkvDB distkvDB =new DistkvDB();
-
-    distkvDB.welcome();
-    distkvDB.version();
-    distkvDB.kvPairs(kvStore);
-    distkvDB.closeIO();
-
+    DistkvDB distkvDB = new DistkvDB();
+    distkvDB.save(kvStore);
   }
 
 

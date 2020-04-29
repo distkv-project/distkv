@@ -1,7 +1,10 @@
 package com.distkv.server.storeserver.persistence;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,31 +42,48 @@ public class DistkvDB {
    */
   private static final String DB_ROOT_PATH = System.getProperty("user.dir") + "/distkv.db";
 
-  private DataOutputStream stream;
+  private DataOutputStream writeStream;
+
+  private DataInputStream readStream;
 
   public DistkvDB() {
-    stream = createIO();
   }
 
   /**
    * Save memory data into distkv.db file.
    *
    * @param values The memory data in store engine.
-   * @throws IOException IOException.
+   * @throws IOException IOException
    */
-  public void execute(Map<String, DistkvValue> values) throws IOException {
-    welcome();
-    version();
-    kvPairs(values);
+  public void save(Map<String, DistkvValue> values) throws IOException {
+    writeStream = createWriteIO();
+    writeWelcome();
+    writeVersion();
+    writeKVPairs(values);
     writeEOF();
     writeByteSUM();
-    closeIO();
+    closeWriteIO();
+  }
+
+  /**
+   * Load DB data into memory.
+   *
+   * @throws IOException IOException
+   */
+  public void load() throws IOException {
+    readStream = createReadIO();
+    readWelcome();
+    readVersion();
+    readKVPairs();
+    readEOF();
+    readByteSUM();
+    closeReadIO();
   }
 
   /**
    * Create DataOutputStream.
    */
-  public DataOutputStream createIO() {
+  public DataOutputStream createWriteIO() {
     DataOutputStream dataOutputStream = null;
     try {
       dataOutputStream = new DataOutputStream(
@@ -77,27 +97,43 @@ public class DistkvDB {
   }
 
   /**
+   * Create DataOutputStream.
+   */
+  public DataInputStream createReadIO() {
+    DataInputStream dataInputStream = null;
+    try {
+      dataInputStream = new DataInputStream(
+          new BufferedInputStream(
+              new FileInputStream(DB_ROOT_PATH)));
+    } catch (FileNotFoundException e) {
+      LOGGER.error("Create DataOutputStream failed. {1}", e);
+      System.out.println("Create DataOutputStream failed. " + e);
+    }
+    return dataInputStream;
+  }
+
+  /**
    * Write Welcome words.
    */
-  public void welcome() throws IOException {
-    stream.write(WELCOME_DISTKV.getBytes());
-    LOGGER.info(stream.size() + "  bytes have been written. <WELCOME_DISTKV>");
-    System.out.println(stream.size() + "  bytes have been written. <WELCOME_DISTKV>");
+  public void writeWelcome() throws IOException {
+    writeStream.write(WELCOME_DISTKV.getBytes());
+    LOGGER.info(writeStream.size() + "  bytes have been written. <WELCOME_DISTKV>");
+    System.out.println(writeStream.size() + "  bytes have been written. <WELCOME_DISTKV>");
   }
 
   /**
    * Write DB Version.
    */
-  public void version() throws IOException {
-    stream.write(DB_VERSION.getBytes());
-    LOGGER.info(stream.size() + " bytes have been written. <DB_VERSION>");
-    System.out.println(stream.size() + " bytes have been written. <DB_VERSION>");
+  public void writeVersion() throws IOException {
+    writeStream.write(DB_VERSION.getBytes());
+    LOGGER.info(writeStream.size() + " bytes have been written. <DB_VERSION>");
+    System.out.println(writeStream.size() + " bytes have been written. <DB_VERSION>");
   }
 
   /**
    * Write Key-Value pairs.
    */
-  public void kvPairs(Map<String, DistkvValue> values)
+  public void writeKVPairs(Map<String, DistkvValue> values)
       throws IOException {
     for (Map.Entry<String, DistkvValue> m : values.entrySet()) {
       String key = m.getKey();
@@ -109,9 +145,9 @@ public class DistkvDB {
       writeStringObject(key);
       //save the object value.
       writeValueObject(value);
-      LOGGER.info(stream.size() + " bytes have been written. <Key-Value>");
+      LOGGER.info(writeStream.size() + " bytes have been written. <Key-Value>");
       LOGGER.info("key:" + key + "    value:" + value);
-      System.out.println(stream.size() + " bytes have been written. <Key-Value>");
+      System.out.println(writeStream.size() + " bytes have been written. <Key-Value>");
       System.out.println("key:" + key + "    value:" + value);
     }
   }
@@ -120,16 +156,16 @@ public class DistkvDB {
    * Write the raw data length with fixed 8 bytes. TODO (senyer) Saves an encoded length.
    */
   public void writeLength(long len) throws IOException {
-    stream.writeLong(len);
-    LOGGER.info(stream.size() + " bytes have been written. <Key-Value>");
-    System.out.println(stream.size() + " bytes have been written. <Key-Value>");
+    writeStream.writeLong(len);
+    LOGGER.info(writeStream.size() + " bytes have been written. <Key-Value>");
+    System.out.println(writeStream.size() + " bytes have been written. <Key-Value>");
   }
 
   /**
    * Write the type of value.
    */
   public void writeObjectType(int type) throws IOException {
-    stream.writeByte(type);
+    writeStream.writeByte(type);
   }
 
   /**
@@ -138,7 +174,7 @@ public class DistkvDB {
   public void writeStringObject(String val) throws IOException {
     //TODO (senyer) Improve it.
     writeLength(val.length());
-    stream.writeChars(val);
+    writeStream.writeChars(val);
   }
 
   /**
@@ -191,11 +227,83 @@ public class DistkvDB {
   }
 
   /**
+   * Read Welcome words.
+   */
+  public void readWelcome() throws IOException {
+    //TODO (senyer) Improve it.
+  }
+
+  /**
+   * Read DB Version.
+   */
+  public void readVersion() throws IOException {
+    //TODO (senyer) Improve it.
+  }
+
+  /**
+   * Read Key-Value pairs.
+   */
+  public void readKVPairs() throws IOException {
+    //TODO (senyer) Improve it.
+  }
+
+  /**
+   * Read the raw data length with fixed 8 bytes.
+   */
+  public void readLength() throws IOException {
+    //TODO (senyer) Improve it.
+  }
+
+  /**
+   * Read the type of value.
+   */
+  public void readObjectType() throws IOException {
+    //TODO (senyer) Improve it.
+  }
+
+  /**
+   * Read the raw data length with fixed 8 bytes. TODO (senyer) Saves an encoded length.
+   */
+  public void readStringObject() throws IOException {
+    //TODO (senyer) Improve it.
+  }
+
+  /**
+   * Read the raw data.
+   */
+  public void readValueObject() throws IOException {
+    //TODO (senyer) Finish it. Add
+
+  }
+
+  /**
+   * Read the end mark.
+   */
+  public void readEOF() throws IOException {
+    //TODO (senyer) Finish it.
+  }
+
+  /**
+   * Read the total db file length.
+   */
+  public void readByteSUM() throws IOException {
+    //TODO (senyer) Finish it.
+  }
+
+
+  /**
    * Close DataOutputStream.
    */
-  public void closeIO() throws IOException {
-    System.out.println(stream.size());
-    stream.close();
+  public void closeWriteIO() throws IOException {
+    System.out.println(writeStream.size());
+    writeStream.close();
+  }
+
+  /**
+   * Close DataIntputStream.
+   */
+  public void closeReadIO() throws IOException {
+    readStream.close();
   }
 
 }
