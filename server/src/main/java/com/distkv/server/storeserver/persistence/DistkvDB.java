@@ -10,7 +10,6 @@ import org.dousi.DistkvValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /*
   This is used to save store engine memory data into DB file.
   The Protocol:
@@ -47,6 +46,19 @@ public class DistkvDB {
   }
 
   /**
+   * Save memory data into distkv.db file.
+   *
+   * @param values The memory data in store engine.
+   * @throws IOException IOException.
+   */
+  public void execute(Map<String, DistkvValue> values) throws IOException {
+    welcome();
+    version();
+    kvPairs(values);
+    closeIO();
+  }
+
+  /**
    * Create DataOutputStream.
    */
   public DataOutputStream createIO() {
@@ -57,6 +69,7 @@ public class DistkvDB {
               new FileOutputStream(DB_ROOT_PATH, true)));
     } catch (FileNotFoundException e) {
       LOGGER.error("Create DataOutputStream failed. {1}", e);
+      System.out.println("Create DataOutputStream failed. " + e);
     }
     return dataOutputStream;
   }
@@ -65,16 +78,18 @@ public class DistkvDB {
    * Write Welcome words.
    */
   public void welcome() throws IOException {
-    stream.writeBytes(WELCOME_DISTKV);
+    stream.write(WELCOME_DISTKV.getBytes());
     LOGGER.info(stream.size() + "  bytes have been written. <WELCOME_DISTKV>");
+    System.out.println(stream.size() + "  bytes have been written. <WELCOME_DISTKV>");
   }
 
   /**
    * Write DB Version.
    */
   public void version() throws IOException {
-    stream.writeBytes(DB_VERSION);
+    stream.write(DB_VERSION.getBytes());
     LOGGER.info(stream.size() + " bytes have been written. <DB_VERSION>");
+    System.out.println(stream.size() + " bytes have been written. <DB_VERSION>");
   }
 
   /**
@@ -83,11 +98,19 @@ public class DistkvDB {
   public void kvPairs(Map<String, DistkvValue> values)
       throws IOException {
     for (Map.Entry<String, DistkvValue> m : values.entrySet()) {
+      String key = m.getKey();
+      DistkvValue value = m.getValue();
       //TODO (senyer) save the expire time
-
-      stream.writeBytes(m.getKey());
+      //save object type.
+      writeObjectType(value.getType());
+      //save the key.
+      writeStringObject(key);
+      //save the object value.
+      writeValueObject(value);
       LOGGER.info(stream.size() + " bytes have been written. <Key-Value>");
-      LOGGER.info("key:" + m.getKey() + "    value:" + m.getValue());
+      LOGGER.info("key:" + key + "    value:" + value);
+      System.out.println(stream.size() + " bytes have been written. <Key-Value>");
+      System.out.println("key:" + key + "    value:" + value);
     }
   }
 
@@ -97,6 +120,7 @@ public class DistkvDB {
   public void writeLength(long len) throws IOException {
     stream.writeLong(len);
     LOGGER.info(stream.size() + " bytes have been written. <Key-Value>");
+    System.out.println(stream.size() + " bytes have been written. <Key-Value>");
   }
 
   /**
@@ -104,21 +128,50 @@ public class DistkvDB {
    */
   public void writeObjectType(int type) throws IOException {
     stream.writeByte(type);
-    //TODO (senyer) Finish it.
   }
 
   /**
    * Write the raw data length with fixed 8 bytes. TODO (senyer) Saves an encoded length.
    */
-  public void writeStringObject(long len) throws IOException {
-    //TODO (senyer) Finish it.
+  public void writeStringObject(String val) throws IOException {
+    //TODO (senyer) Improve it.
+    writeLength(val.length());
+    stream.writeChars(val);
   }
 
   /**
    * Write the raw data. TODO (senyer) Saves an encoded object.
    */
-  public void writeValueObject(Object object) throws IOException {
-    //TODO (senyer) Finish it.
+  public void writeValueObject(DistkvValue val) throws IOException {
+    //TODO (senyer) Finish it. Add
+    int type = val.getType();
+    Object value = val.getValue();
+
+    switch (type) {
+      case ValueType.STRING:
+        /* Save a string value */
+        writeStringObject(String.valueOf(value));
+        break;
+      case ValueType.LIST:
+        /* Save a list value */
+        break;
+      case ValueType.SET:
+        /* Save a set value */
+        break;
+      case ValueType.DICT:
+        /* Save a dict value */
+        break;
+      case ValueType.SLIST:
+        /* Save a slist value */
+        break;
+      case ValueType.INTS:
+        /* Save a ints value */
+        break;
+      default:
+        LOGGER.warn("Unknown value type.");
+        System.err.println("Unknown value type.");
+        break;
+    }
   }
 
   /**
@@ -139,6 +192,8 @@ public class DistkvDB {
    * Close DataOutputStream.
    */
   public void closeIO() throws IOException {
+    System.out.println(stream.size());
     stream.close();
   }
+
 }
