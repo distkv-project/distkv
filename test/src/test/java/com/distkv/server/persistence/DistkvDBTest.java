@@ -1,7 +1,7 @@
 package com.distkv.server.persistence;
 
+import com.distkv.server.storeserver.persistence.DistkvDB;
 import com.distkv.server.storeserver.persistence.ValueType;
-import java.io.DataOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import org.dousi.DistkvValue;
@@ -21,11 +21,13 @@ public class DistkvDBTest {
   }
 
   public static void main(String[] args) throws Exception {
-    /*DataOutputStream stream = createStream();
-    welcome(stream);
-    version(stream);
-    kvPairs(stream,kvStore);
-    closeStream(stream);*/
+    DistkvDB distkvDB =new DistkvDB();
+
+    distkvDB.welcome();
+    distkvDB.version();
+    distkvDB.kvPairs(kvStore);
+    distkvDB.closeIO();
+
   }
 
 
