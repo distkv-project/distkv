@@ -55,6 +55,8 @@ public class DistkvDB {
     welcome();
     version();
     kvPairs(values);
+    writeEOF();
+    writeByteSUM();
     closeIO();
   }
 
