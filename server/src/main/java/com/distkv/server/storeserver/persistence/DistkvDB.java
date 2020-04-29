@@ -106,8 +106,8 @@ public class DistkvDB {
           new BufferedInputStream(
               new FileInputStream(DB_ROOT_PATH)));
     } catch (FileNotFoundException e) {
-      LOGGER.error("Create DataOutputStream failed. {1}", e);
-      System.out.println("Create DataOutputStream failed. " + e);
+      LOGGER.error("Create DataInputStream failed. {1}", e);
+      System.out.println("Create DataInputStream failed. " + e);
     }
     return dataInputStream;
   }
