@@ -1,15 +1,15 @@
 package com.distkv.core.concepts;
 
 /**
- * DistkvValue object save the storage information of all distkv data structures.
- * Including type and value objects.
+ * DistkvValue object save the storage information of all distkv data structures. Including type and
+ * value objects.
  */
 public class DistkvValue<T> {
 
   private int type;
   private T value;
 
-  enum TYPE {
+  public enum TYPE {
     STRING,
     LIST,
     DICT,
