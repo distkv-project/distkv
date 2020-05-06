@@ -3,9 +3,11 @@ package com.distkv.server.view;
 import com.distkv.common.Constants;
 import com.distkv.common.NodeInfo;
 import com.distkv.common.NodeState;
+import org.apache.commons.lang.math.RandomUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,8 +24,11 @@ public class NodeTable implements Serializable {
    */
   private ConcurrentHashMap<String, NodeInfo> nodeTable;
 
+  private volatile boolean hasMaster;
+
   public NodeTable() {
     nodeTable = new ConcurrentHashMap<>();
+    hasMaster = false;
   }
 
   public void putNodeInfo(NodeInfo nodeInfo) {
@@ -59,5 +64,37 @@ public class NodeTable implements Serializable {
 
   public boolean isEmpty() {
     return nodeTable.isEmpty();
+  }
+
+  public void selectMaster() {
+    if (nodeTable.size() == 0) {
+      return;
+    }
+
+    if (hasMaster != false) {
+      //1. find now master.
+      NodeInfo oldMaster = null;
+      for (NodeInfo nodeInfo : nodeTable.values()) {
+        if (nodeInfo.isMaster()) {
+          oldMaster = nodeInfo;
+        }
+      }
+      synchronized (oldMaster) {
+        //2. judge master state.
+        if (oldMaster.getState() == NodeState.DEAD) {
+          //3. select a master node.
+          nodeTable.remove(oldMaster.getAddress());
+          getActiveNode().setIsMaster(true);
+        }
+      }
+    } else {
+      getActiveNode().setIsMaster(true);
+    }
+  }
+
+  public NodeInfo getActiveNode() {
+    int randomKey = RandomUtils.nextInt(nodeTable.size());
+    NodeInfo nodeInfo = (NodeInfo) nodeTable.values().toArray()[randomKey];
+    return nodeInfo;
   }
 }
