@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 public class CacheTest extends BaseTestSupplier {
 
   @Test
-  public void testCache() throws InterruptedException {
+  public void testCache() {
     Pine.init(getListeningAddress());
 
     PineCache cache = Pine.newCache((long) 1000);

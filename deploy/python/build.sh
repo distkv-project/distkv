@@ -6,7 +6,9 @@ set -e
 
 # install
 pushd ../../
-mvn clean install -DskipTests
+
+# Execute build the jars.
+./build.sh
 
 # copy distkv-server jar to wheel dist.
 cp server/target/distkv-server-0.1.4-SNAPSHOT-jar-with-dependencies.jar deploy/python/dkv/jars/distkv-server.jar

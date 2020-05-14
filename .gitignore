@@ -57,3 +57,6 @@ site
 
 # cpp
 cpp/cmake-build-debug
+
+# storage_engine
+storageengine/native_dependencies/
