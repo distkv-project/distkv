@@ -16,7 +16,7 @@ jobs:
       - name: install the dependencies
         run: ./scripts/install_dependencies.sh
       - name: package Distkv
-        run: mvn -T 4 clean install -DskipTests
+        run: ./build.sh
       - name: distkv test case result
         run: mvn test
       - name: report the result of code coverage
