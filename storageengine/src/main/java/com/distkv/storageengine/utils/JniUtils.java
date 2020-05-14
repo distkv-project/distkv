@@ -35,7 +35,7 @@ public class JniUtils {
   }
 
   /**
-   * This is a hack to reset library path at runtime. Please don't use it outside of ray
+   * This is a hack to reset library path at runtime.
    */
   public static synchronized void resetLibraryPath(String libPath) {
     if (Strings.isNullOrEmpty(libPath)) {
