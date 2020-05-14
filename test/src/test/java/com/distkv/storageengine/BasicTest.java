@@ -11,5 +11,6 @@ public class BasicTest {
     engine.put("k1", "v1");
     engine.put("k2", "v2");
     Assert.assertEquals(engine.get("k1"), "v1");
+    Assert.assertEquals(engine.get("k2"), "v2");
   }
 }
