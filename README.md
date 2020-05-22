@@ -1,5 +1,5 @@
 <div align=left>
-    <img src="docs/res/distkv_logo.png" width="282" height="170"> 
+    <img src="https://distkv.com/images/distkv-logo.png" width="282" height="170"> 
 </div>
 
 [![distkv build](https://github.com/distkv-project/distkv/workflows/distkv_build/badge.svg)](https://github.com/distkv-project/distkv/actions)
@@ -75,7 +75,7 @@ Now we support both `Java Client SDK` and `Java Async Client SDK`. We are workin
 
 # Who Is Using
 <div align=left>
-    <img src="docs/res/who_is_using_logos/yige_logo.png" width="200" height="200"> 
+    <img src="https://distkv.com/images/who_is_using_logos/yige_logo.png" width="200" height="200"> 
 </div>
 
 # Getting Involved
