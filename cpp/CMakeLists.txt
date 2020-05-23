@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(JNI REQUIRED)
 
-set(THIRDPARTY_DIRS thirdparty/)
-set(SKIPLIST_SOURCE_FILES thirdparty/skiplist/src)
-include_directories(${JNI_INCLUDE_DIRS}, ${THIRDPARTY_DIRS})
+set(SKIPLIST_HEADER_DIR thirdparty/skiplist/include)
+set(SKIPLIST_SOURCE_FILES thirdparty/skiplist/src/skiplist.cc)
+include_directories(${JNI_INCLUDE_DIRS}, ${SKIPLIST_HEADER_DIR})
 
 
 include_directories(src)

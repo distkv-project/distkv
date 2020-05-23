@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "skiplist/include/sl_map.h"
+#include "sl_map.h"
 
 
 namespace distkv {
