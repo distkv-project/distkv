@@ -5,6 +5,9 @@
 #include <string>
 #include <unordered_map>
 
+#include "skiplist/include/sl_map.h"
+
+
 namespace distkv {
 
 class StorageEngine {
@@ -12,15 +15,21 @@ class StorageEngine {
 
  public:
   void Put(const std::string &key, const std::string &value) {
-    store_[key] = value;
+    store_.insert(std::make_pair(key, value));
   }
 
   std::string Get(const std::string &key) {
-    return store_[key];
+    auto it = store_.find(key);
+    if (it == store_.end()) {
+      // Not found.
+      return std::string();
+    }
+
+    return it->second;
   }
 
  private:
-  std::unordered_map <std::string, std::string> store_;
+  sl_map<std::string, std::string> store_;
 };
 
 } // namespace distkv
