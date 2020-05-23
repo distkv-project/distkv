@@ -7,7 +7,7 @@ public class BasicTest {
 
   @Test
   public void testPutAndGet() {
-    StorageEngine engine = new StorageEngine();
+    StorageEngine engine = new StorageEngineNativeImpl();
     engine.put("k1", "v1");
     engine.put("k2", "v2");
     Assert.assertEquals(engine.get("k1"), "v1");
