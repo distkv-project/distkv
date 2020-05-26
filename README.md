@@ -1,15 +1,15 @@
 <div align=left>
-    <img src="docs/res/distkv_logo.png" width="282" height="170"> 
+    <img src="https://distkv.com/images/distkv-logo.png" width="282" height="170"> 
 </div>
 
 [![distkv build](https://github.com/distkv-project/distkv/workflows/distkv_build/badge.svg)](https://github.com/distkv-project/distkv/actions)
 [![codebeat badge](https://codebeat.co/badges/4d3ca0ed-06a6-4f43-b866-2b663e65e0f4)](https://codebeat.co/projects/github-com-distkv-project-distkv-master) 
 [![codecov](https://codecov.io/gh/distkv-project/distkv/branch/master/graph/badge.svg)](https://codecov.io/gh/distkv-project/distkv)
 
-A distributed key-value in-memory database system with table concept.
+A distributed key-value database system with table concept.
 
 # Project Description
-`Distkv` project is a distributed key-value in-memory database system. Besides these features, `Distkv` supports table concept which looks like tables in relational databases. It also supports a rich ecosystem, named `Pine`, which has many easy-to-use and out-of-the-box components for Web application and micro-service.
+`Distkv` project is a distributed key-value database system. Besides these features, `Distkv` supports table concept which looks like tables in relational databases. It also supports a rich ecosystem, named `Pine`, which has many easy-to-use and out-of-the-box components for Web application and micro-service.
 
 Full document is https://distkv.com
 
@@ -75,7 +75,7 @@ Now we support both `Java Client SDK` and `Java Async Client SDK`. We are workin
 
 # Who Is Using
 <div align=left>
-    <img src="docs/res/who_is_using_logos/yige_logo.png" width="200" height="200"> 
+    <img src="https://distkv.com/images/who_is_using_logos/yige_logo.png" width="200" height="200"> 
 </div>
 
 # Getting Involved

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 
 public class WorkerPool {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(WorkerPool.class);
+  private static final Logger LOG = LoggerFactory.getLogger(WorkerPool.class);
 
   private final int shardNum;
 
@@ -37,7 +37,7 @@ public class WorkerPool {
       worker.post(new InternalRequest(request, completableFuture));
     } catch (InterruptedException e) {
       // TODO(qwang): Should be an assert here.
-      LOGGER.error("Failed to post request to worker pool, key is {}", key);
+      LOG.error("Failed to post request to worker pool, key is {}", key);
 
     }
   }

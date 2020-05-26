@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 @Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(IntProxyTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(IntProxyTest.class);
 
   @Test
   public void testPutAndGetIncr() throws InvalidProtocolBufferException {
@@ -65,7 +65,7 @@ public class IntProxyTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       } catch (InvalidProtocolBufferException e) {
-        LOGGER.error("Failed to unpack response. {1}", e);
+        LOG.error("Failed to unpack response. {1}", e);
         return false;
       }
     }, 30 * 1000);

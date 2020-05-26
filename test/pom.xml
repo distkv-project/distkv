@@ -36,7 +36,6 @@
             <artifactId>distkv-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.distkv</groupId>
             <artifactId>distkv-client</artifactId>
@@ -54,11 +53,15 @@
         </dependency>
         <dependency>
             <groupId>com.distkv</groupId>
+            <artifactId>distkv-storageengine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.distkv</groupId>
             <artifactId>distkv-server</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.dousi</groupId>
             <artifactId>dousi-protocol</artifactId>

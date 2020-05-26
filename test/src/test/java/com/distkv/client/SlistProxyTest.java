@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 @Test(singleThreaded = true)
 public class SlistProxyTest extends BaseTestSupplier {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SlistProxyTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SlistProxyTest.class);
 
   private DistkvClient distkvClient = null;
 
@@ -96,7 +96,7 @@ public class SlistProxyTest extends BaseTestSupplier {
       } catch (KeyNotFoundException e) {
         return true;
       } catch (InvalidProtocolBufferException e) {
-        LOGGER.error("Failed to unpack response. {1}", e);
+        LOG.error("Failed to unpack response. {1}", e);
         return false;
       }
     }, 30 * 1000);

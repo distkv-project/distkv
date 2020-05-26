@@ -3,7 +3,7 @@ package com.distkv.core.concepts;
 import com.distkv.common.DistkvTuple;
 import com.distkv.common.entity.sortedList.SlistEntity;
 import com.distkv.common.utils.Status;
-import java.util.LinkedList;
+import com.distkv.core.struct.slist.Slist;
 import java.util.List;
 
 public interface DistkvSlists {
@@ -14,7 +14,7 @@ public interface DistkvSlists {
    * @param key The key to store.
    * @param list The SortedList value to store.
    */
-  void put(String key, LinkedList<SlistEntity> list);
+  void put(String key, Slist list);
 
   /**
    * This method will del a key-value pair to map.

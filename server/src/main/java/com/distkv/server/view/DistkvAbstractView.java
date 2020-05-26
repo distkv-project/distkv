@@ -10,7 +10,7 @@ public abstract class DistkvAbstractView {
   /**
    * Map storing node table.
    */
-  private ConcurrentHashMap<String, NodeTable> map = new ConcurrentHashMap<>();
+  protected ConcurrentHashMap<String, NodeTable> map = new ConcurrentHashMap<>();
 
   protected void put(String key, NodeTable value) {
     map.put(key, value);
