@@ -4,6 +4,7 @@ import com.distkv.core.concepts.DistkvValue;
 import com.distkv.server.storeserver.persistence.DistkvDB;
 import com.distkv.server.storeserver.persistence.ValueType;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +45,7 @@ public class DistkvDBTest {
   public static void main(String[] args) throws Exception {
     DistkvDB distkvDB = new DistkvDB();
     distkvDB.save(kvStore);
+    distkvDB.load();
   }
 
 

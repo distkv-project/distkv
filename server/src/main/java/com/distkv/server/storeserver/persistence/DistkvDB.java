@@ -46,6 +46,8 @@ public class DistkvDB {
    */
   private static final String DB_VERSION = "0001";
 
+  private static int READ_SUM = 0;
+
   /*
    * Defined DB store path.
    */
@@ -82,10 +84,10 @@ public class DistkvDB {
     readStream = createReadIO();
     readWelcome();
     readVersion();
-    readKVPairs();
-    readEOF();
-    readByteSUM();
-    closeReadIO();
+    //readKVPairs();
+    //readEOF();
+    //readByteSUM();
+    //closeReadIO();
   }
 
   /**
@@ -125,7 +127,6 @@ public class DistkvDB {
    */
   public void writeWelcome() throws IOException {
     writeStream.write(WELCOME_DISTKV.getBytes());
-    TOTAL_SUM += WELCOME_DISTKV.length();
     LOGGER.info(writeStream.size() + "  bytes have been written. <WELCOME_DISTKV>");
     System.out.println(writeStream.size() + "  bytes have been written. <WELCOME_DISTKV>");
   }
@@ -291,14 +292,26 @@ public class DistkvDB {
    * Read Welcome words.
    */
   public void readWelcome() throws IOException {
-    //TODO (senyer) Improve it.
+    int length = WELCOME_DISTKV.length();
+    byte[] welcomeStr = new byte[length];
+    int readLen = readStream.read(welcomeStr, 0, length);
+    System.out.println(readLen);
+    System.out.println(new String(welcomeStr));
+    READ_SUM += readLen;
+    System.out.println("已读长度： " + READ_SUM);
   }
 
   /**
    * Read DB Version.
    */
   public void readVersion() throws IOException {
-    //TODO (senyer) Improve it.
+    int length = DB_VERSION.length();
+    byte[] versionStr = new byte[length];
+    int readLen = readStream.read(versionStr, 0, length);
+    System.out.println(readLen);
+    System.out.println(new String(versionStr));
+    READ_SUM += readLen;
+    System.out.println("已读长度： " + READ_SUM);
   }
 
   /**
