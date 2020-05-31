@@ -6,6 +6,7 @@ import com.distkv.common.utils.NetUtil;
 import com.distkv.core.KVStore;
 import com.distkv.core.KVStoreImpl;
 import com.distkv.server.storeserver.RunningMode;
+import com.distkv.server.storeserver.persistence.DistkvDB;
 import com.distkv.server.storeserver.runtime.expire.ExpirationManager;
 import com.distkv.server.storeserver.runtime.heartbeat.HeartbeatManager;
 import com.distkv.server.storeserver.runtime.slave.SlaveClient;
@@ -35,6 +36,8 @@ public class StoreRuntime {
 
   private WorkerPool workerPool;
 
+  private DistkvDB distkvDB;
+
   private volatile ConcurrentHashMap<String, SlaveClient> slaveClients;
 
   private volatile NodeInfo nodeInfo;
@@ -44,6 +47,8 @@ public class StoreRuntime {
     storeEngine = new KVStoreImpl();
     expirationManager = new ExpirationManager(config);
     slaveClients = new ConcurrentHashMap<>();
+    distkvDB = new DistkvDB();
+
     NodeId nodeId = NodeId.nil();
     nodeInfo = NodeInfo.newBuilder()
         .setAddress(String.format("distkv://%s:%d", NetUtil.getLocalIp(), config.getPort()))
@@ -74,6 +79,10 @@ public class StoreRuntime {
 
   public ExpirationManager getExpirationManager() {
     return expirationManager;
+  }
+
+  public DistkvDB getDistkvDB() {
+    return distkvDB;
   }
 
   public ConcurrentHashMap<String, SlaveClient> getAllSlaveClients() {
