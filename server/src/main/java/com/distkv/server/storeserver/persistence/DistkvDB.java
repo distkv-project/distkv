@@ -1,5 +1,6 @@
 package com.distkv.server.storeserver.persistence;
 
+import com.distkv.core.concepts.DistkvValue;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -8,8 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
-import org.dousi.DistkvValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,11 @@ import org.slf4j.LoggerFactory;
 public class DistkvDB {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DistkvDB.class);
+
+  /*
+   * Defined file total length.
+   */
+  private static long TOTAL_SUM = 0;
 
   /*
    * Defined file `first word`.
@@ -117,6 +123,7 @@ public class DistkvDB {
    */
   public void writeWelcome() throws IOException {
     writeStream.write(WELCOME_DISTKV.getBytes());
+    TOTAL_SUM += WELCOME_DISTKV.length();
     LOGGER.info(writeStream.size() + "  bytes have been written. <WELCOME_DISTKV>");
     System.out.println(writeStream.size() + "  bytes have been written. <WELCOME_DISTKV>");
   }
@@ -155,8 +162,13 @@ public class DistkvDB {
   /**
    * Write the raw data length with fixed 8 bytes. TODO (senyer) Saves an encoded length.
    */
-  public void writeLength(long len) throws IOException {
-    writeStream.writeLong(len);
+  public void writeLength(long len) {
+    try {
+      writeStream.writeLong(len);
+    } catch (IOException e) {
+      LOGGER.error("Write length failed. {1}",e);
+    }
+    TOTAL_SUM += len;
     LOGGER.info(writeStream.size() + " bytes have been written. <Key-Value>");
     System.out.println(writeStream.size() + " bytes have been written. <Key-Value>");
   }
@@ -171,10 +183,21 @@ public class DistkvDB {
   /**
    * Write the raw data length with fixed 8 bytes. TODO (senyer) Saves an encoded length.
    */
-  public void writeStringObject(String val) throws IOException {
+  public void writeStringObject(String val) {
     //TODO (senyer) Improve it.
     writeLength(val.length());
-    writeStream.writeChars(val);
+    try {
+      writeStream.writeChars(val);
+    } catch (IOException e) {
+      LOGGER.error("Write string object failed. {1}",e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void writeListObject(Object val) {
+    List<String> listVal = (List<String>) val;
+    writeLength(listVal.size());
+    listVal.forEach(this::writeStringObject);
   }
 
   /**
@@ -191,7 +214,7 @@ public class DistkvDB {
         writeStringObject(String.valueOf(value));
         break;
       case ValueType.LIST:
-        /* Save a list value */
+        writeListObject(value);
         break;
       case ValueType.SET:
         /* Save a set value */

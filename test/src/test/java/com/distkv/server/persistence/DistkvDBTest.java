@@ -1,10 +1,11 @@
 package com.distkv.server.persistence;
 
+import com.distkv.core.concepts.DistkvValue;
 import com.distkv.server.storeserver.persistence.DistkvDB;
 import com.distkv.server.storeserver.persistence.ValueType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.dousi.DistkvValue;
 
 public class DistkvDBTest {
 
@@ -19,6 +20,9 @@ public class DistkvDBTest {
     kvStore.put("k3", new DistkvValue(ValueType.STRING, "v3333"));
     kvStore.put("k4", new DistkvValue(ValueType.STRING, "v4444"));
     kvStore.put("k5", new DistkvValue(ValueType.STRING, "v5555"));
+    //List
+    kvStore.put("k6", new DistkvValue(ValueType.LIST, Arrays.asList("list1","list2","list3")));
+    kvStore.put("k7", new DistkvValue(ValueType.LIST, Arrays.asList("list4","list5","list6")));
   }
 
   public static void main(String[] args) throws Exception {
