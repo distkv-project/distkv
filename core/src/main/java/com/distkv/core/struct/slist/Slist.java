@@ -18,6 +18,13 @@ public interface Slist {
   int size();
 
   /**
+   * Get all SlistEntity list of this sorted list.
+   *
+   * @return SlistEntity list.
+   */
+  List<SlistEntity>  get();
+
+  /**
    * Put a list with scores into this sorted list.
    *
    * @param entities The entities of the sorted list to be putted.
