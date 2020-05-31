@@ -227,11 +227,17 @@ public class DistkvDB {
   @SuppressWarnings("unchecked")
   public void writeSlistObject(Object val) {
     Slist slistVal = (Slist) val;
+    slistVal.subList(1, -1);
 
   }
 
   @SuppressWarnings("unchecked")
   public void writeIntsObject(Object val) {
+    try {
+      writeStream.writeInt((int) val);
+    } catch (IOException e) {
+      LOGGER.error("Write int object failed. {1}", e);
+    }
   }
 
   /**
@@ -264,6 +270,7 @@ public class DistkvDB {
         break;
       case ValueType.INTS:
         /* Save a ints value */
+        writeIntsObject(value);
         break;
       default:
         LOGGER.warn("Unknown value type.");
