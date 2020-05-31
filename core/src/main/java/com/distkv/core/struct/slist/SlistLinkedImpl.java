@@ -37,6 +37,15 @@ public final class SlistLinkedImpl
   }
 
   @Override
+  public List<SlistEntity> get() {
+    final List<SlistEntity> slists = new ArrayList<>();
+    for (Node<SlistEntity> cur = first; cur != null; cur = cur.next) {
+      slists.add(cur.item);
+    }
+    return slists;
+  }
+
+  @Override
   public boolean put(
       List<SlistEntity> sortedListEntities) {
     if (hasDuplicatedMembers(sortedListEntities)) {
@@ -148,12 +157,13 @@ public final class SlistLinkedImpl
   }
 
   private static class Node<E> {
+
     E item;
     SlistLinkedImpl.Node<E> next;
     SlistLinkedImpl.Node<E> prev;
 
     Node(SlistLinkedImpl.Node<E> prev,
-         E element, SlistLinkedImpl.Node<E> next) {
+        E element, SlistLinkedImpl.Node<E> next) {
       this.item = element;
       this.next = next;
       this.prev = prev;
