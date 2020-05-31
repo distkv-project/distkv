@@ -1,6 +1,7 @@
 package com.distkv.server.storeserver.persistence;
 
 import com.distkv.core.concepts.DistkvValue;
+import com.distkv.core.struct.slist.Slist;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -11,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -166,7 +168,7 @@ public class DistkvDB {
     try {
       writeStream.writeLong(len);
     } catch (IOException e) {
-      LOGGER.error("Write length failed. {1}",e);
+      LOGGER.error("Write length failed. {1}", e);
     }
     TOTAL_SUM += len;
     LOGGER.info(writeStream.size() + " bytes have been written. <Key-Value>");
@@ -183,21 +185,53 @@ public class DistkvDB {
   /**
    * Write the raw data length with fixed 8 bytes. TODO (senyer) Saves an encoded length.
    */
-  public void writeStringObject(String val) {
+  public void writeStringObject(Object val) {
+    String strVal = String.valueOf(val);
     //TODO (senyer) Improve it.
-    writeLength(val.length());
+    writeLength(strVal.length());
     try {
-      writeStream.writeChars(val);
+      writeStream.writeChars(strVal);
     } catch (IOException e) {
-      LOGGER.error("Write string object failed. {1}",e);
+      LOGGER.error("Write string object failed. {1}", e);
     }
   }
 
+  /*
+   * Save list object. First of all, save element number,then save every elements.
+   * Elements are stored in length and content by traversing in order.
+   */
   @SuppressWarnings("unchecked")
   public void writeListObject(Object val) {
     List<String> listVal = (List<String>) val;
     writeLength(listVal.size());
     listVal.forEach(this::writeStringObject);
+  }
+
+  @SuppressWarnings("unchecked")
+  public void writeDictObject(Object val) {
+    Map<String, String> dictVal = (Map<String, String>) val;
+    writeLength(dictVal.size());
+    dictVal.forEach((k, v) -> {
+      writeStringObject(k);
+      writeStringObject(v);
+    });
+  }
+
+  @SuppressWarnings("unchecked")
+  public void writeSetObject(Object val) {
+    Set<String> setVal = (Set<String>) val;
+    writeLength(setVal.size());
+    setVal.forEach(this::writeStringObject);
+  }
+
+  @SuppressWarnings("unchecked")
+  public void writeSlistObject(Object val) {
+    Slist slistVal = (Slist) val;
+
+  }
+
+  @SuppressWarnings("unchecked")
+  public void writeIntsObject(Object val) {
   }
 
   /**
@@ -211,16 +245,19 @@ public class DistkvDB {
     switch (type) {
       case ValueType.STRING:
         /* Save a string value */
-        writeStringObject(String.valueOf(value));
+        writeStringObject(value);
         break;
       case ValueType.LIST:
+        /* Save a list value */
         writeListObject(value);
         break;
       case ValueType.SET:
         /* Save a set value */
+        writeSetObject(value);
         break;
       case ValueType.DICT:
         /* Save a dict value */
+        writeDictObject(value);
         break;
       case ValueType.SLIST:
         /* Save a slist value */
