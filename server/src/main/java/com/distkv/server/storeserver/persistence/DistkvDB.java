@@ -45,6 +45,7 @@ public class DistkvDB {
    * Defined DB version.
    */
   private static final String DB_VERSION = "0001";
+
   /*
    * Defined DB store path.
    */
@@ -68,7 +69,6 @@ public class DistkvDB {
     writeWelcome();
     writeVersion();
     writeKVPairs(values);
-    writeEOF();
     writeByteSUM();
     closeWriteIO();
   }
@@ -280,17 +280,11 @@ public class DistkvDB {
   }
 
   /**
-   * Write the end mark.
-   */
-  public void writeEOF() throws IOException {
-    //TODO (senyer) Finish it.
-  }
-
-  /**
    * Write the total db file length.
    */
   public void writeByteSUM() throws IOException {
-    //TODO (senyer) Finish it.
+    int totalSize = writeStream.size();
+    writeStream.writeInt(totalSize);
   }
 
   /**
