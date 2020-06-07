@@ -1,6 +1,6 @@
 package com.distkv.common.id;
 
-import javax.xml.bind.DatatypeConverter;
+import com.distkv.common.utils.HexadecimalUtil;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
@@ -26,7 +26,7 @@ public class PineHandleId implements Serializable {
   }
 
   public String hex() {
-    return DatatypeConverter.printHexBinary(data).toLowerCase();
+    return HexadecimalUtil.parseByte2Hexstr(data).toLowerCase();
   }
 
   @Override
