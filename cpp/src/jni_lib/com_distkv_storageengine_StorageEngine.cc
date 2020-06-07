@@ -25,7 +25,7 @@ jstring NativeStringToJavaString(JNIEnv * env, const std::string &native_string)
  * Method:    nativeInit
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngine_nativeInit
+JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngineNativeImpl_nativeInit
     (JNIEnv *env, jobject o) {
   auto *native_storage_engine_pointer = new distkv::StorageEngine();
   return reinterpret_cast<jlong>(native_storage_engine_pointer);
@@ -36,7 +36,7 @@ JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngine_nativeInit
  * Method:    nativeDestory
  * Signature: (J)J
  */
-JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngine_nativeDestory
+JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngineNativeImpl_nativeDestory
     (JNIEnv *env, jobject o, jlong nativePointer) {
   auto *native_storage_engine_pointer = reinterpret_cast<distkv::StorageEngine *>(nativePointer);
   delete native_storage_engine_pointer;
@@ -47,7 +47,7 @@ JNIEXPORT jlong JNICALL Java_com_distkv_storageengine_StorageEngine_nativeDestor
  * Method:    nativePut
  * Signature: (JLjava/lang/String;Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_distkv_storageengine_StorageEngine_nativePut
+JNIEXPORT void JNICALL Java_com_distkv_storageengine_StorageEngineNativeImpl_nativePut
     (JNIEnv *env, jobject o, jlong nativePointer, jstring key, jstring value) {
   auto *native_storage_engine_pointer = reinterpret_cast<distkv::StorageEngine *>(nativePointer);
   native_storage_engine_pointer->Put(JavaStringToNativeString(env, key), JavaStringToNativeString(env, value));
@@ -58,7 +58,7 @@ JNIEXPORT void JNICALL Java_com_distkv_storageengine_StorageEngine_nativePut
  * Method:    nativeGet
  * Signature: (JLjava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_distkv_storageengine_StorageEngine_nativeGet
+JNIEXPORT jstring JNICALL Java_com_distkv_storageengine_StorageEngineNativeImpl_nativeGet
     (JNIEnv *env, jobject o, jlong nativePointer, jstring key) {
   // TODO(qwang): These JNI methods shouldn't provide string interface, provide bytes instead.
   auto *native_storage_engine_pointer = reinterpret_cast<distkv::StorageEngine *>(nativePointer);
