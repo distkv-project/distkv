@@ -22,7 +22,7 @@
     </modules>
 
     <properties>
-        <dousi.version>0.1.1-SNAPSHOT</dousi.version>
+        <drpc.version>0.1.1-SNAPSHOT</drpc.version>
         <lombok.version>1.18.8</lombok.version>
         <testng.version>7.0.0</testng.version>
         <protobuf.version>3.11.4</protobuf.version>

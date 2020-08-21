@@ -1,9 +1,9 @@
 package com.distkv.server.storeserver.runtime.slave;
 
-import org.dousi.Proxy;
-import org.dousi.api.Client;
-import org.dousi.config.ClientConfig;
-import org.dousi.netty.DousiClient;
+import org.drpc.Proxy;
+import org.drpc.api.Client;
+import org.drpc.config.ClientConfig;
+import org.drpc.netty.DrpcClient;
 import com.distkv.rpc.service.DistkvService;
 
 public class SlaveClient {
@@ -19,7 +19,7 @@ public class SlaveClient {
         .address(serverAddress)
         .build();
 
-    rpcClient = new DousiClient(clientConfig);
+    rpcClient = new DrpcClient(clientConfig);
     rpcClient.open();
     isOpen = true;
     // Setup distkvService proxy.

@@ -19,9 +19,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.dousi</groupId>
-            <artifactId>dousi-all</artifactId>
-            <version>${dousi.version}</version>
+            <groupId>org.drpc</groupId>
+            <artifactId>drpc-all</artifactId>
+            <version>${drpc.version}</version>
         </dependency>
     </dependencies>
 

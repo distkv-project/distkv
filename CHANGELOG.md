@@ -10,7 +10,7 @@
 - Add BSD-3-clause LICENSE ([#422](https://github.com/distkv-project/distkv/pull/422))
 - Support that master sync the requests to slaves ([#435](https://github.com/distkv-project/distkv/pull/435))
 - Upgrade protobuf to proto3 ([#458](https://github.com/distkv-project/distkv/pull/458))
-- Enable io thread only for dousi server ([#460](https://github.com/distkv-project/distkv/pull/460))
+- Enable io thread only for drpc server ([#460](https://github.com/distkv-project/distkv/pull/460))
 - Refine the relationship between worker, worker pool and store runtime ([#467](https://github.com/distkv-project/distkv/pull/467)#)
 - Remove legacy table concept ([#485](https://github.com/distkv-project/distkv/pull/485))
 - Support namespace filter for client to allow key conflicts ([#504](https://github.com/distkv-project/distkv/pull/504))

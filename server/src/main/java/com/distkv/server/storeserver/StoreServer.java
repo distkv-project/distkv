@@ -3,8 +3,8 @@ package com.distkv.server.storeserver;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.distkv.server.storeserver.services.DistkvServiceImpl;
-import org.dousi.DousiServer;
-import org.dousi.config.ServerConfig;
+import org.drpc.DrpcServer;
+import org.drpc.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ public class StoreServer {
 
   private static final Logger LOG = LoggerFactory.getLogger(StoreServer.class);
 
-  private DousiServer dousiServer;
+  private DrpcServer drpcServer;
 
   private StoreRuntime storeRuntime;
 
@@ -36,11 +36,11 @@ public class StoreServer {
 
   public StoreServer(StoreConfig storeConfig) {
     this.storeConfig = storeConfig;
-    ServerConfig dousiServerConfig = ServerConfig.builder()
+    ServerConfig drpcServerConfig = ServerConfig.builder()
         /// Note: This is a very important flag for `StoreServer` because it
         /// affects the threading model of `StoreServer`.
         /// For a `StoreServer`, it should have the rigorous threading model
-        /// for the performance requirements. `Dousi` RPC has its own threading
+        /// for the performance requirements. `Drpc` RPC has its own threading
         /// model with multiple worker threads, and `StoreServer` should have
         /// its own threading model with multiple threads as well. Therefore, it's
         /// hard to manage so many threads to meet our performance requirements if
@@ -48,14 +48,14 @@ public class StoreServer {
         .enableIOThreadOnly(true)
         .port(storeConfig.getPort())
         .build();
-    dousiServer = new DousiServer(dousiServerConfig);
+    drpcServer = new DrpcServer(drpcServerConfig);
     storeRuntime = new StoreRuntime(storeConfig);
     registerAllRpcServices();
   }
 
   public void run() {
     try {
-      dousiServer.run();
+      drpcServer.run();
     } catch (Throwable e) {
       LOG.error("Failed with the exception: {}", e.toString());
       System.exit(-1);
@@ -64,13 +64,13 @@ public class StoreServer {
   }
 
   private void registerAllRpcServices() {
-    dousiServer.registerService(
+    drpcServer.registerService(
         DistkvService.class, new DistkvServiceImpl(this.storeRuntime));
   }
 
   public void shutdown() {
     try {
-      dousiServer.stop();
+      drpcServer.stop();
     } catch (Throwable e) {
       LOG.error("Failed shutdown DistkvServer with the exception: {}", e.toString());
       System.exit(-1);
