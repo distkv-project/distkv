@@ -5,17 +5,17 @@
 set -e
 set -x
 
-# Install dousi RPC.
-DOUSI_REPOSITORY_URL=https://github.com/distkv-project/dousi-rpc.git
-DOUSI_COMMIT_ID=3cdabb087cd5d6c58ed2d9f4128add96074c8aec
+# Install drpc RPC.
+DRPC_REPOSITORY_URL=https://github.com/distkv-project/drpc.git
+DRPC_COMMIT_ID=1fb9f1b15d4c768e5e1548da416d809cdfe5f2ed
 
-git clone ${DOUSI_REPOSITORY_URL} dousi_tmp
-pushd dousi_tmp
-git checkout ${DOUSI_COMMIT_ID}
+git clone ${DRPC_REPOSITORY_URL} drpc
+pushd drpc
+git checkout ${DRPC_COMMIT_ID}
 mvn clean install -DskipTests
 popd
-rm -rf dousi_tmp
+rm -rf drpc
 
-echo "Dousi RPC was installed successfully."
+echo "Drpc RPC was installed successfully."
 
 echo "All dependencies were installed successfully."

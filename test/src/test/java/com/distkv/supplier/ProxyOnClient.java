@@ -1,10 +1,10 @@
 package com.distkv.supplier;
 
 import com.distkv.common.utils.RuntimeUtil;
-import org.dousi.Proxy;
-import org.dousi.api.Client;
-import org.dousi.config.ClientConfig;
-import org.dousi.netty.DousiClient;
+import org.drpc.Proxy;
+import org.drpc.api.Client;
+import org.drpc.config.ClientConfig;
+import org.drpc.netty.DrpcClient;
 
 public class ProxyOnClient<T> implements AutoCloseable {
 
@@ -17,7 +17,7 @@ public class ProxyOnClient<T> implements AutoCloseable {
         .build();
     RuntimeUtil.waitForCondition(() -> {
       try {
-        client = new DousiClient(clientConfig);
+        client = new DrpcClient(clientConfig);
         client.open();
         proxy = new Proxy<>();
         proxy.setInterfaceClass(clazz);

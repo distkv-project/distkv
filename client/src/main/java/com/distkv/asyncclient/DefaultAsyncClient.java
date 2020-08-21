@@ -10,11 +10,11 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol.RequestType;
 import com.distkv.rpc.protobuf.generated.ExpireProtocol.ExpireRequest;
 import com.google.protobuf.Any;
 import java.util.concurrent.CompletableFuture;
-import org.dousi.Proxy;
-import org.dousi.api.Client;
-import org.dousi.config.ClientConfig;
-import org.dousi.exception.DousiConnectionRefusedException;
-import org.dousi.netty.DousiClient;
+import org.drpc.Proxy;
+import org.drpc.api.Client;
+import org.drpc.config.ClientConfig;
+import org.drpc.exception.DrpcConnectionRefusedException;
+import org.drpc.netty.DrpcClient;
 import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.service.DistkvService;
 
@@ -45,10 +45,10 @@ public class DefaultAsyncClient implements DistkvAsyncClient {
         .address(serverAddress)
         .build();
 
-    rpcClient = new DousiClient(clientConfig);
+    rpcClient = new DrpcClient(clientConfig);
     try {
       rpcClient.open();
-    } catch (DousiConnectionRefusedException connectFail) {
+    } catch (DrpcConnectionRefusedException connectFail) {
       throw new DistkvException("Failed to connect to Distkv Server:" + connectFail);
     }
     Proxy<DistkvService> distkvRpcProxy = new Proxy<>();

@@ -5,11 +5,11 @@ import com.distkv.common.exception.DistkvException;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.service.DistkvService;
 import com.distkv.server.storeserver.StoreConfig;
-import org.dousi.Proxy;
-import org.dousi.api.Client;
-import org.dousi.config.ClientConfig;
-import org.dousi.exception.DousiConnectionRefusedException;
-import org.dousi.netty.DousiClient;
+import org.drpc.Proxy;
+import org.drpc.api.Client;
+import org.drpc.config.ClientConfig;
+import org.drpc.exception.DrpcConnectionRefusedException;
+import org.drpc.netty.DrpcClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,10 +35,10 @@ public class ExpirationClient {
     ClientConfig clientConfig = ClientConfig.builder()
         .address(localAddress)
         .build();
-    expireClient = new DousiClient(clientConfig);
+    expireClient = new DrpcClient(clientConfig);
     try {
       expireClient.open();
-    } catch (DousiConnectionRefusedException connectFail) {
+    } catch (DrpcConnectionRefusedException connectFail) {
       throw new DistkvException("Failed to connect to Distkv Server:" + connectFail);
     } finally {
       isConnected = true;
