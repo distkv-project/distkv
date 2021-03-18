@@ -20,7 +20,7 @@ public class BaseTestSupplier {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseTestSupplier.class);
 
-  private static final AtomicInteger PORT = new AtomicInteger(10000);
+  private static final AtomicInteger PORT = new AtomicInteger(20000);
   protected final ThreadLocal<Integer> rpcServerPort =
           ThreadLocal.withInitial(() -> PORT.getAndIncrement());
   protected final ThreadLocal<StoreServer> storeServer = new ThreadLocal<>();
