@@ -38,7 +38,7 @@ public class KVStoreImpl implements KVStore {
   private DistkvSlists slists;
 
   public KVStoreImpl() {
-    distkvKeyValueMap = new DistkvHashMapImpl<>();
+    distkvKeyValueMap = new DistkvNavigableMapImpl<>();
     this.strs = new DistkvStringsImpl(distkvKeyValueMap);
     this.lists = new DistkvListsImpl(distkvKeyValueMap);
     this.sets = new DistkvSetsImpl(distkvKeyValueMap);
