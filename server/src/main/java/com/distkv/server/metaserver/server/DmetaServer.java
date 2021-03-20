@@ -9,8 +9,8 @@ import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
 import com.alipay.sofa.jraft.rpc.RpcServer;
 import com.distkv.server.metaserver.server.processor.GetGlobalViewRequestProcessor;
 import com.distkv.server.metaserver.server.processor.HeartbeatRequestProcessor;
-import org.apache.commons.io.FileUtils;
 import com.distkv.server.metaserver.server.statemachine.MetaStateMachine;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,6 @@ public class DmetaServer {
 
     // make raft RPC and work RPC use same RPC server
     final RpcServer rpcServer = RaftRpcServerFactory.createRaftRpcServer(serverId.getEndpoint());
-    RaftRpcServerFactory.addRaftRequestProcessors(rpcServer);
     // Registration processor
     rpcServer.registerProcessor(new HeartbeatRequestProcessor(this));
     rpcServer.registerProcessor(new GetGlobalViewRequestProcessor(this));
@@ -90,13 +89,14 @@ public class DmetaServer {
     final String initConfStr = args[3];
 
     final NodeOptions nodeOptions = new NodeOptions();
-    // Set the election timeout to 1 second.
+    // 为了测试,调整 snapshot 间隔等参数
+    // 设置选举超时时间为 1 秒
     nodeOptions.setElectionTimeoutMs(1000);
-    // close CLI service.
+    // 关闭 CLI 服务。
     nodeOptions.setDisableCli(false);
-    //30s snapshot
+    // 每隔30秒做一次 snapshot
     nodeOptions.setSnapshotIntervalSecs(30);
-    // parser
+    // 解析参数
     final PeerId serverId = new PeerId();
     if (!serverId.parse(serverIdStr)) {
       throw new IllegalArgumentException("Fail to parse serverId:" + serverIdStr);
@@ -105,12 +105,12 @@ public class DmetaServer {
     if (!initConf.parse(initConfStr)) {
       throw new IllegalArgumentException("Fail to parse initConf:" + initConfStr);
     }
-    // set origin conf
+    // 设置初始集群配置
     nodeOptions.setInitialConf(initConf);
 
-    // start
-    final DmetaServer counterServer = new DmetaServer(dataPath, groupId, serverId, nodeOptions);
-    System.out.println("Started DMeta server at port:"
-        + counterServer.getNode().getNodeId().getPeerId().getPort());
+    // 启动
+    final DmetaServer dmetaServer = new DmetaServer(dataPath, groupId, serverId, nodeOptions);
+    System.out.println("Started counter server at port:"
+        + dmetaServer.getNode().getNodeId().getPeerId().getPort());
   }
 }

@@ -48,10 +48,9 @@ public class HeartbeatRequestProcessor implements RpcProcessor<HeartbeatRequest>
 
     try {
       final Task task = new Task();
-      task.setDone(closure);
       task.setData(ByteBuffer
           .wrap(SerializerManager.getSerializer(SerializerManager.Hessian2).serialize(request)));
-
+      task.setDone(closure);
       // apply task to raft group.
       dmetaServer.getNode().apply(task);
     } catch (final CodecException e) {

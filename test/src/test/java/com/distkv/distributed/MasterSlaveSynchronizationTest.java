@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class MasterSlaveSynchronizationTest {
 
   @Test(singleThreaded = true)
-  public void mainTest() throws InterruptedException, InvalidProtocolBufferException {
+  public void mainTest() throws InterruptedException {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "TestMasterSlaveSync", "mainTest"));
     DistkvNodesManager nodesManager = new DistkvNodesManager(3);
