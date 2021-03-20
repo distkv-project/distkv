@@ -1,12 +1,12 @@
 package com.distkv.server.metaserver.server;
 
-import com.alipay.remoting.rpc.RpcServer;
 import com.alipay.sofa.jraft.Node;
 import com.alipay.sofa.jraft.RaftGroupService;
 import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.NodeOptions;
 import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
+import com.alipay.sofa.jraft.rpc.RpcServer;
 import com.distkv.server.metaserver.server.processor.GetGlobalViewRequestProcessor;
 import com.distkv.server.metaserver.server.processor.HeartbeatRequestProcessor;
 import org.apache.commons.io.FileUtils;
@@ -27,11 +27,11 @@ public class DmetaServer {
     FileUtils.forceMkdir(new File(dataPath));
 
     // make raft RPC and work RPC use same RPC server
-    final RpcServer rpcServer = new RpcServer(serverId.getPort());
+    final RpcServer rpcServer = RaftRpcServerFactory.createRaftRpcServer(serverId.getEndpoint());
     RaftRpcServerFactory.addRaftRequestProcessors(rpcServer);
     // Registration processor
-    rpcServer.registerUserProcessor(new HeartbeatRequestProcessor(this));
-    rpcServer.registerUserProcessor(new GetGlobalViewRequestProcessor(this));
+    rpcServer.registerProcessor(new HeartbeatRequestProcessor(this));
+    rpcServer.registerProcessor(new GetGlobalViewRequestProcessor(this));
     // init StateMachine
     this.fsm = new MetaStateMachine();
     // set StateMachine

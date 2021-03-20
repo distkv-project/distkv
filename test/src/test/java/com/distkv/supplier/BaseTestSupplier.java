@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,9 +21,9 @@ public class BaseTestSupplier {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseTestSupplier.class);
 
-  private static final AtomicInteger PORT = new AtomicInteger(20000);
+  private static final AtomicInteger PORT = new AtomicInteger(30000);
   protected final ThreadLocal<Integer> rpcServerPort =
-          ThreadLocal.withInitial(() -> PORT.getAndIncrement());
+      ThreadLocal.withInitial(() -> PORT.getAndIncrement());
   protected final ThreadLocal<StoreServer> storeServer = new ThreadLocal<>();
 
   @BeforeMethod
@@ -55,7 +56,7 @@ public class BaseTestSupplier {
     RuntimeUtil.waitForCondition(() -> {
       try {
         client[0] = new DefaultDistkvClient(
-                String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
+            String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
         final String randomStr = RandomStringUtils.random(10);
         // A dummy put to ping the server is serving.
         client[0].strs().put(randomStr, randomStr);
@@ -72,7 +73,7 @@ public class BaseTestSupplier {
     RuntimeUtil.waitForCondition(() -> {
       try {
         client[0] = new DefaultAsyncClient(
-                String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
+            String.format("distkv://127.0.0.1:%d", rpcServerPort.get()));
         final String randomStr = RandomStringUtils.random(10);
         // A dummy put to ping the server is serving.
         client[0].strs().put(randomStr, randomStr);
