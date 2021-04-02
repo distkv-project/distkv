@@ -33,3 +33,8 @@ message ExistsResponse {
 message TTLResponse {
     int64 ttl = 1;
 }
+
+message SyncIssueResponse {
+    string errorMsg = 1;
+    string data = 2;
+}

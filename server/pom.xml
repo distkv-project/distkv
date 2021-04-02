@@ -154,5 +154,11 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
         </dependency>
+        <dependency>
+            <groupId>com.distkv</groupId>
+            <artifactId>distkv-client</artifactId>
+            <version>0.1.4-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
