@@ -1,6 +1,6 @@
 package com.distkv.server.storeserver.cluster;
 
-import com.alipay.remoting.rpc.RpcServer;
+import com.alipay.sofa.jraft.rpc.RpcServer;
 import com.alipay.sofa.jraft.Node;
 import com.alipay.sofa.jraft.RaftGroupService;
 import com.alipay.sofa.jraft.conf.Configuration;
