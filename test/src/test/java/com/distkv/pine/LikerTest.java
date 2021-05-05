@@ -8,6 +8,7 @@ import com.distkv.supplier.BaseTestSupplier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Test(singleThreaded = true)
 public class LikerTest extends BaseTestSupplier {
 
   @Test

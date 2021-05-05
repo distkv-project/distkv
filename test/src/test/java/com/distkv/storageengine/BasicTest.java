@@ -1,11 +1,9 @@
 package com.distkv.storageengine;
 
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 public class BasicTest {
 
-  @Test
   public void testPutAndGet() {
     StorageEngine engine = new StorageEngine();
     engine.put("k1", "v1");

@@ -19,9 +19,16 @@ import java.io.IOException;
  * @date : 2021/3/20
  */
 public class ClusterServer {
+
   private RaftGroupService raftGroupService;
   private Node node;
   private KVStoreStateMachine fsm;
+  private KVStoreClusterServer storeClusterServer;
+  private final RpcServer rpcServer;
+
+  private String groupId;
+  private PeerId serverId;
+  private NodeOptions nodeOptions;
 
   public ClusterServer(final String dataPath, final String groupId, final PeerId serverId,
                        final NodeOptions nodeOptions) throws IOException {
@@ -29,13 +36,11 @@ public class ClusterServer {
     FileUtils.forceMkdir(new File(dataPath));
 
     // 这里让 raft RPC 和业务 RPC 使用同一个 RPC server, 通常也可以分开
-    final RpcServer rpcServer = RaftRpcServerFactory.createRaftRpcServer(serverId.getEndpoint());
+    rpcServer = RaftRpcServerFactory.createRaftRpcServer(serverId.getEndpoint());
     // 启动distkvServer.
     StoreConfig config = StoreConfig.create();
-    KVStoreClusterServer storeServer = new KVStoreClusterServer(config, this);
-    new Thread(() -> {
-      storeServer.run();
-    }).start();
+    storeClusterServer = new KVStoreClusterServer(config, this);
+
     // 初始化状态机
     this.fsm = new KVStoreStateMachine(config);
     // 设置状态机到启动参数
@@ -47,10 +52,28 @@ public class ClusterServer {
     nodeOptions.setRaftMetaUri(dataPath + File.separator + "raft_meta");
     // snapshot, 可选, 一般都推荐
     nodeOptions.setSnapshotUri(dataPath + File.separator + "snapshot");
+
+    this.groupId = groupId;
+    this.serverId = serverId;
+    this.nodeOptions = nodeOptions;
+
+  }
+
+  public void run() {
+    new Thread(() -> {
+      storeClusterServer.run();
+    }).start();
     // 初始化 raft group 服务框架
     this.raftGroupService = new RaftGroupService(groupId, serverId, nodeOptions, rpcServer);
     // 启动
     this.node = this.raftGroupService.start();
+  }
+
+  public void shutdown() {
+    raftGroupService.shutdown();
+    node.shutdown();
+    storeClusterServer.shutdown();
+    rpcServer.shutdown();
   }
 
   public KVStoreStateMachine getFsm() {
@@ -71,6 +94,7 @@ public class ClusterServer {
               "/tmp/server1 counter 127.0.0.1:8081 127.0.0.1:8081,127.0.0.1:8082,127.0.0.1:8083");
       System.exit(1);
     }
+
     final String dataPath = args[0];
     final String groupId = args[1];
     final String serverIdStr = args[2];
@@ -99,6 +123,7 @@ public class ClusterServer {
     // 启动
     final ClusterServer clusterServer =
         new ClusterServer(dataPath, groupId, serverId, nodeOptions);
+    clusterServer.run();
     System.out.println("Started raft server at port:"
         + clusterServer.getNode().getNodeId().getPeerId().getPort());
   }

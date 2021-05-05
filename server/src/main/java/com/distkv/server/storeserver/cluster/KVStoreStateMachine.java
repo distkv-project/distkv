@@ -1,9 +1,12 @@
 package com.distkv.server.storeserver.cluster;
 
+import com.alipay.sofa.jraft.Closure;
 import com.alipay.sofa.jraft.Iterator;
 import com.alipay.sofa.jraft.Status;
 import com.alipay.sofa.jraft.core.StateMachineAdapter;
 import com.alipay.sofa.jraft.error.RaftException;
+import com.alipay.sofa.jraft.storage.snapshot.SnapshotReader;
+import com.alipay.sofa.jraft.storage.snapshot.SnapshotWriter;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.server.storeserver.StoreConfig;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
@@ -96,5 +99,14 @@ public class KVStoreStateMachine extends StateMachineAdapter {
   @Override
   public void onError(final RaftException e) {
     LOG.error("Raft error: {}", e, e);
+  }
+
+  @Override
+  public void onSnapshotSave(SnapshotWriter writer, Closure done) {
+  }
+
+  @Override
+  public boolean onSnapshotLoad(SnapshotReader reader) {
+    return false;
   }
 }

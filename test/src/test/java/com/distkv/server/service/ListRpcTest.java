@@ -28,7 +28,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testPutAndGet() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort.get())) {
+        DistkvService.class, KVSTORE_PORT)) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -37,7 +37,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       values.forEach(putRequestBuilder::addValues);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_PUT)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
@@ -50,7 +50,7 @@ public class ListRpcTest extends BaseTestSupplier {
           .newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       DistkvRequest getRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_GET)
           .setRequest(Any.pack(getRequestBuilder.build()))
           .build();
@@ -58,6 +58,15 @@ public class ListRpcTest extends BaseTestSupplier {
           listService.call(getRequest));
       Assert.assertEquals(dummyListTestData(), getResponse.getResponse()
           .unpack(ListGetResponse.class).getValuesList());
+
+      // Drop.
+      DistkvRequest dropRequest = DistkvRequest.newBuilder()
+          .setKey("list_r_k1")
+          .setRequestType(RequestType.DROP)
+          .build();
+      DistkvResponse dropResponse = FutureUtils.get(
+          listService.call(dropRequest));
+      Assert.assertEquals(CommonProtocol.Status.OK, dropResponse.getStatus());
 
       // Get a non-exist key.
       ListProtocol.ListGetRequest.Builder getRequest2Builder = ListProtocol.ListGetRequest
@@ -77,7 +86,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testDrop() {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort.get())) {
+        DistkvService.class, KVSTORE_PORT)) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -86,7 +95,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       values.forEach(putRequestBuilder::addValues);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_PUT)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
@@ -96,7 +105,7 @@ public class ListRpcTest extends BaseTestSupplier {
 
       // Drop.
       DistkvRequest dropRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.DROP)
           .build();
       DistkvResponse dropResponse = FutureUtils.get(
@@ -117,7 +126,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testLPut() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort.get())) {
+        DistkvService.class, KVSTORE_PORT)) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -126,7 +135,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       values.forEach(putRequestBuilder::addValues);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_PUT)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
@@ -142,7 +151,7 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesLput.add("v4");
       lputRequestBuilder.addAllValues(valuesLput);
       DistkvRequest lputRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_LPUT)
           .setRequest(Any.pack(lputRequestBuilder.build()))
           .build();
@@ -155,7 +164,7 @@ public class ListRpcTest extends BaseTestSupplier {
           = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       DistkvRequest getRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_GET)
           .setRequest(Any.pack(getRequestBuilder.build()))
           .build();
@@ -164,6 +173,15 @@ public class ListRpcTest extends BaseTestSupplier {
       Assert.assertEquals(CommonProtocol.Status.OK, getResponse.getStatus());
       Assert.assertEquals(ImmutableList.of("v3", "v4", "v0", "v1", "v2"),
           getResponse.getResponse().unpack(ListGetResponse.class).getValuesList());
+
+      // Drop.
+      DistkvRequest dropRequest = DistkvRequest.newBuilder()
+          .setKey("list_r_k1")
+          .setRequestType(RequestType.DROP)
+          .build();
+      DistkvResponse dropResponse = FutureUtils.get(
+          listService.call(dropRequest));
+      Assert.assertEquals(CommonProtocol.Status.OK, dropResponse.getStatus());
 
       // Test lput a non-exist key.
       List<String> valuesLput2 = new ArrayList<>();
@@ -184,7 +202,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testRPut() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort.get())) {
+        DistkvService.class, KVSTORE_PORT)) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -193,7 +211,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       values.forEach(putRequestBuilder::addValues);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_PUT)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
@@ -209,7 +227,7 @@ public class ListRpcTest extends BaseTestSupplier {
       valuesRput.add("v4");
       valuesRput.forEach(rputRequestBuilder::addValues);
       DistkvRequest rputRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_RPUT)
           .setRequest(Any.pack(rputRequestBuilder.build()))
           .build();
@@ -222,7 +240,7 @@ public class ListRpcTest extends BaseTestSupplier {
           = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       DistkvRequest getRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_GET)
           .setRequest(Any.pack(getRequestBuilder.build()))
           .build();
@@ -230,6 +248,15 @@ public class ListRpcTest extends BaseTestSupplier {
           listService.call(getRequest));
       Assert.assertEquals(ImmutableList.of("v0", "v1", "v2", "v3", "v4"),
           getResponse.getResponse().unpack(ListGetResponse.class).getValuesList());
+
+      // Drop.
+      DistkvRequest dropRequest = DistkvRequest.newBuilder()
+          .setKey("list_r_k1")
+          .setRequestType(RequestType.DROP)
+          .build();
+      DistkvResponse dropResponse = FutureUtils.get(
+          listService.call(dropRequest));
+      Assert.assertEquals(CommonProtocol.Status.OK, dropResponse.getStatus());
 
       // Test rput a non-exist key.
       List<String> valuesRput2 = new ArrayList<>();
@@ -250,7 +277,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testRemove() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort.get())) {
+        DistkvService.class, KVSTORE_PORT)) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -259,7 +286,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       values.forEach(putRequestBuilder::addValues);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_PUT)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
@@ -273,7 +300,7 @@ public class ListRpcTest extends BaseTestSupplier {
       removeOneRequestBuilder.setType(ListProtocol.RemoveType.RemoveOne);
       removeOneRequestBuilder.setIndex(1);
       DistkvRequest removeRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_REMOVE)
           .setRequest(Any.pack(removeOneRequestBuilder.build()))
           .build();
@@ -286,7 +313,7 @@ public class ListRpcTest extends BaseTestSupplier {
           = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       DistkvRequest getRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_GET)
           .setRequest(Any.pack(getRequestBuilder.build()))
           .build();
@@ -302,13 +329,22 @@ public class ListRpcTest extends BaseTestSupplier {
       removeRangeRequestBuilder.setFrom(0);
       removeRangeRequestBuilder.setEnd(1);
       DistkvRequest removeRangeRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_REMOVE)
           .setRequest(Any.pack(removeRangeRequestBuilder.build()))
           .build();
       DistkvResponse removeRangeResponse = FutureUtils.get(
           listService.call(removeRangeRequest));
       Assert.assertEquals(CommonProtocol.Status.OK, removeRangeResponse.getStatus());
+
+      // Drop.
+      DistkvRequest dropRequest = DistkvRequest.newBuilder()
+          .setKey("list_r_k1")
+          .setRequestType(RequestType.DROP)
+          .build();
+      DistkvResponse dropResponse = FutureUtils.get(
+          listService.call(dropRequest));
+      Assert.assertEquals(CommonProtocol.Status.OK, dropResponse.getStatus());
 
       // Test remove range with a non-exist key.
       removeRangeRequestBuilder.setIndex(1);
@@ -326,7 +362,7 @@ public class ListRpcTest extends BaseTestSupplier {
   @Test
   public void testMRemove() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> listProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort.get())) {
+        DistkvService.class, KVSTORE_PORT)) {
       final DistkvService listService = listProxy.getService();
 
       // Put.
@@ -335,7 +371,7 @@ public class ListRpcTest extends BaseTestSupplier {
       List<String> values = dummyListTestData();
       values.forEach(putRequestBuilder::addValues);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_PUT)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
@@ -349,7 +385,7 @@ public class ListRpcTest extends BaseTestSupplier {
       multipleRemoveRequestBuilder.addIndexes(1);
       multipleRemoveRequestBuilder.addIndexes(0);
       DistkvRequest mremoveRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_MREMOVE)
           .setRequest(Any.pack(multipleRemoveRequestBuilder.build()))
           .build();
@@ -362,7 +398,7 @@ public class ListRpcTest extends BaseTestSupplier {
           = ListProtocol.ListGetRequest.newBuilder();
       getRequestBuilder.setType(ListProtocol.GetType.GET_ALL);
       DistkvRequest getRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("list_r_k1")
           .setRequestType(RequestType.LIST_GET)
           .setRequest(Any.pack(getRequestBuilder.build()))
           .build();
@@ -370,6 +406,15 @@ public class ListRpcTest extends BaseTestSupplier {
           listService.call(getRequest));
       Assert.assertEquals(ImmutableList.of("v2"), getResponse.getResponse()
           .unpack(ListGetResponse.class).getValuesList());
+
+      // Drop.
+      DistkvRequest dropRequest = DistkvRequest.newBuilder()
+          .setKey("list_r_k1")
+          .setRequestType(RequestType.DROP)
+          .build();
+      DistkvResponse dropResponse = FutureUtils.get(
+          listService.call(dropRequest));
+      Assert.assertEquals(CommonProtocol.Status.OK, dropResponse.getStatus());
 
       // Test multi-remove a non-exist key.
       multipleRemoveRequestBuilder.addIndexes(1);

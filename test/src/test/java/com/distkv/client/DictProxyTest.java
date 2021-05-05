@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-@Test(singleThreaded = true)
 public class DictProxyTest extends BaseTestSupplier {
 
   @Test
@@ -18,6 +17,7 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
     Map<String, String> dict1 = client.dicts().get("m1");
+    client.drop("m1");
     Assert.assertEquals(dict, dict1);
     client.disconnect();
   }
@@ -31,6 +31,7 @@ public class DictProxyTest extends BaseTestSupplier {
     client.dicts().putItem("m1", "k2", "v2");
     final Map<String, String> m2 = client.dicts().get("m1");
     dict.put("k2", "v2");
+    client.drop("m1");
     Assert.assertEquals(dict, m2);
     client.disconnect();
   }
@@ -42,6 +43,7 @@ public class DictProxyTest extends BaseTestSupplier {
     dict.put("k1", "v1");
     client.dicts().put("m1", dict);
     String s1 = client.dicts().getItem("m1", "k1");
+    client.drop("m1");
     Assert.assertEquals("v1", s1);
     client.disconnect();
   }
@@ -57,6 +59,7 @@ public class DictProxyTest extends BaseTestSupplier {
     Assert.assertEquals("v1", s1);
     dict.remove("k1");
     Assert.assertEquals(dict, client.dicts().get("m1"));
+    client.drop("m1");
     client.disconnect();
   }
 

@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Test(singleThreaded = true)
 public class SlistProxyTest extends BaseTestSupplier {
 
   private static final Logger LOG = LoggerFactory.getLogger(SlistProxyTest.class);
@@ -30,25 +29,26 @@ public class SlistProxyTest extends BaseTestSupplier {
     testRemoveItem();
     testTop();
     testGetItem();
+    testDrop();
     distkvClient.disconnect();
   }
 
   private void testTop() throws InvalidProtocolBufferException {
-    LinkedList<SlistEntity> list = distkvClient.slists().top("k1", 100);
+    LinkedList<SlistEntity> list = distkvClient.slists().top("slist_p_key", 100);
     Assert.assertEquals(list.get(0).getMember(), "whhh");
     Assert.assertEquals(list.get(1).getMember(), "fw");
   }
 
   private void testRemoveItem() {
-    distkvClient.slists().removeMember("k1", "55");
+    distkvClient.slists().removeMember("slist_p_key", "55");
   }
 
   private void testPutItem() {
-    distkvClient.slists().putMember("k1", new SlistEntity("whhh", 100));
+    distkvClient.slists().putMember("slist_p_key", new SlistEntity("whhh", 100));
   }
 
   private void testIncItem() {
-    distkvClient.slists().incrScore("k1", "fw", 1);
+    distkvClient.slists().incrScore("slist_p_key", "fw", 1);
   }
 
   private void testPut() {
@@ -57,13 +57,17 @@ public class SlistProxyTest extends BaseTestSupplier {
     list.add(new SlistEntity("wlll", 8));
     list.add(new SlistEntity("fw", 9));
     list.add(new SlistEntity("55", 6));
-    distkvClient.slists().put("k1", list);
+    distkvClient.slists().put("slist_p_key", list);
   }
 
   private void testGetItem() throws InvalidProtocolBufferException {
-    DistkvTuple<Integer, Integer> tuple = distkvClient.slists().getMember("k1", "fw");
+    DistkvTuple<Integer, Integer> tuple = distkvClient.slists().getMember("slist_p_key", "fw");
     Assert.assertEquals(tuple.getFirst().intValue(), 10);
     Assert.assertEquals(tuple.getSecond().intValue(), 2);
+  }
+
+  private void testDrop() {
+    distkvClient.drop("slist_p_key");
   }
 
   @Test
@@ -72,6 +76,7 @@ public class SlistProxyTest extends BaseTestSupplier {
     testPut();
     Assert.assertThrows(
         DistkvKeyDuplicatedException.class, this::testPut);
+    testDrop();
     distkvClient.disconnect();
   }
 
@@ -80,7 +85,7 @@ public class SlistProxyTest extends BaseTestSupplier {
     distkvClient = newDistkvClient();
     Assert
         .assertThrows(KeyNotFoundException.class, () ->
-            distkvClient.slists().top("k1", 100));
+            distkvClient.slists().top("slist_p_key", 100));
     distkvClient.disconnect();
   }
 
@@ -88,10 +93,10 @@ public class SlistProxyTest extends BaseTestSupplier {
   public void testExpireSList() {
     distkvClient = newDistkvClient();
     testPut();
-    distkvClient.expire("k1", 1000);
+    distkvClient.expire("slist_p_key", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        distkvClient.slists().getMember("k1", "fw");
+        distkvClient.slists().getMember("slist_p_key", "fw");
         return false;
       } catch (KeyNotFoundException e) {
         return true;

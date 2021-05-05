@@ -12,7 +12,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.Set;
 
-@Test(singleThreaded = true)
 public class StringProxyTest extends BaseTestSupplier {
 
   private static final Logger LOG = LoggerFactory.getLogger(StringProxyTest.class);
@@ -20,8 +19,8 @@ public class StringProxyTest extends BaseTestSupplier {
   @Test
   public void testPutAndGet() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
-    client.strs().put("k1", "v1");
-    Assert.assertEquals("v1", client.strs().get("k1"));
+    client.strs().put("str_k2", "v2");
+    Assert.assertEquals("v2", client.strs().get("str_k2"));
     client.disconnect();
   }
 
@@ -29,7 +28,7 @@ public class StringProxyTest extends BaseTestSupplier {
   public void testKeyNotFoundWhenGetting() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     try {
-      client.strs().get("k1");
+      client.strs().get("str_key");
       Assert.fail("It shouldn't reach here.");
     } catch (KeyNotFoundException e) {
       Assert.assertTrue(true);
@@ -43,8 +42,8 @@ public class StringProxyTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
 
     // string
-    client.strs().put("str_k1", "v1");
-    Assert.assertEquals("v1", client.strs().get("str_k1"));
+    client.strs().put("str_p_k1", "v1");
+    Assert.assertEquals("v1", client.strs().get("str_p_k1"));
 
     // list
     client.lists().put("list_k1", ImmutableList.of("v1", "v2", "v3"));

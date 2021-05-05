@@ -20,7 +20,7 @@ import java.util.concurrent.TimeoutException;
  * @author : kairbon
  * @date : 2021/4/8
  */
-public class RaftDistkvClient implements DistkvClient {
+public class RaftDefaultDistkvClient implements DistkvClient {
 
   private static final String typeCode = "X";
 
@@ -29,7 +29,7 @@ public class RaftDistkvClient implements DistkvClient {
 
   private final CliClientService cliClientService;
 
-  private static volatile String leaderAddr;
+  private volatile String leaderAddr;
 
   private String groupId;
 
@@ -46,7 +46,7 @@ public class RaftDistkvClient implements DistkvClient {
   private DistkvIntProxy intProxy;
 
 
-  public RaftDistkvClient(String groupId, String clusterConfig) {
+  public RaftDefaultDistkvClient(String groupId, String clusterConfig) {
 
     final Configuration conf = new Configuration();
 
@@ -60,8 +60,6 @@ public class RaftDistkvClient implements DistkvClient {
     cliClientService.init(new CliOptions());
 
     refreshLeader();
-    //TODO(kairbon): Replace this line using conf
-    refreshDistkvClient(String.format("distkv://%s:%d", leaderAddr, 8082));
   }
 
   private void refreshLeader() {
@@ -70,7 +68,11 @@ public class RaftDistkvClient implements DistkvClient {
         throw new IllegalStateException("Refresh leader failed");
       }
       final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
-      leaderAddr = leader.getIp();
+      if (!leader.getIp().equals(leaderAddr)) {
+        leaderAddr = leader.getIp();
+        //TODO(kairbon): Replace this line using conf
+        refreshDistkvClient(String.format("distkv://%s:%d", leaderAddr, 8082));
+      }
     } catch (InterruptedException | TimeoutException e) {
       e.printStackTrace();
     }
@@ -99,6 +101,7 @@ public class RaftDistkvClient implements DistkvClient {
 
   @Override
   public boolean disconnect() {
+    cliClientService.shutdown();
     asyncClient.disconnect();
     return true;
   }

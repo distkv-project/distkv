@@ -26,7 +26,7 @@ public class AsyncIntProxyTest extends BaseTestSupplier {
 
     try {
       CompletableFuture<DistkvResponse> putFuture =
-          client.ints().put("k1", 1);
+          client.ints().put("int_k1", 1);
       putFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
@@ -34,7 +34,7 @@ public class AsyncIntProxyTest extends BaseTestSupplier {
       });
 
       CompletableFuture<DistkvResponse> getFuture =
-          client.ints().get("k1");
+          client.ints().get("int_k1");
       getFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
@@ -42,7 +42,7 @@ public class AsyncIntProxyTest extends BaseTestSupplier {
       });
 
       CompletableFuture<DistkvResponse> incrFuture =
-          client.ints().incr("k1", 2);
+          client.ints().incr("int_k1", 2);
       getFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
@@ -50,7 +50,7 @@ public class AsyncIntProxyTest extends BaseTestSupplier {
       });
 
       CompletableFuture<DistkvResponse> dropFuture =
-          client.drop("k1");
+          client.drop("int_k1");
       getFuture.whenComplete((r, t) -> {
         if (t != null) {
           throw new IllegalStateException(t);
