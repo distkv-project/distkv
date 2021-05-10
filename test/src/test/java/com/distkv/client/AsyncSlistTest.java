@@ -32,7 +32,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
     list.add(new SlistEntity("fw", 9));
     list.add(new SlistEntity("55", 6));
     CompletableFuture<DistkvResponse> putFuture =
-        client.slists().put("k1", list);
+        client.slists().put("async_slist_k1", list);
     putFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -41,7 +41,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
 
     // TestIncScore
     CompletableFuture<DistkvResponse> incFuture =
-        client.slists().incrScore("k1", "fw", 1);
+        client.slists().incrScore("async_slist_k1", "fw", 1);
     incFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -50,7 +50,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
 
     // TestPutMember
     CompletableFuture<DistkvResponse> putMemberFuture =
-        client.slists().putMember("k1", new SlistEntity("aa", 10));
+        client.slists().putMember("async_slist_k1", new SlistEntity("aa", 10));
     putMemberFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -59,7 +59,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
 
     // TestRemoveMember
     CompletableFuture<DistkvResponse> removeFuture =
-        client.slists().removeMember("k1", "xswl");
+        client.slists().removeMember("async_slist_k1", "xswl");
     removeFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -68,7 +68,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
 
     // TestTop
     CompletableFuture<DistkvResponse> topFuture =
-        client.slists().top("k1", 3);
+        client.slists().top("async_slist_k1", 3);
     topFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -77,7 +77,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
 
     // TestGetMember
     CompletableFuture<DistkvResponse> getMemberFuture =
-        client.slists().getMember("k1", "55");
+        client.slists().getMember("async_slist_k1", "55");
     getMemberFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -86,7 +86,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
 
     //TestDrop
     CompletableFuture<DistkvResponse> dropFuture =
-        client.drop("k1");
+        client.drop("async_slist_k1");
     dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -111,7 +111,7 @@ public class AsyncSlistTest extends BaseTestSupplier {
     Assert.assertEquals(putMemberResponse.getStatus(), status);
     Assert.assertEquals(removeMemberResponse.getStatus(), status);
     CompletableFuture<DistkvResponse> getMember =
-        client.slists().getMember("k1", "fw");
+        client.slists().getMember("async_slist_k1", "fw");
     DistkvResponse distkvResponse = getMember.get();
     Assert.assertEquals(topResponse.getResponse()
         .unpack(SlistTopResponse.class).getList(0).getMember(), "aa");

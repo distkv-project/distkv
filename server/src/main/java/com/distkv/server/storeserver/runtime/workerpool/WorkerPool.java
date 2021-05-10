@@ -4,7 +4,9 @@ import com.distkv.rpc.protobuf.generated.DistkvProtocol;
 import com.distkv.rpc.protobuf.generated.DistkvProtocol.DistkvResponse;
 import com.distkv.server.storeserver.runtime.StoreRuntime;
 import com.google.common.collect.ImmutableList;
+
 import java.util.concurrent.CompletableFuture;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -29,17 +31,13 @@ public class WorkerPool {
   }
 
   public void postRequest(
-      DistkvProtocol.DistkvRequest request, CompletableFuture<DistkvResponse> completableFuture) {
+      DistkvProtocol.DistkvRequest request,
+      CompletableFuture<DistkvResponse> completableFuture)
+      throws InterruptedException {
     String key = request.getKey();
     final int workerIndex = Math.abs(key.hashCode()) % shardNum;
     Worker worker = workers.get(workerIndex);
-    try {
-      worker.post(new InternalRequest(request, completableFuture));
-    } catch (InterruptedException e) {
-      // TODO(qwang): Should be an assert here.
-      LOG.error("Failed to post request to worker pool, key is {}", key);
-
-    }
+    worker.post(new InternalRequest(request, completableFuture));
   }
 
   public void shutdown() {

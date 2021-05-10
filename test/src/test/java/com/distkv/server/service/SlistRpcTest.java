@@ -23,7 +23,7 @@ public class SlistRpcTest extends BaseTestSupplier {
   @Test
   public void testPut() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> sortedListProxy =
-        new ProxyOnClient<>(DistkvService.class, rpcServerPort.get())) {
+        new ProxyOnClient<>(DistkvService.class, KVSTORE_PORT)) {
       DistkvService service = sortedListProxy.getService();
       LinkedList<SlistEntity> list = new LinkedList<>();
       list.add(new SlistEntity("xswl", 9));
@@ -44,7 +44,7 @@ public class SlistRpcTest extends BaseTestSupplier {
       }
       requestBuilder.addAllList(listEntities);
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("slist_key")
           .setRequestType(RequestType.SLIST_PUT)
           .setRequest(Any.pack(requestBuilder.build()))
           .build();
@@ -55,7 +55,7 @@ public class SlistRpcTest extends BaseTestSupplier {
           SlistProtocol.SlistTopRequest.newBuilder();
       topRequestBuilder.setCount(2);
       DistkvRequest topRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("slist_key")
           .setRequestType(RequestType.SLIST_TOP)
           .setRequest(Any.pack(topRequestBuilder.build()))
           .build();
@@ -71,7 +71,7 @@ public class SlistRpcTest extends BaseTestSupplier {
       putRequestBuilder.setMember("asd");
       putRequestBuilder.setScore(1000);
       DistkvRequest putMemberRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("slist_key")
           .setRequestType(RequestType.SLIST_PUT_MEMBER)
           .setRequest(Any.pack(putRequestBuilder.build()))
           .build();
@@ -88,7 +88,7 @@ public class SlistRpcTest extends BaseTestSupplier {
           SlistProtocol.SlistGetMemberRequest.newBuilder();
       getMemberRequestBuilder.setMember("asd");
       DistkvRequest getMemberRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("slist_key")
           .setRequestType(RequestType.SLIST_GET_MEMBER)
           .setRequest(Any.pack(getMemberRequestBuilder.build()))
           .build();

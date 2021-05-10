@@ -24,11 +24,11 @@ public class SetRpcTest extends BaseTestSupplier {
   public void testSet() throws InvalidProtocolBufferException {
     // The following methods should be called as ordered
     // because some methods depend on other methods.
-    testPut(rpcServerPort.get());
-    testGet(rpcServerPort.get());
-    testRemoveItem(rpcServerPort.get());
-    testDropByKey(rpcServerPort.get());
-    testExists(rpcServerPort.get());
+    testPut(KVSTORE_PORT);
+    testGet(KVSTORE_PORT);
+    testRemoveItem(KVSTORE_PORT);
+    testDropByKey(KVSTORE_PORT);
+    testExists(KVSTORE_PORT);
   }
 
   private static void testPut(int rpcServerPort) {
@@ -41,7 +41,7 @@ public class SetRpcTest extends BaseTestSupplier {
       values.forEach(setPutRequestBuilder::addValues);
 
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("set_r_k1")
           .setRequestType(RequestType.SET_PUT)
           .setRequest(Any.pack(setPutRequestBuilder.build()))
           .build();
@@ -56,7 +56,7 @@ public class SetRpcTest extends BaseTestSupplier {
         DistkvService.class, rpcServerPort)) {
       DistkvService setService = setProxy.getService();
       DistkvRequest request = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("set_r_k1")
           .setRequestType(RequestType.SET_GET)
           .build();
       DistkvResponse setGetResponse = FutureUtils.get(
@@ -77,7 +77,7 @@ public class SetRpcTest extends BaseTestSupplier {
           SetProtocol.SetRemoveItemRequest.newBuilder();
       setRemoveRequestBuilder.setItemValue("v1");
       DistkvRequest request = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("set_r_k1")
           .setRequestType(RequestType.SET_REMOVE_ITEM)
           .setRequest(Any.pack(setRemoveRequestBuilder.build()))
           .build();
@@ -93,7 +93,7 @@ public class SetRpcTest extends BaseTestSupplier {
       DistkvService setService = setProxy.getService();
 
       DistkvRequest request = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("set_r_k1")
           .setRequestType(RequestType.DROP)
           .build();
       DistkvResponse setDropByKeyResponse = FutureUtils.get(
@@ -112,7 +112,7 @@ public class SetRpcTest extends BaseTestSupplier {
       setExistRequestBuilder.setEntity("v1");
 
       DistkvRequest request = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("set_r_k1")
           .setRequestType(RequestType.SET_EXISTS)
           .setRequest(Any.pack(setExistRequestBuilder.build()))
           .build();

@@ -29,6 +29,8 @@ enum RequestType {
 
     TTL = 7;
 
+    SYNC_ISSUE = 8;
+
     // string concept
     STR_PUT = 101;
     STR_GET = 102;

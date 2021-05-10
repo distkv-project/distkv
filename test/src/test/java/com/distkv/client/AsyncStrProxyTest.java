@@ -24,7 +24,7 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
     DistkvAsyncClient client = newAsyncDistkvClient();
 
     CompletableFuture<DistkvResponse> putFuture =
-        client.strs().put("k1", "v1");
+        client.strs().put("async_str_k1", "v1");
     putFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -32,8 +32,16 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
     });
 
     CompletableFuture<DistkvResponse> getFuture =
-        client.strs().get("k1");
+        client.strs().get("async_str_k1");
     getFuture.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
+    });
+
+    CompletableFuture<DistkvResponse> dropFuture =
+        client.drop("async_str_k1");
+    dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
       }
@@ -43,6 +51,8 @@ public class AsyncStrProxyTest extends BaseTestSupplier {
         putFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse getResponse =
         getFuture.get(1, TimeUnit.SECONDS);
+    dropFuture.get();
+
 
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(getResponse.getStatus(), CommonProtocol.Status.OK);

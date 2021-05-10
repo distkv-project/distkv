@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-@Test(singleThreaded = true)
 public class IntProxyTest extends BaseTestSupplier {
 
   private static final Logger LOG = LoggerFactory.getLogger(IntProxyTest.class);
@@ -18,10 +17,10 @@ public class IntProxyTest extends BaseTestSupplier {
   public void testPutAndGetIncr() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     try {
-      client.ints().put("k1", 1);
-      Assert.assertEquals(1, client.ints().get("k1"));
-      client.ints().incr("k1", 2);
-      Assert.assertEquals(3, client.ints().get("k1"));
+      client.ints().put("Ik1", 1);
+      Assert.assertEquals(1, client.ints().get("Ik1"));
+      client.ints().incr("Ik1", 2);
+      Assert.assertEquals(3, client.ints().get("Ik1"));
     } finally {
       client.disconnect();
     }
@@ -31,10 +30,10 @@ public class IntProxyTest extends BaseTestSupplier {
   public void testDrop() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     try {
-      client.ints().put("k1", 1);
-      Assert.assertEquals(1, client.ints().get("k1"));
-      client.drop("k1");
-      Assert.assertThrows(KeyNotFoundException.class, () -> client.ints().get("k1"));
+      client.ints().put("Ik1", 1);
+      Assert.assertEquals(1, client.ints().get("Ik1"));
+      client.drop("Ik1");
+      Assert.assertThrows(KeyNotFoundException.class, () -> client.ints().get("Ik1"));
     } finally {
       client.disconnect();
     }
@@ -44,7 +43,7 @@ public class IntProxyTest extends BaseTestSupplier {
   public void testKeyNotFoundWhenGetting() throws InvalidProtocolBufferException {
     DistkvClient client = newDistkvClient();
     try {
-      client.ints().get("k1");
+      client.ints().get("Ik1");
       Assert.fail("It shouldn't reach here.");
     } catch (KeyNotFoundException e) {
       Assert.assertTrue(true);
@@ -56,11 +55,11 @@ public class IntProxyTest extends BaseTestSupplier {
   @Test
   public void testExpireList() {
     DistkvClient client = newDistkvClient();
-    client.ints().put("k1", 1);
-    client.expire("k1", 1000);
+    client.ints().put("Ik1", 1);
+    client.expire("Ik1", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        client.ints().get("k1");
+        client.ints().get("Ik1");
         return false;
       } catch (KeyNotFoundException e) {
         return true;

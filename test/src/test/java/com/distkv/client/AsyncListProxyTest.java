@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+@Test(singleThreaded = true)
 public class AsyncListProxyTest extends BaseTestSupplier {
 
   CommonProtocol.Status status = CommonProtocol.Status.OK;
@@ -26,7 +27,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testPut
     CompletableFuture<DistkvResponse> putFuture =
-        client.lists().put("k1", ImmutableList.of("v1", "v2", "v3"));
+        client.lists().put("async_list_p_k1", ImmutableList.of("v1", "v2", "v3"));
     putFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -35,7 +36,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testGetOne
     CompletableFuture<DistkvResponse> getOneFuture =
-        client.lists().get("k1", 0);
+        client.lists().get("async_list_p_k1", 0);
     getOneFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -44,7 +45,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testGetRange
     CompletableFuture<DistkvResponse> getRangeFuture =
-        client.lists().get("k1", 1, 3);
+        client.lists().get("async_list_p_k1", 1, 3);
     getRangeFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -53,7 +54,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testLPut
     CompletableFuture<DistkvResponse> lputFuture =
-        client.lists().lput("k1", ImmutableList.of("v0"));
+        client.lists().lput("async_list_p_k1", ImmutableList.of("v0"));
     lputFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -62,7 +63,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testRemoveOne
     CompletableFuture<DistkvResponse> removeOneFuture =
-        client.lists().remove("k1", 3);
+        client.lists().remove("async_list_p_k1", 3);
     removeOneFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -71,7 +72,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testRPut
     CompletableFuture<DistkvResponse> rputFuture =
-        client.lists().rput("k1", ImmutableList.of("v3", "v4"));
+        client.lists().rput("async_list_p_k1", ImmutableList.of("v3", "v4"));
     rputFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -80,7 +81,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testRemoveRange
     CompletableFuture<DistkvResponse> removeRangeFuture =
-        client.lists().remove("k1", 1, 2);
+        client.lists().remove("async_list_p_k1", 1, 2);
     removeRangeFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -89,7 +90,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testMRemove
     CompletableFuture<DistkvResponse> mremoveFuture =
-        client.lists().mremove("k1", ImmutableList.of(0, 2));
+        client.lists().mremove("async_list_p_k1", ImmutableList.of(0, 2));
     mremoveFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
@@ -98,8 +99,16 @@ public class AsyncListProxyTest extends BaseTestSupplier {
 
     // testGetAll
     CompletableFuture<DistkvResponse> getAllFuture =
-        client.lists().get("k1");
+        client.lists().get("async_list_p_k1");
     getAllFuture.whenComplete((r, t) -> {
+      if (t != null) {
+        throw new IllegalStateException(t);
+      }
+    });
+
+    CompletableFuture<DistkvResponse> dropFuture =
+        client.drop("async_list_p_k1");
+    dropFuture.whenComplete((r, t) -> {
       if (t != null) {
         throw new IllegalStateException(t);
       }
@@ -114,6 +123,7 @@ public class AsyncListProxyTest extends BaseTestSupplier {
     DistkvResponse removeRangeResponse = removeRangeFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse mremoveResponse = mremoveFuture.get(1, TimeUnit.SECONDS);
     DistkvResponse getResponse = getAllFuture.get(1, TimeUnit.SECONDS);
+    dropFuture.get();
 
     Assert.assertEquals(putResponse.getStatus(), status);
     Assert.assertEquals(rputResponse.getStatus(), status);

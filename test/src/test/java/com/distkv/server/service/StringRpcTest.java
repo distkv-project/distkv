@@ -20,7 +20,7 @@ public class StringRpcTest extends BaseTestSupplier {
   @Test
   public void testRpcServer() throws InvalidProtocolBufferException {
     try (ProxyOnClient<DistkvService> stringProxy = new ProxyOnClient<>(
-        DistkvService.class, rpcServerPort.get())) {
+        DistkvService.class, KVSTORE_PORT)) {
       DistkvService stringService = stringProxy.getService();
       // Test string put request.
       StringProtocol.StrPutRequest strPutRequest =
@@ -28,7 +28,7 @@ public class StringRpcTest extends BaseTestSupplier {
               .setValue("v1")
               .build();
       DistkvRequest putRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("str_r_k1")
           .setRequestType(RequestType.STR_PUT)
           .setRequest(Any.pack(strPutRequest))
           .build();
@@ -37,7 +37,7 @@ public class StringRpcTest extends BaseTestSupplier {
 
       // Test string get request.
       DistkvRequest getRequest = DistkvRequest.newBuilder()
-          .setKey("k1")
+          .setKey("str_r_k1")
           .setRequestType(RequestType.STR_GET)
           .build();
       DistkvResponse getResponse = FutureUtils.get(stringService.call(getRequest));

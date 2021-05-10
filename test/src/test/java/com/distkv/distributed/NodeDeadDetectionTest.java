@@ -9,13 +9,12 @@ import com.distkv.server.metaserver.server.bean.GetGlobalViewResponse;
 import com.distkv.server.view.NodeTable;
 import com.distkv.supplier.MasterSlaveSyncTestUtil;
 import com.distkv.utils.DistkvNodesManager;
-import java.util.concurrent.TimeUnit;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+
+import java.util.concurrent.TimeUnit;
 
 public class NodeDeadDetectionTest {
 
-  @Test(singleThreaded = true)
   public void testMetaServerDetectNodeDead() {
     System.out.println(String.format("\n==================== Running the test method: %s.%s",
         "KillingNodeTest", "test"));
@@ -49,7 +48,6 @@ public class NodeDeadDetectionTest {
     }
   }
 
-  @Test(singleThreaded = true)
   public void testKillSingleNode() {
     DistkvNodesManager nodesManager = new DistkvNodesManager(3);
     nodesManager.startAllMetaServers();

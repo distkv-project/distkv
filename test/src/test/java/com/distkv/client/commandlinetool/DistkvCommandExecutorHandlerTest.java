@@ -288,6 +288,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .listGet(distkvClient, distKVParsedResult), "[v4]");
+
+    //'drop'
+    command = "drop k1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(
+        CommandExecutorHandler.drop(distkvClient, distKVParsedResult), STATUS_OK);
   }
 
   @Test
@@ -303,6 +309,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .listGet(distkvClient, distKVParsedResult), "[v4, v5]");
+
+    //'drop'
+    command = "drop k1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(
+        CommandExecutorHandler.drop(distkvClient, distKVParsedResult), STATUS_OK);
   }
 
   @Test
@@ -505,6 +517,11 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     distKVParsedResult = distkvParser.parse(command);
     Assert.assertEquals(CommandExecutorHandler
         .exists(distkvClient, distKVParsedResult), "true");
+    //'drop'
+    command = "drop str_k1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(
+        CommandExecutorHandler.drop(distkvClient, distKVParsedResult), STATUS_OK);
   }
 
   @Test
@@ -525,6 +542,12 @@ public class DistkvCommandExecutorHandlerTest extends BaseTestSupplier {
     String timeToLive = CommandExecutorHandler.ttl(distkvClient, distKVParsedResult)
         .replace(TimeUnit.MILLISECOND, "");
     Assert.assertEquals(timeToLive, "-1");
+
+    //'drop'
+    command = "drop str_k1";
+    distKVParsedResult = distkvParser.parse(command);
+    Assert.assertEquals(
+        CommandExecutorHandler.drop(distkvClient, distKVParsedResult), STATUS_OK);
   }
 
   @Test

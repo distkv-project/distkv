@@ -10,8 +10,8 @@ import org.testng.annotations.Test;
 public class BasicOperationTest extends BaseTestSupplier {
 
   private void dummyPut(DistkvClient client) throws InvalidProtocolBufferException {
-    client.strs().put("k1", "v1");
-    Assert.assertEquals("v1", client.strs().get("k1"));
+    client.strs().put("b_key", "v1");
+    Assert.assertEquals("v1", client.strs().get("b_key"));
   }
 
   @Test
@@ -19,8 +19,8 @@ public class BasicOperationTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     dummyPut(client);
     //Drop expiration.
-    client.drop("k1");
-    Assert.assertThrows(KeyNotFoundException.class, () -> client.strs().get("k1"));
+    client.drop("b_key");
+    Assert.assertThrows(KeyNotFoundException.class, () -> client.strs().get("b_key"));
     client.disconnect();
   }
 
@@ -29,10 +29,10 @@ public class BasicOperationTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     dummyPut(client);
     //Expire operation.
-    client.expire("k1", 1000);
+    client.expire("b_key", 1000);
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        client.strs().get("k1");
+        client.strs().get("b_key");
         return false;
       } catch (InvalidProtocolBufferException e) {
         return false;
@@ -49,7 +49,8 @@ public class BasicOperationTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     dummyPut(client);
     // Exist operation.
-    Assert.assertTrue(client.exists("k1"));
+    Assert.assertTrue(client.exists("b_key"));
+    client.drop("b_key");
     client.disconnect();
   }
 
@@ -58,7 +59,8 @@ public class BasicOperationTest extends BaseTestSupplier {
     DistkvClient client = newDistkvClient();
     dummyPut(client);
     // TTL with no expire operation.
-    Assert.assertEquals(client.ttl("k1"), -1);
+    Assert.assertEquals(client.ttl("b_key"), -1);
+    client.drop("b_key");
     client.disconnect();
   }
 
@@ -68,11 +70,11 @@ public class BasicOperationTest extends BaseTestSupplier {
     dummyPut(client);
 
     //Expire operation.
-    client.expire("k1", 2000);
+    client.expire("b_key", 2000);
 
     // TTL with key has not expired operation.
     boolean ttlResult = RuntimeUtil.waitForCondition(() -> {
-      long servivalTime = client.ttl("k1");
+      long servivalTime = client.ttl("b_key");
       return servivalTime < 2000 && servivalTime > 0;
     }, 1000);
     Assert.assertTrue(ttlResult);
@@ -80,7 +82,7 @@ public class BasicOperationTest extends BaseTestSupplier {
     // TTL with key has expired operation.
     boolean result = RuntimeUtil.waitForCondition(() -> {
       try {
-        client.ttl("k1");
+        client.ttl("b_key");
         return false;
       } catch (KeyNotFoundException e) {
         return true;

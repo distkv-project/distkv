@@ -1,12 +1,11 @@
 package com.distkv.server.metaserver.client;
 
-import com.alipay.remoting.exception.RemotingException;
 import com.alipay.sofa.jraft.JRaftUtils;
 import com.alipay.sofa.jraft.RouteTable;
 import com.alipay.sofa.jraft.conf.Configuration;
 import com.alipay.sofa.jraft.entity.PeerId;
 import com.alipay.sofa.jraft.option.CliOptions;
-import com.alipay.sofa.jraft.rpc.impl.cli.BoltCliClientService;
+import com.alipay.sofa.jraft.rpc.impl.cli.CliClientServiceImpl;
 import com.distkv.common.NodeInfo;
 import com.distkv.server.metaserver.server.bean.GetGlobalViewRequest;
 import com.distkv.server.metaserver.server.bean.GetGlobalViewResponse;
@@ -19,9 +18,9 @@ import java.util.concurrent.TimeoutException;
 
 public class DmetaClient {
 
-  private BoltCliClientService cliClientService = null;
+  private final CliClientServiceImpl cliClientService;
 
-  private static Logger LOG = LoggerFactory.getLogger(DmetaClient.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DmetaClient.class);
 
   public static final String RAFT_GROUP_ID = "META_SERVER";
 
@@ -34,7 +33,7 @@ public class DmetaClient {
     RouteTable.getInstance().updateConfiguration(RAFT_GROUP_ID, conf);
 
     //init RPC client and update Routing table
-    cliClientService = new BoltCliClientService();
+    cliClientService = new CliClientServiceImpl();
     cliClientService.init(new CliOptions());
     refreshLeader();
   }
@@ -47,7 +46,7 @@ public class DmetaClient {
       final HeartbeatRequest request = new HeartbeatRequest(nodeInfo);
 
       HeartbeatResponse response = (HeartbeatResponse) cliClientService.getRpcClient()
-          .invokeSync(leader.getEndpoint().toString(), request, HEARTBEAT_TIMEOUT);
+          .invokeSync(leader.getEndpoint(), request, HEARTBEAT_TIMEOUT);
       if (!response.isSuccess()) {
         if (response.getRedirect().length() > 0) {
           refreshLeader();
@@ -56,10 +55,10 @@ public class DmetaClient {
       }
       return response;
       // TODO(kairbon): Need to handle these exception.
-    } catch (InterruptedException e) {
-      return null;
-    } catch (RemotingException e) {
+    } catch (com.alipay.sofa.jraft.error.RemotingException e) {
       refreshLeader();
+      return null;
+    } catch (InterruptedException e) {
       return null;
     }
   }
@@ -70,10 +69,9 @@ public class DmetaClient {
     final GetGlobalViewRequest request = new GetGlobalViewRequest();
 
     try {
-      GetGlobalViewResponse response = (GetGlobalViewResponse) cliClientService.getRpcClient()
-          .invokeSync(leader.getEndpoint().toString(), request, HEARTBEAT_TIMEOUT);
-      return response;
-    } catch (RemotingException e) {
+      return (GetGlobalViewResponse) cliClientService.getRpcClient()
+          .invokeSync(leader.getEndpoint(), request, HEARTBEAT_TIMEOUT);
+    } catch (com.alipay.sofa.jraft.error.RemotingException e) {
       refreshLeader();
       return null;
     } catch (InterruptedException e) {
@@ -87,9 +85,7 @@ public class DmetaClient {
       if (!RouteTable.getInstance().refreshLeader(cliClientService, RAFT_GROUP_ID, 1000).isOk()) {
         throw new IllegalStateException("Refresh leader failed");
       }
-    } catch (InterruptedException e) {
-      LOG.error("Refresh leader failed");
-    } catch (TimeoutException e) {
+    } catch (InterruptedException | TimeoutException e) {
       LOG.error("Refresh leader failed");
     }
   }

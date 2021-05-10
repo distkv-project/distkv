@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+@Test(singleThreaded = true)
 public class TopperTest extends BaseTestSupplier {
 
   @Test
